@@ -182,7 +182,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies x => (int?)x == 1 for not all items,
+						             satisfies x => (int?)x == 1 not for all items,
 						             but all 3 did
 
 						             Collection:

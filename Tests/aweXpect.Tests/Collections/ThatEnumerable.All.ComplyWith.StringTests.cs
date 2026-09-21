@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
-						             but only 2 of 3 were
+						             but only 2 of 3 did
 						             """).AsPrefix();
 				}
 
@@ -76,8 +76,8 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             starts with "a" for not all items,
-						             but all 3 were
+						             starts with "a" not for all items,
+						             but all 3 did
 
 						             Collection:
 						             [

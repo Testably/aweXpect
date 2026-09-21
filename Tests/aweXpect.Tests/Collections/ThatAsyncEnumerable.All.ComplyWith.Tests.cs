@@ -193,7 +193,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Value is equal to 5 for all items,
-						             but none of 2 were
+						             but none of 2 did
 
 						             Not matching items:
 						             [
@@ -233,7 +233,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to 0 for not all items,
+						             is equal to 0 not for all items,
 						             but it was <null>
 						             """);
 				}
@@ -291,7 +291,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
-						             but only 2 of 3 were
+						             but only 2 of 3 did
 
 						             Not matching items:
 						             [
@@ -360,7 +360,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is greater than 0 for not all items,
+						             is greater than 0 not for all items,
 						             but all 5 were
 
 						             Collection:

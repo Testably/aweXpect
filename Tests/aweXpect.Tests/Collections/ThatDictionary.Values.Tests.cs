@@ -93,7 +93,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique for not all items,
+					             has values which are unique not for all items,
 					             but it was <null>
 					             """);
 			}

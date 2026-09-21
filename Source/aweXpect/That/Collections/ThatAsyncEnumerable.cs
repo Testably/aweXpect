@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount, _verb);
+			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -142,13 +142,12 @@ public static partial class ThatAsyncEnumerable
 			else
 			{
 				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				stringBuilder.Append(" for ");
 				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount, _verb);
+			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
 
 		private void AppendContexts(bool isIncomplete)
 		{
@@ -294,7 +293,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount,
+			=> _quantifier.AppendResult(stringBuilder, _grammars, It, _matchingCount, _notMatchingCount, _totalCount,
 				_verb);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -307,13 +306,12 @@ public static partial class ThatAsyncEnumerable
 			else
 			{
 				stringBuilder.Append(_expectationText(_grammars));
-				stringBuilder.Append(" for ");
 				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, _grammars.Negate(), _matchingCount, _notMatchingCount,
+			=> _quantifier.AppendResult(stringBuilder, _grammars.Negate(), It, _matchingCount, _notMatchingCount,
 				_totalCount, _verb);
 
 		private void AppendContexts(bool isIncomplete)
@@ -422,7 +420,7 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				_quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
+				_quantifier.AppendResult(stringBuilder, _grammars, It, _matchingCount, _notMatchingCount, _totalCount);
 			}
 		}
 
@@ -442,7 +440,7 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				_quantifier.AppendResult(stringBuilder, _grammars.Negate(), _matchingCount, _notMatchingCount,
+				_quantifier.AppendResult(stringBuilder, _grammars.Negate(), It, _matchingCount, _notMatchingCount,
 					_totalCount);
 			}
 		}

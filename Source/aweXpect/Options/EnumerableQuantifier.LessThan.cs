@@ -7,7 +7,7 @@ namespace aweXpect.Options;
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches less than <paramref name="maximum" /> items.
+	///     Matches fewer than <paramref name="maximum" /> items.
 	/// </summary>
 	public static EnumerableQuantifier LessThan(int maximum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
@@ -21,8 +21,8 @@ public abstract partial class EnumerableQuantifier
 		public override string ToString()
 			=> maximum switch
 			{
-				1 => "less than one",
-				_ => $"less than {maximum}",
+				1 => "fewer than one",
+				_ => $"fewer than {maximum}",
 			};
 
 		/// <inheritdoc />
@@ -53,12 +53,21 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
+		internal override void AppendNegated(StringBuilder stringBuilder)
+			=> stringBuilder.Append(maximum switch
+			{
+				1 => " for at least one item",
+				_ => $" for at least {maximum} items",
+			});
+
+		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, false);
+			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb, false);
 	}
 }

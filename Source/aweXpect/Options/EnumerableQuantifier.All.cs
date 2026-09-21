@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -43,8 +44,17 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.NotMatchingItems;
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     <c>not for all items</c> keeps the negation in front of the connector, because <c>for not all items</c>
+		///     reads as a statement about the items rather than about the quantifier.
+		/// </remarks>
+		internal override void AppendNegated(StringBuilder stringBuilder)
+			=> stringBuilder.Append(" not for all items");
+
+		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
@@ -53,11 +63,18 @@ public abstract partial class EnumerableQuantifier
 			verb ??= "were";
 			if (grammars.IsNegated())
 			{
-				stringBuilder.Append("all ").Append(matchingCount).Append(' ').Append(verb);
+				if (totalCount == 0)
+				{
+					stringBuilder.Append(it).Append(grammars.SubjectVerb(it, " was", " were")).Append(" empty");
+				}
+				else
+				{
+					stringBuilder.Append("all ").Append(matchingCount).Append(' ').Append(verb);
+				}
 			}
 			else
 			{
-				AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, true);
+				AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb, true);
 			}
 		}
 	}

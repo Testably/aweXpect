@@ -91,13 +91,13 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		=> AppendExpectation(stringBuilder, false);
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		=> quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount, verb);
+		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendExpectation(stringBuilder, true);
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		=> quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount, verb);
+		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
 
 	private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 	{
@@ -109,13 +109,13 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		else
 		{
 			stringBuilder.Append(expectationText(isNegated ? Grammars.Negate() : Grammars));
-			stringBuilder.Append(For);
 			if (isNegated)
 			{
 				quantifier.AppendNegated(stringBuilder);
 			}
 			else
 			{
+				stringBuilder.Append(For);
 				stringBuilder.Append(quantifier);
 				stringBuilder.Append(' ');
 				stringBuilder.Append(quantifier.GetItemString());

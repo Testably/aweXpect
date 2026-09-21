@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has between 3 and 6 items,
-						             but found only 2
+						             but it had only 2 items
 
 						             Collection:
 						             [1, 2]
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has between 3 and 6 items,
-						             but found 7
+						             but it had 7 items
 
 						             Collection:
 						             [1, 2, 3, 4, 5, 6, 7]
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has between 3 and 6 items,
-						             but found only 2
+						             but it had only 2 items
 
 						             Collection:
 						             [1, 2]
@@ -138,7 +138,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has between 3 and 6 items,
-						             but found at least 7
+						             but it had at least 7 items
 
 						             Collection:
 						             [1, 2, 3, 4, 5, 6, 7]

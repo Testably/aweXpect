@@ -105,7 +105,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions whose Message is equal to "inner" for all items,
-					             but none of 0 were
+					             but none of 0 did
 
 					             Collection:
 					             []

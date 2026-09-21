@@ -1,1 +1,3 @@
 #nullable enable
+*REMOVED*abstract aweXpect.Options.EnumerableQuantifier.AppendResult(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null) -> void
+abstract aweXpect.Options.EnumerableQuantifier.AppendResult(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string! it, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null) -> void

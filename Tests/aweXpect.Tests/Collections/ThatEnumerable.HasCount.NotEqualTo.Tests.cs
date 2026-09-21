@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 2 items,
-						             but found 2
+						             but it had 2 items
 
 						             Collection:
 						             [1, 2]
@@ -100,7 +100,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 3 items,
-						             but found 3
+						             but it had 3 items
 
 						             Collection:
 						             [1, 2, 3]

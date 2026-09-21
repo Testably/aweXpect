@@ -60,7 +60,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has at least 4 items,
-						             but found only 3
+						             but it had only 3 items
 
 						             Collection:
 						             [1, 2, 3]

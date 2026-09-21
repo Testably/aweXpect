@@ -18,7 +18,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is greater than 2 for not at most 3 items,
+					             is greater than 2 for more than 3 items,
 					             but 3 of 5 were
 
 					             Matching items:

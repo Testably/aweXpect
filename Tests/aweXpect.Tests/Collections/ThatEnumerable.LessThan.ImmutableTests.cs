@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for less than 3 items,
+					             is equal to 1 for fewer than 3 items,
 					             but 4 of 7 were
 
 					             Matching items:
@@ -66,7 +66,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for less than 4 items,
+					             is equal to 1 for fewer than 4 items,
 					             but 4 of 7 were
 
 					             Matching items:
@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to "foo" ignoring case for less than 2 items,
+					             is equal to "foo" ignoring case for fewer than 2 items,
 					             but 2 of 3 were
 
 					             Matching items:
@@ -120,7 +120,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to "foo" for less than 2 items,
+					             is equal to "foo" for fewer than 2 items,
 					             but 2 of 3 were
 
 					             Matching items:
@@ -149,7 +149,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to "foo" for less than one item,
+					             is equal to "foo" for fewer than one item,
 					             but 2 of 3 were
 
 					             Matching items:

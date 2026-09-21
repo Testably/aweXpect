@@ -152,7 +152,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values start with "f" for no items,
-					             but 1 of 2 were
+					             but 1 of 2 did
 
 					             Matching items:
 					             [
@@ -293,7 +293,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values start with "f" for all items,
-					             but only 1 of 2 were
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
@@ -423,7 +423,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values have exactly 3 items,
-					             but found only 2
+					             but values [1, 2] had only 2 items
 
 					             Collection:
 					             [

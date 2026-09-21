@@ -29,7 +29,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             has less than 7 items,
+						             has fewer than 7 items,
 						             but it could not be verified, because it was already canceled
 
 						             Collection:
@@ -48,8 +48,8 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has less than 3 items,
-						             but found at least 3
+						             has fewer than 3 items,
+						             but it had at least 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -78,8 +78,8 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has less than 2 items,
-						             but found at least 2
+						             has fewer than 2 items,
+						             but it had at least 2 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -97,7 +97,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has less than 2 items,
+						             has fewer than 2 items,
 						             but it was <null>
 						             """);
 				}

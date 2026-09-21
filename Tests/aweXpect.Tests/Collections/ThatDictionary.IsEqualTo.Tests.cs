@@ -301,7 +301,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
-					             but it contained 2 keys instead of 1
+					             but it contained 2 keys and matched 1 expected key
 
 					             Dictionary:
 					             {["a"] = 1, ["b"] = 2}
@@ -320,7 +320,14 @@ public sealed partial class ThatDictionary
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*is equal to dictionary expected*").AsWildcard()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained 1 key and matched 2 expected keys
+
+					             Dictionary:
+					             {["a"] = 1}
+					             """)
 					.Because("the duplicate guard uses the default key equality, not the comparer of the subject");
 			}
 		}

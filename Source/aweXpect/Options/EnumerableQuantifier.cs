@@ -1,6 +1,7 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -64,16 +65,22 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public abstract void AppendResult(StringBuilder stringBuilder,
 		ExpectationGrammars grammars,
+		string it,
 		int matchingCount,
 		int notMatchingCount,
 		int? totalCount,
 		string? verb = null);
 
 	/// <summary>
-	///     Appends the negated quantifier together with the item noun, e.g. <c>not all items</c>.
+	///     Appends the connector together with the complement of the quantifier and the item noun,
+	///     e.g. <c> for no items</c>.
 	/// </summary>
+	/// <remarks>
+	///     The connector belongs to the negation, because the complement of <c>for all items</c> negates the connector
+	///     itself (<c>not for all items</c>).
+	/// </remarks>
 	internal virtual void AppendNegated(StringBuilder stringBuilder)
-		=> stringBuilder.Append("not ").Append(this).Append(' ').Append(this.GetItemString());
+		=> stringBuilder.Append(" for not ").Append(this).Append(' ').Append(this.GetItemString());
 
 	/// <summary>
 	///     Appends the <paramref name="matchingCount" /> relative to the <paramref name="totalCount" />,
@@ -81,9 +88,10 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	/// <remarks>
 	///     Without a <paramref name="verb" />, the items themselves are counted (e.g. <c>HasCount</c>), so the matching count
-	///     is the total and only the number of found items is appended.
+	///     is the total and the result names <paramref name="it" /> as the subject that had them.
 	/// </remarks>
 	private protected static void AppendCounts(StringBuilder stringBuilder,
+		string it,
 		int matchingCount,
 		int notMatchingCount,
 		int? totalCount,
@@ -92,7 +100,7 @@ public abstract partial class EnumerableQuantifier
 	{
 		if (verb is null)
 		{
-			stringBuilder.Append("found ");
+			stringBuilder.Append(it).Append(" had ");
 			if (!totalCount.HasValue)
 			{
 				stringBuilder.Append("at least ");
@@ -102,7 +110,7 @@ public abstract partial class EnumerableQuantifier
 				stringBuilder.Append("only ");
 			}
 
-			stringBuilder.Append(matchingCount);
+			stringBuilder.AppendItemCount(matchingCount);
 			return;
 		}
 

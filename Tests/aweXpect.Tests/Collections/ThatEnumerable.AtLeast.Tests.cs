@@ -205,7 +205,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 0 for not at least 2 items,
+					             is equal to 0 for fewer than 2 items,
 					             but it was <null>
 					             """);
 			}

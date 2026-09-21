@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with "b" for at least one item,
-					             but none of 2 were
+					             but none of 2 did
 
 					             Collection:
 					             [
@@ -224,7 +224,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is greater than 2 for not at least one item,
+					             is greater than 2 for no items,
 					             but 3 of 5 were
 
 					             Collection:

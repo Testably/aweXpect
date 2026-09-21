@@ -37,7 +37,7 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(EnumerableQuantifier.AtLeast(minimum), false);
 
 	/// <summary>
-	///     Verifies that the collection has less than <paramref name="maximum" /> items.
+	///     Verifies that the collection has fewer than <paramref name="maximum" /> items.
 	/// </summary>
 	public TReturn LessThan(int maximum)
 		=> factory(EnumerableQuantifier.LessThan(maximum), false);

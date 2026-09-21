@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is equal to 1 for at least 2 items,
-					             but only 1 of 2 were
+					             but only 1 of 2 did
 
 					             Collection:
 					             [
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is greater than 2 for not at least 2 items,
+					             is greater than 2 for fewer than 2 items,
 					             but 3 of 5 were
 
 					             Collection:

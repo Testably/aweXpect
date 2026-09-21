@@ -158,6 +158,23 @@ public class ManualExpectationBuilderTests
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode(sut1));
 	}
 
+	[Theory]
+	[InlineData("is equal to 1", "were")]
+	[InlineData("are equal to 1", "were")]
+	[InlineData("was equal to 1", "were")]
+	[InlineData("were equal to 1", "were")]
+	[InlineData("starts with \"a\"", "did")]
+	[InlineData("has length 3", "did")]
+	[InlineData("", "were")]
+	public async Task GetResultVerb_ShouldUseDoSupportForEveryVerbButBe(string expectationText, string expected)
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _, _) => new DummyConstraint(expectationText));
+
+		await That(sut.GetResultVerb()).IsEqualTo(expected)
+			.Because("the result refers back to the expectation with a pro-verb that has to match its head verb");
+	}
+
 	[Fact]
 	public async Task IsMet_ShouldThrowNotSupportedException()
 	{

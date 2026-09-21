@@ -53,13 +53,22 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.None;
 
 		/// <inheritdoc />
+		internal override void AppendNegated(StringBuilder stringBuilder)
+			=> stringBuilder.Append(minimum switch
+			{
+				1 => " for no items",
+				_ => $" for fewer than {minimum} items",
+			});
+
+		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb,
+			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb,
 				!grammars.IsNegated());
 	}
 }

@@ -9,7 +9,7 @@ namespace aweXpect;
 public static partial class ThatAsyncEnumerable
 {
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static Elements<TItem> LessThan<TItem>(
@@ -19,7 +19,7 @@ public static partial class ThatAsyncEnumerable
 			EnumerableQuantifier.LessThan(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static Elements LessThan(

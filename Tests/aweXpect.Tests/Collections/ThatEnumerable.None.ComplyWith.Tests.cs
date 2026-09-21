@@ -18,7 +18,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is equal to 1 for no items,
-					             but 1 of 2 were
+					             but 1 of 2 did
 
 					             Matching items:
 					             [

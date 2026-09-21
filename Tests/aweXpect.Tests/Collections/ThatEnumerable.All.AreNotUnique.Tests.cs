@@ -98,7 +98,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for not all items,
+						             is not unique not for all items,
 						             but all 4 were
 
 						             Collection:
