@@ -47,3 +47,5 @@ aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Action<aweXpe
 aweXpect.Core.ExpectationGrammars.Introduced = 32 -> aweXpect.Core.ExpectationGrammars
 static aweXpect.Expect.That(System.Threading.Tasks.Task! subject, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
 static aweXpect.Expect.That(System.Threading.Tasks.ValueTask subject, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
+aweXpect.Core.IObjectMatchType.GetItemExpectation(string! expected, string? itemNoun = null) -> string!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.GetItemExpectation(string! expected, string? itemNoun = null) -> string!

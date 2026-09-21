@@ -75,7 +75,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => $"{Formatter.Format(expected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(expected)),
 					indexOptions)),
 			subject,
 			indexOptions,
@@ -159,7 +159,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => $"{Formatter.Format(expected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(expected)),
 					indexOptions)),
 			subject,
 			indexOptions,
@@ -223,7 +223,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => $"{Formatter.Format(expected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(expected)),
 					indexOptions)),
 			subject,
 			indexOptions,
@@ -308,7 +308,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, unexpected),
-					() => $"{Formatter.Format(unexpected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(unexpected)),
 					indexOptions).Invert()),
 			subject,
 			indexOptions,
@@ -392,7 +392,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, unexpected),
-					() => $"{Formatter.Format(unexpected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(unexpected)),
 					indexOptions).Invert()),
 			subject,
 			indexOptions,
@@ -456,7 +456,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, unexpected),
-					() => $"{Formatter.Format(unexpected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(unexpected)),
 					indexOptions).Invert()),
 			subject,
 			indexOptions,

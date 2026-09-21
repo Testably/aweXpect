@@ -71,7 +71,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => $"{Formatter.Format(expected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(expected)),
 					indexOptions)),
 			subject,
 			indexOptions,
@@ -153,7 +153,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, unexpected),
-					() => $"{Formatter.Format(unexpected)}{options}",
+					() => options.GetItemExpectation(Formatter.Format(unexpected)),
 					indexOptions).Invert()),
 			subject,
 			indexOptions,

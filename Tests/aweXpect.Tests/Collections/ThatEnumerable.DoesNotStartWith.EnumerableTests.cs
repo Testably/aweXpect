@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with [MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 2 }] equivalent,
+					             does not start with [MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 2 }] using equivalency,
 					             but it did start with [
 					               MyClass {
 					                 StringValue = "",

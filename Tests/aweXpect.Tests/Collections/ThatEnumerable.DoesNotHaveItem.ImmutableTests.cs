@@ -165,10 +165,10 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item MyClass {
+					             does not have item equivalent to MyClass {
 					               StringValue = "",
 					               Value = 2
-					             } equivalent at index 2,
+					             } at index 2,
 					             but it had item MyClass {
 					               StringValue = "",
 					               Value = 2

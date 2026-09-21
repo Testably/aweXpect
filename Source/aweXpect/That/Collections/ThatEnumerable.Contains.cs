@@ -41,8 +41,8 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
-						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
+						? $"{g.Verb("does not contain", "do not contain")} {ContainedItemExpectation(options, expected)}"
+						: $"{g.Verb("contains", "contain")} {ContainedItemExpectation(options, expected)} {q}",
 					a => options.AreConsideredEqual(a, expected),
 					quantifier)),
 			subject,
@@ -125,8 +125,8 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
-						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
+						? $"{g.Verb("does not contain", "do not contain")} {ContainedItemExpectation(options, expected)}"
+						: $"{g.Verb("contains", "contain")} {ContainedItemExpectation(options, expected)} {q}",
 					a => options.AreConsideredEqual(a, expected),
 					quantifier)),
 			subject,
@@ -184,8 +184,8 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
-						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
+						? $"{g.Verb("does not contain", "do not contain")} {ContainedItemExpectation(options, expected)}"
+						: $"{g.Verb("contains", "contain")} {ContainedItemExpectation(options, expected)} {q}",
 					a => options.AreConsideredEqual(a, expected),
 					quantifier)),
 			subject,
@@ -510,7 +510,7 @@ public static partial class ThatEnumerable
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
+					(q, g) => q.ToDoesNotContainExpectation(g, ContainedItemExpectation(options, unexpected)),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -587,7 +587,7 @@ public static partial class ThatEnumerable
 				new AsyncContainForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder,
 					it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
+					(q, g) => q.ToDoesNotContainExpectation(g, ContainedItemExpectation(options, unexpected)),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -642,7 +642,7 @@ public static partial class ThatEnumerable
 				new AsyncContainForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder,
 					it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
+					(q, g) => q.ToDoesNotContainExpectation(g, ContainedItemExpectation(options, unexpected)),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -955,6 +955,16 @@ public static partial class ThatEnumerable
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
+
+	/// <summary>
+	///     The text for the <paramref name="expected" /> item of a <c>contain</c> expectation.
+	/// </summary>
+	/// <remarks>
+	///     The verb keeps a direct object, so a match type that describes the item reads "contains an item
+	///     equivalent to …" instead of only naming the value.
+	/// </remarks>
+	private static string ContainedItemExpectation<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
+		=> options.GetItemExpectation(Formatter.Format(expected), "an item");
 
 	/// <summary>
 	///     Casts the <paramref name="item" /> of an untyped enumerable to <typeparamref name="TItem" />.

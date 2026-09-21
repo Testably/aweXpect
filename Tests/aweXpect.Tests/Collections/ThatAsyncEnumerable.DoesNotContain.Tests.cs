@@ -168,10 +168,10 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain MyClass {
+					             does not contain an item equivalent to MyClass {
 					               StringValue = "",
 					               Value = 5
-					             } equivalent,
+					             },
 					             but it contained it at least once
 
 					             Collection:

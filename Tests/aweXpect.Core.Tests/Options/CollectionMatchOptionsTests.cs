@@ -119,7 +119,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to collection expected in order equivalent,
+				             is equal to collection expected in order using equivalency,
 				             but it
 				               contained item 1 (int) at index 1 instead of 1 (long) and
 				               lacked 1 of 2 expected items: 1
