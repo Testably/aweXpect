@@ -73,12 +73,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Both strings are normalized once before the comparison, so that the options which change the length of the
 	///     strings are applied to the complete strings and not to the individual substrings that are compared.<br />
 	///     Returns <c>0</c> when the <paramref name="expected" /> <see langword="string" /> is empty after the
-	///     normalization.
+	///     normalization.<br />
+	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
+	///     instead of only when the returned task is awaited.
 	/// </remarks>
 #if NET8_0_OR_GREATER
-	public async ValueTask<int> CountOccurrences(string actual, string expected)
+	public ValueTask<int> CountOccurrences(string actual, string expected)
 #else
-	public async Task<int> CountOccurrences(string actual, string expected)
+	public Task<int> CountOccurrences(string actual, string expected)
 #endif
 	{
 		actual = Normalize(actual);
@@ -86,9 +88,25 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		ValidatePattern(expected);
 		if (expected.Length == 0)
 		{
-			return 0;
+#if NET8_0_OR_GREATER
+			return ValueTask.FromResult(0);
+#else
+			return Task.FromResult(0);
+#endif
 		}
 
+		return CountNormalizedOccurrences(actual, expected);
+	}
+
+	/// <summary>
+	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	private async ValueTask<int> CountNormalizedOccurrences(string actual, string expected)
+#else
+	private async Task<int> CountNormalizedOccurrences(string actual, string expected)
+#endif
+	{
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
 		if (_matchType is BlockMatchType)
 		{
