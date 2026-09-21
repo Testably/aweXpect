@@ -31,7 +31,7 @@
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="1.1.4" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
 		<PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
 		<PackageVersion Include="NUnit" Version="4.6.1" />
 		<PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
@@ -46,7 +46,7 @@
 		<PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
 		<PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1" />
 		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
-		<PackageVersion Include="FluentAssertions" Version="8.10.0" />
+		<PackageVersion Include="FluentAssertions" Version="8.11.0" />
 		<PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.1" />
 		<PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
