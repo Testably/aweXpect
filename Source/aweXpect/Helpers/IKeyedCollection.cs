@@ -13,7 +13,8 @@ internal interface IKeyedCollection
 	string Format();
 
 	/// <summary>
-	///     Formats the items at the <paramref name="indices" /> together with their keys.
+	///     Formats the items at the <paramref name="indices" /> together with their keys, of which
+	///     <paramref name="totalCount" /> were found in total.
 	/// </summary>
-	string Format(IEnumerable<int> indices);
+	string Format(IEnumerable<int> indices, int? totalCount);
 }

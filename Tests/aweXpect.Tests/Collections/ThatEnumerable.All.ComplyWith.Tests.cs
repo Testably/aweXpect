@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is less than 6 for all items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 
 						             Collection:
 						             [
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 						               7,
 						               8,
 						               9,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 						             but only 2 of at least 3 were
 
 						             Not matching items:
-						             [2, (… and maybe others)]
+						             [2, (… and maybe more)]
 
 						             Collection:
 						             [
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -214,7 +214,7 @@ public sealed partial class ThatEnumerable
 						                 1,
 						                 3
 						               ],
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -414,7 +414,7 @@ public sealed partial class ThatEnumerable
 						             but none of at least 1 were
 
 						             Not matching items:
-						             [1, (… and maybe others)]
+						             [1, (… and maybe more)]
 
 						             Collection:
 						             [1, 1, 1, 1, 1, 1, 1]

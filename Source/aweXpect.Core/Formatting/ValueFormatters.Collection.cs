@@ -110,6 +110,7 @@ public static partial class ValueFormatters
 		=> Format(formatter, new KeyValuePair<object?, object?>(item.Key, item.Value), options with
 		{
 			IncludeType = false,
+			TotalItemCount = null,
 		});
 
 	private static string FormatItem(
@@ -120,6 +121,7 @@ public static partial class ValueFormatters
 		{
 			IncludeType = false,
 			UseLineBreaks = options.UseLineBreaks && item?.GetType() != typeof(string),
+			TotalItemCount = null,
 		});
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
@@ -133,6 +135,7 @@ public static partial class ValueFormatters
 		Func<ValueFormatter, T, FormattingOptions, string> formatItem)
 	{
 		options ??= FormattingOptions.SingleLine;
+		totalCount = options.TotalItemCount ?? totalCount;
 		if (options.IncludeType)
 		{
 			Format(Formatter, stringBuilder, value.GetType());
@@ -179,15 +182,17 @@ public static partial class ValueFormatters
 		if (hasMoreValues)
 		{
 			const char ellipsis = '\u2026';
+			stringBuilder.Append('(').Append(ellipsis).Append(" and ");
 			if (totalCount > maxCount)
 			{
-				stringBuilder.Append('(').Append(ellipsis).Append(" and ").Append(totalCount - maxCount)
-					.Append(" more)");
+				stringBuilder.Append(totalCount - maxCount);
 			}
 			else
 			{
-				stringBuilder.Append(ellipsis);
+				stringBuilder.Append("maybe");
 			}
+
+			stringBuilder.Append(" more)");
 		}
 
 		if (options.UseLineBreaks && isNotEmpty)
@@ -206,6 +211,7 @@ public static partial class ValueFormatters
 		=> Format(formatter, item, options with
 		{
 			IncludeType = false,
+			TotalItemCount = null,
 		});
 
 	/// <summary>

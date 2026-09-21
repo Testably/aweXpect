@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();
 				}

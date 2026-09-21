@@ -155,16 +155,20 @@ public static partial class ValueFormatters
 
 				stringBuilder.Append('<');
 				bool isFirstArgument = true;
+				bool previousWasWritten = false;
 				genericArguments ??= value.GetGenericArguments();
 				foreach (Type? argument in genericArguments)
 				{
+					bool isWritten = !argument.ContainsGenericParameters;
 					if (!isFirstArgument)
 					{
-						stringBuilder.Append(", ");
+						// An unbound argument writes nothing, so a space after its comma would dangle.
+						stringBuilder.Append(previousWasWritten && isWritten ? ", " : ",");
 					}
 
 					isFirstArgument = false;
-					if (!argument.ContainsGenericParameters)
+					previousWasWritten = isWritten;
+					if (isWritten)
 					{
 						FormatType(argument, stringBuilder);
 					}

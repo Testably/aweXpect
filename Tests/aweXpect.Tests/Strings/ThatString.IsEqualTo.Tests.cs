@@ -382,7 +382,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is equal to {Formatter.Format(expected)} ignoring leading white-space,
+					              is equal to {Formatter.Format(expected)} ignoring leading whitespace,
 					              but it was {Formatter.Format(subject.TrimStart())} which differs at index {index}:
 					                 ↓ (actual)
 					                "foo"
@@ -406,7 +406,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to " bar" ignoring leading white-space,
+					             is equal to " bar" ignoring leading whitespace,
 					             but it was "foo" which differs at index 0:
 					                ↓ (actual)
 					               "foo"
@@ -427,7 +427,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is equal to {Formatter.Format(expected)} ignoring leading white-space,
+					              is equal to {Formatter.Format(expected)} ignoring leading whitespace,
 					              but it was {Formatter.Format(subject.TrimStart())} which differs on line {line} and column {column}:
 					                 ↓ (actual)
 					                {Formatter.Format(subject.TrimStart())}
@@ -451,7 +451,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to " \n bar" ignoring leading white-space,
+					             is equal to " \n bar" ignoring leading whitespace,
 					             but it was "foo\nbar" which differs on line 1 and column 1:
 					                ↓ (actual)
 					               "foo\nbar"
@@ -530,7 +530,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is equal to "foo-bar" ignoring trailing white-space,
+					              is equal to "foo-bar" ignoring trailing whitespace,
 					              but it was "foo-boo\nbaz" which differs on line 1 and column 6:
 					                      ↓ (actual)
 					                "foo-boo\nbaz"
@@ -554,7 +554,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to "foo-bar" ignoring trailing white-space,
+					             is equal to "foo-bar" ignoring trailing whitespace,
 					             but it was "foo-boo" which differs at index 5:
 					                     ↓ (actual)
 					               "foo-boo"

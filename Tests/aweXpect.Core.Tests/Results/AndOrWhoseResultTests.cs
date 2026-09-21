@@ -16,7 +16,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True and refers to AndOrWhoseResultTests.MyClass {
+			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True and refers to AndOrWhoseResultTests.MyClass {
 			                 Value1 = False,
 			                 Value2 = False
 			               },
@@ -36,7 +36,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose Value1.ToString().Length is less than 5,
+			             is of type AndOrWhoseResultTests.MyClass whose Value1.ToString().Length is less than 5,
 			             but Value1.ToString().Length was 5
 			             """);
 	}
@@ -53,7 +53,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose (bool?)o.Value1 is True,
+			             is of type AndOrWhoseResultTests.MyClass whose (bool?)o.Value1 is True,
 			             but (bool?)o.Value1 was False
 			             """);
 	}
@@ -70,7 +70,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose ((MyClass)f).Value1 is True,
+			             is of type AndOrWhoseResultTests.MyClass whose ((MyClass)f).Value1 is True,
 			             but ((MyClass)f).Value1 was False
 			             """);
 	}
@@ -87,7 +87,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose it is null,
+			             is of type AndOrWhoseResultTests.MyClass whose it is null,
 			             but it was AndOrWhoseResultTests.MyClass {
 			                 Value1 = False,
 			                 Value2 = False
@@ -107,7 +107,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose Value1 is True,
+			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True,
 			             but Value1 was False
 			             """);
 	}
@@ -124,7 +124,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose Value1 is True,
+			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True,
 			             but Value1 was False
 			             """);
 	}
@@ -150,7 +150,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws().OnlyIf(!expectSuccess)
 			.WithMessage($"""
 			              Expected that sut
-			              is type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True,
+			              is of type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True,
 			              but {(value1 ? "" : "Value1 was False")}{(!value1 && !value2 ? " and " : "")}{(value2 ? "" : "Value2 was False")}
 			              """);
 	}
@@ -167,7 +167,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose GetValue1Async() is True,
+			             is of type AndOrWhoseResultTests.MyClass whose GetValue1Async() is True,
 			             but GetValue1Async() was False
 			             """);
 	}
@@ -185,7 +185,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
+			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
 			             but GetValue1Async() was False
 			             """);
 	}
@@ -202,7 +202,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
+			             is of type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
 			             but FaultedAsync() did throw an InvalidOperationException:
 			               async member failed
 			             """)
@@ -221,7 +221,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
+			             is of type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
 			             but Throwing() did throw an InvalidOperationException:
 			               member failed
 			             """)
@@ -241,7 +241,7 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
+			             is of type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
 			             but FaultedAsync() did throw an InvalidOperationException:
 			               async member failed
 			             """)

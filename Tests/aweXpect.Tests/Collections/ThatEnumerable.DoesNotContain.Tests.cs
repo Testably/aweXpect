@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and maybe more)
 					              ]
 					              """);
 			}
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -150,7 +150,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -215,7 +215,7 @@ public sealed partial class ThatEnumerable
 					                 StringValue = "",
 					                 Value = 55
 					               },
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -249,7 +249,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -282,7 +282,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -316,7 +316,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -416,7 +416,7 @@ public sealed partial class ThatEnumerable
 					               "item-21",
 					               "item-34",
 					               "item-55",
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -715,7 +715,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -748,7 +748,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and maybe more)
 					              ]
 					              """);
 			}
@@ -781,7 +781,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -815,7 +815,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -849,7 +849,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -882,7 +882,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -916,7 +916,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}

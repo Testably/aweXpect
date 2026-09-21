@@ -461,13 +461,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		switch (_ignoreLeadingWhiteSpace, _ignoreTrailingWhiteSpace)
 		{
 			case (true, true):
-				tokens.Add("white-space");
+				tokens.Add("whitespace");
 				break;
 			case (true, false):
-				tokens.Add("leading white-space");
+				tokens.Add("leading whitespace");
 				break;
 			case (false, true):
-				tokens.Add("trailing white-space");
+				tokens.Add("trailing whitespace");
 				break;
 		}
 

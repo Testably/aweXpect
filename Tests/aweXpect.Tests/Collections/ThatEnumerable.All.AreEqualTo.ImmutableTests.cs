@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 						               34,
 						               55,
 						               89,
-						               …
+						               (… and 9 more)
 						             ]
 
 						             Collection:
@@ -228,7 +228,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring case, white-space and newline style for all items,
+						             is equal to "foo" ignoring case, whitespace and newline style for all items,
 						             but none of 1 were
 
 						             Not matching items:
@@ -280,7 +280,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring leading white-space for all items,
+						             is equal to "foo" ignoring leading whitespace for all items,
 						             but none of 1 were
 
 						             Not matching items:
@@ -332,7 +332,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring trailing white-space for all items,
+						             is equal to "foo" ignoring trailing whitespace for all items,
 						             but none of 1 were
 
 						             Not matching items:

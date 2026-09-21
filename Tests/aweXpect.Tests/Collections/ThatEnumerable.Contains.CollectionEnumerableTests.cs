@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -599,7 +599,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1021,7 +1021,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1435,7 +1435,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1837,7 +1837,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2308,7 +2308,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2860,7 +2860,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -3324,7 +3324,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:

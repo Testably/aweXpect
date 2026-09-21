@@ -7,7 +7,7 @@ using aweXpect.SourceGenerators;
 namespace aweXpect;
 
 [CreateExpectationOnNullable<char>("Is{Not}WhiteSpace", "char.IsWhiteSpace({value}.Value)",
-	ExpectationText = "is {not} white-space",
+	ExpectationText = "is {not} whitespace",
 	Remarks = """
 	          This means, that the specified Unicode character is categorized as white-space.<br />
 	          <seealso cref="char.IsWhiteSpace(char)" />

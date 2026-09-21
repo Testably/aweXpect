@@ -36,7 +36,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}

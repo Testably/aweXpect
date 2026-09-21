@@ -55,7 +55,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not exactly type ThatObject.MyClass,
+					             is not exactly of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -109,7 +109,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is not exactly type ThatObject.MyClass, because {{reason}},
+					               is not exactly of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -147,7 +147,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not exactly type ThatObject.MyClass,
+					             is not exactly of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -246,7 +246,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is not exactly type ThatObject.MyClass, because {{reason}},
+					               is not exactly of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyClass
 
 					               Actual:

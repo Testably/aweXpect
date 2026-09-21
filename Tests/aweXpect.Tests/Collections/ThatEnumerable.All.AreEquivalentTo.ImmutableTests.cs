@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 						               34,
 						               55,
 						               89,
-						               …
+						               (… and 9 more)
 						             ]
 
 						             Collection:

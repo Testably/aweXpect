@@ -23,12 +23,12 @@ internal sealed class KeyedValues<TKey, TValue> : ReadOnlyCollection<TValue>, IK
 
 	/// <inheritdoc cref="IKeyedCollection.Format()" />
 	public string Format()
-		=> Format(_pairs);
+		=> Format(_pairs, _pairs.Length);
 
-	/// <inheritdoc cref="IKeyedCollection.Format(IEnumerable{int})" />
-	public string Format(IEnumerable<int> indices)
-		=> Format(indices.Select(index => _pairs[index]).ToArray());
+	/// <inheritdoc cref="IKeyedCollection.Format(IEnumerable{int},int?)" />
+	public string Format(IEnumerable<int> indices, int? totalCount)
+		=> Format(indices.Select(index => _pairs[index]).ToArray(), totalCount);
 
-	private static string Format(KeyValuePair<TKey, TValue>[] items)
-		=> Formatter.Format(items, typeof(TValue).GetFormattingOption(items.Length));
+	private static string Format(KeyValuePair<TKey, TValue>[] items, int? totalCount)
+		=> Formatter.Format(items, typeof(TValue).GetFormattingOption(items.Length, totalCount));
 }

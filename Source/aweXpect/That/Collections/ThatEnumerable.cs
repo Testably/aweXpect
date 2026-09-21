@@ -662,7 +662,8 @@ public static partial class ThatEnumerable
 			    _matchingItems is { Count: > 0 } matchingItems)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-						() => matchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
+						() => matchingItems.Format(Actual, typeof(TItem), _matchingCount)
+							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
 
@@ -670,7 +671,8 @@ public static partial class ThatEnumerable
 			    _notMatchingItems is { Count: > 0 } notMatchingItems)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-						() => notMatchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
+						() => notMatchingItems.Format(Actual, typeof(TItem), _notMatchingCount)
+							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
 		}
@@ -819,7 +821,8 @@ public static partial class ThatEnumerable
 			    _matchingItems is { Count: > 0 } matchingItems)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-						() => matchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
+						() => matchingItems.Format(Actual, typeof(TItem), _matchingCount)
+							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
 
@@ -827,7 +830,8 @@ public static partial class ThatEnumerable
 			    _notMatchingItems is { Count: > 0 } notMatchingItems)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-						() => notMatchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
+						() => notMatchingItems.Format(Actual, typeof(TItem), _notMatchingCount)
+							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
 		}
@@ -975,7 +979,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
-								(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count))
+								(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count, _matchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -985,7 +989,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,
-								(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count))
+								(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -1142,7 +1146,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
-								(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count))
+								(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count, _matchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -1152,7 +1156,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,
-								(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count))
+								(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}

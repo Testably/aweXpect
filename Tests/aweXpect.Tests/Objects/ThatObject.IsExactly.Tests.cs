@@ -57,7 +57,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type ThatObject.MyClass,
+					             is exactly of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -78,7 +78,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.OtherClass, because we want to test the failure,
+					               is exactly of type ThatObject.OtherClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -104,7 +104,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.MyBaseClass, because we want to test the failure,
+					               is exactly of type ThatObject.MyBaseClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -130,7 +130,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.MyClass, because {{reason}},
+					               is exactly of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyBaseClass
 
 					               Actual:
@@ -179,7 +179,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type ThatObject.MyClass,
+					             is exactly of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -232,7 +232,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.OtherClass, because we want to test the failure,
+					               is exactly of type ThatObject.OtherClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -271,7 +271,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.MyBaseClass, because we want to test the failure,
+					               is exactly of type ThatObject.MyBaseClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -297,7 +297,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is exactly type ThatObject.MyClass, because {{reason}},
+					               is exactly of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyBaseClass
 
 					               Actual:
@@ -329,7 +329,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type IList<>,
+					             is exactly of type IList<>,
 					             but it was List<string>
 
 					             Actual:
@@ -359,7 +359,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type IDictionary<, >,
+					             is exactly of type IDictionary<,>,
 					             but it was List<string>
 
 					             Actual:
@@ -379,7 +379,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type List<>, because exactly means the type itself, so the base type chain is not walked,
+					             is exactly of type List<>, because exactly means the type itself, so the base type chain is not walked,
 					             but it was ThatObject.MyGenericBaseClass
 
 					             Actual:

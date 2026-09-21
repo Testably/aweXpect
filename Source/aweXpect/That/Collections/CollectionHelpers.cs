@@ -14,6 +14,8 @@ namespace aweXpect;
 
 internal static class CollectionHelpers
 {
+	private const string MaybeMoreMarker = "(… and maybe more)";
+
 	internal static string CreateDuplicateFailureMessage<TItem>(string it, List<TItem> duplicates)
 	{
 		StringBuilder sb = new();
@@ -140,8 +142,12 @@ internal static class CollectionHelpers
 		stringBuilder.Append(quantifier).Append(' ');
 	}
 
+	/// <summary>
+	///     Adds the "Collection" context for the <paramref name="value" />, passing the <paramref name="totalCount" />
+	///     of items whenever the caller counted them while the <paramref name="value" /> kept only the first ones.
+	/// </summary>
 	internal static ExpectationBuilder AddCollectionContext<TItem>(this ExpectationBuilder expectationBuilder,
-		IEnumerable<TItem>? value, bool isIncomplete = false)
+		IEnumerable<TItem>? value, bool isIncomplete = false, int? totalCount = null)
 	{
 		if (value is null)
 		{
@@ -155,15 +161,7 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => (value is IKeyedCollection keyed
-							? keyed.Format()
-							: Formatter.Format(value, typeof(TItem).GetFormattingOption(value switch
-							{
-								ICollection<TItem> coll => coll.Count,
-								LimitedCollection<TItem> limited => limited.Count,
-								ICountable countable => countable.Count,
-								_ => null,
-							}))).AppendIsIncomplete(isIncomplete),
+						() => FormatCollection(value, totalCount).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
@@ -194,12 +192,7 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => Formatter.Format(value, type.GetFormattingOption(value switch
-						{
-							ICollection coll => coll.Count,
-							ICountable countable => countable.Count,
-							_ => null,
-						})).AppendIsIncomplete(isIncomplete),
+						() => FormatCollection(value, type).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
@@ -225,7 +218,7 @@ internal static class CollectionHelpers
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
 						() => Formatter.Format(HideCount(value.MaterializedItems),
-								typeof(TItem).GetFormattingOption(value.Count))
+								typeof(TItem).GetFormattingOption(value.Count, value.Count))
 							.AppendIsIncomplete(isIncomplete),
 						-1));
 			}
@@ -278,13 +271,49 @@ internal static class CollectionHelpers
 	}
 
 	/// <summary>
+	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
+	///     be rendered as the total from which the number of remaining items is derived.
+	/// </summary>
+	private static string FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
+	{
+		if (value is IKeyedCollection keyed)
+		{
+			return keyed.Format();
+		}
+
+		totalCount ??= value switch
+		{
+			ICollection<TItem> coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
+			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
+	}
+
+	private static string FormatCollection(IEnumerable value, Type itemType)
+	{
+		int? totalCount = value switch
+		{
+			ICollection coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, itemType.GetFormattingOption(totalCount, totalCount));
+	}
+
+	/// <summary>
 	///     Formats the <paramref name="items" /> recorded from the <paramref name="source" /> collection, together with
 	///     their keys when the source is an <see cref="IKeyedCollection" />.
 	/// </summary>
-	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType)
+	/// <remarks>
+	///     Only the first items are recorded, so <paramref name="totalCount" /> is how many were found in total.
+	/// </remarks>
+	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType,
+		int? totalCount)
 		=> source is IKeyedCollection keyed
-			? keyed.Format(items.Indices)
-			: Formatter.Format(items, itemType.GetFormattingOption(items.Count));
+			? keyed.Format(items.Indices, totalCount)
+			: Formatter.Format(items, itemType.GetFormattingOption(items.Count, totalCount));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -340,32 +369,28 @@ internal static class CollectionHelpers
 		}
 
 		// The count of a collection whose enumeration stopped early does not tell how many items remain.
-		formattedItems = Regex.Replace(formattedItems, @"\(… and \d+ more\)(?=(\r?\n)?\]$)", "…",
+		Match truncation = Regex.Match(formattedItems, @"\(… and [^)]+ more\)(?=(\r?\n)?\]$)",
 			RegexOptions.None, TimeSpan.FromSeconds(1));
-
-		if (formattedItems.EndsWith("…]"))
+		if (truncation.Success)
 		{
-			return $"{formattedItems[..^2]}(… and maybe others)]";
-		}
-
-		if (formattedItems.EndsWith($"…{Environment.NewLine}]"))
-		{
-			return formattedItems[..^(Environment.NewLine.Length + 2)] +
-			       $"(… and maybe others){Environment.NewLine}]";
+			return formattedItems[..truncation.Index] + MaybeMoreMarker +
+			       formattedItems[(truncation.Index + truncation.Length)..];
 		}
 
 		if (formattedItems.EndsWith($"{Environment.NewLine}]"))
 		{
 			return formattedItems[..^(Environment.NewLine.Length + 1)] +
-			       $",{Environment.NewLine}  (… and maybe others){Environment.NewLine}]";
+			       $",{Environment.NewLine}  {MaybeMoreMarker}{Environment.NewLine}]";
 		}
 
-		return $"""
-		        {formattedItems[..^1]}, (… and maybe others)]
-		        """;
+		return $"{formattedItems[..^1]}, {MaybeMoreMarker}]";
 	}
 
-	internal static FormattingOptions GetFormattingOption(this Type type, int? count)
+	/// <summary>
+	///     The layout follows the <paramref name="count" /> of items that are rendered, while a truncation marker names
+	///     the remainder of the <paramref name="totalCount" /> items the collection holds.
+	/// </summary>
+	internal static FormattingOptions GetFormattingOption(this Type type, int? count, int? totalCount = null)
 	{
 		Type[] singleLineTypes =
 		[
@@ -389,7 +414,10 @@ internal static class CollectionHelpers
 		];
 		if (count < 10 && singleLineTypes.Contains(type))
 		{
-			return FormattingOptions.SingleLine;
+			return FormattingOptions.SingleLine with
+			{
+				TotalItemCount = totalCount,
+			};
 		}
 
 		Type? underlyingType = Nullable.GetUnderlyingType(type);
@@ -397,9 +425,15 @@ internal static class CollectionHelpers
 		if (count < 10 && underlyingType != null &&
 		    singleLineTypes.Contains(underlyingType))
 		{
-			return FormattingOptions.SingleLine;
+			return FormattingOptions.SingleLine with
+			{
+				TotalItemCount = totalCount,
+			};
 		}
 
-		return FormattingOptions.MultipleLines;
+		return FormattingOptions.MultipleLines with
+		{
+			TotalItemCount = totalCount,
+		};
 	}
 }

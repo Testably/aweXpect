@@ -912,7 +912,7 @@ public sealed partial class ThatAsyncEnumerable
 					                 StringValue = "",
 					                 Value = 55
 					               },
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -946,7 +946,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}

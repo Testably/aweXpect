@@ -74,7 +74,7 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		    _matchingItems is { Count: > 0 } matchingItems)
 		{
 			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-				() => matchingItems.Format(Actual, ItemType),
+				() => matchingItems.Format(Actual, ItemType, _matchingCount),
 				int.MaxValue));
 		}
 
@@ -82,7 +82,7 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		    _notMatchingItems is { Count: > 0 } notMatchingItems)
 		{
 			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-				() => notMatchingItems.Format(Actual, ItemType),
+				() => notMatchingItems.Format(Actual, ItemType, _notMatchingCount),
 				int.MaxValue));
 		}
 	}

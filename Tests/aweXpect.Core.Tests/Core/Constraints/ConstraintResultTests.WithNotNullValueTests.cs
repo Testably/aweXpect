@@ -92,7 +92,7 @@ public partial class ConstraintResultTests
 			string resultText = sut.GetResultText();
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
-			await That(resultText).IsEqualTo("it could not be verified, because it was already cancelled");
+			await That(resultText).IsEqualTo("it could not be verified, because it was already canceled");
 		}
 
 		[Fact]
@@ -103,7 +103,7 @@ public partial class ConstraintResultTests
 			string resultText = sut.GetResultText();
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
-			await That(resultText).IsEqualTo("Items could not be verified, because it was already cancelled");
+			await That(resultText).IsEqualTo("Items could not be verified, because it was already canceled");
 		}
 
 		[Theory]

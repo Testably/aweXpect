@@ -30,10 +30,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has at most 6 items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 
 						             Collection:
-						             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and maybe others)]
+						             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and maybe more)]
 						             """);
 				}
 

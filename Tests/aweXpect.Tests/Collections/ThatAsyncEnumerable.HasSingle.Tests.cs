@@ -111,7 +111,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}

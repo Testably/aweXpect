@@ -75,7 +75,7 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
-		public async Task InFailureMessage_WhenCountIsNotKnown_ShouldUseEllipsis()
+		public async Task InFailureMessage_WhenLazySequenceWasFullyEnumerated_ShouldNameTheNumberOfRemainingItems()
 		{
 			IEnumerable<int> subject = Lazy(Enumerable.Range(1, 25));
 			int[] expected = Enumerable.Range(1, 26).ToArray();
@@ -101,7 +101,7 @@ public partial class ValueFormatters
 				               8,
 				               9,
 				               10,
-				               …
+				               (… and 15 more)
 				             ]
 
 				             Expected:
@@ -124,7 +124,7 @@ public partial class ValueFormatters
 		[Fact]
 		public async Task ShouldLimitTo10Items()
 		{
-			string expectedResult = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, …]";
+			string expectedResult = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]";
 			IEnumerable<int> value = Lazy(Enumerable.Range(1, 20));
 			StringBuilder sb = new();
 
@@ -149,7 +149,7 @@ public partial class ValueFormatters
 
 			string result = Formatter.Format(value);
 
-			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, …]");
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
 			await That(enumeratedItems).IsEqualTo(11);
 		}
 
@@ -206,7 +206,7 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
-		public async Task WhenCountIsNotKnown_WithLineBreaks_ShouldUseEllipsisOnTheLastLine()
+		public async Task WhenCountIsNotKnown_WithLineBreaks_ShouldSayOnTheLastLineThatMoreItemsMayFollow()
 		{
 			IEnumerable<int> value = Lazy(Enumerable.Range(1, 12));
 
@@ -224,7 +224,7 @@ public partial class ValueFormatters
 			                               8,
 			                               9,
 			                               10,
-			                               …
+			                               (… and maybe more)
 			                             ]
 			                             """);
 		}

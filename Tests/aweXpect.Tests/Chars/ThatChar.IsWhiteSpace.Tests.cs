@@ -31,7 +31,7 @@ public sealed partial class ThatChar
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is white-space,
+					              is whitespace,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -90,7 +90,7 @@ public sealed partial class ThatChar
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not white-space,
+					              is not whitespace,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
