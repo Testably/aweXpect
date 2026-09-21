@@ -43,7 +43,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with unexpected equivalent,
+					             does not start with unexpected using equivalency,
 					             but it did start with [
 					               MyClass {
 					                 StringValue = "",

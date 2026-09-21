@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains [2, 1] equivalent at least once,
+					             contains an item equivalent to [2, 1] at least once,
 					             but it did not contain it
 
 					             Collection:

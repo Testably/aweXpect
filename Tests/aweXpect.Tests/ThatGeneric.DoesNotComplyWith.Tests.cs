@@ -114,9 +114,9 @@ public sealed partial class ThatGeneric
 					             is not equivalent to {
 					                 HasWaitedEnough = False
 					               } within 0:30,
-					             but it was considered equivalent for ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
+					             but it was ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -191,9 +191,9 @@ public sealed partial class ThatGeneric
 					             is not equivalent to {
 					                 HasWaitedEnough = False
 					               } within 0:00.050,
-					             but it was considered equivalent for ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
+					             but it was ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties

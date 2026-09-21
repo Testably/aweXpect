@@ -36,7 +36,7 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 	{
 		if (grammars.HasFlag(ExpectationGrammars.Negated))
 		{
-			return $"{it} was considered equivalent for {Formatter.Format(actual, FormattingOptions.Indented())}";
+			return $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
 		}
 
 		if (actual is null != expected is null)
@@ -52,6 +52,10 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 
 		return $"{it} was not:{_failureBuilder}";
 	}
+
+	/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?)" />
+	public string GetItemExpectation(string expected, string? itemNoun = null)
+		=> itemNoun is null ? $"equivalent to {expected}" : $"{itemNoun} equivalent to {expected}";
 
 	private static bool HandleSpecialCases<TActual, TExpected>(TActual actual, TExpected expected,
 		StringBuilder failureBuilder,
@@ -101,5 +105,5 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 		return false;
 	}
 
-	public override string ToString() => " equivalent";
+	public override string ToString() => " using equivalency";
 }

@@ -31,10 +31,10 @@ public sealed partial class ThatObject
 					                 Inner = <null>,
 					                 Value = "Foo"
 					               },
-					             but it was considered equivalent for ThatObject.OuterClass {
+					             but it was ThatObject.OuterClass {
 					                 Inner = <null>,
 					                 Value = "Foo"
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -114,7 +114,7 @@ public sealed partial class ThatObject
 					                 },
 					                 Value = "Foo"
 					               },
-					             but it was considered equivalent for ThatObject.OuterClass {
+					             but it was ThatObject.OuterClass {
 					                 Inner = ThatObject.InnerClass {
 					                   Collection = <null>,
 					                   Inner = ThatObject.InnerClass {
@@ -131,7 +131,7 @@ public sealed partial class ThatObject
 					                   Value = "Bar"
 					                 },
 					                 Value = "Foo"
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -226,7 +226,7 @@ public sealed partial class ThatObject
 					                 },
 					                 Value = "Foo"
 					               },
-					             but it was considered equivalent for ThatObject.OuterClass {
+					             but it was ThatObject.OuterClass {
 					                 Inner = ThatObject.InnerClass {
 					                   Collection = <null>,
 					                   Inner = ThatObject.InnerClass {
@@ -239,7 +239,7 @@ public sealed partial class ThatObject
 					                   Value = "Bar"
 					                 },
 					                 Value = "Foo"
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -300,7 +300,7 @@ public sealed partial class ThatObject
 					                 },
 					                 Value = "Foo"
 					               },
-					             but it was considered equivalent for ThatObject.OuterClass {
+					             but it was ThatObject.OuterClass {
 					                 Inner = ThatObject.InnerClass {
 					                   Collection = <null>,
 					                   Inner = ThatObject.InnerClass {
@@ -317,7 +317,7 @@ public sealed partial class ThatObject
 					                   Value = "Bar"
 					                 },
 					                 Value = "Foo"
-					               }
+					               }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -436,11 +436,11 @@ public sealed partial class ThatObject
 					               3,
 					               2
 					             ],
-					             but it was considered equivalent for [
+					             but it was [
 					               1,
 					               2,
 					               3
-					             ]
+					             ], which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -465,11 +465,11 @@ public sealed partial class ThatObject
 					               2,
 					               3
 					             ],
-					             but it was considered equivalent for [
+					             but it was [
 					               1,
 					               2,
 					               3
-					             ]
+					             ], which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -580,10 +580,10 @@ public sealed partial class ThatObject
 					               [2] = 3,
 					               [1] = 4
 					             },
-					             but it was considered equivalent for {
+					             but it was {
 					               [2] = 3,
 					               [1] = 4
-					             }
+					             }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties
@@ -623,10 +623,10 @@ public sealed partial class ThatObject
 					               ["B"] = "B",
 					               ["A"] = "A"
 					             },
-					             but it was considered equivalent for {
+					             but it was {
 					               ["A"] = "A",
 					               ["B"] = "B"
-					             }
+					             }, which is considered equivalent
 					             
 					             Equivalency options:
 					              - include public fields and properties

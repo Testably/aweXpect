@@ -2096,7 +2096,7 @@ public sealed partial class ThatObject
 					                 Inner = <null>,
 					                 Value = "Foo"
 					               },
-					             but it was considered equivalent for ThatObject.OuterClass {
+					             but it was ThatObject.OuterClass {
 					                 Inner = ThatObject.InnerClass {
 					                   Collection = <null>,
 					                   Inner = <null>,
@@ -2104,7 +2104,7 @@ public sealed partial class ThatObject
 					                   Value = <null>
 					                 },
 					                 Value = "Foo"
-					               }
+					               }, which is considered equivalent
 
 					             Equivalency options:
 					              - include public fields and properties

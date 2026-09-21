@@ -26,4 +26,13 @@ public interface IObjectMatchType
 	///     Get an extended failure text.
 	/// </summary>
 	string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected);
+
+	/// <summary>
+	///     Get the expectation text for a single expected item, e.g. <c>equivalent to {expected}</c>.
+	/// </summary>
+	/// <remarks>
+	///     A match type that describes the item instead of only formatting it prepends the
+	///     <paramref name="itemNoun" />, so that a verb such as <c>contains</c> keeps a direct object.
+	/// </remarks>
+	string GetItemExpectation(string expected, string? itemNoun = null);
 }

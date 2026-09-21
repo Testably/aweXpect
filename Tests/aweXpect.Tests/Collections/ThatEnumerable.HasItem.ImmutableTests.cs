@@ -267,10 +267,10 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item MyClass {
+					             has item equivalent to MyClass {
 					               StringValue = "",
 					               Value = 4
-					             } equivalent,
+					             },
 					             but it did not match at any index
 
 					             Collection:
