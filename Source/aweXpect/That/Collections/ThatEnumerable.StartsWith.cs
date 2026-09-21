@@ -120,6 +120,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable?> subject,
 			IEnumerable<TItem> expected)
 	{
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -133,9 +134,40 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
+	///     Verifies that the collection starts with the provided <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
+	///     sequence of characters.
+	/// </remarks>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
+		StartsWith(
+			this IThat<IEnumerable?> subject,
+			string? expected)
+	{
+		string?[] expectedItems = [expected,];
+		ObjectEqualityOptions<string?> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new StartsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
+					Formatter.Format(expectedItems),
+					expectedItems,
+					options)),
+			subject,
+			options);
+	}
+
+	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[OverloadResolutionPriority(-1)]
+	/// <remarks>
+	///     The priority is below the one of the collection overload, so that a collection argument binds as the expected
+	///     sequence instead of as a single expected item.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		StartsWith<TItem>(
@@ -351,6 +383,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable?> subject,
 			IEnumerable<TItem> unexpected)
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -364,9 +397,40 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
+	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
+	///     sequence of characters.
+	/// </remarks>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
+		DoesNotStartWith(
+			this IThat<IEnumerable?> subject,
+			string? unexpected)
+	{
+		string?[] unexpectedItems = [unexpected,];
+		ObjectEqualityOptions<string?> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new StartsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
+					Formatter.Format(unexpectedItems),
+					unexpectedItems,
+					options).Invert()),
+			subject,
+			options);
+	}
+
+	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[OverloadResolutionPriority(-1)]
+	/// <remarks>
+	///     The priority is below the one of the collection overload, so that a collection argument binds as the unexpected
+	///     sequence instead of as a single unexpected item.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotStartWith<TItem>(
