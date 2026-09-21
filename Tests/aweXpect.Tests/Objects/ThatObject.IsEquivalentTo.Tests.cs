@@ -253,7 +253,10 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to { A = 1, B =  },
+					             is equivalent to {
+					                 A = 1,
+					                 B = <null>
+					               },
 					             but it was not:
 					               Property B is missing on the actual object
 
@@ -654,7 +657,9 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to { V = 1 },
+					             is equivalent to {
+					                 V = 1
+					               },
 					             but it was not:
 					               Property V differed:
 					                    Found: 1 (int)
@@ -684,7 +689,9 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to { T = System.Int64 },
+					             is equivalent to {
+					                 T = long
+					               },
 					             but it was not:
 					               Property T differed:
 					                    Found: int
@@ -1467,7 +1474,10 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to { MyProperty = False, PublicValue = 2 },
+					             is equivalent to {
+					                 MyProperty = False,
+					                 PublicValue = 2
+					               },
 					             but it was not:
 					               Property PublicValue differed:
 					                    Found: 1

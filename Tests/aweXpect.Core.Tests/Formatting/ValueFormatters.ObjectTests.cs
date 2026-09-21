@@ -138,6 +138,26 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenAnonymousObject_ShouldFormatMembersWithTheirFormatters()
+		{
+			object value = new
+			{
+				Text = "foo",
+				Type = typeof(long),
+			};
+			string expectedResult = """{ Text = "foo", Type = long }""";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because(
+					"the compiler-generated ToString would render the type as System.Int64, where the rest of the message says long");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenClassContainsField_ShouldDisplayFieldValue()
 		{
 			object value = new ClassWithField
@@ -231,6 +251,31 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a registered type is formatted through its registration instead of by reflection");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenTwoMembersAreEqualButNotTheSame_ShouldFormatBoth()
+		{
+			object value = new
+			{
+				A = new
+				{
+					X = 1,
+				},
+				B = new
+				{
+					X = 1,
+				},
+			};
+			string expectedResult = "{ A = { X = 1 }, B = { X = 1 } }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a recursion is the same instance coming round again, not an equal one");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 

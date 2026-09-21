@@ -138,7 +138,9 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException which is equivalent to { Message = other },
+						             has an inner ThatException.CustomException which is equivalent to {
+						                 Message = "other"
+						               },
 						             but it was not:
 						               Property Message differed:
 						                    Found: "inner"

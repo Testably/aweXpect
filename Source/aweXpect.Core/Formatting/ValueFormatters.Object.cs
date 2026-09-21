@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -31,7 +32,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("] = ");
 			Format(Formatter, stringBuilder, pairValue, pairOptions, context);
 		}
-		else if (HasDefaultToStringImplementation(value))
+		else if (IsAnonymousType(value.GetType()) || HasDefaultToStringImplementation(value))
 		{
 			context ??= new FormattingContext();
 			WriteTypeAndMemberValues(value, stringBuilder, options with
@@ -115,6 +116,16 @@ public static partial class ValueFormatters
 		return str is null || str == value.GetType().ToString();
 	}
 
+	/// <remarks>
+	///     An anonymous type renders itself through a compiler-generated <see cref="object.ToString()" /> that passes
+	///     every member through its own one, so a <see cref="Type" /> member reads as <c>System.Int64</c> where the
+	///     rest of the message reads <c>long</c>. It is therefore written member-wise like a type without a rendering
+	///     of its own, but without a name that would say nothing to the reader.
+	/// </remarks>
+	private static bool IsAnonymousType(Type type)
+		=> type.Name.IndexOf("AnonymousType", StringComparison.Ordinal) >= 0 &&
+		   type.IsDefined(typeof(CompilerGeneratedAttribute), false);
+
 	private static void WriteMemberValues(
 		object obj,
 		List<EquivalencyMember> members,
@@ -175,7 +186,12 @@ public static partial class ValueFormatters
 		FormattingContext context)
 	{
 		Type type = obj.GetType();
-		Formatter.Format(stringBuilder, type);
+		if (!IsAnonymousType(type))
+		{
+			Formatter.Format(stringBuilder, type);
+			stringBuilder.Append(' ');
+		}
+
 		WriteTypeValues(obj, stringBuilder, type, options, context);
 	}
 
@@ -188,22 +204,22 @@ public static partial class ValueFormatters
 	{
 		if (!context.FormattedObjects.Add(obj))
 		{
-			stringBuilder.Append(" { *recursive* }");
+			stringBuilder.Append("{ *recursive* }");
 			return;
 		}
 
 		List<EquivalencyMember>? members = GetMembers(type);
 		if (members is null)
 		{
-			stringBuilder.Append(" { *unregistered* }");
+			stringBuilder.Append("{ *unregistered* }");
 		}
 		else if (members.Count == 0)
 		{
-			stringBuilder.Append(" { }");
+			stringBuilder.Append("{ }");
 		}
 		else
 		{
-			stringBuilder.Append(" {");
+			stringBuilder.Append('{');
 			AppendLineWithIndentationOrBlank(stringBuilder, options);
 			WriteMemberValues(obj, members, stringBuilder, options.UseLineBreaks ? 2 : 0, options, context);
 			AppendLineWithIndentationOrBlank(stringBuilder, options);
