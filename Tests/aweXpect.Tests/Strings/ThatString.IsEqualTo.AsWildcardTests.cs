@@ -169,7 +169,7 @@ public sealed partial class ThatString
 				await That(Act).Throws().OnlyIf(!expectMatch)
 					.WithMessage($"""
 					              Expected that subject
-					              matches {Formatter.Format(pattern)},
+					              matches {Formatter.Format(pattern)} ignoring case,
 					              but it did not match:
 					                ↓ (actual)
 					                {Formatter.Format(subject)}
@@ -190,7 +190,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches "abc",
+					             matches "abc" ignoring case,
 					             but it did not match:
 					               ↓ (actual)
 					               "XYZ\nABC"

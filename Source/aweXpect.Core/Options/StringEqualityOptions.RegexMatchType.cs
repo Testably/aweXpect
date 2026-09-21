@@ -146,11 +146,11 @@ public partial class StringEqualityOptions
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 			{
 				(true, false) =>
-					$"matches regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("matches", "match")} regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
 				(false, false) =>
 					$"matching regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
 				(true, true) =>
-					$"does not match regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("does not match", "do not match")} regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
 				(false, true) =>
 					$"not matching regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
 			};
@@ -160,8 +160,11 @@ public partial class StringEqualityOptions
 			=> " as regex";
 
 		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
+		/// <remarks>
+		///     A <paramref name="comparer" /> is rejected for a pattern, so only the casing can be ignored here.
+		/// </remarks>
 		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> "";
+			=> ignoreCase ? " ignoring case" : "";
 
 		#endregion
 	}

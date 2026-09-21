@@ -142,6 +142,42 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeysExist_ButAValueStartsWithTheUnexpectedPrefix_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All()
+						.ComplyWith(v => v.DoesNotStartWith("f"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2] whose values do not start with "f" for all items,
+					             but only 1 of 2 were
+
+					             Not matching items:
+					             [
+					               [1] = "foo"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """)
+					.Because("the plural connector must also govern the negated form of a string match type");
+			}
+
+			[Fact]
 			public async Task WhenKeysExist_ButOneValueCompliesWithNone_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -152,7 +188,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values starts with "f" for no items,
+					             contains keys [1, 2] whose values start with "f" for no items,
 					             but 1 of 2 were
 
 					             Matching items:
@@ -329,7 +365,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values starts with "f" for all items,
+					             contains keys [1, 2] whose values start with "f" for all items,
 					             but only 1 of 2 were
 
 					             Not matching items:

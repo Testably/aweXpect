@@ -22,7 +22,7 @@ public sealed partial class ThatString
 				await That(Act).Throws().OnlyIf(ignoreCase)
 					.WithMessage("""
 					             Expected that subject
-					             does not match regex ".*ME ME.*",
+					             does not match regex ".*ME ME.*" ignoring case,
 					             but it was "some message"
 					             """);
 			}

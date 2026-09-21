@@ -137,7 +137,9 @@ expectations also keep the expectation they continue from, so `HasSingle().Which
 `has a single item whose … for all items` instead of starting at the dangling connector. Where a connector already
 introduced the subject, as in `has item that …` or `contains key 2 whose value …`, the member no longer starts a
 second relative clause but reads `has Value which is equal to 5`, and it agrees with a plural connector
-(`whose values have Length which …`). Tests that assert on the exact text of a failure message may need an update.
+(`whose values have Length which …`). `IgnoringCase()` is now also named in the expectation when the value is matched
+as a regex or wildcard pattern, where it took effect but stayed invisible. Tests that assert on the exact text of a
+failure message may need an update.
 
 ## Timeouts on negative event expectations
 
