@@ -771,8 +771,12 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
-		await That(result.Generated).DoesNotContain("System.Collections.Generic.List<")
+		await That(result.Generated).DoesNotContain("RegisterProperty<global::System.Collections.Generic.List<")
 			.Because("the comparison enumerates a collection instead of comparing its members");
+		await That(result.Generated)
+			.Contains("typeof(global::System.Collections.Generic.List<global::Models.Other>)")
+			.Because(
+				"the collection keeps the interfaces that select the comparison, which the trimmer would drop");
 	}
 
 	[Fact]

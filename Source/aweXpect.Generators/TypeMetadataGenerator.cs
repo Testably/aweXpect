@@ -330,6 +330,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		{
 			body.AppendLine();
 			body.Append("\t// ").AppendLine(registrations[i].Key);
+			if (registrations[i].Nameable is { } nameable)
+			{
+				// A comparison finds the interfaces that select it through `GetInterfaces()`, which reports an
+				// implementation the trimmer removed as absent, silently turning a set into an ordered collection
+				// and a dictionary into a sequence of pairs. Rooting them keeps the comparison the same as the JIT's.
+				body.AppendLine("#if NET5_0_OR_GREATER");
+				body.Append(
+						"\t[System.Diagnostics.CodeAnalysis.DynamicDependency(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.Interfaces, typeof(")
+					.Append(nameable).AppendLine("))]");
+				body.AppendLine("#endif");
+			}
+
 			body.Append("\tprivate static void Register").Append(i).AppendLine("()");
 			body.AppendLine("\t{");
 			body.Append(registrations[i].Source);
@@ -362,7 +374,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// <remarks>
 	///     <paramref name="Suppressions" /> holds the comma-separated obsolete diagnostic ids the registration triggers.
 	/// </remarks>
-	private readonly record struct TypeRegistration(string Key, string Source, string Suppressions);
+	/// <remarks>
+	///     <c>Nameable</c> is set only for a registration that exists to keep a type's interfaces, and holds the
+	///     type as a <c>typeof</c> operand. Rooting the interfaces of a type that has none is an error, so a
+	///     registration of members or events leaves it <see langword="null" />.
+	/// </remarks>
+	private readonly record struct TypeRegistration(string Key, string Source, string Suppressions, string? Nameable);
 
 	private readonly record struct AssemblyRegistrations(
 		EquatableArray<TypeRegistration> Registrations,
@@ -454,12 +471,33 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 			if (IsEnumerable(named))
 			{
+				SeedInterfaceRoot(named);
 				SeedElements(named);
 				return;
 			}
 
 			SeedMembers(named);
 		}
+
+		/// <remarks>
+		///     A collection registers no members, because it is compared element by element, but the comparison still
+		///     asks its runtime type whether it is a set or a dictionary, and that answer comes from the interface
+		///     list. The trimmer drops an implementation nothing else uses, so the collection is recorded with no
+		///     members of its own, only to keep its interfaces.
+		/// </remarks>
+		private void SeedInterfaceRoot(INamedTypeSymbol type)
+		{
+			if (ContainsTypeParameter(type) || !IsNameable(type) || !IsReferenceable(type))
+			{
+				return;
+			}
+
+			string name = type.ToDisplayString(TypeFormat);
+			_registrations.Add(new TypeRegistration(InterfacesKey(name), "", "", name));
+		}
+
+		private static string InterfacesKey(string typeName)
+			=> "interfaces of " + typeName;
 
 		private void SeedElements(INamedTypeSymbol enumerable)
 		{
@@ -500,7 +538,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			if (source is not null)
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
-					string.Join(",", diagnosticIds)));
+					string.Join(",", diagnosticIds),
+					null));
 			}
 		}
 
@@ -535,7 +574,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 
 			_registrations.Add(new TypeRegistration(EventsKey(named.ToDisplayString(TypeFormat)),
-				EmitEventRegistration(named, events), string.Join(",", diagnosticIds)));
+				EmitEventRegistration(named, events), string.Join(",", diagnosticIds), null));
 		}
 
 		/// <remarks>
