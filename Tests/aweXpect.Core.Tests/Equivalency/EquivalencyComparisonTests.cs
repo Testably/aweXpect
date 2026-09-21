@@ -745,6 +745,37 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionaryKeyContainsABracket_ShouldNotIgnoreTheEntryForAnotherKey()
+	{
+		Dictionary<string, int> actual = new()
+		{
+			["a[b"] = 1,
+			["b"] = 2,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a[b"] = 11,
+			["b"] = 22,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[b]"),],
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a[b] differed:
+		                                                       Found: 1
+		                                                    Expected: 11
+		                                                """).IgnoringNewlineStyle()
+			.Because("the bracket inside the key does not open the path segment that the ignored name refers to");
+	}
+
+	[Fact]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndEntriesAreInDifferentOrder_ShouldSucceed()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
