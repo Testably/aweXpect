@@ -232,7 +232,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -373,7 +373,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -405,7 +405,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -437,7 +437,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -469,7 +469,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -501,7 +501,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -557,7 +557,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -674,7 +674,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -789,7 +789,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -918,7 +918,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -949,7 +949,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -981,7 +981,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1013,7 +1013,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1045,7 +1045,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1077,7 +1077,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1133,7 +1133,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1167,7 +1167,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order as wildcard,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1199,7 +1199,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring leading whitespace,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1231,7 +1231,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring trailing whitespace,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [

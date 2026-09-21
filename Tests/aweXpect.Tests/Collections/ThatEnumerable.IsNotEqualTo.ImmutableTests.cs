@@ -148,7 +148,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection [1, 2, 3,] in order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [1, 2, 3]
@@ -232,7 +232,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [1, 2, 3]
@@ -280,7 +280,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -421,7 +421,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -453,7 +453,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -485,7 +485,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -517,7 +517,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -549,7 +549,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -605,7 +605,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -722,7 +722,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -837,7 +837,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -966,7 +966,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -997,7 +997,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1029,7 +1029,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1061,7 +1061,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1093,7 +1093,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1125,7 +1125,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1181,7 +1181,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1215,7 +1215,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order as wildcard,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1247,7 +1247,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring leading whitespace,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1279,7 +1279,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring trailing whitespace,
-					             but it did
+					             but it was
 					             
 					             Collection:
 					             [

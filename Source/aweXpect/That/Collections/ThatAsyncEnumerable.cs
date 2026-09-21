@@ -577,7 +577,7 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did");
+				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
 			}
 		}
 	}
@@ -711,7 +711,7 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did");
+				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
 			}
 		}
 
@@ -853,7 +853,7 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did");
+				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
 			}
 		}
 

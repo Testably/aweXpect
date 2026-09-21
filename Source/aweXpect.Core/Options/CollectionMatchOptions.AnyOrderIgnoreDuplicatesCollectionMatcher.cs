@@ -101,7 +101,9 @@ public partial class CollectionMatchOptions
 			_uniqueItems.Add(value);
 			_index++;
 
-			return (_additionalItems.Count > 2 * maximumNumber, null);
+			return _additionalItems.Count > 2 * maximumNumber
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				: (false, null);
 		}
 
 #if NET8_0_OR_GREATER
@@ -113,17 +115,19 @@ public partial class CollectionMatchOptions
 		{
 			if (_missingItems.Count + _additionalItems.Count > 2 * maximumNumber)
 			{
+				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
 #if NET8_0_OR_GREATER
-				return ValueTask.FromResult<(bool, string?)>((true, null));
+				return ValueTask.FromResult<(bool, string?)>((true, tooManyDeviations));
 #else
-				return Task.FromResult<(bool, string?)>((true, null));
+				return Task.FromResult<(bool, string?)>((true, tooManyDeviations));
 #endif
 			}
 
+			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
-				errors.AddRange(AdditionalItemsError(_additionalItems));
+				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
 			{
@@ -132,7 +136,7 @@ public partial class CollectionMatchOptions
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true));
+				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true, formatItem));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
@@ -146,6 +150,20 @@ public partial class CollectionMatchOptions
 			return Task.FromResult<(bool, string?)>((error != null, error));
 #endif
 		}
+
+		/// <summary>
+		///     Additional items are no deviation for the containment relation, so they are left out.
+		/// </summary>
+		private IEnumerable<string> GetDeviations()
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+				? []
+				: AdditionalItemsError(_additionalItems, CreateItemFormatter());
+
+		/// <summary>
+		///     An unexpected and a missing item that format equally differ only in their runtime type.
+		/// </summary>
+		private Func<object?, string> CreateItemFormatter()
+			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
 #if NET8_0_OR_GREATER
 		protected abstract ValueTask<bool>

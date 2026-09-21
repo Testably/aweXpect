@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -138,7 +138,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -176,7 +176,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -254,7 +254,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -277,7 +277,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -315,7 +315,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -343,7 +343,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection expected in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -396,7 +396,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection expected in any order ± 1:00,
-						              but it did
+						              but it was
 
 						              Collection:
 						              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
@@ -440,7 +440,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection expected in any order ± 1:00,
-						              but it did
+						              but it was
 
 						              Collection:
 						              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
