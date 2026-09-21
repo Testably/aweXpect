@@ -399,6 +399,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [
@@ -959,6 +960,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [

@@ -464,6 +464,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [
@@ -1011,6 +1012,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [
@@ -1090,7 +1092,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it
-					               contained item "a" at index 1 instead of 2 and
+					               contained item "a" at index 2 instead of 2 and
 					               lacked 1 of 2 expected items: 2
 
 					             Collection:

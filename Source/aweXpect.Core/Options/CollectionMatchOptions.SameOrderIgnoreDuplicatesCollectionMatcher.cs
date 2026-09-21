@@ -122,23 +122,7 @@ public partial class CollectionMatchOptions
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				if (_uniqueItems.Add(value))
-				{
-					if (_ignoreInterspersedItems)
-					{
-						await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
-					}
-					else
-					{
-						await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
-					}
-
-					_distinctIndex++;
-				}
-
-				_index++;
-				return (_additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2 * maximumNumber,
-					null);
+				return await VerifyTheCurrentValueIsContainedInTheExpectedItems(value, options, maximumNumber);
 			}
 
 #pragma warning disable S1871 // The identical branches record the same outcome for distinct reasons and are kept apart to stay readable
@@ -146,6 +130,7 @@ public partial class CollectionMatchOptions
 			{
 				if (!_uniqueItems.Add(value))
 				{
+					_index++;
 					return (false, null);
 				}
 
@@ -160,6 +145,7 @@ public partial class CollectionMatchOptions
 			{
 				if (!_uniqueItems.Add(value))
 				{
+					_index++;
 					return (false, null);
 				}
 
@@ -169,6 +155,7 @@ public partial class CollectionMatchOptions
 			{
 				if (!_uniqueItems.Add(value))
 				{
+					_index++;
 					return (false, null);
 				}
 
@@ -179,6 +166,37 @@ public partial class CollectionMatchOptions
 			_index++;
 			return (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
 			        2 * maximumNumber, null);
+		}
+
+		/// <summary>
+		///     Only the unique items of the subject have to appear in the expected collection, so an item that repeats
+		///     an earlier one is skipped; the expected items it never consumes are no deviations for this relation.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask<(bool, string?)>
+#else
+		private async Task<(bool, string?)>
+#endif
+			VerifyTheCurrentValueIsContainedInTheExpectedItems(T value, IOptionsEquality<T2> options,
+				int maximumNumber)
+		{
+			if (_uniqueItems.Add(value))
+			{
+				if (_ignoreInterspersedItems)
+				{
+					await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
+				}
+				else
+				{
+					await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
+				}
+
+				_distinctIndex++;
+			}
+
+			_index++;
+			return (_additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2 * maximumNumber,
+				null);
 		}
 
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
@@ -192,7 +210,7 @@ public partial class CollectionMatchOptions
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
 				return _ignoreInterspersedItems
-					? VerifyCompleteForSubsequenceMatch(it, maximumNumber)
+					? VerifyCompleteForSubsequenceMatch(it)
 					: VerifyCompleteForContiguousMatch(it);
 			}
 
@@ -283,15 +301,11 @@ public partial class CollectionMatchOptions
 		///     The subject is contained in the expected collection, when its unique items appear there in the same relative
 		///     order; the expected items that are skipped in between are missing items.
 		/// </summary>
-		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it, int maximumNumber)
+		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it)
 		{
 			for (int i = _matchIndex; i < _expectedItems.Length; i++)
 			{
 				_missingItems.Add(_expectedItems[i]);
-				if (_additionalItems.Count + _outOfOrderItems.Count + _missingItems.Count > 2 * maximumNumber)
-				{
-					return (true, null);
-				}
 			}
 
 			List<string> errors = new();
@@ -311,7 +325,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Keeps all offsets in the expected collection at which the subject could still start an uninterrupted run;
 		///     when the last candidate is abandoned, the <paramref name="value" /> and all later items are reported
-		///     against it.
+		///     against it, unless they still match the item they are aligned with.
 		/// </summary>
 #if NET8_0_OR_GREATER
 		private async ValueTask
@@ -322,29 +336,7 @@ public partial class CollectionMatchOptions
 		{
 			if (!_runIsBroken)
 			{
-				List<(int Offset, int Cursor)> candidates = new();
-				if (_distinctIndex == 0)
-				{
-					for (int offset = 0; offset < _expectedItems.Length; offset++)
-					{
-						if (await AreConsideredEqual(value, _expectedItems[offset], options))
-						{
-							candidates.Add((offset, offset + 1));
-						}
-					}
-				}
-				else
-				{
-					foreach ((int offset, int cursor) in _candidates)
-					{
-						int match = await FindTheNextMatchingExpectedItem(cursor, value, options);
-						if (match >= 0)
-						{
-							candidates.Add((offset, match + 1));
-						}
-					}
-				}
-
+				List<(int Offset, int Cursor)> candidates = await FindTheRemainingCandidates(value, options);
 				if (candidates.Count > 0)
 				{
 					_candidates = candidates;
@@ -355,16 +347,57 @@ public partial class CollectionMatchOptions
 				_runIsBroken = true;
 			}
 
-			if (_alignment < _expectedItems.Length)
-			{
-				_incorrectItems.Add(_index, (value, _expectedItems[_alignment]));
-			}
-			else
+			if (_alignment >= _expectedItems.Length)
 			{
 				_additionalItems.Add(_index, value);
 			}
+			else if (!await AreConsideredEqual(value, _expectedItems[_alignment], options))
+			{
+				_incorrectItems.Add(_index, (value, _expectedItems[_alignment]));
+			}
 
 			_alignment++;
+		}
+
+		/// <summary>
+		///     The first unique item opens a candidate at every offset it matches, each later unique item keeps the
+		///     candidates whose next expected item it matches.
+		/// </summary>
+		/// <returns>
+		///     The offsets at which the run can still continue with the <paramref name="value" />, each with the cursor
+		///     behind the expected item it matched.
+		/// </returns>
+#if NET8_0_OR_GREATER
+		private async ValueTask<List<(int Offset, int Cursor)>>
+#else
+		private async Task<List<(int Offset, int Cursor)>>
+#endif
+			FindTheRemainingCandidates(T value, IOptionsEquality<T2> options)
+		{
+			List<(int Offset, int Cursor)> candidates = new();
+			if (_distinctIndex == 0)
+			{
+				for (int offset = 0; offset < _expectedItems.Length; offset++)
+				{
+					if (await AreConsideredEqual(value, _expectedItems[offset], options))
+					{
+						candidates.Add((offset, offset + 1));
+					}
+				}
+			}
+			else
+			{
+				foreach ((int offset, int cursor) in _candidates)
+				{
+					int match = await FindTheNextMatchingExpectedItem(cursor, value, options);
+					if (match >= 0)
+					{
+						candidates.Add((offset, match + 1));
+					}
+				}
+			}
+
+			return candidates;
 		}
 
 		/// <summary>
@@ -461,6 +494,12 @@ public partial class CollectionMatchOptions
 			else if (_expectationIndex < 0 || _expectationIndex >= _expectedDistinctItems.Length)
 			{
 				_additionalItems.Add(_index, value);
+			}
+			else if (await AreConsideredEqual(value, _expectedDistinctItems[_expectationIndex], options))
+			{
+				// The value still matches the expected item it is aligned with, so it is no deviation,
+				// although the run that could have matched was abandoned.
+				_maxMatchIndex = Math.Max(_expectationIndex + 1, _maxMatchIndex);
 			}
 			else
 			{
