@@ -21,13 +21,14 @@ public static partial class ThatDictionary
 			IEnumerable<KeyValuePair<TKey, TValue>> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries = ThrowHelper.EnsureDistinctKeys(expected);
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
+					expectedEntries,
 					options)),
 			subject,
 			options);
@@ -48,6 +49,7 @@ public static partial class ThatDictionary
 			IEnumerable<KeyValuePair<TKey, TValue>> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries = ThrowHelper.EnsureDistinctKeys(expected);
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
@@ -56,7 +58,7 @@ public static partial class ThatDictionary
 				=> new IsEqualToConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
 					grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
+					expectedEntries,
 					options)),
 			subject,
 			options);
@@ -72,13 +74,14 @@ public static partial class ThatDictionary
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		ICollection<KeyValuePair<TKey, TValue>>? unexpectedEntries = ThrowHelper.EnsureDistinctKeys(unexpected);
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
+					unexpectedEntries,
 					options).Invert()),
 			subject,
 			options);
@@ -100,6 +103,7 @@ public static partial class ThatDictionary
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		ICollection<KeyValuePair<TKey, TValue>>? unexpectedEntries = ThrowHelper.EnsureDistinctKeys(unexpected);
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
@@ -108,7 +112,7 @@ public static partial class ThatDictionary
 				=> new IsEqualToConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
 					grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
+					unexpectedEntries,
 					options).Invert()),
 			subject,
 			options);
