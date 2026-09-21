@@ -156,6 +156,12 @@ exists for, such as a collection of DTOs: each expected element is matched again
 it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
 reports only the elements that were left over, each against the leftover element it differs from the least.
 
+A **set** and a **dictionary** are no longer compared by the order in which they enumerate: a set is matched element
+by element like a collection whose order is ignored, and a dictionary is compared by key. This applies to `ISet<T>`
+and `IReadOnlySet<T>`, and to `IDictionary<TKey, TValue>` and `IReadOnlyDictionary<TKey, TValue>`. v2 only
+recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only implements
+`IReadOnlyDictionary<TKey, TValue>` failed when both sides held the same content in a different order. Every other
+collection still compares by position.
 `IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
 the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
 [Limiting the recursion depth](/docs/expectations/equivalency#limiting-the-recursion-depth).
