@@ -18,7 +18,7 @@ public class AwaitExpectationCodeFixProviderTests
 		    public async Task MyTest()
 		    {
 		        var subject = true;
-		        [|Expect.That(subject)|].IsTrue();
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
 		    }
 		}
 		""",
@@ -47,7 +47,7 @@ public class AwaitExpectationCodeFixProviderTests
 		    public int MyTest()
 		    {
 		        var subject = true;
-		        [|Expect.That(subject)|].IsTrue();
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
 		        return 0;
 		    }
 		}
@@ -78,7 +78,7 @@ public class AwaitExpectationCodeFixProviderTests
 		    public void MyTest()
 		    {
 		        var subject = true;
-		        [|Expect.That(subject)|].IsTrue();
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
 		    }
 		}
 		""",

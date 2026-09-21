@@ -7,6 +7,65 @@ namespace aweXpect.Analyzers.Tests;
 public class AwaitExpectationAnalyzerTests
 {
 	[Fact]
+	public async Task WhenAssignedToLocal_ThatIsAwaited_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        var expectation = Expect.That(subject).IsTrue();
+			        await expectation;
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenAssignedToLocal_ThatIsNeverUsed_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        var expectation = {|#0:Expect.That(subject)|}.IsTrue();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAssignedToLocal_ThatIsVerified_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        var expectation = Expect.That(subject).IsTrue();
+			        expectation.VerifySynchronously();
+			    }
+			}
+			"""
+		);
+
+	[Fact]
 	public async Task WhenAwaited_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -39,6 +98,128 @@ public class AwaitExpectationAnalyzerTests
 			    }
 			}
 			"""
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncLambdaReturningTask_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        Func<bool, Task> check = async subject => await Expect.That(subject).IsTrue();
+			        await check(true);
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncVoidLambda_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        List<bool> subjects = new();
+			        subjects.ForEach(async subject => await {|#0:Expect.That(subject)|}.IsTrue());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenChainedWithAnd_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        {|#0:Expect.That(subject)|}.IsTrue().And.IsTrue();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenDiscarded_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        _ = {|#0:Expect.That(subject)|}.IsTrue();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenEvaluatedThroughTheAwaiter_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        Expect.That(subject).IsTrue().GetAwaiter().GetResult();
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenNotAwaited_InOneBranch_WithVerifyInTheOtherBranch_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        if (subject)
+			            {|#0:Expect.That(subject)|}.IsTrue();
+			        else
+			            Synchronously.Verify(Expect.That(subject).IsTrue());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
 		);
 
 	[Fact]
@@ -93,6 +274,96 @@ public class AwaitExpectationAnalyzerTests
 			    {
 			        aweXpect.Synchronous.Synchronously.Verify(Expect.That(true).IsTrue());
 			        {|#0:Expect.That(() => {})|}.DoesNotThrow();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenReturnedFromExpressionBodiedMethod_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class MyClass
+			{
+			    public Expectation MyExpectation(bool subject)
+			        => Expect.That(subject).IsTrue();
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenReturnedWithReturnStatement_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class MyClass
+			{
+			    public Expectation MyExpectation(bool subject)
+			    {
+			        return Expect.That(subject).IsTrue();
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenThatAllIsAwaited_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Expect.ThatAll(Expect.That(subject).IsTrue(), Expect.That(subject).IsTrue());
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenThatAllIsNotAwaited_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        {|#0:Expect.ThatAll(Expect.That(subject).IsTrue(), Expect.That(subject).IsTrue())|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenThatAnyIsNotAwaited_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        {|#0:Expect.ThatAny(Expect.That(subject).IsTrue(), Expect.That(subject).IsTrue())|};
 			    }
 			}
 			""",
