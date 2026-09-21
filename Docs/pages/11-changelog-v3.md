@@ -229,7 +229,14 @@ the v3 pre-releases, read like a timeout failure although it is the result of an
 
 ## Analyzer
 
+- `aweXpect0001` follows the expectation instead of scanning the enclosing statement, so it no longer breaks the
+  build for an expectation that is assigned to a local, returned from a member or evaluated with
+  `GetAwaiter().GetResult()`. It now also covers `Expect.ThatAll` and `Expect.ThatAny`, and no longer accepts an
+  expectation because another branch of the same statement verifies one.
 - `aweXpect0003` flags a `Has…` exception expectation directly after `Throws`, and offers a code fix. See
   [Delegates](/docs/expectations/delegates#with-after-throws-has-on-the-exception).
+- `aweXpect0005` warns about an expectation inside an `async` lambda that is converted to a void-returning delegate,
+  such as `list.ForEach(async x => await Expect.That(x).IsTrue())`, because the lambda returns before the expectation
+  is evaluated and its failure is thrown after the test has completed.
 - `aweXpect2001` warns when a type named in `[assembly: GenerateMetadata]` yields no registration.
 - The nullability suppressor reads `[GuaranteesNotNull]`, so it suppresses the warning after far more expectations.

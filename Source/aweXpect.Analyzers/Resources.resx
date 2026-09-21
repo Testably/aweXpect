@@ -63,6 +63,15 @@
 		<value>Insert ".Which"</value>
 		<comment>The title of the code fix that inserts .Which before the expectation.</comment>
 	</data>
+	<data name="aweXpect0005Description" xml:space="preserve">
+		<value>An async lambda that is converted to a void-returning delegate returns before the expectation is evaluated, so a failing expectation is thrown on an unrelated thread after the test has completed instead of failing the test. Pass a delegate that returns a task, or await the expectation in the test method itself.</value>
+	</data>
+	<data name="aweXpect0005MessageFormat" xml:space="preserve">
+		<value>Expectations in an async void lambda are not observed by the test</value>
+	</data>
+	<data name="aweXpect0005Title" xml:space="preserve">
+		<value>Expectations in an async void lambda are not observed by the test</value>
+	</data>
 	<data name="IsNotNullSuppressionJustification" xml:space="preserve">
 		<value>The subject was verified to be not null by a preceding expectation.</value>
 	</data>
