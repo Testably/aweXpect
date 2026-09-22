@@ -63,15 +63,7 @@ internal sealed record CollectionExpectationFamily(
 	private static List<string> Overloads(IMethodSymbol helper, Declaration declaration, Compilation compilation,
 		Location location, List<Problem> problems)
 	{
-		// The expected parameter follows the subject, but an expectation such as IsInAscendingOrder takes none, so the
-		// negation flag comes right after the subject instead.
-		IParameterSymbol? expected = helper.Parameters.Length > 1 &&
-		                             helper.Parameters[1].Type.SpecialType != SpecialType.System_Boolean
-			? helper.Parameters[1]
-			: null;
-		// Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
-		string parameterName = expected?.Name ?? "";
-		string negatedParameterName = parameterName == "expected" ? "unexpected" : parameterName;
+		IParameterSymbol? expected = ExpectedParameter(helper);
 		// Only a helper that takes the negation flag has a negated form.
 		bool hasPolarity = helper.Parameters.Skip(expected == null ? 1 : 2)
 			.Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
@@ -81,53 +73,72 @@ internal sealed record CollectionExpectationFamily(
 			hasPolarity = false;
 		}
 
+		List<Variant> variants = Variants(declaration, expected?.Name ?? "", hasPolarity);
+		// A single expected value of a nullable element already accepts the non-nullable one.
+		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
+		List<Instantiation> instantiations = Instantiate(declaration, castsUp).ToList();
+		problems.AddRange(Check(helper, declaration, location, hasPolarity, instantiations.Count));
+		return Subjects(helper, declaration, compilation)
+			.SelectMany(subject => instantiations.Select(x => x.For(subject)))
+			.SelectMany(bound => variants.Select(variant => Render(helper, expected, declaration, bound, variant)))
+			.ToList();
+	}
+
+	/// <remarks>
+	///     The expected parameter follows the subject, but an expectation such as IsInAscendingOrder takes none, so
+	///     the negation flag comes right after the subject instead.
+	/// </remarks>
+	private static IParameterSymbol? ExpectedParameter(IMethodSymbol helper)
+		=> helper.Parameters.Length > 1 && helper.Parameters[1].Type.SpecialType != SpecialType.System_Boolean
+			? helper.Parameters[1]
+			: null;
+
+	/// <remarks>
+	///     Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
+	/// </remarks>
+	private static List<Variant> Variants(Declaration declaration, string parameterName, bool hasPolarity)
+	{
+		List<Variant> variants =
+		[
+			new Variant(declaration.PositiveName, parameterName, declaration.Summary, declaration.Remarks, false),
+		];
+		if (hasPolarity)
+		{
+			variants.Add(new Variant(declaration.NegatedName,
+				parameterName == "expected" ? "unexpected" : parameterName, declaration.NegatedSummary,
+				declaration.NegatedRemarks ?? declaration.Remarks, true));
+		}
+
+		return variants;
+	}
+
+	private static IEnumerable<Problem> Check(IMethodSymbol helper, Declaration declaration, Location location,
+		bool hasPolarity, int instantiations)
+	{
 		if (declaration.Summary.Length == 0)
 		{
-			problems.Add(new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
-				declaration.PositiveName, "Summary"));
+			yield return new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
+				declaration.PositiveName, "Summary");
 		}
 
 		if (hasPolarity && declaration.NegatedSummary.Length == 0)
 		{
-			problems.Add(new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
-				declaration.NegatedName, "NegatedSummary"));
+			yield return new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
+				declaration.NegatedName, "NegatedSummary");
 		}
 
 		if (declaration.PerSubject && !CollectionSubjects(helper.ContainingType).Any())
 		{
-			problems.Add(new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
-				declaration.PositiveName, "the containing class has no [CollectionSubjects]"));
+			yield return new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
+				declaration.PositiveName, "the containing class has no [CollectionSubjects]");
 		}
 
-		// A single expected value of a nullable element already accepts the non-nullable one.
-		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
-		List<Instantiation> instantiations = Instantiate(declaration, castsUp).ToList();
-		if (declaration.Factory != null && instantiations.Count == 0)
+		if (declaration.Factory != null && instantiations == 0)
 		{
-			problems.Add(new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
+			yield return new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
 				declaration.PositiveName,
-				$"the factory '{declaration.Factory.Name}' has no parameterless static method returning ObjectEqualityWithToleranceOptions<,>"));
+				$"the factory '{declaration.Factory.Name}' has no parameterless static method returning ObjectEqualityWithToleranceOptions<,>");
 		}
-
-		List<string> methods = [];
-		foreach (SubjectKind? subject in Subjects(helper, declaration, compilation))
-		{
-			foreach (Instantiation instantiation in instantiations)
-			{
-				Instantiation bound = instantiation.For(subject);
-				methods.Add(Render(helper, expected, declaration, bound,
-					new Variant(declaration.PositiveName, parameterName, declaration.Summary, declaration.Remarks,
-						false)));
-				if (hasPolarity)
-				{
-					methods.Add(Render(helper, expected, declaration, bound,
-						new Variant(declaration.NegatedName, negatedParameterName, declaration.NegatedSummary,
-							declaration.NegatedRemarks ?? declaration.Remarks, true)));
-				}
-			}
-		}
-
-		return methods;
 	}
 
 	/// <remarks>
