@@ -12,7 +12,6 @@ using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
-[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 public static partial class ThatEnumerable
 {
 	private const string Matches =

@@ -57,26 +57,27 @@ public static partial class ThatEnumerable
 		=> IsInOrderForEnumerable(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
-#if NET8_0_OR_GREATER
-	[CreateCollectionExpectation("Is{Not}InDescendingOrder",
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", PerSubject = true,
 		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
-	internal static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInDescendingOrderForImmutableArrayCore<TItem>(
-			IThat<ImmutableArray<TItem>> subject,
+	internal static CollectionOrderResult<TItem, TCollection, IThat<TCollection>>
+		IsInDescendingOrderForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
 			bool negated)
-		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", negated);
+		where TCollection : IEnumerable<TItem>
+		=> IsInOrderForCollection<TCollection, TItem, TItem>(subject, x => x, aweXpect.SortOrder.Descending, "",
+			negated);
 
-	[CreateCollectionExpectation("Is{Not}InDescendingOrder",
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", PerSubject = true,
 		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
-	internal static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInDescendingOrderForImmutableArrayByMemberCore<TItem, TMember>(
-			IThat<ImmutableArray<TItem>> subject,
+	internal static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
+		IsInDescendingOrderForCollectionByMemberCore<TCollection, TItem, TMember>(
+			IThat<TCollection> subject,
 			Func<TItem, TMember> memberAccessor,
 			string memberExpression,
 			bool negated)
-		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		where TCollection : IEnumerable<TItem>
+		=> IsInOrderForCollection(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
-#endif
 
 	/// <summary>
 	///     Verifies that the collection is in descending order.

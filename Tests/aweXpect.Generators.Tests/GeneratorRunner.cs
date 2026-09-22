@@ -13,13 +13,17 @@ internal static class GeneratorRunner
 {
 	public static GeneratorResult Run(string[] sources, bool referenceCore = true,
 		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
+		=> Run(new TypeMetadataGenerator(), sources, referenceCore, languageVersion, additionalReferences);
+
+	public static GeneratorResult Run(IIncrementalGenerator generator, string[] sources, bool referenceCore = true,
+		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
 	{
 		CSharpParseOptions parseOptions = new(languageVersion);
 		List<SyntaxTree> trees = Parse(sources, parseOptions);
 		CSharpCompilation compilation = Compile("GeneratorTests", trees,
 			GetReferences(referenceCore).Concat(additionalReferences));
 
-		GeneratorDriver driver = CSharpGeneratorDriver.Create([new TypeMetadataGenerator().AsSourceGenerator(),],
+		GeneratorDriver driver = CSharpGeneratorDriver.Create([generator.AsSourceGenerator(),],
 			parseOptions: parseOptions);
 		driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output,
 			out ImmutableArray<Diagnostic> generatorDiagnostics);
@@ -50,6 +54,10 @@ internal static class GeneratorRunner
 
 		return MetadataReference.CreateFromImage(stream.ToArray());
 	}
+
+	public static CSharpCompilation CreateCompilation(string[] sources, bool referenceCore = true)
+		=> Compile("GeneratorTests", Parse(sources, new CSharpParseOptions(LanguageVersion.Latest)),
+			GetReferences(referenceCore));
 
 	private static List<SyntaxTree> Parse(string[] sources, CSharpParseOptions parseOptions)
 		=> sources.Select(source => CSharpSyntaxTree.ParseText(source, parseOptions)).ToList();

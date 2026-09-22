@@ -57,26 +57,27 @@ public static partial class ThatEnumerable
 		=> IsInOrderForEnumerable(subject, memberAccessor, aweXpect.SortOrder.Ascending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
-#if NET8_0_OR_GREATER
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder",
+	[CreateCollectionExpectation("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInAscendingOrderForImmutableArrayCore<TItem>(
-			IThat<ImmutableArray<TItem>> subject,
+	internal static CollectionOrderResult<TItem, TCollection, IThat<TCollection>>
+		IsInAscendingOrderForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
 			bool negated)
-		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Ascending, "", negated);
+		where TCollection : IEnumerable<TItem>
+		=> IsInOrderForCollection<TCollection, TItem, TItem>(subject, x => x, aweXpect.SortOrder.Ascending, "",
+			negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder",
+	[CreateCollectionExpectation("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInAscendingOrderForImmutableArrayByMemberCore<TItem, TMember>(
-			IThat<ImmutableArray<TItem>> subject,
+	internal static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
+		IsInAscendingOrderForCollectionByMemberCore<TCollection, TItem, TMember>(
+			IThat<TCollection> subject,
 			Func<TItem, TMember> memberAccessor,
 			string memberExpression,
 			bool negated)
-		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Ascending,
+		where TCollection : IEnumerable<TItem>
+		=> IsInOrderForCollection(subject, memberAccessor, aweXpect.SortOrder.Ascending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
-#endif
 
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
@@ -288,22 +289,22 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-#if NET8_0_OR_GREATER
-	private static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInOrder<TItem, TMember>(
-			IThat<ImmutableArray<TItem>> subject,
+	private static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
+		IsInOrderForCollection<TCollection, TItem, TMember>(
+			IThat<TCollection> subject,
 			Func<TItem, TMember> memberAccessor,
 			SortOrder sortOrder,
 			string memberExpression,
 			bool isNegated,
 			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
+		where TCollection : IEnumerable<TItem>
 	{
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
+		return new CollectionOrderResult<TMember, TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
-				IsInOrderForEnumerableConstraint<ImmutableArray<TItem>, TItem, TMember> constraint = new(
+				IsInOrderForEnumerableConstraint<TCollection, TItem, TMember> constraint = new(
 					expectationBuilder, it, grammars,
 					memberAccessor,
 					sortOrder,
@@ -315,5 +316,20 @@ public static partial class ThatEnumerable
 			subject,
 			options);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     The kind-aware <see cref="DateTime" /> overloads cannot infer the element for the collection helper.
+	/// </remarks>
+	private static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+		IsInOrder<TItem, TMember>(
+			IThat<ImmutableArray<TItem>> subject,
+			Func<TItem, TMember> memberAccessor,
+			SortOrder sortOrder,
+			string memberExpression,
+			bool isNegated,
+			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
+		=> IsInOrderForCollection(subject, memberAccessor, sortOrder, memberExpression, isNegated,
+			createIncompatibilityCheck);
 #endif
 }

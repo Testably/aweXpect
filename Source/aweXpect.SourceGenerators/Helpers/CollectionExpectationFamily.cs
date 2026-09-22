@@ -10,9 +10,14 @@ namespace aweXpect.SourceGenerators.Helpers;
 ///     The helper's own signature is the declaration: its return type, its subject and expected parameters and its
 ///     type parameters are emitted verbatim. Only what the signature cannot state - the name, the element types of a
 ///     tolerance family, the subject kinds of a per-subject family, the overload priority and the documentation -
-///     comes from the attribute. Everything is reduced to strings here so that no symbol is held across the pipeline.
+///     comes from the attribute. Everything is reduced to strings here so that no symbol is held across the pipeline,
+///     and the record equality lets the pipeline skip the output when nothing changed.
 /// </remarks>
-internal sealed class CollectionExpectationFamily
+internal sealed record CollectionExpectationFamily(
+	string Namespace,
+	string ClassName,
+	string FileName,
+	EquatableArray<string> Methods)
 {
 	private const string ItemPlaceholder = "{item}";
 	private const string SubjectPlaceholder = "{subject}";
@@ -21,19 +26,6 @@ internal sealed class CollectionExpectationFamily
 		.WithMiscellaneousOptions(
 			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
-
-	private CollectionExpectationFamily(string @namespace, string className, string fileName, List<string> methods)
-	{
-		Namespace = @namespace;
-		ClassName = className;
-		FileName = fileName;
-		Methods = methods;
-	}
-
-	public string Namespace { get; }
-	public string ClassName { get; }
-	public string FileName { get; }
-	public List<string> Methods { get; }
 
 	public static CollectionExpectationFamily? Create(IMethodSymbol helper, AttributeData attributeData,
 		Compilation compilation)
@@ -89,10 +81,13 @@ internal sealed class CollectionExpectationFamily
 		}
 
 		// The generated file is named after the helper's own file, so that a before/after diff works per file.
-		string fileName = Path.GetFileNameWithoutExtension(helper.Locations.FirstOrDefault()?.SourceTree?.FilePath)
-		                  ?? $"{helper.ContainingType.Name}.{positiveName}";
+		string fileName = Path.GetFileNameWithoutExtension(helper.Locations.FirstOrDefault()?.SourceTree?.FilePath);
+		if (string.IsNullOrEmpty(fileName))
+		{
+			fileName = $"{helper.ContainingType.Name}.{positiveName}";
+		}
 		return new CollectionExpectationFamily(helper.ContainingType.ContainingNamespace.ToString(),
-			helper.ContainingType.Name, fileName, methods);
+			helper.ContainingType.Name, fileName, new EquatableArray<string>(methods.ToArray()));
 	}
 
 	/// <remarks>
@@ -120,7 +115,8 @@ internal sealed class CollectionExpectationFamily
 				if (value.Value?.ToString() is { } template &&
 				    Resolve(template, compilation) is { } definition)
 				{
-					yield return new SubjectKind(template, priority, remarks, KindConstraints(template, definition));
+					yield return new SubjectKind(Qualify(template), definition.IsValueType, priority, remarks,
+						KindConstraints(template, definition));
 				}
 			}
 		}
@@ -174,9 +170,9 @@ internal sealed class CollectionExpectationFamily
 	private static Dictionary<string, List<string>> KindConstraints(string template, INamedTypeSymbol definition)
 	{
 		string[] arguments = TypeArguments(template);
-		Dictionary<string, string> byName = definition.TypeParameters
+		Dictionary<string, Bound> byName = definition.TypeParameters
 			.Select((x, i) => (x.Name, Argument: i < arguments.Length ? arguments[i] : x.Name))
-			.ToDictionary(x => x.Name, x => x.Argument);
+			.ToDictionary(x => x.Name, x => new Bound(x.Argument, $"{x.Argument}?"));
 		Dictionary<string, List<string>> result = [];
 		for (int i = 0; i < arguments.Length && i < definition.TypeParameters.Length; i++)
 		{
@@ -220,18 +216,23 @@ internal sealed class CollectionExpectationFamily
 				continue;
 			}
 
-			string item = options.TypeArguments[0].ToDisplayString(TypeFormat);
-			string tolerance = options.TypeArguments[1].ToDisplayString(TypeFormat);
+			ITypeSymbol item = options.TypeArguments[0];
+			ITypeSymbol tolerance = options.TypeArguments[1];
+			string itemName = item.ToDisplayString(TypeFormat);
 			string call = $"{factory.ToDisplayString(TypeFormat)}.{factoryMethod.Name}()";
-			yield return new Instantiation(item, item, tolerance) { FactoryCall = call, };
-			if (castsUp && options.TypeArguments[0] is INamedTypeSymbol
+			yield return new Instantiation(itemName, itemName, tolerance.ToDisplayString(TypeFormat))
+			{
+				ItemIsValueType = item.IsValueType, ToleranceIsValueType = tolerance.IsValueType, FactoryCall = call,
+			};
+			if (castsUp && item is INamedTypeSymbol
 			    {
 				    ConstructedFrom.SpecialType: SpecialType.System_Nullable_T,
 			    } nullable)
 			{
-				yield return new Instantiation(item, nullable.TypeArguments[0].ToDisplayString(TypeFormat), tolerance)
+				yield return new Instantiation(itemName, nullable.TypeArguments[0].ToDisplayString(TypeFormat),
+					tolerance.ToDisplayString(TypeFormat))
 				{
-					FactoryCall = call,
+					ItemIsValueType = true, ToleranceIsValueType = tolerance.IsValueType, FactoryCall = call,
 				};
 			}
 		}
@@ -243,22 +244,27 @@ internal sealed class CollectionExpectationFamily
 	{
 		// Without a factory the element type is the one the expected parameter already carries.
 		string item = instantiation.Item ?? (expected == null ? "TItem" : ElementOf(expected.Type));
-		Dictionary<string, string> substitutions = [];
+		Dictionary<string, Bound> substitutions = [];
 		if (instantiation.Item != null)
 		{
-			substitutions["TItem"] = instantiation.Item;
-			substitutions["TTolerance"] = instantiation.Tolerance ?? "";
+			substitutions["TItem"] = Bind(helper, "TItem", instantiation.Item, instantiation.ItemIsValueType);
+			substitutions["TTolerance"] = Bind(helper, "TTolerance", instantiation.Tolerance ?? "",
+				instantiation.ToleranceIsValueType);
 		}
 
 		if (instantiation.Subject != null)
 		{
-			substitutions["TCollection"] = instantiation.Subject.Template.Replace(ItemPlaceholder, item);
+			substitutions["TCollection"] = Bind(helper, "TCollection",
+				instantiation.Subject.Template.Replace(ItemPlaceholder, item), instantiation.Subject.IsValueType);
 		}
 
 		// The expected parameter may take the non-nullable element while the subject keeps the nullable one.
-		Dictionary<string, string> expectedSubstitutions = instantiation.ExpectedItem == null
+		Dictionary<string, Bound> expectedSubstitutions = instantiation.ExpectedItem == null
 			? substitutions
-			: new Dictionary<string, string>(substitutions) { ["TItem"] = instantiation.ExpectedItem, };
+			: new Dictionary<string, Bound>(substitutions)
+			{
+				["TItem"] = Bind(helper, "TItem", instantiation.ExpectedItem, instantiation.ItemIsValueType),
+			};
 
 		string subjectName = helper.Parameters[0].Name;
 		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
@@ -309,7 +315,7 @@ internal sealed class CollectionExpectationFamily
 		string typeArguments = helper.TypeParameters.Length == 0
 			? ""
 			: $"<{string.Join(", ", helper.TypeParameters.Select(x
-				=> substitutions.TryGetValue(x.Name, out string? v) ? v : x.Name))}>";
+				=> substitutions.TryGetValue(x.Name, out Bound? v) ? v.Type : x.Name))}>";
 
 		string header = $"""
 		                 	/// <summary>
@@ -348,6 +354,17 @@ internal sealed class CollectionExpectationFamily
 		         """;
 	}
 
+	/// <remarks>
+	///     An annotated <c>T?</c> is <c>T</c> itself once a value type fills an unconstrained <c>T</c>, and only
+	///     <c>Nullable&lt;T&gt;</c> when <c>T</c> is constrained to a struct; a reference type keeps the annotation.
+	/// </remarks>
+	private static Bound Bind(IMethodSymbol helper, string name, string type, bool isValueType)
+	{
+		bool isNullableOfType = !isValueType ||
+		                        helper.TypeParameters.Any(x => x.Name == name && x.HasValueTypeConstraint);
+		return new Bound(type, isNullableOfType ? $"{type.TrimEnd('?')}?" : type);
+	}
+
 	private static string ArgumentFor(IParameterSymbol parameter, Instantiation instantiation, bool negated,
 		bool echoesExpression)
 	{
@@ -366,7 +383,7 @@ internal sealed class CollectionExpectationFamily
 	/// <remarks>
 	///     A type parameter the overload keeps also keeps the helper's constraints, with the bound ones substituted.
 	/// </remarks>
-	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, string> substitutions,
+	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, Bound> substitutions,
 		SubjectKind? subject)
 	{
 		List<string> constraints = [];
@@ -381,7 +398,7 @@ internal sealed class CollectionExpectationFamily
 	}
 
 	private static List<string> ConstraintsOf(ITypeParameterSymbol typeParameter,
-		Dictionary<string, string> substitutions)
+		Dictionary<string, Bound> substitutions)
 	{
 		List<string> constraints = [];
 		if (typeParameter.HasReferenceTypeConstraint)
@@ -414,16 +431,19 @@ internal sealed class CollectionExpectationFamily
 	///     The helper is rendered unconstructed and the bound type parameters are replaced by name, because an
 	///     instantiation cannot construct a method that still carries the overload's own type parameters.
 	/// </remarks>
-	private static string Substitute(ITypeSymbol type, Dictionary<string, string> substitutions)
+	private static string Substitute(ITypeSymbol type, Dictionary<string, Bound> substitutions)
 	{
 		string result = type.ToDisplayString(TypeFormat);
-		foreach (KeyValuePair<string, string> substitution in substitutions.OrderByDescending(x => x.Key.Length))
+		foreach (KeyValuePair<string, Bound> substitution in substitutions)
 		{
-			result = Regex.Replace(result, $@"\b{substitution.Key}\b", substitution.Value.Replace("$", "$$"));
+			result = Regex.Replace(result, $@"\b{substitution.Key}\?", Escape(substitution.Value.NullableType));
+			result = Regex.Replace(result, $@"\b{substitution.Key}\b", Escape(substitution.Value.Type));
 		}
 
 		return result;
 	}
+
+	private static string Escape(string replacement) => replacement.Replace("$", "$$");
 
 	/// <remarks>
 	///     The element of an array is its element type, the element of an expected collection or of a predicate is its
@@ -439,6 +459,11 @@ internal sealed class CollectionExpectationFamily
 
 	private static string Qualify(string type)
 		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.");
+
+	/// <summary>
+	///     A type that fills one of the helper's type parameters, and what its annotated <c>T?</c> form is.
+	/// </summary>
+	private sealed record Bound(string Type, string NullableType);
 
 	private sealed class Declaration
 	{
@@ -498,13 +523,21 @@ internal sealed class CollectionExpectationFamily
 	private sealed class Instantiation(string? item, string? expectedItem, string? tolerance)
 	{
 		public string? Item { get; } = item;
+		public bool ItemIsValueType { get; init; }
 		public string? ExpectedItem { get; } = expectedItem;
 		public string? Tolerance { get; } = tolerance;
+		public bool ToleranceIsValueType { get; init; }
 		public SubjectKind? Subject { get; private init; }
 		public string? FactoryCall { get; init; }
 
 		public Instantiation For(SubjectKind? subject)
-			=> new(Item, ExpectedItem, Tolerance) { Subject = subject, FactoryCall = FactoryCall, };
+			=> new(Item, ExpectedItem, Tolerance)
+			{
+				ItemIsValueType = ItemIsValueType,
+				ToleranceIsValueType = ToleranceIsValueType,
+				Subject = subject,
+				FactoryCall = FactoryCall,
+			};
 	}
 
 	/// <summary>
@@ -513,11 +546,13 @@ internal sealed class CollectionExpectationFamily
 	/// </summary>
 	private sealed class SubjectKind(
 		string template,
+		bool isValueType,
 		int priority,
 		string? remarks,
 		Dictionary<string, List<string>> constraints)
 	{
 		public string Template { get; } = template;
+		public bool IsValueType { get; } = isValueType;
 		public int Priority { get; } = priority;
 		public string? Remarks { get; } = remarks;
 		public Dictionary<string, List<string>> Constraints { get; } = constraints;
