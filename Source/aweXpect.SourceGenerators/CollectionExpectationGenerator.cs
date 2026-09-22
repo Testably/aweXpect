@@ -60,7 +60,7 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 	private static void Execute(ImmutableArray<CollectionExpectationFamily> families, SourceProductionContext context)
 	{
 		foreach (IGrouping<string, CollectionExpectationFamily> group in families
-			         .GroupBy(x => $"{x.ClassName}.{x.Name}"))
+			         .GroupBy(x => x.FileName))
 		{
 			string result = CollectionExpectationSources.GenerateExtensionClass(group.ToList());
 			context.AddSource($"{group.Key}.g.cs", SourceText.From(result, Encoding.UTF8));

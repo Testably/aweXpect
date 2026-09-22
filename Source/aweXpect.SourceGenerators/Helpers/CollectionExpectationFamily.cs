@@ -22,17 +22,17 @@ internal sealed class CollectionExpectationFamily
 			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-	private CollectionExpectationFamily(string @namespace, string className, string name, List<string> methods)
+	private CollectionExpectationFamily(string @namespace, string className, string fileName, List<string> methods)
 	{
 		Namespace = @namespace;
 		ClassName = className;
-		Name = name;
+		FileName = fileName;
 		Methods = methods;
 	}
 
 	public string Namespace { get; }
 	public string ClassName { get; }
-	public string Name { get; }
+	public string FileName { get; }
 	public List<string> Methods { get; }
 
 	public static CollectionExpectationFamily? Create(IMethodSymbol helper, AttributeData attributeData,
@@ -56,16 +56,23 @@ internal sealed class CollectionExpectationFamily
 		// Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
 		string parameterName = helper.Parameters[1].Name;
 		string negatedParameterName = parameterName == "expected" ? "unexpected" : parameterName;
+		// Only a helper that takes the negation flag has a negated form.
+		bool hasPolarity = helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
+		// A single expected value of a nullable element already accepts the non-nullable one.
+		bool castsUp = helper.Parameters[1].Type is not ITypeParameterSymbol;
 		List<string> methods = [];
 		foreach (string? subject in Subjects(helper, declaration, compilation))
 		{
-			foreach (Instantiation instantiation in Instantiate(declaration, compilation))
+			foreach (Instantiation instantiation in Instantiate(declaration, compilation, castsUp))
 			{
 				Instantiation bound = instantiation.For(subject);
 				methods.Add(Render(helper, declaration, bound, positiveName, parameterName, declaration.Summary,
 					declaration.Remarks, false));
-				methods.Add(Render(helper, declaration, bound, negatedName, negatedParameterName,
-					declaration.NegatedSummary, declaration.NegatedRemarks ?? declaration.Remarks, true));
+				if (hasPolarity)
+				{
+					methods.Add(Render(helper, declaration, bound, negatedName, negatedParameterName,
+						declaration.NegatedSummary, declaration.NegatedRemarks ?? declaration.Remarks, true));
+				}
 			}
 		}
 
@@ -74,8 +81,11 @@ internal sealed class CollectionExpectationFamily
 			return null;
 		}
 
+		// The generated file is named after the helper's own file, so that a before/after diff works per file.
+		string fileName = Path.GetFileNameWithoutExtension(helper.Locations.FirstOrDefault()?.SourceTree?.FilePath)
+		                  ?? $"{helper.ContainingType.Name}.{positiveName}";
 		return new CollectionExpectationFamily(helper.ContainingType.ContainingNamespace.ToString(),
-			helper.ContainingType.Name, positiveName, methods);
+			helper.ContainingType.Name, fileName, methods);
 	}
 
 	/// <remarks>
@@ -117,7 +127,8 @@ internal sealed class CollectionExpectationFamily
 	///     A factory expands into one instantiation per <c>Create*</c> method, and a nullable element additionally
 	///     accepts a non-nullable expected collection, which is cast up.
 	/// </remarks>
-	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, Compilation compilation)
+	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, Compilation compilation,
+		bool castsUp)
 	{
 		if (declaration.Factory == null)
 		{
@@ -146,7 +157,7 @@ internal sealed class CollectionExpectationFamily
 			string tolerance = options.TypeArguments[1].ToDisplayString(TypeFormat);
 			string call = $"{factory.ToDisplayString(TypeFormat)}.{factoryMethod.Name}()";
 			yield return new Instantiation(item, item, tolerance) { FactoryCall = call, };
-			if (options.TypeArguments[0] is INamedTypeSymbol
+			if (castsUp && options.TypeArguments[0] is INamedTypeSymbol
 			    {
 				    ConstructedFrom.SpecialType: SpecialType.System_Nullable_T,
 			    } nullable)
@@ -196,13 +207,20 @@ internal sealed class CollectionExpectationFamily
 			? parameterName
 			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
 
-		List<string> arguments = ["subject", argument,];
+		string subjectName = helper.Parameters[0].Name;
+		List<string> arguments = [subjectName, argument,];
 		arguments.AddRange(helper.Parameters.Skip(2).Select(x => ArgumentFor(x, declaration, instantiation, negated)));
 
 		// A type parameter bound by the factory or by the subject kind is consumed by the instantiation.
-		string[] ownTypeParameters = helper.TypeParameters
-			.Select(x => x.Name).Where(x => !substitutions.ContainsKey(x)).ToArray();
-		string typeParameters = ownTypeParameters.Length == 0 ? "" : $"<{string.Join(", ", ownTypeParameters)}>";
+		ITypeParameterSymbol[] ownTypeParameters = helper.TypeParameters
+			.Where(x => !substitutions.ContainsKey(x.Name)).ToArray();
+		string typeParameters = ownTypeParameters.Length == 0
+			? ""
+			: $"<{string.Join(", ", ownTypeParameters.Select(x => x.Name))}>";
+		string constraints = string.Concat(ownTypeParameters
+			.Select(x => Constraints(x, substitutions))
+			.Where(x => x != null)
+			.Select(x => $"\n\t\t{x}"));
 		string typeArguments = helper.TypeParameters.Length == 0
 			? ""
 			: $"<{string.Join(", ", helper.TypeParameters.Select(x
@@ -244,8 +262,8 @@ internal sealed class CollectionExpectationFamily
 		         {{header}}
 		         	public static {{Substitute(helper.ReturnType, substitutions)}}
 		         		{{methodName}}{{typeParameters}}(
-		         			this {{Substitute(helper.Parameters[0].Type, substitutions)}} subject,
-		         			{{expectedParameter}}
+		         			this {{Substitute(helper.Parameters[0].Type, substitutions)}} {{subjectName}},
+		         			{{expectedParameter}}{{constraints}}
 		         		=> {{helper.Name}}{{typeArguments}}(
 		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
 		         """;
@@ -265,6 +283,38 @@ internal sealed class CollectionExpectationFamily
 			SpecialType.System_String when declaration.Params => "null",
 			_ => "doNotPopulateThisValue",
 		};
+	}
+
+	/// <remarks>
+	///     A type parameter the overload keeps also keeps the helper's constraints, with the bound ones substituted.
+	/// </remarks>
+	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, string> substitutions)
+	{
+		List<string> constraints = [];
+		if (typeParameter.HasReferenceTypeConstraint)
+		{
+			constraints.Add("class");
+		}
+		else if (typeParameter.HasUnmanagedTypeConstraint)
+		{
+			constraints.Add("unmanaged");
+		}
+		else if (typeParameter.HasValueTypeConstraint)
+		{
+			constraints.Add("struct");
+		}
+		else if (typeParameter.HasNotNullConstraint)
+		{
+			constraints.Add("notnull");
+		}
+
+		constraints.AddRange(typeParameter.ConstraintTypes.Select(x => Substitute(x, substitutions)));
+		if (typeParameter.HasConstructorConstraint)
+		{
+			constraints.Add("new()");
+		}
+
+		return constraints.Count == 0 ? null : $"where {typeParameter.Name} : {string.Join(", ", constraints)}";
 	}
 
 	/// <remarks>
