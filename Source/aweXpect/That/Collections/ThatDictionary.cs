@@ -1,15 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 /// <summary>
 ///     Expectations on <see cref="IDictionary{TKey,TValue}" /> and <see cref="IReadOnlyDictionary{TKey,TValue}" />.
 /// </summary>
+[CollectionSubjects(
+	"System.Collections.Generic.IDictionary<TKey, TValue>",
+	"System.Collections.Generic.Dictionary<TKey, TValue>",
+	"System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>")]
+[CollectionSubjects("System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>",
+	Priority = -1, Remarks = SharedDeclaringTypeRemarks)]
 public static partial class ThatDictionary
 {
 	private const string ExpectedDictionaryWasNull = "the expected dictionary was <null>";
+
+	private const string SharedDeclaringTypeRemarks =
+		"Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the\n" +
+		"priority to decide between them.";
 
 	internal static bool ContainsValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
 		TValue value)

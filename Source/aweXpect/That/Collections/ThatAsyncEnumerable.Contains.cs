@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -13,6 +12,7 @@ using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -20,401 +20,217 @@ namespace aweXpect;
 
 public static partial class ThatAsyncEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection contains the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		Contains<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			TItem expected)
+	private const string ContainsValue =
+		"Verifies that the collection contains the <paramref name=\"expected\" /> value.";
+
+	private const string DoesNotContainValue =
+		"Verifies that the collection does not contain the <paramref name=\"unexpected\" /> value.";
+
+	private const string ContainsMatchingItem =
+		"Verifies that the collection contains an item that satisfies the <paramref name=\"predicate\" />.";
+
+	private const string DoesNotContainMatchingItem =
+		"Verifies that the collection contains no item that satisfies the <paramref name=\"predicate\" />.";
+
+	private const string ContainsCollection =
+		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
+
+	private const string DoesNotContainCollection =
+		"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection.";
+
+	private const string ContainsRemarks =
+		"The expected items must appear in the same order and contiguous, i.e. without other items in between. Use\n" +
+		"<c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the\n" +
+		"order.";
+
+	private const string DoesNotContainRemarks =
+		"The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.\n" +
+		"without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with\n" +
+		"other items in between or <c>InAnyOrder()</c> to also ignore the order.";
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+	internal static ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		ContainsItemCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			TItem expected,
+			bool negated)
 	{
 		Quantifier quantifier = new();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {ContainedItemExpectation(options, expected)}"
-						: $"{g.Verb("contains", "contain")} {ContainedItemExpectation(options, expected)} {q}",
+				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
 					a => options.AreConsideredEqual(a, expected),
-					quantifier)),
+					quantifier).InvertIf(negated)),
 			subject,
 			quantifier,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		Contains(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			string? expected)
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+	internal static StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+		ContainsItemForStringsCore(
+			IThat<IAsyncEnumerable<string?>?> subject,
+			string? expected,
+			bool negated)
 	{
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<string?>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
-						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
+				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}", negated),
 					a => options.AreConsideredEqual(a, expected),
-					quantifier)),
+					quantifier).InvertIf(negated)),
 			subject,
 			quantifier,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains an item that satisfies the <paramref name="predicate" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-		Contains<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
+	internal static CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		ContainsMatchingItemCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, bool> predicate,
-			[CallerArgumentExpression("predicate")]
-			string doNotPopulateThisValue = "")
+			string predicateExpression,
+			bool negated)
 	{
 		predicate.ThrowIfNull();
 		Quantifier quantifier = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainConstraint<TItem>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"{g.Verb("contains", "contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q}",
+				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g,
+						$"item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
 					predicate,
-					quantifier)),
+					quantifier).InvertIf(negated)),
 			subject,
 			quantifier);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The expected items must appear in the same order and contiguous, i.e. without other items in between. Use
-	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
-	///     order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		Contains<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+	internal static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		ContainsCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(
-					expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(), expected,
-					options, matchOptions, failsForNullSubject: true)),
+				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The expected items must appear in the same order and contiguous, i.e. without other items in between. Use
-	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
-	///     order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		Contains(
-			this IThat<IAsyncEnumerable<string?>?> subject,
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+	internal static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+		ContainsForStringsCore(
+			IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(
-					expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected, options, matchOptions, failsForNullSubject: true)),
+				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of predicates.
-	/// </summary>
-	/// <remarks>
-	///     The expected predicates must be satisfied in the same order and contiguous, i.e. without other items in
-	///     between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also
-	///     ignore the order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		Contains<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary =
+			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of predicates.",
+		NegatedSummary =
+			"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of predicates.",
+		Remarks =
+			"The expected predicates must be satisfied in the same order and contiguous, i.e. without other items in\n" +
+			"between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also\n" +
+			"ignore the order.",
+		NegatedRemarks =
+			"The unexpected predicates are only considered contained when they are satisfied in the same order and\n" +
+			"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
+			"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.")]
+	internal static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		ContainsFromPredicatesCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Expression<Func<TItem, bool>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions, failsForNullSubject: true)),
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	/// <summary>
-	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of expectations.
-	/// </summary>
-	/// <remarks>
-	///     The expectations must be satisfied in the same order and contiguous, i.e. without other items in between. Use
-	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
-	///     order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		Contains<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Summary =
+			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of expectations.",
+		NegatedSummary =
+			"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of expectations.",
+		Remarks =
+			"The expectations must be satisfied in the same order and contiguous, i.e. without other items in between. Use\n" +
+			"<c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the\n" +
+			"order.",
+		NegatedRemarks =
+			"The unexpected expectations are only considered contained when they are satisfied in the same order and\n" +
+			"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
+			"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.")]
+	internal static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		ContainsFromExpectationsCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Action<IThatSubject<TItem?>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions, failsForNullSubject: true)),
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	/// <summary>
-	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotContain<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			TItem unexpected)
-	{
-		Quantifier quantifier = new();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, ContainedItemExpectation(options, unexpected)),
-					a => options.AreConsideredEqual(a, unexpected),
-					quantifier).Invert()),
-			subject,
-			quantifier,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		DoesNotContain(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			string? unexpected)
-	{
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<string?>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
-					a => options.AreConsideredEqual(a, unexpected),
-					quantifier).Invert()),
-			subject,
-			quantifier,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection contains no item that satisfies the <paramref name="predicate" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-		DoesNotContain<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			Func<TItem, bool> predicate,
-			[CallerArgumentExpression("predicate")]
-			string doNotPopulateThisValue = "")
-	{
-		predicate.ThrowIfNull();
-		Quantifier quantifier = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainConstraint<TItem>(
-					expectationBuilder, it, grammars,
-					(q, g) => q.ToDoesNotContainExpectation(g, $"item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"),
-					predicate,
-					quantifier).Invert()),
-			subject,
-			quantifier);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.
-	///     without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with
-	///     other items in between or <c>InAnyOrder()</c> to also ignore the order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotContain<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(
-					expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(), unexpected,
-					options, matchOptions, failsForNullSubject: true).Invert()),
-			subject,
-			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.
-	///     without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with
-	///     other items in between or <c>InAnyOrder()</c> to also ignore the order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		DoesNotContain(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(
-					expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected, options, matchOptions, failsForNullSubject: true).Invert()),
-			subject,
-			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
-	/// </summary>
-	/// <remarks>
-	///     The unexpected predicates are only considered contained when they are satisfied in the same order and
-	///     contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them
-	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotContain<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions, failsForNullSubject: true).Invert()),
-			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
-	/// </summary>
-	/// <remarks>
-	///     The unexpected expectations are only considered contained when they are satisfied in the same order and
-	///     contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them
-	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotContain<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions, failsForNullSubject: true).Invert()),
-			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
-	}
 
 	/// <summary>
 	///     The text for the <paramref name="expected" /> item of a <c>contain</c> expectation.

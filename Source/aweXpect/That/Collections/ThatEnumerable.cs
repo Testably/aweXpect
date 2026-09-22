@@ -11,6 +11,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -19,6 +20,7 @@ namespace aweXpect;
 /// <summary>
 ///     Expectations on <see cref="IEnumerable{TItem}" />.
 /// </summary>
+[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 public static partial class ThatEnumerable
 {
 	private const string For = " for ";

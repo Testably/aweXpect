@@ -24,6 +24,19 @@ internal static class ThrowHelper
 	public static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeys<TKey, TValue>(
 		IEnumerable<KeyValuePair<TKey, TValue>>? entries,
 		[CallerArgumentExpression(nameof(entries))] string? paramName = null)
+		=> EnsureDistinctKeysNamed(entries, paramName);
+
+	/// <summary>
+	///     <see cref="EnsureDistinctKeys{TKey,TValue}(IEnumerable{KeyValuePair{TKey,TValue}}?,string?)" /> for the
+	///     <paramref name="entries" /> named after the polarity of the expectation: the expected dictionary, or the
+	///     unexpected one when <paramref name="negated" />.
+	/// </summary>
+	public static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeys<TKey, TValue>(
+		IEnumerable<KeyValuePair<TKey, TValue>>? entries, bool negated)
+		=> EnsureDistinctKeysNamed(entries, negated ? "unexpected" : "expected");
+
+	private static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeysNamed<TKey, TValue>(
+		IEnumerable<KeyValuePair<TKey, TValue>>? entries, string? paramName)
 	{
 		if (entries is null)
 		{

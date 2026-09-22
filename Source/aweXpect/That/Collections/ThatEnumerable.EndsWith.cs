@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -10,9 +9,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
-#endif
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -20,530 +17,172 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		EndsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
+	private const string EndsWithSummary =
+		"Verifies that the collection ends with the provided <paramref name=\"expected\" /> collection.";
+
+	private const string DoesNotEndWithSummary =
+		"Verifies that the collection does not end with the provided <paramref name=\"unexpected\" /> collection.";
+
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Params = true, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		EndsWithCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
+			{
+				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		EndsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			params TItem[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		EndsWith(
-			this IThat<IEnumerable<string?>?> subject,
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Params = true, ExpectedType = "string",
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+		EndsWithForStringsCore(
+			IThat<IEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
+			{
+				EndsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		EndsWith(
-			this IThat<IEnumerable<string?>?> subject,
-			params string[] expected)
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Priority = -1, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Params = true, Priority = -2, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
+		Remarks = LowerPriorityRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
+		EndsWithForEnumerableCore<TItem>(
+			IThat<IEnumerable?> subject,
+			IEnumerable<TItem> expected,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<string, string>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		EndsWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			IEnumerable<TItem> expected)
-	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
+			{
+				EndsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expected), expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
-	///     sequence of characters.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
-		EndsWith(
-			this IThat<IEnumerable?> subject,
-			string? expected)
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Priority = -1, ExpectedType = "string?",
+		Summary = "Verifies that the collection ends with the provided <paramref name=\"expected\" /> value.",
+		NegatedSummary =
+			"Verifies that the collection does not end with the provided <paramref name=\"unexpected\" /> value.",
+		Remarks = SingleValueRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
+		EndsWithSingleStringCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			bool negated)
 	{
 		string?[] expectedItems = [expected,];
 		ObjectEqualityOptions<string?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
-					Formatter.Format(expectedItems),
-					expectedItems,
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
+			{
+				EndsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expectedItems), expectedItems, options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The priority is below the one of the collection overload, so that a collection argument binds as the expected
-	///     sequence instead of as a single expected item.
-	/// </remarks>
-	[OverloadResolutionPriority(-2)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		EndsWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			params TItem[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		EndsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>
+		EndsWithForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
-#endif
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		EndsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			params TItem[] expected)
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
+		ExpectedType = "string",
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static StringEqualityResult<TCollection, IThat<TCollection>>
+		EndsWithForCollectionStringsCore<TCollection>(
+			IThat<TCollection> subject,
+			IEnumerable<string?> expected,
+			bool negated)
+		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		EndsWith(
-			this IThat<ImmutableArray<string?>> subject,
-			IEnumerable<string?> expected)
-	{
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(expected),
-					expected.ToArray(),
-					options)),
+		return new StringEqualityResult<TCollection, IThat<TCollection>>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expected), expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		EndsWith(
-			this IThat<ImmutableArray<string?>> subject,
-			params string[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-#endif
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		DoesNotEndWith(
-			this IThat<IEnumerable<string?>?> subject,
-			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		DoesNotEndWith(
-			this IThat<IEnumerable<string?>?> subject,
-			params string[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithConstraint<string, string>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			IEnumerable<TItem> unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
-	///     sequence of characters.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
-		DoesNotEndWith(
-			this IThat<IEnumerable?> subject,
-			string? unexpected)
-	{
-		string?[] unexpectedItems = [unexpected,];
-		ObjectEqualityOptions<string?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpectedItems),
-					unexpectedItems,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The priority is below the one of the collection overload, so that a collection argument binds as the unexpected
-	///     sequence instead of as a single unexpected item.
-	/// </remarks>
-	[OverloadResolutionPriority(-2)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		DoesNotEndWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		DoesNotEndWith(
-			this IThat<ImmutableArray<string?>> subject,
-			IEnumerable<string?> unexpected)
-	{
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(unexpected),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		DoesNotEndWith(
-			this IThat<ImmutableArray<string?>> subject,
-			params string[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new EndsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
 
 	private sealed class EndsWithConstraint<TItem, TMatch>
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,

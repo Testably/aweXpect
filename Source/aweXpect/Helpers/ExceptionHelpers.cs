@@ -11,6 +11,16 @@ internal static class ExceptionHelpers
 {
 	public static void ThrowIfNull(this object? parameter,
 		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		=> ThrowIfNullNamed(parameter, paramName);
+
+	/// <summary>
+	///     Throws when the <paramref name="parameter" /> is null, naming it after the polarity of the expectation: the
+	///     expected value, or the unexpected one when <paramref name="negated" />.
+	/// </summary>
+	public static void ThrowIfNull(this object? parameter, bool negated)
+		=> ThrowIfNullNamed(parameter, negated ? "unexpected" : "expected");
+
+	private static void ThrowIfNullNamed(object? parameter, string? paramName)
 	{
 		if (parameter is null)
 		{
@@ -21,8 +31,18 @@ internal static class ExceptionHelpers
 
 	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter,
 		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		=> ThrowIfNullOrEmptyNamed(parameter, paramName);
+
+	/// <summary>
+	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
+	///     expectation: the expected collection, or the unexpected one when <paramref name="negated" />.
+	/// </summary>
+	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter, bool negated)
+		=> ThrowIfNullOrEmptyNamed(parameter, negated ? "unexpected" : "expected");
+
+	private static void ThrowIfNullOrEmptyNamed<T>(IEnumerable<T>? parameter, string? paramName)
 	{
-		parameter.ThrowIfNull(paramName);
+		ThrowIfNullNamed(parameter, paramName);
 		if (!parameter!.Any())
 		{
 			// ReSharper disable once LocalizableElement

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -11,9 +10,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
-#endif
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -21,12 +18,26 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection has an item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemWithConditionResult<IEnumerable<TItem>?, TItem> HasItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject)
+	private const string HasAnItem = "Verifies that the collection has an item…";
+	private const string DoesNotHaveAnItem = "Verifies that the collection does not have an item…";
+
+	private const string HasMatchingItem =
+		"Verifies that the collection has an item matching the <paramref name=\"predicate\" />…";
+
+	private const string DoesNotHaveMatchingItem =
+		"Verifies that the collection does not have an item matching the <paramref name=\"predicate\" />…";
+
+	private const string HasTheItem = "Verifies that the collection has the <paramref name=\"expected\" /> item…";
+
+	private const string DoesNotHaveTheItem =
+		"Verifies that the collection does not have the <paramref name=\"unexpected\" /> item…";
+
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
+	internal static HasItemWithConditionResult<IEnumerable<TItem>?, TItem>
+		HasItemCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<TItem> options = new();
@@ -36,37 +47,38 @@ public static partial class ThatEnumerable
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					x => options.Matches(x),
 					options.GetDescription,
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable<TItem>?> HasItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject, Func<TItem, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
+	internal static HasItemResult<IEnumerable<TItem>?>
+		HasMatchingItemCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
+			Func<TItem, bool> predicate,
+			string predicateExpression,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
-					() => doNotPopulateThisValue, indexOptions)),
+					() => predicateExpression, indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has the <paramref name="expected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectHasItemResult<IEnumerable<TItem>?, TItem> HasItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject, TItem expected)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemResult<IEnumerable<TItem>?, TItem>
+		HasTheItemCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
+			TItem expected,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -76,18 +88,19 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected)),
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has the <paramref name="expected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringHasItemResult<IEnumerable<string?>?> HasItem(
-		this IThat<IEnumerable<string?>?> subject, string? expected)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static StringHasItemResult<IEnumerable<string?>?>
+		HasTheItemForStringsCore(
+			IThat<IEnumerable<string?>?> subject,
+			string? expected,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -97,18 +110,18 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetExpectation(expected, grammars),
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has an item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemWithConditionResult<IEnumerable?, object?> HasItem(
-		this IThat<IEnumerable?> subject)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
+	internal static HasItemWithConditionResult<IEnumerable?, object?>
+		HasItemForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<object?> options = new();
@@ -116,21 +129,20 @@ public static partial class ThatEnumerable
 		return new HasItemWithConditionResult<IEnumerable?, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions)),
+					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable?> HasItem(
-		this IThat<IEnumerable?> subject, Func<object?, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true, Priority = -1,
+		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
+	internal static HasItemResult<IEnumerable?>
+		HasMatchingItemForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			Func<object?, bool> predicate,
+			string predicateExpression,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -138,18 +150,19 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
-					predicate, () => doNotPopulateThisValue,
-					indexOptions)),
+					predicate, () => predicateExpression,
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection has the <paramref name="expected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectHasItemResult<IEnumerable?, object?> HasItem(
-		this IThat<IEnumerable?> subject, object? expected)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemResult<IEnumerable?, object?>
+		HasTheItemForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			object? expected,
+			bool negated)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -160,332 +173,101 @@ public static partial class ThatEnumerable
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected)),
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
-	/// </summary>
-	public static HasItemResult<ImmutableArray<TItem>> HasItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject, Func<TItem, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
+	internal static HasItemResult<TCollection>
+		HasMatchingItemForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			Func<TItem, bool> predicate,
+			string predicateExpression,
+			bool negated)
+		where TCollection : IEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<ImmutableArray<TItem>>(
+		return new HasItemResult<TCollection>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
+				=> new HasItemForEnumerableConstraint<TCollection, TItem>(
 					expectationBuilder, it, grammars,
-					predicate, () => doNotPopulateThisValue,
-					indexOptions)),
+					predicate, () => predicateExpression,
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
 	}
-#endif
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection has an item…
-	/// </summary>
-	public static HasItemWithConditionResult<ImmutableArray<TItem>, TItem> HasItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
+	internal static HasItemWithConditionResult<TCollection, TItem>
+		HasItemForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			bool negated)
+		where TCollection : IEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<ImmutableArray<TItem>, TItem>(
+		return new HasItemWithConditionResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions)),
+				=> new HasItemForEnumerableConstraint<TCollection, TItem>(expectationBuilder, it, grammars,
+					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
-#endif
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection has the <paramref name="expected" /> item…
-	/// </summary>
-	public static ObjectHasItemResult<ImmutableArray<TItem>, TItem> HasItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject, TItem expected)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemResult<TCollection, TItem>
+		HasTheItemForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			TItem expected,
+			bool negated)
+		where TCollection : IEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
-		return new ObjectHasItemResult<ImmutableArray<TItem>, TItem>(
+		return new ObjectHasItemResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
+				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected)),
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
-#endif
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection has the <paramref name="expected" /> item…
-	/// </summary>
-	public static StringHasItemResult<ImmutableArray<string?>> HasItem(
-		this IThat<ImmutableArray<string?>> subject, string? expected)
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static StringHasItemResult<TCollection>
+		HasTheItemForCollectionStringsCore<TCollection>(
+			IThat<TCollection> subject,
+			string? expected,
+			bool negated)
+		where TCollection : IEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new();
-		return new StringHasItemResult<ImmutableArray<string?>>(
+		return new StringHasItemResult<TCollection>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<string?>, string?>(
+				=> new HasAsyncItemForEnumerableConstraint<TCollection, string?>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => $"{Formatter.Format(expected)}{options}",
-					indexOptions)),
+					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
 	}
-#endif
-
-	/// <summary>
-	///     Verifies that the collection does not have an item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemWithConditionResult<IEnumerable<TItem>?, TItem> DoesNotHaveItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject)
-	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<IEnumerable<TItem>?, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
-					x => options.Matches(x),
-					options.GetDescription,
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have an item matching the <paramref name="predicate" />…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable<TItem>?> DoesNotHaveItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject, Func<TItem, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable<TItem>?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
-					() => doNotPopulateThisValue, indexOptions).Invert()),
-			subject,
-			indexOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectHasItemResult<IEnumerable<TItem>?, TItem> DoesNotHaveItem<TItem>(
-		this IThat<IEnumerable<TItem>?> subject, TItem unexpected)
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<TItem> options = new();
-		return new ObjectHasItemResult<IEnumerable<TItem>?, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, unexpected),
-					() => options.GetItemExpectation(Formatter.Format(unexpected)),
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringHasItemResult<IEnumerable<string?>?> DoesNotHaveItem(
-		this IThat<IEnumerable<string?>?> subject, string? unexpected)
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new();
-		return new StringHasItemResult<IEnumerable<string?>?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, unexpected),
-					() => options.GetExpectation(unexpected, grammars),
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have an item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static HasItemWithConditionResult<IEnumerable?, object?> DoesNotHaveItem(
-		this IThat<IEnumerable?> subject)
-	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<IEnumerable?, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have an item matching the <paramref name="predicate" />…
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable?> DoesNotHaveItem(
-		this IThat<IEnumerable?> subject, Func<object?, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
-					expectationBuilder, it, grammars,
-					predicate, () => doNotPopulateThisValue,
-					indexOptions).Invert()),
-			subject,
-			indexOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectHasItemResult<IEnumerable?, object?> DoesNotHaveItem(
-		this IThat<IEnumerable?> subject, object? unexpected)
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<object?> options = new();
-		return new ObjectHasItemResult<IEnumerable?, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
-					expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, unexpected),
-					() => options.GetItemExpectation(Formatter.Format(unexpected)),
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not have an item matching the <paramref name="predicate" />…
-	/// </summary>
-	public static HasItemResult<ImmutableArray<TItem>> DoesNotHaveItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject, Func<TItem, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<ImmutableArray<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
-					expectationBuilder, it, grammars,
-					predicate, () => doNotPopulateThisValue,
-					indexOptions).Invert()),
-			subject,
-			indexOptions);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not have an item…
-	/// </summary>
-	public static HasItemWithConditionResult<ImmutableArray<TItem>, TItem> DoesNotHaveItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject)
-	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<ImmutableArray<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
-	/// </summary>
-	public static ObjectHasItemResult<ImmutableArray<TItem>, TItem> DoesNotHaveItem<TItem>(
-		this IThat<ImmutableArray<TItem>> subject, TItem unexpected)
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<TItem> options = new();
-		return new ObjectHasItemResult<ImmutableArray<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
-					expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, unexpected),
-					() => options.GetItemExpectation(Formatter.Format(unexpected)),
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
-	/// </summary>
-	public static StringHasItemResult<ImmutableArray<string?>> DoesNotHaveItem(
-		this IThat<ImmutableArray<string?>> subject, string? unexpected)
-	{
-		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new();
-		return new StringHasItemResult<ImmutableArray<string?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<ImmutableArray<string?>, string?>(
-					expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, unexpected),
-					() => $"{Formatter.Format(unexpected)}{options}",
-					indexOptions).Invert()),
-			subject,
-			indexOptions,
-			options);
-	}
-#endif
 
 	private sealed class HasAsyncItemConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,

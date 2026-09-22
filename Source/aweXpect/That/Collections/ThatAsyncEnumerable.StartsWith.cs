@@ -1,7 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -11,6 +10,7 @@ using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -18,184 +18,61 @@ namespace aweXpect;
 
 public static partial class ThatAsyncEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	private const string StartsWithSummary =
+		"Verifies that the collection starts with the provided <paramref name=\"expected\" /> collection.";
+
+	private const string DoesNotStartWithSummary =
+		"Verifies that the collection does not start with the provided <paramref name=\"unexpected\" /> collection.";
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		StartsWithCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			params TItem[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		StartsWith(
-			this IThat<IAsyncEnumerable<string?>?> subject,
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, ExpectedType = "string",
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+		StartsWithForStringsCore(
+			IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		StartsWith(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			params string[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<string, string>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		DoesNotStartWith(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		DoesNotStartWith(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			params string[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
+			{
+				StartsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}

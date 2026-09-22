@@ -47,6 +47,38 @@ public sealed partial class ThatAsyncEnumerable
 						             [1.0, 2.0, 3.0]
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenExpectedIsAMultiLineExpression_ShouldTrimTheCommonWhiteSpace()
+				{
+					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([
+							1.0m,
+							2.0m,
+							3.0m,
+						]).Within(0.2m).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [
+						             	1.0m,
+						             	2.0m,
+						             	3.0m,
+						             ] in any order ± 0.2,
+						             but it
+						               contained item 2.3 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 2.0
+
+						             Collection:
+						             [1.1, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, 2.0, 3.0]
+						             """);
+				}
 			}
 
 			public sealed class NullableDecimalTests
@@ -266,7 +298,9 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [{Formatter.Format(expected)}]
+						              [
+						                {Formatter.Format(expected)}
+						              ]
 						              """);
 				}
 			}
@@ -450,7 +484,9 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [{Formatter.Format(expected)}]
+						              [
+						                {Formatter.Format(expected)}
+						              ]
 						              """);
 				}
 			}

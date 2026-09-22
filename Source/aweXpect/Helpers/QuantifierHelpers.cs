@@ -14,6 +14,21 @@ internal static class QuantifierHelpers
 	}
 
 	/// <summary>
+	///     The expectation of a "contains" constraint on the <paramref name="expected" /> text, or of a "does not contain"
+	///     constraint when <paramref name="negated" />.
+	/// </summary>
+	public static string ToContainsExpectation(this Quantifier quantifier, ExpectationGrammars grammars,
+		string expected, bool negated)
+	{
+		if (negated || quantifier.IsNever)
+		{
+			return quantifier.ToDoesNotContainExpectation(grammars, expected);
+		}
+
+		return $"{grammars.Verb("contains", "contain")} {expected} {quantifier}";
+	}
+
+	/// <summary>
 	///     The expectation of a "does not contain" constraint on the <paramref name="expected" /> text, which reads
 	///     positively once the constraint is negated again.
 	/// </summary>
