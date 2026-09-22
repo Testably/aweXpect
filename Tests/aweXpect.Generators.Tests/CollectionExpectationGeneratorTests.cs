@@ -254,6 +254,132 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the re-created family equals the previous one, so nothing is re-emitted");
 	}
 
+	[Fact]
+	public async Task PerSubject_ShouldPutThePrimaryConstraintFirstWhicheverSideContributesIt()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public class Keyed<T> where T : IComparable<T> { }
+
+			[CollectionSubjects("Lib.Keyed<TItem>")]
+			public static partial class ThatKeyed
+			{
+				[CreateCollectionExpectation("Contains", PerSubject = true, Summary = "Contains.")]
+				internal static IThat<TCollection?> ContainsCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					TItem expected)
+					where TCollection : class
+					where TItem : class
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("where TItem : class, global::System.IComparable<TItem>").Once()
+			.Because("the kind contributes the interface and the helper the primary constraint");
+	}
+
+	[Fact]
+	public async Task WhenNegatedNameEqualsTheName_ShouldReportAndEmitOnlyThePositiveOverload()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("Contains", Summary = "Contains.", NegatedSummary = "Does not contain.")]
+				internal static IThat<TItem> ContainsCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					TItem expected,
+					bool negated)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3002");
+		await That(result.Generated).Contains("Contains<TItem>(").Once();
+	}
+
+	[Fact]
+	public async Task WhenTheFactoryHasNoCreateMethod_ShouldReport()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static class Factory
+			{
+				public static ObjectEqualityWithToleranceOptions<double, double> Create(int value) => new();
+			}
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				internal static IThat<TItem> IsEqualToCore<TItem, TTolerance>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected,
+					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+					=> null!;
+			}
+			""");
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("'Factory'"));
+		await That(result.Generated).DoesNotContain("IsEqualTo(");
+	}
+
+	[Fact]
+	public async Task PerSubject_WithoutCollectionSubjects_ShouldReport()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("HasItem", PerSubject = true, Summary = "Has the item.")]
+				internal static IThat<TCollection?> HasItemCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					TItem expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("[CollectionSubjects]"));
+		await That(result.Generated).DoesNotContain("HasItem<");
+	}
+
+	[Fact]
+	public async Task WithoutSummary_ShouldWarn()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("Is{Not}EqualTo", Summary = "Matches.")]
+				internal static IThat<TItem> IsEqualToCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected,
+					bool negated)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3003" && x.Severity == DiagnosticSeverity.Warning &&
+			                x.GetMessage().Contains("'IsNotEqualTo' has no NegatedSummary"));
+	}
+
 	private static GeneratorRunner.GeneratorResult Run(string source)
 		=> GeneratorRunner.Run(new CollectionExpectationGenerator(), [Stubs, Usings + source,], false);
 }

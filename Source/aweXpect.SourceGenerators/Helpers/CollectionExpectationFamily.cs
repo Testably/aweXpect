@@ -11,13 +11,15 @@ namespace aweXpect.SourceGenerators.Helpers;
 ///     type parameters are emitted verbatim. Only what the signature cannot state - the name, the element types of a
 ///     tolerance family, the subject kinds of a per-subject family, the overload priority and the documentation -
 ///     comes from the attribute. Everything is reduced to strings here so that no symbol is held across the pipeline,
-///     and the record equality lets the pipeline skip the output when nothing changed.
+///     and the record equality lets the pipeline skip the output when nothing changed. A declaration that cannot
+///     render what it promises carries a <see cref="Problem" /> instead of failing silently.
 /// </remarks>
 internal sealed record CollectionExpectationFamily(
 	string Namespace,
 	string ClassName,
 	string FileName,
-	EquatableArray<string> Methods)
+	EquatableArray<string> Methods,
+	EquatableArray<Problem> Problems)
 {
 	private const string ItemPlaceholder = "{item}";
 	private const string SubjectPlaceholder = "{subject}";
@@ -28,24 +30,39 @@ internal sealed record CollectionExpectationFamily(
 			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-	public static CollectionExpectationFamily? Create(IMethodSymbol helper, AttributeData attributeData,
+	public static CollectionExpectationFamily Create(IMethodSymbol helper, AttributeData attributeData,
 		Compilation compilation)
 	{
-		if (attributeData.ConstructorArguments.Length != 1 ||
-		    attributeData.ConstructorArguments[0].Value?.ToString() is not { } name ||
-		    helper.Parameters.Length < 1)
+		Declaration declaration = new(attributeData);
+		Location location = attributeData.ApplicationSyntaxReference?.GetSyntax().GetLocation() ??
+		                    helper.Locations.FirstOrDefault() ?? Location.None;
+		List<Problem> problems = [];
+		List<string> methods = [];
+		if (helper.Parameters.Length == 0)
 		{
-			return null;
+			problems.Add(new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
+				declaration.PositiveName, "the helper takes no subject parameter"));
+		}
+		else
+		{
+			methods = Overloads(helper, declaration, compilation, location, problems);
 		}
 
-		Declaration declaration = new();
-		foreach (KeyValuePair<string, TypedConstant> namedArgument in attributeData.NamedArguments)
+		// The generated file is named after the helper's own file, so that a before/after diff works per file.
+		string fileName = Path.GetFileNameWithoutExtension(helper.Locations.FirstOrDefault()?.SourceTree?.FilePath);
+		if (string.IsNullOrEmpty(fileName))
 		{
-			declaration.Apply(namedArgument.Key, namedArgument.Value);
+			fileName = $"{helper.ContainingType.Name}.{declaration.PositiveName}";
 		}
 
-		string positiveName = name.Replace("{Not}", "");
-		string negatedName = declaration.NegatedName ?? name.Replace("{Not}", "Not");
+		return new CollectionExpectationFamily(helper.ContainingType.ContainingNamespace.ToString(),
+			helper.ContainingType.Name, fileName, new EquatableArray<string>(methods.ToArray()),
+			new EquatableArray<Problem>(problems.ToArray()));
+	}
+
+	private static List<string> Overloads(IMethodSymbol helper, Declaration declaration, Compilation compilation,
+		Location location, List<Problem> problems)
+	{
 		// The expected parameter follows the subject, but an expectation such as IsInAscendingOrder takes none, so the
 		// negation flag comes right after the subject instead.
 		IParameterSymbol? expected = helper.Parameters.Length > 1 &&
@@ -58,38 +75,59 @@ internal sealed record CollectionExpectationFamily(
 		// Only a helper that takes the negation flag has a negated form.
 		bool hasPolarity = helper.Parameters.Skip(expected == null ? 1 : 2)
 			.Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
+		if (hasPolarity && declaration.NegatedName == declaration.PositiveName)
+		{
+			problems.Add(new Problem(CollectionExpectationDiagnostics.SameNegatedName, location, declaration.Name));
+			hasPolarity = false;
+		}
+
+		if (declaration.Summary.Length == 0)
+		{
+			problems.Add(new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
+				declaration.PositiveName, "Summary"));
+		}
+
+		if (hasPolarity && declaration.NegatedSummary.Length == 0)
+		{
+			problems.Add(new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
+				declaration.NegatedName, "NegatedSummary"));
+		}
+
+		if (declaration.PerSubject && !CollectionSubjects(helper.ContainingType).Any())
+		{
+			problems.Add(new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
+				declaration.PositiveName, "the containing class has no [CollectionSubjects]"));
+		}
+
 		// A single expected value of a nullable element already accepts the non-nullable one.
 		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
+		List<Instantiation> instantiations = Instantiate(declaration, castsUp).ToList();
+		if (declaration.Factory != null && instantiations.Count == 0)
+		{
+			problems.Add(new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
+				declaration.PositiveName,
+				$"the factory '{declaration.Factory.Name}' has no parameterless static method returning ObjectEqualityWithToleranceOptions<,>"));
+		}
+
 		List<string> methods = [];
 		foreach (SubjectKind? subject in Subjects(helper, declaration, compilation))
 		{
-			foreach (Instantiation instantiation in Instantiate(declaration, compilation, castsUp))
+			foreach (Instantiation instantiation in instantiations)
 			{
 				Instantiation bound = instantiation.For(subject);
 				methods.Add(Render(helper, expected, declaration, bound,
-					new Variant(positiveName, parameterName, declaration.Summary, declaration.Remarks, false)));
+					new Variant(declaration.PositiveName, parameterName, declaration.Summary, declaration.Remarks,
+						false)));
 				if (hasPolarity)
 				{
 					methods.Add(Render(helper, expected, declaration, bound,
-						new Variant(negatedName, negatedParameterName, declaration.NegatedSummary,
+						new Variant(declaration.NegatedName, negatedParameterName, declaration.NegatedSummary,
 							declaration.NegatedRemarks ?? declaration.Remarks, true)));
 				}
 			}
 		}
 
-		if (methods.Count == 0)
-		{
-			return null;
-		}
-
-		// The generated file is named after the helper's own file, so that a before/after diff works per file.
-		string fileName = Path.GetFileNameWithoutExtension(helper.Locations.FirstOrDefault()?.SourceTree?.FilePath);
-		if (string.IsNullOrEmpty(fileName))
-		{
-			fileName = $"{helper.ContainingType.Name}.{positiveName}";
-		}
-		return new CollectionExpectationFamily(helper.ContainingType.ContainingNamespace.ToString(),
-			helper.ContainingType.Name, fileName, new EquatableArray<string>(methods.ToArray()));
+		return methods;
 	}
 
 	/// <remarks>
@@ -107,8 +145,7 @@ internal sealed record CollectionExpectationFamily(
 			yield break;
 		}
 
-		foreach (AttributeData attribute in helper.ContainingType.GetAttributes()
-			         .Where(x => x.AttributeClass?.Name == "CollectionSubjectsAttribute"))
+		foreach (AttributeData attribute in CollectionSubjects(helper.ContainingType))
 		{
 			int priority = attribute.NamedArguments.FirstOrDefault(x => x.Key == "Priority").Value.Value as int? ?? 0;
 			string? remarks = attribute.NamedArguments.FirstOrDefault(x => x.Key == "Remarks").Value.Value?.ToString();
@@ -123,6 +160,9 @@ internal sealed record CollectionExpectationFamily(
 			}
 		}
 	}
+
+	private static IEnumerable<AttributeData> CollectionSubjects(INamedTypeSymbol type)
+		=> type.GetAttributes().Where(x => x.AttributeClass?.Name == "CollectionSubjectsAttribute");
 
 	private static INamedTypeSymbol? Resolve(string template, Compilation compilation)
 	{
@@ -192,18 +232,11 @@ internal sealed record CollectionExpectationFamily(
 	///     A factory expands into one instantiation per <c>Create*</c> method, and a nullable element additionally
 	///     accepts a non-nullable expected collection, which is cast up.
 	/// </remarks>
-	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, Compilation compilation,
-		bool castsUp)
+	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, bool castsUp)
 	{
-		if (declaration.Factory == null)
+		if (declaration.Factory is not { } factory)
 		{
 			yield return new Instantiation(null, null, null);
-			yield break;
-		}
-
-		INamedTypeSymbol? factory = compilation.GetTypeByMetadataName(declaration.Factory);
-		if (factory == null)
-		{
 			yield break;
 		}
 
@@ -254,7 +287,7 @@ internal sealed record CollectionExpectationFamily(
 		                        helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
 		if (expected != null)
 		{
-			string expectedType = ExpectedType(helper, expected, declaration, instantiation, item, substitutions);
+			string expectedType = RenderExpectedType(helper, expected, declaration, instantiation, item, substitutions);
 			parameters.Add($"{expectedType} {variant.ParameterName}");
 			if (echoesExpression)
 			{
@@ -311,8 +344,8 @@ internal sealed record CollectionExpectationFamily(
 		return substitutions;
 	}
 
-	private static string ExpectedType(IMethodSymbol helper, IParameterSymbol expected, Declaration declaration,
-		Instantiation instantiation, string item, Dictionary<string, Bound> substitutions)
+	private static string RenderExpectedType(IMethodSymbol helper, IParameterSymbol expected,
+		Declaration declaration, Instantiation instantiation, string item, Dictionary<string, Bound> substitutions)
 	{
 		if (declaration.Params)
 		{
@@ -421,9 +454,20 @@ internal sealed record CollectionExpectationFamily(
 		}
 
 		constraints.AddRange(ConstraintsOf(typeParameter, substitutions));
-		constraints = constraints.Distinct().ToList();
+		constraints = constraints.Distinct().OrderBy(Rank).ToList();
 		return constraints.Count == 0 ? null : $"where {typeParameter.Name} : {string.Join(", ", constraints)}";
 	}
+
+	/// <remarks>
+	///     C# wants the primary constraint first and the constructor constraint last, whichever side contributed them.
+	/// </remarks>
+	private static int Rank(string constraint)
+		=> constraint switch
+		{
+			"class" or "struct" or "unmanaged" or "notnull" => 0,
+			"new()" => 2,
+			_ => 1,
+		};
 
 	private static List<string> ConstraintsOf(ITypeParameterSymbol typeParameter,
 		Dictionary<string, Bound> substitutions)
@@ -507,24 +551,37 @@ internal sealed record CollectionExpectationFamily(
 
 	private sealed class Declaration
 	{
-		public string? Factory { get; private set; }
+		private string? _negatedName;
+
+		public Declaration(AttributeData attributeData)
+		{
+			Name = attributeData.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
+			foreach (KeyValuePair<string, TypedConstant> namedArgument in attributeData.NamedArguments)
+			{
+				Apply(namedArgument.Key, namedArgument.Value);
+			}
+		}
+
+		public string Name { get; }
+		public string PositiveName => Name.Replace("{Not}", "");
+		public string NegatedName => _negatedName ?? Name.Replace("{Not}", "Not");
+		public INamedTypeSymbol? Factory { get; private set; }
 		public string? ExpectedType { get; private set; }
 		public bool PerSubject { get; private set; }
 		public bool GuaranteesNotNull { get; private set; }
 		public bool Params { get; private set; }
-		public string? NegatedName { get; private set; }
 		public int Priority { get; private set; }
 		public string Summary { get; private set; } = "";
 		public string NegatedSummary { get; private set; } = "";
 		public string? Remarks { get; private set; }
 		public string? NegatedRemarks { get; private set; }
 
-		public void Apply(string key, TypedConstant value)
+		private void Apply(string key, TypedConstant value)
 		{
 			switch (key)
 			{
 				case "Factory":
-					Factory = (value.Value as INamedTypeSymbol)?.ToDisplayString();
+					Factory = value.Value as INamedTypeSymbol;
 					break;
 				case "ExpectedType":
 					ExpectedType = value.Value?.ToString();
@@ -539,7 +596,7 @@ internal sealed record CollectionExpectationFamily(
 					Params = value.Value as bool? ?? false;
 					break;
 				case "NegatedName":
-					NegatedName = value.Value?.ToString();
+					_negatedName = value.Value?.ToString();
 					break;
 				case "Priority":
 					Priority = value.Value as int? ?? 0;

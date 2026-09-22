@@ -42,28 +42,35 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 			return ImmutableArray<CollectionExpectationFamily>.Empty;
 		}
 
-		ImmutableArray<CollectionExpectationFamily>.Builder builder =
-			ImmutableArray.CreateBuilder<CollectionExpectationFamily>();
-		foreach (AttributeData attributeData in context.Attributes)
-		{
-			CollectionExpectationFamily? family =
-				CollectionExpectationFamily.Create(helper, attributeData, context.SemanticModel.Compilation);
-			if (family != null)
-			{
-				builder.Add(family);
-			}
-		}
-
-		return builder.ToImmutable();
+		return context.Attributes
+			.Select(attributeData =>
+				CollectionExpectationFamily.Create(helper, attributeData, context.SemanticModel.Compilation))
+			.ToImmutableArray();
 	}
 
 	private static void Execute(ImmutableArray<CollectionExpectationFamily> families, SourceProductionContext context)
 	{
-		foreach (IGrouping<string, CollectionExpectationFamily> group in families
-			         .GroupBy(x => x.FileName))
+		foreach (Problem problem in families.SelectMany(x => x.Problems))
 		{
+			context.ReportDiagnostic(problem.ToDiagnostic());
+		}
+
+		// A family without methods is a subject kind that this target framework does not have.
+		List<IGrouping<(string Namespace, string ClassName, string FileName), CollectionExpectationFamily>> groups =
+			families
+				.Where(x => x.Methods.Count > 0)
+				.GroupBy(x => (x.Namespace, x.ClassName, x.FileName))
+				.ToList();
+		foreach (IGrouping<(string Namespace, string ClassName, string FileName), CollectionExpectationFamily> group
+		         in groups)
+		{
+			// Two classes with a same-named helper file must not share an output file.
+			bool sharedFileName = groups.Count(x => x.Key.FileName == group.Key.FileName) > 1;
+			string hintName = sharedFileName
+				? $"{group.Key.Namespace}.{group.Key.ClassName}.{group.Key.FileName}"
+				: group.Key.FileName;
 			string result = CollectionExpectationSources.GenerateExtensionClass(group.ToList());
-			context.AddSource($"{group.Key}.g.cs", SourceText.From(result, Encoding.UTF8));
+			context.AddSource($"{hintName}.g.cs", SourceText.From(result, Encoding.UTF8));
 		}
 	}
 }

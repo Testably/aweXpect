@@ -42,7 +42,7 @@ internal static class ExceptionHelpers
 
 	private static void ThrowIfNullOrEmptyNamed<T>(IEnumerable<T>? parameter, string? paramName)
 	{
-		parameter.ThrowIfNull(paramName);
+		ThrowIfNullNamed(parameter, paramName);
 		if (!parameter!.Any())
 		{
 			// ReSharper disable once LocalizableElement

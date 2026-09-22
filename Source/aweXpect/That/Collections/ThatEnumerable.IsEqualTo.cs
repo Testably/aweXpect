@@ -200,7 +200,6 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-
 	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
 	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",

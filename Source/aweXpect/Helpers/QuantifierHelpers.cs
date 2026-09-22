@@ -20,14 +20,12 @@ internal static class QuantifierHelpers
 	public static string ToContainsExpectation(this Quantifier quantifier, ExpectationGrammars grammars,
 		string expected, bool negated)
 	{
-		if (negated)
+		if (negated || quantifier.IsNever)
 		{
 			return quantifier.ToDoesNotContainExpectation(grammars, expected);
 		}
 
-		return quantifier.IsNever
-			? $"{grammars.Verb("does not contain", "do not contain")} {expected}"
-			: $"{grammars.Verb("contains", "contain")} {expected} {quantifier}";
+		return $"{grammars.Verb("contains", "contain")} {expected} {quantifier}";
 	}
 
 	/// <summary>
