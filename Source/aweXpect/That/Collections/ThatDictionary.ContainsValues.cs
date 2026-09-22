@@ -20,7 +20,7 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>

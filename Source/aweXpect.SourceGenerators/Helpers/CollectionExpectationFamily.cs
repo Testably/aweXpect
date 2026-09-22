@@ -21,6 +21,7 @@ internal sealed record CollectionExpectationFamily(
 {
 	private const string ItemPlaceholder = "{item}";
 	private const string SubjectPlaceholder = "{subject}";
+	private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
 
 	private static readonly SymbolDisplayFormat TypeFormat = SymbolDisplayFormat.FullyQualifiedFormat
 		.WithMiscellaneousOptions(
@@ -65,12 +66,13 @@ internal sealed record CollectionExpectationFamily(
 			foreach (Instantiation instantiation in Instantiate(declaration, compilation, castsUp))
 			{
 				Instantiation bound = instantiation.For(subject);
-				methods.Add(Render(helper, expected, declaration, bound, positiveName, parameterName,
-					declaration.Summary, declaration.Remarks, false));
+				methods.Add(Render(helper, expected, declaration, bound,
+					new Variant(positiveName, parameterName, declaration.Summary, declaration.Remarks, false)));
 				if (hasPolarity)
 				{
-					methods.Add(Render(helper, expected, declaration, bound, negatedName, negatedParameterName,
-						declaration.NegatedSummary, declaration.NegatedRemarks ?? declaration.Remarks, true));
+					methods.Add(Render(helper, expected, declaration, bound,
+						new Variant(negatedName, negatedParameterName, declaration.NegatedSummary,
+							declaration.NegatedRemarks ?? declaration.Remarks, true)));
 				}
 			}
 		}
@@ -239,11 +241,59 @@ internal sealed record CollectionExpectationFamily(
 	}
 
 	private static string Render(IMethodSymbol helper, IParameterSymbol? expected, Declaration declaration,
-		Instantiation instantiation, string methodName, string parameterName, string summary, string? remarks,
-		bool negated)
+		Instantiation instantiation, Variant variant)
 	{
 		// Without a factory the element type is the one the expected parameter already carries.
-		string item = instantiation.Item ?? (expected == null ? "TItem" : ElementOf(expected.Type));
+		string item = instantiation.Item ?? DefaultItem(expected);
+		Dictionary<string, Bound> substitutions = Bindings(helper, instantiation, item);
+		string subjectName = helper.Parameters[0].Name;
+		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
+		List<string> arguments = [subjectName,];
+		// Only a helper that takes the expression can echo one, and a params array has none to echo.
+		bool echoesExpression = expected != null && !declaration.Params &&
+		                        helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
+		if (expected != null)
+		{
+			string expectedType = ExpectedType(helper, expected, declaration, instantiation, item, substitutions);
+			parameters.Add($"{expectedType} {variant.ParameterName}");
+			if (echoesExpression)
+			{
+				parameters.Add(
+					$"[global::System.Runtime.CompilerServices.CallerArgumentExpression(\"{variant.ParameterName}\")]\n" +
+					"\t\t\tstring doNotPopulateThisValue = \"\"");
+			}
+
+			arguments.Add(ExpectedArgument(instantiation, item, variant.ParameterName));
+		}
+
+		arguments.AddRange(helper.Parameters.Skip(expected == null ? 1 : 2)
+			.Select(x => ArgumentFor(x, instantiation, variant.Negated, echoesExpression)));
+
+		// A type parameter bound by the factory or by the subject kind is consumed by the instantiation.
+		ITypeParameterSymbol[] ownTypeParameters = helper.TypeParameters
+			.Where(x => !substitutions.ContainsKey(x.Name)).ToArray();
+		string constraints = string.Concat(ownTypeParameters
+			.Select(x => RenderConstraints(x, substitutions, instantiation.Subject))
+			.Where(x => x != null)
+			.Select(x => $"\n\t\t{x}"));
+		string typeArguments = TypeParameterList(helper.TypeParameters
+			.Select(x => substitutions.TryGetValue(x.Name, out Bound? v) ? v.Type : x.Name));
+
+		return $$"""
+		         {{Header(declaration, instantiation, variant)}}
+		         	public static {{Substitute(helper.ReturnType, substitutions)}}
+		         		{{variant.MethodName}}{{TypeParameterList(ownTypeParameters.Select(x => x.Name))}}(
+		         			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
+		         		=> {{helper.Name}}{{typeArguments}}(
+		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
+		         """;
+	}
+
+	private static string DefaultItem(IParameterSymbol? expected)
+		=> expected == null ? "TItem" : ElementOf(expected.Type);
+
+	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation, string item)
+	{
 		Dictionary<string, Bound> substitutions = [];
 		if (instantiation.Item != null)
 		{
@@ -258,76 +308,61 @@ internal sealed record CollectionExpectationFamily(
 				instantiation.Subject.Template.Replace(ItemPlaceholder, item), instantiation.Subject.IsValueType);
 		}
 
+		return substitutions;
+	}
+
+	private static string ExpectedType(IMethodSymbol helper, IParameterSymbol expected, Declaration declaration,
+		Instantiation instantiation, string item, Dictionary<string, Bound> substitutions)
+	{
+		if (declaration.Params)
+		{
+			// A params array has no single caller expression, so the helper formats the value instead.
+			return $"params {(declaration.ExpectedType == null ? item : Qualify(declaration.ExpectedType))}[]";
+		}
+
+		if (declaration.ExpectedType != null)
+		{
+			return Qualify(declaration.ExpectedType
+				.Replace(SubjectPlaceholder, instantiation.Subject?.Template ?? "")
+				.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
+		}
+
 		// The expected parameter may take the non-nullable element while the subject keeps the nullable one.
-		Dictionary<string, Bound> expectedSubstitutions = instantiation.ExpectedItem == null
-			? substitutions
-			: new Dictionary<string, Bound>(substitutions)
+		if (instantiation.ExpectedItem != null)
+		{
+			substitutions = new Dictionary<string, Bound>(substitutions)
 			{
 				["TItem"] = Bind(helper, "TItem", instantiation.ExpectedItem, instantiation.ItemIsValueType),
 			};
-
-		string subjectName = helper.Parameters[0].Name;
-		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
-		List<string> arguments = [subjectName,];
-		// Only a helper that takes the expression can echo one, and a params array has none to echo.
-		bool echoesExpression = expected != null && !declaration.Params &&
-		                        helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
-		if (expected != null)
-		{
-			string expectedType = declaration.ExpectedType == null
-				? Substitute(expected.Type, expectedSubstitutions)
-				: Qualify(declaration.ExpectedType
-					.Replace(SubjectPlaceholder, instantiation.Subject?.Template ?? "")
-					.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
-			if (declaration.Params)
-			{
-				// A params array has no single caller expression, so the helper formats the value instead.
-				expectedType =
-					$"params {(declaration.ExpectedType == null ? item : Qualify(declaration.ExpectedType))}[]";
-			}
-
-			parameters.Add($"{expectedType} {parameterName}");
-			if (echoesExpression)
-			{
-				parameters.Add(
-					$"[global::System.Runtime.CompilerServices.CallerArgumentExpression(\"{parameterName}\")]\n" +
-					"\t\t\tstring doNotPopulateThisValue = \"\"");
-			}
-
-			arguments.Add(instantiation.ExpectedItem == instantiation.Item
-				? parameterName
-				: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})");
 		}
 
-		arguments.AddRange(helper.Parameters.Skip(expected == null ? 1 : 2)
-			.Select(x => ArgumentFor(x, instantiation, negated, echoesExpression)));
+		return Substitute(expected.Type, substitutions);
+	}
 
-		// A type parameter bound by the factory or by the subject kind is consumed by the instantiation.
-		ITypeParameterSymbol[] ownTypeParameters = helper.TypeParameters
-			.Where(x => !substitutions.ContainsKey(x.Name)).ToArray();
-		string typeParameters = ownTypeParameters.Length == 0
-			? ""
-			: $"<{string.Join(", ", ownTypeParameters.Select(x => x.Name))}>";
-		string constraints = string.Concat(ownTypeParameters
-			.Select(x => Constraints(x, substitutions, instantiation.Subject))
-			.Where(x => x != null)
-			.Select(x => $"\n\t\t{x}"));
-		string typeArguments = helper.TypeParameters.Length == 0
-			? ""
-			: $"<{string.Join(", ", helper.TypeParameters.Select(x
-				=> substitutions.TryGetValue(x.Name, out Bound? v) ? v.Type : x.Name))}>";
+	private static string ExpectedArgument(Instantiation instantiation, string item, string parameterName)
+		=> instantiation.ExpectedItem == instantiation.Item
+			? parameterName
+			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
 
+	private static string TypeParameterList(IEnumerable<string> names)
+	{
+		string[] list = names.ToArray();
+		return list.Length == 0 ? "" : $"<{string.Join(", ", list)}>";
+	}
+
+	private static string Header(Declaration declaration, Instantiation instantiation, Variant variant)
+	{
 		string header = $"""
 		                 	/// <summary>
-		                 	///     {summary}
+		                 	///     {variant.Summary}
 		                 	/// </summary>
 		                 """;
 		// A subject kind can have its own reason for its priority, which applies to every family it takes part in.
-		remarks = string.Join("\n", new[] { remarks, instantiation.Subject?.Remarks, }
+		string remarks = string.Join("\n", new[] { variant.Remarks, instantiation.Subject?.Remarks, }
 			.Where(x => !string.IsNullOrEmpty(x)));
 		if (!string.IsNullOrEmpty(remarks))
 		{
-			header += $"\n\t/// <remarks>\n\t///     {remarks!.Replace("\n", "\n\t///     ")}\n\t/// </remarks>";
+			header += $"\n\t/// <remarks>\n\t///     {remarks.Replace("\n", "\n\t///     ")}\n\t/// </remarks>";
 		}
 
 		if (declaration.GuaranteesNotNull)
@@ -344,14 +379,7 @@ internal sealed record CollectionExpectationFamily(
 				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({priority})]";
 		}
 
-		return $$"""
-		         {{header}}
-		         	public static {{Substitute(helper.ReturnType, substitutions)}}
-		         		{{methodName}}{{typeParameters}}(
-		         			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
-		         		=> {{helper.Name}}{{typeArguments}}(
-		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
-		         """;
+		return header;
 	}
 
 	/// <remarks>
@@ -383,8 +411,8 @@ internal sealed record CollectionExpectationFamily(
 	/// <remarks>
 	///     A type parameter the overload keeps also keeps the helper's constraints, with the bound ones substituted.
 	/// </remarks>
-	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, Bound> substitutions,
-		SubjectKind? subject)
+	private static string? RenderConstraints(ITypeParameterSymbol typeParameter,
+		Dictionary<string, Bound> substitutions, SubjectKind? subject)
 	{
 		List<string> constraints = [];
 		if (subject != null && subject.Constraints.TryGetValue(typeParameter.Name, out List<string>? fromKind))
@@ -436,8 +464,10 @@ internal sealed record CollectionExpectationFamily(
 		string result = type.ToDisplayString(TypeFormat);
 		foreach (KeyValuePair<string, Bound> substitution in substitutions)
 		{
-			result = Regex.Replace(result, $@"\b{substitution.Key}\?", Escape(substitution.Value.NullableType));
-			result = Regex.Replace(result, $@"\b{substitution.Key}\b", Escape(substitution.Value.Type));
+			result = Regex.Replace(result, $@"\b{substitution.Key}\?", Escape(substitution.Value.NullableType),
+				RegexOptions.None, RegexTimeout);
+			result = Regex.Replace(result, $@"\b{substitution.Key}\b", Escape(substitution.Value.Type),
+				RegexOptions.None, RegexTimeout);
 		}
 
 		return result;
@@ -458,12 +488,22 @@ internal sealed record CollectionExpectationFamily(
 		};
 
 	private static string Qualify(string type)
-		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.");
+		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.", RegexOptions.None, RegexTimeout);
 
 	/// <summary>
 	///     A type that fills one of the helper's type parameters, and what its annotated <c>T?</c> form is.
 	/// </summary>
 	private sealed record Bound(string Type, string NullableType);
+
+	/// <summary>
+	///     One polarity of a family: the overload name, the name of its expected parameter and its documentation.
+	/// </summary>
+	private sealed record Variant(
+		string MethodName,
+		string ParameterName,
+		string Summary,
+		string? Remarks,
+		bool Negated);
 
 	private sealed class Declaration
 	{

@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -61,7 +61,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -87,7 +87,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> expected,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -141,7 +141,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
@@ -169,7 +169,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection>>(

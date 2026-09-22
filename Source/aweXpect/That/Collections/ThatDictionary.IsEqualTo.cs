@@ -47,7 +47,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
-			ThrowHelper.EnsureDistinctKeys(expected, negated ? "unexpected" : "expected");
+			ThrowHelper.EnsureDistinctKeys(expected, negated);
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(

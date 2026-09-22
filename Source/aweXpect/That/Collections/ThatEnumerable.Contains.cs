@@ -248,7 +248,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -273,7 +273,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -298,7 +298,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -323,7 +323,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -349,7 +349,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -375,7 +375,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -410,7 +410,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -443,7 +443,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
+		expected.ThrowIfNullOrEmpty(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
