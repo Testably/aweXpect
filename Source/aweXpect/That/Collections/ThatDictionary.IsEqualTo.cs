@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -7,113 +6,56 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatDictionary
 {
-	/// <summary>
-	///     Verifies that the dictionary is equal to the <paramref name="expected" /> dictionary.
-	/// </summary>
-	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
-		IsEqualTo<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> subject,
+	private const string IsEqualToSummary =
+		"Verifies that the dictionary is equal to the <paramref name=\"expected\" /> dictionary.";
+
+	private const string IsNotEqualToSummary =
+		"Verifies that the dictionary is not equal to the <paramref name=\"unexpected\" /> dictionary.";
+
+	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
+	internal static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
+		IsEqualToCore<TKey, TValue>(
+			IThat<IDictionary<TKey, TValue>?> subject,
 			IEnumerable<KeyValuePair<TKey, TValue>> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries = ThrowHelper.EnsureDistinctKeys(expected);
-		ObjectEqualityOptions<TValue> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expectedEntries,
-					options)),
-			subject,
-			options);
-	}
+			string expectedExpression,
+			bool negated)
+		=> IsEqualToDictionary(subject, expected, expectedExpression, negated);
 
-	/// <summary>
-	///     Verifies that the dictionary is equal to the <paramref name="expected" /> dictionary.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1, Remarks = SharedDeclaringTypeRemarks,
+		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
+	internal static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TValue>
-		IsEqualTo<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
+		IsEqualToForReadOnlyCore<TKey, TValue>(
+			IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
 			IEnumerable<KeyValuePair<TKey, TValue>> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
+		=> IsEqualToDictionary(subject, expected, expectedExpression, negated);
+
+	private static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
+		IsEqualToDictionary<TCollection, TKey, TValue>(
+			IThat<TCollection?> subject,
+			IEnumerable<KeyValuePair<TKey, TValue>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries = ThrowHelper.EnsureDistinctKeys(expected);
+		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
+			ThrowHelper.EnsureDistinctKeys(expected, negated ? "unexpected" : "expected");
 		ObjectEqualityOptions<TValue> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>(
+		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+				=> new IsEqualToConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(),
 					expectedEntries,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary is not equal to the <paramref name="unexpected" /> dictionary.
-	/// </summary>
-	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
-		IsNotEqualTo<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> subject,
-			IEnumerable<KeyValuePair<TKey, TValue>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ICollection<KeyValuePair<TKey, TValue>>? unexpectedEntries = ThrowHelper.EnsureDistinctKeys(unexpected);
-		ObjectEqualityOptions<TValue> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpectedEntries,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary is not equal to the <paramref name="unexpected" /> dictionary.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		IsNotEqualTo<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			IEnumerable<KeyValuePair<TKey, TValue>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ICollection<KeyValuePair<TKey, TValue>>? unexpectedEntries = ThrowHelper.EnsureDistinctKeys(unexpected);
-		ObjectEqualityOptions<TValue> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpectedEntries,
-					options).Invert()),
+					options).InvertIf(negated)),
 			subject,
 			options);
 	}

@@ -1,171 +1,30 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatDictionary
 {
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>> ContainsValue<TKey,
-		TValue>(
-		this IThat<IDictionary<TKey, TValue>?> subject,
-		TValue expected)
+	[CreateCollectionExpectation("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
+		GuaranteesNotNull = true,
+		Summary = "Verifies that the dictionary contains the <paramref name=\"expected\" /> value.",
+		NegatedSummary = "Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> value.")]
+	internal static AndOrResult<TCollection, IThat<TCollection?>>
+		ContainsValueCore<TCollection, TKey, TValue>(
+			IThat<TCollection?> subject,
+			TValue expected,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>(
+		return new AndOrResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					expected)),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>> ContainsValue<TKey,
-		TValue>(
-		this IThat<Dictionary<TKey, TValue>?> subject,
-		TValue expected)
-		where TKey : notnull
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					expected)),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
-		ContainsValue<TKey,
-			TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			TValue expected)
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars, expected)),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>> ContainsValue<
-		TKey,
-		TValue>(
-		this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
-		TValue expected)
-		where TKey : notnull
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars, expected)),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>
-		DoesNotContainValue<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> subject,
-			TValue unexpected)
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					unexpected).Invert()),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>
-		DoesNotContainValue<TKey, TValue>(
-			this IThat<Dictionary<TKey, TValue>?> subject,
-			TValue unexpected)
-		where TKey : notnull
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it, grammars,
-					unexpected).Invert()),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
-		DoesNotContainValue<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			TValue unexpected)
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars, unexpected).Invert()),
-			subject
-		);
-	}
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
-		DoesNotContainValue<TKey, TValue>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
-			TValue unexpected)
-		where TKey : notnull
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<IReadOnlyDictionary<TKey, TValue>, TKey, TValue>(expectationBuilder, it,
-					grammars, unexpected).Invert()),
+				new ContainValueConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expected).InvertIf(negated)),
 			subject
 		);
 	}

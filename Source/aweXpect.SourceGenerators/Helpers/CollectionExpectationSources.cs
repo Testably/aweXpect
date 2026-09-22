@@ -71,21 +71,31 @@ internal static class CollectionExpectationSources
 		}
 
 		/// <summary>
-		/// The collection types of this class that cannot reach an expectation through the covariance of
-		/// <c>IThat&lt;out T&gt;</c> - value types such as <c>ImmutableArray&lt;T&gt;</c> - and therefore need their
-		/// own overloads. Adding one here adds it to every <c>PerSubject</c> family of the class; a type that does
-		/// not exist in the current compilation is skipped.
+		/// The collection types of this class that need their own overloads - value types such as
+		/// <c>ImmutableArray&lt;T&gt;</c> that cannot reach an expectation through the covariance of
+		/// <c>IThat&lt;out T&gt;</c>, or kinds whose result keeps the concrete subject type. Adding one here adds it to
+		/// every <c>PerSubject</c> family of the class; a type that does not exist in the current compilation is
+		/// skipped, and the constraints of its own type parameters carry over to the overloads.
 		/// </summary>
 		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
 		internal class CollectionSubjectsAttribute : System.Attribute
 		{
-			/// <param name="collectionTypes">The collection types, where <c>{item}</c> marks the element.</param>
+			/// <param name="collectionTypes">
+			/// The collection types, where <c>{item}</c> marks the element; any other type argument names a type
+			/// parameter of the helper.
+			/// </param>
 			public CollectionSubjectsAttribute(params string[] collectionTypes)
 			{
 				CollectionTypes = collectionTypes;
 			}
 
 			public string[] CollectionTypes { get; }
+
+			/// <summary>The <c>OverloadResolutionPriority</c> of these kinds, or <c>0</c> for the family's.</summary>
+			public int Priority { get; set; }
+
+			/// <summary>The reason for these kinds' priority, added to the remarks of every overload.</summary>
+			public string? Remarks { get; set; }
 		}
 		#nullable disable
 		""";

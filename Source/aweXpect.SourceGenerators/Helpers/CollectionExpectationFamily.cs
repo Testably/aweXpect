@@ -68,7 +68,7 @@ internal sealed class CollectionExpectationFamily
 		// A single expected value of a nullable element already accepts the non-nullable one.
 		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
 		List<string> methods = [];
-		foreach (string? subject in Subjects(helper, declaration, compilation))
+		foreach (SubjectKind? subject in Subjects(helper, declaration, compilation))
 		{
 			foreach (Instantiation instantiation in Instantiate(declaration, compilation, castsUp))
 			{
@@ -101,7 +101,7 @@ internal sealed class CollectionExpectationFamily
 	///     added. A kind whose type does not exist in this compilation is skipped, so the target frameworks sort
 	///     themselves out. Every other family is emitted once.
 	/// </remarks>
-	private static IEnumerable<string?> Subjects(IMethodSymbol helper, Declaration declaration,
+	private static IEnumerable<SubjectKind?> Subjects(IMethodSymbol helper, Declaration declaration,
 		Compilation compilation)
 	{
 		if (!declaration.PerSubject)
@@ -113,11 +113,14 @@ internal sealed class CollectionExpectationFamily
 		foreach (AttributeData attribute in helper.ContainingType.GetAttributes()
 			         .Where(x => x.AttributeClass?.Name == "CollectionSubjectsAttribute"))
 		{
+			int priority = attribute.NamedArguments.FirstOrDefault(x => x.Key == "Priority").Value.Value as int? ?? 0;
+			string? remarks = attribute.NamedArguments.FirstOrDefault(x => x.Key == "Remarks").Value.Value?.ToString();
 			foreach (TypedConstant value in attribute.ConstructorArguments.SelectMany(x => x.Values))
 			{
-				if (value.Value?.ToString() is { } template && Resolve(template, compilation) != null)
+				if (value.Value?.ToString() is { } template &&
+				    Resolve(template, compilation) is { } definition)
 				{
-					yield return template;
+					yield return new SubjectKind(template, priority, remarks, KindConstraints(template, definition));
 				}
 			}
 		}
@@ -126,8 +129,65 @@ internal sealed class CollectionExpectationFamily
 	private static INamedTypeSymbol? Resolve(string template, Compilation compilation)
 	{
 		int index = template.IndexOf('<');
-		string metadataName = index < 0 ? template : $"{template.Substring(0, index)}`1";
+		string metadataName = index < 0
+			? template
+			: $"{template.Substring(0, index)}`{TypeArguments(template).Length}";
 		return compilation.GetTypeByMetadataName(metadataName);
+	}
+
+	private static string[] TypeArguments(string template)
+	{
+		int start = template.IndexOf('<');
+		if (start < 0)
+		{
+			return [];
+		}
+
+		List<string> arguments = [];
+		int depth = 0;
+		int from = start + 1;
+		for (int i = from; i < template.Length; i++)
+		{
+			switch (template[i])
+			{
+				case '<':
+					depth++;
+					break;
+				case '>' when depth > 0:
+					depth--;
+					break;
+				case '>':
+				case ',' when depth == 0:
+					arguments.Add(template.Substring(from, i - from).Trim());
+					from = i + 1;
+					break;
+			}
+		}
+
+		return arguments.ToArray();
+	}
+
+	/// <remarks>
+	///     A kind's own type parameter constraints, such as <c>TKey : notnull</c> of <c>Dictionary&lt;TKey, TValue&gt;</c>,
+	///     have to hold for the overload's type parameter that fills them.
+	/// </remarks>
+	private static Dictionary<string, List<string>> KindConstraints(string template, INamedTypeSymbol definition)
+	{
+		string[] arguments = TypeArguments(template);
+		Dictionary<string, string> byName = definition.TypeParameters
+			.Select((x, i) => (x.Name, Argument: i < arguments.Length ? arguments[i] : x.Name))
+			.ToDictionary(x => x.Name, x => x.Argument);
+		Dictionary<string, List<string>> result = [];
+		for (int i = 0; i < arguments.Length && i < definition.TypeParameters.Length; i++)
+		{
+			List<string> constraints = ConstraintsOf(definition.TypeParameters[i], byName);
+			if (constraints.Count > 0)
+			{
+				result[arguments[i]] = constraints;
+			}
+		}
+
+		return result;
 	}
 
 	/// <remarks>
@@ -192,7 +252,7 @@ internal sealed class CollectionExpectationFamily
 
 		if (instantiation.Subject != null)
 		{
-			substitutions["TCollection"] = instantiation.Subject.Replace(ItemPlaceholder, item);
+			substitutions["TCollection"] = instantiation.Subject.Template.Replace(ItemPlaceholder, item);
 		}
 
 		// The expected parameter may take the non-nullable element while the subject keeps the nullable one.
@@ -211,7 +271,7 @@ internal sealed class CollectionExpectationFamily
 			string expectedType = declaration.ExpectedType == null
 				? Substitute(expected.Type, expectedSubstitutions)
 				: Qualify(declaration.ExpectedType
-					.Replace(SubjectPlaceholder, instantiation.Subject ?? "")
+					.Replace(SubjectPlaceholder, instantiation.Subject?.Template ?? "")
 					.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
 			if (declaration.Params)
 			{
@@ -243,7 +303,7 @@ internal sealed class CollectionExpectationFamily
 			? ""
 			: $"<{string.Join(", ", ownTypeParameters.Select(x => x.Name))}>";
 		string constraints = string.Concat(ownTypeParameters
-			.Select(x => Constraints(x, substitutions))
+			.Select(x => Constraints(x, substitutions, instantiation.Subject))
 			.Where(x => x != null)
 			.Select(x => $"\n\t\t{x}"));
 		string typeArguments = helper.TypeParameters.Length == 0
@@ -256,6 +316,9 @@ internal sealed class CollectionExpectationFamily
 		                 	///     {summary}
 		                 	/// </summary>
 		                 """;
+		// A subject kind can have its own reason for its priority, which applies to every family it takes part in.
+		remarks = string.Join("\n", new[] { remarks, instantiation.Subject?.Remarks, }
+			.Where(x => !string.IsNullOrEmpty(x)));
 		if (!string.IsNullOrEmpty(remarks))
 		{
 			header += $"\n\t/// <remarks>\n\t///     {remarks!.Replace("\n", "\n\t///     ")}\n\t/// </remarks>";
@@ -266,10 +329,13 @@ internal sealed class CollectionExpectationFamily
 			header += "\n\t[global::aweXpect.Core.GuaranteesNotNull]";
 		}
 
-		if (declaration.Priority != 0)
+		int priority = instantiation.Subject?.Priority is { } kindPriority and not 0
+			? kindPriority
+			: declaration.Priority;
+		if (priority != 0)
 		{
 			header +=
-				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({declaration.Priority})]";
+				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({priority})]";
 		}
 
 		return $$"""
@@ -300,7 +366,22 @@ internal sealed class CollectionExpectationFamily
 	/// <remarks>
 	///     A type parameter the overload keeps also keeps the helper's constraints, with the bound ones substituted.
 	/// </remarks>
-	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, string> substitutions)
+	private static string? Constraints(ITypeParameterSymbol typeParameter, Dictionary<string, string> substitutions,
+		SubjectKind? subject)
+	{
+		List<string> constraints = [];
+		if (subject != null && subject.Constraints.TryGetValue(typeParameter.Name, out List<string>? fromKind))
+		{
+			constraints.AddRange(fromKind);
+		}
+
+		constraints.AddRange(ConstraintsOf(typeParameter, substitutions));
+		constraints = constraints.Distinct().ToList();
+		return constraints.Count == 0 ? null : $"where {typeParameter.Name} : {string.Join(", ", constraints)}";
+	}
+
+	private static List<string> ConstraintsOf(ITypeParameterSymbol typeParameter,
+		Dictionary<string, string> substitutions)
 	{
 		List<string> constraints = [];
 		if (typeParameter.HasReferenceTypeConstraint)
@@ -326,7 +407,7 @@ internal sealed class CollectionExpectationFamily
 			constraints.Add("new()");
 		}
 
-		return constraints.Count == 0 ? null : $"where {typeParameter.Name} : {string.Join(", ", constraints)}";
+		return constraints;
 	}
 
 	/// <remarks>
@@ -345,13 +426,16 @@ internal sealed class CollectionExpectationFamily
 	}
 
 	/// <remarks>
-	///     The element of an expected collection or of a predicate is its first type argument, and a single expected
-	///     value is the element itself.
+	///     The element of an array is its element type, the element of an expected collection or of a predicate is its
+	///     first type argument, and a single expected value is the element itself.
 	/// </remarks>
 	private static string ElementOf(ITypeSymbol type)
-		=> type is INamedTypeSymbol { TypeArguments.Length: > 0, } named
-			? named.TypeArguments[0].ToDisplayString(TypeFormat)
-			: type.ToDisplayString(TypeFormat);
+		=> type switch
+		{
+			IArrayTypeSymbol array => array.ElementType.ToDisplayString(TypeFormat),
+			INamedTypeSymbol { TypeArguments.Length: > 0, } named => named.TypeArguments[0].ToDisplayString(TypeFormat),
+			_ => type.ToDisplayString(TypeFormat),
+		};
 
 	private static string Qualify(string type)
 		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.");
@@ -416,10 +500,26 @@ internal sealed class CollectionExpectationFamily
 		public string? Item { get; } = item;
 		public string? ExpectedItem { get; } = expectedItem;
 		public string? Tolerance { get; } = tolerance;
-		public string? Subject { get; private init; }
+		public SubjectKind? Subject { get; private init; }
 		public string? FactoryCall { get; init; }
 
-		public Instantiation For(string? subject)
+		public Instantiation For(SubjectKind? subject)
 			=> new(Item, ExpectedItem, Tolerance) { Subject = subject, FactoryCall = FactoryCall, };
+	}
+
+	/// <summary>
+	///     One entry of <c>[CollectionSubjects]</c>: the collection type, where <c>{item}</c> marks the element, with the
+	///     priority, remarks and type parameter constraints its overloads need.
+	/// </summary>
+	private sealed class SubjectKind(
+		string template,
+		int priority,
+		string? remarks,
+		Dictionary<string, List<string>> constraints)
+	{
+		public string Template { get; } = template;
+		public int Priority { get; } = priority;
+		public string? Remarks { get; } = remarks;
+		public Dictionary<string, List<string>> Constraints { get; } = constraints;
 	}
 }
