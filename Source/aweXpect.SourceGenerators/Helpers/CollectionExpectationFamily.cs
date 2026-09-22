@@ -53,15 +53,18 @@ internal sealed class CollectionExpectationFamily
 
 		string positiveName = name.Replace("{Not}", "");
 		string negatedName = declaration.NegatedName ?? name.Replace("{Not}", "Not");
+		// Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
+		string parameterName = helper.Parameters[1].Name;
+		string negatedParameterName = parameterName == "expected" ? "unexpected" : parameterName;
 		List<string> methods = [];
 		foreach (string? subject in Subjects(helper, declaration, compilation))
 		{
 			foreach (Instantiation instantiation in Instantiate(declaration, compilation))
 			{
 				Instantiation bound = instantiation.For(subject);
-				methods.Add(Render(helper, declaration, bound, positiveName, "expected", declaration.Summary,
+				methods.Add(Render(helper, declaration, bound, positiveName, parameterName, declaration.Summary,
 					declaration.Remarks, false));
-				methods.Add(Render(helper, declaration, bound, negatedName, "unexpected",
+				methods.Add(Render(helper, declaration, bound, negatedName, negatedParameterName,
 					declaration.NegatedSummary, declaration.NegatedRemarks ?? declaration.Remarks, true));
 			}
 		}
@@ -159,8 +162,8 @@ internal sealed class CollectionExpectationFamily
 	private static string Render(IMethodSymbol helper, Declaration declaration, Instantiation instantiation,
 		string methodName, string parameterName, string summary, string? remarks, bool negated)
 	{
-		// Without a factory the element type is the one the expected collection already carries.
-		string item = instantiation.Item ?? ElementOf(helper.Parameters[1].Type) ?? "TItem";
+		// Without a factory the element type is the one the expected parameter already carries.
+		string item = instantiation.Item ?? ElementOf(helper.Parameters[1].Type);
 		Dictionary<string, string> substitutions = [];
 		if (instantiation.Item != null)
 		{
@@ -279,10 +282,14 @@ internal sealed class CollectionExpectationFamily
 		return result;
 	}
 
-	private static string? ElementOf(ITypeSymbol type)
-		=> type is INamedTypeSymbol { TypeArguments.Length: 1, } named
+	/// <remarks>
+	///     The element of an expected collection or of a predicate is its first type argument, and a single expected
+	///     value is the element itself.
+	/// </remarks>
+	private static string ElementOf(ITypeSymbol type)
+		=> type is INamedTypeSymbol { TypeArguments.Length: > 0, } named
 			? named.TypeArguments[0].ToDisplayString(TypeFormat)
-			: null;
+			: type.ToDisplayString(TypeFormat);
 
 	private static string Qualify(string type)
 		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.");
