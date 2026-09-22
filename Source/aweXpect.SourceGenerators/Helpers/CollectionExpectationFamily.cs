@@ -40,7 +40,7 @@ internal sealed class CollectionExpectationFamily
 	{
 		if (attributeData.ConstructorArguments.Length != 1 ||
 		    attributeData.ConstructorArguments[0].Value?.ToString() is not { } name ||
-		    helper.Parameters.Length < 2)
+		    helper.Parameters.Length < 1)
 		{
 			return null;
 		}
@@ -53,24 +53,31 @@ internal sealed class CollectionExpectationFamily
 
 		string positiveName = name.Replace("{Not}", "");
 		string negatedName = declaration.NegatedName ?? name.Replace("{Not}", "Not");
+		// The expected parameter follows the subject, but an expectation such as IsInAscendingOrder takes none, so the
+		// negation flag comes right after the subject instead.
+		IParameterSymbol? expected = helper.Parameters.Length > 1 &&
+		                             helper.Parameters[1].Type.SpecialType != SpecialType.System_Boolean
+			? helper.Parameters[1]
+			: null;
 		// Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
-		string parameterName = helper.Parameters[1].Name;
+		string parameterName = expected?.Name ?? "";
 		string negatedParameterName = parameterName == "expected" ? "unexpected" : parameterName;
 		// Only a helper that takes the negation flag has a negated form.
-		bool hasPolarity = helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
+		bool hasPolarity = helper.Parameters.Skip(expected == null ? 1 : 2)
+			.Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
 		// A single expected value of a nullable element already accepts the non-nullable one.
-		bool castsUp = helper.Parameters[1].Type is not ITypeParameterSymbol;
+		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
 		List<string> methods = [];
 		foreach (string? subject in Subjects(helper, declaration, compilation))
 		{
 			foreach (Instantiation instantiation in Instantiate(declaration, compilation, castsUp))
 			{
 				Instantiation bound = instantiation.For(subject);
-				methods.Add(Render(helper, declaration, bound, positiveName, parameterName, declaration.Summary,
-					declaration.Remarks, false));
+				methods.Add(Render(helper, expected, declaration, bound, positiveName, parameterName,
+					declaration.Summary, declaration.Remarks, false));
 				if (hasPolarity)
 				{
-					methods.Add(Render(helper, declaration, bound, negatedName, negatedParameterName,
+					methods.Add(Render(helper, expected, declaration, bound, negatedName, negatedParameterName,
 						declaration.NegatedSummary, declaration.NegatedRemarks ?? declaration.Remarks, true));
 				}
 			}
@@ -170,11 +177,12 @@ internal sealed class CollectionExpectationFamily
 		}
 	}
 
-	private static string Render(IMethodSymbol helper, Declaration declaration, Instantiation instantiation,
-		string methodName, string parameterName, string summary, string? remarks, bool negated)
+	private static string Render(IMethodSymbol helper, IParameterSymbol? expected, Declaration declaration,
+		Instantiation instantiation, string methodName, string parameterName, string summary, string? remarks,
+		bool negated)
 	{
 		// Without a factory the element type is the one the expected parameter already carries.
-		string item = instantiation.Item ?? ElementOf(helper.Parameters[1].Type);
+		string item = instantiation.Item ?? (expected == null ? "TItem" : ElementOf(expected.Type));
 		Dictionary<string, string> substitutions = [];
 		if (instantiation.Item != null)
 		{
@@ -192,24 +200,41 @@ internal sealed class CollectionExpectationFamily
 			? substitutions
 			: new Dictionary<string, string>(substitutions) { ["TItem"] = instantiation.ExpectedItem, };
 
-		string expectedType = declaration.ExpectedType == null
-			? Substitute(helper.Parameters[1].Type, expectedSubstitutions)
-			: Qualify(declaration.ExpectedType
-				.Replace(SubjectPlaceholder, instantiation.Subject ?? "")
-				.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
-		if (declaration.Params)
+		string subjectName = helper.Parameters[0].Name;
+		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
+		List<string> arguments = [subjectName,];
+		// Only a helper that takes the expression can echo one, and a params array has none to echo.
+		bool echoesExpression = expected != null && !declaration.Params &&
+		                        helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
+		if (expected != null)
 		{
-			// A params array has no single caller expression, so the helper formats the value instead.
-			expectedType = $"params {(declaration.ExpectedType == null ? item : Qualify(declaration.ExpectedType))}[]";
+			string expectedType = declaration.ExpectedType == null
+				? Substitute(expected.Type, expectedSubstitutions)
+				: Qualify(declaration.ExpectedType
+					.Replace(SubjectPlaceholder, instantiation.Subject ?? "")
+					.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
+			if (declaration.Params)
+			{
+				// A params array has no single caller expression, so the helper formats the value instead.
+				expectedType =
+					$"params {(declaration.ExpectedType == null ? item : Qualify(declaration.ExpectedType))}[]";
+			}
+
+			parameters.Add($"{expectedType} {parameterName}");
+			if (echoesExpression)
+			{
+				parameters.Add(
+					$"[global::System.Runtime.CompilerServices.CallerArgumentExpression(\"{parameterName}\")]\n" +
+					"\t\t\tstring doNotPopulateThisValue = \"\"");
+			}
+
+			arguments.Add(instantiation.ExpectedItem == instantiation.Item
+				? parameterName
+				: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})");
 		}
 
-		string argument = instantiation.ExpectedItem == instantiation.Item
-			? parameterName
-			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
-
-		string subjectName = helper.Parameters[0].Name;
-		List<string> arguments = [subjectName, argument,];
-		arguments.AddRange(helper.Parameters.Skip(2).Select(x => ArgumentFor(x, declaration, instantiation, negated)));
+		arguments.AddRange(helper.Parameters.Skip(expected == null ? 1 : 2)
+			.Select(x => ArgumentFor(x, instantiation, negated, echoesExpression)));
 
 		// A type parameter bound by the factory or by the subject kind is consumed by the instantiation.
 		ITypeParameterSymbol[] ownTypeParameters = helper.TypeParameters
@@ -247,30 +272,18 @@ internal sealed class CollectionExpectationFamily
 				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({declaration.Priority})]";
 		}
 
-		// Only a helper that takes the expression can echo one, and a params array has none to echo.
-		bool takesExpression = helper.Parameters.Skip(2)
-			.Any(x => x.Type.SpecialType == SpecialType.System_String);
-		string expectedParameter = declaration.Params || !takesExpression
-			? $"{expectedType} {parameterName})"
-			: $"""
-			   {expectedType} {parameterName},
-			   			[global::System.Runtime.CompilerServices.CallerArgumentExpression("{parameterName}")]
-			   			string doNotPopulateThisValue = "")
-			   """;
-
 		return $$"""
 		         {{header}}
 		         	public static {{Substitute(helper.ReturnType, substitutions)}}
 		         		{{methodName}}{{typeParameters}}(
-		         			this {{Substitute(helper.Parameters[0].Type, substitutions)}} {{subjectName}},
-		         			{{expectedParameter}}{{constraints}}
+		         			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
 		         		=> {{helper.Name}}{{typeArguments}}(
 		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
 		         """;
 	}
 
-	private static string ArgumentFor(IParameterSymbol parameter, Declaration declaration, Instantiation instantiation,
-		bool negated)
+	private static string ArgumentFor(IParameterSymbol parameter, Instantiation instantiation, bool negated,
+		bool echoesExpression)
 	{
 		if (parameter.Type.Name == "ObjectEqualityWithToleranceOptions")
 		{
@@ -280,8 +293,7 @@ internal sealed class CollectionExpectationFamily
 		return parameter.Type.SpecialType switch
 		{
 			SpecialType.System_Boolean => negated ? "true" : "false",
-			SpecialType.System_String when declaration.Params => "null",
-			_ => "doNotPopulateThisValue",
+			_ => echoesExpression ? "doNotPopulateThisValue" : "null",
 		};
 	}
 

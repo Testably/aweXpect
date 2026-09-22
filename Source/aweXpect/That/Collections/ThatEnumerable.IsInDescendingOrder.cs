@@ -7,6 +7,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
@@ -15,292 +16,66 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-		IsInDescendingOrder<TItem>(
-			this IThat<IEnumerable<TItem>?> subject)
-	{
-		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderConstraint<TItem, TItem>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"")),
-			subject,
-			options);
-	}
+	private const string InDescendingOrder = "Verifies that the collection is in Descending order.";
+	private const string NotInDescendingOrder = "Verifies that the collection is not in Descending order.";
 
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-		IsInDescendingOrder<
-			TItem, TMember>(
-			this IThat<IEnumerable<TItem>?> subject,
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+		IsInDescendingOrderCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
+			bool negated)
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", negated);
+
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+		IsInDescendingOrderByMemberCore<TItem, TMember>(
+			IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderConstraint<TItem, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
-			subject,
-			options);
-	}
+			string memberExpression,
+			bool negated)
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
-		IsInDescendingOrder(this IThat<IEnumerable?> subject)
-	{
-		CollectionOrderOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<IEnumerable, object?, object?>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"")),
-			subject,
-			options);
-	}
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true, Priority = -1,
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
+		IsInDescendingOrderForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			bool negated)
+		=> IsInOrderForEnumerable(subject, x => x, aweXpect.SortOrder.Descending, "", negated);
 
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
-		IsInDescendingOrder<TMember>(
-			this IThat<IEnumerable?> subject,
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
+		IsInDescendingOrderForEnumerableByMemberCore<TMember>(
+			IThat<IEnumerable?> subject,
 			Func<object?, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<IEnumerable, object?, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
-			subject,
-			options);
-	}
+			string memberExpression,
+			bool negated)
+		=> IsInOrderForEnumerable(subject, memberAccessor, aweXpect.SortOrder.Descending,
+			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInDescendingOrder<TItem>(
-			this IThat<ImmutableArray<TItem>> subject)
-	{
-		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"")),
-			subject,
-			options);
-	}
-#endif
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder",
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+		IsInDescendingOrderForImmutableArrayCore<TItem>(
+			IThat<ImmutableArray<TItem>> subject,
+			bool negated)
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", negated);
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection is in descending order.
-	/// </summary>
-	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsInDescendingOrder<
-			TItem, TMember>(
-			this IThat<ImmutableArray<TItem>> subject,
+	[CreateCollectionExpectation("Is{Not}InDescendingOrder",
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+	internal static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+		IsInDescendingOrderForImmutableArrayByMemberCore<TItem, TMember>(
+			IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<ImmutableArray<TItem>, TItem, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
-			subject,
-			options);
-	}
-#endif
-
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-		IsNotInDescendingOrder<TItem>(
-			this IThat<IEnumerable<TItem>?> subject)
-	{
-		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderConstraint<TItem, TItem>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"").Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-		IsNotInDescendingOrder<
-			TItem, TMember>(
-			this IThat<IEnumerable<TItem>?> subject,
-			Func<TItem, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderConstraint<TItem, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
-		IsNotInDescendingOrder(this IThat<IEnumerable?> subject)
-	{
-		CollectionOrderOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<IEnumerable, object?, object?>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"").Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
-		IsNotInDescendingOrder<TMember>(
-			this IThat<IEnumerable?> subject,
-			Func<object?, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<IEnumerable, object?, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
-			subject,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsNotInDescendingOrder<TItem>(this IThat<ImmutableArray<TItem>> subject)
-	{
-		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(
-					expectationBuilder, it, grammars,
-					x => x,
-					aweXpect.SortOrder.Descending,
-					options,
-					"").Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection is not in descending order.
-	/// </summary>
-	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
-		IsNotInDescendingOrder<TItem, TMember>(
-			this IThat<ImmutableArray<TItem>> subject,
-			Func<TItem, TMember> memberAccessor,
-			[CallerArgumentExpression("memberAccessor")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsInOrderForEnumerableConstraint<ImmutableArray<TItem>, TItem, TMember>(
-					expectationBuilder, it, grammars,
-					memberAccessor,
-					aweXpect.SortOrder.Descending,
-					options,
-					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
-			subject,
-			options);
-	}
+			string memberExpression,
+			bool negated)
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 #endif
 
 	/// <summary>
@@ -313,14 +88,14 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<DateTime, IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>>
 		IsInDescendingOrder(this IThat<IEnumerable<DateTime>?> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<DateTime?, IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>>
 		IsInDescendingOrder(this IThat<IEnumerable<DateTime?>?> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
@@ -331,7 +106,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -343,7 +118,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime?> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -357,14 +132,14 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<DateTime, IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>>
 		IsNotInDescendingOrder(this IThat<IEnumerable<DateTime>?> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<DateTime?, IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>>
 		IsNotInDescendingOrder(this IThat<IEnumerable<DateTime?>?> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
@@ -375,7 +150,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -387,7 +162,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime?> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -395,13 +170,13 @@ public static partial class ThatEnumerable
 	/// <inheritdoc cref="IsInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	public static CollectionOrderResult<DateTime, ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>>
 		IsInDescendingOrder(this IThat<ImmutableArray<DateTime>> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	public static CollectionOrderResult<DateTime?, ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>>
 		IsInDescendingOrder(this IThat<ImmutableArray<DateTime?>> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
@@ -411,7 +186,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -422,20 +197,20 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime?> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	public static CollectionOrderResult<DateTime, ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>>
 		IsNotInDescendingOrder(this IThat<ImmutableArray<DateTime>> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
 	public static CollectionOrderResult<DateTime?, ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>>
 		IsNotInDescendingOrder(this IThat<ImmutableArray<DateTime?>> subject)
-		=> IsInKindAwareOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
+		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Descending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInDescendingOrder(IThat{IEnumerable{DateTime}?})" />
@@ -445,7 +220,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
@@ -456,7 +231,7 @@ public static partial class ThatEnumerable
 			Func<TItem, DateTime?> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> IsInKindAwareOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
+		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Descending,
 			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 #endif
