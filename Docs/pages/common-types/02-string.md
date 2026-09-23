@@ -321,3 +321,11 @@ await Expect.That("1st place").IsLowerCased()
 await Expect.That("1st PLACE").IsNotLowerCased()
   .Because("it contains at least one uppercase characters");
 ```
+
+Letters without an upper-case (lower-case) form, like `ß`, count as upper-cased (lower-cased). Use
+`IncludingUncasedLetters()` to also reject them and titlecase letters like `ǅ`:
+
+```csharp
+await Expect.That("STRAßE").IsNotUpperCased().IncludingUncasedLetters()
+  .Because("ß is a lowercase letter without an uppercase form");
+```

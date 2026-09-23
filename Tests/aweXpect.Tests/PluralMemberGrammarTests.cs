@@ -341,6 +341,24 @@ public sealed class PluralMemberGrammar
 		}
 
 		[Fact]
+		public async Task Strings_WhenIncludingUncasedLetters_ShouldUsePluralVerb()
+		{
+			Container<string> subject = new("A", "ß");
+
+			async Task Act()
+				=> await That(subject).Whose(c => c.Items,
+					items => items.All().ComplyWith(x => x.IsUpperCased().IncludingUncasedLetters()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Items are upper-cased including uncased letters for all items,
+				             but only 1 of 2 were
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
 		public async Task Strings_WhenMemberIsAString_ShouldUseSingularVerb()
 		{
 			Container<int> subject = new(1);

@@ -6,6 +6,12 @@
 *REMOVED*static aweXpect.Options.EnumerableQuantifier.Exactly(int expected, aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) -> aweXpect.Options.EnumerableQuantifier!
 *REMOVED*static aweXpect.Options.EnumerableQuantifier.LessThan(int maximum, aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) -> aweXpect.Options.EnumerableQuantifier!
 *REMOVED*static aweXpect.Options.EnumerableQuantifier.MoreThan(int minimum, aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) -> aweXpect.Options.EnumerableQuantifier!
+*REMOVED*static aweXpect.ThatString.IsLowerCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>!>!
+*REMOVED*static aweXpect.ThatString.IsNotLowerCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.AndOrResult<string!, aweXpect.Core.IThat<string?>!>!
+*REMOVED*static aweXpect.ThatString.IsNotUpperCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.AndOrResult<string!, aweXpect.Core.IThat<string?>!>!
+*REMOVED*static aweXpect.ThatString.IsUpperCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>!>!
+aweXpect.Results.CasingResult<TType, TThat>
+aweXpect.Results.CasingResult<TType, TThat>.IncludingUncasedLetters() -> aweXpect.Results.AndOrResult<TType, TThat>!
 static aweXpect.Options.EnumerableQuantifier.All() -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.AtLeast(int minimum) -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.AtMost(int maximum) -> aweXpect.Options.EnumerableQuantifier!
@@ -75,3 +81,7 @@ static aweXpect.ThatEnumerable.IsNotEqualTo(this aweXpect.Core.IThat<System.Coll
 static aweXpect.ThatEnumerable.IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan>?>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! unexpected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.TimeSpan>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan>?>!, System.TimeSpan, System.TimeSpan>!
 static aweXpect.ThatEnumerable.IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan?>?>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! unexpected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.TimeSpan?>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan?>?>!, System.TimeSpan?, System.TimeSpan>!
 static aweXpect.ThatEnumerable.IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan?>?>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan?>! unexpected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.TimeSpan?>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan?>?>!, System.TimeSpan?, System.TimeSpan>!
+static aweXpect.ThatString.IsLowerCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.CasingResult<string?, aweXpect.Core.IThat<string?>!>!
+static aweXpect.ThatString.IsNotLowerCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.CasingResult<string!, aweXpect.Core.IThat<string?>!>!
+static aweXpect.ThatString.IsNotUpperCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.CasingResult<string!, aweXpect.Core.IThat<string?>!>!
+static aweXpect.ThatString.IsUpperCased(this aweXpect.Core.IThat<string?>! subject) -> aweXpect.Results.CasingResult<string?, aweXpect.Core.IThat<string?>!>!
