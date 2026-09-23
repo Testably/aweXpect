@@ -5,81 +5,40 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatGuid
 {
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsOneOf(this IThat<Guid> subject,
-		params Guid?[] expected)
+	private const string IsOneOfSummary =
+		"Verifies that the subject is one of the <paramref name=\"expected\" /> values.";
+
+	private const string IsNotOneOfSummary =
+		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
+
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static AndOrResult<Guid, IThat<Guid>> IsOneOfCore(
+		IThat<Guid> subject,
+		IEnumerable<Guid?> expected,
+		bool negated)
 	{
-		expected.ThrowIfNull();
+		expected.ThrowIfNull(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected)),
+				new IsOneOfConstraint(it, grammars, expected).InvertIf(negated)),
 			subject);
 	}
 
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsOneOf(this IThat<Guid> subject,
-		IEnumerable<Guid?> expected)
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static AndOrResult<Guid, IThat<Guid>> IsOneOfForValuesCore(
+		IThat<Guid> subject,
+		IEnumerable<Guid> expected,
+		bool negated)
 	{
-		expected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected)),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsOneOf(this IThat<Guid> subject,
-		IEnumerable<Guid> expected)
-	{
-		expected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected.Cast<Guid?>())),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsNotOneOf(this IThat<Guid> subject,
-		params Guid?[] unexpected)
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected).Invert()),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsNotOneOf(this IThat<Guid> subject,
-		IEnumerable<Guid?> unexpected)
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected).Invert()),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<Guid, IThat<Guid>> IsNotOneOf(this IThat<Guid> subject,
-		IEnumerable<Guid> unexpected)
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected.Cast<Guid?>()).Invert()),
-			subject);
+		expected.ThrowIfNull(negated);
+		return IsOneOfCore(subject, expected.Cast<Guid?>(), negated);
 	}
 
 	private sealed class IsOneOfConstraint(string it, ExpectationGrammars grammars, IEnumerable<Guid?> expected)

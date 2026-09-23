@@ -5,87 +5,42 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatNullableEnum
 {
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
-		params TEnum?[] expected)
+	private const string IsOneOfSummary =
+		"Verifies that the subject is one of the <paramref name=\"expected\" /> values.";
+
+	private const string IsNotOneOfSummary =
+		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
+
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOfCore<TEnum>(
+		IThat<TEnum?> subject,
+		IEnumerable<TEnum?> expected,
+		bool negated)
 		where TEnum : struct, Enum
 	{
-		expected.ThrowIfNull();
+		expected.ThrowIfNull(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
+				new IsOneOfConstraint<TEnum>(it, grammars, expected).InvertIf(negated)),
 			subject);
 	}
 
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
-		IEnumerable<TEnum?> expected)
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOfForValuesCore<TEnum>(
+		IThat<TEnum?> subject,
+		IEnumerable<TEnum> expected,
+		bool negated)
 		where TEnum : struct, Enum
 	{
-		expected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
-		IEnumerable<TEnum> expected)
-		where TEnum : struct, Enum
-	{
-		expected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expected.Cast<TEnum?>())),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
-		params TEnum?[] unexpected)
-		where TEnum : struct, Enum
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
-		IEnumerable<TEnum?> unexpected)
-		where TEnum : struct, Enum
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			subject);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
-		IEnumerable<TEnum> unexpected)
-		where TEnum : struct, Enum
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, unexpected.Cast<TEnum?>()).Invert()),
-			subject);
+		expected.ThrowIfNull(negated);
+		return IsOneOfCore(subject, expected.Cast<TEnum?>(), negated);
 	}
 
 	private sealed class IsOneOfConstraint<TEnum>(string it, ExpectationGrammars grammars, IEnumerable<TEnum?> expected)
