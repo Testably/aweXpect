@@ -307,6 +307,23 @@ public sealed class PluralMemberGrammar
 		}
 
 		[Fact]
+		public async Task Signs_WhenNegated_ShouldUsePluralVerb()
+		{
+			Container<int> subject = new(-1, 1);
+
+			async Task Act()
+				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotPositive()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Items are not positive for all items,
+				             but only 1 of 2 were
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
 		public async Task Strings_ShouldUsePluralVerb()
 		{
 			Container<string> subject = new("", "a");

@@ -13,3 +13,31 @@ static aweXpect.Options.EnumerableQuantifier.Between(int minimum, int maximum) -
 static aweXpect.Options.EnumerableQuantifier.Exactly(int expected) -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.LessThan(int maximum) -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.MoreThan(int minimum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<decimal>! subject) -> aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<decimal?>! subject) -> aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<double>! subject) -> aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<double?>! subject) -> aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<float>! subject) -> aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<float?>! subject) -> aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<int>! subject) -> aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<int?>! subject) -> aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<long>! subject) -> aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<long?>! subject) -> aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<sbyte>! subject) -> aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<sbyte?>! subject) -> aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<short>! subject) -> aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>!>!
+static aweXpect.ThatNumber.IsNotNegative(this aweXpect.Core.IThat<short?>! subject) -> aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<decimal>! subject) -> aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<decimal?>! subject) -> aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<double>! subject) -> aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<double?>! subject) -> aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<float>! subject) -> aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<float?>! subject) -> aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<int>! subject) -> aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<int?>! subject) -> aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<long>! subject) -> aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<long?>! subject) -> aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<sbyte>! subject) -> aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<sbyte?>! subject) -> aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<short>! subject) -> aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>!>!
+static aweXpect.ThatNumber.IsNotPositive(this aweXpect.Core.IThat<short?>! subject) -> aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>!>!

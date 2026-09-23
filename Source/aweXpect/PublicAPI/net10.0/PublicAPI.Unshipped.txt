@@ -13,3 +13,7 @@ static aweXpect.Options.EnumerableQuantifier.Between(int minimum, int maximum) -
 static aweXpect.Options.EnumerableQuantifier.Exactly(int expected) -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.LessThan(int maximum) -> aweXpect.Options.EnumerableQuantifier!
 static aweXpect.Options.EnumerableQuantifier.MoreThan(int minimum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.ThatNumber.IsNotNegative<TNumber>(this aweXpect.Core.IThat<TNumber>! subject) -> aweXpect.Results.AndOrResult<TNumber, aweXpect.Core.IThat<TNumber>!>!
+static aweXpect.ThatNumber.IsNotNegative<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject) -> aweXpect.Results.AndOrResult<TNumber?, aweXpect.Core.IThat<TNumber?>!>!
+static aweXpect.ThatNumber.IsNotPositive<TNumber>(this aweXpect.Core.IThat<TNumber>! subject) -> aweXpect.Results.AndOrResult<TNumber, aweXpect.Core.IThat<TNumber>!>!
+static aweXpect.ThatNumber.IsNotPositive<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject) -> aweXpect.Results.AndOrResult<TNumber?, aweXpect.Core.IThat<TNumber?>!>!
