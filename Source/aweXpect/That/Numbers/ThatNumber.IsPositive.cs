@@ -13,6 +13,8 @@ public static partial class ThatNumber
 {
 	private const string ExpectIsPositive = "is positive";
 	private const string ExpectIsNotPositive = "is not positive";
+	private const string ExpectArePositive = "are positive";
+	private const string ExpectAreNotPositive = "are not positive";
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -51,16 +53,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsPositive, ExpectArePositive));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -83,16 +85,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsPositive, ExpectArePositive));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -135,16 +137,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsPositive, ExpectArePositive));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -166,16 +168,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsPositive, ExpectArePositive));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotPositive);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

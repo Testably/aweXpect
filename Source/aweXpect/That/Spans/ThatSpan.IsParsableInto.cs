@@ -81,6 +81,7 @@ public static partial class ThatSpan
 	{
 		private readonly IFormatProvider? _formatProvider;
 		private string? _exceptionMessage;
+		private TType? _parsedValue;
 
 		public IsParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
@@ -96,7 +97,7 @@ public static partial class ThatSpan
 
 			try
 			{
-				_ = TType.Parse(actual.AsSpan(), _formatProvider);
+				_parsedValue = TType.Parse(actual.AsSpan(), _formatProvider);
 				Outcome = Outcome.Success;
 			}
 			catch (Exception ex)
@@ -118,7 +119,7 @@ public static partial class ThatSpan
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is parsable into ");
+			stringBuilder.Append(Grammars.Verb("is parsable into ", "are parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -132,7 +133,7 @@ public static partial class ThatSpan
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not parsable into ");
+			stringBuilder.Append(Grammars.Verb("is not parsable into ", "are not parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -142,7 +143,12 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+		{
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
+			Formatter.Format(stringBuilder, new string(Actual!.AsSpan()));
+			stringBuilder.Append(", which is parsable into ");
+			Formatter.Format(stringBuilder, _parsedValue);
+		}
 	}
 
 	private sealed class IsUtf8ParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<SpanWrapper<byte>>,
@@ -151,6 +157,7 @@ public static partial class ThatSpan
 	{
 		private readonly IFormatProvider? _formatProvider;
 		private string? _exceptionMessage;
+		private TType? _parsedValue;
 
 		public IsUtf8ParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
@@ -166,7 +173,7 @@ public static partial class ThatSpan
 
 			try
 			{
-				_ = TType.Parse(actual.AsSpan(), _formatProvider);
+				_parsedValue = TType.Parse(actual.AsSpan(), _formatProvider);
 				Outcome = Outcome.Success;
 			}
 			catch (Exception ex)
@@ -180,6 +187,13 @@ public static partial class ThatSpan
 					_exceptionMessage = char.ToLowerInvariant(ex.Message[0]) + ex.Message[1..^1];
 				}
 
+				// Older runtimes name the input "System.ReadOnlySpan<Byte>[length]" in the message instead of its text.
+				if (actual is not null)
+				{
+					ReadOnlySpan<byte> input = actual.AsSpan();
+					_exceptionMessage = _exceptionMessage.Replace(input.ToString(), Encoding.UTF8.GetString(input));
+				}
+
 				Outcome = Outcome.Failure;
 			}
 
@@ -188,7 +202,7 @@ public static partial class ThatSpan
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is parsable into ");
+			stringBuilder.Append(Grammars.Verb("is parsable into ", "are parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -202,7 +216,7 @@ public static partial class ThatSpan
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not parsable into ");
+			stringBuilder.Append(Grammars.Verb("is not parsable into ", "are not parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -212,7 +226,12 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+		{
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
+			Formatter.Format(stringBuilder, Encoding.UTF8.GetString(Actual!.AsSpan()));
+			stringBuilder.Append(", which is parsable into ");
+			Formatter.Format(stringBuilder, _parsedValue);
+		}
 	}
 }
 #endif

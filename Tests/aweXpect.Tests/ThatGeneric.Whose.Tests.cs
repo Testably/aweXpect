@@ -903,7 +903,7 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Items has a single item which is equal to 2,
+					             whose Items have a single item which is equal to 2,
 					             but Items was 1 which differs by -1
 					             """);
 			}
@@ -920,7 +920,7 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item whose Items has a single item which is equal to 2,
+					             has a single item whose Items have a single item which is equal to 2,
 					             but Items was 1 which differs by -1
 					             """);
 			}

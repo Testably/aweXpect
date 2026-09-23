@@ -36,7 +36,7 @@ public static partial class ThatException
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has an inner ");
+			stringBuilder.Append(Grammars.Verb("has an inner ", "have an inner "));
 			if (innerExceptionType == typeof(Exception))
 			{
 				stringBuilder.Append("exception");
@@ -62,7 +62,7 @@ public static partial class ThatException
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have an inner ");
+			stringBuilder.Append(Grammars.Verb("does not have an inner ", "do not have an inner "));
 			if (innerExceptionType == typeof(Exception))
 			{
 				stringBuilder.Append("exception");

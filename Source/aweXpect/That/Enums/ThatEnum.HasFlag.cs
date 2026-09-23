@@ -54,19 +54,19 @@ public static partial class ThatEnum
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has flag ");
+			stringBuilder.Append(Grammars.Verb("has flag ", "have flag "));
 			Formatter.Format(stringBuilder, expectedFlag);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have flag ");
+			stringBuilder.Append(Grammars.Verb("does not have flag ", "do not have flag "));
 			Formatter.Format(stringBuilder, expectedFlag);
 		}
 

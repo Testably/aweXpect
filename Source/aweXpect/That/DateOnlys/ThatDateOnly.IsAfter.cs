@@ -76,20 +76,20 @@ public static partial class ThatDateOnly
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is after ");
+			stringBuilder.Append(Grammars.Verb("is after ", "are after "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not after ");
+			stringBuilder.Append(Grammars.Verb("is not after ", "are not after "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance.ToDayString());
 		}

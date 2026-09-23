@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using aweXpect.Core;
 using aweXpect.Signaling;
 
@@ -24,7 +25,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least twice with x => x > 0 and whose parameters all are unique,
+					             has recorded the callback at least twice with x => x > 0 with parameters that all are unique,
 					             but it was never recorded
 					             
 					             Collection:
@@ -43,8 +44,27 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recorded the callback at least once and whose parameters have exactly 0 items,
+					             has recorded the callback at least once with parameters that have exactly 0 items,
 					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTriggered_AndMemberOfParametersDoesNotMatch_ShouldFail()
+			{
+				Signaler<int> signaler = new();
+
+				_ = Task.Delay(10.Milliseconds())
+					.ContinueWith(_ => signaler.Signal(1));
+
+				async Task Act() =>
+					await That(signaler).Signaled().WhoseParameters.Whose(p => p.Count(), c => c.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once with parameters that have Count() which is equal to 2,
+					             but Count() was 1 which differs by -1
 					             """);
 			}
 
@@ -62,7 +82,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once and whose parameters all satisfy x => x < 1,
+					             has recorded the callback at least once with parameters that all satisfy x => x < 1,
 					             but none of 1 did
 					             
 					             Not matching items:

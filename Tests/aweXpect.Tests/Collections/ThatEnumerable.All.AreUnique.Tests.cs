@@ -132,7 +132,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             whose Items is unique for all items,
+						             whose Items are unique for all items,
 						             but Items could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();

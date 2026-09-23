@@ -20,12 +20,13 @@ public class SignalCountWhoseResult<TParameter>(
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
-	///     …and whose parameters…
+	///     …with parameters that…
 	/// </summary>
 	public IThat<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			_expectationBuilder.ForWhich<Signaler<TParameter>, IEnumerable<TParameter>>(
 				x => x.Wait(timeout: TimeSpan.Zero).Parameters,
-				" and whose parameters ", null,
-				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural));
+				" with parameters that ", null,
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
+				            ExpectationGrammars.Introduced));
 }

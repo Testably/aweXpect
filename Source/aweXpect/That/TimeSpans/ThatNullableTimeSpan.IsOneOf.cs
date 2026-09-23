@@ -77,20 +77,20 @@ public static partial class ThatNullableTimeSpan
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is one of ");
+			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not one of ");
+			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}

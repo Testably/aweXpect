@@ -149,7 +149,7 @@ public static partial class ThatGeneric
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("satisfies ").Append(predicateExpression.TrimCommonWhiteSpace())
+			=> stringBuilder.Append(Grammars.Verb("satisfies ", "satisfy ")).Append(predicateExpression.TrimCommonWhiteSpace())
 				.Append(options);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -160,12 +160,12 @@ public static partial class ThatGeneric
 				return;
 			}
 
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not satisfy ").Append(predicateExpression.TrimCommonWhiteSpace())
+			=> stringBuilder.Append(Grammars.Verb("does not satisfy ", "do not satisfy ")).Append(predicateExpression.TrimCommonWhiteSpace())
 				.Append(options);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

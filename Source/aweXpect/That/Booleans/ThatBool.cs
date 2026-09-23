@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect;
 
@@ -21,7 +22,7 @@ public static partial class ThatBool
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is ");
+			stringBuilder.Append(Grammars.Verb("is ", "are "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 
@@ -34,7 +35,7 @@ public static partial class ThatBool
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not ");
+			stringBuilder.Append(Grammars.Verb("is not ", "are not "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 

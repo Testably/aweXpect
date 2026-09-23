@@ -96,7 +96,7 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is between ");
+			stringBuilder.Append(Grammars.Verb("is between ", "are between "));
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
@@ -112,14 +112,14 @@ public static partial class ThatDateTime
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not between ");
+			stringBuilder.Append(Grammars.Verb("is not between ", "are not between "));
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);

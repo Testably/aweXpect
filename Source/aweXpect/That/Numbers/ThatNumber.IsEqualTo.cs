@@ -93,28 +93,28 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is equal to ");
+			stringBuilder.Append(Grammars.Verb("is equal to ", "are equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifference(stringBuilder, Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not equal to ");
+			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}
@@ -139,28 +139,28 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is equal to ");
+			stringBuilder.Append(Grammars.Verb("is equal to ", "are equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifference(stringBuilder, Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not equal to ");
+			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}
@@ -215,28 +215,28 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is equal to ");
+			stringBuilder.Append(Grammars.Verb("is equal to ", "are equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifference(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not equal to ");
+			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}
@@ -259,28 +259,28 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is equal to ");
+			stringBuilder.Append(Grammars.Verb("is equal to ", "are equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifference(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not equal to ");
+			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}

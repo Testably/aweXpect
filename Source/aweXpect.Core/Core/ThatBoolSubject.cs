@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Results;
@@ -67,7 +68,7 @@ public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 
 			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append("is ");
+				stringBuilder.Append(Grammars.Verb("is ", "are "));
 				Formatter.Format(stringBuilder, true, FormattingOptions.Indented(indentation));
 			}
 
@@ -80,7 +81,7 @@ public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append("is not ");
+				stringBuilder.Append(Grammars.Verb("is not ", "are not "));
 				Formatter.Format(stringBuilder, true, FormattingOptions.Indented(indentation));
 			}
 

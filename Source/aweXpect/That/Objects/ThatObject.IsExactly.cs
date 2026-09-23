@@ -67,19 +67,19 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is exactly of type ");
+			stringBuilder.Append(Grammars.Verb("is exactly of type ", "are exactly of type "));
 			Formatter.Format(stringBuilder, type);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual!.GetType());
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not exactly of type ");
+			stringBuilder.Append(Grammars.Verb("is not exactly of type ", "are not exactly of type "));
 			Formatter.Format(stringBuilder, type);
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -89,11 +90,11 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"is {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
+			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
 
 		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}";
+			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)

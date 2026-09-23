@@ -11,6 +11,8 @@ public static partial class ThatNumber
 {
 	private const string ExpectIsInfinite = "is infinite";
 	private const string ExpectIsNotInfinite = "is not infinite";
+	private const string ExpectAreInfinite = "are infinite";
+	private const string ExpectAreNotInfinite = "are not infinite";
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -70,16 +72,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsInfinite, ExpectAreInfinite));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotInfinite, ExpectAreNotInfinite));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -100,16 +102,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsInfinite, ExpectAreInfinite));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotInfinite, ExpectAreNotInfinite));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -158,16 +160,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsInfinite, ExpectAreInfinite));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotInfinite, ExpectAreNotInfinite));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -189,16 +191,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsInfinite, ExpectAreInfinite));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotInfinite);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotInfinite, ExpectAreNotInfinite));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
