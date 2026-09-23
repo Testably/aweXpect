@@ -918,9 +918,7 @@ public static partial class ThatAsyncEnumerable
 					continue;
 				}
 
-				int comparisonResult = comparer.Compare(previous, current);
-				if ((comparisonResult > 0 && sortOrder == SortOrder.Ascending) ||
-				    (comparisonResult < 0 && sortOrder == SortOrder.Descending))
+				if (IsOutOfOrder(comparer.Compare(previous, current)))
 				{
 					_failureText ??=
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";
@@ -934,17 +932,23 @@ public static partial class ThatAsyncEnumerable
 				previous = current;
 			}
 
+			Outcome = GetOutcome();
+			return this;
+		}
+
+		private bool IsOutOfOrder(int comparisonResult)
+			=> (comparisonResult > 0 && sortOrder == SortOrder.Ascending) ||
+			   (comparisonResult < 0 && sortOrder == SortOrder.Descending);
+
+		private Outcome GetOutcome()
+		{
 			if (_hasIncompatibleItems)
 			{
 				// The order of incompatible items cannot be verified, so the negated check fails as well.
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
-			}
-			else
-			{
-				Outcome = _failureText != null ? Outcome.Failure : Outcome.Success;
+				return IsNegated ? Outcome.Success : Outcome.Failure;
 			}
 
-			return this;
+			return _failureText != null ? Outcome.Failure : Outcome.Success;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

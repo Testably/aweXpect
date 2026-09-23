@@ -1357,6 +1357,10 @@ public static partial class ThatEnumerable
 				_totalCount);
 	}
 
+	private static bool IsOutOfOrder(aweXpect.SortOrder sortOrder, int comparisonResult)
+		=> (comparisonResult > 0 && sortOrder == aweXpect.SortOrder.Ascending) ||
+		   (comparisonResult < 0 && sortOrder == aweXpect.SortOrder.Descending);
+
 	private sealed class IsInOrderConstraint<TItem, TMember>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -1407,9 +1411,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				int comparisonResult = comparer.Compare(previous, current);
-				if ((comparisonResult > 0 && sortOrder == aweXpect.SortOrder.Ascending) ||
-				    (comparisonResult < 0 && sortOrder == aweXpect.SortOrder.Descending))
+				if (IsOutOfOrder(sortOrder, comparer.Compare(previous, current)))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";
@@ -1509,9 +1511,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				int comparisonResult = comparer.Compare(previous, current);
-				if ((comparisonResult > 0 && sortOrder == aweXpect.SortOrder.Ascending) ||
-				    (comparisonResult < 0 && sortOrder == aweXpect.SortOrder.Descending))
+				if (IsOutOfOrder(sortOrder, comparer.Compare(previous, current)))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";

@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System.Linq;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Customization;
 
@@ -35,16 +36,5 @@ internal static class StringContextHelpers
 	}
 
 	private static int GetEscapedLength(string value)
-	{
-		int length = value.Length;
-		foreach (char c in value)
-		{
-			if (c is '\n' or '\r' or '\t')
-			{
-				length++;
-			}
-		}
-
-		return length;
-	}
+		=> value.Length + value.Count(c => c is '\n' or '\r' or '\t');
 }

@@ -763,6 +763,7 @@ public sealed partial class ThatGeneric
 			{
 				public int Value { get; set; }
 
+#pragma warning disable CA1822 // the tests access these members through the subject
 				public int Throwing => throw new InvalidOperationException("member failed");
 
 				public string Name => throw new NotSupportedException("name failed");
@@ -794,6 +795,7 @@ public sealed partial class ThatGeneric
 					throw new InvalidOperationException("async member failed");
 				}
 #endif
+#pragma warning restore CA1822
 			}
 
 			private sealed class MyClass

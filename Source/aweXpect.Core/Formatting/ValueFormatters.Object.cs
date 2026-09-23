@@ -123,7 +123,7 @@ public static partial class ValueFormatters
 	///     of its own, but without a name that would say nothing to the reader.
 	/// </remarks>
 	private static bool IsAnonymousType(Type type)
-		=> type.Name.IndexOf("AnonymousType", StringComparison.Ordinal) >= 0 &&
+		=> type.Name.Contains("AnonymousType") &&
 		   type.IsDefined(typeof(CompilerGeneratedAttribute), false);
 
 	private static void WriteMemberValues(

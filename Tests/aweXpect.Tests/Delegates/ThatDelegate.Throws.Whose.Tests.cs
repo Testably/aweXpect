@@ -277,6 +277,7 @@ public sealed partial class ThatDelegate
 
 			private sealed class AsyncException(int value) : Exception
 			{
+#pragma warning disable CA1822 // the tests access these members through the subject
 				public async Task<int> FaultedAsync()
 				{
 					await Task.Yield();
@@ -290,6 +291,7 @@ public sealed partial class ThatDelegate
 					throw new InvalidOperationException("async member failed");
 				}
 #endif
+#pragma warning restore CA1822
 
 				public Task<int> GetValueAsync() => Task.FromResult(value);
 
