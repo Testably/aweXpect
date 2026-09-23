@@ -4080,6 +4080,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -4762,7 +4768,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -5448,7 +5455,8 @@ window.BENCHMARK_DATA = {
           342.6122290293376,
           325.596474647522,
           332.7308561007182,
-          348.62004709243774
+          348.62004709243774,
+          227.43967040947504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6131,6 +6139,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6833,7 +6842,8 @@ window.BENCHMARK_DATA = {
           247.38781152452742,
           248.4422721862793,
           246.51306128501892,
-          253.8849971453349
+          253.8849971453349,
+          195.0926110426585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7026,6 +7036,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11156,6 +11167,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -11761,7 +11778,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -12370,7 +12388,8 @@ window.BENCHMARK_DATA = {
           401936.7021484375,
           388872.50808919274,
           405945.89314152644,
-          429798.4231770833
+          429798.4231770833,
+          280274.5925455729
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12976,6 +12995,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13601,7 +13621,8 @@ window.BENCHMARK_DATA = {
           2591831.70859375,
           2262712.8839285714,
           2457022.338020833,
-          2637916.90546875
+          2637916.90546875,
+          1498728.9471354166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14215,7 +14236,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18309,6 +18331,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -18991,7 +19019,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -19677,7 +19706,8 @@ window.BENCHMARK_DATA = {
           600.8308386484782,
           546.1139658519199,
           527.4140539169312,
-          565.3289719263713
+          565.3289719263713,
+          373.4577563285828
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20364,6 +20394,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -21062,7 +21093,8 @@ window.BENCHMARK_DATA = {
           533.289975643158,
           479.4356617927551,
           478.51592718760173,
-          533.7854971204486
+          533.7854971204486,
+          361.0428803648268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21255,6 +21287,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25847,6 +25880,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -26529,7 +26568,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -27215,7 +27255,8 @@ window.BENCHMARK_DATA = {
           345.2246816953023,
           355.953902498881,
           334.57904758453367,
-          371.66191215515136
+          371.66191215515136,
+          260.18825085957843
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27898,6 +27939,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28600,7 +28642,8 @@ window.BENCHMARK_DATA = {
           254.87316243989127,
           245.97134253184,
           233.82022239367168,
-          255.75856889088948
+          255.75856889088948,
+          197.37258693377177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28793,6 +28836,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33385,6 +33429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -34067,7 +34117,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -34753,7 +34804,8 @@ window.BENCHMARK_DATA = {
           682.4214453379313,
           630.2490653991699,
           603.0432953516643,
-          659.7945933024089
+          659.7945933024089,
+          402.196131669558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35436,6 +35488,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -36138,7 +36191,8 @@ window.BENCHMARK_DATA = {
           1383.8630406697591,
           1141.61229964665,
           1135.6289141337077,
-          1249.2195592244466
+          1249.2195592244466,
+          834.4202824274699
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36567,6 +36621,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40923,6 +40978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -41605,7 +41666,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -42291,7 +42353,8 @@ window.BENCHMARK_DATA = {
           2733.3808873494468,
           2565.799169413249,
           2489.40236554827,
-          2620.067540032523
+          2620.067540032523,
+          1321.011224610465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42978,6 +43041,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -43676,7 +43740,8 @@ window.BENCHMARK_DATA = {
           1428.1928583780925,
           1297.2388025919597,
           1323.1875149653508,
-          1373.8136695861817
+          1373.8136695861817,
+          915.1889366422381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43869,6 +43934,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48461,6 +48527,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
@@ -49143,7 +49215,8 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
@@ -49829,7 +49902,8 @@ window.BENCHMARK_DATA = {
           3135.0400232950847,
           3061.9932332720077,
           3075.296388772818,
-          3182.197739464896
+          3182.197739464896,
+          1616.4755638667516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50516,6 +50590,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -51214,7 +51289,8 @@ window.BENCHMARK_DATA = {
           26194.006308419364,
           19821.484313964844,
           25226.168403038613,
-          26430.457550048828
+          26430.457550048828,
+          12074.787969316754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51905,7 +51981,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
