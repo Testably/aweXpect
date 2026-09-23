@@ -62,13 +62,13 @@ public static partial class ThatException
 			}
 			else
 			{
-				stringBuilder.Append("has recursive inner exceptions");
+				stringBuilder.Append(Grammars.Verb("has recursive inner exceptions", "have recursive inner exceptions"));
 			}
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			stringBuilder.Append(Actual!.FormatForMessage(indentation));
 		}
 
@@ -84,7 +84,7 @@ public static partial class ThatException
 			}
 			else
 			{
-				stringBuilder.Append("does not have recursive inner exceptions");
+				stringBuilder.Append(Grammars.Verb("does not have recursive inner exceptions", "do not have recursive inner exceptions"));
 			}
 		}
 

@@ -40,13 +40,13 @@ public static partial class ThatStream
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is seekable");
+			=> stringBuilder.Append(Grammars.Verb("is seekable", "are seekable"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" was not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not seekable");
+			=> stringBuilder.Append(Grammars.Verb("is not seekable", "are not seekable"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" was");

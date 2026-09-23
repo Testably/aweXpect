@@ -11,6 +11,8 @@ public static partial class ThatNumber
 {
 	private const string ExpectIsNaN = "is NaN";
 	private const string ExpectIsNotNaN = "is not NaN";
+	private const string ExpectAreNaN = "are NaN";
+	private const string ExpectAreNotNaN = "are not NaN";
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -64,16 +66,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNaN, ExpectAreNaN));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -94,16 +96,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNaN, ExpectAreNaN));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -150,16 +152,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNaN, ExpectAreNaN));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -181,16 +183,16 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNaN, ExpectAreNaN));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
+			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

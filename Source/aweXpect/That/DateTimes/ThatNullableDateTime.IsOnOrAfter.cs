@@ -86,7 +86,7 @@ public static partial class ThatNullableDateTime
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is on or after ");
+			stringBuilder.Append(Grammars.Verb("is on or after ", "are on or after "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
@@ -100,14 +100,14 @@ public static partial class ThatNullableDateTime
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not on or after ");
+			stringBuilder.Append(Grammars.Verb("is not on or after ", "are not on or after "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}

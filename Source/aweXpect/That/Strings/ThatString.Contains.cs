@@ -104,18 +104,18 @@ public static partial class ThatString
 		{
 			if (quantifier.IsNever)
 			{
-				stringBuilder.Append("does not contain ");
+				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
 				Formatter.Format(stringBuilder, expected);
 			}
 			else if (_isNegated)
 			{
-				stringBuilder.Append("does not contain ");
+				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
 				Formatter.Format(stringBuilder, expected);
 				stringBuilder.Append(' ').Append(quantifier.ToNegatedString());
 			}
 			else
 			{
-				stringBuilder.Append("contains ");
+				stringBuilder.Append(Grammars.Verb("contains ", "contain "));
 				Formatter.Format(stringBuilder, expected);
 				stringBuilder.Append(' ').Append(quantifier);
 			}

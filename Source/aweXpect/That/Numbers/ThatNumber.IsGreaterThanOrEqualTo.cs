@@ -64,20 +64,20 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is greater than or equal to ", "are greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is not greater than or equal to ", "are not greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
@@ -104,20 +104,20 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is greater than or equal to ", "are greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is not greater than or equal to ", "are not greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
@@ -178,20 +178,20 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is greater than or equal to ", "are greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is not greater than or equal to ", "are not greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
@@ -218,20 +218,20 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is greater than or equal to ", "are greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not greater than or equal to ");
+			stringBuilder.Append(Grammars.Verb("is not greater than or equal to ", "are not greater than or equal to "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}

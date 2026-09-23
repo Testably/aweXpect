@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Helpers;
 
 namespace aweXpect.Equivalency;
 
@@ -29,28 +30,28 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 
 	/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 	public string GetExpectation(string expected, ExpectationGrammars grammars)
-		=> $"is {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equivalent to {expected}";
+		=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equivalent to {expected}";
 
 	/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
 	public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 	{
 		if (grammars.HasFlag(ExpectationGrammars.Negated))
 		{
-			return $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
+			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
 		}
 
 		if (actual is null != expected is null)
 		{
 			_failureBuilder.Clear();
 			_failureBuilder.Append(it);
-			_failureBuilder.Append(" was ");
+			_failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
 			Formatter.Format(_failureBuilder, actual, FormattingOptions.SingleLine);
 			_failureBuilder.Append(" instead of ");
 			Formatter.Format(_failureBuilder, expected, FormattingOptions.SingleLine);
 			return _failureBuilder.ToString();
 		}
 
-		return $"{it} was not:{_failureBuilder}";
+		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder}";
 	}
 
 	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />

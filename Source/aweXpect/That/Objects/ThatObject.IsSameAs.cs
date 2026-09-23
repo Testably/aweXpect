@@ -43,20 +43,20 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("refers to ");
+			stringBuilder.Append(Grammars.Verb("refers to ", "refer to "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It);
-			stringBuilder.Append(" was ");
+			stringBuilder.Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not refer to ");
+			stringBuilder.Append(Grammars.Verb("does not refer to ", "do not refer to "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 

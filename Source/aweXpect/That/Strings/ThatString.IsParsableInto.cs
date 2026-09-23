@@ -91,7 +91,7 @@ public static partial class ThatString
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is parsable into ");
+			stringBuilder.Append(Grammars.Verb("is parsable into ", "are parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -107,7 +107,7 @@ public static partial class ThatString
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not parsable into ");
+			stringBuilder.Append(Grammars.Verb("is not parsable into ", "are not parsable into "));
 			Formatter.Format(stringBuilder, typeof(TType));
 			if (_formatProvider is not null)
 			{
@@ -118,7 +118,7 @@ public static partial class ThatString
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			stringBuilder.Append(", which is parsable into ");
 			Formatter.Format(stringBuilder, _parsedValue);

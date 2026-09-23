@@ -57,13 +57,13 @@ public static partial class ThatString
 			}
 			else
 			{
-				stringBuilder.Append("has lines");
+				stringBuilder.Append(Grammars.Verb("has lines", "have lines"));
 			}
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual, FormattingOptions.SingleLine);
 		}
 
@@ -79,7 +79,7 @@ public static partial class ThatString
 			}
 			else
 			{
-				stringBuilder.Append("does not have lines");
+				stringBuilder.Append(Grammars.Verb("does not have lines", "do not have lines"));
 			}
 		}
 

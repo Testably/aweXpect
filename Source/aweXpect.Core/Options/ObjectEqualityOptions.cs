@@ -205,11 +205,11 @@ internal static class ObjectEqualityOptions
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"is {(grammars.IsNegated() ? "not " : "")}equal to {expected}";
+			=> $"{grammars.Verb("is", "are")} {(grammars.IsNegated() ? "not " : "")}equal to {expected}";
 
 		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}";
+			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)

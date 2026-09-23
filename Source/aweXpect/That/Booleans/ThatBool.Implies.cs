@@ -33,7 +33,7 @@ public static partial class ThatBool
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("implies ");
+			stringBuilder.Append(Grammars.Verb("implies ", "imply "));
 			Formatter.Format(stringBuilder, consequent, FormattingOptions.Indented(indentation));
 		}
 
@@ -45,7 +45,7 @@ public static partial class ThatBool
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not imply ");
+			stringBuilder.Append(Grammars.Verb("does not imply ", "do not imply "));
 			Formatter.Format(stringBuilder, consequent, FormattingOptions.Indented(indentation));
 		}
 

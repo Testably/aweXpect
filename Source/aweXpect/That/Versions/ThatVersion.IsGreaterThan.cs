@@ -52,19 +52,19 @@ public static partial class ThatVersion
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is greater than ");
+			stringBuilder.Append(Grammars.Verb("is greater than ", "are greater than "));
 			Formatter.Format(stringBuilder, expected);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not greater than ");
+			stringBuilder.Append(Grammars.Verb("is not greater than ", "are not greater than "));
 			Formatter.Format(stringBuilder, expected);
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ public static partial class ThatGeneric
 				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-				memberGrammars => MemberGrammars(memberGrammars, grammars));
+				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
 		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -52,7 +53,7 @@ public static partial class ThatGeneric
 				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-				memberGrammars => MemberGrammars(memberGrammars, grammars));
+				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
 		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -98,11 +99,38 @@ public static partial class ThatGeneric
 	/// </summary>
 	/// <remarks>
 	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>which</c> of the
-	///     other form is dropped again before a nested <c>whose</c>.
+	///     other form is dropped again before a nested <c>whose</c>.<br />
+	///     The number of the member follows its static type alone: a collection other than a <see langword="string" />
+	///     is plural (<c>whose Items are</c>), anything else is singular, whatever the number of the enclosing subject.
 	/// </remarks>
-	private static ExpectationGrammars MemberGrammars(ExpectationGrammars memberGrammars,
+	private static ExpectationGrammars MemberGrammars<TMember>(ExpectationGrammars memberGrammars,
 		ExpectationGrammars enclosingGrammars)
-		=> enclosingGrammars.HasFlag(ExpectationGrammars.Introduced)
+	{
+		memberGrammars = IsCollection(typeof(TMember))
+			? memberGrammars | ExpectationGrammars.Plural
+			: memberGrammars & ~ExpectationGrammars.Plural;
+		return enclosingGrammars.HasFlag(ExpectationGrammars.Introduced)
 			? memberGrammars
 			: memberGrammars | ExpectationGrammars.Introduced;
+	}
+
+	private static bool IsCollection(Type type)
+	{
+		if (type == typeof(string))
+		{
+			return false;
+		}
+
+		if (typeof(IEnumerable).IsAssignableFrom(type))
+		{
+			return true;
+		}
+
+#if NET8_0_OR_GREATER
+		// Only the interface itself, because searching the implemented interfaces is not trim-safe.
+		return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IAsyncEnumerable<>);
+#else
+		return false;
+#endif
+	}
 }

@@ -158,16 +158,16 @@ internal static class SourceGenerationHelper
 			            		}
 			            	
 			            		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			            			=> stringBuilder.Append("{{expectationToGenerate.ExpectationText}}");
+			            			=> stringBuilder.Append({{Verb(expectationToGenerate.ExpectationText)}});
 			            	
 			            		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			            		{
-			            			stringBuilder.Append(It).Append(" was ");
+			            			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			            			Formatter.Format(stringBuilder, Actual);
 			            		}
 			            	
 			            		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			            			=> stringBuilder.Append("{{expectationToGenerate.NegatedExpectationText}}");
+			            			=> stringBuilder.Append({{Verb(expectationToGenerate.NegatedExpectationText)}});
 			            	
 			            		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			            			=> AppendNormalResult(stringBuilder, indentation);
@@ -189,16 +189,16 @@ internal static class SourceGenerationHelper
 			            		}
 			            	
 			            		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			            			=> stringBuilder.Append("{{expectationToGenerate.ExpectationText}}");
+			            			=> stringBuilder.Append({{Verb(expectationToGenerate.ExpectationText)}});
 			            	
 			            		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			            		{
-			            			stringBuilder.Append(It).Append(" was ");
+			            			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			            			Formatter.Format(stringBuilder, Actual);
 			            		}
 			            	
 			            		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			            			=> stringBuilder.Append("{{expectationToGenerate.NegatedExpectationText}}");
+			            			=> stringBuilder.Append({{Verb(expectationToGenerate.NegatedExpectationText)}});
 			            	
 			            		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			            			=> AppendNormalResult(stringBuilder, indentation);
@@ -211,5 +211,23 @@ internal static class SourceGenerationHelper
 		          #nullable disable
 		          """;
 		return result.TrimStart();
+	}
+
+	/// <summary>
+	///     The expression that selects the singular <paramref name="text" /> or its plural form by the grammars.
+	/// </summary>
+	private static string Verb(string text)
+	{
+		int space = text.IndexOf(' ');
+		string head = space < 0 ? text : text.Substring(0, space);
+		string tail = space < 0 ? "" : text.Substring(space);
+		string plural = head switch
+		{
+			"is" => "are" + tail,
+			"has" => "have" + tail,
+			"does" => "do" + tail,
+			_ => text,
+		};
+		return $"Grammars.Verb(\"{text}\", \"{plural}\")";
 	}
 }

@@ -425,6 +425,9 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Specifies a mapping to add expectations on the member from the <paramref name="asyncMemberAccessor" />.
 	/// </summary>
+	/// <remarks>
+	///     The member is a single value, so its expectations are in singular form.
+	/// </remarks>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
 		string? separator = null)
@@ -443,7 +446,7 @@ public abstract class ExpectationBuilder
 			_node = new ExpectationNode();
 		}
 
-		ExpectationGrammars &= ~ExpectationGrammars.Introduced;
+		ExpectationGrammars &= ~(ExpectationGrammars.Introduced | ExpectationGrammars.Plural);
 		_whichNode = new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator);
 		return this;
 	}

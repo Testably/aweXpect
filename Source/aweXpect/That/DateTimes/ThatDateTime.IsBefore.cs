@@ -80,7 +80,7 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is before ");
+			stringBuilder.Append(Grammars.Verb("is before ", "are before "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
@@ -94,14 +94,14 @@ public static partial class ThatDateTime
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not before ");
+			stringBuilder.Append(Grammars.Verb("is not before ", "are not before "));
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
