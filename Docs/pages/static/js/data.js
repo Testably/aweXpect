@@ -4074,6 +4074,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -4755,7 +4761,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -5440,7 +5447,8 @@ window.BENCHMARK_DATA = {
           364.719633324941,
           342.6122290293376,
           325.596474647522,
-          332.7308561007182
+          332.7308561007182,
+          348.62004709243774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6123,6 +6131,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6823,7 +6832,8 @@ window.BENCHMARK_DATA = {
           289.4803840637207,
           247.38781152452742,
           248.4422721862793,
-          246.51306128501892
+          246.51306128501892,
+          253.8849971453349
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7016,6 +7026,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11139,6 +11150,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -11743,7 +11760,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -12351,7 +12369,8 @@ window.BENCHMARK_DATA = {
           401476.0254952567,
           401936.7021484375,
           388872.50808919274,
-          405945.89314152644
+          405945.89314152644,
+          429798.4231770833
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12957,6 +12976,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13580,7 +13600,8 @@ window.BENCHMARK_DATA = {
           2390517.840401786,
           2591831.70859375,
           2262712.8839285714,
-          2457022.338020833
+          2457022.338020833,
+          2637916.90546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14191,6 +14212,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841631,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -18281,6 +18303,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -18962,7 +18990,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -19647,7 +19676,8 @@ window.BENCHMARK_DATA = {
           619.2734131495158,
           600.8308386484782,
           546.1139658519199,
-          527.4140539169312
+          527.4140539169312,
+          565.3289719263713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20334,6 +20364,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -21030,7 +21061,8 @@ window.BENCHMARK_DATA = {
           550.5547884532383,
           533.289975643158,
           479.4356617927551,
-          478.51592718760173
+          478.51592718760173,
+          533.7854971204486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21223,6 +21255,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25808,6 +25841,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -26489,7 +26528,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -27174,7 +27214,8 @@ window.BENCHMARK_DATA = {
           375.70752239227295,
           345.2246816953023,
           355.953902498881,
-          334.57904758453367
+          334.57904758453367,
+          371.66191215515136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27857,6 +27898,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28557,7 +28599,8 @@ window.BENCHMARK_DATA = {
           307.92783781687416,
           254.87316243989127,
           245.97134253184,
-          233.82022239367168
+          233.82022239367168,
+          255.75856889088948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28750,6 +28793,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33335,6 +33379,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -34016,7 +34066,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -34701,7 +34752,8 @@ window.BENCHMARK_DATA = {
           666.1042346318562,
           682.4214453379313,
           630.2490653991699,
-          603.0432953516643
+          603.0432953516643,
+          659.7945933024089
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35384,6 +35436,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -36084,7 +36137,8 @@ window.BENCHMARK_DATA = {
           1338.6829133351644,
           1383.8630406697591,
           1141.61229964665,
-          1135.6289141337077
+          1135.6289141337077,
+          1249.2195592244466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36513,6 +36567,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40862,6 +40917,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -41543,7 +41604,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -42228,7 +42290,8 @@ window.BENCHMARK_DATA = {
           2439.2200119018553,
           2733.3808873494468,
           2565.799169413249,
-          2489.40236554827
+          2489.40236554827,
+          2620.067540032523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42915,6 +42978,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -43611,7 +43675,8 @@ window.BENCHMARK_DATA = {
           1443.1622580119542,
           1428.1928583780925,
           1297.2388025919597,
-          1323.1875149653508
+          1323.1875149653508,
+          1373.8136695861817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43804,6 +43869,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48389,6 +48455,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
         "message": "fix: warn about expectations in async void methods and local functions (#1326)"
+      },
+      {
+        "sha": "f01f8fc6d3fe808610e84f1e6cc3d9fd39350a56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
+        "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
       }
     ],
     "labels": [
@@ -49070,7 +49142,8 @@ window.BENCHMARK_DATA = {
       "4b77c45c",
       "de2b5ef6",
       "7a806db0",
-      "8e8be742"
+      "8e8be742",
+      "f01f8fc6"
     ],
     "datasets": [
       {
@@ -49755,7 +49828,8 @@ window.BENCHMARK_DATA = {
           2952.2586067744664,
           3135.0400232950847,
           3061.9932332720077,
-          3075.296388772818
+          3075.296388772818,
+          3182.197739464896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50442,6 +50516,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -51138,7 +51213,8 @@ window.BENCHMARK_DATA = {
           24906.509231567383,
           26194.006308419364,
           19821.484313964844,
-          25226.168403038613
+          25226.168403038613,
+          26430.457550048828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51826,6 +51902,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471
