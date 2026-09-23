@@ -101,7 +101,8 @@ public static partial class ThatGeneric
 	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>which</c> of the
 	///     other form is dropped again before a nested <c>whose</c>.<br />
 	///     The number of the member follows its static type alone: a collection other than a <see langword="string" />
-	///     is plural (<c>whose Items are</c>), anything else is singular, whatever the number of the enclosing subject.
+	///     or a dictionary is plural (<c>whose Items are</c>), anything else is singular, whatever the number of the
+	///     enclosing subject.
 	/// </remarks>
 	private static ExpectationGrammars MemberGrammars<TMember>(ExpectationGrammars memberGrammars,
 		ExpectationGrammars enclosingGrammars)
@@ -116,7 +117,7 @@ public static partial class ThatGeneric
 
 	private static bool IsCollection(Type type)
 	{
-		if (type == typeof(string))
+		if (type == typeof(string) || IsDictionary(type))
 		{
 			return false;
 		}
@@ -132,5 +133,27 @@ public static partial class ThatGeneric
 #else
 		return false;
 #endif
+	}
+
+	/// <remarks>
+	///     A dictionary reads as a single lookup (<c>whose Map contains key 1</c>), not as a plural noun.<br />
+	///     The generic interfaces are only matched by their definition, because searching the implemented interfaces is
+	///     not trim-safe; the framework dictionaries also implement <see cref="IDictionary" />.
+	/// </remarks>
+	private static bool IsDictionary(Type type)
+	{
+		if (typeof(IDictionary).IsAssignableFrom(type))
+		{
+			return true;
+		}
+
+		if (!type.IsGenericType)
+		{
+			return false;
+		}
+
+		Type definition = type.GetGenericTypeDefinition();
+		return definition == typeof(System.Collections.Generic.IDictionary<,>) ||
+		       definition == typeof(System.Collections.Generic.IReadOnlyDictionary<,>);
 	}
 }

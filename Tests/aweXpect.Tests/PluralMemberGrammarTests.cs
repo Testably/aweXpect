@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace aweXpect.Tests;
 
@@ -111,6 +112,40 @@ public sealed class PluralMemberGrammar
 				             but only 1 of 2 were
 				             *
 				             """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task Dictionaries_ShouldUseSingularVerb()
+		{
+			Container<int> subject = new(1);
+
+			async Task Act()
+				=> await That(subject).Whose(c => c.Map, map => map.ContainsKey(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Map contains key 2,
+				             *
+				             """).AsWildcard()
+				.Because("a dictionary reads as a single lookup, not as a plural noun");
+		}
+
+		[Fact]
+		public async Task Dictionaries_WhenDeclaredAsReadOnlyInterface_ShouldUseSingularVerb()
+		{
+			Container<int> subject = new(1);
+
+			async Task Act()
+				=> await That(subject).Whose(c => c.Lookup, lookup => lookup.ContainsKey(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Lookup contains key 2,
+				             *
+				             """).AsWildcard()
+				.Because("IReadOnlyDictionary<,> does not implement the non-generic IDictionary");
 		}
 
 		[Fact]
@@ -383,6 +418,8 @@ public sealed class PluralMemberGrammar
 		{
 			public int Count => items.Length;
 			public IEnumerable<T> Items => items;
+			public IReadOnlyDictionary<int, T> Lookup => Map;
+			public Dictionary<int, T> Map => Enumerable.Range(1, items.Length).ToDictionary(i => i, i => items[i - 1]);
 			public string Name => "foo";
 		}
 	}
