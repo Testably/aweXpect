@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.21984214049118,
           238.01321502832266,
           254.38529607454936,
           248.4514249165853,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           342.6122290293376,
           325.596474647522,
           332.7308561007182,
-          348.62004709243774
+          348.62004709243774,
+          227.43967040947504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -451,7 +451,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -461,6 +460,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          246.26655778884887,
           232.07729390689306,
           268.6056815783183,
           260.14416281382245,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.38781152452742,
           248.4422721862793,
           246.51306128501892,
-          253.8849971453349
+          253.8849971453349,
+          195.0926110426585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          378122.3570963542,
           359753.4371861049,
           336696.07591145835,
           376971.2715820313,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           401936.7021484375,
           388872.50808919274,
           405945.89314152644,
-          429798.4231770833
+          429798.4231770833,
+          280274.5925455729
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           542085,
           542084,
           542085,
@@ -1069,6 +1068,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2691490.117745536,
           2656361.561104911,
           2121308.9622395835,
           2426398.605208333,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2591831.70859375,
           2262712.8839285714,
           2457022.338020833,
-          2637916.90546875
+          2637916.90546875,
+          1498728.9471354166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841613,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
       {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          490.7369747161865,
           430.87276567731584,
           452.197840486254,
           456.83985471725464,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           600.8308386484782,
           546.1139658519199,
           527.4140539169312,
-          565.3289719263713
+          565.3289719263713,
+          373.4577563285828
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1640,7 +1640,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          463.4168947660006,
           502.7744050392738,
           512.5203483581543,
           511.47907301584877,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           533.289975643158,
           479.4356617927551,
           478.51592718760173,
-          533.7854971204486
+          533.7854971204486,
+          361.0428803648268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.84208323160806,
           248.98065288861594,
           266.4412367502848,
           260.0524561882019,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           345.2246816953023,
           355.953902498881,
           334.57904758453367,
-          371.66191215515136
+          371.66191215515136,
+          260.18825085957843
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2275,7 +2275,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2285,6 +2284,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.7939587434133,
           233.75534197262354,
           274.007928276062,
           258.13585980733234,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           254.87316243989127,
           245.97134253184,
           233.82022239367168,
-          255.75856889088948
+          255.75856889088948,
+          197.37258693377177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          445.87982719285145,
           434.76134182856634,
           398.9302934964498,
           455.2793807029724,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           682.4214453379313,
           630.2490653991699,
           603.0432953516643,
-          659.7945933024089
+          659.7945933024089,
+          402.196131669558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1128,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1168.7655032231257,
           1126.2487712860107,
           1100.7628861836024,
           1166.936570576259,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1383.8630406697591,
           1141.61229964665,
           1135.6289141337077,
-          1249.2195592244466
+          1249.2195592244466,
+          834.4202824274699
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1861.6818230946858,
           1841.2285196940104,
           1287.7733272552491,
           1828.1378362019857,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2733.3808873494468,
           2565.799169413249,
           2489.40236554827,
-          2620.067540032523
+          2620.067540032523,
+          1321.011224610465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3464,7 +3464,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1295.5762007395426,
           1253.913455581665,
           1315.0816380182903,
           1325.6420168876648,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1428.1928583780925,
           1297.2388025919597,
           1323.1875149653508,
-          1373.8136695861817
+          1373.8136695861817,
+          915.1889366422381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "17052f40e8ff964454e2c356bc0b66e0b18474fd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
-        "message": "fix: let the test host\u0027s heap limit take effect"
-      },
-      {
         "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:17:04 2026 \u002B0200",
         "message": "test: pin failure messages and make the remaining timing tests meaningful under load (#1330)"
+      },
+      {
+        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
+        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
       }
     ],
     "labels": [
-      "17052f40",
       "debf8049",
       "e730bf95",
       "65c8528d",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "de2b5ef6",
       "7a806db0",
       "8e8be742",
-      "f01f8fc6"
+      "f01f8fc6",
+      "7ff3e590"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2556.625624847412,
           2496.28075000218,
           1838.3150026957194,
           2415.468625288743,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3135.0400232950847,
           3061.9932332720077,
           3075.296388772818,
-          3182.197739464896
+          3182.197739464896,
+          1616.4755638667516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4072,7 +4072,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4113,6 +4112,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27086.83559526716,
           26457.502580915178,
           16851.12421468099,
           19935.378450666154,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26194.006308419364,
           19821.484313964844,
           25226.168403038613,
-          26430.457550048828
+          26430.457550048828,
+          12074.787969316754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33465,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
