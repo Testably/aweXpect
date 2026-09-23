@@ -30,7 +30,7 @@ public sealed partial class ThatGuid
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not {Formatter.Format(unexpected)},
+					              is not equal to {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}

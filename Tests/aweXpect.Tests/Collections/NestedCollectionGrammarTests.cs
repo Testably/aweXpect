@@ -148,6 +148,30 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
+		public async Task IsNotOneOf_ShouldUsePluralVerb()
+		{
+			object?[] unexpected = [null,];
+
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.IsNotOneOf(unexpected).Using(new AllEqualComparer()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has lines which are not one of [<null>] using AllEqualComparer,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task IsOneOf_ShouldUsePluralVerb()
+		{
+			object?[] expected = [null,];
+
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.IsOneOf(expected));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has lines which are one of [<null>],*").AsWildcard();
+		}
+
+		[Fact]
 		public async Task StartsWith_ShouldUsePluralVerb()
 		{
 			async Task Act()

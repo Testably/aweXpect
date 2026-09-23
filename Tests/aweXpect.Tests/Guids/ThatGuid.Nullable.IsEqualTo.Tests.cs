@@ -32,7 +32,7 @@ public sealed partial class ThatGuid
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is {Formatter.Format(expected)},
+						              is equal to {Formatter.Format(expected)},
 						              but it was {Formatter.Format(subject)}
 						              """);
 				}
@@ -48,7 +48,7 @@ public sealed partial class ThatGuid
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is {FixedGuid()},
+						              is equal to {FixedGuid()},
 						              but it was <null>
 						              """);
 				}

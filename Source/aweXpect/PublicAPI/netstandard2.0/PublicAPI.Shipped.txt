@@ -1,5 +1,5 @@
 #nullable enable
-abstract aweXpect.Options.EnumerableQuantifier.AppendResult(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null) -> void
+abstract aweXpect.Options.EnumerableQuantifier.AppendResult(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string! it, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null) -> void
 abstract aweXpect.Options.EnumerableQuantifier.GetOutcome(int matchingCount, int notMatchingCount, int? totalCount) -> aweXpect.Core.Constraints.Outcome
 abstract aweXpect.Options.EnumerableQuantifier.IsDeterminable(int matchingCount, int notMatchingCount) -> bool
 abstract aweXpect.Options.EnumerableQuantifier.IsSingle() -> bool

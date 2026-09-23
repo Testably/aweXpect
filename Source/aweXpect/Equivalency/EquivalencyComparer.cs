@@ -53,8 +53,8 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 		return $"{it} was not:{_failureBuilder}";
 	}
 
-	/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?)" />
-	public string GetItemExpectation(string expected, string? itemNoun = null)
+	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
+	public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 		=> itemNoun is null ? $"equivalent to {expected}" : $"{itemNoun} equivalent to {expected}";
 
 	private static bool HandleSpecialCases<TActual, TExpected>(TActual actual, TExpected expected,

@@ -66,7 +66,7 @@ public static partial class ThatAsyncEnumerable
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
-					() => predicateExpression, indexOptions).InvertIf(negated)),
+					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
 	}
@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected)),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,

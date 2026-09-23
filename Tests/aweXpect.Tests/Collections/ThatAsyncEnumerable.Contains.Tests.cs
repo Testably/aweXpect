@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains 1 at least {minimum} times,
+					              contains an item equal to 1 at least {minimum} times,
 					              but it contained it twice
 
 					              Collection:
@@ -84,7 +84,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains 1 at most once,
+					             contains an item equal to 1 at most once,
 					             but it contained it at least twice
 
 					             Collection:
@@ -118,7 +118,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains 1 between {minimum} and {maximum} times,
+					              contains an item equal to 1 between {minimum} and {maximum} times,
 					              but it contained it twice
 
 					              Collection:
@@ -164,7 +164,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains 1 exactly {(times == 1 ? "once" : $"{times} times")},
+					              contains an item equal to 1 exactly {(times == 1 ? "once" : $"{times} times")},
 					              but it contained it {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
@@ -197,7 +197,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains 1 less than twice,
+					             contains an item equal to 1 less than twice,
 					             but it contained it at least twice
 
 					             Collection:
@@ -231,7 +231,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains 1 more than {minimum.ToTimesString()},
+					              contains an item equal to 1 more than {minimum.ToTimesString()},
 					              but it contained it twice
 
 					              Collection:
@@ -262,7 +262,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain 2,
+					             does not contain an item equal to 2,
 					             but it contained it at least once
 
 					             Collection:
@@ -314,7 +314,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              contains {Formatter.Format(expected)} at least once,
+					              contains an item equal to {Formatter.Format(expected)} at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -334,7 +334,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains 42 at least once,
+					             contains an item equal to 42 at least once,
 					             but it was <null>
 					             """);
 			}
@@ -751,7 +751,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains item matching x => x == 1 at least {minimum} times,
+					              contains an item matching x => x == 1 at least {minimum} times,
 					              but it contained it twice
 
 					              Collection:
@@ -785,7 +785,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains item matching x => x == 1 at most once,
+					             contains an item matching x => x == 1 at most once,
 					             but it contained it at least twice
 
 					             Collection:
@@ -819,7 +819,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains item matching x => x == 1 between {minimum} and {maximum} times,
+					              contains an item matching x => x == 1 between {minimum} and {maximum} times,
 					              but it contained it twice
 
 					              Collection:
@@ -853,7 +853,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains item matching x => x == 1 exactly {(times == 1 ? "once" : $"{times} times")},
+					              contains an item matching x => x == 1 exactly {(times == 1 ? "once" : $"{times} times")},
 					              but it contained it {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
@@ -886,7 +886,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains item matching x => x == 1 less than twice,
+					             contains an item matching x => x == 1 less than twice,
 					             but it contained it at least twice
 
 					             Collection:
@@ -920,7 +920,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains item matching x => x == 1 more than {minimum.ToTimesString()},
+					              contains an item matching x => x == 1 more than {minimum.ToTimesString()},
 					              but it contained it twice
 
 					              Collection:
@@ -951,7 +951,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain item matching x => x == 2,
+					             does not contain an item matching x => x == 2,
 					             but it contained it at least once
 
 					             Collection:
@@ -1003,7 +1003,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              contains item matching x => x == expected at least once,
+					              contains an item matching x => x == expected at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -1035,7 +1035,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains item matching _ => true at least once,
+					             contains an item matching _ => true at least once,
 					             but it was <null>
 					             """);
 			}

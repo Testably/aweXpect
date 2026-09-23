@@ -19,7 +19,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which have exactly 3 items and contain 4 at least once,
+					             has values which have exactly 3 items and contain an item equal to 4 at least once,
 					             but it did not contain it
 
 					             Collection:

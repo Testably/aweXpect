@@ -15,6 +15,17 @@ internal static class ObjectEqualityOptions
 {
 	internal static readonly IObjectMatchType EqualsMatch = new EqualsMatchType();
 
+	/// <summary>
+	///     Prepends the <paramref name="itemNoun" /> and the <paramref name="comparison" /> to the
+	///     <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     A match type that only formats the value names neither the item nor the comparison on its own, so a verb
+	///     that needs both reads <c>contains an item equal to 3</c>.
+	/// </remarks>
+	internal static string GetItemExpectation(string expected, string? itemNoun, string? comparison)
+		=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected;
+
 	private sealed class EqualsMatchType : IObjectMatchType
 	{
 		/// <inheritdoc cref="object.ToString()" />
@@ -200,8 +211,9 @@ internal static class ObjectEqualityOptions
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}";
 
-		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?)" />
-		public string GetItemExpectation(string expected, string? itemNoun = null) => expected;
+		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
+		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+			=> GetItemExpectation(expected, itemNoun, comparison);
 
 		#endregion
 	}
@@ -243,9 +255,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		=> MatchType.GetExpectation(expectedExpression, grammars);
 
 
-	/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?)" />
-	public string GetItemExpectation(string expected, string? itemNoun = null)
-		=> MatchType.GetItemExpectation(expected, itemNoun);
+	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
+	public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
+		=> MatchType.PrependItemAndComparison(expected, itemNoun, comparison);
 
 	/// <inheritdoc />
 	public override string? ToString() => MatchType.ToString();

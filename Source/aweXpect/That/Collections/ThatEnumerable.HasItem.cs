@@ -67,7 +67,7 @@ public static partial class ThatEnumerable
 		return new HasItemResult<IEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
-					() => predicateExpression, indexOptions).InvertIf(negated)),
+					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
 	}
@@ -87,7 +87,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected)),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
@@ -150,7 +150,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
-					predicate, () => predicateExpression,
+					predicate, () => $"matching {predicateExpression}",
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
@@ -172,7 +172,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected)),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
@@ -195,7 +195,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<TCollection, TItem>(
 					expectationBuilder, it, grammars,
-					predicate, () => predicateExpression,
+					predicate, () => $"matching {predicateExpression}",
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
@@ -238,7 +238,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected)),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
@@ -262,7 +262,7 @@ public static partial class ThatEnumerable
 				=> new HasAsyncItemForEnumerableConstraint<TCollection, string?>(
 					expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
-					() => $"{Formatter.Format(expected)}{options}",
+					() => options.GetExpectation(expected, grammars),
 					indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,

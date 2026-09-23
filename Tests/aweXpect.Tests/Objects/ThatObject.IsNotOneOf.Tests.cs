@@ -24,7 +24,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to one of [ThatObject.MyClass { Value = 0 }, ThatObject.MyClass { Value = 0 }], because we want to test the failure,
+					             is not one of [ThatObject.MyClass { Value = 0 }, ThatObject.MyClass { Value = 0 }], because we want to test the failure,
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
@@ -151,7 +151,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not equal to one of {Formatter.Format(expected)},
+					              is not one of {Formatter.Format(expected)},
 					              but it was <null>
 					              """);
 			}
