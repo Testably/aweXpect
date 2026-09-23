@@ -237,7 +237,7 @@ jobs:
     
     publish-test-results:
         name: "Publish Tests Results"
-        needs: [ unit-tests ]
+        needs: [ unit-tests, aot-smoke-tests ]
         runs-on: ubuntu-latest
         permissions:
             checks: write
