@@ -84,6 +84,9 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+		{
+			stringBuilder.Append(It).Append(" had lines ");
+			Formatter.Format(stringBuilder, Actual.GetLines(), FormattingOptions.MultipleLines);
+		}
 	}
 }

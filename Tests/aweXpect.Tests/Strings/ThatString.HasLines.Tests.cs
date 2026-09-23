@@ -210,7 +210,10 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not have lines which contain "Ready" at least once,
-					             but it had
+					             but it had lines [
+					               "Starting up",
+					               "Ready"
+					             ]
 					             """);
 			}
 		}

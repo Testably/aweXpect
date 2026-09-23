@@ -33,7 +33,7 @@ public sealed partial class ThatSpan
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is not parsable into int,
-					             but it was
+					             but it was "42", which is parsable into 42
 					             """);
 			}
 
@@ -52,7 +52,7 @@ public sealed partial class ThatSpan
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is not parsable into decimal using {cultureName},
-					              but it was
+					              but it was "{subjectString}", which is parsable into 12.34
 					              """);
 			}
 		}

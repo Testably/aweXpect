@@ -48,6 +48,7 @@ public static partial class ThatString
 	{
 		private readonly IFormatProvider? _formatProvider;
 		private string? _exceptionMessage;
+		private TType? _parsedValue;
 
 		public IsParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
@@ -68,7 +69,7 @@ public static partial class ThatString
 
 			try
 			{
-				_ = TType.Parse(actual, _formatProvider);
+				_parsedValue = TType.Parse(actual, _formatProvider);
 				Outcome = Outcome.Success;
 			}
 			catch (Exception ex)
@@ -116,7 +117,12 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+		{
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.Append(", which is parsable into ");
+			Formatter.Format(stringBuilder, _parsedValue);
+		}
 	}
 }
 #endif
