@@ -95,8 +95,9 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}";
 
-		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?)" />
-		public string GetItemExpectation(string expected, string? itemNoun = null) => expected + ToString();
+		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?, string?)" />
+		public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
+			=> (comparison is null ? expected : $"{comparison} {expected}") + ToString();
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()

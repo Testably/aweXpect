@@ -205,7 +205,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item 2 for all items,
+						             has item equal to 2 for all items,
 						             but only 1 of at least 2 did
 
 						             Not matching items:

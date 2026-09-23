@@ -47,7 +47,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => false at index 2,
+					             has item matching _ => false at index 2,
 					             but it had item 2 at index 2
 
 					             Collection:
@@ -77,7 +77,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => true at index 3,
+					             has item matching _ => true at index 3,
 					             but it did not contain any item at index 3
 
 					             Collection:
@@ -96,7 +96,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => true,
+					             has item matching _ => true,
 					             but it did not contain any item
 
 					             Collection:
@@ -115,7 +115,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => true,
+					             has item matching _ => true,
 					             but it was <null>
 					             """);
 			}
@@ -131,7 +131,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => true at index 0,
+					             has item matching _ => true at index 0,
 					             but it was <null>
 					             """);
 			}
@@ -147,7 +147,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => true with invalid match,
+					             has item matching _ => true with invalid match,
 					             but it did not contain any item with invalid match
 
 					             Collection:
@@ -168,7 +168,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item _ => false at index 0 and has item _ => false at index 1 and has item _ => false,
+					             has item matching _ => false at index 0 and has item matching _ => false at index 1 and has item matching _ => false,
 					             but it had item "a" at index 0 and it had item "b" at index 1 and it did not match at any index
 
 					             Collection:
@@ -217,7 +217,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 3 at index 2,
+					             has item equal to 3 at index 2,
 					             but it had item 2 at index 2
 
 					             Collection:
@@ -247,7 +247,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 5 at index 3,
+					             has item equal to 5 at index 3,
 					             but it did not contain any item at index 3
 
 					             Collection:
@@ -267,7 +267,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has item {expected},
+					              has item equal to {expected},
 					              but it did not contain any item
 
 					              Collection:
@@ -302,7 +302,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 42,
+					             has item equal to 42,
 					             but it was <null>
 					             """);
 			}
@@ -319,7 +319,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 42 at index 0,
+					             has item equal to 42 at index 0,
 					             but it was <null>
 					             """);
 			}
@@ -336,7 +336,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 42 at index 0 from end,
+					             has item equal to 42 at index 0 from end,
 					             but it was <null>
 					             """);
 			}
@@ -352,7 +352,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 2 with invalid match,
+					             has item equal to 2 with invalid match,
 					             but it did not contain any item with invalid match
 
 					             Collection:
@@ -372,7 +372,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 4 at index 0 and has item 5 at index 1 and has item 6,
+					             has item equal to 4 at index 0 and has item equal to 5 at index 1 and has item equal to 6,
 					             but it had item 1 at index 0 and it had item 2 at index 1 and it did not match at any index
 
 					             Collection:
@@ -931,7 +931,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 1 using AllDifferentComparer,
+					             has item equal to 1 using AllDifferentComparer,
 					             but it did not match at any index
 
 					             Collection:
@@ -977,7 +977,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has item {expected - 1} at index 2 from end,
+					              has item equal to {expected - 1} at index 2 from end,
 					              but it had item {expected} at index 2 from end
 
 					              Collection:
@@ -1009,7 +1009,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has item {expected} at index 3 from end,
+					              has item equal to {expected} at index 3 from end,
 					              but it did not contain any item at index 3 from end
 
 					              Collection:
@@ -1029,7 +1029,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has item {expected} at index 0 from end,
+					              has item equal to {expected} at index 0 from end,
 					              but it did not contain any item at index 0 from end
 
 					              Collection:
@@ -1064,7 +1064,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item 42 at index 0 from end,
+					             has item equal to 42 at index 0 from end,
 					             but it was <null>
 					             """);
 			}

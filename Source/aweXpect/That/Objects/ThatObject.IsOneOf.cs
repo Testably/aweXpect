@@ -71,18 +71,20 @@ public static partial class ThatObject
 			return this;
 		}
 
+		/// <remarks>
+		///     <c>one of</c> already implies the equality, so only a match type that compares differently names
+		///     itself, e.g. <c>is equivalent to one of […]</c>.
+		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace(),
-				Grammars));
+			=> stringBuilder.Append("is ").Append(options.GetItemExpectation(
+				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace(),
-				Grammars));
+			=> stringBuilder.Append("is not ").Append(options.GetItemExpectation(
+				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

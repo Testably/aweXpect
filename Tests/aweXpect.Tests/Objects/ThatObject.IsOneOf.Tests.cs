@@ -36,11 +36,52 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to one of [ThatObject.MyClass { Value = 0 }], because we want to test the failure,
+					             is one of [ThatObject.MyClass { Value = 0 }], because we want to test the failure,
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenComparingWithCustomComparer_ShouldFail()
+			{
+				object subject = new MyClass();
+				object[] expected = [subject,];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).Using(new AllDifferentComparer());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [ThatObject.MyClass { Value = 0 }] using AllDifferentComparer,
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """)
+					.Because("a custom comparer still adds information, while the default equality does not");
+			}
+
+			[Fact]
+			public async Task WhenComparingWithEquivalence_ShouldFail()
+			{
+				object subject = new MyClass
+				{
+					Value = 1,
+				};
+				object[] expected = [new MyClass(),];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).Equivalent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to one of [ThatObject.MyClass { Value = 0 }],
+					             *
+					             """).AsWildcard()
+					.Because("the equivalency keeps naming the comparison it performs");
 			}
 
 			[Fact]
@@ -94,7 +135,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to one of [<null>],
+					             is one of [<null>],
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
@@ -139,7 +180,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to one of [ThatObject.MyClass { Value = 0 }],
+					             is one of [ThatObject.MyClass { Value = 0 }],
 					             but it was <null>
 					             """);
 			}

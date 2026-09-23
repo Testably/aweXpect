@@ -142,7 +142,10 @@ as a regex or wildcard pattern, where it took effect but stayed invisible. A qua
 back to its own verb, so `All().ComplyWith(it => it.StartsWith("a"))` reports `but only 1 of 3 did` instead of
 `but only 1 of 3 were`, a negated quantifier names its complement (`for no items` instead of
 `for not at least one item`), and `HasCount` names its subject (`but it had only 3 items` instead of
-`but found only 3`). Tests that assert on the exact text of a failure message may need an update.
+`but found only 3`). Every expectation text also mirrors the method it comes from, so `IsEqualTo` reads
+`is equal to …` for `Guid`, `enum` and `char?` as well, `IsOneOf` on an object reads `is one of […]` instead of the
+ambiguous `is equal to one of […]`, and `HasItem` names how it matches (`has item matching _ => true`,
+`has item equal to 3`). Tests that assert on the exact text of a failure message may need an update.
 
 ## Timeouts on negative event expectations
 

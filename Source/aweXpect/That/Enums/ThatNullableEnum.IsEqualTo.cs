@@ -43,7 +43,7 @@ public static partial class ThatNullableEnum
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is ");
+			stringBuilder.Append("is equal to ");
 			Formatter.Format(stringBuilder, expected);
 		}
 
@@ -55,7 +55,7 @@ public static partial class ThatNullableEnum
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not ");
+			stringBuilder.Append("is not equal to ");
 			Formatter.Format(stringBuilder, expected);
 		}
 

@@ -32,7 +32,9 @@ public interface IObjectMatchType
 	/// </summary>
 	/// <remarks>
 	///     A match type that describes the item instead of only formatting it prepends the
-	///     <paramref name="itemNoun" />, so that a verb such as <c>contains</c> keeps a direct object.
+	///     <paramref name="itemNoun" />, so that a verb such as <c>contains</c> keeps a direct object.<br />
+	///     A match type that only formats the value prepends the <paramref name="comparison" /> instead, so that a verb
+	///     which already names the item reads <c>has item equal to 3</c>.
 	/// </remarks>
-	string GetItemExpectation(string expected, string? itemNoun = null);
+	string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null);
 }
