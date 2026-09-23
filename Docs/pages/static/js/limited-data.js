@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          252.4134638786316,
           255.2726117769877,
           250.21984214049118,
           238.01321502832266,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           361.90503655947174,
           364.719633324941,
           342.6122290293376,
-          325.596474647522
+          325.596474647522,
+          332.7308561007182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -453,7 +453,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -463,6 +462,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          245.66537170410157,
           235.88093944958277,
           246.26655778884887,
           232.07729390689306,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           255.29758116404216,
           289.4803840637207,
           247.38781152452742,
-          248.4422721862793
+          248.4422721862793,
+          246.51306128501892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          379574.25278320315,
           387609.7756998698,
           378122.3570963542,
           359753.4371861049,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           417273.9706624349,
           401476.0254952567,
           401936.7021484375,
-          388872.50808919274
+          388872.50808919274,
+          405945.89314152644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           542085,
           542084,
           542085,
@@ -1071,6 +1070,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2772779.322135417,
           2597183.655048077,
           2691490.117745536,
           2656361.561104911,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2681513.6515625,
           2390517.840401786,
           2591831.70859375,
-          2262712.8839285714
+          2262712.8839285714,
+          2457022.338020833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841648,
           4841631,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
       {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          488.20431429545084,
           454.63850116729736,
           490.7369747161865,
           430.87276567731584,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           576.7297085982102,
           619.2734131495158,
           600.8308386484782,
-          546.1139658519199
+          546.1139658519199,
+          527.4140539169312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1642,7 +1642,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1683,6 +1682,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          506.7423930849348,
           470.06133098602294,
           463.4168947660006,
           502.7744050392738,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           476.6302760442098,
           550.5547884532383,
           533.289975643158,
-          479.4356617927551
+          479.4356617927551,
+          478.51592718760173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          278.1191467285156,
           266.18300444285074,
           266.84208323160806,
           248.98065288861594,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           365.8065305709839,
           375.70752239227295,
           345.2246816953023,
-          355.953902498881
+          355.953902498881,
+          334.57904758453367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2277,7 +2277,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2287,6 +2286,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          259.62245308558147,
           258.6352137883504,
           250.7939587434133,
           233.75534197262354,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247.26381438573202,
           307.92783781687416,
           254.87316243989127,
-          245.97134253184
+          245.97134253184,
+          233.82022239367168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          443.8239698750632,
           451.3546841825758,
           445.87982719285145,
           434.76134182856634,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           635.7641259602138,
           666.1042346318562,
           682.4214453379313,
-          630.2490653991699
+          630.2490653991699,
+          603.0432953516643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1128,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1189.5603050231935,
           1137.5848183949788,
           1168.7655032231257,
           1126.2487712860107,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1192.4736000061034,
           1338.6829133351644,
           1383.8630406697591,
-          1141.61229964665
+          1141.61229964665,
+          1135.6289141337077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1899.8832641601562,
           1915.4286098480225,
           1861.6818230946858,
           1841.2285196940104,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2295.0043688456217,
           2439.2200119018553,
           2733.3808873494468,
-          2565.799169413249
+          2565.799169413249,
+          2489.40236554827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3466,7 +3466,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3507,6 +3506,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1378.2740264892577,
           1285.010301208496,
           1295.5762007395426,
           1253.913455581665,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1326.4313330332438,
           1443.1622580119542,
           1428.1928583780925,
-          1297.2388025919597
+          1297.2388025919597,
+          1323.1875149653508
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
-        "message": "fix: cap the heap of the test host instead of the whole job"
-      },
-      {
         "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
-      "c038ec26",
       "525e912c",
       "17052f40",
       "debf8049",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2525.565395061786,
           2612.7643934396597,
           2556.625624847412,
           2496.28075000218,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2892.8446628863994,
           2952.2586067744664,
           3135.0400232950847,
-          3061.9932332720077
+          3061.9932332720077,
+          3075.296388772818
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4074,7 +4074,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4115,6 +4114,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27292.448457845054,
           26717.905848185223,
           27086.83559526716,
           26457.502580915178,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27610.790985107422,
           24906.509231567383,
           26194.006308419364,
-          19821.484313964844
+          19821.484313964844,
+          25226.168403038613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
