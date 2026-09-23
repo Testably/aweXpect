@@ -85,20 +85,22 @@ public static partial class ThatNullableDateTime
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Tolerance
-				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
-				Outcome = minimum - actual.Value <= timeTolerance &&
-				          actual.Value - maximum <= timeTolerance
-					? Outcome.Success
-					: Outcome.Failure;
+				Outcome = IsWithinRange(actual.Value, minimum.Value, maximum.Value) ? Outcome.Success : Outcome.Failure;
 			}
 
 			return this;
+		}
+
+		private bool IsWithinRange(DateTime actual, DateTime minimum, DateTime maximum)
+		{
+			TimeSpan timeTolerance = tolerance.Tolerance
+			                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+			if (IsNegated)
+			{
+				timeTolerance = timeTolerance.Negate();
+			}
+
+			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

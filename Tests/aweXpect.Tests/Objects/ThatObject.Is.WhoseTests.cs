@@ -257,6 +257,7 @@ public sealed partial class ThatObject
 			{
 				public int Value { get; set; }
 
+#pragma warning disable CA1822 // the tests access these members through the subject
 				public async Task<int> FaultedAsync()
 				{
 					await Task.Yield();
@@ -270,6 +271,7 @@ public sealed partial class ThatObject
 					throw new InvalidOperationException("async member failed");
 				}
 #endif
+#pragma warning restore CA1822
 
 				public async Task<int> GetValueAsync()
 				{

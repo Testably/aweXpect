@@ -86,26 +86,24 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		actual = Normalize(actual);
 		expected = Normalize(expected);
 		ValidatePattern(expected);
-		if (expected.Length == 0)
+		int? count = expected.Length == 0 ? 0 : CountOccurrencesWithoutWindow(actual, expected);
+		if (count is not null)
 		{
 #if NET8_0_OR_GREATER
-			return ValueTask.FromResult(0);
+			return ValueTask.FromResult(count.Value);
 #else
-			return Task.FromResult(0);
+			return Task.FromResult(count.Value);
 #endif
 		}
 
-		return CountNormalizedOccurrences(actual, expected);
+		return CountOccurrencesWithWindow(actual, expected);
 	}
 
 	/// <summary>
-	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern.
+	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern for
+	///     match types that cannot be counted with a window of the expected length, or returns <see langword="null" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
-	private async ValueTask<int> CountNormalizedOccurrences(string actual, string expected)
-#else
-	private async Task<int> CountNormalizedOccurrences(string actual, string expected)
-#endif
+	private int? CountOccurrencesWithoutWindow(string actual, string expected)
 	{
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
 		if (_matchType is BlockMatchType)
@@ -132,6 +130,19 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			throw CreateTimeoutException(expected, exception);
 		}
 
+		return null;
+	}
+
+	/// <summary>
+	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> string by
+	///     comparing it with a window of the same length.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	private async ValueTask<int> CountOccurrencesWithWindow(string actual, string expected)
+#else
+	private async Task<int> CountOccurrencesWithWindow(string actual, string expected)
+#endif
+	{
 		int count = 0;
 		int index = 0;
 		while (index < actual.Length)
