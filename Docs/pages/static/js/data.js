@@ -4086,6 +4086,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -4769,7 +4775,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -5456,7 +5463,8 @@ window.BENCHMARK_DATA = {
           325.596474647522,
           332.7308561007182,
           348.62004709243774,
-          227.43967040947504
+          227.43967040947504,
+          368.76065781911217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6139,6 +6147,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6843,7 +6852,8 @@ window.BENCHMARK_DATA = {
           248.4422721862793,
           246.51306128501892,
           253.8849971453349,
-          195.0926110426585
+          195.0926110426585,
+          247.28855617841086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7036,6 +7046,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11173,6 +11184,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -11779,7 +11796,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -12389,7 +12407,8 @@ window.BENCHMARK_DATA = {
           388872.50808919274,
           405945.89314152644,
           429798.4231770833,
-          280274.5925455729
+          280274.5925455729,
+          432805.6280273438
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12995,6 +13014,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13622,7 +13642,8 @@ window.BENCHMARK_DATA = {
           2262712.8839285714,
           2457022.338020833,
           2637916.90546875,
-          1498728.9471354166
+          1498728.9471354166,
+          2588505.1143229166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14237,7 +14258,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841611
+          4841611,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18337,6 +18359,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -19020,7 +19048,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -19707,7 +19736,8 @@ window.BENCHMARK_DATA = {
           546.1139658519199,
           527.4140539169312,
           565.3289719263713,
-          373.4577563285828
+          373.4577563285828,
+          616.9647481918335
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20394,6 +20424,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -21094,7 +21125,8 @@ window.BENCHMARK_DATA = {
           479.4356617927551,
           478.51592718760173,
           533.7854971204486,
-          361.0428803648268
+          361.0428803648268,
+          515.2972635269165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21287,6 +21319,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25886,6 +25919,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -26569,7 +26608,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -27256,7 +27296,8 @@ window.BENCHMARK_DATA = {
           355.953902498881,
           334.57904758453367,
           371.66191215515136,
-          260.18825085957843
+          260.18825085957843,
+          371.57226079305013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27939,6 +27980,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28643,7 +28685,8 @@ window.BENCHMARK_DATA = {
           245.97134253184,
           233.82022239367168,
           255.75856889088948,
-          197.37258693377177
+          197.37258693377177,
+          250.52697706222534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28836,6 +28879,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33435,6 +33479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -34118,7 +34168,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -34805,7 +34856,8 @@ window.BENCHMARK_DATA = {
           630.2490653991699,
           603.0432953516643,
           659.7945933024089,
-          402.196131669558
+          402.196131669558,
+          669.1177337646484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35488,6 +35540,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -36192,7 +36245,8 @@ window.BENCHMARK_DATA = {
           1141.61229964665,
           1135.6289141337077,
           1249.2195592244466,
-          834.4202824274699
+          834.4202824274699,
+          1305.3931626637777
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36621,6 +36675,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40984,6 +41039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -41667,7 +41728,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -42354,7 +42416,8 @@ window.BENCHMARK_DATA = {
           2565.799169413249,
           2489.40236554827,
           2620.067540032523,
-          1321.011224610465
+          1321.011224610465,
+          2742.400967915853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43041,6 +43104,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -43741,7 +43805,8 @@ window.BENCHMARK_DATA = {
           1297.2388025919597,
           1323.1875149653508,
           1373.8136695861817,
-          915.1889366422381
+          915.1889366422381,
+          1425.9506351470948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43934,6 +43999,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48533,6 +48599,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
         "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
+      },
+      {
+        "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
+        "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
       }
     ],
     "labels": [
@@ -49216,7 +49288,8 @@ window.BENCHMARK_DATA = {
       "7a806db0",
       "8e8be742",
       "f01f8fc6",
-      "7ff3e590"
+      "7ff3e590",
+      "7148a396"
     ],
     "datasets": [
       {
@@ -49903,7 +49976,8 @@ window.BENCHMARK_DATA = {
           3061.9932332720077,
           3075.296388772818,
           3182.197739464896,
-          1616.4755638667516
+          1616.4755638667516,
+          3235.9760614122665
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50590,6 +50664,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -51290,7 +51365,8 @@ window.BENCHMARK_DATA = {
           19821.484313964844,
           25226.168403038613,
           26430.457550048828,
-          12074.787969316754
+          12074.787969316754,
+          27407.378987630207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51982,7 +52058,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
