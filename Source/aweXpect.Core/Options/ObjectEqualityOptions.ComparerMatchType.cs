@@ -38,7 +38,7 @@ public partial class ObjectEqualityOptions<TSubject>
 
 		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?, string?)" />
 		public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
-			=> (comparison is null ? expected : $"{comparison} {expected}") + ToString();
+			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()

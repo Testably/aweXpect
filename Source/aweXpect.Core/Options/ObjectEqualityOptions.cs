@@ -15,6 +15,17 @@ internal static class ObjectEqualityOptions
 {
 	internal static readonly IObjectMatchType EqualsMatch = new EqualsMatchType();
 
+	/// <summary>
+	///     Prepends the <paramref name="itemNoun" /> and the <paramref name="comparison" /> to the
+	///     <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     A match type that only formats the value names neither the item nor the comparison on its own, so a verb
+	///     that needs both reads <c>contains an item equal to 3</c>.
+	/// </remarks>
+	internal static string GetItemExpectation(string expected, string? itemNoun, string? comparison)
+		=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected;
+
 	private sealed class EqualsMatchType : IObjectMatchType
 	{
 		/// <inheritdoc cref="object.ToString()" />
@@ -202,7 +213,7 @@ internal static class ObjectEqualityOptions
 
 		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?, string?)" />
 		public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
-			=> comparison is null ? expected : $"{comparison} {expected}";
+			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison);
 
 		#endregion
 	}

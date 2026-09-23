@@ -76,14 +76,14 @@ public static partial class ThatObject
 		///     itself, e.g. <c>is equivalent to one of […]</c>.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is ").Append(options.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.GetItemExpectation(
 				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not ").Append(options.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.GetItemExpectation(
 				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

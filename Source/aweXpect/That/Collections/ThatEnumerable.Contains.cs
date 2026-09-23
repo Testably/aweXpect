@@ -115,7 +115,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -161,7 +161,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -231,7 +231,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<TCollection, TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -461,10 +461,11 @@ public static partial class ThatEnumerable
 	/// </summary>
 	/// <remarks>
 	///     The verb keeps a direct object, so a match type that describes the item reads "contains an item
-	///     equivalent to …" instead of only naming the value.
+	///     equivalent to …", and one that only formats it names the comparison itself instead of leaving the
+	///     reader to guess it from "contains 3".
 	/// </remarks>
 	private static string ContainedItemExpectation<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
-		=> options.GetItemExpectation(Formatter.Format(expected), "an item");
+		=> options.GetItemExpectation(Formatter.Format(expected), "an item", "equal to");
 
 	/// <summary>
 	///     Casts the <paramref name="item" /> of an untyped enumerable to <typeparamref name="TItem" />.

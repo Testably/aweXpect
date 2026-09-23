@@ -144,8 +144,9 @@ back to its own verb, so `All().ComplyWith(it => it.StartsWith("a"))` reports `b
 `for not at least one item`), and `HasCount` names its subject (`but it had only 3 items` instead of
 `but found only 3`). Every expectation text also mirrors the method it comes from, so `IsEqualTo` reads
 `is equal to …` for `Guid`, `enum` and `char?` as well, `IsOneOf` on an object reads `is one of […]` instead of the
-ambiguous `is equal to one of […]`, and `HasItem` names how it matches (`has item matching _ => true`,
-`has item equal to 3`). Tests that assert on the exact text of a failure message may need an update.
+ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they match (`has item matching _ => true`,
+`has item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
+need an update.
 
 ## Timeouts on negative event expectations
 

@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              contains {Formatter.Format(Local)} at least once,
+					              contains an item equal to {Formatter.Format(Local)} at least once,
 					              but it did not contain it
 
 					              Collection:
