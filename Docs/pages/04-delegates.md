@@ -159,9 +159,7 @@ void Act() => throw new AggregateException("outer", new CustomException("inner")
 await Expect.That(Act).Throws().WithRecursiveInnerExceptions(innerExceptions => innerExceptions.AtLeast(1).Are<CustomException>());
 ```
 
-An exception without any inner exception fails `All()`, because an empty collection satisfies it without stating
-anything. The quantifiers that state an upper bound (e.g. `None()` or `AtMost(2)`) are still satisfied, as is
-`IsEmpty()`.
+The exception must have at least one inner exception.
 
 ### Other members
 

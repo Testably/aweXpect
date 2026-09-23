@@ -92,31 +92,6 @@ internal static class CollectionHelpers
 		=> quantifier.IsSingle() ? "item" : "items";
 
 	/// <summary>
-	///     Returns the outcome of the <paramref name="quantifier" />, unless the <paramref name="actual" /> collection
-	///     rejects a success that only holds because the collection is empty.
-	/// </summary>
-	/// <remarks>
-	///     A quantifier states nothing about an empty collection exactly when it would reject the same collection with a
-	///     single non-matching item; <c>all</c> is the only such quantifier, while e.g. <c>none</c> or <c>at most 2</c>
-	///     are satisfied by an empty collection because of what they state, not despite it.
-	/// </remarks>
-	internal static Outcome GetOutcomeForCollection(this EnumerableQuantifier quantifier,
-		object? actual,
-		int matchingCount,
-		int notMatchingCount,
-		int? totalCount)
-	{
-		Outcome outcome = quantifier.GetOutcome(matchingCount, notMatchingCount, totalCount);
-		if (outcome == Outcome.Success && totalCount == 0 && actual is IRejectVacuousSuccess &&
-		    quantifier.GetOutcome(0, 1, 1) != Outcome.Success)
-		{
-			return Outcome.Failure;
-		}
-
-		return outcome;
-	}
-
-	/// <summary>
 	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
 	///     <c>has lines which …</c>.
 	/// </summary>
