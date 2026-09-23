@@ -214,6 +214,50 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WithFactory_WhenTheHelperTakesNoExpectedValue_ShouldNotTakeTheFilledParameterForOne()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public sealed class Sign<TNumber> { }
+
+			public static class Factory
+			{
+				public static Sign<int> CreateInt() => new();
+			}
+
+			public static partial class ThatNumber
+			{
+				[CreateCollectionExpectation("IsPositive", Factory = typeof(Factory), Summary = "Is positive.")]
+				internal static IThat<TNumber> IsPositiveCore<TNumber>(
+					IThat<TNumber> subject,
+					Sign<TNumber> sign)
+					where TNumber : struct
+					=> null!;
+
+				[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(Factory),
+					Summary = "Is NaN.", NegatedSummary = "Is not NaN.")]
+				internal static IThat<TNumber> IsNaNCore<TNumber>(
+					IThat<TNumber> subject,
+					Sign<TNumber> sign,
+					bool negated)
+					where TNumber : struct
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("IsPositive(").Once();
+		await That(result.Generated).Contains("this global::aweXpect.Core.IThat<int> subject)").Exactly(3)
+			.Because("the sign is filled by the factory, not passed by the caller");
+		await That(result.Generated).Contains("IsNotNaN(").Once()
+			.Because("the negation flag after the filled parameter still gives the negated form");
+		await That(result.Generated).Contains("global::Lib.Factory.CreateInt()").Exactly(3);
+	}
+
+	[Fact]
 	public async Task WithFactory_WhenTypeParameterIsConstrainedToStruct_ShouldKeepNullableOfIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

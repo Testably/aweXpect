@@ -63,7 +63,7 @@ internal sealed record CollectionExpectationFamily(
 	private static List<string> Overloads(IMethodSymbol helper, Declaration declaration, Compilation compilation,
 		Location location, List<Problem> problems)
 	{
-		IParameterSymbol? expected = ExpectedParameter(helper);
+		IParameterSymbol? expected = ExpectedParameter(helper, declaration);
 		// Only a helper that takes the negation flag has a negated form.
 		bool hasPolarity = helper.Parameters.Skip(expected == null ? 1 : 2)
 			.Any(x => x.Type.SpecialType == SpecialType.System_Boolean);
@@ -89,10 +89,32 @@ internal sealed record CollectionExpectationFamily(
 	///     The expected parameter follows the subject, but an expectation such as IsInAscendingOrder takes none, so
 	///     the negation flag comes right after the subject instead.
 	/// </remarks>
-	private static IParameterSymbol? ExpectedParameter(IMethodSymbol helper)
-		=> helper.Parameters.Length > 1 && helper.Parameters[1].Type.SpecialType != SpecialType.System_Boolean
-			? helper.Parameters[1]
-			: null;
+	private static IParameterSymbol? ExpectedParameter(IMethodSymbol helper, Declaration declaration)
+	{
+		if (helper.Parameters.Length < 2)
+		{
+			return null;
+		}
+
+		IParameterSymbol candidate = helper.Parameters[1];
+		// IsPositive takes only the subject, the sign the factory fills and at most the negation flag, so it has no
+		// expected value; a filled parameter followed by more is an expected collection the factory happens to produce.
+		bool onlyFilledAndFlags = IsFilledBy(declaration.Factory, candidate) &&
+		                          helper.Parameters.Skip(2).All(x => x.Type.SpecialType == SpecialType.System_Boolean);
+		return candidate.Type.SpecialType == SpecialType.System_Boolean || onlyFilledAndFlags ? null : candidate;
+	}
+
+	private static bool IsFilledBy(INamedTypeSymbol? factory, IParameterSymbol parameter)
+		=> factory != null &&
+		   parameter.Type is INamedTypeSymbol { IsGenericType: true, } type &&
+		   FactoryMethods(factory).Any(x => x.ReturnType is INamedTypeSymbol returnType &&
+		                                   SymbolEqualityComparer.Default.Equals(returnType.OriginalDefinition,
+			                                   type.OriginalDefinition));
+
+	private static IEnumerable<IMethodSymbol> FactoryMethods(INamedTypeSymbol factory)
+		=> factory.GetMembers().OfType<IMethodSymbol>()
+			.Where(m => m is { IsStatic: true, Parameters.Length: 0, } &&
+			            m.Name.StartsWith("Create", StringComparison.Ordinal));
 
 	/// <remarks>
 	///     Only an expected value turns into an unexpected one; a name such as "predicate" reads the same either way.
@@ -255,9 +277,7 @@ internal sealed record CollectionExpectationFamily(
 			yield break;
 		}
 
-		foreach (IMethodSymbol factoryMethod in factory.GetMembers().OfType<IMethodSymbol>()
-			         .Where(m => m is { IsStatic: true, Parameters.Length: 0, } &&
-			                     m.Name.StartsWith("Create", StringComparison.Ordinal)))
+		foreach (IMethodSymbol factoryMethod in FactoryMethods(factory))
 		{
 			if (factoryMethod.ReturnType is not INamedTypeSymbol { IsGenericType: true, } options ||
 			    helper.Parameters.Skip(expected == null ? 1 : 2)
