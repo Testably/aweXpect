@@ -140,7 +140,7 @@ aweXpect.Core.IObjectMatchType
 aweXpect.Core.IObjectMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
 aweXpect.Core.IObjectMatchType.GetExpectation(string! expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
 aweXpect.Core.IObjectMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
-aweXpect.Core.IObjectMatchType.GetItemExpectation(string! expected, string? itemNoun = null) -> string!
+aweXpect.Core.IObjectMatchType.PrependItemAndComparison(string! expected, string? itemNoun = null, string? comparison = null) -> string!
 aweXpect.Core.IOptionsEquality<TSubject>
 aweXpect.Core.IOptionsEquality<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
 aweXpect.Core.IOptionsProvider<TOptions>
@@ -166,6 +166,7 @@ aweXpect.Core.ManualExpectationBuilder<TValue>
 aweXpect.Core.ManualExpectationBuilder<TValue>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(aweXpect.Core.ManualExpectationBuilder<TValue>? x, aweXpect.Core.ManualExpectationBuilder<TValue>? y) -> bool
 aweXpect.Core.ManualExpectationBuilder<TValue>.GetHashCode(aweXpect.Core.ManualExpectationBuilder<TValue>! obj) -> int
+aweXpect.Core.ManualExpectationBuilder<TValue>.GetResultVerb() -> string!
 aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Core.ManualExpectationBuilder<TValue>.ManualExpectationBuilder(aweXpect.Core.ExpectationBuilder? inner, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
 aweXpect.Core.MemberAccessor
@@ -440,6 +441,8 @@ aweXpect.Formatting.FormattingOptions.IncludeType.get -> bool
 aweXpect.Formatting.FormattingOptions.IncludeType.init -> void
 aweXpect.Formatting.FormattingOptions.Indentation.get -> string!
 aweXpect.Formatting.FormattingOptions.Indentation.init -> void
+aweXpect.Formatting.FormattingOptions.TotalItemCount.get -> int?
+aweXpect.Formatting.FormattingOptions.TotalItemCount.init -> void
 aweXpect.Formatting.FormattingOptions.UseLineBreaks.get -> bool
 aweXpect.Formatting.FormattingOptions.UseLineBreaks.init -> void
 aweXpect.Formatting.IValueFormatter
@@ -475,6 +478,7 @@ aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Colle
 aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T>! expected) -> aweXpect.Core.ICollectionMatcher<T, T2>!
 aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<T>!>! expected) -> aweXpect.Core.ICollectionMatcher<T, T2>!
 aweXpect.Options.CollectionMatchOptions.GetExpectation(string! expectedExpression, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Options.CollectionMatchOptions.GetNegatedResultVerb(string! it, aweXpect.Core.ExpectationGrammars grammars) -> string!
 aweXpect.Options.CollectionMatchOptions.IgnoringDuplicates() -> void
 aweXpect.Options.CollectionMatchOptions.IgnoringInterspersedItems() -> void
 aweXpect.Options.CollectionMatchOptions.InAnyOrder() -> void
@@ -504,7 +508,7 @@ aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqual<TExpected>(T
 aweXpect.Options.ObjectEqualityOptions<TSubject>.Equals() -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExpectation(string! expectedExpression, aweXpect.Core.ExpectationGrammars grammars) -> string!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
-aweXpect.Options.ObjectEqualityOptions<TSubject>.GetItemExpectation(string! expected, string? itemNoun = null) -> string!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.GetItemExpectation(string! expected, string? itemNoun = null, string? comparison = null) -> string!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.MatchType -> aweXpect.Core.IObjectMatchType!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.ObjectEqualityOptions() -> void
 aweXpect.Options.ObjectEqualityOptions<TSubject>.SetMatchType(aweXpect.Core.IObjectMatchType! matchType) -> void

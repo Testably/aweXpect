@@ -211,9 +211,9 @@ internal static class ObjectEqualityOptions
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it} was {Formatter.Format(actual, FormattingOptions.Indented())}";
 
-		/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?, string?)" />
-		public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison);
+		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
+		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+			=> GetItemExpectation(expected, itemNoun, comparison);
 
 		#endregion
 	}
@@ -255,9 +255,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		=> MatchType.GetExpectation(expectedExpression, grammars);
 
 
-	/// <inheritdoc cref="IObjectMatchType.GetItemExpectation(string, string?, string?)" />
+	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 	public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
-		=> MatchType.GetItemExpectation(expected, itemNoun, comparison);
+		=> MatchType.PrependItemAndComparison(expected, itemNoun, comparison);
 
 	/// <inheritdoc />
 	public override string? ToString() => MatchType.ToString();

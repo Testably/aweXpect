@@ -36,5 +36,5 @@ public interface IObjectMatchType
 	///     A match type that only formats the value prepends the <paramref name="comparison" /> instead, so that a verb
 	///     which already names the item reads <c>has item equal to 3</c>.
 	/// </remarks>
-	string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null);
+	string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null);
 }

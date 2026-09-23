@@ -1,9 +1,1 @@
 #nullable enable
-*REMOVED*aweXpect.Core.IObjectMatchType.GetItemExpectation(string! expected, string? itemNoun = null) -> string!
-*REMOVED*aweXpect.Options.ObjectEqualityOptions<TSubject>.GetItemExpectation(string! expected, string? itemNoun = null) -> string!
-aweXpect.Core.IObjectMatchType.GetItemExpectation(string! expected, string? itemNoun = null, string? comparison = null) -> string!
-aweXpect.Core.ManualExpectationBuilder<TValue>.GetResultVerb() -> string!
-aweXpect.Formatting.FormattingOptions.TotalItemCount.get -> int?
-aweXpect.Formatting.FormattingOptions.TotalItemCount.init -> void
-aweXpect.Options.CollectionMatchOptions.GetNegatedResultVerb(string! it, aweXpect.Core.ExpectationGrammars grammars) -> string!
-aweXpect.Options.ObjectEqualityOptions<TSubject>.GetItemExpectation(string! expected, string? itemNoun = null, string? comparison = null) -> string!
