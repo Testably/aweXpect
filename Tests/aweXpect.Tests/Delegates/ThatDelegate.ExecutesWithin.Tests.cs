@@ -732,17 +732,18 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that @delegate
-					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             executes within 0:30,
+					             but it was canceled after 0:0*
+					             """).AsWildcard()
+					.Because("the 50 ms timeout must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 
 			[Fact]
@@ -750,19 +751,20 @@ public sealed partial class ThatDelegate
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await Task.Delay(60.Seconds(), token);
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that @delegate
-					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             executes within 0:30,
+					             but it was canceled after 0:0*
+					             """).AsWildcard()
+					.Because("the 50 ms timeout must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 		}
 
@@ -771,18 +773,19 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
 				CancellationToken cancelledToken = new(true);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithCancellation(cancelledToken);
+					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithCancellation(cancelledToken);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that @delegate
-					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             executes within 0:30,
+					             but it was canceled after 0:0*
+					             """).AsWildcard()
+					.Because("the already canceled token must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 
 			[Fact]
@@ -790,20 +793,21 @@ public sealed partial class ThatDelegate
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await Task.Delay(60.Seconds(), token);
 					return 1;
 				};
 				CancellationToken cancelledToken = new(true);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithCancellation(cancelledToken);
+					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithCancellation(cancelledToken);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that @delegate
-					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             executes within 0:30,
+					             but it was canceled after 0:0*
+					             """).AsWildcard()
+					.Because("the already canceled token must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 		}
 	}

@@ -420,7 +420,7 @@ public sealed class PluralMemberGrammar
 			public IEnumerable<T> Items => items;
 			public IReadOnlyDictionary<int, T> Lookup => Map;
 			public Dictionary<int, T> Map => Enumerable.Range(1, items.Length).ToDictionary(i => i, i => items[i - 1]);
-			public string Name => "foo";
+			public string Name { get; } = "foo";
 		}
 	}
 }
