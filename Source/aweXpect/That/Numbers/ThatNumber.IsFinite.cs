@@ -1,7 +1,9 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
@@ -121,100 +123,57 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	/// <summary>
-	///     Verifies that the subject is seen as finite (neither <see cref="float.IsInfinity" />
-	///     nor <see cref="float.IsNaN" />).
-	/// </summary>
-	public static AndOrResult<float, IThat<float>> IsFinite(
-		this IThat<float> subject)
+	private const string IsFiniteSummary = "Verifies that the subject is seen as finite.";
+	private const string IsNotFiniteSummary = "Verifies that the subject is not seen as finite.";
+	private const string FiniteRemarks = "Finite means neither infinity nor not a number (NaN).";
+	private const string NotFiniteRemarks = "Not finite means either infinity or not a number (NaN).";
+
+	[CreateCollectionExpectation("Is{Not}Finite", Factory = typeof(FloatingPointNumberFactory),
+		Summary = IsFiniteSummary, NegatedSummary = IsNotFiniteSummary,
+		Remarks = FiniteRemarks, NegatedRemarks = NotFiniteRemarks)]
+	internal static AndOrResult<TNumber, IThat<TNumber>> IsFiniteCore<TNumber>(
+		IThat<TNumber> subject,
+		FloatingPointTraits<TNumber> traits,
+		bool negated)
+		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsFloatFiniteConstraint(it, grammars)),
+				new IsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).InvertIf(negated)),
 			subject);
 
-	/// <summary>
-	///     Verifies that the subject is seen as finite (neither <see cref="double.IsInfinity" />
-	///     nor <see cref="double.IsNaN" />).
-	/// </summary>
-	public static AndOrResult<double, IThat<double>> IsFinite(
-		this IThat<double> subject)
+	[CreateCollectionExpectation("IsFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
+		Summary = IsFiniteSummary,
+		Remarks = "Finite means neither infinity nor not a number (NaN) nor <see langword=\"null\" />.")]
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
+		IThat<TNumber?> subject,
+		FloatingPointTraits<TNumber> traits)
+		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsDoubleFiniteConstraint(it, grammars)),
+				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite)),
 			subject);
 
-	/// <summary>
-	///     Verifies that the subject is seen as finite (neither <see cref="float.IsInfinity" /> nor
-	///     <see cref="float.IsNaN" /> nor <see langword="null" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<float, IThat<float?>> IsFinite(
-		this IThat<float?> subject)
+	[CreateCollectionExpectation("IsNotFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
+		Summary = IsNotFiniteSummary,
+		Remarks = "Not finite means either infinity or not a number (NaN) or <see langword=\"null\" />.")]
+	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFiniteForNullableCore<TNumber>(
+		IThat<TNumber?> subject,
+		FloatingPointTraits<TNumber> traits)
+		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFloatFiniteConstraint(it, grammars)),
+				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).Invert()),
 			subject);
 
-	/// <summary>
-	///     Verifies that the subject is seen as finite (neither <see cref="double.IsInfinity" /> nor
-	///     <see cref="double.IsNaN" /> nor <see langword="null" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<double, IThat<double?>> IsFinite(
-		this IThat<double?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsDoubleFiniteConstraint(it, grammars)),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as finite (either <see cref="float.IsInfinity" /> or
-	///     <see cref="float.IsNaN" />).
-	/// </summary>
-	public static AndOrResult<float, IThat<float>> IsNotFinite(
-		this IThat<float> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsFloatFiniteConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as finite (either <see cref="double.IsInfinity" /> or
-	///     <see cref="double.IsNaN" />).
-	/// </summary>
-	public static AndOrResult<double, IThat<double>> IsNotFinite(
-		this IThat<double> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsDoubleFiniteConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as finite (either <see cref="float.IsInfinity" /> or
-	///     <see cref="float.IsNaN" /> or <see langword="null" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<float?, IThat<float?>> IsNotFinite(
-		this IThat<float?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFloatFiniteConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as finite (either <see cref="double.IsInfinity" /> or
-	///     <see cref="double.IsNaN" /> or <see langword="null" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<double?, IThat<double?>> IsNotFinite(
-		this IThat<double?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsDoubleFiniteConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsFloatFiniteConstraint(
+	private sealed class IsFiniteConstraint<TNumber>(
 		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<float>(it, grammars),
-			IValueConstraint<float>
+		ExpectationGrammars grammars,
+		Func<TNumber, bool> isFinite)
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
+			IValueConstraint<TNumber>
+		where TNumber : struct
 	{
-		public ConstraintResult IsMetBy(float actual)
+		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = !float.IsInfinity(actual) && !float.IsNaN(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = isFinite(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -234,78 +193,18 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class IsDoubleFiniteConstraint(
+	private sealed class NullableIsFiniteConstraint<TNumber>(
 		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<double>(it, grammars),
-			IValueConstraint<double>
+		ExpectationGrammars grammars,
+		Func<TNumber, bool> isFinite)
+		: ConstraintResult.WithNotNullValue<TNumber?>(it, grammars),
+			IValueConstraint<TNumber?>
+		where TNumber : struct
 	{
-		public ConstraintResult IsMetBy(double actual)
+		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = !double.IsInfinity(actual) && !double.IsNaN(actual) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsFinite);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotFinite);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-
-	private sealed class NullableIsFloatFiniteConstraint(
-		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<float?>(it, grammars),
-			IValueConstraint<float?>
-	{
-		public ConstraintResult IsMetBy(float? actual)
-		{
-			Actual = actual;
-			Outcome = actual is not null && !float.IsInfinity(actual.Value) && !float.IsNaN(actual.Value)
-				? Outcome.Success
-				: Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsFinite);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotFinite);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-
-	private sealed class NullableIsDoubleFiniteConstraint(
-		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<double?>(it, grammars),
-			IValueConstraint<double?>
-	{
-		public ConstraintResult IsMetBy(double? actual)
-		{
-			Actual = actual;
-			Outcome = actual is not null && !double.IsInfinity(actual.Value) && !double.IsNaN(actual.Value)
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = actual is not null && isFinite(actual.Value) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

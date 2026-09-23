@@ -1,7 +1,9 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
@@ -107,85 +109,43 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	/// <summary>
-	///     Verifies that the subject is seen as not a number (<see cref="float.NaN" />).
-	/// </summary>
-	public static AndOrResult<float, IThat<float>> IsNaN(this IThat<float> subject)
+	private const string IsNaNSummary = "Verifies that the subject is seen as not a number.";
+	private const string IsNotNaNSummary = "Verifies that the subject is not seen as not a number.";
+
+	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory),
+		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary)]
+	internal static AndOrResult<TNumber, IThat<TNumber>> IsNaNCore<TNumber>(
+		IThat<TNumber> subject,
+		FloatingPointTraits<TNumber> traits,
+		bool negated)
+		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsFloatNaNConstraint(it, grammars)),
+				new IsNaNConstraint<TNumber>(it, grammars, traits.IsNaN).InvertIf(negated)),
 			subject);
 
-	/// <summary>
-	///     Verifies that the subject is seen as not a number (<see cref="double.NaN" />).
-	/// </summary>
-	public static AndOrResult<double, IThat<double>> IsNaN(this IThat<double> subject)
+	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
+		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary)]
+	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNaNForNullableCore<TNumber>(
+		IThat<TNumber?> subject,
+		FloatingPointTraits<TNumber> traits,
+		bool negated)
+		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsDoubleNaNConstraint(it, grammars)),
+				new NullableIsNaNConstraint<TNumber>(it, grammars, traits.IsNaN).InvertIf(negated)),
 			subject);
 
-	/// <summary>
-	///     Verifies that the subject is seen as not a number (not <see langword="null" /> and <see cref="float.NaN" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<float?, IThat<float?>> IsNaN(this IThat<float?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFloatNaNConstraint(it, grammars)),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is seen as not a number (not <see langword="null" /> and <see cref="double.NaN" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<double?, IThat<double?>> IsNaN(this IThat<double?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsDoubleNaNConstraint(it, grammars)),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as not a number (not <see cref="float.NaN" />).
-	/// </summary>
-	public static AndOrResult<float, IThat<float>> IsNotNaN(this IThat<float> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsFloatNaNConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as not a number (not <see cref="double.NaN" />).
-	/// </summary>
-	public static AndOrResult<double, IThat<double>> IsNotNaN(this IThat<double> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsDoubleNaNConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as not a number (<see langword="null" /> or not not <see cref="float.NaN" />
-	///     ).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<float?, IThat<float?>> IsNotNaN(this IThat<float?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFloatNaNConstraint(it, grammars).Invert()),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is not seen as not a number (<see langword="null" /> or not <see cref="double.NaN" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<double?, IThat<double?>> IsNotNaN(this IThat<double?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsDoubleNaNConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsFloatNaNConstraint(
+	private sealed class IsNaNConstraint<TNumber>(
 		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<float>(it, grammars),
-			IValueConstraint<float>
+		ExpectationGrammars grammars,
+		Func<TNumber, bool> isNaN)
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
+			IValueConstraint<TNumber>
+		where TNumber : struct
 	{
-		public ConstraintResult IsMetBy(float actual)
+		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = float.IsNaN(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = isNaN(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -205,74 +165,18 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class IsDoubleNaNConstraint(
+	private sealed class NullableIsNaNConstraint<TNumber>(
 		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<double>(it, grammars),
-			IValueConstraint<double>
+		ExpectationGrammars grammars,
+		Func<TNumber, bool> isNaN)
+		: ConstraintResult.WithNotNullValue<TNumber?>(it, grammars),
+			IValueConstraint<TNumber?>
+		where TNumber : struct
 	{
-		public ConstraintResult IsMetBy(double actual)
+		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = double.IsNaN(actual) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-
-	private sealed class NullableIsFloatNaNConstraint(
-		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<float?>(it, grammars),
-			IValueConstraint<float?>
-	{
-		public ConstraintResult IsMetBy(float? actual)
-		{
-			Actual = actual;
-			Outcome = actual is not null && float.IsNaN(actual.Value) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNaN);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(ExpectIsNotNaN);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-
-	private sealed class NullableIsDoubleNaNConstraint(
-		string it,
-		ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<double?>(it, grammars),
-			IValueConstraint<double?>
-	{
-		public ConstraintResult IsMetBy(double? actual)
-		{
-			Actual = actual;
-			Outcome = actual is not null && double.IsNaN(actual.Value) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual is not null && isNaN(actual.Value) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
