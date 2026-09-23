@@ -39,7 +39,7 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 			context.ReportDiagnostic(
 				Diagnostic.Create(Rules.AwaitExpectationRule, invocationOperation.Syntax.GetLocation()));
 		}
-		else if (IsInAsyncVoidLambda(invocationOperation))
+		else if (IsInAsyncVoidFunction(invocationOperation, context.ContainingSymbol))
 		{
 			context.ReportDiagnostic(
 				Diagnostic.Create(Rules.AsyncVoidExpectationRule, invocationOperation.Syntax.GetLocation()));
@@ -147,24 +147,28 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 	}
 
 	/// <summary>
-	///     An <see langword="async" /> lambda that is converted to a void-returning delegate returns before the
+	///     An <see langword="async" /> <see langword="void" /> method, local function or lambda returns before the
 	///     expectation is evaluated, so its failure surfaces after the test has completed.
 	/// </summary>
-	private static bool IsInAsyncVoidLambda(IOperation operation)
+	/// <remarks>
+	///     Only the nearest enclosing function matters, because a task-returning function is observed by its own caller.
+	/// </remarks>
+	private static bool IsInAsyncVoidFunction(IOperation operation, ISymbol containingSymbol)
 	{
 		for (IOperation? parent = operation.Parent; parent is not null; parent = parent.Parent)
 		{
-			if (parent is IAnonymousFunctionOperation anonymousFunction)
+			switch (parent)
 			{
-				return anonymousFunction.Symbol is { IsAsync: true, ReturnsVoid: true, };
-			}
-
-			if (parent is ILocalFunctionOperation or IMethodBodyOperation)
-			{
-				return false;
+				case IAnonymousFunctionOperation anonymousFunction:
+					return IsAsyncVoid(anonymousFunction.Symbol);
+				case ILocalFunctionOperation localFunction:
+					return IsAsyncVoid(localFunction.Symbol);
 			}
 		}
 
-		return false;
+		return IsAsyncVoid(containingSymbol);
 	}
+
+	private static bool IsAsyncVoid(ISymbol symbol)
+		=> symbol is IMethodSymbol { IsAsync: true, ReturnsVoid: true, };
 }
