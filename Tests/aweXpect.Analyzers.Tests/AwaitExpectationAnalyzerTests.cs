@@ -101,6 +101,25 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenAwaitedInAsyncLambdaReturningTask_InAsyncVoidMethod_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async void MyHandler(object sender, EventArgs e)
+			    {
+			        Func<bool, Task> check = async subject => await Expect.That(subject).IsTrue();
+			        await check(true);
+			    }
+			}
+			"""
+		);
+
+	[Fact]
 	public async Task WhenAwaitedInAsyncLambdaReturningTask_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -138,6 +157,103 @@ public class AwaitExpectationAnalyzerTests
 			""",
 			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
 				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncVoidLocalFunction_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        Check();
+			        await Task.Yield();
+
+			        async void Check() => await {|#0:Expect.That(subject)|}.IsTrue();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncVoidMethod_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async void MyHandler(object sender, EventArgs e)
+			    {
+			        var subject = true;
+			        await {|#0:Expect.That(subject)|}.IsTrue();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncVoidMethod_WithExpressionBody_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async void MyMethod(bool subject)
+			        => await {|#0:Expect.That(subject)|}.IsTrue();
+			}
+			""",
+			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInAsyncVoidPartialMethod_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+
+			public partial class MyClass
+			{
+			    partial void MyMethod(bool subject);
+
+			    async partial void MyMethod(bool subject)
+			        => await {|#0:Expect.That(subject)|}.IsTrue();
+			}
+			""",
+			Verifier.Diagnostic(Rules.AsyncVoidExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenAwaitedInLocalFunctionReturningTask_InAsyncVoidMethod_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async void MyHandler(object sender, EventArgs e)
+			    {
+			        await Check(true);
+
+			        async Task Check(bool subject) => await Expect.That(subject).IsTrue();
+			    }
+			}
+			"""
 		);
 
 	[Fact]
@@ -404,6 +520,21 @@ public class AwaitExpectationAnalyzerTests
 			    {
 			        {|#0:Expect.That(() => {})|}.DoesNotThrow().VerifySynchronously();
 			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenVerifiedInVoidMethod_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    public void MyMethod(bool subject)
+			        => Expect.That(subject).IsTrue().VerifySynchronously();
 			}
 			"""
 		);
