@@ -376,6 +376,40 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsADifferentString_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("baz");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item equal to "foo",
+					             but it contained it at least once
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+					             """)
+					.Because("treating the string as a sequence of characters would let the expectation pass vacuously");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
 				ArrayList subject = new() { 1, "a", null, };

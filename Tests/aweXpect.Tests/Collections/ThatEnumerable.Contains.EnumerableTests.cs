@@ -358,6 +358,54 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsADifferentString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).Contains("baz");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to "baz" at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+					             """)
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANullString_ShouldMatchTheNullItem()
+			{
+				IEnumerable subject = new ArrayList { "a", null, };
+				string? expected = null;
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("a null string is a single expected item, like the null literal");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAString_ShouldUseItAsSingleExpectedItem()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).Contains("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
 				IEnumerable subject = new ArrayList { 1, "a", null, };

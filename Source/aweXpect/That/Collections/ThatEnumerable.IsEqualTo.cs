@@ -96,6 +96,22 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
+	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1,
+		Summary =
+			"Verifies that the collection matches a collection of only the provided <paramref name=\"expected\" /> value.",
+		NegatedSummary =
+			"Verifies that the collection does not match a collection of only the provided <paramref name=\"unexpected\" /> value.",
+		Remarks = SingleValueRemarks + "\nA <see langword=\"null\" /> argument is still an expected collection that is\n" +
+		          "<see langword=\"null\" />, so that <c>IsEqualTo(null)</c> keeps its meaning.")]
+	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, string?>
+		IsEqualToSingleStringCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			string expectedExpression,
+			bool negated)
+		=> IsEqualToForEnumerableCore<string?>(subject, expected is null ? null! : [expected,],
+			expectedExpression, negated);
+
 	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -2,
 		Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks =

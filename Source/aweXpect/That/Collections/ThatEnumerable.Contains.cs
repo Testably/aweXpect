@@ -39,6 +39,10 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the value overload, so that a <see langword=\"null\" /> literal binds to the value\n" +
 		"overload instead of to this one.";
 
+	private const string UntypedCollectionItemRemarks =
+		"Without this overload a collection argument without an item type would bind to the item overload and be\n" +
+		"expected as a single item.";
+
 	private const string ContainsCollection =
 		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
 
@@ -143,6 +147,15 @@ public static partial class ThatEnumerable
 			quantifier,
 			options);
 	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SingleValueRemarks)]
+	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
+		ContainsSingleStringForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			bool negated)
+		=> ContainsItemForEnumerableCore(subject, expected, negated);
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -2,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem,
@@ -337,6 +350,18 @@ public static partial class ThatEnumerable
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks + "\n" + UntypedCollectionItemRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedCollectionItemRemarks)]
+	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+		ContainsForObjectsCore(
+			IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			string expectedExpression,
+			bool negated)
+		=> ContainsForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,

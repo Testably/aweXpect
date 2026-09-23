@@ -680,6 +680,11 @@ public sealed class GuaranteesNotNullTests
 			return CreateSingleElementArray(type.GetGenericArguments()[0]);
 		}
 
+		if (type == typeof(IEnumerable))
+		{
+			return CreateSingleElementArray(typeof(object));
+		}
+
 		if (typeof(Expression).IsAssignableFrom(type))
 		{
 			return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Expression<>)

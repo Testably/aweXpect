@@ -185,6 +185,39 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollection_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList unexpected = new() { 1, 2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollectionThatDiffers_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList unexpected = new() { 1, 3, };
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsAString_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["foo", "bar",]);

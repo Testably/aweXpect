@@ -103,6 +103,16 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Priority = -1, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
+		Remarks = UntypedCollectionRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
+		EndsWithForObjectsCore(
+			IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			bool negated)
+		=> EndsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, negated);
+
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
 		Summary = "Verifies that the collection ends with the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =

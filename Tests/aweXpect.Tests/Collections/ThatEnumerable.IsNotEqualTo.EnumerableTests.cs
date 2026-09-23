@@ -167,6 +167,44 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsADifferentString_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to collection "foo" in order,
+					             but it was
+
+					             Collection:
+					             [
+					               "foo"
+					             ]
+
+					             Expected:
+					             [
+					               "foo"
+					             ]
+					             """)
+					.Because("treating the string as a sequence of characters would let the expectation pass vacuously");
+			}
+
+			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);

@@ -31,6 +31,10 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the collection overload, so that a collection argument binds as the\n" +
 		"expected sequence instead of as a single expected item.";
 
+	private const string UntypedCollectionRemarks =
+		"Without this overload a collection argument without an item type would bind to the <c>params</c> overload\n" +
+		"and be expected as a single item. The priority only takes effect with C# 13 or later.";
+
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
@@ -109,6 +113,16 @@ public static partial class ThatEnumerable
 			subject,
 			options);
 	}
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
+		Remarks = UntypedCollectionRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
+		StartsWithForObjectsCore(
+			IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			bool negated)
+		=> StartsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, negated);
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
