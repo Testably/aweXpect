@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
+using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -2801,6 +2803,171 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsNotContainedIn(expected).Properly().InAnyOrder().IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class ImmutableWithExpectationsTests
+		{
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldFail()
+			{
+				ImmutableArray<int> subject = [3, 2,];
+				List<Action<IThat<int>>> unexpected =
+				[
+					x => x.IsEqualTo(1),
+					x => x.IsEqualTo(2),
+					x => x.IsEqualTo(3),
+				];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection unexpected in any order,
+					             but it was
+
+					             Collection:
+					             [3, 2]
+
+					             Expected:
+					             [an item that is equal to 1, an item that is equal to 2, an item that is equal to 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task Properly_WhenExpectedHasNoAdditionalItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(2),
+					]).Properly();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithAdditionalItem_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(2),
+					]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithContainedItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [2, 3,];
+				List<Action<IThat<int>>> unexpected =
+				[
+					x => x.IsEqualTo(1),
+					x => x.IsEqualTo(2),
+					x => x.IsGreaterThan(2),
+				];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection unexpected in order and contiguous,
+					             but it was
+
+					             Collection:
+					             [2, 3]
+
+					             Expected:
+					             [an item that is equal to 1, an item that is equal to 2, an item that is greater than 2]
+					             """);
+			}
+		}
+
+		public sealed class ImmutableWithPredicatesTests
+		{
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldFail()
+			{
+				ImmutableArray<int> subject = [3, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn([x => x == 1, x => x == 2, x => x == 3,]).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection [x => x == 1, x => x == 2, x => x == 3,] in any order,
+					             but it was
+
+					             Collection:
+					             [3, 2]
+
+					             Expected:
+					             [
+					               x => (x == 1),
+					               x => (x == 2),
+					               x => (x == 3)
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task Properly_WhenExpectedHasNoAdditionalItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn([x => x == 1, x => x == 2,]).Properly();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithAdditionalItem_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn([x => x == 1, x => x == 2,]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithContainedItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [2, 3,];
+				List<Expression<Func<int, bool>>> unexpected = [x => x == 1, x => x == 2, x => x > 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection unexpected in order and contiguous,
+					             but it was
+
+					             Collection:
+					             [2, 3]
+
+					             Expected:
+					             [
+					               x => (x == 1),
+					               x => (x == 2),
+					               x => (x > 2)
+					             ]
+					             """);
 			}
 		}
 	}

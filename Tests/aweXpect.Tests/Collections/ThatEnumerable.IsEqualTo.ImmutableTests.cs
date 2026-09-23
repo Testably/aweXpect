@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
+using aweXpect.Core;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -2185,6 +2188,160 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow()
 					.Because("a collection expression must keep the string options of the collection comparison");
+			}
+		}
+
+		public sealed class ImmutableWithExpectationsTests
+		{
+			[Fact]
+			public async Task IgnoringDuplicates_WithDuplicatesInSubject_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(2),
+						x => x.IsEqualTo(3),
+					]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [3, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(2),
+						x => x.IsEqualTo(3),
+					]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMatchingItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([
+						x => x.IsEqualTo(1),
+						x => x.IsGreaterThan(1),
+						x => x.IsEqualTo(3),
+					]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMissingItem_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+				List<Action<IThat<int>>> expected =
+				[
+					x => x.IsEqualTo(1),
+					x => x.IsEqualTo(2),
+					x => x.IsEqualTo(3),
+				];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 1 of 3 expected items: an item that is equal to 3
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [an item that is equal to 1, an item that is equal to 2, an item that is equal to 3]
+					             """);
+			}
+		}
+
+		public sealed class ImmutableWithPredicatesTests
+		{
+			[Fact]
+			public async Task IgnoringDuplicates_WithDuplicatesInSubject_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([x => x == 1, x => x == 2, x => x == 3,]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [3, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([x => x == 1, x => x == 2, x => x == 3,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAnEmptyCollectionExpression_ShouldBindToTheValueOverload()
+			{
+				ImmutableArray<int> subject = [];
+
+				ObjectCollectionMatchResult<ImmutableArray<int>, IThat<ImmutableArray<int>>, int> result =
+					That(subject).IsEqualTo([]);
+
+				async Task Act()
+					=> await result;
+
+				await That(Act).DoesNotThrow()
+					.Because("the predicate overload ranks below the value overloads for an empty collection expression");
+			}
+
+			[Fact]
+			public async Task WithMatchingItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([x => x == 1, x => x > 1, x => x == 3,]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMissingItem_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+				List<Expression<Func<int, bool>>> expected = [x => x == 1, x => x == 2, x => x == 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 1 of 3 expected items: x => (x == 3)
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               x => (x == 1),
+					               x => (x == 2),
+					               x => (x == 3)
+					             ]
+					             """);
 			}
 		}
 	}

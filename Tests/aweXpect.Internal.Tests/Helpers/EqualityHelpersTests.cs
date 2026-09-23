@@ -401,5 +401,192 @@ public sealed class EqualityHelpersTests
 				await That(hasKindDifference).IsTrue();
 			}
 		}
+
+		public sealed class DateTimeOffsetTests
+		{
+			[Fact]
+			public async Task WhenDifferenceExceedsTolerance_ShouldReturnFalse()
+			{
+				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
+				DateTimeOffset expected = value.AddTicks(1);
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsFalse();
+			}
+
+			[Theory]
+			[InlineData(1)]
+			[InlineData(-1)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
+			{
+				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
+				DateTimeOffset expected = value.AddSeconds(seconds);
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromSeconds(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				DateTimeOffset value = DateTimeOffset.MinValue;
+				DateTimeOffset? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Fact]
+			public async Task WhenOffsetsDiffer_ShouldCompareTheInstants()
+			{
+				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
+				DateTimeOffset expected = new(2026, 1, 1, 14, 0, 0, TimeSpan.FromHours(2));
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsTrue()
+					.Because("both values denote the same instant, like the equality of DateTimeOffset");
+			}
+		}
+
+		public sealed class NullableDateTimeOffsetTests
+		{
+			[Fact]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				DateTimeOffset? value = null;
+				DateTimeOffset? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsTrue();
+			}
+
+			[Theory]
+			[InlineData(1)]
+			[InlineData(-1)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
+			{
+				DateTimeOffset? value = new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
+				DateTimeOffset? expected = value.Value.AddSeconds(seconds);
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromSeconds(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				DateTimeOffset? value = DateTimeOffset.MinValue;
+				DateTimeOffset? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				DateTimeOffset? value = null;
+				DateTimeOffset? expected = DateTimeOffset.MinValue;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class TimeSpanTests
+		{
+			[Fact]
+			public async Task WhenDifferenceIsOutsideTheRangeOfATimeSpan_ShouldReturnFalse()
+			{
+				TimeSpan value = TimeSpan.MinValue;
+				TimeSpan expected = TimeSpan.MaxValue;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse()
+					.Because("the difference exceeds even the largest tolerance, without overflowing");
+			}
+
+			[Theory]
+			[InlineData(1)]
+			[InlineData(-1)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
+			{
+				TimeSpan value = TimeSpan.FromMinutes(1);
+				TimeSpan expected = value.Add(TimeSpan.FromSeconds(seconds));
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromSeconds(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				TimeSpan value = TimeSpan.Zero;
+				TimeSpan? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class NullableTimeSpanTests
+		{
+			[Fact]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				TimeSpan? value = null;
+				TimeSpan? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsTrue();
+			}
+
+			[Theory]
+			[InlineData(1)]
+			[InlineData(-1)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
+			{
+				TimeSpan? value = TimeSpan.FromMinutes(1);
+				TimeSpan? expected = value.Value.Add(TimeSpan.FromSeconds(seconds));
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromSeconds(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				TimeSpan? value = TimeSpan.Zero;
+				TimeSpan? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				TimeSpan? value = null;
+				TimeSpan? expected = TimeSpan.Zero;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
 	}
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
+using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -3872,6 +3874,217 @@ public sealed partial class ThatEnumerable
 					                "goo"
 					              ]
 					              """);
+			}
+		}
+
+		public sealed class ImmutableWithExpectationsTests
+		{
+			[Fact]
+			public async Task IgnoringDuplicates_WithDuplicatesInSubject_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [0, 1, 1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(2),
+					]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringInterspersedItems_WithItemsInBetween_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([
+						x => x.IsEqualTo(1),
+						x => x.IsEqualTo(3),
+					]).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([
+						x => x.IsEqualTo(3),
+						x => x.IsEqualTo(2),
+					]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Properly_WhenSubjectHasNoAdditionalItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+				List<Action<IThat<int>>> expected =
+				[
+					x => x.IsEqualTo(1),
+					x => x.IsEqualTo(2),
+				];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Properly();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected and at least one additional item in order and contiguous,
+					             but it did not contain any additional items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [an item that is equal to 1, an item that is equal to 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WithContainedItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([
+						x => x.IsEqualTo(2),
+						x => x.IsGreaterThan(2),
+					]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMissingItem_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				List<Action<IThat<int>>> expected =
+				[
+					x => x.IsEqualTo(3),
+					x => x.IsEqualTo(4),
+				];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it lacked 1 of 2 expected items: an item that is equal to 4
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [an item that is equal to 3, an item that is equal to 4]
+					             """);
+			}
+		}
+
+		public sealed class ImmutableWithPredicatesTests
+		{
+			[Fact]
+			public async Task IgnoringDuplicates_WithDuplicatesInSubject_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [0, 1, 1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([x => x == 1, x => x == 2,]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringInterspersedItems_WithItemsInBetween_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([x => x == 1, x => x == 3,]).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([x => x == 3, x => x == 2,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Properly_WhenSubjectHasNoAdditionalItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains([x => x == 1, x => x == 2,]).Properly();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [x => x == 1, x => x == 2,] and at least one additional item in order and contiguous,
+					             but it did not contain any additional items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               x => (x == 1),
+					               x => (x == 2)
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WithContainedItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains([x => x == 2, x => x > 2,]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMissingItem_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				List<Expression<Func<int, bool>>> expected = [x => x == 3, x => x == 4,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it lacked 1 of 2 expected items: x => (x == 4)
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [
+					               x => (x == 3),
+					               x => (x == 4)
+					             ]
+					             """);
 			}
 		}
 	}

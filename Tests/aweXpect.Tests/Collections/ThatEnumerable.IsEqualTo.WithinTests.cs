@@ -590,6 +590,290 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 			}
+
+			public sealed class DateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOffsetsDifferButTheInstantsLieWithinTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.UtcNow;
+					IEnumerable<DateTimeOffset> subject = [now, now.AddHours(1),];
+					IEnumerable<DateTimeOffset> expected =
+					[
+						now.ToOffset(TimeSpan.FromHours(2)).AddSeconds(30),
+						now.AddHours(1).ToOffset(TimeSpan.FromHours(-5)).AddSeconds(-30),
+					];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("the tolerance applies to the instants, as for a single DateTimeOffset");
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected in any order ± 1:00,
+						              but it
+						                contained item {Formatter.Format(now.AddHours(2))} at index 1 that was not expected and
+						                lacked 1 of 3 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
+
+						              Collection:
+						              [
+						                {Formatter.Format(now.AddHours(1))},
+						                {Formatter.Format(now.AddHours(2))},
+						                {Formatter.Format(now.AddHours(3))}
+						              ]
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
+				{
+					IEnumerable<DateTimeOffset> subject = [DateTimeOffset.Now,];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(subject).Within(-1.Minutes());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be non-negative").AsPrefix();
+				}
+			}
+
+			public sealed class NullableDateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject = [now.AddHours(1), now.AddHours(2),];
+					IEnumerable<DateTimeOffset> expected = [now.AddHours(1), now.AddHours(2).AddMinutes(-1),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected in any order ± 1:00,
+						              but it
+						                contained item {Formatter.Format(now.AddHours(2))} at index 2 that was not expected and
+						                lacked 1 of 4 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
+
+						              Collection:
+						              [
+						                {Formatter.Format(now.AddHours(1))},
+						                <null>,
+						                {Formatter.Format(now.AddHours(2))},
+						                {Formatter.Format(now.AddHours(3))}
+						              ]
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class TimeSpanTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(), 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan> expected = [61.Minutes(), 119.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(), 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan> expected = [61.Minutes(), 118.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected in any order ± 1:00,
+						             but it
+						               contained item 2:00:00 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 1:58:00
+
+						             Collection:
+						             [
+						               1:00:00,
+						               2:00:00,
+						               3:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:01:00,
+						               1:58:00,
+						               3:00:00
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsZero_ShouldRequireEqualElements()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(),];
+					IEnumerable<TimeSpan> expected = [3601.Seconds(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(TimeSpan.Zero);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected in order ± 0:00,
+						             but it
+						               contained item 1:00:00 at index 0 that was not expected and
+						               lacked the one expected item
+
+						             Collection:
+						             [
+						               1:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:00:01
+						             ]
+						             """);
+				}
+			}
+
+			public sealed class NullableTimeSpanTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), null, 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan?> expected = [61.Minutes(), null, 119.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), 2.Hours(),];
+					IEnumerable<TimeSpan> expected = [1.Hours(), 119.Minutes(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), null, 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan?> expected = [61.Minutes(), null, 118.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected in any order ± 1:00,
+						             but it
+						               contained item 2:00:00 at index 2 that was not expected and
+						               lacked 1 of 4 expected items: 1:58:00
+
+						             Collection:
+						             [
+						               1:00:00,
+						               <null>,
+						               2:00:00,
+						               3:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:01:00,
+						               <null>,
+						               1:58:00,
+						               3:00:00
+						             ]
+						             """);
+				}
+			}
 		}
 	}
 }
