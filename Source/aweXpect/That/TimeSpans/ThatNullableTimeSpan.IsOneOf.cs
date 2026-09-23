@@ -6,105 +6,43 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatNullableTimeSpan
 {
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> subject,
-		params TimeSpan?[] expected)
+	private const string IsOneOfSummary =
+		"Verifies that the subject is one of the <paramref name=\"expected\" /> values.";
+
+	private const string IsNotOneOfSummary =
+		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
+
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOfCore(
+		IThat<TimeSpan?> subject,
+		IEnumerable<TimeSpan?> expected,
+		bool negated)
 	{
-		expected.ThrowIfNull();
+		expected.ThrowIfNull(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance)),
+				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
 
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> subject,
-		IEnumerable<TimeSpan> expected)
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOfForValuesCore(
+		IThat<TimeSpan?> subject,
+		IEnumerable<TimeSpan> expected,
+		bool negated)
 	{
-		expected.ThrowIfNull();
-		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected.Cast<TimeSpan?>(), tolerance)),
-			subject,
-			tolerance);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> subject,
-		IEnumerable<TimeSpan?> expected)
-	{
-		expected.ThrowIfNull();
-		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance)),
-			subject,
-			tolerance);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> subject,
-		params TimeSpan?[] unexpected)
-	{
-		unexpected.ThrowIfNull();
-		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			subject,
-			tolerance);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> subject,
-		IEnumerable<TimeSpan> unexpected)
-	{
-		unexpected.ThrowIfNull();
-		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected.Cast<TimeSpan?>(), tolerance).Invert()),
-			subject,
-			tolerance);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> subject,
-		IEnumerable<TimeSpan?> unexpected)
-	{
-		unexpected.ThrowIfNull();
-		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			subject,
-			tolerance);
+		expected.ThrowIfNull(negated);
+		return IsOneOfCore(subject, expected.Cast<TimeSpan?>(), negated);
 	}
 
 	private sealed class IsOneOfConstraint(

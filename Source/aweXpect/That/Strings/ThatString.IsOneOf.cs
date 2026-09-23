@@ -6,71 +6,31 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatString
 {
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static StringEqualityTypeResult<string?, IThat<string?>> IsOneOf(
-		this IThat<string?> subject,
-		params string?[] expected)
-	{
-		expected.ThrowIfNull();
-		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expected, options)),
-			subject,
-			options);
-	}
+	private const string IsOneOfSummary =
+		"Verifies that the subject is one of the <paramref name=\"expected\" /> values.";
 
-	/// <summary>
-	///     Verifies that the subject is one of the <paramref name="expected" /> values.
-	/// </summary>
-	public static StringEqualityTypeResult<string?, IThat<string?>> IsOneOf(
-		this IThat<string?> subject,
-		IEnumerable<string?> expected)
-	{
-		expected.ThrowIfNull();
-		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expected, options)),
-			subject,
-			options);
-	}
+	private const string IsNotOneOfSummary =
+		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotOneOf(
-		this IThat<string?> subject,
-		params string?[] unexpected)
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static StringEqualityTypeResult<string?, IThat<string?>> IsOneOfCore(
+		IThat<string?> subject,
+		IEnumerable<string?> expected,
+		bool negated)
 	{
-		unexpected.ThrowIfNull();
+		expected.ThrowIfNull(negated);
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, unexpected, options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
-	/// </summary>
-	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotOneOf(
-		this IThat<string?> subject,
-		IEnumerable<string?> unexpected)
-	{
-		unexpected.ThrowIfNull();
-		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, unexpected, options).Invert()),
+				=> new IsOneOfConstraint(it, grammars, expected, options).InvertIf(negated)),
 			subject,
 			options);
 	}
