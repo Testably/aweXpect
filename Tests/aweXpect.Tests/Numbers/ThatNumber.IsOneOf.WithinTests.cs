@@ -595,6 +595,23 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForInt_WhenDifferenceOverflows_ShouldFail()
+			{
+				int subject = int.MaxValue;
+				int?[] expected = [int.MinValue,];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).Within(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(expected)} ± 1,
+					              but it was 2147483647
+					              """);
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task

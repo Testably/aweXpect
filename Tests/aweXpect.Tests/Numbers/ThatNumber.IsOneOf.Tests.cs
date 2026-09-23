@@ -1318,6 +1318,23 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
+			[Fact]
+			public async Task ForSbyte_WhenDifferenceOverflows_ShouldFail()
+			{
+				sbyte subject = sbyte.MaxValue;
+				sbyte?[] expected = [sbyte.MinValue,];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [-128],
+					             but it was 127
+					             """);
+			}
+
 			[Theory]
 			[InlineData((sbyte)1, (sbyte)2, (sbyte)3)]
 			[InlineData((sbyte)1, (sbyte)0, (sbyte)3)]
@@ -1389,6 +1406,23 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of [2, 3],
 					             but it was 1
+					             """);
+			}
+
+			[Fact]
+			public async Task ForShort_WhenDifferenceOverflows_ShouldFail()
+			{
+				short subject = short.MaxValue;
+				short?[] expected = [short.MinValue,];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [-32768],
+					             but it was 32767
 					             """);
 			}
 

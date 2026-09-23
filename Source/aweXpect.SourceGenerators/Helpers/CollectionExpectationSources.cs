@@ -34,8 +34,10 @@ internal static class CollectionExpectationSources
 			public string Name { get; }
 
 			/// <summary>
-			/// The class whose parameterless <c>Create*</c> methods define the supported element types. Each nullable
-			/// element additionally yields an overload taking a non-nullable expected collection.
+			/// The class whose parameterless static <c>Create*</c> methods define the supported element types. The
+			/// return type of each method fills the helper parameter of that generic type after the subject and the
+			/// expected one, and binds the type parameters the parameter names, in order. A nullable first type argument additionally yields an overload taking a
+			/// non-nullable expected collection.
 			/// </summary>
 			public Type? Factory { get; set; }
 

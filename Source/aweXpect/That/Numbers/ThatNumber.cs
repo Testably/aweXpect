@@ -116,17 +116,6 @@ public static partial class ThatNumber
 	}
 #else
 	/// <remarks>
-	///     Without generic math the difference has to be written out per type; only the floating point types can be
-	///     non-finite, and a non-finite value has no representable distance to a value it is not equal to.
-	/// </remarks>
-	private static float? CalculateDifference(float actual, float expected)
-		=> IsFinite(actual) && IsFinite(expected) ? Math.Abs(actual - expected) : null;
-
-	/// <inheritdoc cref="CalculateDifference(float, float)" />
-	private static double? CalculateDifference(double actual, double expected)
-		=> IsFinite(actual) && IsFinite(expected) ? Math.Abs(actual - expected) : null;
-
-	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
 	///     way round, so the magnitude with an explicit sign remains as fallback. When neither is representable, the
