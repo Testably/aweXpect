@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          225.96870646476745,
           252.4134638786316,
           255.2726117769877,
           250.21984214049118,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           363.00908807118736,
           361.90503655947174,
           364.719633324941,
-          342.6122290293376
+          342.6122290293376,
+          325.596474647522
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -454,7 +454,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -464,6 +463,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.98439423243204,
           245.66537170410157,
           235.88093944958277,
           246.26655778884887,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           257.86671654383343,
           255.29758116404216,
           289.4803840637207,
-          247.38781152452742
+          247.38781152452742,
+          248.4422721862793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          337191.46025390626,
           379574.25278320315,
           387609.7756998698,
           378122.3570963542,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           388905.0842285156,
           417273.9706624349,
           401476.0254952567,
-          401936.7021484375
+          401936.7021484375,
+          388872.50808919274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           542084,
-          542084,
           542085,
           542084,
           542085,
@@ -1072,6 +1071,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2124859.86640625,
           2772779.322135417,
           2597183.655048077,
           2691490.117745536,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2645361.366927083,
           2681513.6515625,
           2390517.840401786,
-          2591831.70859375
+          2591831.70859375,
+          2262712.8839285714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841613,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841631,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
       {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          437.89498167037965,
           488.20431429545084,
           454.63850116729736,
           490.7369747161865,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           595.5922500610352,
           576.7297085982102,
           619.2734131495158,
-          600.8308386484782
+          600.8308386484782,
+          546.1139658519199
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1360,
           1360,
           1360,
           1360,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1616,
+          1616,
           1616
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          497.8950578689575,
           506.7423930849348,
           470.06133098602294,
           463.4168947660006,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           492.16536572774254,
           476.6302760442098,
           550.5547884532383,
-          533.289975643158
+          533.289975643158,
+          479.4356617927551
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.99401931762696,
           278.1191467285156,
           266.18300444285074,
           266.84208323160806,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           359.2989922670218,
           365.8065305709839,
           375.70752239227295,
-          345.2246816953023
+          345.2246816953023,
+          355.953902498881
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2278,7 +2278,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2288,6 +2287,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.23169129689535,
           259.62245308558147,
           258.6352137883504,
           250.7939587434133,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           243.5403353055318,
           247.26381438573202,
           307.92783781687416,
-          254.87316243989127
+          254.87316243989127,
+          245.97134253184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          435.94404163360593,
           443.8239698750632,
           451.3546841825758,
           445.87982719285145,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           619.83853831658,
           635.7641259602138,
           666.1042346318562,
-          682.4214453379313
+          682.4214453379313,
+          630.2490653991699
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1128,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1220.9729890823364,
           1189.5603050231935,
           1137.5848183949788,
           1168.7655032231257,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1267.7719751993816,
           1192.4736000061034,
           1338.6829133351644,
-          1383.8630406697591
+          1383.8630406697591,
+          1141.61229964665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1348.5513350168865,
           1899.8832641601562,
           1915.4286098480225,
           1861.6818230946858,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2486.5309656583345,
           2295.0043688456217,
           2439.2200119018553,
-          2733.3808873494468
+          2733.3808873494468,
+          2565.799169413249
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2624,
           2624,
           2624,
           2624,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3808,
+          3808,
           3808
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1381.5317835126605,
           1378.2740264892577,
           1285.010301208496,
           1295.5762007395426,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1294.0115017524133,
           1326.4313330332438,
           1443.1622580119542,
-          1428.1928583780925
+          1428.1928583780925,
+          1297.2388025919597
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "152b45e4f0ba0b924d875ee41f1eca17cd96918b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
-        "message": "chore: rebalance the mutation slices and tighten the heap limit"
-      },
-      {
         "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
         "message": "chore: address Sonar findings (#1324)"
+      },
+      {
+        "sha": "7a806db0086a29d93176bc77768fc9dd446d5531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
+        "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
       }
     ],
     "labels": [
-      "152b45e4",
       "c038ec26",
       "525e912c",
       "17052f40",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "bb219e53",
       "d6b2af7c",
       "4b77c45c",
-      "de2b5ef6"
+      "de2b5ef6",
+      "7a806db0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1795.5128047943115,
           2525.565395061786,
           2612.7643934396597,
           2556.625624847412,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2947.9482546488443,
           2892.8446628863994,
           2952.2586067744664,
-          3135.0400232950847
+          3135.0400232950847,
+          3061.9932332720077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2816,
           2816,
           2816,
           2816,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3808,
+          3808,
           3808
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16737.171134440105,
           27292.448457845054,
           26717.905848185223,
           27086.83559526716,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26771.651077270508,
           27610.790985107422,
           24906.509231567383,
-          26194.006308419364
+          26194.006308419364,
+          19821.484313964844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
