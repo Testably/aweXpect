@@ -20,10 +20,26 @@ public static partial class ThatEnumerable
 	private const string DoesNotMatch =
 		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection.";
 
+	private const string MatchesPredicates =
+		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.";
+
+	private const string DoesNotMatchPredicates =
+		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.";
+
+	private const string MatchesExpectations =
+		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.";
+
+	private const string DoesNotMatchExpectations =
+		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.";
+
 	private const string SameCollectionTypeRemarks =
 		"Without this overload an <see cref=\"System.Collections.Immutable.ImmutableArray{T}\" /> or a collection\n" +
 		"expression would bind to the equality expectation for structs, which compares the backing arrays by\n" +
 		"reference.";
+
+	private const string BelowCollectionPriorityRemarks =
+		"The priority is below the one of the value overloads, so that an empty collection expression binds to them\n" +
+		"instead of to this one.";
 
 	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -153,9 +169,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Is{Not}EqualTo",
-		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.",
-		NegatedSummary =
-			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.")]
+		Summary = MatchesPredicates, NegatedSummary = DoesNotMatchPredicates)]
 	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromPredicatesCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -168,7 +182,8 @@ public static partial class ThatEnumerable
 		return new CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -177,9 +192,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Is{Not}EqualTo",
-		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.",
-		NegatedSummary =
-			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.")]
+		Summary = MatchesExpectations, NegatedSummary = DoesNotMatchExpectations)]
 	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromExpectationsCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -192,7 +205,8 @@ public static partial class ThatEnumerable
 		return new CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -280,6 +294,56 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
+			matchOptions);
+	}
+
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, Priority = -1,
+		Summary = MatchesPredicates, NegatedSummary = DoesNotMatchPredicates,
+		Remarks = BelowCollectionPriorityRemarks)]
+	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		IsEqualToFromPredicatesForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				IsEqualToFromPredicateConstraint<TCollection, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			matchOptions);
+	}
+
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, Priority = -1,
+		Summary = MatchesExpectations, NegatedSummary = DoesNotMatchExpectations,
+		Remarks = BelowCollectionPriorityRemarks)]
+	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		IsEqualToFromExpectationsForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
 			matchOptions);
 	}
 }

@@ -172,6 +172,43 @@ internal static class EqualityHelpers
 		return !hasKindDifference && difference <= tolerance && difference >= tolerance.Negate();
 	}
 
+	public static bool IsConsideredEqualTo(this DateTimeOffset actual, DateTimeOffset? expected, TimeSpan tolerance)
+	{
+		TimeSpan? difference = actual - expected;
+		return difference <= tolerance && difference >= tolerance.Negate();
+	}
+
+	public static bool IsConsideredEqualTo(this DateTimeOffset? actual, DateTimeOffset? expected, TimeSpan tolerance)
+	{
+		if (actual is null && expected is null)
+		{
+			return true;
+		}
+
+		TimeSpan? difference = actual - expected;
+		return difference <= tolerance && difference >= tolerance.Negate();
+	}
+
+	/// <remarks>
+	///     Compares the shifted values instead of the difference, because the difference between two
+	///     <see cref="TimeSpan" /> values can exceed the range of a <see cref="TimeSpan" />.
+	/// </remarks>
+	public static bool IsConsideredEqualTo(this TimeSpan actual, TimeSpan? expected, TimeSpan tolerance)
+		=> expected is not null &&
+		   actual.ShiftedTicks(tolerance) >= expected.Value.Ticks &&
+		   expected.Value.ShiftedTicks(tolerance) >= actual.Ticks;
+
+	/// <inheritdoc cref="IsConsideredEqualTo(TimeSpan, TimeSpan?, TimeSpan)" />
+	public static bool IsConsideredEqualTo(this TimeSpan? actual, TimeSpan? expected, TimeSpan tolerance)
+	{
+		if (actual is null || expected is null)
+		{
+			return actual is null && expected is null;
+		}
+
+		return actual.Value.IsConsideredEqualTo(expected, tolerance);
+	}
+
 	/// <summary>
 	///     Checks whether <paramref name="actual" /> and <paramref name="other" /> can be compared at all: a
 	///     <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> value denote different instants for

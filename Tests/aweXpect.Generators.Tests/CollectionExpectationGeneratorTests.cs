@@ -349,6 +349,35 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task PerSubject_WhenTheCollectionEnumeratesAnElement_ShouldTakeItForTheKind()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					IEnumerable<Func<TItem, bool>> expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<TItem>> subject")
+			.Once()
+			.Because("the element of a collection of predicates is not the first type argument of the expected type");
+		await That(result.Generated).DoesNotContain("ImmutableArray<global::System.Func");
+		await That(result.Generated)
+			.Contains("IsEqualToCore<global::System.Collections.Immutable.ImmutableArray<TItem>, TItem>(").Once();
+	}
+
+	[Fact]
 	public async Task WithParams_ShouldTakeAnArrayAndPassNoExpression()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
