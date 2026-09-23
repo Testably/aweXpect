@@ -4056,6 +4056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -4734,7 +4740,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -5416,7 +5423,8 @@ window.BENCHMARK_DATA = {
           368.4129589966365,
           363.00908807118736,
           361.90503655947174,
-          364.719633324941
+          364.719633324941,
+          342.6122290293376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6099,6 +6107,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6793,7 +6802,8 @@ window.BENCHMARK_DATA = {
           267.5783852577209,
           257.86671654383343,
           255.29758116404216,
-          289.4803840637207
+          289.4803840637207,
+          247.38781152452742
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6986,6 +6996,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11088,6 +11099,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -11689,7 +11706,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -12294,7 +12312,8 @@ window.BENCHMARK_DATA = {
           424315.381766183,
           388905.0842285156,
           417273.9706624349,
-          401476.0254952567
+          401476.0254952567,
+          401936.7021484375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12900,6 +12919,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13517,7 +13537,8 @@ window.BENCHMARK_DATA = {
           2780040.244140625,
           2645361.366927083,
           2681513.6515625,
-          2390517.840401786
+          2390517.840401786,
+          2591831.70859375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14127,7 +14148,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841648,
-          4841631
+          4841631,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18197,6 +18219,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -18875,7 +18903,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -19557,7 +19586,8 @@ window.BENCHMARK_DATA = {
           602.0566573460897,
           595.5922500610352,
           576.7297085982102,
-          619.2734131495158
+          619.2734131495158,
+          600.8308386484782
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20244,6 +20274,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616
         ],
         "borderColor": "#63A2AC",
@@ -20934,7 +20965,8 @@ window.BENCHMARK_DATA = {
           521.689395904541,
           492.16536572774254,
           476.6302760442098,
-          550.5547884532383
+          550.5547884532383,
+          533.289975643158
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21127,6 +21159,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25691,6 +25724,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -26369,7 +26408,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -27051,7 +27091,8 @@ window.BENCHMARK_DATA = {
           389.3644967812758,
           359.2989922670218,
           365.8065305709839,
-          375.70752239227295
+          375.70752239227295,
+          345.2246816953023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27734,6 +27775,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28428,7 +28470,8 @@ window.BENCHMARK_DATA = {
           272.830256430308,
           243.5403353055318,
           247.26381438573202,
-          307.92783781687416
+          307.92783781687416,
+          254.87316243989127
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28621,6 +28664,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33185,6 +33229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -33863,7 +33913,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -34545,7 +34596,8 @@ window.BENCHMARK_DATA = {
           652.5879485448202,
           619.83853831658,
           635.7641259602138,
-          666.1042346318562
+          666.1042346318562,
+          682.4214453379313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35228,6 +35280,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -35922,7 +35975,8 @@ window.BENCHMARK_DATA = {
           1269.5300566809517,
           1267.7719751993816,
           1192.4736000061034,
-          1338.6829133351644
+          1338.6829133351644,
+          1383.8630406697591
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36351,6 +36405,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40679,6 +40734,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -41357,7 +41418,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -42039,7 +42101,8 @@ window.BENCHMARK_DATA = {
           2495.8874727884927,
           2486.5309656583345,
           2295.0043688456217,
-          2439.2200119018553
+          2439.2200119018553,
+          2733.3808873494468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42726,6 +42789,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808
         ],
         "borderColor": "#63A2AC",
@@ -43416,7 +43480,8 @@ window.BENCHMARK_DATA = {
           1387.0839973177228,
           1294.0115017524133,
           1326.4313330332438,
-          1443.1622580119542
+          1443.1622580119542,
+          1428.1928583780925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43609,6 +43674,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48173,6 +48239,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 20:11:21 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.7 (#1325)"
+      },
+      {
+        "sha": "de2b5ef68b3b57903f77058a3b97602fcdb7ab64",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 20:11:43 2026 \u002B0200",
+        "message": "chore: address Sonar findings (#1324)"
       }
     ],
     "labels": [
@@ -48851,7 +48923,8 @@ window.BENCHMARK_DATA = {
       "4272ae0f",
       "bb219e53",
       "d6b2af7c",
-      "4b77c45c"
+      "4b77c45c",
+      "de2b5ef6"
     ],
     "datasets": [
       {
@@ -49533,7 +49606,8 @@ window.BENCHMARK_DATA = {
           3027.6792368570964,
           2947.9482546488443,
           2892.8446628863994,
-          2952.2586067744664
+          2952.2586067744664,
+          3135.0400232950847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50220,6 +50294,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808
         ],
         "borderColor": "#63A2AC",
@@ -50910,7 +50985,8 @@ window.BENCHMARK_DATA = {
           27810.89567871094,
           26771.651077270508,
           27610.790985107422,
-          24906.509231567383
+          24906.509231567383,
+          26194.006308419364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51597,7 +51673,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
