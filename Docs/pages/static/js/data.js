@@ -4068,6 +4068,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -4748,7 +4754,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -5432,7 +5439,8 @@ window.BENCHMARK_DATA = {
           361.90503655947174,
           364.719633324941,
           342.6122290293376,
-          325.596474647522
+          325.596474647522,
+          332.7308561007182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6115,6 +6123,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6813,7 +6822,8 @@ window.BENCHMARK_DATA = {
           255.29758116404216,
           289.4803840637207,
           247.38781152452742,
-          248.4422721862793
+          248.4422721862793,
+          246.51306128501892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7006,6 +7016,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11122,6 +11133,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -11725,7 +11742,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -12332,7 +12350,8 @@ window.BENCHMARK_DATA = {
           417273.9706624349,
           401476.0254952567,
           401936.7021484375,
-          388872.50808919274
+          388872.50808919274,
+          405945.89314152644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12938,6 +12957,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13559,7 +13579,8 @@ window.BENCHMARK_DATA = {
           2681513.6515625,
           2390517.840401786,
           2591831.70859375,
-          2262712.8839285714
+          2262712.8839285714,
+          2457022.338020833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14170,6 +14191,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841631,
+          4841651,
           4841651,
           4841651
         ],
@@ -18253,6 +18275,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -18933,7 +18961,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -19617,7 +19646,8 @@ window.BENCHMARK_DATA = {
           576.7297085982102,
           619.2734131495158,
           600.8308386484782,
-          546.1139658519199
+          546.1139658519199,
+          527.4140539169312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20304,6 +20334,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616
@@ -20998,7 +21029,8 @@ window.BENCHMARK_DATA = {
           476.6302760442098,
           550.5547884532383,
           533.289975643158,
-          479.4356617927551
+          479.4356617927551,
+          478.51592718760173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21191,6 +21223,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25769,6 +25802,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -26449,7 +26488,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -27133,7 +27173,8 @@ window.BENCHMARK_DATA = {
           365.8065305709839,
           375.70752239227295,
           345.2246816953023,
-          355.953902498881
+          355.953902498881,
+          334.57904758453367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27816,6 +27857,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28514,7 +28556,8 @@ window.BENCHMARK_DATA = {
           247.26381438573202,
           307.92783781687416,
           254.87316243989127,
-          245.97134253184
+          245.97134253184,
+          233.82022239367168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28707,6 +28750,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33285,6 +33329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -33965,7 +34015,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -34649,7 +34700,8 @@ window.BENCHMARK_DATA = {
           635.7641259602138,
           666.1042346318562,
           682.4214453379313,
-          630.2490653991699
+          630.2490653991699,
+          603.0432953516643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35332,6 +35384,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -36030,7 +36083,8 @@ window.BENCHMARK_DATA = {
           1192.4736000061034,
           1338.6829133351644,
           1383.8630406697591,
-          1141.61229964665
+          1141.61229964665,
+          1135.6289141337077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36459,6 +36513,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40801,6 +40856,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -41481,7 +41542,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -42165,7 +42227,8 @@ window.BENCHMARK_DATA = {
           2295.0043688456217,
           2439.2200119018553,
           2733.3808873494468,
-          2565.799169413249
+          2565.799169413249,
+          2489.40236554827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42852,6 +42915,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808
@@ -43546,7 +43610,8 @@ window.BENCHMARK_DATA = {
           1326.4313330332438,
           1443.1622580119542,
           1428.1928583780925,
-          1297.2388025919597
+          1297.2388025919597,
+          1323.1875149653508
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43739,6 +43804,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48317,6 +48383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 21:04:54 2026 \u002B0200",
         "message": "fix!: drop the unused grammars parameter from quantifier factories and reject vacuous success on non-generic collections (#1327)"
+      },
+      {
+        "sha": "8e8be742e5ef2658ed69b23fae6c70d65bbf3b9c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 23 21:05:21 2026 \u002B0200",
+        "message": "fix: warn about expectations in async void methods and local functions (#1326)"
       }
     ],
     "labels": [
@@ -48997,7 +49069,8 @@ window.BENCHMARK_DATA = {
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
-      "7a806db0"
+      "7a806db0",
+      "8e8be742"
     ],
     "datasets": [
       {
@@ -49681,7 +49754,8 @@ window.BENCHMARK_DATA = {
           2892.8446628863994,
           2952.2586067744664,
           3135.0400232950847,
-          3061.9932332720077
+          3061.9932332720077,
+          3075.296388772818
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50368,6 +50442,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808
@@ -51062,7 +51137,8 @@ window.BENCHMARK_DATA = {
           27610.790985107422,
           24906.509231567383,
           26194.006308419364,
-          19821.484313964844
+          19821.484313964844,
+          25226.168403038613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51750,6 +51826,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
