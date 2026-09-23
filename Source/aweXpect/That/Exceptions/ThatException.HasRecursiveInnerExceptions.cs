@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -17,9 +18,7 @@ public static partial class ThatException
 	///     Recursively applies the expectations on the <see cref="Exception.InnerException" /> (if not <see langword="null" />
 	///     and for <see cref="AggregateException" /> also on the <see cref="AggregateException.InnerExceptions" />.
 	///     <para />
-	///     An exception without any inner exception fails a quantifier that an empty collection satisfies without
-	///     stating anything (<c>All()</c>), but still satisfies the quantifiers that state an upper bound
-	///     (e.g. <c>None()</c> or <c>AtMost(2)</c>).
+	///     The exception must have at least one inner exception.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasRecursiveInnerExceptions(
@@ -46,7 +45,15 @@ public static partial class ThatException
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
+			if (actual.GetInnerExceptions().Any())
+			{
+				Outcome = Outcome.Success;
+				return this;
+			}
+
+			// Expectations on missing inner exceptions could only repeat that there is nothing to inspect.
+			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
+			Outcome = Outcome.Failure;
 			return this;
 		}
 
@@ -67,10 +74,7 @@ public static partial class ThatException
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			stringBuilder.Append(Actual!.FormatForMessage(indentation));
-		}
+			=> stringBuilder.Append(It).Append(" had no inner exceptions");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
