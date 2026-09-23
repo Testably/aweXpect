@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches more than <paramref name="minimum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier MoreThan(int minimum,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier MoreThan(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		return new MoreThanQuantifier(minimum);

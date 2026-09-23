@@ -7,6 +7,46 @@ namespace aweXpect.Internal.Tests.ThatTests.Collections;
 public class RejectVacuousSuccessTests
 {
 	[Fact]
+	public async Task AreEqualTo_WhenEmptyEnumerableRejectsVacuousSuccess_ShouldFail()
+	{
+		IEnumerable subject = new NoItems();
+
+		async Task Act()
+			=> await That(subject).All().AreEqualTo(1);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items,
+			             but none of 0 were
+
+			             Collection:
+			             []
+			             """)
+			.Because("a non-generic collection that rejects a vacuous success must fail `All()` while it is empty");
+	}
+
+	[Fact]
+	public async Task ComplyWith_WhenEmptyEnumerableRejectsVacuousSuccess_ShouldFail()
+	{
+		IEnumerable subject = new NoItems();
+
+		async Task Act()
+			=> await That(subject).All().ComplyWith(it => it.IsEqualTo(1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items,
+			             but none of 0 were
+
+			             Collection:
+			             []
+			             """)
+			.Because("a non-generic collection that rejects a vacuous success must fail `All()` while it is empty");
+	}
+
+	[Fact]
 	public async Task ComplyWith_WhenEmptyStringCollectionRejectsVacuousSuccess_ShouldFail()
 	{
 		IEnumerable<string?> subject = new NoStrings();
@@ -24,6 +64,34 @@ public class RejectVacuousSuccessTests
 			             []
 			             """)
 			.Because("a collection that rejects a vacuous success must fail `All()` while it is empty");
+	}
+
+	[Fact]
+	public async Task Satisfy_WhenEmptyEnumerableRejectsVacuousSuccess_ShouldFail()
+	{
+		IEnumerable subject = new NoItems();
+
+		async Task Act()
+			=> await That(subject).All().Satisfy(_ => true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             satisfies _ => true for all items,
+			             but none of 0 did
+
+			             Collection:
+			             []
+			             """)
+			.Because("a non-generic collection that rejects a vacuous success must fail `All()` while it is empty");
+	}
+
+	private sealed class NoItems : IEnumerable, IRejectVacuousSuccess
+	{
+		public IEnumerator GetEnumerator()
+		{
+			yield break;
+		}
 	}
 
 	/// <remarks>

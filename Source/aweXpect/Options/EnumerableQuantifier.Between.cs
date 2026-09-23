@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches between <paramref name="minimum" /> and <paramref name="maximum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier Between(int minimum, int maximum,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier Between(int minimum, int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		ThrowHelper.ThrowIfCountIsNegative(maximum);

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -19,7 +18,7 @@ public static partial class ThatEnumerable
 	public static Elements<TItem> MoreThan<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.MoreThan(minimum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
 
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
@@ -28,7 +27,7 @@ public static partial class ThatEnumerable
 	public static Elements MoreThan(
 		this IThat<IEnumerable<string?>?> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.MoreThan(minimum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
 
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
@@ -38,7 +37,7 @@ public static partial class ThatEnumerable
 	public static ElementsForEnumerable<IEnumerable?> MoreThan(
 		this IThat<IEnumerable?> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.MoreThan(minimum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -47,7 +46,7 @@ public static partial class ThatEnumerable
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> MoreThan<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.MoreThan(minimum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -57,6 +56,6 @@ public static partial class ThatEnumerable
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> MoreThan(
 		this IThat<ImmutableArray<string?>> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.MoreThan(minimum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
 #endif
 }
