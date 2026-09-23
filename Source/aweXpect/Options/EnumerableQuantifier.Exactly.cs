@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches exactly <paramref name="expected" /> items.
 	/// </summary>
-	public static EnumerableQuantifier Exactly(int expected,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier Exactly(int expected)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(expected);
 		return new ExactlyQuantifier(expected);

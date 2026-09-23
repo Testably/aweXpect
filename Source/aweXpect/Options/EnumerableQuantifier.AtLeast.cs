@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches at least <paramref name="minimum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier AtLeast(int minimum,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier AtLeast(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		return new AtLeastQuantifier(minimum);

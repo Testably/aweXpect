@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -18,7 +17,7 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static Elements<TItem> Any<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtLeast(1));
 
 	/// <summary>
 	///     Verifies that in the collection any (at least one) item…
@@ -26,7 +25,7 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static Elements Any(
 		this IThat<IEnumerable<string?>?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtLeast(1));
 
 	/// <summary>
 	///     Verifies that in the collection any (at least one) item…
@@ -35,7 +34,7 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ElementsForEnumerable<IEnumerable?> Any(
 		this IThat<IEnumerable?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtLeast(1));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -43,7 +42,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> Any<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtLeast(1));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -52,6 +51,6 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> Any(
 		this IThat<ImmutableArray<string?>> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtLeast(1));
 #endif
 }

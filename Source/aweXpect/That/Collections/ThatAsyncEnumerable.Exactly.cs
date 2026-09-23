@@ -1,7 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using aweXpect.Core;
-using aweXpect.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect;
@@ -16,7 +15,7 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int expected)
 		=> new(subject,
-			EnumerableQuantifier.Exactly(expected, subject.Get().ExpectationBuilder.ExpectationGrammars));
+			EnumerableQuantifier.Exactly(expected));
 
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
@@ -26,6 +25,6 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<string?>?> subject,
 		int expected)
 		=> new(subject,
-			EnumerableQuantifier.Exactly(expected, subject.Get().ExpectationBuilder.ExpectationGrammars));
+			EnumerableQuantifier.Exactly(expected));
 }
 #endif

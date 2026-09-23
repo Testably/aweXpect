@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -19,7 +18,7 @@ public static partial class ThatEnumerable
 	public static Elements<TItem> AtMost<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.AtMost(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtMost(maximum));
 
 	/// <summary>
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
@@ -28,7 +27,7 @@ public static partial class ThatEnumerable
 	public static Elements AtMost(
 		this IThat<IEnumerable<string?>?> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.AtMost(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtMost(maximum));
 
 	/// <summary>
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
@@ -38,7 +37,7 @@ public static partial class ThatEnumerable
 	public static ElementsForEnumerable<IEnumerable?> AtMost(
 		this IThat<IEnumerable?> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.AtMost(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtMost(maximum));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -47,7 +46,7 @@ public static partial class ThatEnumerable
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> AtMost<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.AtMost(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtMost(maximum));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -57,6 +56,6 @@ public static partial class ThatEnumerable
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> AtMost(
 		this IThat<ImmutableArray<string?>> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.AtMost(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
+		=> new(subject, EnumerableQuantifier.AtMost(maximum));
 #endif
 }

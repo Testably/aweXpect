@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches at most <paramref name="maximum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier AtMost(int maximum,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier AtMost(int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
 		return new AtMostQuantifier(maximum);

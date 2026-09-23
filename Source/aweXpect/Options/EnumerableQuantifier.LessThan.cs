@@ -9,8 +9,7 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches fewer than <paramref name="maximum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier LessThan(int maximum,
-		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
+	public static EnumerableQuantifier LessThan(int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
 		return new LessThanQuantifier(maximum);

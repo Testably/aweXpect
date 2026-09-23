@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -21,7 +20,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject,
 		int minimum)
 		=> new(maximum => new Elements<TItem>(subject,
-			EnumerableQuantifier.Between(minimum, maximum, subject.Get().ExpectationBuilder.ExpectationGrammars)));
+			EnumerableQuantifier.Between(minimum, maximum)));
 
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
@@ -31,7 +30,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<string?>?> subject,
 		int minimum)
 		=> new(maximum => new Elements(subject,
-			EnumerableQuantifier.Between(minimum, maximum, subject.Get().ExpectationBuilder.ExpectationGrammars)));
+			EnumerableQuantifier.Between(minimum, maximum)));
 
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
@@ -42,7 +41,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject,
 		int minimum)
 		=> new(maximum => new ElementsForEnumerable<IEnumerable?>(subject,
-			EnumerableQuantifier.Between(minimum, maximum, subject.Get().ExpectationBuilder.ExpectationGrammars)));
+			EnumerableQuantifier.Between(minimum, maximum)));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -52,7 +51,7 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
 		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<TItem>, TItem>(subject,
-			EnumerableQuantifier.Between(minimum, maximum, subject.Get().ExpectationBuilder.ExpectationGrammars)));
+			EnumerableQuantifier.Between(minimum, maximum)));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -63,6 +62,6 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<string?>> subject,
 		int minimum)
 		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<string?>>(subject,
-			EnumerableQuantifier.Between(minimum, maximum, subject.Get().ExpectationBuilder.ExpectationGrammars)));
+			EnumerableQuantifier.Between(minimum, maximum)));
 #endif
 }
