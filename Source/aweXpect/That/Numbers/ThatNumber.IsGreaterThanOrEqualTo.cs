@@ -5,6 +5,7 @@ using aweXpect.Options;
 using aweXpect.Results;
 #if !NET8_0_OR_GREATER
 using System;
+using aweXpect.SourceGenerators;
 #endif
 
 namespace aweXpect;
@@ -125,347 +126,36 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<byte, IThat<byte>> IsGreaterThanOrEqualTo(
-		this IThat<byte> subject,
-		byte? expected)
-	{
-		NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
-		return new NumberToleranceResult<byte, IThat<byte>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<byte>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
+	private const string IsGreaterThanOrEqualToSummary =
+		"Verifies that the subject is greater than or equal to the <paramref name=\"expected\" /> value.";
 
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<sbyte, IThat<sbyte>> IsGreaterThanOrEqualTo(
-		this IThat<sbyte> subject,
-		sbyte? expected)
-	{
-		NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
-		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<sbyte>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<short, IThat<short>> IsGreaterThanOrEqualTo(
-		this IThat<short> subject,
-		short? expected)
-	{
-		NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
-		return new NumberToleranceResult<short, IThat<short>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<short>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<ushort, IThat<ushort>> IsGreaterThanOrEqualTo(
-		this IThat<ushort> subject,
-		ushort? expected)
-	{
-		NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
-		return new NumberToleranceResult<ushort, IThat<ushort>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<ushort>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<int, IThat<int>> IsGreaterThanOrEqualTo(
-		this IThat<int> subject,
-		int? expected)
-	{
-		NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NumberToleranceResult<int, IThat<int>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<int>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<uint, IThat<uint>> IsGreaterThanOrEqualTo(
-		this IThat<uint> subject,
-		uint? expected)
-	{
-		NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NumberToleranceResult<uint, IThat<uint>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<uint>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<long, IThat<long>> IsGreaterThanOrEqualTo(
-		this IThat<long> subject,
-		long? expected)
-	{
-		NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NumberToleranceResult<long, IThat<long>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<long>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<ulong, IThat<ulong>> IsGreaterThanOrEqualTo(
-		this IThat<ulong> subject,
-		ulong? expected)
-	{
-		NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NumberToleranceResult<ulong, IThat<ulong>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<ulong>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<float, IThat<float>> IsGreaterThanOrEqualTo(
-		this IThat<float> subject,
-		float? expected)
+	[CreateCollectionExpectation("IsGreaterThanOrEqualTo", Factory = typeof(NumberToleranceFactory), Summary = IsGreaterThanOrEqualToSummary)]
+	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsGreaterThanOrEqualToCore<TNumber>(
+		IThat<TNumber> subject,
+		TNumber? expected,
+		NumberTolerance<TNumber> options)
+		where TNumber : struct, IComparable<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		NumberTolerance<float> options = new(CalculateDifference);
-		return new NumberToleranceResult<float, IThat<float>>(
+		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<float>(it, grammars, expected, options)),
+				new IsGreaterThanOrEqualToConstraint<TNumber>(it, grammars, expected, options)),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<double, IThat<double>> IsGreaterThanOrEqualTo(
-		this IThat<double> subject,
-		double? expected)
+	[CreateCollectionExpectation("IsGreaterThanOrEqualTo", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
+		Summary = IsGreaterThanOrEqualToSummary)]
+	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsGreaterThanOrEqualToForNullableCore<TNumber>(
+		IThat<TNumber?> subject,
+		TNumber? expected,
+		NumberTolerance<TNumber> options)
+		where TNumber : struct, IComparable<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		NumberTolerance<double> options = new(CalculateDifference);
-		return new NumberToleranceResult<double, IThat<double>>(
+		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<double>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	public static NumberToleranceResult<decimal, IThat<decimal>> IsGreaterThanOrEqualTo(
-		this IThat<decimal> subject,
-		decimal? expected)
-	{
-		NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NumberToleranceResult<decimal, IThat<decimal>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint<decimal>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<byte, IThat<byte?>> IsGreaterThanOrEqualTo(
-		this IThat<byte?> subject,
-		byte? expected)
-	{
-		NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
-		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<byte>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<sbyte, IThat<sbyte?>> IsGreaterThanOrEqualTo(
-		this IThat<sbyte?> subject,
-		sbyte? expected)
-	{
-		NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
-		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<sbyte>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<short, IThat<short?>> IsGreaterThanOrEqualTo(
-		this IThat<short?> subject,
-		short? expected)
-	{
-		NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
-		return new NullableNumberToleranceResult<short, IThat<short?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<short>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<ushort, IThat<ushort?>> IsGreaterThanOrEqualTo(
-		this IThat<ushort?> subject,
-		ushort? expected)
-	{
-		NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
-		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<ushort>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<int, IThat<int?>> IsGreaterThanOrEqualTo(
-		this IThat<int?> subject,
-		int? expected)
-	{
-		NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NullableNumberToleranceResult<int, IThat<int?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<int>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<uint, IThat<uint?>> IsGreaterThanOrEqualTo(
-		this IThat<uint?> subject,
-		uint? expected)
-	{
-		NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<uint>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<long, IThat<long?>> IsGreaterThanOrEqualTo(
-		this IThat<long?> subject,
-		long? expected)
-	{
-		NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NullableNumberToleranceResult<long, IThat<long?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<long>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<ulong, IThat<ulong?>> IsGreaterThanOrEqualTo(
-		this IThat<ulong?> subject,
-		ulong? expected)
-	{
-		NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<ulong>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<float, IThat<float?>> IsGreaterThanOrEqualTo(
-		this IThat<float?> subject,
-		float? expected)
-	{
-		expected.ThrowIfNaN("expected value");
-		NumberTolerance<float> options = new(CalculateDifference);
-		return new NullableNumberToleranceResult<float, IThat<float?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<float>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<double, IThat<double?>> IsGreaterThanOrEqualTo(
-		this IThat<double?> subject,
-		double? expected)
-	{
-		expected.ThrowIfNaN("expected value");
-		NumberTolerance<double> options = new(CalculateDifference);
-		return new NullableNumberToleranceResult<double, IThat<double?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<double>(it, grammars, expected, options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NullableNumberToleranceResult<decimal, IThat<decimal?>> IsGreaterThanOrEqualTo(
-		this IThat<decimal?> subject,
-		decimal? expected)
-	{
-		NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
-		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanOrEqualToConstraint<decimal>(it, grammars, expected, options)),
+				new NullableIsGreaterThanOrEqualToConstraint<TNumber>(it, grammars, expected, options)),
 			subject,
 			options);
 	}

@@ -75,8 +75,9 @@ internal sealed record CollectionExpectationFamily(
 
 		List<Variant> variants = Variants(declaration, expected?.Name ?? "", hasPolarity);
 		// A single expected value of a nullable element already accepts the non-nullable one.
-		bool castsUp = expected is { Type: not ITypeParameterSymbol, };
-		List<Instantiation> instantiations = Instantiate(declaration, castsUp).ToList();
+		bool castsUp = expected != null &&
+		               !SymbolEqualityComparer.Default.Equals(ElementOf(expected.Type), expected.Type);
+		List<Instantiation> instantiations = Instantiate(helper, expected, declaration, castsUp).ToList();
 		problems.AddRange(Check(helper, declaration, location, hasPolarity, instantiations.Count));
 		return Subjects(helper, declaration, compilation)
 			.SelectMany(subject => instantiations.Select(x => x.For(subject)))
@@ -137,7 +138,7 @@ internal sealed record CollectionExpectationFamily(
 		{
 			yield return new Problem(CollectionExpectationDiagnostics.NothingGenerated, location,
 				declaration.PositiveName,
-				$"the factory '{declaration.Factory.Name}' has no parameterless static method returning ObjectEqualityWithToleranceOptions<,>");
+				$"the factory '{declaration.Factory.Name}' has no parameterless static Create* method whose return type fills a parameter of the helper after the subject and the expected one");
 		}
 	}
 
@@ -240,45 +241,54 @@ internal sealed record CollectionExpectationFamily(
 	}
 
 	/// <remarks>
-	///     A factory expands into one instantiation per <c>Create*</c> method, and a nullable element additionally
-	///     accepts a non-nullable expected collection, which is cast up.
+	///     A factory expands into one instantiation per <c>Create*</c> method: its return type fills the helper
+	///     parameter of that generic type after the subject and the expected one, and binds the type parameters the
+	///     parameter names, in order. A nullable first type argument additionally accepts a non-nullable expected
+	///     collection, which is cast up.
 	/// </remarks>
-	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, bool castsUp)
+	private static IEnumerable<Instantiation> Instantiate(IMethodSymbol helper, IParameterSymbol? expected,
+		Declaration declaration, bool castsUp)
 	{
 		if (declaration.Factory is not { } factory)
 		{
-			yield return new Instantiation(null, null, null);
+			yield return new Instantiation([], null);
 			yield break;
 		}
 
 		foreach (IMethodSymbol factoryMethod in factory.GetMembers().OfType<IMethodSymbol>()
-			         .Where(m => m is { IsStatic: true, Parameters.Length: 0, }))
+			         .Where(m => m is { IsStatic: true, Parameters.Length: 0, } &&
+			                     m.Name.StartsWith("Create", StringComparison.Ordinal)))
 		{
-			if (factoryMethod.ReturnType is not INamedTypeSymbol
-			    {
-				    Name: "ObjectEqualityWithToleranceOptions", TypeArguments.Length: 2,
-			    } options)
+			if (factoryMethod.ReturnType is not INamedTypeSymbol { IsGenericType: true, } options ||
+			    helper.Parameters.Skip(expected == null ? 1 : 2)
+				    .FirstOrDefault(p => p.Type is INamedTypeSymbol parameterType &&
+				                         SymbolEqualityComparer.Default.Equals(parameterType.OriginalDefinition,
+					                         options.OriginalDefinition)) is not { } optionsParameter)
 			{
 				continue;
 			}
 
-			ITypeSymbol item = options.TypeArguments[0];
-			ITypeSymbol tolerance = options.TypeArguments[1];
-			string itemName = item.ToDisplayString(TypeFormat);
+			INamedTypeSymbol parameterType = (INamedTypeSymbol)optionsParameter.Type;
+			List<Binding> bindings = parameterType.TypeArguments
+				.Zip(options.TypeArguments, (name, type) => (name, type))
+				.Where(x => x.name is ITypeParameterSymbol)
+				.Select(x => new Binding(x.name.Name, x.type.ToDisplayString(TypeFormat), x.type.IsValueType))
+				.ToList();
 			string call = $"{factory.ToDisplayString(TypeFormat)}.{factoryMethod.Name}()";
-			yield return new Instantiation(itemName, itemName, tolerance.ToDisplayString(TypeFormat))
+			yield return new Instantiation(bindings, null)
 			{
-				ItemIsValueType = item.IsValueType, ToleranceIsValueType = tolerance.IsValueType, FactoryCall = call,
+				OptionsParameter = optionsParameter.Name, FactoryCall = call,
 			};
-			if (castsUp && item is INamedTypeSymbol
+			// The cast-up rebinds the first type parameter, so the parameter has to name one there.
+			if (castsUp && parameterType.TypeArguments[0] is ITypeParameterSymbol &&
+			    options.TypeArguments[0] is INamedTypeSymbol
 			    {
 				    ConstructedFrom.SpecialType: SpecialType.System_Nullable_T,
 			    } nullable)
 			{
-				yield return new Instantiation(itemName, nullable.TypeArguments[0].ToDisplayString(TypeFormat),
-					tolerance.ToDisplayString(TypeFormat))
+				yield return new Instantiation(bindings, nullable.TypeArguments[0].ToDisplayString(TypeFormat))
 				{
-					ItemIsValueType = true, ToleranceIsValueType = tolerance.IsValueType, FactoryCall = call,
+					OptionsParameter = optionsParameter.Name, FactoryCall = call,
 				};
 			}
 		}
@@ -287,9 +297,17 @@ internal sealed record CollectionExpectationFamily(
 	private static string Render(IMethodSymbol helper, IParameterSymbol? expected, Declaration declaration,
 		Instantiation instantiation, Variant variant)
 	{
-		// Without a factory the element type is the one the expected parameter already carries.
-		string item = instantiation.Item ?? DefaultItem(expected);
-		Dictionary<string, Bound> substitutions = Bindings(helper, instantiation, item);
+		Dictionary<string, Bound> substitutions = Bindings(helper, instantiation);
+		// The element is what the expected parameter carries once the factory has filled its type parameters.
+		string item = expected == null
+			? instantiation.Item ?? "TItem"
+			: Substitute(ElementOf(expected.Type), substitutions);
+		if (instantiation.Subject != null)
+		{
+			substitutions["TCollection"] = Bind(helper, "TCollection",
+				instantiation.Subject.Template.Replace(ItemPlaceholder, item), instantiation.Subject.IsValueType);
+		}
+
 		string subjectName = helper.Parameters[0].Name;
 		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
 		List<string> arguments = [subjectName,];
@@ -333,27 +351,8 @@ internal sealed record CollectionExpectationFamily(
 		         """;
 	}
 
-	private static string DefaultItem(IParameterSymbol? expected)
-		=> expected == null ? "TItem" : ElementOf(expected.Type);
-
-	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation, string item)
-	{
-		Dictionary<string, Bound> substitutions = [];
-		if (instantiation.Item != null)
-		{
-			substitutions["TItem"] = Bind(helper, "TItem", instantiation.Item, instantiation.ItemIsValueType);
-			substitutions["TTolerance"] = Bind(helper, "TTolerance", instantiation.Tolerance ?? "",
-				instantiation.ToleranceIsValueType);
-		}
-
-		if (instantiation.Subject != null)
-		{
-			substitutions["TCollection"] = Bind(helper, "TCollection",
-				instantiation.Subject.Template.Replace(ItemPlaceholder, item), instantiation.Subject.IsValueType);
-		}
-
-		return substitutions;
-	}
+	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation)
+		=> instantiation.TypeBindings.ToDictionary(x => x.Name, x => Bind(helper, x.Name, x.Type, x.IsValueType));
 
 	private static string RenderExpectedType(IMethodSymbol helper, IParameterSymbol expected,
 		Declaration declaration, Instantiation instantiation, string item, Dictionary<string, Bound> substitutions)
@@ -376,7 +375,8 @@ internal sealed record CollectionExpectationFamily(
 		{
 			substitutions = new Dictionary<string, Bound>(substitutions)
 			{
-				["TItem"] = Bind(helper, "TItem", instantiation.ExpectedItem, instantiation.ItemIsValueType),
+				[instantiation.TypeBindings[0].Name] =
+					Bind(helper, instantiation.TypeBindings[0].Name, instantiation.ExpectedItem, true),
 			};
 		}
 
@@ -384,7 +384,7 @@ internal sealed record CollectionExpectationFamily(
 	}
 
 	private static string ExpectedArgument(Instantiation instantiation, string item, string parameterName)
-		=> instantiation.ExpectedItem == instantiation.Item
+		=> instantiation.ExpectedItem == null
 			? parameterName
 			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
 
@@ -440,9 +440,9 @@ internal sealed record CollectionExpectationFamily(
 	private static string ArgumentFor(IParameterSymbol parameter, Instantiation instantiation, bool negated,
 		bool echoesExpression)
 	{
-		if (parameter.Type.Name == "ObjectEqualityWithToleranceOptions")
+		if (parameter.Name == instantiation.OptionsParameter && instantiation.FactoryCall != null)
 		{
-			return instantiation.FactoryCall ?? "default!";
+			return instantiation.FactoryCall;
 		}
 
 		return parameter.Type.SpecialType switch
@@ -532,14 +532,15 @@ internal sealed record CollectionExpectationFamily(
 
 	/// <remarks>
 	///     The element of an array is its element type, the element of an expected collection or of a predicate is its
-	///     first type argument, and a single expected value is the element itself.
+	///     first type argument, and a single expected value, even a nullable one, is the element itself.
 	/// </remarks>
-	private static string ElementOf(ITypeSymbol type)
+	private static ITypeSymbol ElementOf(ITypeSymbol type)
 		=> type switch
 		{
-			IArrayTypeSymbol array => array.ElementType.ToDisplayString(TypeFormat),
-			INamedTypeSymbol { TypeArguments.Length: > 0, } named => named.TypeArguments[0].ToDisplayString(TypeFormat),
-			_ => type.ToDisplayString(TypeFormat),
+			IArrayTypeSymbol array => array.ElementType,
+			INamedTypeSymbol { ConstructedFrom.SpecialType: SpecialType.System_Nullable_T, } => type,
+			INamedTypeSymbol { TypeArguments.Length: > 0, } named => named.TypeArguments[0],
+			_ => type,
 		};
 
 	private static string Qualify(string type)
@@ -628,21 +629,31 @@ internal sealed record CollectionExpectationFamily(
 		}
 	}
 
-	private sealed class Instantiation(string? item, string? expectedItem, string? tolerance)
+	/// <summary>
+	///     A type parameter of the helper and the type a factory method fills it with.
+	/// </summary>
+	private sealed record Binding(string Name, string Type, bool IsValueType);
+
+	/// <summary>
+	///     One expansion of a family: the factory's bindings, the non-nullable element the expected parameter takes
+	///     when it is cast up, and the subject kind.
+	/// </summary>
+	private sealed class Instantiation(List<Binding> bindings, string? expectedItem)
 	{
-		public string? Item { get; } = item;
-		public bool ItemIsValueType { get; init; }
+		public List<Binding> TypeBindings { get; } = bindings;
+
+		/// <summary>The type of the first binding, which is the element of a tolerance family.</summary>
+		public string? Item => TypeBindings.Count == 0 ? null : TypeBindings[0].Type;
+
 		public string? ExpectedItem { get; } = expectedItem;
-		public string? Tolerance { get; } = tolerance;
-		public bool ToleranceIsValueType { get; init; }
+		public string? OptionsParameter { get; init; }
 		public SubjectKind? Subject { get; private init; }
 		public string? FactoryCall { get; init; }
 
 		public Instantiation For(SubjectKind? subject)
-			=> new(Item, ExpectedItem, Tolerance)
+			=> new(TypeBindings, ExpectedItem)
 			{
-				ItemIsValueType = ItemIsValueType,
-				ToleranceIsValueType = ToleranceIsValueType,
+				OptionsParameter = OptionsParameter,
 				Subject = subject,
 				FactoryCall = FactoryCall,
 			};

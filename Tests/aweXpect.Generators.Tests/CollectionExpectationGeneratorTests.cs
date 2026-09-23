@@ -105,6 +105,115 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WithFactory_ShouldFillTheParameterOfTheReturnTypeAndBindWhatItNames()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public sealed class Tolerance<TNumber> { }
+
+			public static class Factory
+			{
+				public static Tolerance<int> CreateInt() => new();
+				public static Tolerance<float> CreateFloat() => new();
+			}
+
+			public static partial class ThatNumber
+			{
+				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
+				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Params = true, Summary = "Is one of.")]
+				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
+					IThat<TNumber?> subject,
+					IEnumerable<TNumber?> expected,
+					Tolerance<TNumber> tolerance)
+					where TNumber : struct
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("params int?[] expected").Once()
+			.Because("the element is what the expected parameter carries once TNumber is bound");
+		await That(result.Generated).Contains("this global::aweXpect.Core.IThat<float?> subject").Exactly(2);
+		await That(result.Generated).Contains("global::Lib.Factory.CreateFloat()").Exactly(2);
+		await That(result.Generated).DoesNotContain("Enumerable.Cast")
+			.Because("a non-nullable element has nothing to cast up");
+	}
+
+	[Fact]
+	public async Task WithFactory_ShouldOnlyUseCreateMethodsThatFillAParameterAfterTheExpectedOne()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public sealed class Tolerance<TNumber> { }
+
+			public static class Factory
+			{
+				public static Tolerance<int> CreateInt() => new();
+				public static Tolerance<long> Default() => new();
+				public static IEnumerable<short?> CreateSequence() => [];
+			}
+
+			public static partial class ThatNumber
+			{
+				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
+				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
+					IThat<TNumber?> subject,
+					IEnumerable<TNumber?> expected,
+					Tolerance<TNumber> tolerance)
+					where TNumber : struct
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("IsOneOf(").Once();
+		await That(result.Generated).Contains("global::Lib.Factory.CreateInt()").Once();
+		await That(result.Generated).DoesNotContain("Factory.Default()")
+			.Because("only a Create* method defines an element type");
+		await That(result.Generated).DoesNotContain("Factory.CreateSequence()")
+			.Because("the expected parameter is not filled by the factory");
+	}
+
+	[Fact]
+	public async Task WithFactory_WhenExpectedIsASingleNullableValue_ShouldNotCastUp()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public sealed class Pair<TFirst, TSecond> { }
+
+			public static class Factory
+			{
+				public static Pair<int?, int> CreateInt() => new();
+			}
+
+			public static partial class ThatNumber
+			{
+				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Is equal to.")]
+				internal static IThat<TNumber?> IsEqualToCore<TValue, TNumber>(
+					IThat<TNumber?> subject,
+					TNumber? expected,
+					Pair<TValue, TNumber> options)
+					where TNumber : struct
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("IsEqualTo(").Once()
+			.Because("a single nullable value already accepts the non-nullable one");
+		await That(result.Generated).DoesNotContain("Enumerable.Cast");
+	}
+
+	[Fact]
 	public async Task WithFactory_WhenTypeParameterIsConstrainedToStruct_ShouldKeepNullableOfIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
