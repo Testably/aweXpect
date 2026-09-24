@@ -43,6 +43,21 @@ public class NarrowingMappingNodeTests
 	}
 
 	[Fact]
+	public async Task Async_IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
+	{
+		NarrowingAsyncMappingNode<object, object?, string> node = new(
+			MemberAccessor<object, Task<object?>>.FromFunc(v => Task.FromResult<object?>(v), " which "));
+		node.AddConstraint(new ExpectationTextConstraint<string>("is a string", "is no string"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy<object>(42, null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(sb.ToString()).IsEqualTo("is a string")
+			.Because("the expectation text of a constraint can depend on how it is evaluated, e.g. when it is negated");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenMemberIsNarrowedType_ShouldUseInnerConstraint()
 	{
 		string? receivedValue = null;
@@ -92,6 +107,21 @@ public class NarrowingMappingNodeTests
 		await That(result.Outcome).IsEqualTo(Outcome.Undecided);
 		await That(sb.ToString()).IsEqualTo("is a string");
 		await That(result.GetResultText()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
+	{
+		NarrowingMappingNode<object, object?, string> node = new(
+			MemberAccessor<object, object?>.FromFunc(v => v, " which "));
+		node.AddConstraint(new ExpectationTextConstraint<string>("is a string", "is no string"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy<object>(42, null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(sb.ToString()).IsEqualTo("is a string")
+			.Because("the expectation text of a constraint can depend on how it is evaluated, e.g. when it is negated");
 	}
 
 	[Fact]

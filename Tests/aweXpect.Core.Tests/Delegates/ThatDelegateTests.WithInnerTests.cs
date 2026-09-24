@@ -139,6 +139,26 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WithInner_Generic_OrType_WhenInnerExceptionHasWrongType_ShouldReportTheInnerExceptionOnce()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.HasMessage("foo"))
+					.Or.WithInner(typeof(MyException), e => e.HasMessage("bar"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo" or with an inner MyException whose Message is equal to "bar",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("both overloads skip the expectations on an inner exception of another type, so they report the same mismatch");
+		}
+
+		[Fact]
 		public async Task WithInner_Generic_WhenInnerExceptionHasWrongType_ShouldFail()
 		{
 			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
@@ -155,6 +175,25 @@ public sealed partial class ThatDelegateTests
 				               inner
 				             """)
 				.Because("the inner exception type is checked before the expectations on the inner exception");
+		}
+
+		[Fact]
+		public async Task WithInner_Generic_WhenInnerExceptionHasWrongType_WithNegatedExpectation_ShouldKeepTheNegation()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.DoesNotComplyWith(i => i.HasMessage("foo")));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is not equal to "foo",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("the expectations on the inner exception are negated, even if they are not applied");
 		}
 
 		[Fact]
@@ -262,6 +301,104 @@ public sealed partial class ThatDelegateTests
 				               "foo"
 				                ↑ (expected)
 				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Type_AfterWhose_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.Whose(e => e.Message, m => m.IsEqualTo("outer"))
+					.And.WithInner(typeof(MyException), e => e.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException whose Message is equal to "outer" and with an inner MyException whose Message is equal to "foo",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("a preceding Whose must not change how the inner exception is rendered");
+		}
+
+		[Fact]
+		public async Task WithInner_Type_AndGeneric_WhenInnerExceptionHasWrongType_ShouldReportTheInnerExceptionOnce()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.HasMessage("foo"))
+					.And.WithInner<MyException>(e => e.HasMessage("bar"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo" and with an inner MyException whose Message is equal to "bar",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("both overloads skip the expectations on an inner exception of another type, so they report the same mismatch");
+		}
+
+		[Fact]
+		public async Task WithInner_Type_OrGeneric_WhenInnerExceptionHasWrongType_ShouldReportTheInnerExceptionOnce()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.HasMessage("foo"))
+					.Or.WithInner<MyException>(e => e.HasMessage("bar"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo" or with an inner MyException whose Message is equal to "bar",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("both overloads skip the expectations on an inner exception of another type, so they report the same mismatch");
+		}
+
+		[Fact]
+		public async Task WithInner_Type_WhenInnerExceptionHasWrongType_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("the expectations on an inner exception of another type are skipped, like for the generic overload");
+		}
+
+		[Fact]
+		public async Task WithInner_Type_WhenInnerExceptionHasWrongType_WithNegatedExpectation_ShouldKeepTheNegation()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.DoesNotComplyWith(i => i.HasMessage("foo")));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is not equal to "foo",
+				             but it had an inner ArgumentException:
+				               inner
+				             """)
+				.Because("the expectations on the inner exception are negated, even if they are not applied");
 		}
 
 		[Fact]

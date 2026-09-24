@@ -73,7 +73,9 @@ public partial class ThatDelegateThrows<TException>
 		Type type,
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(ExpectationBuilder
-				.ForMember<Exception, Exception?>(e => e.InnerException,
+				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
+				.ForMember<Exception, Exception?>(
+					e => type.IsInstanceOfType(e.InnerException) ? e.InnerException : null,
 					" which ",
 					false)
 				.Validate((it, grammars)
@@ -104,15 +106,13 @@ public partial class ThatDelegateThrows<TException>
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			if (hasMemberExpectations && actual?.InnerException is null)
-			{
-				// Expectations on a missing inner exception could only repeat that there is nothing to inspect.
-				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
-			}
-
 			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
 				? Outcome.Success
 				: Outcome.Failure;
+			// Expectations on a missing inner exception or one of another type could only repeat the mismatch.
+			FurtherProcessingStrategy = hasMemberExpectations && Outcome == Outcome.Failure
+				? FurtherProcessingStrategy.IgnoreResult
+				: FurtherProcessingStrategy.Continue;
 			return this;
 		}
 

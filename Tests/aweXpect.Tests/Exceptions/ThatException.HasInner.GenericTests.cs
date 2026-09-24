@@ -124,6 +124,25 @@ public sealed partial class ThatException
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionHasUnexpectedTypeAndNegatedExpectations_ShouldKeepTheNegation()
+				{
+					Exception subject = new("outer", new Exception("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner<CustomException>(e => e.DoesNotComplyWith(i => i.HasMessage("foo")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException whose Message is not equal to "foo",
+						             but it had an inner Exception:
+						               inner
+						             """)
+						.Because("the expectations on the inner exception are negated, even if they are not applied");
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionIsNotEquivalent_ShouldFail()
 				{
 					Exception subject = new("outer", new CustomException("inner"));

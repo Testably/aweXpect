@@ -22,15 +22,13 @@ public static partial class ThatException
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			if (hasMemberExpectations && actual?.InnerException is null)
-			{
-				// Expectations on a missing inner exception could only repeat that there is nothing to inspect.
-				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
-			}
-
 			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
 				? Outcome.Success
 				: Outcome.Failure;
+			// Expectations on a missing inner exception or one of another type could only repeat the mismatch.
+			FurtherProcessingStrategy = hasMemberExpectations && Outcome == Outcome.Failure
+				? FurtherProcessingStrategy.IgnoreResult
+				: FurtherProcessingStrategy.Continue;
 			return this;
 		}
 
