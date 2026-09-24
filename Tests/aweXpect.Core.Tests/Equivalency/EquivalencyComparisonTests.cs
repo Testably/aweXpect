@@ -2267,6 +2267,128 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsComparedByMembersForTheCollectionElementType_ShouldCompareTheirStringMembersByValue()
+	{
+		List<WithNullableValue> actual = [new("ab"),];
+		List<WithNullableValue> expected = [new("cd"),];
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithNullableValue>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                       Found: "ab"
+		                                                    Expected: "cd"
+		                                                """).IgnoringNewlineStyle()
+			.Because("the comparison type registered for the element type describes the element only, not its members");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsComparedByMembersForTheType_AndTheOptionsCompareByValue_ShouldCompareItsMembersByValue()
+	{
+		WithNestedNullableValue actual = new(new WithNullableValue("ab"));
+		WithNestedNullableValue expected = new(new WithNullableValue("ab"));
+		EquivalencyOptions options = new EquivalencyOptions
+			{
+				ComparisonType = EquivalencyComparisonType.ByValue,
+			}
+			.For<WithNestedNullableValue>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).StartsWith("""
+
+		                                                   Property Inner differed:
+		                                                 """).IgnoringNewlineStyle()
+			.Because("the top-level comparison type applies to every member without a registration, and two separate instances are not equal by reference");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareItsIntMemberByValue()
+	{
+		WithProperty actual = new(1);
+		WithProperty expected = new(2);
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithProperty>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("an int has no members, so comparing it by members only because its owner is would throw");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareItsStringMemberByValue()
+	{
+		WithNullableValue actual = new("ab");
+		WithNullableValue expected = new("cd");
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithNullableValue>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: "ab"
+		                                                    Expected: "cd"
+		                                                """).IgnoringNewlineStyle()
+			.Because("comparing a string by members only compares its length, which would hide the difference");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareNestedStringMembersByValue()
+	{
+		WithNestedNullableValue actual = new(new WithNullableValue("ab"));
+		WithNestedNullableValue expected = new(new WithNullableValue("cd"));
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithNestedNullableValue>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Value differed:
+		                                                       Found: "ab"
+		                                                    Expected: "cd"
+		                                                """).IgnoringNewlineStyle()
+			.Because("the comparison type must not reach the members of a member without a registration of its own either");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsRegistered_ShouldCompareTheRegisteredMembers()
 	{
 		RegisterPhantom();
@@ -2557,6 +2679,11 @@ public sealed class EquivalencyComparisonTests
 	private sealed class WithLength(int length)
 	{
 		public int Length => length;
+	}
+
+	private sealed class WithNestedNullableValue(WithNullableValue inner)
+	{
+		public WithNullableValue Inner { get; } = inner;
 	}
 
 	private sealed class WithNullableValue(string? value)

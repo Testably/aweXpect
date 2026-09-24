@@ -220,6 +220,10 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<TrackId>(x => x with { ComparisonType = EquivalencyComparisonType.ByValue }));
 ```
 
+Unlike the other type-specific options, the comparison type applies to the type itself and not to its members: a member
+without a registration of its own falls back to the comparison type of the top-level options or, if none is set, to the
+`DefaultComparisonTypeSelector`, so a string member of a type compared by members is still compared by value.
+
 To change the global rule, replace the `DefaultComparisonTypeSelector`:
 
 ```csharp
