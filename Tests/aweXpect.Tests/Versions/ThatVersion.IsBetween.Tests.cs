@@ -7,6 +7,24 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMaximumIsNull_AndNegated_ShouldFail()
+			{
+				Version? subject = new(1, 5);
+				Version? maximum = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(new Version(1, 0)).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not between 1.0 and <null>,
+					             but it was 1.5
+					             """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 5);
@@ -35,6 +53,24 @@ public sealed partial class ThatVersion
 					.WithParamName("maximum").And
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
 					.Because("an inverted range can never be satisfied");
+			}
+
+			[Fact]
+			public async Task WhenMinimumIsNull_AndNegated_ShouldFail()
+			{
+				Version? subject = new(1, 5);
+				Version? minimum = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(new Version(2, 0)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not between <null> and 2.0,
+					             but it was 1.5
+					             """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Fact]

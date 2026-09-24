@@ -121,30 +121,36 @@ public class EnumValueResult<TItem>
 			$"equal to {formattedUnexpected}");
 
 	private AndOrResult<TItem, IThat<TItem>> AddGreaterThan(decimal? expected, string formattedExpected)
-		=> Add(actual => actual > expected, $"greater than {formattedExpected}");
+		=> Add(actual => actual > expected, $"greater than {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TItem, IThat<TItem>> AddGreaterThanOrEqualTo(decimal? expected, string formattedExpected)
-		=> Add(actual => actual >= expected, $"greater than or equal to {formattedExpected}");
+		=> Add(actual => actual >= expected, $"greater than or equal to {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TItem, IThat<TItem>> AddLessThan(decimal? expected, string formattedExpected)
-		=> Add(actual => actual < expected, $"less than {formattedExpected}");
+		=> Add(actual => actual < expected, $"less than {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TItem, IThat<TItem>> AddLessThanOrEqualTo(decimal? expected, string formattedExpected)
-		=> Add(actual => actual <= expected, $"less than or equal to {formattedExpected}");
+		=> Add(actual => actual <= expected, $"less than or equal to {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TItem, IThat<TItem>> AddBetween(decimal? minimum, decimal? maximum,
 		string formattedMinimum, string formattedMaximum)
 		=> Add(actual => actual >= minimum && actual <= maximum,
-			$"between {formattedMinimum} and {formattedMaximum}");
+			$"between {formattedMinimum} and {formattedMaximum}",
+			isOrderedAgainstNull: minimum is null || maximum is null);
 
 	private AndOrResult<TItem, IThat<TItem>> Add(
 		Func<decimal?, bool> condition,
 		string expectation,
-		string? negatedExpectation = null)
+		string? negatedExpectation = null,
+		bool isOrderedAgainstNull = false)
 		=> new(_subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new ValueConstraint(it, grammars, _mapper, _propertyExpression, condition, expectation,
-						negatedExpectation)),
+						negatedExpectation, isOrderedAgainstNull)),
 			_subject);
 
 	private sealed class ValueConstraint(
@@ -154,11 +160,19 @@ public class EnumValueResult<TItem>
 		string propertyExpression,
 		Func<decimal?, bool> condition,
 		string expectation,
-		string? negatedExpectation)
+		string? negatedExpectation,
+		bool isOrderedAgainstNull)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 			IValueConstraint<TItem>
 	{
 		private decimal? _value;
+
+		/// <inheritdoc />
+		public override Outcome Outcome
+		{
+			get => isOrderedAgainstNull ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public ConstraintResult IsMetBy(TItem actual)
 		{

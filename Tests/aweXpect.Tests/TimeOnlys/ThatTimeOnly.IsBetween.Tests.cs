@@ -8,6 +8,25 @@ public sealed partial class ThatTimeOnly
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMaximumIsNull_AndNegated_ShouldFail()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly? minimum = subject;
+				TimeOnly? maximum = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -23,6 +42,25 @@ public sealed partial class ThatTimeOnly
 					              is between {Formatter.Format(minimum)} and <null>,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenMinimumIsNull_AndNegated_ShouldFail()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly? minimum = null;
+				TimeOnly? maximum = subject;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between <null> and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Fact]

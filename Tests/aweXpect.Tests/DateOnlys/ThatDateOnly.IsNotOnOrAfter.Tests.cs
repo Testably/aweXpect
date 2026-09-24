@@ -88,7 +88,7 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			public async Task WhenUnexpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
 				DateOnly? unexpected = null;
@@ -96,7 +96,13 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotOnOrAfter(unexpected);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not on or after <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 			[Fact]

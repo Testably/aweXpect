@@ -9,6 +9,24 @@ public sealed partial class ThatTimeSpan
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
+				{
+					TimeSpan? subject = CurrentTime();
+					TimeSpan? expected = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsGreaterThan(expected));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not greater than <null>,
+						              but it was {Formatter.Format(subject)}
+						              """)
+						.Because("nothing can be ordered against null, so the negation fails as well");
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeSpan? subject = CurrentTime();

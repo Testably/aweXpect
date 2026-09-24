@@ -67,18 +67,14 @@ public static partial class ThatNullableDateOnly
 		DateOnly? minimum,
 		DateOnly? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateOnly?>(it, grammars),
+		: OrderingConstraint<DateOnly?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateOnly?>
 	{
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

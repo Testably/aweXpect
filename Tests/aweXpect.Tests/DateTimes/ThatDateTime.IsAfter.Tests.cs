@@ -7,6 +7,24 @@ public sealed partial class ThatDateTime
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? expected = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -38,6 +56,27 @@ public sealed partial class ThatDateTime
 					=> await That(subject).IsAfter(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+			public async Task WhenKindsAreIncompatible_AndNegated_ShouldFail(
+				DateTimeKind subjectKind, DateTimeKind expectedKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(CurrentTime(), subjectKind);
+				DateTime expected = DateTime.SpecifyKind(LaterTime(), expectedKind);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after {Formatter.Format(expected)},
+					              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+					              """)
+					.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
 			}
 
 			[Theory]

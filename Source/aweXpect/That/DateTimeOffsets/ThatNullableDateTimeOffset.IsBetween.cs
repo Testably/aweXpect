@@ -70,17 +70,13 @@ public static partial class ThatNullableDateTimeOffset
 		DateTimeOffset? minimum,
 		DateTimeOffset? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTimeOffset?>(it, grammars),
+		: OrderingConstraint<DateTimeOffset?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTimeOffset?>
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

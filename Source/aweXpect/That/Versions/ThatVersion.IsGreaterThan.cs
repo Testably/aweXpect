@@ -34,7 +34,7 @@ public static partial class ThatVersion
 		string it,
 		ExpectationGrammars grammars,
 		Version? expected)
-		: ConstraintResult.WithNotNullValue<Version?>(it, grammars),
+		: OrderingConstraint<Version?>(it, grammars, expected is null),
 			IValueConstraint<Version?>
 	{
 		public ConstraintResult IsMetBy(Version? actual)

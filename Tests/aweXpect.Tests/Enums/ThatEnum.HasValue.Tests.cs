@@ -17,6 +17,25 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData(null, 3L)]
+			[InlineData(1L, null)]
+			public async Task Between_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(long? minimum, long? maximum)
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().Between(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it had value 2
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
 			[Fact]
 			public async Task Between_WhenTheRangeExceedsInt64MaxValue_ShouldSucceed()
 			{
@@ -53,6 +72,23 @@ public sealed partial class ThatEnum
 			}
 
 			[Fact]
+			public async Task GreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().GreaterThan(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -78,6 +114,23 @@ public sealed partial class ThatEnum
 					             has value greater than 18446744073709551615,
 					             but it had value 18446744073709551615
 					             """);
+			}
+
+			[Fact]
+			public async Task GreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().GreaterThanOrEqualTo(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 			[Fact]
@@ -121,6 +174,23 @@ public sealed partial class ThatEnum
 			}
 
 			[Fact]
+			public async Task LessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().LessThan(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task LessThan_WhenTheValueIsInt64MinValue_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -134,6 +204,23 @@ public sealed partial class ThatEnum
 					             has value less than -9223372036854775808,
 					             but it had value -9223372036854775808
 					             """);
+			}
+
+			[Fact]
+			public async Task LessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().LessThanOrEqualTo(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 			[Fact]

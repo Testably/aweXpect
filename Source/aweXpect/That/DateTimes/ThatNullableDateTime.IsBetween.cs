@@ -68,7 +68,7 @@ public static partial class ThatNullableDateTime
 		DateTime? minimum,
 		DateTime? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime?>(it, grammars),
+		: OrderingConstraint<DateTime?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime?>
 	{
 		private DateTimeKind? _incompatibleKind;
@@ -76,11 +76,7 @@ public static partial class ThatNullableDateTime
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}
@@ -88,12 +84,12 @@ public static partial class ThatNullableDateTime
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = minimum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, maximum.Value.Kind))
 			{
 				_incompatibleKind = maximum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else
 			{

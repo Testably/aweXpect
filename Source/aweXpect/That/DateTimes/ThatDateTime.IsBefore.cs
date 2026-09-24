@@ -55,7 +55,7 @@ public static partial class ThatDateTime
 		ExpectationGrammars grammars,
 		DateTime? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
+		: OrderingConstraint<DateTime>(it, grammars, expected is null),
 			IValueConstraint<DateTime>
 	{
 		private DateTimeKind? _incompatibleKind;
@@ -71,7 +71,7 @@ public static partial class ThatDateTime
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = expected.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else
 			{

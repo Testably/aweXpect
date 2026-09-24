@@ -66,7 +66,7 @@ public static partial class ThatDateTime
 		DateTime? minimum,
 		DateTime? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
+		: OrderingConstraint<DateTime>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime>
 	{
 		private DateTimeKind? _incompatibleKind;
@@ -82,12 +82,12 @@ public static partial class ThatDateTime
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = minimum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, maximum.Value.Kind))
 			{
 				_incompatibleKind = maximum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else
 			{

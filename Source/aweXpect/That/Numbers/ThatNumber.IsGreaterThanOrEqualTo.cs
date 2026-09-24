@@ -51,7 +51,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		TNumber? expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithEqualToValue<TNumber>(it, grammars, expected is null),
+		: OrderingConstraint<TNumber>(it, grammars, expected is null),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -91,7 +91,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		TNumber? expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithNotNullValue<TNumber?>(it, grammars),
+		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -165,7 +165,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		TNumber? expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithEqualToValue<TNumber>(it, grammars, expected is null),
+		: OrderingConstraint<TNumber>(it, grammars, expected is null),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -205,7 +205,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		TNumber? expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithNotNullValue<TNumber?>(it, grammars),
+		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{

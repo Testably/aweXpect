@@ -61,17 +61,13 @@ public static partial class ThatNullableTimeOnly
 		TimeOnly? minimum,
 		TimeOnly? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeOnly?>(it, grammars),
+		: OrderingConstraint<TimeOnly?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeOnly?>
 	{
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

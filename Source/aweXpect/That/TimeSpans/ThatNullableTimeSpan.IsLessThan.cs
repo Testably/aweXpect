@@ -47,7 +47,7 @@ public static partial class ThatNullableTimeSpan
 		ExpectationGrammars grammars,
 		TimeSpan? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeSpan?>(it, grammars),
+		: OrderingConstraint<TimeSpan?>(it, grammars, expected is null),
 			IValueConstraint<TimeSpan?>
 	{
 		public ConstraintResult IsMetBy(TimeSpan? actual)

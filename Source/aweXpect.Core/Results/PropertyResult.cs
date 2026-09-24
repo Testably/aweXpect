@@ -72,7 +72,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a > e,
-				$"greater than {Formatter.Format(expected)}");
+				$"greater than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -83,7 +84,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
-				$"greater than or equal to {Formatter.Format(expected)}");
+				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -94,7 +96,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a < e,
-				$"less than {Formatter.Format(expected)}");
+				$"less than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -105,7 +108,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
-				$"less than or equal to {Formatter.Format(expected)}");
+				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -120,7 +124,8 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}
 
@@ -128,7 +133,8 @@ public static class PropertyResult
 			int? expected,
 			Func<int?, int?, bool> condition,
 			string expectation,
-			string? negatedExpectation = null)
+			string? negatedExpectation = null,
+			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, int>(
@@ -138,7 +144,8 @@ public static class PropertyResult
 							propertyExpression,
 							condition,
 							expectation,
-							negatedExpectation)),
+							negatedExpectation,
+							isOrderedAgainstNull: isOrderedAgainstNull)),
 				subject);
 	}
 
@@ -206,7 +213,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a > e,
-				$"greater than {Formatter.Format(expected)}");
+				$"greater than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -217,7 +225,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
-				$"greater than or equal to {Formatter.Format(expected)}");
+				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -228,7 +237,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a < e,
-				$"less than {Formatter.Format(expected)}");
+				$"less than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -239,7 +249,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
-				$"less than or equal to {Formatter.Format(expected)}");
+				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -254,7 +265,8 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}
 
@@ -262,7 +274,8 @@ public static class PropertyResult
 			long? expected,
 			Func<long?, long?, bool> condition,
 			string expectation,
-			string? negatedExpectation = null)
+			string? negatedExpectation = null,
+			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, long>(
@@ -273,7 +286,8 @@ public static class PropertyResult
 							condition,
 							expectation,
 							negatedExpectation,
-							isExpectedPropertyException)),
+							isExpectedPropertyException,
+							isOrderedAgainstNull)),
 				subject);
 	}
 
@@ -393,7 +407,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a > e,
-				$"greater than {Formatter.Format(expected)}");
+				$"greater than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -404,7 +419,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
-				$"greater than or equal to {Formatter.Format(expected)}");
+				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -415,7 +431,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a < e,
-				$"less than {Formatter.Format(expected)}");
+				$"less than {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -426,7 +443,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
-				$"less than or equal to {Formatter.Format(expected)}");
+				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
 		}
 
 		/// <summary>
@@ -441,7 +459,8 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}
 
@@ -449,7 +468,8 @@ public static class PropertyResult
 			TimeSpan? expected,
 			Func<TimeSpan?, TimeSpan?, bool> condition,
 			string expectation,
-			string? negatedExpectation = null)
+			string? negatedExpectation = null,
+			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, TimeSpan>(
@@ -459,7 +479,8 @@ public static class PropertyResult
 							propertyExpression,
 							condition,
 							expectation,
-							negatedExpectation)),
+							negatedExpectation,
+							isOrderedAgainstNull: isOrderedAgainstNull)),
 				subject);
 	}
 
@@ -656,7 +677,8 @@ public static class PropertyResult
 		Func<TProperty?, TProperty?, bool> condition,
 		string expectation,
 		string? negatedExpectation,
-		Func<Exception, bool>? isExpectedPropertyException = null)
+		Func<Exception, bool>? isExpectedPropertyException = null,
+		bool isOrderedAgainstNull = false)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
@@ -667,7 +689,7 @@ public static class PropertyResult
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => _exception is null ? base.Outcome : Outcome.Failure;
+			get => _exception is null && !isOrderedAgainstNull ? base.Outcome : Outcome.Failure;
 			protected set => base.Outcome = value;
 		}
 

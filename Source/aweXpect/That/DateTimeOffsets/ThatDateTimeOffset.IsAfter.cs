@@ -45,7 +45,7 @@ public static partial class ThatDateTimeOffset
 		ExpectationGrammars grammars,
 		DateTimeOffset? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTimeOffset>(it, grammars),
+		: OrderingConstraint<DateTimeOffset>(it, grammars, expected is null),
 			IValueConstraint<DateTimeOffset>
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset actual)
