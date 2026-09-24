@@ -13,6 +13,20 @@ public sealed partial class StringEqualityOptionsTests
 		private const string CatastrophicPattern = "*a*a*a*a*a*a*a*a*a*ab";
 
 		[Fact]
+		public async Task AreConsideredEqual_WhenExpectedIsNotAString_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			async Task Act() => await sut.AreConsideredEqual("42", 42);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("a value that is not a string cannot be a pattern, so it is rejected like a missing one");
+		}
+
+		[Fact]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new();
@@ -55,6 +69,38 @@ public sealed partial class StringEqualityOptionsTests
 				.WithParamName("expected").And
 				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
 				.Because("the pattern is also rejected when the match type was set before it");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowBeforeTheTaskIsAwaited()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null).AsTask();
+#else
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null);
+#endif
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("an unusable pattern must throw at the call instead of inside the returned task");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsNull_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsWildcard();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The 'unexpected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("a negated expectation receives the pattern as 'unexpected'");
 		}
 
 		[Fact]

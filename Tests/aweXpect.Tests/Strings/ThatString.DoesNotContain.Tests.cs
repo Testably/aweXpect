@@ -44,6 +44,21 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+				string unexpected = " ";
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected).AsRegex().IgnoringIndentation();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the pattern as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;

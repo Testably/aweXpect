@@ -59,7 +59,7 @@ public abstract class MemberToIgnore
 			int segmentStart = memberPath.Length - memberName.Length;
 			return (segmentStart == 0 ||
 			        memberName[0] == '[' ||
-			        memberPath[segmentStart - 1] is '.' or ']') &&
+			        memberPath[segmentStart - 1] == '.') &&
 			       !IsInsideElementKey(memberPath, segmentStart);
 		}
 

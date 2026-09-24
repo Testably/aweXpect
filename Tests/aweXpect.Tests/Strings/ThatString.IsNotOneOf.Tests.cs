@@ -47,6 +47,21 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "bar";
+				IEnumerable<string?> unexpected = [null, "foo",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task AsWildcard_WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;

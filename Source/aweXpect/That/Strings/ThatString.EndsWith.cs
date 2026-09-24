@@ -49,7 +49,7 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		StringEqualityOptions options = new StringEqualityOptions().AsSuffix();
+		StringEqualityOptions options = new StringEqualityOptions(nameof(unexpected)).AsSuffix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new EndsWithConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),

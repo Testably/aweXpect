@@ -17,6 +17,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private const int DefaultMaxLength = 30;
 
 	private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(1000);
+	private readonly string _parameterName;
 	private IEqualityComparer<string>? _comparer;
 	private bool _ignoreCase;
 	private bool _ignoreIndentation;
@@ -24,6 +25,22 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private bool _ignoreNewlineStyle;
 	private bool _ignoreTrailingWhiteSpace;
 	private IStringMatchType _matchType = ExactMatch;
+
+	/// <summary>
+	///     Initializes the options for a pattern that the caller received as <c>expected</c>.
+	/// </summary>
+	public StringEqualityOptions() : this("expected")
+	{
+	}
+
+	/// <summary>
+	///     Initializes the options for a pattern that the caller received as <paramref name="parameterName" />, which
+	///     an unusable pattern is reported against.
+	/// </summary>
+	public StringEqualityOptions(string parameterName)
+	{
+		_parameterName = parameterName;
+	}
 
 	/// <summary>
 	///     Indicates whether the current match type inspects the content of the subject instead of comparing it as a value.
@@ -35,34 +52,45 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	public bool InspectsSubject => _matchType is not ExactMatchType;
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
+	///     instead of only when the returned task is awaited.
+	/// </remarks>
 #if NET8_0_OR_GREATER
-	public async ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
+	public ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
 #else
-	public async Task<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
+	public Task<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
 #endif
 	{
-		bool result;
 		if (expected is not string expectedString)
 		{
 			ValidatePattern(null);
-			result = await _matchType.AreConsideredEqual(actual, null, _ignoreCase,
-				_comparer);
-			return result;
+			return _matchType.AreConsideredEqual(actual, null, _ignoreCase, _comparer);
 		}
 
 		expectedString = Normalize(expectedString);
 		ValidatePattern(expectedString);
+		return AreConsideredEqualToPattern(Normalize(actual), expectedString);
+	}
+
+	/// <summary>
+	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
+	///     <paramref name="expected" /> pattern.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	private async ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected)
+#else
+	private async Task<bool> AreConsideredEqualToPattern(string? actual, string expected)
+#endif
+	{
 		try
 		{
-			result = await _matchType.AreConsideredEqual(Normalize(actual), expectedString, _ignoreCase,
-				_comparer);
+			return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
-			throw CreateTimeoutException(expectedString, exception);
+			throw CreateTimeoutException(expected, exception);
 		}
-
-		return result;
 	}
 
 	/// <summary>
@@ -347,7 +375,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		// ReSharper disable once LocalizableElement
 		=> Tracing.WriteException(new ArgumentException(
 			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(RegexTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
-			nameof(expected), innerException));
+			_parameterName, innerException));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
@@ -530,8 +558,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentException(
-				$"The 'expected' {(_matchType is PrefixMatchType ? "prefix" : "suffix")} cannot be empty.",
-				nameof(expected)));
+				$"The '{_parameterName}' {(_matchType is PrefixMatchType ? "prefix" : "suffix")} cannot be empty.",
+				_parameterName));
 		}
 
 		bool isRegex = _matchType is RegexMatchType;
@@ -543,15 +571,15 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		if (expected is null)
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentNullException(nameof(expected),
-				$"The 'expected' {(isRegex ? "regex" : "wildcard")} pattern cannot be null."));
+			throw Tracing.WriteException(new ArgumentNullException(_parameterName,
+				$"The '{_parameterName}' {(isRegex ? "regex" : "wildcard")} pattern cannot be null."));
 		}
 
 		if (isRegex && expected.Length == 0)
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException("The 'expected' regex pattern cannot be empty.",
-				nameof(expected)));
+			throw Tracing.WriteException(new ArgumentException($"The '{_parameterName}' regex pattern cannot be empty.",
+				_parameterName));
 		}
 	}
 }

@@ -8,6 +8,20 @@ public sealed partial class StringEqualityOptionsTests
 	public sealed class RegexMatchTypeTests
 	{
 		[Fact]
+		public async Task AreConsideredEqual_WhenExpectedIsNotAString_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("42", 42);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("a value that is not a string cannot be a pattern, so it is rejected like a missing one");
+		}
+
+		[Fact]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new();
@@ -21,6 +35,24 @@ public sealed partial class StringEqualityOptionsTests
 				.AsPrefix().And
 				.WithParamName("expected")
 				.Because("the timeout must name the pattern instead of surfacing as a generic evaluation error");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowOnlyWhenAwaited()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+#if NET8_0_OR_GREATER
+			ValueTask<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+#else
+			Task<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+#endif
+
+			async Task Act() => await task;
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("""The regex "(a+)+$" did not complete within 0:01.*""").AsWildcard()
+				.Because("only an unusable pattern is rejected at the call, the matching itself still fails the task");
 		}
 
 		[Fact]
@@ -38,6 +70,24 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldThrowBeforeTheTaskIsAwaited()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", "").AsTask();
+#else
+			void Act() => _ = sut.AreConsideredEqual("foo", "");
+#endif
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("an unusable pattern must throw at the call instead of inside the returned task");
+		}
+
+		[Fact]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new();
@@ -49,6 +99,66 @@ public sealed partial class StringEqualityOptionsTests
 				.WithParamName("expected").And
 				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
 				.Because("the pattern is also rejected when the match type was set before it");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowBeforeTheTaskIsAwaited()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null).AsTask();
+#else
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null);
+#endif
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("an unusable pattern must throw at the call instead of inside the returned task");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenPatternDoesNotCompleteInTime_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("""The regex "(a+)+$" did not complete within 0:01.*""").AsWildcard().And
+				.WithParamName("unexpected")
+				.Because("a negated expectation receives the pattern as 'unexpected'");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsEmpty_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", "");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected")
+				.Because("a negated expectation receives the pattern as 'unexpected'");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsNull_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
+				.Because("a negated expectation receives the pattern as 'unexpected'");
 		}
 
 		[Fact]

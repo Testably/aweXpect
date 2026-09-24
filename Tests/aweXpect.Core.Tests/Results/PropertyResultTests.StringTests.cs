@@ -442,6 +442,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task NotEndingWith_WhenUnexpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotEndingWith(" ").IgnoringTrailingWhiteSpace();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' suffix cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected")
+				.Because("the suffix is empty once the trailing white-space is ignored");
+		}
+
+		[Fact]
 		public async Task NotEqualTo_ShouldFailWhenActualDoesNotEqualExpected()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -504,6 +518,20 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(expected);
 
 			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenPatternIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotEqualTo(null).AsRegex();
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
+				.Because("the negated expectation receives the pattern as 'unexpected'");
 		}
 
 		[Fact]
@@ -609,6 +637,20 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("unexpected").And
 				.WithMessage("The unexpected cannot be null.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task NotStartingWith_WhenUnexpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotStartingWith(" ").IgnoringLeadingWhiteSpace();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected")
+				.Because("the prefix is empty once the leading white-space is ignored");
 		}
 
 		[Theory]

@@ -1237,6 +1237,21 @@ public sealed partial class ThatEnumerable
 		public sealed class StringsTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				IEnumerable<string> subject = ToEnumerable(["foo",]);
+				string[] unexpected = ["",];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task AsWildcard_ShouldThrowWhenMatchingWildcard()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo", "bar", "baz",]);

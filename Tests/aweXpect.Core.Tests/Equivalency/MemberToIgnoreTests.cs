@@ -19,6 +19,14 @@ public sealed class MemberToIgnoreTests
 	[InlineData("[c]", "Root[a[b][c]")]
 	[InlineData("Name", "Root[a.b].Name")]
 	[InlineData("Name", "Root[a[b].Name")]
+	[InlineData("[0]", "[0]")]
+	[InlineData("[1]", "[0][1]")]
+	[InlineData("[0][1]", "Items[0][1]")]
+	[InlineData("Name", "[0].Name")]
+	[InlineData("Name", "Items[0][1].Name")]
+	[InlineData("[key]", "Root[key]")]
+	[InlineData("Name", "Root[key].Name")]
+	[InlineData("Name", "Root[a]b].Name")]
 	public async Task ByName_WhenTheNameCoversWholePathSegments_ShouldIgnoreTheMember(
 		string memberName, string memberPath)
 	{
@@ -40,6 +48,11 @@ public sealed class MemberToIgnoreTests
 	[InlineData("b]", "Root[a.b]")]
 	[InlineData("[b]", "Root[a[b]")]
 	[InlineData("Items[3]", "Root[x.Items[3]")]
+	[InlineData(".Name", "Items[3].Name")]
+	[InlineData(".Name", "[3].Name")]
+	[InlineData(".Name", "Child.Name")]
+	[InlineData("b]", "Root[a]b]")]
+	[InlineData("Name]", "Root[a]Name]")]
 	[InlineData("", "Name")]
 	public async Task ByName_WhenTheNameDoesNotCoverWholePathSegments_ShouldNotIgnoreTheMember(
 		string memberName, string memberPath)
