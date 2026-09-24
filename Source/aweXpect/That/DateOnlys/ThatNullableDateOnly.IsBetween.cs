@@ -103,6 +103,7 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			ValueFormatters.Format(Formatter, stringBuilder, Actual);
+			stringBuilder.AppendDayDifferenceToRange(Actual?.DayNumber, minimum?.DayNumber, maximum?.DayNumber);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

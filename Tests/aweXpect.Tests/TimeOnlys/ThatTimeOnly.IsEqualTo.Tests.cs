@@ -37,7 +37,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -0:01
 					              """);
 			}
 
@@ -81,7 +81,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 18:00:00.0000000 ± 11:59:00,
-					             but it was 06:00:00.0000000
+					             but it was 06:00:00.0000000 which differs by 12:00:00
 					             """)
 					.Because("opposite times are exactly 12 hours apart on the clock face");
 			}
@@ -122,8 +122,27 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -0:0{actualDifference}
 					              """);
+			}
+
+			[Fact]
+			public async Task Within_WhenValuesWrapAroundMidnight_ShouldShowTheShorterDifference()
+			{
+				TimeOnly subject = new(23, 59);
+				TimeOnly expected = new(0, 1);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(1.Minutes());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 00:01:00.0000000 ± 1:00,
+					             but it was 23:59:00.0000000 which differs by -2:00
+					             """)
+					.Because("the difference must be the circular distance that the comparison used");
 			}
 
 			[Fact]

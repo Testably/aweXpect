@@ -68,6 +68,7 @@ public static partial class ThatNullableTimeSpan
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.AppendTimeDifference((decimal?)Actual?.Ticks - expected?.Ticks);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

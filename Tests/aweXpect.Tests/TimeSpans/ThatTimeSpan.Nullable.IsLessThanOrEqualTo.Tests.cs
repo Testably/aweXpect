@@ -62,7 +62,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is less than or equal to {Formatter.Format(expected)},
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 0:01
 						              """);
 				}
 
@@ -120,7 +120,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is less than or equal to {Formatter.Format(expected)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 0:04
 						              """);
 				}
 
@@ -152,7 +152,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is less than or equal to {Formatter.Format(expected)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 0:04
 						              """);
 				}
 

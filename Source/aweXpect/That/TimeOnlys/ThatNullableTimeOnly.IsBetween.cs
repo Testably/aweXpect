@@ -95,6 +95,7 @@ public static partial class ThatNullableTimeOnly
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			ValueFormatters.Format(Formatter, stringBuilder, Actual);
+			stringBuilder.AppendTimeDifferenceToArc(Actual, minimum, maximum);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

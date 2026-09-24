@@ -39,7 +39,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -1 day
 					              """);
 			}
 
@@ -53,6 +53,28 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsBelowOneDay_ShouldNotMentionTheTolerance()
+			{
+				DateOnly subject = EarlierTime(2);
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(12.Hours());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -2 days
+					              """)
+					.Because("a default below one day is truncated to zero days and must not read as ± 0 days");
 			}
 
 			[Fact]
@@ -112,6 +134,23 @@ public sealed partial class ThatDateOnly
 					.Because("a date has no time of day, so the remainder would be dropped without notice");
 			}
 
+			[Fact]
+			public async Task Within_WhenToleranceIsOneDay_ShouldUseTheSingular()
+			{
+				DateOnly subject = EarlierTime(3);
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(1.Days());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 1 day,
+					              but it was {Formatter.Format(subject)} which differs by -3 days
+					              """);
+			}
+
 			[Theory]
 			[InlineData(3, 2, true)]
 			[InlineData(5, 3, true)]
@@ -133,7 +172,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± {tolerance} days, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -{actualDifference} days
 					              """);
 			}
 		}

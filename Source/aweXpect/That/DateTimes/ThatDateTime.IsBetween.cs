@@ -117,6 +117,7 @@ public static partial class ThatDateTime
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
+				stringBuilder.AppendTimeDifferenceToRange(Actual.Ticks, minimum?.Ticks, maximum?.Ticks);
 			}
 		}
 
