@@ -204,6 +204,7 @@ aweXpect.Core.ResultContexts.ResultContexts() -> void
 aweXpect.Core.Sources.DelegateValue
 aweXpect.Core.Sources.DelegateValue.DelegateValue(System.Exception? exception, System.TimeSpan duration, bool isNull = false) -> void
 aweXpect.Core.Sources.DelegateValue.Duration.get -> System.TimeSpan
+aweXpect.Core.Sources.DelegateValue.ExceededTimeout.get -> System.TimeSpan?
 aweXpect.Core.Sources.DelegateValue.Exception.get -> System.Exception?
 aweXpect.Core.Sources.DelegateValue.IsNull.get -> bool
 aweXpect.Core.Sources.DelegateValue<TValue>
@@ -560,6 +561,7 @@ aweXpect.Options.StringEqualityOptions.AsRegex() -> aweXpect.Options.StringEqual
 aweXpect.Options.StringEqualityOptions.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.AsSuffix() -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.AsWildcard() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.ComparesByOrdinalEquality.get -> bool
 aweXpect.Options.StringEqualityOptions.Containing() -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected) -> System.Threading.Tasks.ValueTask<int>
 aweXpect.Options.StringEqualityOptions.GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
@@ -572,6 +574,7 @@ aweXpect.Options.StringEqualityOptions.IgnoringTrailingWhiteSpace(bool ignoreTra
 aweXpect.Options.StringEqualityOptions.InspectsSubject.get -> bool
 aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType) -> void
 aweXpect.Options.StringEqualityOptions.StringEqualityOptions() -> void
+aweXpect.Options.StringEqualityOptions.StringEqualityOptions(string! parameterName) -> void
 aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.TimeTolerance
 aweXpect.Options.TimeTolerance.SetTolerance(System.TimeSpan tolerance) -> void
@@ -584,7 +587,7 @@ aweXpect.Options.TriggerEventFilter.IsMatch(object?[]! parameters) -> bool
 aweXpect.Options.TriggerEventFilter.TriggerEventFilter() -> void
 aweXpect.Recording.IDisposableEventRecording<TSubject>
 aweXpect.Recording.IEventRecording<TSubject>
-aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
+aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
 aweXpect.Recording.IEventRecordingResult
 aweXpect.Recording.IEventRecordingResult.GetEventCount(string! eventName, System.Func<object?[]!, bool>? filter = null) -> int
 aweXpect.Recording.IEventRecordingResult.ToString(string! eventName) -> string!
