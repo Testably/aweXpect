@@ -318,7 +318,7 @@ To check for a proper superset, append `.Properly()` (which would fail for equal
 
 ## Start with
 
-You can verify, if a collection starts with another collection or not:
+You can verify if a collection starts with another collection or not:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 3);
@@ -349,7 +349,7 @@ await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
 
 ## End with
 
-You can verify, if a collection ends with another collection or not:
+You can verify if a collection ends with another collection or not:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 5);

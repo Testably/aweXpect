@@ -12,7 +12,7 @@ internal static class TimeDifferenceHelpers
 	/// </summary>
 	/// <remarks>
 	///     The sign is written explicitly, because the time span formatter only writes the magnitude. The difference is
-	///     omitted, when the formatter cannot show it: below one millisecond it would read as zero, and at or beyond
+	///     omitted when the formatter cannot show it: below one millisecond it would read as zero, and at or beyond
 	///     the range of a <see cref="TimeSpan" /> it has no value to format.
 	/// </remarks>
 	public static StringBuilder AppendTimeDifference(this StringBuilder stringBuilder, decimal? differenceTicks,
@@ -92,9 +92,13 @@ internal static class TimeDifferenceHelpers
 	}
 
 	/// <summary>
-	///     Appends the difference to the closest of the <paramref name="expected" /> values that has a compatible
+	///     Appends the difference to the closest of the <paramref name="expected" /> values with a compatible
 	///     <see cref="DateTime.Kind" />.
 	/// </summary>
+	/// <remarks>
+	///     Appends nothing when none of the <paramref name="expected" /> values has a compatible
+	///     <see cref="DateTime.Kind" />.
+	/// </remarks>
 	public static StringBuilder AppendTimeDifferenceToClosest(this StringBuilder stringBuilder, DateTime? actual,
 		IEnumerable<DateTime?> expected)
 		=> stringBuilder.AppendTimeDifferenceToClosest(expected.Select(value

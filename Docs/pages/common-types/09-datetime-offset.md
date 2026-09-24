@@ -197,7 +197,7 @@ await Expect.That(subject).Contains(new DateTime(2024, 12, 24, 0, 0, 0, DateTime
 
 ## Properties
 
-You can verify, the properties of `DateTime` or `DateTimeOffset`:
+You can verify the properties of `DateTime` or `DateTimeOffset`:
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc);

@@ -121,7 +121,7 @@ This will verify that the thrown exception is of type `CustomException` and not 
 
 ### Conditional throw
 
-You can verify that the delegate throws an exception only if a predicate is satisfied (otherwise it verifies, that no
+You can verify that the delegate throws an exception only if a predicate is satisfied (otherwise it verifies that no
 exception is thrown):
 
 ```csharp
