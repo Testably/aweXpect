@@ -32,7 +32,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? unexpected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new IsEqualToConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),

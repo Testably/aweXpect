@@ -50,7 +50,7 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(

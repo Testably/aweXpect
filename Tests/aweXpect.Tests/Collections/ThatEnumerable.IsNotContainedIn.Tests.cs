@@ -12,6 +12,21 @@ public sealed partial class ThatEnumerable
 		public sealed class InSameOrderTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				IEnumerable<string> subject = ["foo",];
+				IEnumerable<string> unexpected = ["",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldSucceed()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);

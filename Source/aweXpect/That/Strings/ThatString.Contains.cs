@@ -53,7 +53,7 @@ public static partial class ThatString
 		}
 
 		Quantifier quantifier = new();
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, unexpected, quantifier, options).Invert()),

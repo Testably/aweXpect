@@ -39,7 +39,7 @@ public sealed partial class ThatString
 					.WithMessage(
 						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 					.AsPrefix().And
-					.WithParamName("expected")
+					.WithParamName("unexpected")
 					.Because("a pattern that cannot be evaluated says nothing about the subject in either polarity");
 			}
 
@@ -64,8 +64,8 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotEqualTo("").AsRegex();
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
-					.WithParamName("expected")
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
 					.Because("an empty pattern matches every subject, so the expectation could never succeed");
 			}
 
@@ -78,8 +78,8 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotEqualTo(null).AsRegex();
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expected").And
-					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
 					.Because("the missing pattern is a setup error that outranks the null subject");
 			}
 
@@ -92,8 +92,8 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotEqualTo(null).AsRegex();
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expected").And
-					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
 					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
 			}
 

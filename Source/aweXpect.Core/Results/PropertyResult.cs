@@ -546,7 +546,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
 			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(unexpected));
 			options.Containing();
 			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
@@ -564,7 +564,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
 			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(unexpected));
 			options.AsSuffix();
 			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
@@ -576,7 +576,7 @@ public static class PropertyResult
 			string? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(unexpected));
 			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
 
@@ -593,7 +593,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
 			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(unexpected));
 			options.AsPrefix();
 			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}

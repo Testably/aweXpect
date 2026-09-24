@@ -162,6 +162,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = " text";
+
+				async Task Act()
+					=> await That(subject).StartsWith(" ").IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the prefix is empty once the leading white-space is ignored");
+			}
+
+			[Fact]
 			public async Task WhenSubjectDoesNotStartWithExpected_ShouldFail()
 			{
 				string subject = "some arbitrary text";

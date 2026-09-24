@@ -411,6 +411,20 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IEnumerable<string?> subject = ["foo", "bar",];
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem("").AsRegex().AtIndex(1);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the pattern as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task AsSuffix_WhenItemEndsWithUnexpected_ShouldFail()
 			{
 				IEnumerable<string?> subject = ["foo", "bar", "baz",];

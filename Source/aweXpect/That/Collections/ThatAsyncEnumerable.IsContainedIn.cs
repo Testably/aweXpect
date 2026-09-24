@@ -190,7 +190,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>,

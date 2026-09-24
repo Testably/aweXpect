@@ -136,6 +136,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "text ";
+
+				async Task Act()
+					=> await That(subject).EndsWith(" ").IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the suffix is empty once the trailing white-space is ignored");
+			}
+
+			[Fact]
 			public async Task WhenSubjectDoesNotEndWithExpected_ShouldFail()
 			{
 				string subject = "some arbitrary text";

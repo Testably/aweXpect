@@ -104,7 +104,7 @@ public static partial class ThatEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<IEnumerable<string?>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
@@ -256,7 +256,7 @@ public static partial class ThatEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<TCollection>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemForEnumerableConstraint<TCollection, string?>(

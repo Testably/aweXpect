@@ -2566,6 +2566,21 @@ public sealed partial class ThatEnumerable
 		public sealed class StringCollectionTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				string?[] subject = ["foo", "bar",];
+				IEnumerable<string?> unexpected = ["",];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string?[]? subject = null;

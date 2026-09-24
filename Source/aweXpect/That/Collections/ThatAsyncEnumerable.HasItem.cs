@@ -103,7 +103,7 @@ public static partial class ThatAsyncEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<IAsyncEnumerable<string?>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<string?>(expectationBuilder, it, grammars,

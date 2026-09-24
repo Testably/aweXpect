@@ -81,7 +81,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -248,7 +248,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		expected.ThrowIfNull(negated);
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(

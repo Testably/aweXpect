@@ -79,7 +79,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		Quantifier quantifier = new();
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -151,7 +151,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
