@@ -49,8 +49,7 @@ public partial class ThatDelegateThrows<TException>
 					" which ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it,
-						grammars | ExpectationGrammars.Nested, true))
+					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
@@ -90,8 +89,7 @@ public partial class ThatDelegateThrows<TException>
 		Type type)
 		=> new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
-					new HasInnerExceptionValueConstraint(type, it,
-						grammars | ExpectationGrammars.Nested)),
+					new HasInnerExceptionValueConstraint(type, it, grammars)),
 			this);
 
 	private sealed class HasInnerExceptionValueConstraint(
