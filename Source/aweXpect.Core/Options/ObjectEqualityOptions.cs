@@ -136,10 +136,12 @@ internal static class ObjectEqualityOptions
 		}
 
 		/// <remarks>
-		///     Every number is converted with the truncating conversion of generic math, which saturates where an
-		///     explicit cast would wrap or throw, and which needs no <see langword="dynamic" /> binder, unavailable when
-		///     publishing with Native AOT enabled. The caller converts in both directions, so a saturated value never
-		///     counts as equal on its own.
+		///     Every number is converted with the checked conversion of generic math, which needs no
+		///     <see langword="dynamic" /> binder, unavailable when publishing with Native AOT enabled. A value that does
+		///     not fit into the target type throws instead of wrapping around, so it counts as not equal, as with
+		///     <see cref="Convert.ChangeType(object, Type, IFormatProvider)" /> on the other target frameworks. The caller
+		///     converts in both directions, so a value that loses precision in one direction never counts as equal on
+		///     its own.
 		/// </remarks>
 		private static bool IsEqualWhenConverted(object source, object target)
 		{
@@ -183,22 +185,22 @@ internal static class ObjectEqualityOptions
 			where TSource : INumberBase<TSource>
 			=> target switch
 			{
-				int number => number.Equals(int.CreateTruncating(source)),
-				long number => number.Equals(long.CreateTruncating(source)),
-				float number => number.Equals(float.CreateTruncating(source)),
-				double number => number.Equals(double.CreateTruncating(source)),
-				decimal number => number.Equals(decimal.CreateTruncating(source)),
-				sbyte number => number.Equals(sbyte.CreateTruncating(source)),
-				byte number => number.Equals(byte.CreateTruncating(source)),
-				short number => number.Equals(short.CreateTruncating(source)),
-				ushort number => number.Equals(ushort.CreateTruncating(source)),
-				uint number => number.Equals(uint.CreateTruncating(source)),
-				ulong number => number.Equals(ulong.CreateTruncating(source)),
-				Int128 number => number.Equals(Int128.CreateTruncating(source)),
-				UInt128 number => number.Equals(UInt128.CreateTruncating(source)),
-				nint number => number.Equals(nint.CreateTruncating(source)),
-				nuint number => number.Equals(nuint.CreateTruncating(source)),
-				Half number => number.Equals(Half.CreateTruncating(source)),
+				int number => number.Equals(int.CreateChecked(source)),
+				long number => number.Equals(long.CreateChecked(source)),
+				float number => number.Equals(float.CreateChecked(source)),
+				double number => number.Equals(double.CreateChecked(source)),
+				decimal number => number.Equals(decimal.CreateChecked(source)),
+				sbyte number => number.Equals(sbyte.CreateChecked(source)),
+				byte number => number.Equals(byte.CreateChecked(source)),
+				short number => number.Equals(short.CreateChecked(source)),
+				ushort number => number.Equals(ushort.CreateChecked(source)),
+				uint number => number.Equals(uint.CreateChecked(source)),
+				ulong number => number.Equals(ulong.CreateChecked(source)),
+				Int128 number => number.Equals(Int128.CreateChecked(source)),
+				UInt128 number => number.Equals(UInt128.CreateChecked(source)),
+				nint number => number.Equals(nint.CreateChecked(source)),
+				nuint number => number.Equals(nuint.CreateChecked(source)),
+				Half number => number.Equals(Half.CreateChecked(source)),
 				_ => false,
 			};
 #endif

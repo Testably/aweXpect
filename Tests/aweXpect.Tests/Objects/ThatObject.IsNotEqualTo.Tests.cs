@@ -57,6 +57,18 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenSubjectAndUnexpectedAreDifferentNumericsWithDifferentValues_ShouldSucceed()
+			{
+				object subject = -1;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(uint.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("-1 does not fit into a uint and must not wrap around to uint.MaxValue");
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 			{
 				MyClass? subject = null;

@@ -117,6 +117,23 @@ public sealed partial class ThatObject
 
 		public sealed class NumericTests
 		{
+			[Fact]
+			public async Task WhenSubjectAndExpectedAreDifferentNumericsWithDifferentValues_ShouldFail()
+			{
+				object subject = -1;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(uint.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 4294967295,
+					             but it was -1
+					             """)
+					.Because("-1 does not fit into a uint and must not wrap around to uint.MaxValue");
+			}
+
 			[Theory]
 			[MemberData(nameof(GetValues))]
 			public async Task WhenSubjectAndExpectedAreDifferentNumericsWithSameValues_ShouldSucceed(object subject,
