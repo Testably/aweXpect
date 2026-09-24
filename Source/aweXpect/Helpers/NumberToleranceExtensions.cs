@@ -29,13 +29,12 @@ internal static class NumberToleranceExtensions
 			return cmp > 0;
 		}
 
-		if (cmp >= 0)
+		if (cmp > 0)
 		{
 			return true;
 		}
 
-		TNumber? diff = TryCalculateDifference(tolerance, actual.Value, expected.Value);
-		return diff is not null && diff.Value.CompareTo(tolerance.Tolerance.Value) <= 0;
+		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value, tolerance.Tolerance.Value);
 	}
 
 	public static bool IsGreaterThanOrEqualTo<TNumber>(
@@ -94,13 +93,12 @@ internal static class NumberToleranceExtensions
 			return cmp < 0;
 		}
 
-		if (cmp <= 0)
+		if (cmp < 0)
 		{
 			return true;
 		}
 
-		TNumber? diff = TryCalculateDifference(tolerance, actual.Value, expected.Value);
-		return diff is not null && diff.Value.CompareTo(tolerance.Tolerance.Value) <= 0;
+		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value, tolerance.Tolerance.Value);
 	}
 
 	public static bool IsLessThanOrEqualTo<TNumber>(
@@ -175,6 +173,44 @@ internal static class NumberToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 		=> value is not null && !IsNaN(value);
+
+	private static bool IsInfinity<TNumber>(TNumber value)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> value switch
+		{
+			double d => double.IsInfinity(d),
+			float f => float.IsInfinity(f),
+#if NET8_0_OR_GREATER
+			Half h => Half.IsInfinity(h),
+#endif
+			_ => false,
+		};
+
+	/// <remarks>
+	///     The distance has to be strictly smaller than the tolerance, so that a strict comparison shifts its bound
+	///     without becoming inclusive, like the time comparisons. An infinite bound stays infinite when shifted, so
+	///     nothing that is not already beyond it is within reach.
+	/// </remarks>
+	private static bool IsStrictlyWithinTolerance<TNumber>(
+		NumberTolerance<TNumber> tolerance, TNumber actual, TNumber expected, TNumber toleranceValue)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		if (IsInfinity(expected))
+		{
+			return false;
+		}
+
+		TNumber? diff = TryCalculateDifference(tolerance, actual, expected);
+		return diff is not null && diff.Value.CompareTo(toleranceValue) < 0;
+	}
 
 	private static TNumber? TryCalculateDifference<TNumber>(
 		NumberTolerance<TNumber> tolerance, TNumber actual, TNumber expected)

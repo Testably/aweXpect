@@ -9,7 +9,6 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData((byte)5, (byte)5)]
 			[InlineData((byte)5, (byte)6)]
-			[InlineData((byte)6, (byte)5)]
 			public async Task ForByte_WhenInsideTolerance_ShouldSucceed(
 				byte subject, byte expected)
 			{
@@ -20,6 +19,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData((byte)6, (byte)5)]
 			[InlineData((byte)7, (byte)5)]
 			[InlineData((byte)10, (byte)5)]
 			public async Task ForByte_WhenOutsideTolerance_ShouldFail(
@@ -39,7 +39,6 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(12.5, 12.5)]
 			[InlineData(12.5, 12.6)]
-			[InlineData(12.6, 12.5)]
 			public async Task ForDecimal_WhenInsideTolerance_ShouldSucceed(
 				double subjectValue, double expectedValue)
 			{
@@ -53,6 +52,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(12.6, 12.5)]
 			[InlineData(13.0, 12.5)]
 			public async Task ForDecimal_WhenOutsideTolerance_ShouldFail(
 				double subjectValue, double expectedValue)
@@ -130,6 +130,24 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForDouble_WhenSubjectAndExpectedAreNegativeInfinity_ShouldFail()
+			{
+				double subject = double.NegativeInfinity;
+				double expected = double.NegativeInfinity;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1.0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than -∞ ± 1.0,
+					             but it was -∞
+					             """)
+					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");
+			}
+
+			[Fact]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldFail()
 			{
 				double subject = double.NaN;
@@ -185,7 +203,6 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(5, 5)]
 			[InlineData(5, 6)]
-			[InlineData(6, 5)]
 			public async Task ForInt_WhenInsideTolerance_ShouldSucceed(int subject, int expected)
 			{
 				async Task Act()
@@ -194,7 +211,21 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForInt_WhenNegatedAndOnToleranceBoundary_ShouldSucceed()
+			{
+				int subject = 6;
+				int expected = 5;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsLessThan(expected).Within(1));
+
+				await That(Act).DoesNotThrow()
+					.Because("the negation is the exact complement of the strict inequality");
+			}
+
 			[Theory]
+			[InlineData(6, 5)]
 			[InlineData(7, 5)]
 			[InlineData(10, 5)]
 			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected)
@@ -227,7 +258,6 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(5L, 5L)]
 			[InlineData(5L, 6L)]
-			[InlineData(6L, 5L)]
 			public async Task ForLong_WhenInsideTolerance_ShouldSucceed(long subject, long expected)
 			{
 				async Task Act()
@@ -237,6 +267,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(6L, 5L)]
 			[InlineData(7L, 5L)]
 			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected)
 			{
@@ -300,7 +331,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task WhenToleranceIsZero_ShouldBeInclusive()
+			public async Task WhenToleranceIsZero_ShouldUseStrictInequality()
 			{
 				int subject = 5;
 				int expected = 5;
@@ -308,7 +339,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThan(expected).Within(0);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 5 ± 0,
+					             but it was 5
+					             """)
+					.Because("a tolerance widens the bound, but does not make the comparison inclusive");
 			}
 		}
 	}
