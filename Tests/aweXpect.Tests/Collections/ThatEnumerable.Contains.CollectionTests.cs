@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -535,6 +535,42 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithMissingItemAfterMoreThan20Items_ShouldReportTheMissingItem()
+			{
+				IEnumerable<int> subject = Enumerable.Range(0, 30);
+				int[] expected = [99,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it lacked the one expected item
+
+					             Collection:
+					             [
+					               0,
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               (… and 20 more)
+					             ]
+
+					             Expected:
+					             [99]
+					             """)
+					.Because("the items outside the expected run are no deviations of the containment");
+			}
+
+			[Fact]
 			public async Task WithMissingItems_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -673,7 +709,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -1117,6 +1153,42 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithMissingItemAfterMoreThan20Items_ShouldReportTheMissingItem()
+			{
+				IEnumerable<int> subject = Enumerable.Range(0, 30);
+				int[] expected = [99,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous ignoring duplicates,
+					             but it lacked the one unique expected item
+
+					             Collection:
+					             [
+					               0,
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               (… and 20 more)
+					             ]
+
+					             Expected:
+					             [99]
+					             """)
+					.Because("the items outside the expected run are no deviations of the containment");
+			}
+
+			[Fact]
 			public async Task WithMissingItems_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -1173,6 +1245,19 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains(expected).IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSubsetAfterMoreThan20Items_ShouldSucceed()
+			{
+				IEnumerable<int> subject = Enumerable.Range(0, 30);
+				int[] expected = [25, 26,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("the items outside the expected run are no deviations of the containment");
 			}
 		}
 
@@ -2063,7 +2148,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -2546,7 +2631,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [

@@ -209,8 +209,11 @@ public partial class CollectionMatchOptions
 						_missingItems.Add(item);
 					}
 
-					if (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
-					    2 * maximumNumber)
+					// Additional items are no deviation for the containment relation.
+					int additionalItems = _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+						? 0
+						: _additionalItems.Count;
+					if (additionalItems + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
 					{
 						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 					}

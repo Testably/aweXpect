@@ -175,10 +175,17 @@ public partial class CollectionMatchOptions
 #pragma warning restore S1871
 
 			_index++;
-			return _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber
+			return CountDeviations() > 2 * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
 		}
+
+		/// <summary>
+		///     Additional items are no deviation for the containment relation, so they are not counted.
+		/// </summary>
+		private int CountDeviations()
+			=> _incorrectItems.Count + _missingItems.Count +
+			   (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
@@ -260,8 +267,7 @@ public partial class CollectionMatchOptions
 					_missingItems.Add(item);
 				}
 
-				if (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
-				    2 * maximumNumberOfCollectionItems)
+				if (CountDeviations() > 2 * maximumNumberOfCollectionItems)
 				{
 					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 				}
