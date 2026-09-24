@@ -908,6 +908,31 @@ public sealed partial class ThatEnumerable
 
 
 			[Fact]
+			public async Task WithMovedItem_ShouldReportItInTheWrongOrder()
+			{
+				IEnumerable<int> subject = ToEnumerable([2, 3, 1,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 1 at index 2 in wrong order
+					             (but the items match in a different order)
+
+					             Collection:
+					             [2, 3, 1]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("an item that the fewest edits remove at one position and insert at another was moved");
+			}
+
+			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);

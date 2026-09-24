@@ -267,7 +267,7 @@ public partial class CollectionMatchOptions
 					_values, (item, expected) => AreConsideredEqual(item, expected, options));
 				if (edits is not null && edits.Count < positionalDeviations)
 				{
-					return ReturnEditsError(it, edits);
+					return await ReturnEditsError(it, edits, options);
 				}
 			}
 
@@ -281,11 +281,20 @@ public partial class CollectionMatchOptions
 				_missingItems.Add(_expectedItems[i]);
 			}
 
-			return ReturnError(it, _incorrectItems, _additionalItems, _missingItems);
+			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems);
 		}
 
-		private (bool, string?) ReturnEditsError(string it,
-			List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits)
+		/// <summary>
+		///     An additional item that matches a missing item was moved, so both are reported as one item in the wrong
+		///     order.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask<(bool, string?)>
+#else
+		private async Task<(bool, string?)>
+#endif
+			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
+				IOptionsEquality<T2> options)
 		{
 			Dictionary<int, (T Item, T3 Expected)> incorrectItems = new();
 			Dictionary<int, T> additionalItems = new();
@@ -306,16 +315,32 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			return ReturnError(it, incorrectItems, additionalItems, missingItems);
+			Dictionary<int, T> outOfOrderItems = new();
+			foreach (KeyValuePair<int, T> additionalItem in additionalItems.ToList())
+			{
+				for (int i = 0; i < missingItems.Count; i++)
+				{
+					if (await AreConsideredEqual(additionalItem.Value, missingItems[i], options))
+					{
+						missingItems.RemoveAt(i);
+						additionalItems.Remove(additionalItem.Key);
+						outOfOrderItems.Add(additionalItem.Key, additionalItem.Value);
+						break;
+					}
+				}
+			}
+
+			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems);
 		}
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
-			Dictionary<int, T> additionalItems, List<T3> missingItems)
+			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems)
 		{
 			Func<object?, string> formatItem =
 				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
 			List<string> errors = new();
 			errors.AddRange(IncorrectItemsError(incorrectItems));
+			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
 			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
 			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem));
 

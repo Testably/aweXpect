@@ -60,6 +60,7 @@ public sealed partial class ThatObject
 
 				await That(Act).DoesNotThrow();
 			}
+
 			[Fact]
 			public async Task Whose_AllowsNestedIs_FailsWhenInnerTypeMismatches()
 			{
