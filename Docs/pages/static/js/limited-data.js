@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          283.4815231959025,
           273.72809038162234,
           256.4923405329386,
           270.47141586939495,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           227.43967040947504,
           368.76065781911217,
           246.31336043431207,
-          366.88434807459515
+          366.88434807459515,
+          325.7155992984772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -447,7 +447,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -457,6 +456,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          273.63889627456666,
           269.87966009775795,
           258.7779306631822,
           256.50651825391327,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           195.0926110426585,
           247.28855617841086,
           191.5841211716334,
-          247.6801100730896
+          247.6801100730896,
+          232.2529143333435
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          403607.07361778844,
           313103.78349609376,
           314545.55390625,
           327024.4654947917,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           280274.5925455729,
           432805.6280273438,
           309114.3339518229,
-          402744.52099609375
+          402744.52099609375,
+          426699.6129557292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           617976,
           617976,
           617976,
@@ -1065,6 +1064,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2852323.4205729165,
           2625909.8854166665,
           2610521.2452566964,
           2708283.4361979165,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1498728.9471354166,
           2588505.1143229166,
           1767930.7940848214,
-          2575607.152604167
+          2575607.152604167,
+          2561419.760216346
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841611,
           4841651,
           4841648,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
       {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          493.58852710723875,
           461.8257578849792,
           474.93318353380477,
           495.7646186535175,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           373.4577563285828,
           616.9647481918335,
           418.5804012005146,
-          614.0945189339774
+          614.0945189339774,
+          606.9750425338746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1360,
           1368,
           1368,
           1368,
@@ -1677,6 +1676,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          490.98782704671225,
           480.7632736137935,
           504.21682192484536,
           547.2313723246257,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           361.0428803648268,
           515.2972635269165,
           368.9387762387594,
-          498.2847960472107
+          498.2847960472107,
+          467.1022602830614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          273.80011316446155,
           259.16043017705283,
           257.07899941716875,
           280.53383081299916,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           260.18825085957843,
           371.57226079305013,
           281.1937019983927,
-          344.52720368703206
+          344.52720368703206,
+          329.71701486294086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2271,7 +2271,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2281,6 +2280,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          286.9390425682068,
           245.1631186803182,
           236.7126715864454,
           266.4871666908264,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           197.37258693377177,
           250.52697706222534,
           189.36316787401836,
-          243.47133977596576
+          243.47133977596576,
+          242.38292394365584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          467.7995653833662,
           508.83996607462564,
           546.8898420969646,
           554.8398835500082,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           402.196131669558,
           669.1177337646484,
           480.31194613530084,
-          625.3137149175008
+          625.3137149175008,
+          620.1444105148315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1256,
           1256,
           1256,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1204.0937852223715,
           1180.9390767904429,
           1293.7900349934896,
           1226.763064956665,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           834.4202824274699,
           1305.3931626637777,
           874.4405344009399,
-          1179.566806411743
+          1179.566806411743,
+          1175.6374717439924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1893.4208389009748,
           1894.3747313363212,
           1977.2733469645182,
           1933.8181060791017,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1321.011224610465,
           2742.400967915853,
           1970.5652867635092,
-          2681.35092976888
+          2681.35092976888,
+          2623.4026667277017
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2624,
           2752,
           2752,
           2752,
@@ -3501,6 +3500,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1280.2460991995674,
           1408.0354794722336,
           1303.7993309020997,
           1347.267807143075,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           915.1889366422381,
           1425.9506351470948,
           970.213997777303,
-          1318.2128634134929
+          1318.2128634134929,
+          1294.726900736491
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
-        "message": "fix: tell the slices apart by the mutants they ran"
-      },
-      {
         "sha": "9d72f3f2da92a5d63fa65492aaa0ed9da0c13866",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:07:54 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
         "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
+      },
+      {
+        "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
+        "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
       }
     ],
     "labels": [
-      "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "7ff3e590",
       "7148a396",
       "11ae0085",
-      "d9d72aca"
+      "d9d72aca",
+      "f5b89dba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2482.6679671151296,
           2470.5895595550537,
           2547.284422238668,
           2586.085273742676,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1616.4755638667516,
           3235.9760614122665,
           2304.881059374128,
-          3153.5936186654226
+          3153.5936186654226,
+          3031.907234700521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2816,
           2944,
           2944,
           2944,
@@ -4109,6 +4108,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27317.63968302409,
           25044.89990641276,
           25662.806424654445,
           26990.944542439778,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           12074.787969316754,
           27407.378987630207,
           14889.59039415632,
-          26510.617586263023
+          26510.617586263023,
+          26177.42107747396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4240,6 +4239,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
