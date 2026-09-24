@@ -4098,6 +4098,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -4783,7 +4789,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -5472,7 +5479,8 @@ window.BENCHMARK_DATA = {
           348.62004709243774,
           227.43967040947504,
           368.76065781911217,
-          246.31336043431207
+          246.31336043431207,
+          366.88434807459515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6155,6 +6163,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -6863,7 +6872,8 @@ window.BENCHMARK_DATA = {
           253.8849971453349,
           195.0926110426585,
           247.28855617841086,
-          191.5841211716334
+          191.5841211716334,
+          247.6801100730896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7056,6 +7066,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11207,6 +11218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -11815,7 +11832,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -12427,7 +12445,8 @@ window.BENCHMARK_DATA = {
           429798.4231770833,
           280274.5925455729,
           432805.6280273438,
-          309114.3339518229
+          309114.3339518229,
+          402744.52099609375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13033,6 +13052,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408,
           628408,
           628408,
@@ -13664,7 +13684,8 @@ window.BENCHMARK_DATA = {
           2637916.90546875,
           1498728.9471354166,
           2588505.1143229166,
-          1767930.7940848214
+          1767930.7940848214,
+          2575607.152604167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14281,7 +14302,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841611,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18393,6 +18415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -19078,7 +19106,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -19767,7 +19796,8 @@ window.BENCHMARK_DATA = {
           565.3289719263713,
           373.4577563285828,
           616.9647481918335,
-          418.5804012005146
+          418.5804012005146,
+          614.0945189339774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20454,6 +20484,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -21158,7 +21189,8 @@ window.BENCHMARK_DATA = {
           533.7854971204486,
           361.0428803648268,
           515.2972635269165,
-          368.9387762387594
+          368.9387762387594,
+          498.2847960472107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21351,6 +21383,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25964,6 +25997,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -26649,7 +26688,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -27338,7 +27378,8 @@ window.BENCHMARK_DATA = {
           371.66191215515136,
           260.18825085957843,
           371.57226079305013,
-          281.1937019983927
+          281.1937019983927,
+          344.52720368703206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28021,6 +28062,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -28729,7 +28771,8 @@ window.BENCHMARK_DATA = {
           255.75856889088948,
           197.37258693377177,
           250.52697706222534,
-          189.36316787401836
+          189.36316787401836,
+          243.47133977596576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28922,6 +28965,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33535,6 +33579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -34220,7 +34270,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -34909,7 +34960,8 @@ window.BENCHMARK_DATA = {
           659.7945933024089,
           402.196131669558,
           669.1177337646484,
-          480.31194613530084
+          480.31194613530084,
+          625.3137149175008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35592,6 +35644,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592,
           1592,
           1592,
@@ -36300,7 +36353,8 @@ window.BENCHMARK_DATA = {
           1249.2195592244466,
           834.4202824274699,
           1305.3931626637777,
-          874.4405344009399
+          874.4405344009399,
+          1179.566806411743
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36729,6 +36783,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41106,6 +41161,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -41791,7 +41852,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -42480,7 +42542,8 @@ window.BENCHMARK_DATA = {
           2620.067540032523,
           1321.011224610465,
           2742.400967915853,
-          1970.5652867635092
+          1970.5652867635092,
+          2681.35092976888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43167,6 +43230,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -43871,7 +43935,8 @@ window.BENCHMARK_DATA = {
           1373.8136695861817,
           915.1889366422381,
           1425.9506351470948,
-          970.213997777303
+          970.213997777303,
+          1318.2128634134929
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44064,6 +44129,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48677,6 +48743,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
         "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
+      },
+      {
+        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
+        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
       }
     ],
     "labels": [
@@ -49362,7 +49434,8 @@ window.BENCHMARK_DATA = {
       "f01f8fc6",
       "7ff3e590",
       "7148a396",
-      "11ae0085"
+      "11ae0085",
+      "d9d72aca"
     ],
     "datasets": [
       {
@@ -50051,7 +50124,8 @@ window.BENCHMARK_DATA = {
           3182.197739464896,
           1616.4755638667516,
           3235.9760614122665,
-          2304.881059374128
+          2304.881059374128,
+          3153.5936186654226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50738,6 +50812,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -51442,7 +51517,8 @@ window.BENCHMARK_DATA = {
           26430.457550048828,
           12074.787969316754,
           27407.378987630207,
-          14889.59039415632
+          14889.59039415632,
+          26510.617586263023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52135,6 +52211,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
