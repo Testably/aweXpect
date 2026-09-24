@@ -52,9 +52,11 @@ public static partial class ValueFormatters
 
 	/// <remarks>
 	///     A registered type is served from the <see cref="TypeMetadataRegistry" />, so that publishing with trimming
-	///     or Native AOT enabled does not remove the members from the message. Every other type is reflected over with
-	///     the default binding flags, as before, or yields <see langword="null" /> where reflection is unavailable,
-	///     because a message must not throw for what it cannot show.
+	///     or Native AOT enabled does not remove the members from the message. Every other type is reflected over for
+	///     its public instance fields and non-indexed properties, or yields <see langword="null" /> where reflection is
+	///     unavailable, because a message must not throw for what it cannot show. Static members are left out, as they
+	///     do not describe the instance, and a static member of the type's own struct type (like
+	///     <c>CancellationToken.None</c>) boxes a new value on every read, so the recursion guard would never stop.
 	/// </remarks>
 	private static List<EquivalencyMember>? GetMembers(Type type)
 	{
@@ -71,9 +73,10 @@ public static partial class ValueFormatters
 			return null;
 		}
 
-		return type.GetFields()
+		return type.GetFields(BindingFlags.Public | BindingFlags.Instance)
 			.Select(field => new EquivalencyMember(field.Name, field.FieldType, subject => field.GetValue(subject)))
-			.Concat(type.GetProperties()
+			.Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+				.Where(property => property.GetIndexParameters().Length == 0)
 				.Select(property => new EquivalencyMember(property.Name, property.PropertyType,
 					subject => property.GetValue(subject))))
 			.ToList();
