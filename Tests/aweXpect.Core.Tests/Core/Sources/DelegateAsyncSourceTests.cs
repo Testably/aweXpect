@@ -1,4 +1,6 @@
-﻿using aweXpect.Chronology;
+﻿using System.Diagnostics;
+using System.Threading;
+using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Sources;
@@ -15,5 +17,148 @@ public class DelegateAsyncSourceTests
 				.UseTimeSystem(timeSystem);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenCancellationIsRequestedBeforeTheDelegateCompletes_ShouldFail()
+	{
+		Func<Task> @delegate = () => PendingTask.Of<int>();
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow().WithCancellation(cts.Token);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it did throw a TaskCanceledException:
+			               {new TaskCanceledException().Message}
+			             """).And
+			.WithInner<TaskCanceledException>()
+			.Because("the cancellation must stop waiting for a delegate that does not observe it");
+	}
+
+	[Fact]
+	public async Task WhenDelegateCompletesWithinTheTimeout_ShouldSucceed()
+	{
+		Func<Task> @delegate = () => Task.Delay(50.Milliseconds());
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow().WithTimeout(5.Seconds());
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_ShouldFail()
+	{
+		Func<Task> @delegate = () => PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it did throw a TaskCanceledException:
+			               {new TaskCanceledException().Message}
+			             """).And
+			.WithInner<TaskCanceledException>()
+			.Because("the timeout must abandon the task instead of awaiting it to completion");
+	}
+
+	[Fact]
+	public async Task WhenDelegateExceedsTheDurationOfExecutesWithin_ShouldFail()
+	{
+		Func<Task> @delegate = () => PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             executes within 0:00.050,
+			             but it was canceled after 0:*
+			             """).AsWildcard()
+			.Because("the duration must abandon the task instead of awaiting it to completion");
+	}
+
+	[Fact]
+	public async Task WhenDelegateExceedsTheDurationOfThrowsWithin_ShouldFail()
+	{
+		Func<Task> @delegate = () => PendingTask.Of<int>();
+		Stopwatch stopwatch = new();
+
+		async Task Act()
+			=> await That(@delegate).Throws<ArgumentException>().Within(50.Milliseconds());
+
+		stopwatch.Start();
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             throws an ArgumentException within 0:00.050,
+			             but it *
+			             """).AsWildcard();
+		stopwatch.Stop();
+
+		await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+			.Because("the duration must abandon the task instead of awaiting it to completion");
+	}
+
+	[Fact]
+	public async Task WhenDelegateExceedsTheUpperBoundOfExecutesIn_ShouldFail()
+	{
+		Func<Task> @delegate = () => PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             executes in at most 0:00.050,
+			             but it was canceled after 0:*
+			             """).AsWildcard()
+			.Because("the upper bound must abandon the task instead of awaiting it to completion");
+	}
+
+	[Fact]
+	public async Task WhenDelegateIgnoresTheCancellationToken_ShouldFail()
+	{
+		Func<CancellationToken, Task> @delegate = _ => PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             executes within 0:00.050,
+			             but it was canceled after 0:*
+			             """).AsWildcard()
+			.Because("a delegate that ignores the cancelled token must be abandoned as well");
+	}
+
+	[Fact]
+	public async Task WhenTaskSubjectDoesNotCompleteWithinTheTimeout_ShouldFail()
+	{
+		Task subject = PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(subject).DoesNotThrow().WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			             Expected that subject
+			             does not throw any exception,
+			             but it did throw a TaskCanceledException:
+			               {new TaskCanceledException().Message}
+			             """).And
+			.WithInner<TaskCanceledException>()
+			.Because("the timeout must abandon the task instead of awaiting it to completion");
 	}
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Delegates;
@@ -299,6 +300,32 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenCancelledWhileTheSubjectIsPending_ShouldBeInconclusive()
+		{
+			using CancellationTokenSource cts = new();
+			cts.CancelAfter(50.Milliseconds());
+			Func<Task<int>> subject = () => PendingTask.Of<int>();
+			Stopwatch stopwatch = new();
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1)
+					.WithTimeout(60.Seconds())
+					.WithCancellation(cts.Token);
+
+			stopwatch.Start();
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to 1,
+				             but it could not be verified, because it was already canceled
+				             """);
+			stopwatch.Stop();
+
+			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+				.Because("the cancellation must stop waiting for a subject that does not observe it");
+		}
+
+		[Fact]
 		public async Task WhenCancellationTokenIsCancelled_ShouldBeInconclusiveWithoutWaitingForTheTimeout()
 		{
 			using CancellationTokenSource cts = new();
@@ -523,7 +550,8 @@ public sealed partial class ThatDelegateTests
 					             Expected that () => counter.Value
 					             is equal to 1 within 0:00.050,
 					             but it was 0 which differs by -1
-					             """);
+					             """)
+					.WithTimeout(30.Seconds());
 			}
 		}
 
@@ -561,7 +589,8 @@ public sealed partial class ThatDelegateTests
 					             Expected that () => counter.Value
 					             is equal to 1,
 					             but it could not be verified, because it was already canceled
-					             """);
+					             """)
+					.WithTimeout(30.Seconds());
 				stopwatch.Stop();
 			}
 

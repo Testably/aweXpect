@@ -700,23 +700,22 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		if (timeout != null)
+		using CancellationTokenSource? timeoutCts = timeout is null
+			? null
+			: CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+		if (timeoutCts is not null)
 		{
-			using CancellationTokenSource timeoutCts = CancellationTokenSource
-				.CreateLinkedTokenSource(cancellationToken);
-			timeoutCts.CancelAfter(timeout.Value.ToTimerTimeout());
-			CancellationToken token = timeoutCts.Token;
-			TValue dataWithTimeout = await _subjectSource.GetValue(timeSystem, token);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
-				$"Checking expectation for {Subject} {dataWithTimeout} with timeout of {Formatter.Format(timeout)}");
-			return await rootNode.IsMetBy(dataWithTimeout, context, token);
+			timeoutCts.CancelAfter(timeout!.Value.ToTimerTimeout());
+			cancellationToken = timeoutCts.Token;
 		}
 
 		TValue data;
 		try
 		{
 			data = await _subjectSource.GetValue(timeSystem, cancellationToken);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+			Customize.aweXpect.TraceWriter.Value?.WriteMessage(timeout is null
+				? $"Checking expectation for {Subject} {data}"
+				: $"Checking expectation for {Subject} {data} with timeout of {Formatter.Format(timeout)}");
 		}
 		catch (Exception exception)
 		{

@@ -26,9 +26,9 @@ await Expect.That(DoAsync()).Throws<InvalidOperationException>();
 ```
 
 A `Task` or `ValueTask` is already running when the expectation receives it, so an expectation on the execution time
-only measures the duration that remains, and it cannot be interrupted by a timeout. Pass the method itself
-(`Expect.That(DoAsync)`) to measure the whole execution. A `ValueTask` is consumed by `Expect.That`, so it must not
-be awaited anywhere else.
+only measures the duration that remains, and a timeout cannot stop it: the expectation only stops waiting for it
+and fails. Pass the method itself (`Expect.That(DoAsync)`) to measure the whole execution. A `ValueTask` is consumed
+by `Expect.That`, so it must not be awaited anywhere else.
 
 To make an expectation about the task object rather than about what it does, state the type explicitly:
 
@@ -258,9 +258,10 @@ of execution time.
 The upper bound — the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance —
 is applied as timeout (a subsequent `WithTimeout(…)` overwrites it), so that a delegate accepting a
 `CancellationToken` is cancelled once it elapsed and the expectation fails with "was canceled after …" instead of
-hanging. `AtLeast` has no upper bound and therefore applies no timeout. A delegate that does not accept a
-`CancellationToken` cannot be interrupted and is awaited to completion, however long that takes; neither
-`WithTimeout` nor `WithCancellation` changes that.
+hanging. `AtLeast` has no upper bound and therefore applies no timeout. The task of an asynchronous delegate is
+abandoned once the timeout elapsed, even if the delegate ignores or does not accept a `CancellationToken`, and the
+expectation fails the same way. A synchronous delegate cannot be interrupted and runs to completion, however long
+that takes; neither `WithTimeout` nor `WithCancellation` changes that.
 
 ### Allowing exceptions
 
@@ -296,9 +297,9 @@ await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300)
 ```
 
 The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
-`CancellationToken` is cancelled once it elapsed. A delegate that does not accept a `CancellationToken` cannot be
-interrupted and is awaited to completion, however long that takes; neither `WithTimeout` nor `WithCancellation`
-changes that.
+`CancellationToken` is cancelled once it elapsed. The task of an asynchronous delegate is abandoned at that point,
+even if the delegate ignores or does not accept a `CancellationToken`. A synchronous delegate cannot be interrupted
+and runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that.
 
 ## Eventually
 

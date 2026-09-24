@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Sources;
@@ -22,7 +23,7 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action)
 		try
 		{
 			sw.Start();
-			await action(cancellationToken);
+			await action(cancellationToken).AbandonOnCancellation(cancellationToken);
 			sw.Stop();
 			return new DelegateValue(null, sw.Elapsed);
 		}

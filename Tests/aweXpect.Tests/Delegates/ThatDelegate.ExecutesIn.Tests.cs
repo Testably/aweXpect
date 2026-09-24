@@ -104,7 +104,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task> @delegate = () => Task.Delay(50.Milliseconds());
+				Func<Task> @delegate = () => Task.Delay(30.Seconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -113,8 +113,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -186,7 +187,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task<int>> @delegate = () => Task.Delay(50.Milliseconds()).ContinueWith(_ => 1);
+				Func<Task<int>> @delegate = () => Task.Delay(30.Seconds()).ContinueWith(_ => 1);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -195,8 +196,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -251,7 +253,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate() => new(Task.Delay(50.Milliseconds()));
+				ValueTask Delegate() => new(Task.Delay(30.Seconds()));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -260,8 +262,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -406,7 +409,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask<int> Delegate() => new(Task.Delay(50.Milliseconds()).ContinueWith(_ => 1));
+				ValueTask<int> Delegate() => new(Task.Delay(30.Seconds()).ContinueWith(_ => 1));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -415,8 +418,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -742,14 +746,9 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAwaitItToCompletion()
+			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAbandonIt()
 			{
-				bool didComplete = false;
-				Func<Task> @delegate = async () =>
-				{
-					await Task.Delay(100.Milliseconds());
-					didComplete = true;
-				};
+				Func<Task> @delegate = () => Task.Delay(30.Seconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -758,10 +757,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
-				await That(didComplete).IsTrue()
-					.Because("a delegate that cannot be interrupted is awaited instead of being abandoned");
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the task of an asynchronous delegate is abandoned instead of awaited to completion");
 			}
 
 			[Fact]

@@ -116,7 +116,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			TValue? data = default;
 			try
 			{
-				data = await subject(cancellationToken);
+				data = await subject(cancellationToken).AbandonOnCancellation(cancellationToken);
 				Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
 			}
 			catch (Exception exception)

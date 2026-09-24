@@ -11,8 +11,8 @@ public partial class ThatDelegateThrows<TException>
 	/// <remarks>
 	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
 	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
-	///     elapsed. A delegate without such a parameter cannot be interrupted and is awaited to completion,
-	///     however long that takes.
+	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
+	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
 	/// </remarks>
 	public ThatDelegateThrows<TException> Within(TimeSpan duration)
 	{

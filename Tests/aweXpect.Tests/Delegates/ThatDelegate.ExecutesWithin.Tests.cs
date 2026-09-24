@@ -116,7 +116,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task> @delegate = () => Task.Delay(50.Milliseconds());
+				Func<Task> @delegate = () => Task.Delay(30.Seconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(10.Milliseconds());
@@ -125,8 +125,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -196,7 +197,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task<int>> @delegate = () => Task.Delay(50.Milliseconds()).ContinueWith(_ => 1);
+				Func<Task<int>> @delegate = () => Task.Delay(30.Seconds()).ContinueWith(_ => 1);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(10.Milliseconds());
@@ -205,8 +206,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -260,7 +262,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate() => new(Task.Delay(50.Milliseconds()));
+				ValueTask Delegate() => new(Task.Delay(30.Seconds()));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesWithin(10.Milliseconds());
@@ -269,8 +271,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -411,7 +414,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask<int> Delegate() => new(Task.Delay(50.Milliseconds()).ContinueWith(_ => 1));
+				ValueTask<int> Delegate() => new(Task.Delay(30.Seconds()).ContinueWith(_ => 1));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesWithin(10.Milliseconds());
@@ -420,8 +423,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
@@ -659,7 +663,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenTaskTakesLonger_ShouldFail()
 			{
-				Task subject = Task.Delay(50.Milliseconds());
+				Task subject = Task.Delay(30.Seconds());
 
 				async Task Act()
 					=> await That(subject).ExecutesWithin(10.Milliseconds());
@@ -668,8 +672,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that subject
 					             executes within 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
 			[Fact]
