@@ -175,6 +175,42 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenClassHasIndexer_ShouldNotDisplayIt()
+		{
+			object value = new ClassWithIndexer
+			{
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassWithIndexer { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("an indexer cannot be read without an index");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenClassHasStaticMembers_ShouldDisplayOnlyInstanceMembers()
+		{
+			object value = new ClassWithStaticMembers
+			{
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassWithStaticMembers { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("static members do not describe the formatted instance");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenClassIsEmpty_ShouldDisplayClassName()
 		{
 			object value = new EmptyClass();
@@ -255,6 +291,24 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenStructHasStaticPropertyOfItsOwnType_ShouldNotFollowIt()
+		{
+			object value = new StructWithStaticPropertyOfItsOwnType
+			{
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.StructWithStaticPropertyOfItsOwnType { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("each read boxes a new value, so the recursion guard would never stop following it");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenTwoMembersAreEqualButNotTheSame_ShouldFormatBoth()
 		{
 			object value = new
@@ -305,6 +359,27 @@ public partial class ValueFormatters
 			public int Value = 2;
 		}
 
+		private sealed class ClassWithIndexer
+		{
+			// ReSharper disable once UnusedMember.Local
+			public int this[int index] => index;
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; }
+		}
+
+		private sealed class ClassWithStaticMembers
+		{
+			// ReSharper disable once UnusedMember.Local
+			public static int StaticField = 3;
+
+			// ReSharper disable once UnusedMember.Local
+			public static ClassWithStaticMembers Default { get; } = new();
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; }
+		}
+
 		private sealed class ClassWithToString(string value)
 		{
 			/// <inheritdoc />
@@ -334,6 +409,23 @@ public partial class ValueFormatters
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
+		}
+
+		private struct StructWithStaticPropertyOfItsOwnType
+		{
+			private static int _reads;
+
+			// ReSharper disable once NotAccessedField.Local
+			public int Value;
+
+			/// <remarks>
+			///     Throws on the second read, so that following it fails the test instead of overflowing the stack.
+			/// </remarks>
+			// ReSharper disable once UnusedMember.Local
+			public static StructWithStaticPropertyOfItsOwnType Default
+				=> ++_reads > 1
+					? throw new InvalidOperationException("read more than once")
+					: new StructWithStaticPropertyOfItsOwnType();
 		}
 
 		private sealed class EmptyClass;
