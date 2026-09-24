@@ -20,6 +20,10 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
+	/// <remarks>
+	///     Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>
+	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
+	/// </remarks>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNegative<TNumber>(
 		this IThat<TNumber> subject)
 		where TNumber : struct, INumber<TNumber>
@@ -30,6 +34,10 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
+	/// <remarks>
+	///     Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>
+	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNegative<TNumber>(
 		this IThat<TNumber?> subject)
@@ -41,6 +49,10 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not negative.
 	/// </summary>
+	/// <remarks>
+	///     Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>
+	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
+	/// </remarks>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNotNegative<TNumber>(
 		this IThat<TNumber> subject)
 		where TNumber : struct, INumber<TNumber>
@@ -51,6 +63,10 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not negative.
 	/// </summary>
+	/// <remarks>
+	///     Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>
+	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotNegative<TNumber>(
 		this IThat<TNumber?> subject)
@@ -124,8 +140,12 @@ public static partial class ThatNumber
 	private const string IsNegativeSummary = "Verifies that the subject is negative.";
 	private const string IsNotNegativeSummary = "Verifies that the subject is not negative.";
 
+	private const string IsNegativeRemarks =
+		"Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>\n" +
+		"and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.";
+
 	[CreateCollectionExpectation("Is{Not}Negative", Factory = typeof(SignedNumberFactory),
-		Summary = IsNegativeSummary, NegatedSummary = IsNotNegativeSummary)]
+		Summary = IsNegativeSummary, NegatedSummary = IsNotNegativeSummary, Remarks = IsNegativeRemarks)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsNegativeCore<TNumber>(
 		IThat<TNumber> subject,
 		NumberSign<TNumber> sign,
@@ -136,7 +156,7 @@ public static partial class ThatNumber
 			subject);
 
 	[CreateCollectionExpectation("Is{Not}Negative", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
-		Summary = IsNegativeSummary, NegatedSummary = IsNotNegativeSummary)]
+		Summary = IsNegativeSummary, NegatedSummary = IsNotNegativeSummary, Remarks = IsNegativeRemarks)]
 	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNegativeForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		NumberSign<TNumber> sign,

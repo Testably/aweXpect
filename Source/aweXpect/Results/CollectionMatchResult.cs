@@ -48,6 +48,9 @@ public class CollectionMatchResult<TType, TThat, TElement, TSelf>(
 	/// <summary>
 	///     Ignores duplicates in both collections.
 	/// </summary>
+	/// <remarks>
+	///     Each distinct item is compared once, so <c>[1, 1, 2]</c> matches <c>[1, 2]</c>.
+	/// </remarks>
 	public TSelf IgnoringDuplicates()
 	{
 		collectionMatchOptions.IgnoringDuplicates();

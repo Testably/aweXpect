@@ -13,6 +13,12 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound, or one whose
+	///     <see cref="DateTime.Kind" /> cannot be compared with the subject's, like <see cref="DateTimeKind.Utc" />
+	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?> IsBetween(
 		this IThat<DateTime?> subject,
@@ -33,6 +39,12 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound, or one whose
+	///     <see cref="DateTime.Kind" /> cannot be compared with the subject's, like <see cref="DateTimeKind.Utc" />
+	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?> IsNotBetween(
 		this IThat<DateTime?> subject,

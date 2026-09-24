@@ -27,6 +27,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as not a number.
 	/// </summary>
+	/// <remarks>
+	///     <see langword="null" /> is not treated as NaN.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNaN<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -46,6 +49,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not seen as not a number.
 	/// </summary>
+	/// <remarks>
+	///     <see langword="null" /> is neither treated as NaN nor as not NaN, so it fails.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotNaN<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -126,7 +132,9 @@ public static partial class ThatNumber
 			subject);
 
 	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
-		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary)]
+		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary,
+		Remarks = "<see langword=\"null\" /> is not treated as NaN.",
+		NegatedRemarks = "<see langword=\"null\" /> is neither treated as NaN nor as not NaN, so it fails.")]
 	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNaNForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits,

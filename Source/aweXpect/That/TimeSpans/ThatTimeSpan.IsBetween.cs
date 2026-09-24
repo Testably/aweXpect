@@ -13,6 +13,11 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation.
+	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?> IsBetween(
 		this IThat<TimeSpan> subject,
 		TimeSpan? minimum)
@@ -32,6 +37,11 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation.
+	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?> IsNotBetween(
 		this IThat<TimeSpan> subject,
 		TimeSpan? minimum)

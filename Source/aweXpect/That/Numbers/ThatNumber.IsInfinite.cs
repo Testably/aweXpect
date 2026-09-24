@@ -50,7 +50,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not seen as infinite.
 	/// </summary>
 	/// <remarks>
-	///     <see langword="null" /> is treated as not infinite.
+	///     <see langword="null" /> is neither treated as infinite nor as not infinite, so it fails.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> subject)
@@ -134,7 +134,7 @@ public static partial class ThatNumber
 	[CreateCollectionExpectation("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
 		GuaranteesNotNull = true, Summary = IsInfiniteSummary, NegatedSummary = IsNotInfiniteSummary,
 		Remarks = "<see langword=\"null\" /> is not treated as infinite.",
-		NegatedRemarks = "<see langword=\"null\" /> is treated as not infinite.")]
+		NegatedRemarks = "<see langword=\"null\" /> is neither treated as infinite nor as not infinite, so it fails.")]
 	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsInfiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits,

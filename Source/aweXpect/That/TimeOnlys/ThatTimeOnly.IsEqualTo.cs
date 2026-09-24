@@ -14,6 +14,11 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The times are compared on the clock face, where the difference runs the shorter way around midnight, so
+	///     23:59 and 00:01 are two minutes apart. The ordering expectations, like
+	///     <see cref="IsAfter(IThat{TimeOnly}, TimeOnly?)" />, compare the times linearly from midnight instead.
+	/// </remarks>
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsEqualTo(this IThat<TimeOnly> subject,
 		TimeOnly? expected)
 	{
@@ -28,6 +33,11 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The times are compared on the clock face, where the difference runs the shorter way around midnight, so
+	///     23:59 and 00:01 are two minutes apart. The ordering expectations, like
+	///     <see cref="IsAfter(IThat{TimeOnly}, TimeOnly?)" />, compare the times linearly from midnight instead.
+	/// </remarks>
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsNotEqualTo(
 		this IThat<TimeOnly> subject,
 		TimeOnly? unexpected)

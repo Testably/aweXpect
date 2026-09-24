@@ -13,6 +13,11 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is on or before the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     Comparing a <see cref="DateTimeKind.Utc" /> with a <see cref="DateTimeKind.Local" /> value fails, for this
+	///     expectation and its negation alike, while <see cref="DateTimeKind.Unspecified" /> can be compared with
+	///     either kind.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsOnOrBefore(
 		this IThat<DateTime?> subject,
@@ -29,6 +34,11 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is not on or before the <paramref name="unexpected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     Comparing a <see cref="DateTimeKind.Utc" /> with a <see cref="DateTimeKind.Local" /> value fails, for this
+	///     expectation and its negation alike, while <see cref="DateTimeKind.Unspecified" /> can be compared with
+	///     either kind.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsNotOnOrBefore(
 		this IThat<DateTime?> subject,

@@ -40,6 +40,15 @@ public class TimeToleranceResult<TType, TThat, TSelf>(
 	/// <summary>
 	///     Specifies a <paramref name="tolerance" /> to apply on the time comparison.
 	/// </summary>
+	/// <remarks>
+	///     The tolerance relaxes the bounds of equality, ordering and range expectations, and a subject exactly the
+	///     tolerance away matches wherever the bound itself matches, for example on <c>IsEqualTo</c> or
+	///     <c>IsOnOrAfter</c>, but not on <c>IsAfter</c>. Negated ordering and range expectations, such as
+	///     <c>IsNotAfter</c> or <c>IsNotBetween</c>, tighten the underlying bound instead and so also pass within the
+	///     tolerance of the bound, while <c>IsNotEqualTo</c> and <c>IsNotOneOf</c> fail within it. On a <c>DateOnly</c>,
+	///     a <paramref name="tolerance" /> that is not a whole number of days throws an
+	///     <see cref="ArgumentOutOfRangeException" /> when the expectation is evaluated.
+	/// </remarks>
 	public TSelf Within(TimeSpan tolerance)
 	{
 		options.SetTolerance(tolerance);

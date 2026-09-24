@@ -14,6 +14,11 @@ public static partial class ThatNullableTimeOnly
 	/// <summary>
 	///     Verifies that the subject is on or after the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The times are compared linearly from midnight, so 00:01 is before 23:59, while
+	///     <see cref="IsEqualTo(IThat{TimeOnly?}, TimeOnly?)" /> and <see cref="IsBetween(IThat{TimeOnly?}, TimeOnly?)" />
+	///     treat the times as a clock face that wraps around midnight.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsOnOrAfter(
 		this IThat<TimeOnly?> subject,
@@ -30,6 +35,11 @@ public static partial class ThatNullableTimeOnly
 	/// <summary>
 	///     Verifies that the subject is not on or after the <paramref name="unexpected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The times are compared linearly from midnight, so 00:01 is before 23:59, while
+	///     <see cref="IsEqualTo(IThat{TimeOnly?}, TimeOnly?)" /> and <see cref="IsBetween(IThat{TimeOnly?}, TimeOnly?)" />
+	///     treat the times as a clock face that wraps around midnight.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsNotOnOrAfter(
 		this IThat<TimeOnly?> subject,

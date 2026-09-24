@@ -14,6 +14,11 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum before the <paramref name="minimum" /> describes a range across
+	///     midnight, so the range from 22:00 to 02:00 includes 23:00 and 01:00. A <see langword="null" /> bound fails
+	///     the expectation as well as its negation.
+	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly>>, TimeOnly?> IsBetween(
 		this IThat<TimeOnly> subject,
 		TimeOnly? minimum)
@@ -30,6 +35,11 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum before the <paramref name="minimum" /> describes a range across
+	///     midnight, so the range from 22:00 to 02:00 includes 23:00 and 01:00. A <see langword="null" /> bound fails
+	///     the expectation as well as its negation.
+	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly>>, TimeOnly?> IsNotBetween(
 		this IThat<TimeOnly> subject,
 		TimeOnly? minimum)

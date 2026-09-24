@@ -56,6 +56,11 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the property given by the <paramref name="propertyExpression" />
 	/// </summary>
+	/// <remarks>
+	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching event is recorded. Without a timeout, only the
+	///     events recorded so far are checked.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(
 		this IThat<IEventRecording<TSubject>> subject,
@@ -67,6 +72,11 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the given <paramref name="propertyName" />
 	/// </summary>
+	/// <remarks>
+	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching event is recorded. Without a timeout, only the
+	///     events recorded so far are checked.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(
 		this IThat<IEventRecording<TSubject>> subject,

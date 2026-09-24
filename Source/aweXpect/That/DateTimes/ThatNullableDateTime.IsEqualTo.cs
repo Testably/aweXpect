@@ -13,6 +13,10 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <see cref="DateTimeKind.Utc" /> and a <see cref="DateTimeKind.Local" /> value cannot be compared and are
+	///     therefore never equal, while <see cref="DateTimeKind.Unspecified" /> can be compared with either kind.
+	/// </remarks>
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsEqualTo(
 		this IThat<DateTime?> subject,
 		DateTime? expected)
@@ -28,6 +32,10 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <see cref="DateTimeKind.Utc" /> and a <see cref="DateTimeKind.Local" /> value cannot be compared and are
+	///     therefore never equal, while <see cref="DateTimeKind.Unspecified" /> can be compared with either kind.
+	/// </remarks>
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsNotEqualTo(
 		this IThat<DateTime?> subject,
 		DateTime? unexpected)
