@@ -198,9 +198,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
-						              but it
-						                contained item {Formatter.Format(value)} at index 0 that was not expected and
-						                lacked the one expected item
+						              but it contained item {Formatter.Format(value)} at index 0 instead of {Formatter.Format(expected)}
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -290,9 +288,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
-						              but it
-						                contained item {Formatter.Format(value)} at index 0 that was not expected and
-						                lacked the one expected item
+						              but it contained item {Formatter.Format(value)} at index 0 instead of {Formatter.Format(expected)}
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -384,9 +380,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
-						              but it
-						                contained item {Formatter.Format(value)} at index 0 that was not expected and
-						                lacked the one expected item
+						              but it contained item {Formatter.Format(value)} at index 0 instead of {Formatter.Format(expected)}
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -476,9 +470,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
-						              but it
-						                contained item {Formatter.Format(value)} at index 0 that was not expected and
-						                lacked the one expected item
+						              but it contained item {Formatter.Format(value)} at index 0 instead of {Formatter.Format(expected)}
 
 						              Collection:
 						              [{Formatter.Format(value)}]

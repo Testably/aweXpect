@@ -169,6 +169,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithDeviationFollowedByTheFirstExpectedItem_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 4, 1,]);
+				int[] unexpected = [1, 2, 1,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);

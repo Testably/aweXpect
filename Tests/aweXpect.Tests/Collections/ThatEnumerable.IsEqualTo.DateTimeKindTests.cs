@@ -25,9 +25,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to collection expected in order,
-					              but it
-					                contained item {Formatter.Format(Utc)} at index 0 that was not expected and
-					                lacked the one expected item
+					              but it contained item {Formatter.Format(Utc)} at index 0 instead of {Formatter.Format(Local)}
 
 					              Collection:
 					              [
