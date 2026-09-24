@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Threading.Channels;
@@ -149,7 +150,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			if (timeout > TimeSpan.Zero && !areFound(this))
 			{
 				Channel<bool> channel = Channel.CreateUnbounded<bool>();
-				using CancellationTokenSource cts = new(timeout);
+				using CancellationTokenSource cts = new(timeout.ToTimerTimeout());
 				CancellationToken token = cts.Token;
 				foreach (EventRecorder recorder in _recorders.Values)
 				{
@@ -191,7 +192,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	{
 		ThrowIfStopped(context);
 		DateTime now = DateTime.Now;
-		DateTime endTime = now.Add(timeout);
+		DateTime endTime = timeout < DateTime.MaxValue - now ? now.Add(timeout) : DateTime.MaxValue;
 		try
 		{
 			if (timeout > TimeSpan.Zero && !areFound(this))
@@ -212,7 +213,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 						}
 
 						ms.Reset();
-						ms.Wait(endTime - now);
+						ms.Wait((endTime - now).ToTimerTimeout());
 						if (areFound(this))
 						{
 							break;

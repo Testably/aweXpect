@@ -508,6 +508,24 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenStopTimeoutExceedsTheTimerRange_ShouldWaitForTheEvent()
+	{
+		CustomEventClass subject = new();
+		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+		_ = Task.Run(async () =>
+		{
+			await Task.Delay(TimeSpan.FromMilliseconds(50));
+			subject.NotifyCustomEvent(1);
+		});
+
+		IEventRecordingResult result = await recording.StopWhen(
+			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) > 0, TimeSpan.MaxValue);
+
+		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
+			.Because("a timeout beyond the range of the timers must not throw");
+	}
+
+	[Fact]
 	public async Task WhenUntilDisposed_OnAnotherImplementation_ShouldThrowNotSupportedException()
 	{
 		ForeignRecording sut = new();

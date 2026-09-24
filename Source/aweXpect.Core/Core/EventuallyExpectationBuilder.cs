@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
@@ -70,7 +71,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		using CancellationTokenSource cancellationCts =
 			CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		cancellationCts.CancelAfter(cancellationTimeout.Value);
+		cancellationCts.CancelAfter(cancellationTimeout.Value.ToTimerTimeout());
 		return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationCts.Token);
 	}
 
