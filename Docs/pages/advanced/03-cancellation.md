@@ -59,3 +59,16 @@ cannot be abandoned and runs to completion.
 - When the **`CancellationToken`** is cancelled, no limit is known, so the expectation is evaluated as if the task had
   been canceled: an execution time expectation fails with "was canceled after …", and `DoesNotThrow` reports the
   cancellation exception.
+
+## Async enumerables
+
+The `CancellationToken` of the expectation, which includes the timeout, is passed to an `IAsyncEnumerable<T>` subject,
+and the expectation stops waiting for the next item once it is cancelled, even if the enumerable ignores the token.
+After that, the enumerable is not advanced any further.
+
+- Expectations that report a cancellation as "could not be verified, because it was already canceled", like the
+  quantified expectations (e.g. `All()` or `None()`), `HasCount` or `IsEmpty`, do so as well when the cancellation or
+  timeout occurs while they wait for an item, and list the items received so far.
+- All other expectations fail with "did not finish within …" and a `TimeoutException` as inner exception when a
+  **timeout** elapses, and abort with an `InvalidOperationException` whose inner exception is the
+  `OperationCanceledException` when the **`CancellationToken`** is cancelled.

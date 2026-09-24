@@ -67,7 +67,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			_materialized = materialized as IMaterializedEnumerable<TItem>;
 			_count = 0;
 			_isEmpty = true;

@@ -118,7 +118,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			if (_expected.Length == 0)
 			{
 				int maximumNumberOfCollectionItems =

@@ -81,7 +81,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			_matchingCount = 0;
 			_notMatchingCount = 0;
 			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
@@ -89,7 +89,7 @@ public static partial class ThatAsyncEnumerable
 			_matchingItems = new LimitedCollection<TItem>(maxItems);
 			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
 
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 				if (isMatch.Outcome == Outcome.Success)

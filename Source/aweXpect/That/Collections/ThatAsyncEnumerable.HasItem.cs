@@ -139,7 +139,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			await expectationBuilder.AddCollectionContext(materialized as IMaterializedEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
@@ -255,7 +255,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			await expectationBuilder.AddCollectionContext(materialized as IMaterializedEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;

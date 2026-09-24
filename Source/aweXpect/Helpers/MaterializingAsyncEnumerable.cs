@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,16 +8,27 @@ namespace aweXpect.Helpers;
 
 internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMaterializedEnumerable<T>
 {
-	private readonly IAsyncEnumerator<T> _enumerator;
+	private readonly CancellationToken _cancellationToken;
+	private readonly IAsyncEnumerable<T> _enumerable;
 	private readonly List<T> _materializedItems = new();
+	private IAsyncEnumerator<T>? _enumerator;
 
-	private MaterializingAsyncEnumerable(IAsyncEnumerable<T> enumerable)
+	private MaterializingAsyncEnumerable(IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken)
 	{
-		_enumerator = enumerable.GetAsyncEnumerator();
+		_enumerable = enumerable;
+		_cancellationToken = cancellationToken;
 	}
 
 	#region IAsyncEnumerable<T> Members
 
+	/// <remarks>
+	///     All enumerations continue the same source enumerator, so the source is governed by the
+	///     <see cref="CancellationToken" /> of the evaluation that wrapped it, not by the
+	///     <paramref name="cancellationToken" /> of a single enumeration.<br />
+	///     The source is not advanced once the evaluation is cancelled, and a pending <c>MoveNextAsync</c> is abandoned
+	///     with an <see cref="OperationCanceledException" />, so that a source which ignores the cancellation cannot
+	///     hang the evaluation.
+	/// </remarks>
 	public async IAsyncEnumerator<T> GetAsyncEnumerator(
 		CancellationToken cancellationToken = default)
 	{
@@ -25,8 +37,9 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 			yield return materializedItem;
 		}
 
+		_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (await _enumerator.MoveNextAsync())
+		while (!_cancellationToken.IsCancellationRequested && await MoveNextOrAbandon(_enumerator))
 		{
 			T item = _enumerator.Current;
 			_materializedItems.Add(item);
@@ -66,14 +79,46 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 		return this;
 	}
 
-	public static IAsyncEnumerable<T> Wrap(IAsyncEnumerable<T> enumerable)
+	public static IAsyncEnumerable<T> Wrap(IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken)
 	{
 		if (enumerable is MaterializingAsyncEnumerable<T>)
 		{
 			return enumerable;
 		}
 
-		return new MaterializingAsyncEnumerable<T>(enumerable);
+		return new MaterializingAsyncEnumerable<T>(enumerable, cancellationToken);
+	}
+
+	private ValueTask<bool> MoveNextOrAbandon(IAsyncEnumerator<T> enumerator)
+	{
+		ValueTask<bool> moveNext = enumerator.MoveNextAsync();
+		return (moveNext.IsCompleted && !_cancellationToken.IsCancellationRequested) ||
+		       !_cancellationToken.CanBeCanceled
+			? moveNext
+			: new ValueTask<bool>(AwaitOrAbandon(moveNext.AsTask()));
+	}
+
+	/// <remarks>
+	///     An item that arrives once the cancellation is requested is dropped, so that it does not depend on the timing
+	///     whether a cancellation during <c>MoveNextAsync</c> still yields the item.<br />
+	///     An abandoned <paramref name="moveNext" /> keeps running, so its exception is observed, as nobody else awaits
+	///     it and it would otherwise surface as <see cref="TaskScheduler.UnobservedTaskException" />.
+	/// </remarks>
+	private async Task<bool> AwaitOrAbandon(Task<bool> moveNext)
+	{
+		try
+		{
+			bool hasNext = await moveNext.WaitAsync(_cancellationToken);
+			_cancellationToken.ThrowIfCancellationRequested();
+			return hasNext;
+		}
+		catch (OperationCanceledException) when (_cancellationToken.IsCancellationRequested)
+		{
+			_ = moveNext.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+				TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
+				TaskScheduler.Default);
+			throw;
+		}
 	}
 }
 
