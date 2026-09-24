@@ -815,7 +815,7 @@ public static partial class ThatEnumerable
 			return Finish(_materializedEnumerable);
 		}
 
-		private ConstraintResult Finish(IEnumerable<TItem> collection)
+		private AsyncContainConstraint<TItem> Finish(IEnumerable<TItem> collection)
 		{
 			expectationBuilder.AddCollectionContext(collection);
 			_isFinished = true;
