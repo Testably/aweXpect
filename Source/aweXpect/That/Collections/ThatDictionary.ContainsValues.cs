@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -36,13 +38,13 @@ public static partial class ThatDictionary
 		ExpectationGrammars grammars,
 		TValue[] expected)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
-			IValueConstraint<TDictionary?>
+			IAsyncConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
 
-		public ConstraintResult IsMetBy(TDictionary? actual)
+		public async Task<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is not null)
@@ -51,7 +53,7 @@ public static partial class ThatDictionary
 				_existingValues = [];
 				foreach (TValue item in expected)
 				{
-					if (actual.ContainsValue(item))
+					if (await ContainsValue(actual, item))
 					{
 						_existingValues.Add(item);
 					}

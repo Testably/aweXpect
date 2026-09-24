@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.SourceGenerators;
 
 namespace aweXpect;
@@ -22,11 +23,24 @@ public static partial class ThatDictionary
 		"Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the\n" +
 		"priority to decide between them.";
 
-	internal static bool ContainsValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
+	/// <summary>
+	///     Compares the values with the same object equality as the items of a collection, as values, unlike keys, have
+	///     no comparer of the dictionary to honour.
+	/// </summary>
+	private static async Task<bool> ContainsValue<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
 		TValue value)
-		=> value is null
-			? dictionary.Any(x => x.Value is null)
-			: dictionary.Any(x => value.Equals(x.Value));
+	{
+		ObjectEqualityOptions<TValue> options = new();
+		foreach (KeyValuePair<TKey, TValue> entry in dictionary)
+		{
+			if (await options.AreConsideredEqual(entry.Value, value))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/// <summary>
 	///     Looks the <paramref name="key" /> up through the dictionary itself, so that its key comparer decides.
