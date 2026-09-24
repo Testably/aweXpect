@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Options;
 public class ObjectEqualityOptionsTests
 {
 	[Theory]
-	[MemberData(nameof(DifferentNumbers))]
+	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
 	public async Task AreConsideredEqual_WhenNumbersHaveDifferentValues_ShouldReturnFalse(
 		object actual, object expected)
 	{
@@ -18,7 +18,7 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Theory]
-	[MemberData(nameof(EqualNumbers))]
+	[MemberData(nameof(EqualNumbers), DisableDiscoveryEnumeration = true)]
 	public async Task AreConsideredEqual_WhenNumbersHaveSameValue_ShouldReturnTrue(
 		object actual, object expected)
 	{
