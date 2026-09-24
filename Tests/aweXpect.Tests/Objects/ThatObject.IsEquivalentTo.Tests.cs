@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using aweXpect.Equivalency;
 
 // ReSharper disable UnusedMember.Local
@@ -669,6 +670,38 @@ public sealed partial class ThatObject
 					              - include public fields and properties
 					             """)
 					.Because("equivalency stays strict about the member type, so the failure has to show which types it compared");
+			}
+
+			[Fact]
+			public async Task WhenOnlyTheExpectedMemberIsAString_ShouldCompareByValue()
+			{
+				var subject = new
+				{
+					S = new StringBuilder("ab"),
+				};
+				var expected = new
+				{
+					S = "ab",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to {
+					                 S = "ab"
+					               },
+					             but it was not:
+					               Property S differed:
+					                    Found: ab
+					                 Expected: "ab"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("a string is compared by value on either side, instead of being reduced to its Length");
 			}
 
 			[Fact]

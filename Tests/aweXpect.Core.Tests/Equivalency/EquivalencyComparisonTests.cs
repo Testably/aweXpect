@@ -11,6 +11,37 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyComparisonTests
 {
 	[Fact]
+	public async Task WhenActualIsComparedByMembers_AndExpectedIsAString_ShouldCompareByValue()
+	{
+		WithLength actual = new(2);
+		string expected = "ab";
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a string is compared by value, so it must not be reduced to its Length just because the subject is compared by members");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It differed:
+		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                    Expected: "ab"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenActualIsComparedByMembers_AndItsEqualsAcceptsTheExpectedValue_ShouldLetTheExpectedValueDecide()
+	{
+		EqualToAnything actual = new();
+		string expected = "ab";
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsFalse()
+			.Because("a type compared by members has its Equals ignored, so only the Equals of the value compared by value may decide");
+	}
+
+	[Fact]
 	public async Task WhenActualMemberIsNull_ShouldReportFoundAndExpected()
 	{
 		var actual = new
@@ -107,6 +138,23 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenActualTypeIsComparedByMembersExplicitly_AndExpectedIsAString_ShouldCompareByValue()
+	{
+		WithLength actual = new(2);
+		string expected = "ab";
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithLength>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByMembers,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsFalse()
+			.Because("comparing the subject by members cannot make a string equivalent to anything other than an equal string");
+	}
+
+	[Fact]
 	public async Task WhenAllMembersAreExcludedExplicitly_ShouldNotThrow()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -161,6 +209,34 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsTrue()
 			.Because("a member that exists on both sides and is null on both sides is equivalent");
 		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCharArrayMemberIsComparedWithAString_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new[]
+			{
+				'a',
+			},
+		};
+		var expected = new
+		{
+			Value = "a",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a string is compared by value, which a collection of its characters is not equal to");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: ['a']
+		                                                    Expected: "a"
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Fact]
@@ -568,6 +644,29 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndOnlyTheExpectedElementIsComparedByValue_ShouldReportTheDifference()
+	{
+		object[] actual = [new WithLength(2),];
+		object[] expected = ["ab",];
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the matching of the elements has to decide the same way as the comparison of a single value");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] differed:
+		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                    Expected: "ab"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode[] actual = [new(4),];
@@ -968,6 +1067,31 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenExpectedMemberIsAString_AndActualMemberIsComparedByMembers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new WithLength(2),
+		};
+		var expected = new
+		{
+			Value = "ab",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("swapping subject and expectation must not change the result, and a string is never equivalent to a non-string");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                    Expected: "ab"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
 	public async Task WhenExpectedMemberIsMissingOnTheActualType_WhenIgnored_ShouldSucceed()
 	{
 		var actual = new
@@ -1182,6 +1306,61 @@ public sealed class EquivalencyComparisonTests
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("a registration keeps the kind of the member, so the fallback has to cross it in the registry as well");
+	}
+
+	[Fact]
+	public async Task WhenExpectedTypeIsComparedByValueByTheSelector_ShouldCompareByValue()
+	{
+		WithProperty actual = new(1);
+		ValueObject expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			DefaultComparisonTypeSelector = type => type == typeof(ValueObject)
+				? EquivalencyComparisonType.ByValue
+				: EquivalencyDefaults.DefaultComparisonType(type),
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsFalse()
+			.Because("the expected type asks for its own equality, which the subject does not satisfy although it has the same members");
+	}
+
+	[Fact]
+	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_ShouldNameTheExpectedType()
+	{
+		WithProperty actual = new(1);
+		WithThrowingEquals expected = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<WithThrowingEquals>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByValue,
+			});
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The equals method of EquivalencyComparisonTests.WithThrowingEquals threw an NotSupportedException: equals")
+			.Because("the Equals that is called belongs to the expected value, which is the only side compared by value");
+	}
+
+	[Fact]
+	public async Task WhenExpectedTypeIsComparedByValueForTheType_ShouldCompareByValue()
+	{
+		WithProperty actual = new(1);
+		ValueObject expected = new(1);
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<ValueObject>(o => o with
+			{
+				ComparisonType = EquivalencyComparisonType.ByValue,
+			});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsFalse()
+			.Because("the expected type asks for its own equality, which the subject does not satisfy although it has the same members");
 	}
 
 	[Fact]
@@ -2246,6 +2425,15 @@ public sealed class EquivalencyComparisonTests
 		Foo,
 	}
 
+	private sealed class EqualToAnything
+	{
+		public int Length => 2;
+
+		public override bool Equals(object? obj) => true;
+
+		public override int GetHashCode() => 0;
+	}
+
 	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
 	{
 		public new int Value = field;
@@ -2350,6 +2538,11 @@ public sealed class EquivalencyComparisonTests
 		public override string ToString() => $"{nameof(ValueLikeWithoutMembers)}({_value})";
 	}
 
+	private sealed class ValueObject(int value)
+	{
+		public int Value => value;
+	}
+
 	private sealed class WithIndexer
 	{
 		public int Count { get; set; }
@@ -2359,6 +2552,11 @@ public sealed class EquivalencyComparisonTests
 	private sealed class WithInternalValue(int value)
 	{
 		internal int Value = value;
+	}
+
+	private sealed class WithLength(int length)
+	{
+		public int Length => length;
 	}
 
 	private sealed class WithNullableValue(string? value)
@@ -2388,6 +2586,15 @@ public sealed class EquivalencyComparisonTests
 	private sealed class WithPublicValue(int value)
 	{
 		public int Value = value;
+	}
+
+	private sealed class WithThrowingEquals
+	{
+		public int Value => 1;
+
+		public override bool Equals(object? obj) => throw new NotSupportedException("equals");
+
+		public override int GetHashCode() => 0;
 	}
 
 	private sealed class WithThrowingGetter(string message)

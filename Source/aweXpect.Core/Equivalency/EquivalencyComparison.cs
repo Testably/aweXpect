@@ -33,7 +33,7 @@ public static partial class EquivalencyComparison
 			actual,
 			expected,
 			equivalencyOptions,
-			equivalencyOptions.GetTypeOptions(actual?.GetType(), equivalencyOptions),
+			equivalencyOptions,
 			failureBuilder,
 			"",
 			MemberType.Value,
