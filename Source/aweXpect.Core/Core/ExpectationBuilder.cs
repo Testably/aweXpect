@@ -84,8 +84,8 @@ public abstract class ExpectationBuilder
 	///     underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives the current name for the subject (mostly "it") and the
+	///     current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
@@ -99,8 +99,8 @@ public abstract class ExpectationBuilder
 	///     underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives this <see cref="ExpectationBuilder" />, the current name for
+	///     the subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
@@ -114,8 +114,8 @@ public abstract class ExpectationBuilder
 	///     the underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives the current name for the subject (mostly "it") and the
+	///     current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
@@ -129,8 +129,8 @@ public abstract class ExpectationBuilder
 	///     the underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives this <see cref="ExpectationBuilder" />, the current name for
+	///     the subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
@@ -144,8 +144,8 @@ public abstract class ExpectationBuilder
 	///     underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives the current name for the subject (mostly "it") and the
+	///     current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
@@ -159,8 +159,8 @@ public abstract class ExpectationBuilder
 	///     underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives this <see cref="ExpectationBuilder" />, the current name for
+	///     the subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
@@ -174,8 +174,8 @@ public abstract class ExpectationBuilder
 	///     verifies the underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives the current name for the subject (mostly "it") and the
+	///     current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
@@ -189,8 +189,8 @@ public abstract class ExpectationBuilder
 	///     verifies the underlying value.
 	/// </summary>
 	/// <remarks>
-	///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-	///     "it").
+	///     The <paramref name="constraintBuilder" /> receives this <see cref="ExpectationBuilder" />, the current name for
+	///     the subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
 	/// </remarks>
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
@@ -653,8 +653,9 @@ public abstract class ExpectationBuilder
 		///     Add a validation constraint for the current <typeparamref name="TSource" />.
 		/// </summary>
 		/// <remarks>
-		///     The parameter passed to the <paramref name="constraintBuilder" /> is the current name for the subject (mostly
-		///     "it").
+		///     The <paramref name="constraintBuilder" /> receives the current name for the subject (mostly "it") and the
+		///     current <see cref="ExpectationBuilder.ExpectationGrammars" /> of the <typeparamref name="TSource" />, as they
+		///     are when the expectations are added and before they change for the <typeparamref name="TMember" />.
 		/// </remarks>
 		public MemberExpectationBuilder<TSource, TMember> Validate(
 			Func<string, ExpectationGrammars, IValueConstraint<TSource>> constraintBuilder)

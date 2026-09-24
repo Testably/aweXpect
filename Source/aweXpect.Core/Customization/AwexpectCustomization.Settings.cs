@@ -125,19 +125,20 @@ public partial class AwexpectCustomization
 		///     The default tolerance for time comparisons.
 		/// </summary>
 		/// <remarks>
-		///     In Windows the `DateTime` resolution is about 10 to 15
+		///     In Windows the <see cref="DateTime" /> resolution is about 10 to 15
 		///     milliseconds (<see href="https://stackoverflow.com/q/3140826/4003370" />), so
 		///     comparing them as exact values might result in brittle tests.<br />
 		///     Therefore, it is possible to specify a default tolerance that is used for all <see cref="DateTime" />,
 		///     <see cref="DateTimeOffset" />, <see cref="DateOnly" />, <see cref="TimeOnly" /> and <see cref="TimeSpan" />
-		///     comparisons (unless an explicit tolerance is given).
+		///     comparisons (unless an explicit tolerance is given). For <see cref="DateOnly" /> only the whole days of the
+		///     tolerance count.
 		/// </remarks>
 #else
 		/// <summary>
 		///     The default tolerance for time comparisons.
 		/// </summary>
 		/// <remarks>
-		///     In Windows the `DateTime` resolution is about 10 to 15
+		///     In Windows the <see cref="DateTime" /> resolution is about 10 to 15
 		///     milliseconds (<see href="https://stackoverflow.com/q/3140826/4003370" />), so
 		///     comparing them as exact values might result in brittle tests.<br />
 		///     Therefore, it is possible to specify a default tolerance that is used for all <see cref="DateTime" />,

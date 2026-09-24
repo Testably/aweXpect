@@ -5,7 +5,7 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that a collection has a matching item at a given index.
+///     The result for verifying that a collection has a matching item, optionally at a given index.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="AndOrResult{TType,TSelf}" />

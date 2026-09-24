@@ -53,7 +53,7 @@ public static partial class ThatEnumerable
 	public partial class ElementsForEnumerable<TEnumerable>
 	{
 		/// <summary>
-		///     …are of type <typeparamref name="TType" />.
+		///     …are exactly of type <typeparamref name="TType" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreExactly<TType>()
@@ -71,7 +71,7 @@ public static partial class ThatEnumerable
 		}
 
 		/// <summary>
-		///     …are of type <paramref name="type" />.
+		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreExactly(Type type)
@@ -93,7 +93,7 @@ public static partial class ThatEnumerable
 	public partial class ElementsForStructEnumerable<TEnumerable, TItem>
 	{
 		/// <summary>
-		///     …are of type <typeparamref name="TType" />.
+		///     …are exactly of type <typeparamref name="TType" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreExactly<TType>()
@@ -111,7 +111,7 @@ public static partial class ThatEnumerable
 		}
 
 		/// <summary>
-		///     …are of type <paramref name="type" />.
+		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreExactly(Type type)

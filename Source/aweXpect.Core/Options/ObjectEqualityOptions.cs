@@ -238,7 +238,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		=> MatchType.AreConsideredEqual(actual, expected);
 
 	/// <summary>
-	///     Specifies a new <see cref="IStringMatchType" /> to use for matching two strings.
+	///     Specifies a new <see cref="IObjectMatchType" /> to use for matching two objects.
 	/// </summary>
 	public void SetMatchType(IObjectMatchType matchType) => MatchType = matchType;
 

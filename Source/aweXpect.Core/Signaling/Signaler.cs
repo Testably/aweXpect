@@ -50,7 +50,8 @@ public class Signaler
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     a default timeout of 30 seconds is used.
+	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult Wait(
 		TimeSpan? timeout = null,
@@ -93,7 +94,8 @@ public class Signaler
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     a default timeout of 30 seconds is used.
+	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult Wait(Times amount, TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
@@ -185,7 +187,8 @@ public class Signaler<TParameter>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     a default timeout of 30 seconds is used.
+	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult<TParameter> Wait(
 		Func<TParameter, bool>? predicate = null,
@@ -236,7 +239,8 @@ public class Signaler<TParameter>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     a default timeout of 30 seconds is used.
+	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult<TParameter> Wait(
 		Times amount,

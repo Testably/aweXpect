@@ -9,11 +9,13 @@ namespace aweXpect;
 public static partial class ThatEnum
 {
 	/// <summary>
-	///     Verifies that the subject has the <paramref name="expected" /> value.
+	///     Verifies that the subject has the <paramref name="expected" /> flag set.
 	/// </summary>
 	/// <remarks>
 	///     Unlike the other <c>Has…</c> expectations this one has no continuation: testing a flag asks whether a bit is
-	///     set, so the comparisons a continuation offers — greater than, between, … — have no meaning for it.
+	///     set, so the comparisons a continuation offers (greater than, between, …) have no meaning for it.<br />
+	///     A <see langword="null" /> <paramref name="expected" /> flag throws an <see cref="ArgumentNullException" />.
+	///     A zero flag is always set (as in <see cref="Enum.HasFlag(Enum)" />), so it matches every subject.
 	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> HasFlag<TEnum>(
 		this IThat<TEnum> subject,
@@ -27,8 +29,12 @@ public static partial class ThatEnum
 	}
 
 	/// <summary>
-	///     Verifies that the subject does not have the <paramref name="unexpected" /> value.
+	///     Verifies that the subject does not have the <paramref name="unexpected" /> flag set.
 	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> <paramref name="unexpected" /> flag throws an <see cref="ArgumentNullException" />.
+	///     A zero flag is always set (as in <see cref="Enum.HasFlag(Enum)" />), so it fails for every subject.
+	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> DoesNotHaveFlag<TEnum>(
 		this IThat<TEnum> subject,
 		TEnum? unexpected)

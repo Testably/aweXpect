@@ -3,7 +3,8 @@
 namespace aweXpect.Core;
 
 /// <summary>
-///     Base class for expectations, containing an <see cref="ExpectationBuilder" />.
+///     An expectation on a subject of type <typeparamref name="T" /> that gives access to its
+///     <see cref="ExpectationBuilder" />.
 /// </summary>
 // ReSharper disable once UnusedTypeParameter
 #pragma warning disable S2326 // 'T' is not used in the interface

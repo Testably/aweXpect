@@ -79,10 +79,11 @@ public class EventTriggerResult<TSubject>(
 	}
 
 	/// <summary>
-	///     Adds a parameter predicate on the first parameter of type <typeparamref name="TParameter" />.
+	///     Adds a predicate that at least one parameter of type <typeparamref name="TParameter" /> must satisfy.
 	/// </summary>
 	/// <remarks>
-	///     The filter will exclude parameters where the type does not match any parameter.
+	///     Parameters of other types are ignored; the event is excluded when no parameter of type
+	///     <typeparamref name="TParameter" /> satisfies <paramref name="predicate" />.
 	/// </remarks>
 	public EventTriggerResult<TSubject> WithParameter<TParameter>(Func<TParameter, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -133,7 +134,9 @@ public class EventTriggerResult<TSubject>(
 		/// </summary>
 		/// <remarks>
 		///     This method is mainly intended for extension methods, as it allows overriding the default
-		///     <paramref name="expression" />.
+		///     <paramref name="expression" />.<br />
+		///     When <paramref name="position" /> is <see langword="null" />, the predicate applies to any parameter of type
+		///     <typeparamref name="TParameter" />, so that at least one of them must satisfy it.
 		/// </remarks>
 		EventTriggerResult<TSubject> WithParameter<TParameter>(
 			string expression,

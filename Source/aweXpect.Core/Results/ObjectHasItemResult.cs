@@ -6,7 +6,7 @@ namespace aweXpect.Results;
 
 #pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
-///     The result for verifying that a collection has a specific item at a given index.
+///     The result for verifying that a collection has a matching item, optionally at a given index.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="HasItemResult{TCollection}" />
@@ -24,7 +24,7 @@ public class ObjectHasItemResult<TCollection, TItem>(
 		options);
 
 /// <summary>
-///     The result for verifying that a collection has a specific item at a given index.
+///     The result for verifying that a collection has a matching item, optionally at a given index.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="HasItemResult{TCollection}" />

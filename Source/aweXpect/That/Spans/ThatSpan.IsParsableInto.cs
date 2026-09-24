@@ -14,7 +14,7 @@ public static partial class ThatSpan
 	/// </summary>
 	/// <remarks>
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
-	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
+	///     in the call to <see cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static IsSpanParsableResult<TType> IsParsableInto<TType>(
@@ -31,7 +31,7 @@ public static partial class ThatSpan
 	/// </summary>
 	/// <remarks>
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
-	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
+	///     in the call to <see cref="IUtf8SpanParsable{TSelf}.Parse(ReadOnlySpan{byte}, IFormatProvider)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static IsUtf8SpanParsableResult<TType> IsParsableInto<TType>(
@@ -48,7 +48,7 @@ public static partial class ThatSpan
 	/// </summary>
 	/// <remarks>
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
-	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
+	///     in the call to <see cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>> IsNotParsableInto<TType>(
@@ -64,7 +64,7 @@ public static partial class ThatSpan
 	/// </summary>
 	/// <remarks>
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
-	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
+	///     in the call to <see cref="IUtf8SpanParsable{TSelf}.Parse(ReadOnlySpan{byte}, IFormatProvider)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<SpanWrapper<byte>, IThat<SpanWrapper<byte>>> IsNotParsableInto<TType>(
