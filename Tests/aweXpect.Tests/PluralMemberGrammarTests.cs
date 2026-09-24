@@ -203,6 +203,24 @@ public sealed class PluralMemberGrammar
 		}
 
 		[Fact]
+		public async Task NumberComparisons_WhenNegated_ShouldUsePluralVerb()
+		{
+			Container<int> subject = new(4, 7);
+
+			async Task Act()
+				=> await That(subject).Whose(c => c.Items,
+					items => items.All().ComplyWith(x => x.IsNotGreaterThan(6).Within(1)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Items are not greater than 6 ± 1 for all items,
+				             but only 1 of 2 were
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
 		public async Task Numbers_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(5, 6);
