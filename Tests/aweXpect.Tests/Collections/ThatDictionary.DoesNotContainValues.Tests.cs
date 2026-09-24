@@ -75,6 +75,29 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenAtLeastOneValueIsANumberOfADifferentType_ShouldFail()
+			{
+				Dictionary<string, object> subject = new() { ["a"] = 1, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues(2, 1L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain values [2, 1],
+					             but it did contain [
+					               1
+					             ]
+
+					             Dictionary:
+					             {
+					               ["a"] = 1
+					             }
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;

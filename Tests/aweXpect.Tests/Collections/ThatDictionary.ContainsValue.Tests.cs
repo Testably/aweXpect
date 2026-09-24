@@ -68,6 +68,18 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenValueIsANumberOfADifferentType_ShouldSucceed()
+			{
+				Dictionary<string, object> subject = new() { ["a"] = 1, };
+
+				async Task Act()
+					=> await That(subject).ContainsValue(1L);
+
+				await That(Act).DoesNotThrow()
+					.Because("values are compared with the same object equality as the items of a collection");
+			}
+
+			[Fact]
 			public async Task WhenValueIsMissing_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);

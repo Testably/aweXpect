@@ -16,6 +16,10 @@ await Expect.That(subject).IsNotEqualTo(new Album("Revolver"));
 
 *Note: this uses the underlying `object.Equals(object?, object?)` method*
 
+*Note: a number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
+in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
+[equivalency](/docs/expectations/equivalency).*
+
 ### Reference equality
 
 You can verify that the `object` has the same reference as another one:

@@ -116,6 +116,18 @@ public sealed partial class ThatDictionary
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenValuesAreNumbersOfADifferentType_ShouldSucceed()
+			{
+				Dictionary<string, object> subject = new() { ["a"] = 1, ["b"] = 2.5, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(1L, 2.5m);
+
+				await That(Act).DoesNotThrow()
+					.Because("values are compared with the same object equality as the items of a collection");
+			}
 		}
 
 		public sealed class OverloadTests
