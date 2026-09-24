@@ -200,6 +200,24 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForFloat_WhenSubjectAndExpectedAreNegativeInfinity_ShouldFail()
+			{
+				float subject = float.NegativeInfinity;
+				float expected = float.NegativeInfinity;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1.0f);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than -∞ ± 1.0,
+					             but it was -∞
+					             """)
+					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");
+			}
+
 			[Theory]
 			[InlineData(5, 5)]
 			[InlineData(5, 6)]
