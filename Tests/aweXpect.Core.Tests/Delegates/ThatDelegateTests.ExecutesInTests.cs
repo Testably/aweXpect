@@ -21,6 +21,18 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task AtMost_WhenMaximumExceedsTheTimerRange_ShouldSucceed()
+		{
+			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn().AtMost(60.Days());
+
+			await That(Act).DoesNotThrow()
+				.Because("a duration beyond the range of the cancellation timer is still a valid upper bound");
+		}
+
+		[Fact]
 		public async Task AtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -32,6 +44,23 @@ public sealed partial class ThatDelegateTests
 				.WithParamName("maximum").And
 				.WithMessage("The maximum must not be negative.").AsPrefix()
 				.Because("an execution can never take less than no time at all");
+		}
+
+		[Fact]
+		public async Task Between_WhenMaximumExceedsTheTimerRange_ShouldFailWithTheGivenDurations()
+		{
+			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn().Between(60.Days()).And(61.Days());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             executes in between 60.00:00:00 and 61.00:00:00,
+				             but it took *
+				             """).AsWildcard()
+				.Because("only the cancellation timer is limited, not the durations that are compared and reported");
 		}
 
 		[Fact]

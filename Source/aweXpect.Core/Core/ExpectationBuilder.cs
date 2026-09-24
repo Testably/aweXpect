@@ -691,7 +691,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			using CancellationTokenSource timeoutCts = CancellationTokenSource
 				.CreateLinkedTokenSource(cancellationToken);
-			timeoutCts.CancelAfter(timeout.Value);
+			timeoutCts.CancelAfter(timeout.Value.ToTimerTimeout());
 			CancellationToken token = timeoutCts.Token;
 			TValue dataWithTimeout = await _subjectSource.GetValue(timeSystem, token);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Signaling;
@@ -68,7 +69,7 @@ public class Signaler
 		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && _resetEvent.Wait(timeout.Value, cancellationToken))
+			if (timeout != TimeSpan.Zero && _resetEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
 				return new SignalerResult(true, _counter);
 			}
@@ -116,7 +117,7 @@ public class Signaler
 		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value, cancellationToken))
+			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
 				return new SignalerResult(true, _counter);
 			}
@@ -205,7 +206,7 @@ public class Signaler<TParameter>
 		{
 			try
 			{
-				if (_resetEvent.Wait(timeout.Value, cancellationToken))
+				if (_resetEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 				{
 					return new SignalerResult<TParameter>(true, _parameters.ToArray());
 				}
@@ -265,7 +266,7 @@ public class Signaler<TParameter>
 		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value, cancellationToken))
+			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
 				return new SignalerResult<TParameter>(true, _parameters.ToArray());
 			}

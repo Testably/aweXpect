@@ -528,6 +528,23 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenTestCancellationTimeoutExceedsTheTimerRange_ShouldKeepRetrying()
+		{
+			Counter counter = new(2);
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(SuccessTimeout))
+			using (IDisposable ___ = Customize.aweXpect.Settings().TestCancellation
+				       .Set(TestCancellation.FromTimeout(60.Days())))
+			{
+				async Task Act() => await That(() => counter.Value).Eventually().IsGreaterThan(3);
+
+				await That(Act).DoesNotThrow()
+					.Because("a test cancellation beyond the range of the cancellation timer must not throw");
+				await That(counter.EvaluationCount).IsEqualTo(4);
+			}
+		}
+
+		[Fact]
 		public async Task WhenTestCancellationTimeoutExpires_ShouldBeInconclusive()
 		{
 			Counter counter = new();
@@ -598,6 +615,19 @@ public sealed partial class ThatDelegateTests
 				}).Eventually().IsEqualTo([1, 2, 3,]).WithTimeout(SuccessTimeout);
 
 			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenTimeoutExceedsTheTimerRange_ShouldKeepRetrying()
+		{
+			Counter counter = new(2);
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().IsGreaterThan(3).WithTimeout(60.Days());
+
+			await That(Act).DoesNotThrow()
+				.Because("a timeout beyond the range of the timers is still a valid retry budget");
+			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
 		[Fact]

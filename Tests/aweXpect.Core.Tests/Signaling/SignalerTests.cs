@@ -185,6 +185,44 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
+		[Fact]
+		public async Task Wait_Single_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignal()
+		{
+			Signaler signaler = new();
+			using CancellationTokenSource cts = new(5.Seconds());
+
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal();
+			});
+
+			SignalerResult result = signaler.Wait(60.Days(), cts.Token);
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("a timeout beyond the range of the wait handle must not throw");
+		}
+
+		[Fact]
+		public async Task Wait_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignals()
+		{
+			Signaler signaler = new();
+			using CancellationTokenSource cts = new(5.Seconds());
+
+			signaler.Signal();
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal();
+			});
+
+			SignalerResult result = signaler.Wait(2.Times(), 60.Days(), cts.Token);
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("a timeout beyond the range of the wait handle must not throw");
+			await That(result.Count).IsEqualTo(2);
+		}
+
 		[Theory]
 		[InlineData(0)]
 		[InlineData(-1)]
@@ -383,6 +421,45 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsFalse();
 			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
+		}
+
+		[Fact]
+		public async Task Wait_Single_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignal()
+		{
+			Signaler<int> signaler = new();
+			using CancellationTokenSource cts = new(5.Seconds());
+
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(1);
+			});
+
+			SignalerResult<int> result = signaler.Wait(timeout: 60.Days(), cancellationToken: cts.Token);
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("a timeout beyond the range of the wait handle must not throw");
+			await That(result.Parameters).IsEqualTo([1,]);
+		}
+
+		[Fact]
+		public async Task Wait_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignals()
+		{
+			Signaler<int> signaler = new();
+			using CancellationTokenSource cts = new(5.Seconds());
+
+			signaler.Signal(1);
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(2);
+			});
+
+			SignalerResult<int> result = signaler.Wait(2.Times(), timeout: 60.Days(), cancellationToken: cts.Token);
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("a timeout beyond the range of the wait handle must not throw");
+			await That(result.Parameters).IsEqualTo([1, 2,]);
 		}
 
 		[Fact]
