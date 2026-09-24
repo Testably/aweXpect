@@ -50,15 +50,21 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	}
 
 	/// <summary>
-	///     Creates a member accessor from the given <paramref name="func" />.
+	///     Creates a member accessor from the given <paramref name="func" />, which is displayed as the
+	///     <paramref name="name" /> verbatim.
 	/// </summary>
 	public static MemberAccessor<TSource, TTarget> FromFunc(
 		Func<TSource, TTarget> func, string name)
 		=> new(func, name);
 
 	/// <summary>
-	///     Creates a member accessor from the given <paramref name="func" />.
+	///     Creates a member accessor from the given <paramref name="func" />, which treats the <paramref name="name" /> as
+	///     a lambda expression and is displayed as its member path (for example <c>x => x.Foo</c> as <c>Foo</c>).
 	/// </summary>
+	/// <remarks>
+	///     A <paramref name="name" /> that is not such a lambda expression is displayed as is, without surrounding
+	///     white-space.
+	/// </remarks>
 	public static MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(
 		Func<TSource, TTarget> func, string name)
 		=> new(func, ExtractMemberPath(name.Trim()));

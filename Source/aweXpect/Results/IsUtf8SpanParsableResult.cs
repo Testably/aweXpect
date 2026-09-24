@@ -5,8 +5,7 @@ using aweXpect.Core;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that the <see cref="IUtf8SpanParsable{TType}" /> subject is parsable
-///     into <typeparamref name="TType" />.
+///     The result for verifying that the subject is parsable into the type <typeparamref name="TType" />.
 /// </summary>
 public class IsUtf8SpanParsableResult<TType>(
 	ExpectationBuilder expectationBuilder,

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -15,7 +14,8 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	: ObjectEqualityOptions<TSubject>
 {
 	/// <summary>
-	///     Specifies a specific <see cref="IEqualityComparer{T}" /> to use for comparing <see cref="object" />s.
+	///     Specifies the <paramref name="tolerance" /> within which the actual value is considered equal to the expected
+	///     value.
 	/// </summary>
 	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
 	{

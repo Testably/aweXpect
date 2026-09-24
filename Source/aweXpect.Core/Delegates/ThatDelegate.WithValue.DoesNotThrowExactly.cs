@@ -14,7 +14,8 @@ public abstract partial class ThatDelegate
 	public sealed partial class WithValue<T>
 	{
 		/// <summary>
-		///     Verifies that the delegate does not throw an exception of type <typeparamref name="TException" />.
+		///     Verifies that the delegate does not throw an exception of exactly type <typeparamref name="TException" />
+		///     (subtypes are allowed).
 		/// </summary>
 		[GuaranteesNotNull]
 		public DelegateWithValueResult<T> DoesNotThrowExactly<TException>()
@@ -23,7 +24,8 @@ public abstract partial class ThatDelegate
 				new DoesNotThrowExactlyConstraint(it, grammars, typeof(TException))));
 
 		/// <summary>
-		///     Verifies that the delegate does not throw an exception of type <paramref name="type" />.
+		///     Verifies that the delegate does not throw an exception of exactly type <paramref name="type" />
+		///     (subtypes are allowed).
 		/// </summary>
 		[GuaranteesNotNull]
 		public DelegateWithValueResult<T> DoesNotThrowExactly(Type type)

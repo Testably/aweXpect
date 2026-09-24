@@ -7,7 +7,7 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that a collection has a specified number of items.
+///     The result for verifying how often an item occurs in a collection.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="CountResult{TType,TThat,TSelf}" />
@@ -25,7 +25,7 @@ public class ObjectCountResult<TType, TThat, TElement>(
 		options);
 
 /// <summary>
-///     The result for verifying that a collection has a specified number of items.
+///     The result for verifying how often an item occurs in a collection.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="CountResult{TType,TThat,TSelf}" />

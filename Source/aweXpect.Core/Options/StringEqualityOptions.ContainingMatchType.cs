@@ -11,7 +11,7 @@ public partial class StringEqualityOptions
 	private static readonly IStringMatchType ContainingMatch = new ContainingMatchType();
 
 	/// <summary>
-	///     Interprets the expected <see langword="string" /> to be a contained in the actual string.
+	///     Interprets the expected <see langword="string" /> as a substring that must be contained in the actual string.
 	/// </summary>
 	public StringEqualityOptions Containing()
 	{

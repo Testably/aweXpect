@@ -44,7 +44,7 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Interface for <see cref="Elements" /> to get access to the <see cref="Quantifier" />
+	///     Interface for <see cref="ElementsForEnumerable{TEnumerable}" /> to get access to the <see cref="Quantifier" />
 	///     and the <see cref="Subject" />.
 	/// </summary>
 	public interface IElementsForEnumerable<out TEnumerable>
@@ -62,8 +62,8 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Interface for <see cref="Elements{TItem}" /> to get access to the <see cref="Quantifier" />
-	///     and the <see cref="Subject" />.
+	///     Interface for <see cref="ElementsForStructEnumerable{TEnumerable,TItem}" /> to get access to the
+	///     <see cref="Quantifier" /> and the <see cref="Subject" />.
 	/// </summary>
 	public interface IElementsForStructEnumerable<out TEnumerable, TItem>
 		where TEnumerable : struct, IEnumerable<TItem>
@@ -80,8 +80,8 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Interface for <see cref="Elements{TItem}" /> to get access to the <see cref="Quantifier" />
-	///     and the <see cref="Subject" />.
+	///     Interface for <see cref="ElementsForStructEnumerable{TEnumerable}" /> to get access to the
+	///     <see cref="Quantifier" /> and the <see cref="Subject" />.
 	/// </summary>
 	public interface IElementsForStructEnumerable<out TEnumerable>
 		where TEnumerable : struct, IEnumerable<string?>

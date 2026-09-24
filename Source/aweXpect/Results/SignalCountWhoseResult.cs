@@ -7,7 +7,8 @@ using aweXpect.Signaling;
 namespace aweXpect.Results;
 
 /// <summary>
-///     A trigger result that also allows specifying the timeout.
+///     The result for verifying how often a <see cref="Signaler{TParameter}" /> was signaled, which allows specifying
+///     the timeout, filtering the signals by their parameter and verifying the parameters of the signals.
 /// </summary>
 public class SignalCountWhoseResult<TParameter>(
 	ExpectationBuilder expectationBuilder,

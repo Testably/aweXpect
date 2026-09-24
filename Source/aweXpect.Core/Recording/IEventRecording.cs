@@ -11,10 +11,13 @@ namespace aweXpect.Recording;
 public interface IEventRecording<TSubject>
 {
 	/// <summary>
-	///     Stops the recording of events when checked events <see paramref="areFound" />
-	///     or the <paramref name="timeout" /> elapsed.
+	///     Waits until the recorded events satisfy <paramref name="areFound" /> or the <paramref name="timeout" />
+	///     elapsed, and then stops the recording of events, unless it was set to
+	///     <see cref="RecordExtensions.UntilDisposed{TSubject}(IEventRecording{TSubject})" />.
 	/// </summary>
 	/// <remarks>
+	///     <paramref name="areFound" /> is checked initially and after each recorded event, for at most the
+	///     <paramref name="timeout" />. A <paramref name="timeout" /> that is not positive does not wait at all.<br />
 	///     A recording that was stopped with the same <paramref name="context" /> can be checked again, so that all
 	///     constraints of one expectation describe the same snapshot.
 	/// </remarks>

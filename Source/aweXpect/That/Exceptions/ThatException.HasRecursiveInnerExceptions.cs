@@ -15,7 +15,7 @@ public static partial class ThatException
 	///     <paramref name="expectations" />.
 	/// </summary>
 	/// <remarks>
-	///     Recursively applies the expectations on the <see cref="Exception.InnerException" /> (if not <see langword="null" />
+	///     Recursively applies the expectations on the <see cref="Exception.InnerException" /> (if not <see langword="null" />)
 	///     and for <see cref="AggregateException" /> also on the <see cref="AggregateException.InnerExceptions" />.
 	///     <para />
 	///     The exception must have at least one inner exception.
