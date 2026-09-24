@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 using aweXpect.Delegates;
 
@@ -64,7 +65,11 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual?.Exception is not null)
+			if (_actual?.ExceededTimeout is { } exceededTimeout)
+			{
+				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
+			}
+			else if (_actual?.Exception is not null)
 			{
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(ThatDelegate.FormatForMessage(_actual.Exception, indentation));

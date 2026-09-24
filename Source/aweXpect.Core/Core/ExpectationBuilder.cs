@@ -700,33 +700,53 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		if (timeout != null)
+		using CancellationTokenSource? timeoutCts = timeout is null
+			? null
+			: CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+		CancellationToken token = cancellationToken;
+		if (timeoutCts is not null)
 		{
-			using CancellationTokenSource timeoutCts = CancellationTokenSource
-				.CreateLinkedTokenSource(cancellationToken);
-			timeoutCts.CancelAfter(timeout.Value.ToTimerTimeout());
-			CancellationToken token = timeoutCts.Token;
-			TValue dataWithTimeout = await _subjectSource.GetValue(timeSystem, token);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
-				$"Checking expectation for {Subject} {dataWithTimeout} with timeout of {Formatter.Format(timeout)}");
-			return await rootNode.IsMetBy(dataWithTimeout, context, token);
+			timeoutCts.CancelAfter(timeout!.Value.ToTimerTimeout());
+			token = timeoutCts.Token;
 		}
+
+		bool HasTimedOut(Exception? exception)
+			=> exception is OperationCanceledException && timeoutCts?.IsCancellationRequested == true &&
+			   !cancellationToken.IsCancellationRequested;
 
 		TValue data;
 		try
 		{
-			data = await _subjectSource.GetValue(timeSystem, cancellationToken);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+			data = await _subjectSource.GetValue(timeSystem, token);
+			Customize.aweXpect.TraceWriter.Value?.WriteMessage(timeout is null
+				? $"Checking expectation for {Subject} {data}"
+				: $"Checking expectation for {Subject} {data} with timeout of {Formatter.Format(timeout)}");
 		}
 		catch (Exception exception)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellationToken);
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
-			return new ConstraintResult.FromException(expectation, exception);
+			return HasTimedOut(exception)
+				? new ConstraintResult.FromException(expectation, CreateTimeoutException(timeout!.Value, exception),
+					timeout)
+				: new ConstraintResult.FromException(expectation, exception);
 		}
 
-		return await rootNode.IsMetBy(data, context, cancellationToken);
+		if (data is DelegateValue delegateValue && HasTimedOut(delegateValue.Exception))
+		{
+			data = (TValue)(object)delegateValue.WithExceededTimeout(timeout!.Value,
+				CreateTimeoutException(timeout.Value, delegateValue.Exception!));
+		}
+
+		return await rootNode.IsMetBy(data, context, token);
 	}
+
+	/// <summary>
+	///     Replaces the cancellation caused by the <paramref name="timeout" />, so that it is reported the same way,
+	///     whether the awaited task reacted to the cancellation itself or was abandoned.
+	/// </summary>
+	private static TimeoutException CreateTimeoutException(TimeSpan timeout, Exception cancellation)
+		=> new($"The operation did not finish within {Formatter.Format(timeout)}.", cancellation);
 }

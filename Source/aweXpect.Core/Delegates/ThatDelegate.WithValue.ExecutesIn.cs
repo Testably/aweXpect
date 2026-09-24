@@ -23,8 +23,9 @@ public abstract partial class ThatDelegate
 		///     <para />
 		///     An upper bound is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
 		///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
-		///     elapsed. A delegate without such a parameter cannot be interrupted and is awaited to completion,
-		///     however long that takes.
+		///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
+		///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
+		///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithValue<T>>> ExecutesIn()
@@ -47,8 +48,10 @@ public abstract partial class ThatDelegate
 		///     <para />
 		///     The <paramref name="expected" /> time plus the tolerance is applied as timeout (a subsequent
 		///     <c>WithTimeout(…)</c> overwrites it), so that a delegate accepting a
-		///     <see cref="System.Threading.CancellationToken" /> is cancelled once it elapsed. A delegate without such a
-		///     parameter cannot be interrupted and is awaited to completion, however long that takes.
+		///     <see cref="System.Threading.CancellationToken" /> is cancelled once it elapsed. The task of an
+		///     asynchronous delegate is abandoned at that point, even if it ignores the cancellation, while a synchronous
+		///     delegate cannot be interrupted and runs to completion.
+		///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
@@ -75,7 +78,8 @@ public abstract partial class ThatDelegate
 
 			/// <inheritdoc cref="ConstraintResult.FailureCause" />
 			public override Exception? FailureCause
-				=> Outcome == Outcome.Failure && !options.AllowsException(_actual?.Exception)
+				=> Outcome == Outcome.Failure &&
+				   (_actual?.ExceededTimeout is not null || !options.AllowsException(_actual?.Exception))
 					? _actual?.Exception
 					: null;
 
@@ -83,7 +87,7 @@ public abstract partial class ThatDelegate
 			public ConstraintResult IsMetBy(DelegateValue<T> value)
 			{
 				_actual = value;
-				if (value.IsNull)
+				if (value.IsNull || value.ExceededTimeout is not null)
 				{
 					Outcome = Outcome.Failure;
 					return this;
@@ -110,6 +114,10 @@ public abstract partial class ThatDelegate
 				if (_actual?.IsNull != false)
 				{
 					stringBuilder.ItWasNull(it);
+				}
+				else if (_actual.ExceededTimeout is { } exceededTimeout)
+				{
+					stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 				}
 				else if (_actual.Exception is OperationCanceledException)
 				{

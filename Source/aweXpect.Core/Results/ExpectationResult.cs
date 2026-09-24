@@ -60,6 +60,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     Sets the <see cref="CancellationToken" /> to be passed to expectations.
 	/// </summary>
 	/// <remarks>
+	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
+	///     abandoned when the <paramref name="cancellationToken" /> is cancelled before it completes, and the expectation
+	///     is evaluated as if the task had been cancelled.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation
@@ -77,6 +81,11 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     Sets the <paramref name="timeout" /> to be passed to expectations.
 	/// </summary>
 	/// <remarks>
+	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
+	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
+	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries
+	///     instead.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation
@@ -219,6 +228,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     Sets the <paramref name="cancellationToken" /> to be passed to expectations.
 	/// </summary>
 	/// <remarks>
+	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
+	///     abandoned when the <paramref name="cancellationToken" /> is cancelled before it completes, and the expectation
+	///     is evaluated as if the task had been cancelled.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation
@@ -236,6 +249,11 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     Sets the <paramref name="timeout" /> to be passed to expectations.
 	/// </summary>
 	/// <remarks>
+	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
+	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
+	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries
+	///     instead.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation

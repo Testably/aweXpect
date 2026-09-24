@@ -146,9 +146,18 @@ public sealed class CustomizeSettingsTests
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
+			async Task Act()
+				=> await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
+					.Throws<TaskCanceledException>();
+
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
-				.Throws<TaskCanceledException>();
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
+				             throws a TaskCanceledException,
+				             but it did not finish within 0:00.100
+				             """)
+				.WithTimeout(30.Seconds());
 			stopwatch.Stop();
 		}
 
@@ -216,10 +225,18 @@ public sealed class CustomizeSettingsTests
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(20.Seconds())))
 		{
+			async Task Act()
+				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
+					.Throws<TaskCanceledException>()
+					.WithTimeout(20.Milliseconds());
+
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(delay, cancellationToken))
-				.Throws<TaskCanceledException>()
-				.WithTimeout(20.Milliseconds());
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+				             throws a TaskCanceledException,
+				             but it did not finish within 0:00.020
+				             """);
 			stopwatch.Stop();
 		}
 

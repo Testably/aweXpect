@@ -46,3 +46,15 @@ await Expect.That(myEnumerable).All().AreEqualTo(1)
 
 *Note: A local `CancellationToken` will replace the global one and not be applied additionally.
 If necessary, provide a [linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource) yourself!*
+
+## Awaited tasks
+
+A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
+the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
+cannot be abandoned and runs to completion.
+
+- When a **timeout** elapses, the expectation fails with "did not finish within …" and a `TimeoutException` as inner
+  exception. This is the same whether the task was abandoned or reacted to the cancellation itself.
+- When the **`CancellationToken`** is cancelled, no limit is known, so the expectation is evaluated as if the task had
+  been canceled: an execution time expectation fails with "was canceled after …", and `DoesNotThrow` reports the
+  cancellation exception.

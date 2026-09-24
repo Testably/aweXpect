@@ -13,6 +13,12 @@ public class DelegateValue<TValue>(in TValue? value, Exception? exception, TimeS
 	/// </summary>
 	public TValue? Value { get; } = value;
 
+	internal override DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
+		=> new DelegateValue<TValue>(default, exception, Duration, IsNull)
+		{
+			ExceededTimeout = timeout,
+		};
+
 	/// <inheritdoc />
 	public override string ToString()
 	{
@@ -47,6 +53,22 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	///     Flag, indicating if the delegate callback was <see langword="null" />.
 	/// </summary>
 	public bool IsNull { get; } = isNull;
+
+	/// <summary>
+	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it, or
+	///     <see langword="null" /> if it finished in time or no timeout applied.
+	/// </summary>
+	/// <remarks>
+	///     The <see cref="Exception" /> is then a <see cref="TimeoutException" />, whichever way the delegate reacted to
+	///     the cancellation, so that a timeout is reported the same way every time.
+	/// </remarks>
+	public TimeSpan? ExceededTimeout { get; private protected set; }
+
+	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
+		=> new(exception, Duration, IsNull)
+		{
+			ExceededTimeout = timeout,
+		};
 
 	/// <inheritdoc />
 	public override string ToString()

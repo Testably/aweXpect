@@ -47,7 +47,7 @@ public abstract partial class ThatDelegate
 			public ConstraintResult IsMetBy(DelegateValue value)
 			{
 				_actual = value;
-				if (value.IsNull)
+				if (value.IsNull || value.ExceededTimeout is not null)
 				{
 					Outcome = Outcome.Failure;
 					return this;
@@ -78,6 +78,10 @@ public abstract partial class ThatDelegate
 				if (_actual?.IsNull != false)
 				{
 					stringBuilder.ItWasNull(it);
+				}
+				else if (_actual.ExceededTimeout is { } exceededTimeout)
+				{
+					stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 				}
 				else
 				{

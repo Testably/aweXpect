@@ -12,6 +12,12 @@ internal static class StringBuilderExtensions
 	public static void ItWasNull(this StringBuilder stringBuilder, string it, ExpectationGrammars grammars)
 		=> stringBuilder.Append(it).Append(grammars.SubjectVerb(it, " was", " were")).Append(" <null>");
 
+	public static void ItDidNotFinishWithin(this StringBuilder stringBuilder, string it, TimeSpan timeout)
+	{
+		stringBuilder.Append(it).Append(" did not finish within ");
+		Formatter.Format(stringBuilder, timeout);
+	}
+
 	/// <summary>
 	///     Appends the <paramref name="separator" /> followed by the expectation of the <paramref name="right" /> result.
 	/// </summary>
