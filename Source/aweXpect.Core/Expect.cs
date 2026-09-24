@@ -14,7 +14,7 @@ namespace aweXpect;
 public static class Expect
 {
 	/// <summary>
-	///     Specify expectations for the current <paramref name="subject" />.
+	///     Specifies expectations for the current <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T> That<T>(T subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -22,7 +22,7 @@ public static class Expect
 			new ValueSource<T>(subject), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current <paramref name="subject" />.
+	///     Specifies expectations for the current <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T[]?> That<T>(T[]? subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -30,7 +30,7 @@ public static class Expect
 			new ValueSource<T[]?>(subject), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current asynchronous <paramref name="subject" />.
+	///     Specifies expectations for the current asynchronous <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T> That<T>(Task<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -39,7 +39,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <paramref name="subject" />.
+	///     Specifies expectations for the current <paramref name="subject" />.
 	/// </summary>
 	public static IThat<SpanWrapper<T>> That<T>(ReadOnlySpan<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -49,7 +49,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <paramref name="subject" />.
+	///     Specifies expectations for the current <paramref name="subject" />.
 	/// </summary>
 	public static IThat<SpanWrapper<T>> That<T>(Span<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -59,7 +59,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current asynchronous <paramref name="subject" />.
+	///     Specifies expectations for the current asynchronous <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T> That<T>(ValueTask<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
@@ -68,7 +68,7 @@ public static class Expect
 #endif
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Action" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Action" /> <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithoutValue That(Action @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
@@ -77,7 +77,7 @@ public static class Expect
 			new DelegateSource(@delegate), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Action{CancellationToken}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Action{CancellationToken}" /> <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithoutValue That(
 		Action<CancellationToken> @delegate,
@@ -86,7 +86,7 @@ public static class Expect
 			new DelegateSource(@delegate), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{Task}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Func{Task}" /> <paramref name="delegate" />.
 	/// </summary>
 #if NET8_0_OR_GREATER
 	[OverloadResolutionPriority(1)]
@@ -98,7 +98,7 @@ public static class Expect
 			new DelegateAsyncSource(@delegate is null ? null : _ => @delegate()), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{CancellationToken, Task}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Func{CancellationToken, Task}" /> <paramref name="delegate" />.
 	/// </summary>
 #if NET8_0_OR_GREATER
 	[OverloadResolutionPriority(1)]
@@ -109,7 +109,7 @@ public static class Expect
 			new DelegateAsyncSource(@delegate), doNotPopulateThisValue));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Task" /> <paramref name="subject" />.
+	///     Specifies expectations for the current <see cref="Task" /> <paramref name="subject" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="subject" /> is already running, so an expectation on its execution time only measures the
@@ -123,7 +123,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{ValueTask}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Func{ValueTask}" /> <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithoutValue That(Func<ValueTask> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
@@ -134,8 +134,8 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{CancellationToken, ValueTask}" /> <paramref name="delegate" />
-	///     .
+	///     Specifies expectations for the current <see cref="Func{CancellationToken, ValueTask}" />
+	///     <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithoutValue That(Func<CancellationToken, ValueTask> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
@@ -147,7 +147,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <see cref="ValueTask" /> <paramref name="subject" />.
+	///     Specifies expectations for the current <see cref="ValueTask" /> <paramref name="subject" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="subject" /> is already running, so an expectation on its execution time only measures the
@@ -160,7 +160,7 @@ public static class Expect
 #endif
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{TValue}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Func{TValue}" /> <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<TValue> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
@@ -171,7 +171,7 @@ public static class Expect
 			@delegate is null ? null : _ => Task.FromResult(@delegate()));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{CancellationToken, TValue}" /> <paramref name="delegate" />.
+	///     Specifies expectations for the current <see cref="Func{CancellationToken, TValue}" /> <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<CancellationToken, TValue> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
@@ -181,7 +181,7 @@ public static class Expect
 			@delegate is null ? null : token => Task.FromResult(@delegate(token)));
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{T}" /> of <see cref="Task{TValue}" />
+	///     Specifies expectations for the current <see cref="Func{T}" /> of <see cref="Task{TValue}" />
 	///     <paramref name="delegate" />.
 	/// </summary>
 #if NET8_0_OR_GREATER
@@ -197,7 +197,7 @@ public static class Expect
 			@delegate is null ? null : _ => @delegate());
 
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{CancellationToken, T}" /> of <see cref="Task{TValue}" />
+	///     Specifies expectations for the current <see cref="Func{CancellationToken, T}" /> of <see cref="Task{TValue}" />
 	///     <paramref name="delegate" />.
 	/// </summary>
 #if NET8_0_OR_GREATER
@@ -212,7 +212,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{T}" /> of <see cref="ValueTask{TValue}" />
+	///     Specifies expectations for the current <see cref="Func{T}" /> of <see cref="ValueTask{TValue}" />
 	///     <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<ValueTask<TValue>> @delegate,
@@ -227,7 +227,7 @@ public static class Expect
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Specify expectations for the current <see cref="Func{CancellationToken, T}" /> of <see cref="ValueTask{TValue}" />
+	///     Specifies expectations for the current <see cref="Func{CancellationToken, T}" /> of <see cref="ValueTask{TValue}" />
 	///     <paramref name="delegate" />.
 	/// </summary>
 	public static ThatDelegate.WithValue<TValue> That<TValue>(
@@ -242,7 +242,7 @@ public static class Expect
 #endif
 
 	/// <summary>
-	///     Specify expectations for the current boolean <paramref name="subject" />.
+	///     Specifies expectations for the current boolean <paramref name="subject" />.
 	/// </summary>
 	public static ThatBoolSubject That(bool subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")

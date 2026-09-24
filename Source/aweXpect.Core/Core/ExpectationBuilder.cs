@@ -63,7 +63,7 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     When not set, the expectation will still use the cancellation token from
-	///     <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />
+	///     <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />.
 	/// </remarks>
 	public CancellationToken? CancellationToken { get; private set; }
 

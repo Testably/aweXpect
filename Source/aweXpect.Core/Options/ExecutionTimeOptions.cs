@@ -14,7 +14,7 @@ public class ExecutionTimeOptions
 	private Action<TimeSpan>? _onUpperBound;
 
 	/// <summary>
-	///     Flag, indicating if a thrown exception leaves the outcome to the measured duration.
+	///     Flag indicating if a thrown exception leaves the outcome to the measured duration.
 	/// </summary>
 	internal bool AreExceptionsAllowed { get; private set; }
 
@@ -33,7 +33,7 @@ public class ExecutionTimeOptions
 	internal void AllowExceptions() => AreExceptionsAllowed = true;
 
 	/// <summary>
-	///     Verifies if the <paramref name="exception" /> leaves the outcome to the measured duration.
+	///     Checks if the <paramref name="exception" /> leaves the outcome to the measured duration.
 	/// </summary>
 	/// <remarks>
 	///     A cancellation is never allowed, because it aborts the execution instead of timing it.
@@ -42,10 +42,13 @@ public class ExecutionTimeOptions
 		=> exception is null || (AreExceptionsAllowed && exception is not OperationCanceledException);
 
 	/// <summary>
-	///     Verifies if the <paramref name="actual" /> value is within the required limit.
+	///     Checks if the <paramref name="actual" /> value is within the required limit.
 	/// </summary>
-	/// <param name="actual"></param>
-	/// <returns></returns>
+	/// <param name="actual">The measured execution time.</param>
+	/// <returns>
+	///     <see langword="true" /> if a limit was set and the <paramref name="actual" /> value is within it; otherwise
+	///     <see langword="false" />.
+	/// </returns>
 	public bool IsWithinLimit(TimeSpan? actual)
 	{
 		if (actual is null || _limit is null)
@@ -69,7 +72,7 @@ public class ExecutionTimeOptions
 		=> _limit?.AppendTo(stringBuilder, prefix);
 
 	/// <summary>
-	///     Verifies that the value is within the given <paramref name="duration" />.
+	///     Requires the value to be within the given <paramref name="duration" />.
 	/// </summary>
 	public void Within(TimeSpan duration)
 	{
@@ -79,7 +82,7 @@ public class ExecutionTimeOptions
 	}
 
 	/// <summary>
-	///     Verifies that the value is at most <paramref name="maximum" />.
+	///     Requires the value to be at most <paramref name="maximum" />.
 	/// </summary>
 	public void AtMost(TimeSpan maximum)
 	{
@@ -89,7 +92,7 @@ public class ExecutionTimeOptions
 	}
 
 	/// <summary>
-	///     Verifies that the value is at least <paramref name="minimum" />.
+	///     Requires the value to be at least <paramref name="minimum" />.
 	/// </summary>
 	public void AtLeast(TimeSpan minimum)
 	{
@@ -98,7 +101,7 @@ public class ExecutionTimeOptions
 	}
 
 	/// <summary>
-	///     Verifies that the value is approximately <paramref name="expected" />,
+	///     Requires the value to be approximately <paramref name="expected" />,
 	///     using the provided <paramref name="tolerance" />.
 	/// </summary>
 	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
@@ -114,7 +117,7 @@ public class ExecutionTimeOptions
 	}
 
 	/// <summary>
-	///     Verifies that the value is between <paramref name="minimum" /> and <paramref name="maximum" />.
+	///     Requires the value to be between <paramref name="minimum" /> and <paramref name="maximum" />.
 	/// </summary>
 	public void Between(TimeSpan minimum, TimeSpan maximum)
 	{

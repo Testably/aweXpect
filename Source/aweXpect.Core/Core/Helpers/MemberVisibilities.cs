@@ -4,7 +4,7 @@ using System;
 namespace aweXpect.Core.Helpers;
 
 /// <summary>
-///     Determines which members are included in the equivalency constraint
+///     Determines which members are included in the equivalency constraint.
 /// </summary>
 [Flags]
 public enum MemberVisibilities
@@ -25,7 +25,7 @@ public enum MemberVisibilities
 	Public = 2,
 
 	/// <summary>
-	///     Explicitely implemented.
+	///     Explicitly implemented.
 	/// </summary>
 	ExplicitlyImplemented = 4,
 }

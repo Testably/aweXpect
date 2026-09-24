@@ -108,7 +108,7 @@ await Expect.That(subject).IsNot<Single>();
 await Expect.That(subject).IsNot(typeof(Single));
 ```
 
-This verifies, if the subject is of the given type or a derived type.
+This verifies if the subject is of the given type or a derived type.
 
 You can also verify that the `object` is only of the given type and not of a derived type:
 
@@ -123,7 +123,7 @@ await Expect.That(subject).IsNotExactly(typeof(Single));
 
 ## Null
 
-You can verify, if the `object` is `null` or not:
+You can verify if the `object` is `null` or not:
 
 ```csharp
 object? subject = null;

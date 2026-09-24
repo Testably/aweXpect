@@ -18,8 +18,8 @@ public static partial class ThatString
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not <see langword="null" />, <see cref="string.Empty" /> or consists only of
-	///     white-space characters.
+	///     Verifies that the subject is neither <see langword="null" /> nor <see cref="string.Empty" /> and does not
+	///     consist only of white-space characters.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNullOrWhiteSpace(

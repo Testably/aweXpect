@@ -8,7 +8,7 @@ namespace aweXpect;
 public static partial class ThatObject
 {
 	/// <summary>
-	///     Verifies the actual value to be the same as the <paramref name="expected" /> value.
+	///     Verifies that the subject refers to the same instance as the <paramref name="expected" /> value.
 	/// </summary>
 	public static AndOrResult<T?, IThat<T?>> IsSameAs<T>(this IThat<T?> subject, object? expected)
 		where T : class
@@ -18,7 +18,7 @@ public static partial class ThatObject
 			subject);
 
 	/// <summary>
-	///     Verifies the actual value to not be the same as the <paramref name="unexpected" /> value.
+	///     Verifies that the subject does not refer to the same instance as the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<T?, IThat<T?>> IsNotSameAs<T>(this IThat<T?> subject, object? unexpected)
 		where T : class

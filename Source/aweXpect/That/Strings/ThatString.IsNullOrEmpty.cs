@@ -17,7 +17,7 @@ public static partial class ThatString
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not <see langword="null" /> or <see cref="string.Empty" />.
+	///     Verifies that the subject is neither <see langword="null" /> nor <see cref="string.Empty" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNullOrEmpty(

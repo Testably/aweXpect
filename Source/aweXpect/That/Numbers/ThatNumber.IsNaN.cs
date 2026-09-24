@@ -16,7 +16,7 @@ public static partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that the subject is seen as not a number.
+	///     Verifies that the subject is not a number (<see cref="double.IsNaN(double)">NaN</see>).
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNaN<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -25,7 +25,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is seen as not a number.
+	///     Verifies that the subject is not a number (<see cref="double.IsNaN(double)">NaN</see>).
 	/// </summary>
 	/// <remarks>
 	///     <see langword="null" /> is not treated as NaN.
@@ -38,7 +38,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as not a number.
+	///     Verifies that the subject is a number (not <see cref="double.IsNaN(double)">NaN</see>).
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNotNaN<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -47,7 +47,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as not a number.
+	///     Verifies that the subject is a number (not <see cref="double.IsNaN(double)">NaN</see>).
 	/// </summary>
 	/// <remarks>
 	///     <see langword="null" /> is neither treated as NaN nor as not NaN, so it fails.
@@ -117,8 +117,8 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	private const string IsNaNSummary = "Verifies that the subject is seen as not a number.";
-	private const string IsNotNaNSummary = "Verifies that the subject is not seen as not a number.";
+	private const string IsNaNSummary = "Verifies that the subject is not a number (<see cref=\"double.IsNaN(double)\">NaN</see>).";
+	private const string IsNotNaNSummary = "Verifies that the subject is a number (not <see cref=\"double.IsNaN(double)\">NaN</see>).";
 
 	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory),
 		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary)]

@@ -185,7 +185,7 @@ await Expect.That(subject)
 
 ## Properties
 
-You can verify, the properties of the `DateTime`:
+You can verify the properties of the `DateTime`:
 
 ```csharp
 DateOnly subject = new DateOnly(2024, 12, 31);
@@ -199,7 +199,7 @@ await Expect.That(subject).HasMonth().EqualTo(12);
 await Expect.That(subject).HasDay().EqualTo(31);
 ```
 
-You can verify, the properties of the `TimeOnly`:
+You can verify the properties of the `TimeOnly`:
 
 ```csharp
 TimeOnly subject = new TimeOnly(15, 16, 17, 189);

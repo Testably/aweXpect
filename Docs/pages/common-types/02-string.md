@@ -257,7 +257,7 @@ await Expect.That(subject).Contains("FIELDS").Using(StringComparer.OrdinalIgnore
   .Because("the comparer ignored the casing");
 ```
 
-You can also specify, how often the substring should be found:
+You can also specify how often the substring should be found:
 
 ```csharp
 string subject = "get back, get back, get back to where you once belonged.";

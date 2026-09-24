@@ -7,7 +7,7 @@ using aweXpect.Signaling;
 namespace aweXpect.Options;
 
 /// <summary>
-///     Options for <see cref="Signaler" />
+///     Options for <see cref="Signaler" />.
 /// </summary>
 public record SignalerOptions
 {
@@ -29,7 +29,7 @@ public record SignalerOptions
 }
 
 /// <summary>
-///     Options for <see cref="Signaler{TParameter}" />
+///     Options for <see cref="Signaler{TParameter}" />.
 /// </summary>
 public record SignalerOptions<TParameter> : SignalerOptions
 {

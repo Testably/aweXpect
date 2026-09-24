@@ -50,7 +50,7 @@ If it fails, it will throw a framework-specific exception with the following mes
 
 ## Add a reason
 
-You can add a reason for all expectations, that will be included in the exception message:
+You can add a reason for all expectations that will be included in the exception message:
 
 ```csharp
 [Fact]

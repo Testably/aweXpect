@@ -15,7 +15,7 @@ internal static class GrammarHelpers
 	private const string SubjectPronoun = "it";
 
 	/// <summary>
-	///     Returns the <paramref name="plural" /> form, if the <paramref name="grammars" /> have the
+	///     Returns the <paramref name="plural" /> form if the <paramref name="grammars" /> have the
 	///     <see cref="ExpectationGrammars.Plural" /> flag, otherwise the <paramref name="singular" /> form.
 	/// </summary>
 	/// <remarks>
@@ -25,7 +25,7 @@ internal static class GrammarHelpers
 		=> grammars.IsPlural() ? plural : singular;
 
 	/// <summary>
-	///     Returns the <paramref name="plural" /> form, if the <paramref name="grammars" /> have the
+	///     Returns the <paramref name="plural" /> form if the <paramref name="grammars" /> have the
 	///     <see cref="ExpectationGrammars.Plural" /> flag and <paramref name="it" /> is a member name,
 	///     otherwise the <paramref name="singular" /> form.
 	/// </summary>

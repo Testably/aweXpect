@@ -27,7 +27,7 @@ public partial class CollectionMatchOptions(
 	public enum EquivalenceRelations
 	{
 		/// <summary>
-		///     The subject and expected collection must be equivalent (have the same items)
+		///     The subject and expected collection must be equivalent (have the same items).
 		/// </summary>
 		Equivalent = 1,
 

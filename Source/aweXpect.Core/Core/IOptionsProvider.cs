@@ -9,7 +9,7 @@ public interface IOptionsProvider<out TOptions>
 	///     The underlying options of type <typeparamref name="TOptions" />.
 	/// </summary>
 	/// <remarks>
-	///     This is primarily intended for extension methods
+	///     This is primarily intended for extension methods.
 	/// </remarks>
 	TOptions Options { get; }
 }

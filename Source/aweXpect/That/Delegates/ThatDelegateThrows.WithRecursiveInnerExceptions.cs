@@ -10,7 +10,7 @@ namespace aweXpect;
 public static partial class ThatDelegateThrows
 {
 	/// <summary>
-	///     Verifies that the actual exception recursively has inner exceptions which satisfy the
+	///     Verifies that the thrown exception recursively has inner exceptions which satisfy the
 	///     <paramref name="expectations" />.
 	/// </summary>
 	/// <remarks>

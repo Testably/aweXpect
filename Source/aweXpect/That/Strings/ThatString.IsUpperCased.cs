@@ -14,7 +14,7 @@ public static partial class ThatString
 	///     Verifies that all cased characters in the subject are upper-case.
 	/// </summary>
 	/// <remarks>
-	///     That is, that the string could be the result of a call to <see cref="string.ToUpperInvariant()" />.
+	///     This means that the string could be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	///     Letters without an upper-case form count as upper-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
 	/// </remarks>
@@ -33,7 +33,7 @@ public static partial class ThatString
 	///     Verifies that of all cased characters in the subject at least one is lower-case.
 	/// </summary>
 	/// <remarks>
-	///     That is, that the string could not be the result of a call to <see cref="string.ToUpperInvariant()" />.
+	///     This means that the string could not be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	///     Letters without an upper-case form count as upper-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
 	/// </remarks>

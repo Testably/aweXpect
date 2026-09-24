@@ -33,16 +33,16 @@ public abstract partial class EnumerableQuantifier
 	}
 
 	/// <summary>
-	///     Checks for each iteration, if the result is determinable by the <paramref name="matchingCount" /> and
+	///     Checks for each iteration if the result is determinable by the <paramref name="matchingCount" /> and
 	///     <paramref name="notMatchingCount" />.
 	/// </summary>
 	public abstract bool IsDeterminable(int matchingCount, int notMatchingCount);
 
 	/// <summary>
-	///     Returns true, if the quantifier should be treated as containing a single item.
+	///     Returns <see langword="true" /> if the quantifier should be treated as containing a single item.
 	/// </summary>
 	/// <remarks>
-	///     This means, that the expectation text can be written in singular.
+	///     This means that the expectation text can be written in singular.
 	/// </remarks>
 	public abstract bool IsSingle();
 

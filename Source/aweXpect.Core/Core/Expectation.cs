@@ -119,8 +119,8 @@ public abstract class Expectation
 		protected abstract string GetSubjectLine();
 
 		/// <summary>
-		///     Specifies, if the combination should be treated as
-		///     <see cref="Outcome.Success" /> or <see cref="Outcome.Failure" />
+		///     Specifies if the combination should be treated as
+		///     <see cref="Outcome.Success" /> or <see cref="Outcome.Failure" />.
 		/// </summary>
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 

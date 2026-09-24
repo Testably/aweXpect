@@ -14,7 +14,7 @@ namespace aweXpect;
 public static partial class ThatGeneric
 {
 	/// <summary>
-	///     Verifies the actual value to satisfy the <paramref name="predicate" />.
+	///     Verifies that the subject satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="predicate" /> decides about a <see langword="null" /> subject as well, so
@@ -41,7 +41,7 @@ public static partial class ThatGeneric
 	}
 
 	/// <summary>
-	///     Verifies the actual value to not satisfy the <paramref name="predicate" />.
+	///     Verifies that the subject does not satisfy the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="predicate" /> decides about a <see langword="null" /> subject as well, so

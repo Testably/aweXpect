@@ -4,7 +4,7 @@ Describes the possible expectations for `Stream` and `BufferedStream`.
 
 ## Properties
 
-You can verify, the properties of the `Stream`:
+You can verify the properties of the `Stream`:
 
 ```csharp
 Stream subject = new MemoryStream();
@@ -20,7 +20,7 @@ await Expect.That(File.Open("write-only.txt", FileMode.OpenOrCreate, FileAccess.
 
 ## Length
 
-You can verify, the length of the `Stream`:
+You can verify the length of the `Stream`:
 
 ```csharp
 Stream subject = new MemoryStream("foo"u8.ToArray());
@@ -40,7 +40,7 @@ await Expect.That(subject).HasLength().Between(2).And(4);
 
 ## Position
 
-You can verify, the position of the `Stream`:
+You can verify the position of the `Stream`:
 
 ```csharp
 Stream subject = new MemoryStream("foo"u8.ToArray());
@@ -61,7 +61,7 @@ await Expect.That(subject).HasPosition().Between(1).And(3);
 
 ## Buffer size
 
-You can verify, the buffer size of the `BufferedStream`:
+You can verify the buffer size of the `BufferedStream`:
 
 ```csharp
 BufferedStream subject = new(new MemoryStream("foo"u8.ToArray()), 2);

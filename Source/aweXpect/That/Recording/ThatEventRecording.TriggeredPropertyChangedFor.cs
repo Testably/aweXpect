@@ -15,7 +15,7 @@ public static partial class ThatEventRecording
 {
 	/// <summary>
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
-	///     for the property given by the <paramref name="propertyExpression" />
+	///     for the property given by the <paramref name="propertyExpression" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(
@@ -26,7 +26,7 @@ public static partial class ThatEventRecording
 
 	/// <summary>
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
-	///     for the given <paramref name="propertyName" />
+	///     for the given <paramref name="propertyName" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(
@@ -54,7 +54,7 @@ public static partial class ThatEventRecording
 
 	/// <summary>
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
-	///     for the property given by the <paramref name="propertyExpression" />
+	///     for the property given by the <paramref name="propertyExpression" />.
 	/// </summary>
 	/// <remarks>
 	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full
@@ -70,7 +70,7 @@ public static partial class ThatEventRecording
 
 	/// <summary>
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
-	///     for the given <paramref name="propertyName" />
+	///     for the given <paramref name="propertyName" />.
 	/// </summary>
 	/// <remarks>
 	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full

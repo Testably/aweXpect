@@ -15,7 +15,7 @@ public class AndResult<TThat>(
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
-	///     … AND …
+	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>
 	public TThat And
 	{
@@ -53,7 +53,7 @@ public class AndResult<TType, TThat, TSelf>(
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
-	///     … AND …
+	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>
 	public TThat And
 	{
