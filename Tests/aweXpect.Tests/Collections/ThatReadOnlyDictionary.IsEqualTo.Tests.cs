@@ -71,6 +71,28 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoExpectedKeysForOneEntry_ShouldFail()
+			{
+				IReadOnlyDictionary<string, int> subject =
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, };
+				IReadOnlyDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it lacked a distinct key for "A" and contained additional key "b"
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 1}
+					             """)
+					.Because("both expected keys are matched by the key \"a\" of the subject");
+			}
+
+			[Fact]
 			public async Task WhenTheValueForAKeyDiffers_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -127,6 +149,42 @@ public sealed partial class ThatReadOnlyDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("a type that implements no IDictionary is looked up through its own TryGetValue");
+			}
+
+			[Fact]
+			public async Task WhenTheComparerCannotBeRead_WithAnAdditionalKey_ShouldNotNameIt()
+			{
+				ReadOnlyOnlyDictionary<string, int> subject =
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+				IReadOnlyDictionary<string, int> expected = ToDictionary(["A",], [1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained 2 keys and matched 1 expected key
+
+					             Dictionary:
+					             [["a"] = 1, ["b"] = 1]
+					             """)
+					.Because("without the comparer of the subject, naming the additional keys would overshoot");
+			}
+
+			[Fact]
+			public async Task WhenTheComparerCannotBeRead_WithTwoExpectedKeysForOneEntry_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<string, int> subject =
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+				IReadOnlyDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("without the comparer of the subject, the two expected keys count as two matched keys");
 			}
 		}
 	}
