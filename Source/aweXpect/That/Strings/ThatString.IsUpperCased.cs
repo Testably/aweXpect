@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -54,7 +55,7 @@ public static partial class ThatString
 		public ConstraintResult IsMetBy(string? actual)
 		{
 			Actual = actual;
-			Outcome = actual != null && actual == actual.ToUpperInvariant() &&
+			Outcome = actual != null && string.Equals(actual, actual.ToUpperInvariant(), StringComparison.Ordinal) &&
 			          !(options.IncludesUncasedLetters &&
 			            actual.ContainsCharacterOfCategory(UnicodeCategory.LowercaseLetter,
 				            UnicodeCategory.TitlecaseLetter))
