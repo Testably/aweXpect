@@ -244,6 +244,19 @@ await Expect.That(albums).Contains(expected).Equivalent();
 await Expect.That(albums).Contains(expected).Using(new AlbumComparer());
 ```
 
+A set that was created with a custom comparer (a `HashSet<T>` or `SortedSet<T>`, and on .NET 8 or later also an
+`ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`) is asked for the item itself, so its comparer decides
+and the item is counted at most once. Any other collection, including a set with the default comparer, is compared with
+the default equality. A custom comparer, equivalency or a string option such as `IgnoringCase()` takes precedence over
+the comparer of the set:
+
+```csharp
+HashSet<string> values = new(StringComparer.OrdinalIgnoreCase) { "foo" };
+
+await Expect.That(values).Contains("FOO");
+await Expect.That(values).DoesNotContain("FOO").Using(StringComparer.Ordinal);
+```
+
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 ### Predicate
