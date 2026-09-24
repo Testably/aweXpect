@@ -258,8 +258,9 @@ await Expect.That(subject).HasYear().Between(2000).And(2024);
 
 In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
 comparing them as exact values might result in brittle tests.
-Therefore, it is possible to specify a default tolerance that is used for all `DateTime`, `DateTimeOffset`, `DateOnly`,
-`TimeOnly` and `TimeSpan` comparisons (unless an explicit tolerance is given):
+Therefore, it is possible to specify a default tolerance that is used when a `DateTime`, `DateTimeOffset`, `DateOnly`,
+`TimeOnly` or `TimeSpan` subject is compared directly (e.g. with `IsEqualTo`, `IsOneOf`, `IsBefore` or `IsBetween`) and
+no explicit tolerance is given:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -267,3 +268,9 @@ using aweXpect.Customization;
 
 IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```
+
+The default tolerance is not used for:
+- property verifications like `HasOffset()`
+- items of a collection (specify the tolerance with `Within` on the collection expectation instead)
+- members compared by `IsEquivalentTo`
+- values compared as `object`
