@@ -11,6 +11,11 @@ public static partial class ThatNullableTimeSpan
 	/// <summary>
 	///     Verifies that the subject is positive.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="TimeSpan.Zero" /> is neither positive nor negative, so it fails
+	///     <see cref="IsPositive(IThat{TimeSpan?})" /> and <see cref="IsNegative(IThat{TimeSpan?})" /> and satisfies
+	///     <see cref="IsNotPositive(IThat{TimeSpan?})" /> and <see cref="IsNotNegative(IThat{TimeSpan?})" />.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsPositive(this IThat<TimeSpan?> subject)
 		=> new(
@@ -21,6 +26,11 @@ public static partial class ThatNullableTimeSpan
 	/// <summary>
 	///     Verifies that the subject is not positive.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="TimeSpan.Zero" /> is neither positive nor negative, so it fails
+	///     <see cref="IsPositive(IThat{TimeSpan?})" /> and <see cref="IsNegative(IThat{TimeSpan?})" /> and satisfies
+	///     <see cref="IsNotPositive(IThat{TimeSpan?})" /> and <see cref="IsNotNegative(IThat{TimeSpan?})" />.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsNotPositive(
 		this IThat<TimeSpan?> subject)

@@ -203,6 +203,12 @@ public abstract class ExpectationBuilder
 	///     Specifies a constraint that applies to the member selected
 	///     by the <paramref name="memberAccessor" />.
 	/// </summary>
+	/// <remarks>
+	///     If accessing the member throws, the expectations on the member fail with <c>… did throw …</c> and the
+	///     exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
+	///     <see cref="OperationCanceledException" /> thrown while the evaluation is cancelled aborts the evaluation
+	///     instead.
+	/// </remarks>
 	public MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(
 		MemberAccessor<TSource, TTarget> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
@@ -251,6 +257,12 @@ public abstract class ExpectationBuilder
 	///     Specifies a constraint that applies to the member selected asynchronously
 	///     by the <paramref name="memberAccessor" />.
 	/// </summary>
+	/// <remarks>
+	///     The member is awaited before the expectations on it are applied. If accessing or awaiting the member throws,
+	///     they fail with <c>… did throw …</c> and the exception as <see cref="ConstraintResult.FailureCause" />, which
+	///     a negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
+	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	/// </remarks>
 	public MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,

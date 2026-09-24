@@ -14,6 +14,11 @@ public static partial class ThatGeneric
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberSelector" />.
 	/// </summary>
+	/// <remarks>
+	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
+	///     exception, which a negation does not invert. An <see cref="OperationCanceledException" /> thrown while the
+	///     evaluation is cancelled aborts the evaluation instead.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
@@ -37,6 +42,12 @@ public static partial class ThatGeneric
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
 	///     <paramref name="memberSelector" />.
 	/// </summary>
+	/// <remarks>
+	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
+	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
+	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
+	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(2)]
 	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
@@ -62,6 +73,12 @@ public static partial class ThatGeneric
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
 	///     <paramref name="memberSelector" />.
 	/// </summary>
+	/// <remarks>
+	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
+	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
+	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
+	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(1)]
 	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(

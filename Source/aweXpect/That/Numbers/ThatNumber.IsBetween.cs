@@ -16,6 +16,11 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
+	///     is never between them.
+	/// </remarks>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsBetween<TNumber>(
 		this IThat<TNumber> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
@@ -32,6 +37,11 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
+	///     is never between them.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsBetween<TNumber>(
 		this IThat<TNumber?> subject, TNumber? minimum)
@@ -49,6 +59,11 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
+	///     is never between them.
+	/// </remarks>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
@@ -65,6 +80,11 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
+	///     is never between them.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber?> subject, TNumber? minimum)
@@ -215,8 +235,13 @@ public static partial class ThatNumber
 	private const string IsNotBetweenSummary =
 		"Verifies that the subject is not between the <paramref name=\"minimum\" />…";
 
+	private const string IsBetweenRemarks =
+		"Both bounds are inclusive. A maximum below the <paramref name=\"minimum\" /> or a <c>NaN</c> bound throws\n" +
+		"an <see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> bound or a\n" +
+		"<c>NaN</c> subject is never between them.";
+
 	[CreateCollectionExpectation("Is{Not}Between", Factory = typeof(NumberToleranceFactory),
-		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary)]
+		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
 	internal static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsBetweenCore<TNumber>(
 		IThat<TNumber> subject,
 		TNumber? minimum,
@@ -230,7 +255,7 @@ public static partial class ThatNumber
 			options));
 
 	[CreateCollectionExpectation("Is{Not}Between", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
-		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary)]
+		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
 	internal static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?>
 		IsBetweenForNullableCore<TNumber>(
 			IThat<TNumber?> subject,

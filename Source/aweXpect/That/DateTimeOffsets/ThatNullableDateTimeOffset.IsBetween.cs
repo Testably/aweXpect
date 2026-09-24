@@ -13,6 +13,11 @@ public static partial class ThatNullableDateTimeOffset
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>
 		IsBetween(
@@ -35,6 +40,11 @@ public static partial class ThatNullableDateTimeOffset
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	/// <remarks>
+	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>
 		IsNotBetween(

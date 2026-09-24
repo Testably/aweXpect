@@ -24,6 +24,11 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate does not throw an exception of type <typeparamref name="TException" />.
 		/// </summary>
+		/// <remarks>
+		///     Only an exception of type <typeparamref name="TException" /> or of a derived type fails the expectation,
+		///     while any other exception is ignored. Use <see cref="DoesNotThrowExactly{TException}()" /> to ignore
+		///     derived types as well.
+		/// </remarks>
 		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrow<TException>()
 			where TException : Exception
@@ -33,6 +38,10 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate does not throw an exception of type <paramref name="type" />.
 		/// </summary>
+		/// <remarks>
+		///     Only an exception of the <paramref name="type" /> or of a derived type fails the expectation, while any
+		///     other exception is ignored. Use <see cref="DoesNotThrowExactly(Type)" /> to ignore derived types as well.
+		/// </remarks>
 		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrow(Type type)
 			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>

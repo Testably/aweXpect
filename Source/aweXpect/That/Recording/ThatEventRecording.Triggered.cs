@@ -38,6 +38,10 @@ public static partial class ThatEventRecording
 	/// </summary>
 	/// <remarks>
 	///     This will stop the recording on the <see cref="IEventRecording{TSubject}" /> subject.
+	///     <para />
+	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching event is recorded. Without a timeout, only the
+	///     events recorded so far are checked.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTrigger<TSubject>(

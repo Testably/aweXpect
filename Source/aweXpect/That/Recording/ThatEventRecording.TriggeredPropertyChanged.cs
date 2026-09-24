@@ -36,6 +36,11 @@ public static partial class ThatEventRecording
 	/// <summary>
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event.
 	/// </summary>
+	/// <remarks>
+	///     With <see cref="EventTriggerResult{TSubject}.Within(System.TimeSpan)" />, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching event is recorded. Without a timeout, only the
+	///     events recorded so far are checked.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(
 		this IThat<IEventRecording<TSubject>> subject)
