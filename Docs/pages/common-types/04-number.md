@@ -92,14 +92,18 @@ await Expect.That(subject).IsBetween(41).And(43);
 
 ## Positive / negative
 
-You can verify that the number is positive or negative:
+You can verify that the number is positive or negative, or that it is not:
 
 ```csharp
 await Expect.That(42).IsPositive();
 await Expect.That(-3).IsNegative();
+await Expect.That(0).IsNotPositive();
+await Expect.That(0).IsNotNegative();
 ```
 
-*Note: these expectations are only available for signed numbers.*
+Zero and `NaN` are neither positive nor negative, so both `IsNotPositive` and `IsNotNegative` succeed for them.
+
+*Note: below .NET 8 these expectations are only available for signed numbers; on .NET 8 or later they are available for every `INumber<T>`, including unsigned types.*
 
 ## NaN
 

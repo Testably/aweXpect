@@ -38,6 +38,27 @@ public static partial class ThatNumber
 				new NullableIsPositiveConstraint<TNumber>(it, grammars)),
 			subject);
 
+	/// <summary>
+	///     Verifies that the subject is not positive.
+	/// </summary>
+	public static AndOrResult<TNumber, IThat<TNumber>> IsNotPositive<TNumber>(
+		this IThat<TNumber> subject)
+		where TNumber : struct, INumber<TNumber>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new IsPositiveConstraint<TNumber>(it, grammars).Invert()),
+			subject);
+
+	/// <summary>
+	///     Verifies that the subject is not positive.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotPositive<TNumber>(
+		this IThat<TNumber?> subject)
+		where TNumber : struct, INumber<TNumber>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new NullableIsPositiveConstraint<TNumber>(it, grammars).Invert()),
+			subject);
+
 	private sealed class IsPositiveConstraint<TNumber>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
@@ -101,24 +122,28 @@ public static partial class ThatNumber
 	}
 #else
 	private const string IsPositiveSummary = "Verifies that the subject is positive.";
+	private const string IsNotPositiveSummary = "Verifies that the subject is not positive.";
 
-	[CreateCollectionExpectation("IsPositive", Factory = typeof(SignedNumberFactory), Summary = IsPositiveSummary)]
+	[CreateCollectionExpectation("Is{Not}Positive", Factory = typeof(SignedNumberFactory),
+		Summary = IsPositiveSummary, NegatedSummary = IsNotPositiveSummary)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsPositiveCore<TNumber>(
 		IThat<TNumber> subject,
-		NumberSign<TNumber> sign)
+		NumberSign<TNumber> sign,
+		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive)),
+				new IsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive).InvertIf(negated)),
 			subject);
 
-	[CreateCollectionExpectation("IsPositive", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
-		Summary = IsPositiveSummary)]
+	[CreateCollectionExpectation("Is{Not}Positive", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
+		Summary = IsPositiveSummary, NegatedSummary = IsNotPositiveSummary)]
 	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsPositiveForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
-		NumberSign<TNumber> sign)
+		NumberSign<TNumber> sign,
+		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive)),
+				new NullableIsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive).InvertIf(negated)),
 			subject);
 
 	private sealed class IsPositiveConstraint<TNumber>(
