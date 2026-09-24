@@ -121,6 +121,71 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollection_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList unexpected = new() { 2, 3, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection unexpected in order and contiguous,
+					             but it did
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [
+					               2,
+					               3
+					             ]
+					             """)
+					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollectionInADifferentOrder_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList unexpected = new() { 3, 2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollectionInAnyOrder_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList unexpected = new() { 3, 2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection unexpected in any order,
+					             but it did
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [
+					               3,
+					               2
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);

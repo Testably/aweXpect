@@ -29,7 +29,7 @@ IEnumerable<double> expected = [1.0, 2.0, 3.0];
 await Expect.That(values).IsEqualTo(expected).Within(0.1).InAnyOrder();
 ```
 
-This tolerance can be applied to `double`, `float`, `decimal` and `DateTime`.
+This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `DateTimeOffset` and `TimeSpan`.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
@@ -92,7 +92,7 @@ IEnumerable<double> values = [2.04, 2.02, 2.01];
 await Expect.That(values).All().AreEqualTo(2.0).Within(0.1);
 ```
 
-This tolerance can be applied to `double`, `float`, `decimal` and `DateTime`.
+This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `DateTimeOffset` and `TimeSpan`.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 

@@ -138,6 +138,152 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsADifferentString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).IsContainedIn("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection "foo" in order and contiguous,
+					             but it contained item "bar" at index 1 that was not expected
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+
+					             Expected:
+					             [
+					               "foo"
+					             ]
+					             """)
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionContainingTheSubject_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList expected = new() { 0, 1, 2, 3, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionEqualToTheSubjectAndProperly_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList expected = new() { 1, 2, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).Properly();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected which has at least one additional item in order and contiguous,
+					             but it contained all expected items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               1,
+					               2
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionInAnyOrder_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList expected = new() { 3, 2, 1, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionNotContainingTheSubject_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList expected = new() { 1, 3, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order and contiguous,
+					             but it contained item 2 at index 1 instead of 3
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               1,
+					               3
+					             ]
+					             """)
+					.Because("a collection argument without an item type is the expected collection");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionThatIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANullString_ShouldThrowArgumentNullException()
+			{
+				IEnumerable subject = ToEnumerable(["foo",]);
+				string? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix()
+					.Because("a null string is still a missing expected collection and not a null item");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAString_ShouldUseItAsSingleExpectedItem()
+			{
+				IEnumerable subject = ToEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).IsContainedIn("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);

@@ -36,4 +36,20 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 	public static ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> CreateNullableDateTime() =>
 		new((a, e, t) => a.IsConsideredEqualTo(e, t),
 			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<DateTimeOffset, TimeSpan> CreateDateTimeOffset() =>
+		new((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<DateTimeOffset?, TimeSpan> CreateNullableDateTimeOffset() =>
+		new((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<TimeSpan, TimeSpan> CreateTimeSpan() =>
+		new((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<TimeSpan?, TimeSpan> CreateNullableTimeSpan() =>
+		new((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
 }

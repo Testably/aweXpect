@@ -121,40 +121,56 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
-					             but none of 0 did
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
 					             """)
-					.Because("an expectation on all inner exceptions requires at least one of them");
+					.Because("an expectation on the inner exceptions requires at least one of them");
 			}
 
 			[Fact]
-			public async Task WhenNoInnerExceptionIsPresent_ForAtMost_ShouldSucceed()
+			public async Task WhenNoInnerExceptionIsPresent_ForAtMost_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
 
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtMost(2).Satisfy(_ => true));
 
-				await That(Act).DoesNotThrow()
-					.Because("at most 2 inner exceptions is what an exception without any inner exception has");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which at most 2 satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
 			[Fact]
-			public async Task WhenNoInnerExceptionIsPresent_ForNone_ShouldSucceed()
+			public async Task WhenNoInnerExceptionIsPresent_ForNone_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
 
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.None().Satisfy(_ => true));
 
-				await That(Act).DoesNotThrow()
-					.Because("no inner exception matches when there is no inner exception");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which none satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
 			[Fact]
-			public async Task WhenNoInnerExceptionIsPresent_WhenExpectingInnerExceptionsToBeEmpty_ShouldSucceed()
+			public async Task WhenNoInnerExceptionIsPresent_WhenExpectingInnerExceptionsToBeEmpty_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
 
@@ -162,8 +178,53 @@ public sealed partial class ThatDelegate
 					=> await That(action).Throws()
 						.WithRecursiveInnerExceptions(innerExceptions => innerExceptions.IsEmpty());
 
-				await That(Act).DoesNotThrow()
-					.Because("an expectation that is only about the absence of items stays satisfiable");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions which are empty,
+					             but it had no inner exceptions
+					             """)
+					.Because("the existence of an inner exception is required before the inner exceptions are inspected");
+			}
+
+			[Fact]
+			public async Task WhenThrownAggregateExceptionHasNoInnerExceptions_ForAll_ShouldFail()
+			{
+				Action action = () => throw new AggregateException();
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("an AggregateException without inner exceptions is empty just like any other exception");
+			}
+
+			[Fact]
+			public async Task WhenThrownAggregateExceptionHasNoInnerExceptions_ForNone_ShouldFail()
+			{
+				Action action = () => throw new AggregateException();
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.None().Satisfy(_ => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which none satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}
 		}
 	}

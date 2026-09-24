@@ -34,12 +34,12 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy _ => true,
-					             but none of 0 did
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
 					             """)
-					.Because("an expectation on all inner exceptions requires at least one of them");
+					.Because("an expectation on the inner exceptions requires at least one of them");
 			}
 
 			[Fact]
@@ -55,7 +55,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all are equal to Exception: inner,
-					             but none of 0 were
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
@@ -74,7 +74,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all are unique,
-					             but none of 0 were
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
@@ -82,15 +82,23 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenExceptionHasNoInnerException_ForAtMost_ShouldSucceed()
+			public async Task WhenExceptionHasNoInnerException_ForAtMost_ShouldFail()
 			{
 				Exception subject = new("outer");
 
 				async Task Act()
 					=> await That(subject).HasRecursiveInnerExceptions(c => c.AtMost(2).Satisfy(_ => true));
 
-				await That(Act).DoesNotThrow()
-					.Because("at most 2 inner exceptions is what an exception without any inner exception has");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recursive inner exceptions of which at most 2 satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
 			[Fact]
@@ -105,7 +113,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions whose Message is equal to "inner" for all items,
-					             but none of 0 did
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
@@ -113,15 +121,43 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenExceptionHasNoInnerException_ForNone_ShouldSucceed()
+			public async Task WhenExceptionHasNoInnerException_ForHasCountZero_ShouldFail()
+			{
+				Exception subject = new("outer");
+
+				async Task Act()
+					=> await That(subject).HasRecursiveInnerExceptions(c => c.HasCount(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recursive inner exceptions which have exactly 0 items,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("the existence of an inner exception is required before the count is checked");
+			}
+
+			[Fact]
+			public async Task WhenExceptionHasNoInnerException_ForNone_ShouldFail()
 			{
 				Exception subject = new("outer");
 
 				async Task Act()
 					=> await That(subject).HasRecursiveInnerExceptions(c => c.None().Satisfy(_ => true));
 
-				await That(Act).DoesNotThrow()
-					.Because("no inner exception matches when there is no inner exception");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recursive inner exceptions of which none satisfy _ => true,
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
 			[Fact]
@@ -147,7 +183,27 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy _ => true,
-					             but none of 0 did
+					             but it had no inner exceptions
+
+					             Collection:
+					             []
+					             """)
+					.Because("an AggregateException without inner exceptions is empty just like any other exception");
+			}
+
+			[Fact]
+			public async Task WhenExceptionIsAnAggregateExceptionWithoutInnerExceptions_ForNone_ShouldFail()
+			{
+				Exception subject = new AggregateException();
+
+				async Task Act()
+					=> await That(subject).HasRecursiveInnerExceptions(c => c.None().Satisfy(_ => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recursive inner exceptions of which none satisfy _ => true,
+					             but it had no inner exceptions
 
 					             Collection:
 					             []
@@ -298,6 +354,32 @@ public sealed partial class ThatException
 
 				await That(Act).DoesNotThrow()
 					.Because("the negated expectation holds whenever the positive one fails");
+			}
+
+			[Fact]
+			public async Task WhenExceptionHasNoInnerException_ForNone_ShouldSucceed()
+			{
+				Exception subject = new("outer");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasRecursiveInnerExceptions(c => c.None().Satisfy(_ => true)));
+
+				await That(Act).DoesNotThrow()
+					.Because("an exception without inner exceptions does not have recursive inner exceptions");
+			}
+
+			[Fact]
+			public async Task WhenExceptionIsAnAggregateExceptionWithoutInnerExceptions_ShouldSucceed()
+			{
+				Exception subject = new AggregateException();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasRecursiveInnerExceptions(c => c.HasCount(0)));
+
+				await That(Act).DoesNotThrow()
+					.Because("an AggregateException without inner exceptions does not have recursive inner exceptions");
 			}
 
 			[Fact]

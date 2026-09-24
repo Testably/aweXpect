@@ -39,6 +39,10 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the value overload, so that a <see langword=\"null\" /> literal binds to the value\n" +
 		"overload instead of to this one.";
 
+	private const string UntypedCollectionItemRemarks =
+		"Without this overload a collection argument without an item type would bind to the item overload and be\n" +
+		"expected as a single item.";
+
 	private const string ContainsCollection =
 		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
 
@@ -54,6 +58,38 @@ public static partial class ThatEnumerable
 		"The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.\n" +
 		"without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with\n" +
 		"other items in between or <c>InAnyOrder()</c> to also ignore the order.";
+
+	private const string ContainsPredicates =
+		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of predicates.";
+
+	private const string DoesNotContainPredicates =
+		"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of predicates.";
+
+	private const string ContainsPredicatesRemarks =
+		"The expected predicates must be satisfied in the same order and contiguous, i.e. without other items in\n" +
+		"between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also\n" +
+		"ignore the order.";
+
+	private const string DoesNotContainPredicatesRemarks =
+		"The unexpected predicates are only considered contained when they are satisfied in the same order and\n" +
+		"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
+		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
+
+	private const string ContainsExpectations =
+		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of expectations.";
+
+	private const string DoesNotContainExpectations =
+		"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of expectations.";
+
+	private const string ContainsExpectationsRemarks =
+		"The expectations must be satisfied in the same order and contiguous, i.e. without other items in between. Use\n" +
+		"<c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the\n" +
+		"order.";
+
+	private const string DoesNotContainExpectationsRemarks =
+		"The unexpected expectations are only considered contained when they are satisfied in the same order and\n" +
+		"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
+		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
@@ -143,6 +179,15 @@ public static partial class ThatEnumerable
 			quantifier,
 			options);
 	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SingleValueRemarks)]
+	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
+		ContainsSingleStringForEnumerableCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			bool negated)
+		=> ContainsItemForEnumerableCore(subject, expected, negated);
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -2,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem,
@@ -338,6 +383,18 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks + "\n" + UntypedCollectionItemRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedCollectionItemRemarks)]
+	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+		ContainsForObjectsCore(
+			IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			string expectedExpression,
+			bool negated)
+		=> ContainsForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
+
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
@@ -391,18 +448,8 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
-		Summary =
-			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of predicates.",
-		NegatedSummary =
-			"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of predicates.",
-		Remarks =
-			"The expected predicates must be satisfied in the same order and contiguous, i.e. without other items in\n" +
-			"between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also\n" +
-			"ignore the order.",
-		NegatedRemarks =
-			"The unexpected predicates are only considered contained when they are satisfied in the same order and\n" +
-			"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
-			"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.")]
+		Summary = ContainsPredicates, NegatedSummary = DoesNotContainPredicates,
+		Remarks = ContainsPredicatesRemarks, NegatedRemarks = DoesNotContainPredicatesRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		ContainsFromPredicatesCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -415,7 +462,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				=> new IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -424,18 +471,8 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
-		Summary =
-			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of expectations.",
-		NegatedSummary =
-			"Verifies that the collection does not contain the provided <paramref name=\"unexpected\" /> collection of expectations.",
-		Remarks =
-			"The expectations must be satisfied in the same order and contiguous, i.e. without other items in between. Use\n" +
-			"<c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the\n" +
-			"order.",
-		NegatedRemarks =
-			"The unexpected expectations are only considered contained when they are satisfied in the same order and\n" +
-			"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
-			"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.")]
+		Summary = ContainsExpectations, NegatedSummary = DoesNotContainExpectations,
+		Remarks = ContainsExpectationsRemarks, NegatedRemarks = DoesNotContainExpectationsRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		ContainsFromExpectationsCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -448,7 +485,59 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				=> new IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem>(expectationBuilder, it,
+					grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
+			subject,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
+		Summary = ContainsPredicates, NegatedSummary = DoesNotContainPredicates,
+		Remarks = ContainsPredicatesRemarks + "\n" + BelowCollectionPriorityRemarks,
+		NegatedRemarks = DoesNotContainPredicatesRemarks + "\n" + BelowCollectionPriorityRemarks)]
+	internal static ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		ContainsFromPredicatesForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToFromPredicateConstraint<TCollection, TItem, TItem>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
+			subject,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
+		Summary = ContainsExpectations, NegatedSummary = DoesNotContainExpectations,
+		Remarks = ContainsExpectationsRemarks + "\n" + BelowCollectionPriorityRemarks,
+		NegatedRemarks = DoesNotContainExpectationsRemarks + "\n" + BelowCollectionPriorityRemarks)]
+	internal static ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		ContainsFromExpectationsForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem>(expectationBuilder, it,
+					grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,

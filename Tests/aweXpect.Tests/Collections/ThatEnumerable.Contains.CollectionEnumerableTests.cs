@@ -132,6 +132,99 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsANonGenericCollection_ShouldUseItsItemsAsExpectedCollection()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList expected = new() { 1, 3, };
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it
+					               contained item 2 at index 1 instead of 3 and
+					               lacked 1 of 2 expected items: 3
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [
+					               1,
+					               3
+					             ]
+					             """)
+					.Because("a collection argument without an item type is the expected collection and not a single expected item");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionInAnyOrder_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList expected = new() { 3, 2, };
+
+				async Task Act()
+					=> await That(subject).Contains(expected).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionThatIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList? expected = null;
+
+				async Task Act()
+					=> await That(subject).Contains(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionWithAllItemsAndProperly_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList expected = new() { 1, 2, };
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Properly();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected and at least one additional item in order and contiguous,
+					             but it did not contain any additional items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               1,
+					               2
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsANonGenericCollectionWithInterspersedItems_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				ArrayList expected = new() { 1, 3, };
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);

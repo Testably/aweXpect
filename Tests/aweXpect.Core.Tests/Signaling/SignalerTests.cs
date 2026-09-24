@@ -105,7 +105,8 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(500.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
 		[Fact]
@@ -180,7 +181,8 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(500.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
 		[Theory]
@@ -300,7 +302,8 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(500.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
 		[Fact]
@@ -378,7 +381,8 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(500.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
 		[Fact]

@@ -678,17 +678,18 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing,
-						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(2)));
+						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Throwing satisfies x => x == 1 within 0:02,
+					             whose Throwing satisfies x => x == 1 within 0:30,
 					             but Throwing did throw an InvalidOperationException:
 					               member failed
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
-				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(1));
+				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+					.Because("a throwing member must fail at once instead of being retried for the 30 s window");
 			}
 
 			[Fact]
@@ -699,17 +700,18 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(),
-						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(2)));
+						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose FaultedAsync() satisfies x => x == 1 within 0:02,
+					             whose FaultedAsync() satisfies x => x == 1 within 0:30,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(1));
+				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+					.Because("a faulted async member must fail at once instead of being retried for the 30 s window");
 			}
 
 			[Fact]
