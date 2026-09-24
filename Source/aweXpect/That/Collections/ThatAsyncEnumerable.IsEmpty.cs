@@ -56,9 +56,9 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			await using IAsyncEnumerator<TItem> enumerator =
-				materializedEnumerable.GetAsyncEnumerator(cancellationToken);
+				materializedEnumerable.UntilCancelled(cancellationToken).GetAsyncEnumerator();
 			if (await enumerator.MoveNextAsync())
 			{
 				int maximumNumberOfCollectionItems =

@@ -32,7 +32,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but it could not be verified, because it was already canceled
 
 						             Collection:
-						             [0, 1, 2, 3, 4, 5, 6, (… and maybe more)]
+						             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 						             """);
 				}
 

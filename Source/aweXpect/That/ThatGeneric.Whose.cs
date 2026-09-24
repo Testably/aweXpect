@@ -46,7 +46,8 @@ public static partial class ThatGeneric
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
 	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	///     <see cref="OperationCanceledException" /> and a timeout fails it with
+	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(2)]
@@ -77,7 +78,8 @@ public static partial class ThatGeneric
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
 	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	///     <see cref="OperationCanceledException" /> and a timeout fails it with
+	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(1)]

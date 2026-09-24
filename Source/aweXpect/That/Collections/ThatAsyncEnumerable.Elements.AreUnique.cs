@@ -265,10 +265,10 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
 			List<(TItem Item, int MemberIndex)> items = [];
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				items.Add((item, await occurrences.Add(memberAccessor(item))));
 			}

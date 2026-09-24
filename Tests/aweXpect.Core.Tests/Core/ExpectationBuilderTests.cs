@@ -1,8 +1,12 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -388,6 +392,23 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldAbortTheEvaluation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await ThatAwaiting(1).WithCancellation(cts.Token);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				$"Error evaluating *AwaitingConstraint constraint with value 1: {new TaskCanceledException().Message}")
+			.AsWildcard().And
+			.WithInner<TaskCanceledException>()
+			.Because("only a timeout is reported as a failed expectation, a requested cancellation still aborts");
+	}
+
+	[Fact]
 	public async Task WhenSubjectHasMultipleLines_ShouldTrimCommonWhiteSpace()
 	{
 		async Task Act() => await That(new[]
@@ -411,6 +432,22 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task WhenTimeoutElapsesWhileAConstraintAwaits_ShouldFailWithTheTimeout()
+	{
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("a timeout during the evaluation is reported like a subject that did not finish in time");
+	}
+
+	[Fact]
 	public async Task WhenTypeImplementsIDescribableSubject_ShouldUseToStringFromIt()
 	{
 		MyDescribableSubject subject = new("this long description for the subject");
@@ -423,6 +460,25 @@ public class ExpectationBuilderTests
 			             is null,
 			             but it was ExpectationBuilderTests.MyDescribableSubject { }
 			             """);
+	}
+
+	private static ExpectationResult ThatAwaiting(int subject)
+		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new AwaitingConstraint()));
+
+	/// <remarks>
+	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the
+	///     test instead of hanging the test run.
+	/// </remarks>
+	private sealed class AwaitingConstraint : IAsyncConstraint<int>
+	{
+		public async Task<ConstraintResult> IsMetBy(int actual, CancellationToken cancellationToken)
+		{
+			await Task.Delay(30.Seconds(), cancellationToken);
+			return new DummyConstraint<int>(_ => false, "awaits").IsMetBy(actual);
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("awaits");
 	}
 
 	private sealed class MyDescribableSubject(string subject) : IDescribableSubject

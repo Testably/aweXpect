@@ -267,7 +267,7 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
-	public async Task WhenMemberDoesNotFinishWithinTheTimeout_ShouldAbortTheEvaluation()
+	public async Task WhenMemberDoesNotFinishWithinTheTimeout_ShouldFailWithTheTimeout()
 	{
 		string subject = "foo";
 
@@ -277,10 +277,15 @@ public class AsyncMappingNodeTests
 					length => length.IsEqualTo(3))
 				.WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<TaskCanceledException>()
-			.WithMessage(new TaskCanceledException().Message)
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             length is equal to 3,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 			.WithTimeout(30.Seconds())
-			.Because("the timeout must abandon a member task that never finishes, as the cancellation of the evaluation");
+			.Because("the timeout must abandon a member task that never finishes, and report it like any other timeout");
 	}
 
 	[Fact]

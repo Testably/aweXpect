@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#if NET8_0_OR_GREATER
+using System.Threading;
+#endif
 using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Helpers;
@@ -48,11 +51,15 @@ internal static class EvaluationContextExtensions
 	///     Avoids enumerating an <see cref="IEnumerable{TItem}" /> multiple times,
 	///     by caching already materialized items in the <paramref name="evaluationContext" />.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="cancellationToken" /> of the evaluation is passed to the source and stops waiting for it,
+	///     so that a timeout or cancellation also applies to a source that ignores it.
+	/// </remarks>
 	public static IAsyncEnumerable<TItem> UseMaterializedAsyncEnumerable<TItem, TCollection>(
-		this IEvaluationContext evaluationContext, TCollection collection)
+		this IEvaluationContext evaluationContext, TCollection collection, CancellationToken cancellationToken)
 		where TCollection : IAsyncEnumerable<TItem>
 		=> evaluationContext.GetOrMaterialize(MaterializedAsyncEnumerableKey, collection,
-			() => MaterializingAsyncEnumerable<TItem>.Wrap(collection));
+			() => MaterializingAsyncEnumerable<TItem>.Wrap(collection, cancellationToken));
 #endif
 
 	/// <summary>

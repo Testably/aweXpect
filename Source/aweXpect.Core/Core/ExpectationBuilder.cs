@@ -261,7 +261,8 @@ public abstract class ExpectationBuilder
 	///     The member is awaited before the expectations on it are applied. If accessing or awaiting the member throws,
 	///     they fail with <c>… did throw …</c> and the exception as <see cref="ConstraintResult.FailureCause" />, which
 	///     a negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" />, even if the member ignores the cancellation.
+	///     <see cref="OperationCanceledException" /> and a timeout fails it with
+	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	public MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
@@ -724,14 +725,10 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
+			ConstraintResult result = await FromException(exception);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
-			return HasTimedOut(exception)
-				? new ConstraintResult.FromException(expectation, CreateTimeoutException(timeout!.Value, exception),
-					timeout)
-				: new ConstraintResult.FromException(expectation, exception);
+			return result;
 		}
 
 		if (data is DelegateValue delegateValue && HasTimedOut(delegateValue.Exception))
@@ -740,7 +737,25 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 				CreateTimeoutException(timeout.Value, delegateValue.Exception!));
 		}
 
-		return await rootNode.IsMetBy(data, context, token);
+		try
+		{
+			return await rootNode.IsMetBy(data, context, token);
+		}
+		// The ExpectationNode wraps the cancellation of a constraint in an InvalidOperationException.
+		catch (Exception exception) when (HasTimedOut(exception) || HasTimedOut(exception.InnerException))
+		{
+			return await FromException(exception as OperationCanceledException ?? exception.InnerException!);
+		}
+
+		async Task<ConstraintResult> FromException(Exception exception)
+		{
+			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
+			return HasTimedOut(exception)
+				? new ConstraintResult.FromException(expectation, CreateTimeoutException(timeout!.Value, exception),
+					timeout)
+				: new ConstraintResult.FromException(expectation, exception);
+		}
 	}
 
 	/// <summary>

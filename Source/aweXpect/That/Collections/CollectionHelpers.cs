@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+#if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
+using System.Threading;
+#endif
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -198,6 +202,37 @@ internal static class CollectionHelpers
 						-1));
 			}
 		});
+	}
+
+	/// <summary>
+	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
+	///     cancelled, also while it waits for the next item.
+	/// </summary>
+	/// <remarks>
+	///     For expectations that report a cancelled evaluation as undecided, which must not be aborted instead, when the
+	///     cancellation abandons an item the <paramref name="source" /> is still waiting for.
+	/// </remarks>
+	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken)
+	{
+		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
+		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
+		{
+			yield return enumerator.Current;
+		}
+	}
+
+	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
+		CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await enumerator.MoveNextAsync();
+		}
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+		{
+			return false;
+		}
 	}
 #endif
 
