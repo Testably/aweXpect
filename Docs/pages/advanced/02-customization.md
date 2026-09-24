@@ -78,5 +78,5 @@ Under `Customize.aweXpect.Settings()` you have:
   The default timeout for the [`Signaler`](/docs/expectations/advanced/callbacks).
 
 - **DefaultTimeComparisonTolerance**  
-  The default tolerance for time comparisons.
+  The default tolerance when a date or time subject is compared directly, see [Default Tolerance](/docs/expectations/common-types/datetime-offset#default-tolerance).
   *Note: In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370)*

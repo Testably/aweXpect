@@ -128,10 +128,12 @@ public partial class AwexpectCustomization
 		///     In Windows the <see cref="DateTime" /> resolution is about 10 to 15
 		///     milliseconds (<see href="https://stackoverflow.com/q/3140826/4003370" />), so
 		///     comparing them as exact values might result in brittle tests.<br />
-		///     Therefore, it is possible to specify a default tolerance that is used for all <see cref="DateTime" />,
-		///     <see cref="DateTimeOffset" />, <see cref="DateOnly" />, <see cref="TimeOnly" /> and <see cref="TimeSpan" />
-		///     comparisons (unless an explicit tolerance is given). For <see cref="DateOnly" /> only the whole days of the
-		///     tolerance count.
+		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
+		///     <see cref="DateTimeOffset" />, <see cref="DateOnly" />, <see cref="TimeOnly" /> or <see cref="TimeSpan" />
+		///     subject is compared directly and no explicit tolerance is given. For <see cref="DateOnly" /> only the whole
+		///     days of the tolerance count.<br />
+		///     It is not used for property verifications, items of a collection, members compared by equivalency or values
+		///     compared as <see langword="object" />.
 		/// </remarks>
 #else
 		/// <summary>
@@ -141,9 +143,11 @@ public partial class AwexpectCustomization
 		///     In Windows the <see cref="DateTime" /> resolution is about 10 to 15
 		///     milliseconds (<see href="https://stackoverflow.com/q/3140826/4003370" />), so
 		///     comparing them as exact values might result in brittle tests.<br />
-		///     Therefore, it is possible to specify a default tolerance that is used for all <see cref="DateTime" />,
-		///     <see cref="DateTimeOffset" /> and <see cref="TimeSpan" /> comparisons
-		///     (unless an explicit tolerance is given).
+		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
+		///     <see cref="DateTimeOffset" /> or <see cref="TimeSpan" /> subject is compared directly and no explicit
+		///     tolerance is given.<br />
+		///     It is not used for property verifications, items of a collection, members compared by equivalency or values
+		///     compared as <see langword="object" />.
 		/// </remarks>
 #endif
 		public TimeSpan DefaultTimeComparisonTolerance { get; init; } = TimeSpan.Zero;
