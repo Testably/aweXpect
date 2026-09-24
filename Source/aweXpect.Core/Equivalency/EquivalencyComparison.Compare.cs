@@ -15,9 +15,15 @@ namespace aweXpect.Equivalency;
 
 public static partial class EquivalencyComparison
 {
+	/// <remarks>
+	///     When only <paramref name="expected" /> is compared by value, its <see cref="object.Equals(object)" />
+	///     decides, because the type of <paramref name="actual" /> is compared by members, which ignores its
+	///     <see cref="object.Equals(object)" />.
+	/// </remarks>
 	private static bool CompareByValue<TActual, TExpected>(
 		[DisallowNull] TActual actual,
 		[DisallowNull] TExpected expected,
+		bool isDecidedByExpected,
 		StringBuilder failureBuilder,
 		string memberPath,
 		MemberType memberType,
@@ -32,13 +38,13 @@ public static partial class EquivalencyComparison
 		bool isEqual;
 		try
 		{
-			isEqual = actual.Equals(expected);
+			isEqual = isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected);
 		}
 		catch (Exception exception)
 		{
 			throw Tracing.WriteException(
 				new InvalidOperationException(
-					$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
+					$"The equals method of {Formatter.Format(isDecidedByExpected ? expected.GetType() : actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
 					exception));
 		}
 
@@ -170,8 +176,24 @@ public static partial class EquivalencyComparison
 			_ => memberToIgnore is not MemberToIgnore.ByFieldPredicate and
 			     not MemberToIgnore.ByPropertyPredicate,
 		};
+
+	/// <remarks>
+	///     Asked for both sides, and one of them being compared by value is enough: walking the members of the
+	///     expected object would otherwise reduce a value such as a string to the few public members it happens to
+	///     have, so that any object with a matching <c>Length</c> would be equivalent to it, and the result would
+	///     change when subject and expectation are swapped.
+	/// </remarks>
+	private static bool IsComparedByValue(Type type, EquivalencyTypeOptions typeOptions,
+		EquivalencyOptions equivalencyOptions)
+		=> (typeOptions.ComparisonType ?? equivalencyOptions.DefaultComparisonTypeSelector.Invoke(type))
+		   == EquivalencyComparisonType.ByValue;
+
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
 #pragma warning disable S107 // https://rules.sonarsource.com/csharp/RSPEC-107
+	/// <remarks>
+	///     Receives the options of the enclosing object instead of those of <paramref name="actual" />, because the
+	///     options that apply to <paramref name="expected" /> have to be looked up from there as well.
+	/// </remarks>
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
 #else
@@ -181,7 +203,7 @@ public static partial class EquivalencyComparison
 			TActual actual,
 			TExpected expected,
 			EquivalencyOptions equivalencyOptions,
-			EquivalencyTypeOptions typeOptions,
+			EquivalencyTypeOptions parentTypeOptions,
 			StringBuilder failureBuilder,
 			string memberPath,
 			MemberType memberType,
@@ -222,12 +244,16 @@ public static partial class EquivalencyComparison
 			return CompareNulls(actual, expected, failureBuilder, memberPath, memberType, context);
 		}
 
-		EquivalencyComparisonType comparisonType = typeOptions.ComparisonType
-		                                           ?? equivalencyOptions.DefaultComparisonTypeSelector.Invoke(
-			                                           actual.GetType());
-		if (comparisonType == EquivalencyComparisonType.ByValue)
+		EquivalencyTypeOptions typeOptions = equivalencyOptions.GetTypeOptions(actual.GetType(), parentTypeOptions);
+		if (IsComparedByValue(actual.GetType(), typeOptions, equivalencyOptions))
 		{
-			return CompareByValue(actual, expected, failureBuilder, memberPath, memberType, context);
+			return CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
+		}
+
+		if (IsComparedByValue(expected.GetType(),
+			    equivalencyOptions.GetTypeOptions(expected.GetType(), parentTypeOptions), equivalencyOptions))
+		{
+			return CompareByValue(actual, expected, true, failureBuilder, memberPath, memberType, context);
 		}
 
 		ComparedPair comparedPair = new(actual, expected);
@@ -317,7 +343,7 @@ public static partial class EquivalencyComparison
 				object? expectedFieldValue = field.GetValue(expected);
 
 				if (!await Compare(actualFieldValue, expectedFieldValue,
-					    options, options.GetTypeOptions(actualFieldValue?.GetType(), typeOptions),
+					    options, typeOptions,
 					    failureBuilder, fieldMemberPath, MemberType.Field, context))
 				{
 					result = false;
@@ -353,7 +379,7 @@ public static partial class EquivalencyComparison
 				object? expectedPropertyValue = property.GetValue(expected);
 
 				if (!await Compare(actualPropertyValue, expectedPropertyValue,
-					    options, options.GetTypeOptions(actualPropertyValue?.GetType(), typeOptions),
+					    options, typeOptions,
 					    failureBuilder, propertyMemberPath, MemberType.Property, context))
 				{
 					result = false;
@@ -493,7 +519,7 @@ public static partial class EquivalencyComparison
 				object? expectedObject = expected[key];
 
 				if (!await Compare(actualObject, expectedObject,
-					    options, options.GetTypeOptions(actualObject?.GetType(), typeOptions),
+					    options, typeOptions,
 					    failureBuilder, elementMemberPath, MemberType.Element, context))
 				{
 					result = false;
@@ -566,7 +592,7 @@ public static partial class EquivalencyComparison
 			object? expectedObject = expectedObjects.ElementAtOrDefault(i);
 
 			if (!await Compare(actualObject, expectedObject,
-				    options, options.GetTypeOptions(actualObject?.GetType(), typeOptions),
+				    options, typeOptions,
 				    failureBuilder, elementMemberPath, MemberType.Element, context))
 			{
 				result = false;
@@ -663,7 +689,7 @@ public static partial class EquivalencyComparison
 			{
 				object? actualObject = actualObjects[actualIndex];
 				await Compare(actualObject, expectedObjects[expectedIndex],
-					options, options.GetTypeOptions(actualObject?.GetType(), typeOptions),
+					options, typeOptions,
 					failureBuilder, $"{memberPath}[{actualIndex}]", MemberType.Element, context);
 			}
 		}
@@ -890,7 +916,7 @@ public static partial class EquivalencyComparison
 			object? actualObject = _actualObjects[_actualIndices[actualIndex]];
 			int differenceCount = _context.DifferenceCount;
 			bool isEquivalent = await Compare(actualObject, _expectedObjects[_expectedIndices[expectedIndex]],
-				_options, _options.GetTypeOptions(actualObject?.GetType(), _typeOptions),
+				_options, _typeOptions,
 				new StringBuilder(), $"{_memberPath}[{_actualIndices[actualIndex]}]", MemberType.Element, _context);
 			_results[actualIndex, expectedIndex] = isEquivalent;
 			_differenceCounts[actualIndex, expectedIndex] = _context.DifferenceCount - differenceCount;

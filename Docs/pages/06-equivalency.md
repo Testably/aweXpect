@@ -82,6 +82,9 @@ By default, equivalency:
   *value types* and compares them with `Equals`. The same applies to handles that describe something else instead of
   carrying state of their own: `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri` and
   `CultureInfo`, including anything derived from them. Everything else is compared **by members**.
+- Compares by value as soon as either side is compared by value, so a string is never equivalent to anything but an
+  equal string, however many of its members another object shares, and swapping the subject and the expectation does
+  not change the result.
 - Ignores a type's own `Equals` while comparing it by members, so two objects are equivalent exactly when their
   members are — an `Equals` that reports everything as equal cannot hide differing members, and one that reports
   nothing as equal cannot reject matching ones. To let `Equals` decide instead, compare the type
@@ -208,7 +211,9 @@ changing the default itself.
 Each type can be compared either by value (`Equals`) or by walking its members. The default is determined by the type
 itself (see [Default behaviour](#default-behaviour)). By value, `Equals` decides alone and in both directions; by
 members, `Equals` is ignored and only the members count. Comparing by value is therefore how you ask for the equality
-a type defines for itself — a value object that compares only its `Id`, for example. To override for a specific type:
+a type defines for itself — a value object that compares only its `Id`, for example. One side being compared by value
+is enough; when it is only the expectation, the expectation's `Equals` decides, since the subject is compared by
+members, which ignores its `Equals`. To override for a specific type:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
