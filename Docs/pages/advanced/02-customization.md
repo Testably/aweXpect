@@ -7,6 +7,23 @@ The `Set` method always returns a lifetime scope which is an `IDisposable` objec
 
 The customization options are applied in an [async context](https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1) which means, that they don't directly influence other parallel tests.
 
+```csharp
+using aweXpect.Customization;
+
+using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
+{
+    // strings of up to 500 characters are shown in full here
+}
+```
+
+
+## Equivalency
+
+Under `Customize.aweXpect.Equivalency()` you have:
+- **DefaultEquivalencyOptions**  
+  The [equivalency options](/docs/expectations/equivalency#customizing-the-global-defaults) that are used when an
+  expectation does not configure them.
+
 
 ## Formatting
 
@@ -16,13 +33,17 @@ Under `Customize.aweXpect.Formatting()` you have:
   The remaining items are summarized at the end of the list: `(… and 7 more)` when the total number of items is known,
   and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation stopped enumerating early.
 
+- **MaximumStringLength**  
+  The maximum length of a displayed `string` before it gets truncated.
+
 - **MinimumNumberOfCharactersAfterStringDifference**  
   The minimum number of characters included after the first mismatch in the string difference.
 
 
 ## Json
 
-Under `Customize.aweXpect.Json()` you have:
+Under `Customize.aweXpect.Json()`, which comes with the separate
+[`aweXpect.Json`](https://github.com/aweXpect/aweXpect.Json) package, you have:
 - **DefaultJsonDocumentOptions**  
   The default [options](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) used to parse a `JsonDocument`. 
 

@@ -146,13 +146,14 @@ When the object changes in the background, you can also verify that it satisfies
 period:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 Track subject = new() {
 	IsPlayed = false
 };
 // Start a background task that sets `IsPlayed` to true
 
 await Expect.That(subject).Satisfies(x => x.IsPlayed == true).Within(2.Seconds());
-// using aweXpect.Chronology
 ```
 
 ## Comply with
@@ -169,9 +170,10 @@ When the object changes in the background, you can also verify that it complies 
 period:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 List<Track> tracks = new();
 // Start a background task that adds items to `tracks`
 
 await Expect.That(tracks).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
-// using aweXpect.Chronology
 ```

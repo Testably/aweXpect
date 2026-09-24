@@ -12,9 +12,13 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 ```
 
 > ```
-> Expected subject to
-> start with "some" and end with "text",
-> but it was "something different"
+> Expected that subject
+> starts with "some" and ends with "text",
+> but it was "something different" which differs before index 17:
+>                     ↓ (actual)
+>   "something different"
+>                  "text"
+>                     ↑ (expected suffix)
 > ```
 
 `.And` binds tighter than `.Or`, so `A.And.B.Or.C` is evaluated as `(A && B) || C`.
@@ -23,6 +27,7 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 using it as a guard, e.g.
 
 ```csharp
+string? subject = null;
 await Expect.That(subject).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(2));
 ```
 
@@ -39,17 +44,17 @@ e.g.
   
   await Expect.That(subject)
     .Whose(x => x.TrackCount, x => x.IsGreaterThan(1)).And
-    .Whose(x => x.Title, x => x.Is("Dark Side of the Moon"));
+    .Whose(x => x.Title, x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
 > ```
-> Expected subject to
-> whose TrackCount be greater than 1 and whose Title be equal to "Dark Side of the Moon",
+> Expected that subject
+> whose TrackCount is greater than 1 and whose Title is equal to "Dark Side of the Moon",
 > but TrackCount was 1 and Title was "Dark Side of the Sun" which differs at index 17:
->                      ↓ (actual)
->   "Dark Side of the Sun"
->   "Dark Side of the Moon"
->                      ↑ (expected)
+>                 ↓ (actual)
+>   "…Side of the Sun"
+>   "…Side of the Moon"
+>                 ↑ (expected)
 > ```
 
 When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result, e.g.
@@ -68,14 +73,14 @@ Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expecta
   string subjectB = "XYZ";
   
   await Expect.ThatAll(
-    Expect.That(subjectA).Is("ABC"),
-    Expect.That(subjectB).Is("DEF"));
+    Expect.That(subjectA).IsEqualTo("ABC"),
+    Expect.That(subjectB).IsEqualTo("DEF"));
 ```
 
 > ```
 > Expected all of the following to succeed:
->  [01] Expected subjectA to be equal to "ABC"
->  [02] Expected subjectB to be equal to "DEF"
+>  [01] Expected that subjectA is equal to "ABC"
+>  [02] Expected that subjectB is equal to "DEF"
 > but
 >  [02] it was "XYZ" which differs at index 0:
 >          ↓ (actual)

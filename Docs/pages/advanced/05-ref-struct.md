@@ -8,6 +8,8 @@ In order to allow using aweXpect on properties of `ref struct` types, there is a
 expectation synchronously, so that the test method itself can remain synchronous:
 
 ```csharp
+using aweXpect.Synchronous;
+
 ReadOnlySpan<char> subject = @"foo".AsSpan();
 
 Synchronously.Verify(Expect.That(subject.Length).IsEqualTo(3));

@@ -38,14 +38,32 @@ await Expect.That<Task>(task).IsNotNull();
 
 Note that `Task<T>` and `ValueTask<T>` behave differently: they are awaited and their **result** becomes the subject.
 
+:::warning[Ambiguous lambdas on .NET 8 or later]
+On .NET 8 or later, an `async` lambda and a lambda that only throws fit both the `Task` and the `ValueTask` overload,
+so `Expect.That(async () => await x.RunAsync())` and `Expect.That(() => throw new X())` fail with CS0121. Drop
+`async` and `await` and return the task directly, as in `Expect.That(() => x.RunAsync())`, or declare a local
+function (`void Act() => throw new X();`) and pass it. A project that targets .NET Framework or .NET Standard 2.0 is
+not affected, because the netstandard2.0 build of aweXpect has no `ValueTask` overloads.
+:::
+
 ## Not throw
 
 You can verify that the delegate does not throw any exception:
 
 ```csharp
-void Act() => {};
+void Act() { }
 
 await Expect.That(Act).DoesNotThrow();
+```
+
+`DoesNotThrow<TException>()` only fails when the delegate throws a `TException` or a derived type, and
+`DoesNotThrowExactly<TException>()` only when it throws exactly a `TException`. Any other exception passes both:
+
+```csharp
+void Act() => throw new ArgumentNullException("value");
+
+await Expect.That(Act).DoesNotThrow<InvalidOperationException>();
+await Expect.That(Act).DoesNotThrowExactly<ArgumentException>();
 ```
 
 For a delegate with a return value, `WhoseResult` continues with the returned value as subject, and awaiting the
@@ -221,6 +239,8 @@ rule `aweXpect0003` flags it and offers to switch to the `With…` twin or to in
 You can verify that the execution time of a delegate:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 await Expect.That(Task.Delay(200)).ExecutesIn().AtMost(300.Milliseconds())
   .Because("the delegate should execute faster than 300ms");
 await Expect.That(Task.Delay(200)).ExecutesIn().AtLeast(100.Milliseconds())
@@ -320,11 +340,9 @@ The timeout bounds how long the delegate is *retried*, not how long a single eva
 checked between evaluations, so a delegate that blocks for longer than the timeout still runs to completion.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
-`Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. As for `Expect.That`, an `async` lambda
-is ambiguous between the `Task` and the `ValueTask` overload, so on .NET 8 or later its type must be stated
-explicitly:
+`Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Pass the task without `async` and `await`,
+as an `async` lambda is [ambiguous](#delegates) on .NET 8 or later:
 
 ```csharp
-Func<Task<int>> subject = async () => await sut.GetCountAsync();
-await Expect.That(subject).Eventually().IsGreaterThan(5);
+await Expect.That(() => sut.GetCountAsync()).Eventually().IsGreaterThan(5);
 ```

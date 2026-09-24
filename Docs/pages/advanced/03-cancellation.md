@@ -6,6 +6,8 @@ You can add cancellation support on the expectations, so that they don't run ind
 ## Timeout
 You can set a global timeout that is applied for all expectations:
 ```csharp
+using aweXpect.Customization;
+
 // Sets a global timeout of 10 seconds
 Customize.aweXpect.Settings().TestCancellation
     .Set(TestCancellation.FromTimeout(TimeSpan.FromSeconds(10)));

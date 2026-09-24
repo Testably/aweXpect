@@ -58,7 +58,7 @@ You can also specify a tolerance:
 ```csharp
 TimeSpan subject = TimeSpan.FromSeconds(41);
 
-await Expect.That(subject).IsGreaterThan(42).Within(TimeSpan.FromSeconds(2))
+await Expect.That(subject).IsGreaterThan(TimeSpan.FromSeconds(42)).Within(TimeSpan.FromSeconds(2))
   .Because("we accept values greater than 0:40 (0:42 ± 2s)");
 ```
 
@@ -78,7 +78,7 @@ You can also specify a tolerance:
 ```csharp
 TimeSpan subject = TimeSpan.FromSeconds(43);
 
-await Expect.That(subject).IsLessThan(42).Within(TimeSpan.FromSeconds(2))
+await Expect.That(subject).IsLessThan(TimeSpan.FromSeconds(42)).Within(TimeSpan.FromSeconds(2))
   .Because("we accept values less than 0:44 (0:42 ± 2s)");
 ```
 
@@ -95,6 +95,8 @@ await Expect.That(subject).IsBetween(TimeSpan.FromSeconds(40)).And(TimeSpan.From
 You can also specify a tolerance:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 TimeSpan subject = TimeSpan.FromSeconds(42);
 
 await Expect.That(subject)

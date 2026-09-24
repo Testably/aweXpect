@@ -29,7 +29,7 @@ Verifies that two `string` values are equal, ignoring case.
 await Expect.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _stringSubject.Should().BeEquivalentTo(_stringExpectation, o => o.IgnoringCase());
 ```
 
@@ -47,7 +47,7 @@ Verifies that a boolean subject is `true`.
 await Expect.That(_boolSubject).IsTrue();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _boolSubject.Should().BeTrue();
 ```
 
@@ -65,7 +65,7 @@ Verifies that an `int` subject is greater than a minimum.
 await Expect.That(_intSubject).IsGreaterThan(_intMinimum);
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _intSubject.Should().BeGreaterThan(_intMinimum);
 ```
 
@@ -83,7 +83,7 @@ Verifies that two deeply nested object trees are structurally equivalent.
 await Expect.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _nestedSubject.Should().BeEquivalentTo(_nestedExpectation);
 ```
 
@@ -98,10 +98,10 @@ Verifies that an `IEnumerable<int>` has at least the expected number of items (1
 <BenchmarkResult name="ItemsCount_AtLeast" />
 
 ```csharp title="aweXpect"
-await Expect.That(_enumerableSubject).HasCount().AtLeast(_enumerableCount);
+await Expect.That(_enumerableSubject).HasCount().GreaterThanOrEqualTo(_enumerableCount);
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _enumerableSubject.Should().HaveCountGreaterThanOrEqualTo(_enumerableCount);
 ```
 
@@ -127,7 +127,7 @@ await Expect.That(_stringArrayAnyOrderSubject)
     .IsEqualTo(_stringArrayAnyOrderExpectation).InAnyOrder();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _stringArraySubject.Should().Equal(_stringArrayExpectation);
 // In any order
 _stringArrayAnyOrderSubject.Should().BeEquivalentTo(_stringArrayAnyOrderExpectation);

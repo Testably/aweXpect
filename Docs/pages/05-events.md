@@ -8,6 +8,8 @@ First, you have to start a recording of events. This can be done with the `.Reco
 aweXpect.Recording" namespace.
 
 ```csharp
+using aweXpect.Recording;
+
 class ThresholdReachedEventArgs(int threshold = 0) : EventArgs
 {
     public int Threshold { get; } = threshold;
@@ -22,7 +24,7 @@ MyClass subject = new MyClass();
 
 // ↓ Records all events
 IEventRecording<MyClass> recording = subject.Record().Events();
-IEventRecording<MyClass> recording = subject.Record().Events(nameof(MyClass.ThresholdReached));
+IEventRecording<MyClass> thresholdRecording = subject.Record().Events(nameof(MyClass.ThresholdReached));
 // ↑ Records only the ThresholdReached event
 ```
 
@@ -113,6 +115,8 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
 You can specify a timeout within the expected events should be triggered:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 IEventRecording<MyClass> recording = subject.Record().Events();
 
 _ = Task.Delay(2.Seconds()).ContinueWith(_ => {
@@ -177,6 +181,8 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
 You can verify that an event was recorded a specific number of times
 
 ```csharp
+using aweXpect.Core; // for `Times()`
+
 IEventRecording<MyClass> recording = subject.Record().Events();
 
 subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
@@ -201,8 +207,8 @@ Included are some overloads for the [
 event:
 
 ```csharp
-MyClass subject = // ...implements INotifyPropertyChanged
-IEventRecording<MyClass> recording = subject.Record().Events();
+MyViewModel subject = // ...implements INotifyPropertyChanged
+IEventRecording<MyViewModel> recording = subject.Record().Events();
 
 // do something that triggers the PropertyChanged event
 subject.Execute();
