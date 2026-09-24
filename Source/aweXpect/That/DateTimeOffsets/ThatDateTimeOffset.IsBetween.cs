@@ -73,17 +73,12 @@ public static partial class ThatDateTimeOffset
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = minimum - actual <= timeTolerance && actual - maximum <= timeTolerance
 					? Outcome.Success
 					: Outcome.Failure;

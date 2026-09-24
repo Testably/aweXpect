@@ -74,17 +74,12 @@ public static partial class ThatNullableTimeSpan
 			Actual = actual;
 			if (actual is null || minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = actual.Value.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
 				          actual.Value.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success

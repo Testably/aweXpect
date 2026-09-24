@@ -76,7 +76,7 @@ public static partial class ThatDateTime
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, minimum.Value.Kind))
 			{
@@ -101,11 +101,6 @@ public static partial class ThatDateTime
 		{
 			TimeSpan timeTolerance = tolerance.Tolerance
 			                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			if (IsNegated)
-			{
-				timeTolerance = timeTolerance.Negate();
-			}
-
 			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 

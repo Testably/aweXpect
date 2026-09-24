@@ -44,13 +44,8 @@ internal static class TimeOnlyHelpers
 	/// </remarks>
 	public static bool IsOnArc(this TimeOnly value, TimeOnly minimum, TimeOnly maximum, TimeSpan tolerance)
 	{
-		long toleranceTicks = Math.Clamp(tolerance.Ticks, -TimeSpan.TicksPerDay, TimeSpan.TicksPerDay);
+		long toleranceTicks = Math.Min(tolerance.Ticks, TimeSpan.TicksPerDay);
 		long arc = Clockwise(maximum.Ticks - minimum.Ticks) + (2 * toleranceTicks);
-		if (arc < 0)
-		{
-			return false;
-		}
-
 		return arc >= TimeSpan.TicksPerDay ||
 		       Clockwise(value.Ticks - minimum.Ticks + toleranceTicks) <= arc;
 	}

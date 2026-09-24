@@ -76,17 +76,12 @@ public static partial class ThatNullableDateOnly
 			Actual = actual;
 			if (actual is null || minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = minimum.Value.DayNumber - actual.Value.DayNumber <= (int)timeTolerance.TotalDays &&
 				          actual.Value.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success

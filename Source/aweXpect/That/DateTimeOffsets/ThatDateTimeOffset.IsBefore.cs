@@ -59,12 +59,7 @@ public static partial class ThatDateTimeOffset
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (!IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
-				Outcome = expected - actual > timeTolerance ? Outcome.Success : Outcome.Failure;
+				Outcome = expected - actual > timeTolerance.Negate() ? Outcome.Success : Outcome.Failure;
 			}
 
 			return this;
