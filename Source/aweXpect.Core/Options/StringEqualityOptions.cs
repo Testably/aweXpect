@@ -51,6 +51,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </remarks>
 	public bool InspectsSubject => _matchType is not ExactMatchType;
 
+	/// <summary>
+	///     Indicates whether the options compare two <see langword="string" />s with plain ordinal equality, i.e. whether
+	///     neither the match type nor any option that changes the comparison was set.
+	/// </summary>
+	/// <remarks>
+	///     This lets an expectation hand the comparison to a collection that has its own comparer, as long as nothing
+	///     was configured that the collection could not honour.
+	/// </remarks>
+	public bool ComparesByOrdinalEquality
+		=> _matchType is ExactMatchType && _comparer is null && !_ignoreCase && !_ignoreLeadingWhiteSpace &&
+		   !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle && !_ignoreIndentation;
+
 	/// <inheritdoc />
 	/// <remarks>
 	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call

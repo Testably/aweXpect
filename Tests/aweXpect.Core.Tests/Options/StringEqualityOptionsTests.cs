@@ -110,6 +110,52 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task ComparesByOrdinalEquality_ByDefault_ShouldBeTrue()
+		{
+			StringEqualityOptions sut = new();
+
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
+		}
+
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.AsBlock))]
+		[InlineData(nameof(StringEqualityOptions.AsPrefix))]
+		[InlineData(nameof(StringEqualityOptions.AsRegex))]
+		[InlineData(nameof(StringEqualityOptions.AsRegex) + "WithOptions")]
+		[InlineData(nameof(StringEqualityOptions.AsSuffix))]
+		[InlineData(nameof(StringEqualityOptions.AsWildcard))]
+		[InlineData(nameof(StringEqualityOptions.Containing))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringCase))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.Using))]
+		public async Task ComparesByOrdinalEquality_WhenTheComparisonIsChanged_ShouldBeFalse(string option)
+		{
+			StringEqualityOptions sut = new();
+			Change(sut, option, true);
+
+			await That(sut.ComparesByOrdinalEquality).IsFalse();
+		}
+
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.IgnoringCase))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.Using))]
+		public async Task ComparesByOrdinalEquality_WhenTheOptionIsReset_ShouldBeTrue(string option)
+		{
+			StringEqualityOptions sut = new();
+			Change(sut, option, true);
+			Change(sut, option, false);
+
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
+		}
+
+		[Fact]
 		public async Task CountOccurrences_WhenExpectedIsLongerThanActual_ShouldStillApplyTheOptions()
 		{
 			StringEqualityOptions sut = new();
@@ -551,6 +597,54 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).DoesNotThrow()
 				.Because("no comparer is set that the regex engine could not honour");
+		}
+
+		private static void Change(StringEqualityOptions options, string option, bool enable)
+		{
+			switch (option)
+			{
+				case "AsBlock":
+					options.AsBlock();
+					break;
+				case "AsPrefix":
+					options.AsPrefix();
+					break;
+				case "AsRegex":
+					options.AsRegex();
+					break;
+				case "AsRegexWithOptions":
+					options.AsRegex(RegexOptions.Multiline);
+					break;
+				case "AsSuffix":
+					options.AsSuffix();
+					break;
+				case "AsWildcard":
+					options.AsWildcard();
+					break;
+				case "Containing":
+					options.Containing();
+					break;
+				case "IgnoringCase":
+					options.IgnoringCase(enable);
+					break;
+				case "IgnoringIndentation":
+					options.IgnoringIndentation(enable);
+					break;
+				case "IgnoringLeadingWhiteSpace":
+					options.IgnoringLeadingWhiteSpace(enable);
+					break;
+				case "IgnoringNewlineStyle":
+					options.IgnoringNewlineStyle(enable);
+					break;
+				case "IgnoringTrailingWhiteSpace":
+					options.IgnoringTrailingWhiteSpace(enable);
+					break;
+				case "Using":
+					options.Using(enable ? StringComparer.Ordinal : null);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(option), option, null);
+			}
 		}
 
 		/// <remarks>
