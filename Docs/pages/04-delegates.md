@@ -38,12 +38,13 @@ await Expect.That<Task>(task).IsNotNull();
 
 Note that `Task<T>` and `ValueTask<T>` behave differently: they are awaited and their **result** becomes the subject.
 
-:::warning[Ambiguous lambdas on .NET 8 or later]
-On .NET 8 or later, an `async` lambda and a lambda that only throws fit both the `Task` and the `ValueTask` overload,
-so `Expect.That(async () => await x.RunAsync())` and `Expect.That(() => throw new X())` fail with CS0121. Drop
-`async` and `await` and return the task directly, as in `Expect.That(() => x.RunAsync())`, or declare a local
-function (`void Act() => throw new X();`) and pass it. A project that targets .NET Framework or .NET Standard 2.0 is
-not affected, because the netstandard2.0 build of aweXpect has no `ValueTask` overloads.
+:::info[C# 13 or later]
+An `async` lambda and a lambda that only throws, as in `Expect.That(async () => await x.RunAsync())` or
+`Expect.That(() => throw new X())`, bind to the `Task` overload through `[OverloadResolutionPriority]`. The attribute
+only takes effect with C# 13 or later, which is the default only for .NET 9 and later. With an older language version
+on .NET 8, such a lambda fits both the `Task` and the `ValueTask` overload and fails with CS0121. Set `<LangVersion>`
+to `13` or `latest`, return the task directly (`Expect.That(() => x.RunAsync())`), or declare a local function
+(`void Act() => throw new X();`) and pass it.
 :::
 
 ## Not throw
@@ -340,8 +341,8 @@ The timeout bounds how long the delegate is *retried*, not how long a single eva
 checked between evaluations, so a delegate that blocks for longer than the timeout still runs to completion.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
-`Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Pass the task without `async` and `await`,
-as an `async` lambda is [ambiguous](#delegates) on .NET 8 or later:
+`Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Returning the task directly also works with a
+language version [older than C# 13](#delegates):
 
 ```csharp
 await Expect.That(() => sut.GetCountAsync()).Eventually().IsGreaterThan(5);
