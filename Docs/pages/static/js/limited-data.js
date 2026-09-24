@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.38529607454936,
           248.4514249165853,
           283.4815231959025,
           273.72809038162234,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           332.7308561007182,
           348.62004709243774,
           227.43967040947504,
-          368.76065781911217
+          368.76065781911217,
+          246.31336043431207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -449,7 +449,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -459,6 +458,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936,
           936,
           936,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          268.6056815783183,
           260.14416281382245,
           273.63889627456666,
           269.87966009775795,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           246.51306128501892,
           253.8849971453349,
           195.0926110426585,
-          247.28855617841086
+          247.28855617841086,
+          191.5841211716334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          336696.07591145835,
           376971.2715820313,
           403607.07361778844,
           313103.78349609376,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           405945.89314152644,
           429798.4231770833,
           280274.5925455729,
-          432805.6280273438
+          432805.6280273438,
+          309114.3339518229
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           542085,
           542084,
           617976,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628408,
           628408
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2121308.9622395835,
           2426398.605208333,
           2852323.4205729165,
           2625909.8854166665,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2457022.338020833,
           2637916.90546875,
           1498728.9471354166,
-          2588505.1143229166
+          2588505.1143229166,
+          1767930.7940848214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841613,
           4841651,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841611,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
       {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          452.197840486254,
           456.83985471725464,
           493.58852710723875,
           461.8257578849792,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           527.4140539169312,
           565.3289719263713,
           373.4577563285828,
-          616.9647481918335
+          616.9647481918335,
+          418.5804012005146
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1679,6 +1678,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1616,
           1616,
           1616,
           1616,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          512.5203483581543,
           511.47907301584877,
           490.98782704671225,
           480.7632736137935,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           478.51592718760173,
           533.7854971204486,
           361.0428803648268,
-          515.2972635269165
+          515.2972635269165,
+          368.9387762387594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.4412367502848,
           260.0524561882019,
           273.80011316446155,
           259.16043017705283,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           334.57904758453367,
           371.66191215515136,
           260.18825085957843,
-          371.57226079305013
+          371.57226079305013,
+          281.1937019983927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2273,7 +2273,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2283,6 +2282,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104,
           1104,
           1104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          274.007928276062,
           258.13585980733234,
           286.9390425682068,
           245.1631186803182,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           233.82022239367168,
           255.75856889088948,
           197.37258693377177,
-          250.52697706222534
+          250.52697706222534,
+          189.36316787401836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          398.9302934964498,
           455.2793807029724,
           467.7995653833662,
           508.83996607462564,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           603.0432953516643,
           659.7945933024089,
           402.196131669558,
-          669.1177337646484
+          669.1177337646484,
+          480.31194613530084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1256,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1100.7628861836024,
           1166.936570576259,
           1204.0937852223715,
           1180.9390767904429,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1135.6289141337077,
           1249.2195592244466,
           834.4202824274699,
-          1305.3931626637777
+          1305.3931626637777,
+          874.4405344009399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1287.7733272552491,
           1828.1378362019857,
           1893.4208389009748,
           1894.3747313363212,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2489.40236554827,
           2620.067540032523,
           1321.011224610465,
-          2742.400967915853
+          2742.400967915853,
+          1970.5652867635092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3462,7 +3462,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3503,6 +3502,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1315.0816380182903,
           1325.6420168876648,
           1280.2460991995674,
           1408.0354794722336,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1323.1875149653508,
           1373.8136695861817,
           915.1889366422381,
-          1425.9506351470948
+          1425.9506351470948,
+          970.213997777303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e730bf950e1c6caeec9e2045e032462100b5e78a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
-        "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
-      },
-      {
         "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
         "message": "fix!: require at least one recursive inner exception instead of rejecting vacuous success (#1332)"
+      },
+      {
+        "sha": "11ae008583d35db17703f90518c7e7aa7ff4b791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 24 05:48:35 2026 \u002B0200",
+        "message": "fix!: bind string and untyped collection arguments of the untyped collection expectations by meaning (#1328)"
       }
     ],
     "labels": [
-      "e730bf95",
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "8e8be742",
       "f01f8fc6",
       "7ff3e590",
-      "7148a396"
+      "7148a396",
+      "11ae0085"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1838.3150026957194,
           2415.468625288743,
           2482.6679671151296,
           2470.5895595550537,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3075.296388772818,
           3182.197739464896,
           1616.4755638667516,
-          3235.9760614122665
+          3235.9760614122665,
+          2304.881059374128
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4070,7 +4070,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4111,6 +4110,7 @@ window.BENCHMARK_DATA = {
           3488,
           3488,
           3488,
+          3808,
           3808,
           3808,
           3808,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16851.12421468099,
           19935.378450666154,
           27317.63968302409,
           25044.89990641276,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           25226.168403038613,
           26430.457550048828,
           12074.787969316754,
-          27407.378987630207
+          27407.378987630207,
+          14889.59039415632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
