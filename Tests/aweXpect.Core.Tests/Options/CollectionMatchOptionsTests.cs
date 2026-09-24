@@ -248,7 +248,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportEachItemAtItsPosition()
+		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 5, 2, 2, 3,];
 
@@ -260,12 +260,10 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 1 at index 0 instead of 2 and
-				               contained item 2 at index 1 instead of 3 and
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected and
 				               contained item 5 at index 2 that was not expected and
-				               contained item 2 at index 3 that was not expected and
-				               contained item 2 at index 4 that was not expected and
-				               contained item 3 at index 5 that was not expected
+				               contained item 2 at index 3 that was not expected
 
 				             Collection:
 				             [1, 2, 5, 2, 2, 3]
@@ -273,7 +271,7 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 3]
 				             """)
-				.Because("equality compares each item with the expected item at its position instead of restarting the match");
+				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
 		[Fact]
@@ -336,7 +334,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportEachItemAtItsPosition()
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 2, 3,];
 
@@ -348,10 +346,8 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 1 at index 0 instead of 2 and
-				               contained item 2 at index 1 instead of 3 and
-				               contained item 2 at index 2 that was not expected and
-				               contained item 3 at index 3 that was not expected
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]
@@ -359,7 +355,7 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 3]
 				             """)
-				.Because("equality compares each item with the expected item at its position instead of restarting the match");
+				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
 		[Fact]

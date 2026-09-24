@@ -517,11 +517,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "c" at index 0 instead of "a" and
-					               contained item "a" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "c" at index 0 that was not expected
 
 					             Collection:
 					             [
@@ -617,10 +613,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "b" at index 1 instead of "a" and
-					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "c"
+					             but it lacked 1 of 4 expected items: "a"
 
 					             Collection:
 					             [
@@ -637,6 +630,54 @@ public sealed partial class ThatAsyncEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithItemInsertedBeforeMoreThan20Items_ShouldOnlyReportTheInsertedItem()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(0, 25));
+				int[] expected = Enumerable.Range(1, 24).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 0 at index 0 that was not expected
+
+					             Collection:
+					             [
+					               0,
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               (… and 15 more)
+					             ]
+
+					             Expected:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and 14 more)
+					             ]
+					             """)
+					.Because("the failure reports the fewest edits that align the subject with the expected items, instead of every shifted item");
 			}
 
 			[Fact]
@@ -669,6 +710,30 @@ public sealed partial class ThatAsyncEnumerable
 					               "d"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithMissingItemInTheMiddle_ShouldOnlyReportTheMissingItem()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 4, 5,]);
+				int[] expected = [1, 2, 3, 4, 5,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 1 of 5 expected items: 3
+
+					             Collection:
+					             [1, 2, 4, 5]
+
+					             Expected:
+					             [1, 2, 3, 4, 5]
+					             """)
+					.Because("the failure reports the fewest edits that align the subject with the expected items, instead of every shifted item");
 			}
 
 			[Fact]

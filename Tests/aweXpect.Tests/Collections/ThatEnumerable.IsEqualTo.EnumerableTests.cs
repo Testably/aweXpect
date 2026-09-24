@@ -663,10 +663,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "b" at index 1 instead of "a" and
-					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "c"
+					             but it lacked 1 of 4 expected items: "a"
 
 					             Collection:
 					             [
@@ -698,10 +695,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "a" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "a" at index 0 that was not expected
 
 					             Collection:
 					             [
