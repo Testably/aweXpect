@@ -46,6 +46,51 @@ public static partial class ThatNumber
 			options);
 	}
 
+	/// <summary>
+	///     Verifies that the subject is not greater than the <paramref name="unexpected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> subject is not greater than any value, so it satisfies this expectation
+	///     although it fails <c>IsLessThanOrEqualTo</c>. A <c>NaN</c> <paramref name="unexpected" /> value throws an
+	///     <see cref="System.ArgumentOutOfRangeException" />, while a <see langword="null" /> one fails this
+	///     expectation as well as <c>IsGreaterThan</c>.
+	/// </remarks>
+	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsNotGreaterThan<TNumber>(
+		this IThat<TNumber> subject, TNumber? unexpected)
+		where TNumber : struct, INumber<TNumber>
+	{
+		unexpected.ThrowIfNaN("unexpected value");
+		NumberTolerance<TNumber> options = new(CalculateDifference);
+		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new IsGreaterThanConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+			subject,
+			options);
+	}
+
+	/// <summary>
+	///     Verifies that the subject is not greater than the <paramref name="unexpected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> subject is not greater than any value, so it satisfies this expectation
+	///     although it fails <c>IsLessThanOrEqualTo</c>. A <c>NaN</c> <paramref name="unexpected" /> value throws an
+	///     <see cref="System.ArgumentOutOfRangeException" />, while a <see langword="null" /> one fails this
+	///     expectation as well as <c>IsGreaterThan</c>.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsNotGreaterThan<TNumber>(
+		this IThat<TNumber?> subject, TNumber? unexpected)
+		where TNumber : struct, INumber<TNumber>
+	{
+		unexpected.ThrowIfNaN("unexpected value");
+		NumberTolerance<TNumber> options = new(CalculateDifference);
+		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new NullableIsGreaterThanConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+			subject,
+			options);
+	}
+
 	private sealed class IsGreaterThanConstraint<TNumber>(
 		string it,
 		ExpectationGrammars grammars,
@@ -129,33 +174,47 @@ public static partial class ThatNumber
 	private const string IsGreaterThanSummary =
 		"Verifies that the subject is greater than the <paramref name=\"expected\" /> value.";
 
-	[CreateCollectionExpectation("IsGreaterThan", Factory = typeof(NumberToleranceFactory), Summary = IsGreaterThanSummary)]
+	private const string IsNotGreaterThanSummary =
+		"Verifies that the subject is not greater than the <paramref name=\"unexpected\" /> value.";
+
+	private const string IsNotGreaterThanRemarks =
+		"A <c>NaN</c> subject is not greater than any value, so it satisfies this expectation\n" +
+		"although it fails <c>IsLessThanOrEqualTo</c>. A <c>NaN</c> <paramref name=\"unexpected\" /> value throws an\n" +
+		"<see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> one fails this\n" +
+		"expectation as well as <c>IsGreaterThan</c>.";
+
+	[CreateCollectionExpectation("Is{Not}GreaterThan", Factory = typeof(NumberToleranceFactory),
+		Summary = IsGreaterThanSummary, NegatedSummary = IsNotGreaterThanSummary,
+		NegatedRemarks = IsNotGreaterThanRemarks)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsGreaterThanCore<TNumber>(
 		IThat<TNumber> subject,
 		TNumber? expected,
-		NumberTolerance<TNumber> options)
+		NumberTolerance<TNumber> options,
+		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNaN("expected value");
+		ThrowIfNaN(expected, negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanConstraint<TNumber>(it, grammars, expected, options)),
+				new IsGreaterThanConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
 			subject,
 			options);
 	}
 
-	[CreateCollectionExpectation("IsGreaterThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
-		Summary = IsGreaterThanSummary)]
+	[CreateCollectionExpectation("Is{Not}GreaterThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
+		Summary = IsGreaterThanSummary, NegatedSummary = IsNotGreaterThanSummary,
+		NegatedRemarks = IsNotGreaterThanRemarks)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsGreaterThanForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		TNumber? expected,
-		NumberTolerance<TNumber> options)
+		NumberTolerance<TNumber> options,
+		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNaN("expected value");
+		ThrowIfNaN(expected, negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsGreaterThanConstraint<TNumber>(it, grammars, expected, options)),
+				new NullableIsGreaterThanConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
 			subject,
 			options);
 	}

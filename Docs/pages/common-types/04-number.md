@@ -42,14 +42,19 @@ await Expect.That(subject).IsOneOf(40, 42, 44).Within(0.2)
 
 ## Greater than
 
-You can verify that the number is greater than (or equal to) another number:
+You can verify that the number is greater than (or equal to) another number, or that it is not:
 
 ```csharp
 int subject = 42;
 
 await Expect.That(subject).IsGreaterThan(41);
 await Expect.That(subject).IsGreaterThanOrEqualTo(42);
+await Expect.That(subject).IsNotGreaterThan(42);
+await Expect.That(subject).IsNotGreaterThanOrEqualTo(43);
 ```
+
+`NaN` is neither greater nor less than any number, so it satisfies `IsNotGreaterThan(5)` although it fails
+`IsLessThanOrEqualTo(5)`.
 
 You can also specify a tolerance:
 
@@ -62,13 +67,15 @@ await Expect.That(subject).IsGreaterThan(42).Within(0.2)
 
 ## Less than
 
-You can verify that the number is less than (or equal to) another number:
+You can verify that the number is less than (or equal to) another number, or that it is not:
 
 ```csharp
 int subject = 42;
 
 await Expect.That(subject).IsLessThanOrEqualTo(42);
 await Expect.That(subject).IsLessThan(43);
+await Expect.That(subject).IsNotLessThan(42);
+await Expect.That(subject).IsNotLessThanOrEqualTo(41);
 ```
 
 You can also specify a tolerance:

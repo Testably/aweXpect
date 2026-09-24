@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 #if !NET8_0_OR_GREATER
+using aweXpect.Helpers;
 using aweXpect.Options;
 #endif
 
@@ -115,6 +116,22 @@ public static partial class ThatNumber
 		}
 	}
 #else
+	/// <remarks>
+	///     The generated negated overloads name the parameter <c>unexpected</c>, so the exception names it as well.
+	/// </remarks>
+	private static void ThrowIfNaN<TNumber>(TNumber? expected, bool negated)
+		where TNumber : struct, IComparable<TNumber>
+	{
+		if (negated)
+		{
+			expected.ThrowIfNaN("unexpected value", "unexpected");
+		}
+		else
+		{
+			expected.ThrowIfNaN("expected value");
+		}
+	}
+
 	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
