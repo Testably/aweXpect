@@ -579,6 +579,213 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 			}
+
+			public sealed class DateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection expected in any order ± 1:00,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableDateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection expected in any order ± 1:00,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject = [now.AddHours(1), now.AddHours(2),];
+					IEnumerable<DateTimeOffset> expected = [now.AddHours(1), now.AddHours(2).AddMinutes(-2),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class TimeSpanTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(), 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan> expected = [61.Minutes(), 119.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to collection expected in any order ± 1:00,
+						             but it was
+
+						             Collection:
+						             [
+						               1:00:00,
+						               2:00:00,
+						               3:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:01:00,
+						               1:59:00,
+						               3:00:00
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(), 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan> expected = [61.Minutes(), 118.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableTimeSpanTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), null, 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan?> expected = [61.Minutes(), null, 119.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to collection expected in any order ± 1:00,
+						             but it was
+
+						             Collection:
+						             [
+						               1:00:00,
+						               <null>,
+						               2:00:00,
+						               3:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:01:00,
+						               <null>,
+						               1:59:00,
+						               3:00:00
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), 2.Hours(),];
+					IEnumerable<TimeSpan> expected = [1.Hours(), 118.Minutes(),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), null, 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan?> expected = [61.Minutes(), null, 118.Minutes(), 3.Hours(),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
 		}
 	}
 }

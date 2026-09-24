@@ -30,6 +30,18 @@ public static partial class ThatEnumerable
 		"and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it\n" +
 		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
+	private const string ContainedInPredicates =
+		"Verifies that the collection is contained in the provided <paramref name=\"expected\" /> collection of predicates.";
+
+	private const string NotContainedInPredicates =
+		"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection of predicates.";
+
+	private const string ContainedInExpectations =
+		"Verifies that the collection is contained in the provided <paramref name=\"expected\" /> collection of expectations.";
+
+	private const string NotContainedInExpectations =
+		"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection of expectations.";
+
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
@@ -144,10 +156,7 @@ public static partial class ThatEnumerable
 			expectedExpression, negated);
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
-		Summary =
-			"Verifies that the collection is contained in the provided <paramref name=\"expected\" /> collection of predicates.",
-		NegatedSummary =
-			"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection of predicates.",
+		Summary = ContainedInPredicates, NegatedSummary = NotContainedInPredicates,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedInFromPredicatesCore<TItem>(
@@ -162,7 +171,8 @@ public static partial class ThatEnumerable
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -172,10 +182,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
-		Summary =
-			"Verifies that the collection is contained in the provided <paramref name=\"expected\" /> collection of expectations.",
-		NegatedSummary =
-			"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection of expectations.",
+		Summary = ContainedInExpectations, NegatedSummary = NotContainedInExpectations,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedInFromExpectationsCore<TItem>(
@@ -190,7 +197,8 @@ public static partial class ThatEnumerable
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -253,6 +261,62 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+	}
+
+	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
+		Summary = ContainedInPredicates, NegatedSummary = NotContainedInPredicates,
+		Remarks = ContainedInRemarks + "\n" + BelowCollectionPriorityRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + BelowCollectionPriorityRemarks)]
+	internal static ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		IsContainedInFromPredicatesForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		expected.ThrowIfNull(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				IsEqualToFromPredicateConstraint<TCollection, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+	}
+
+	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
+		Summary = ContainedInExpectations, NegatedSummary = NotContainedInExpectations,
+		Remarks = ContainedInRemarks + "\n" + BelowCollectionPriorityRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + BelowCollectionPriorityRemarks)]
+	internal static ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		IsContainedInFromExpectationsForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
+			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<TItem>
+	{
+		expected.ThrowIfNull(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}

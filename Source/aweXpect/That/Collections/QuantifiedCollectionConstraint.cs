@@ -67,7 +67,7 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	protected void Complete()
 	{
 		_totalCount = _matchingCount + _notMatchingCount;
-		Outcome = quantifier.GetOutcomeForCollection(Actual, _matchingCount, _notMatchingCount, _totalCount);
+		Outcome = quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
 		EnumerableQuantifier.QuantifierContexts quantifierContexts = quantifier.GetQuantifierContext();
 		if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&

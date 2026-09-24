@@ -324,8 +324,12 @@ internal sealed record CollectionExpectationFamily(
 			: Substitute(ElementOf(expected.Type), substitutions);
 		if (instantiation.Subject != null)
 		{
+			string subjectItem = SubjectElementOf(helper) is { } subjectElement
+				? Substitute(subjectElement, substitutions)
+				: item;
 			substitutions["TCollection"] = Bind(helper, "TCollection",
-				instantiation.Subject.Template.Replace(ItemPlaceholder, item), instantiation.Subject.IsValueType);
+				instantiation.Subject.Template.Replace(ItemPlaceholder, subjectItem),
+				instantiation.Subject.IsValueType);
 		}
 
 		string subjectName = helper.Parameters[0].Name;
@@ -562,6 +566,16 @@ internal sealed record CollectionExpectationFamily(
 			INamedTypeSymbol { TypeArguments.Length: > 0, } named => named.TypeArguments[0],
 			_ => type,
 		};
+
+	/// <remarks>
+	///     A <c>TCollection</c> constrained to <c>IEnumerable&lt;T&gt;</c> states its element itself, which an expected
+	///     collection of predicates or of expectations does not carry as its first type argument.
+	/// </remarks>
+	private static ITypeSymbol? SubjectElementOf(IMethodSymbol helper)
+		=> helper.TypeParameters.FirstOrDefault(x => x.Name == "TCollection")?.ConstraintTypes
+			.OfType<INamedTypeSymbol>()
+			.FirstOrDefault(x => x.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+			?.TypeArguments[0];
 
 	private static string Qualify(string type)
 		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.", RegexOptions.None, RegexTimeout);

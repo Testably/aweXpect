@@ -318,6 +318,182 @@ public sealed partial class ThatEnumerable
 						await That(Act).DoesNotThrow();
 					}
 				}
+
+				public sealed class DateTimeOffsetTests
+				{
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						ImmutableArray<DateTimeOffset> subject = [now.AddMinutes(1), now, now.AddMinutes(-2),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
+							              but only 2 of 3 were
+
+							              Not matching items:
+							              [
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+
+							              Collection:
+							              [
+							                {Formatter.Format(now.AddMinutes(1))},
+							                {Formatter.Format(now)},
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						ImmutableArray<DateTimeOffset> subject = [now.AddMinutes(1), now, now.AddMinutes(-1),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class NullableDateTimeOffsetTests
+				{
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						ImmutableArray<DateTimeOffset?> subject = [now.AddMinutes(1), now, null, now.AddMinutes(-2),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
+							              but only 2 of 4 were
+
+							              Not matching items:
+							              [
+							                <null>,
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+
+							              Collection:
+							              [
+							                {Formatter.Format(now.AddMinutes(1))},
+							                {Formatter.Format(now)},
+							                <null>,
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						ImmutableArray<DateTimeOffset?> subject = [now.AddMinutes(1), now, now.AddMinutes(-1),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class TimeSpanTests
+				{
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						ImmutableArray<TimeSpan> subject = [61.Minutes(), 1.Hours(), 58.Minutes(),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage("""
+							             Expected that subject
+							             is equal to 1:00:00 ± 1:00 for all items,
+							             but only 2 of 3 were
+
+							             Not matching items:
+							             [
+							               58:00
+							             ]
+
+							             Collection:
+							             [
+							               1:01:00,
+							               1:00:00,
+							               58:00
+							             ]
+							             """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						ImmutableArray<TimeSpan> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class NullableTimeSpanTests
+				{
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						ImmutableArray<TimeSpan?> subject = [61.Minutes(), 1.Hours(), null, 58.Minutes(),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage("""
+							             Expected that subject
+							             is equal to 1:00:00 ± 1:00 for all items,
+							             but only 2 of 4 were
+
+							             Not matching items:
+							             [
+							               <null>,
+							               58:00
+							             ]
+
+							             Collection:
+							             [
+							               1:01:00,
+							               1:00:00,
+							               <null>,
+							               58:00
+							             ]
+							             """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						ImmutableArray<TimeSpan?> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
 			}
 		}
 	}
