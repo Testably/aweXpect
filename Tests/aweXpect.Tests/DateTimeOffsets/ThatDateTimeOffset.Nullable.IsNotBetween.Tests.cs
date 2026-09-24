@@ -213,7 +213,7 @@ public sealed partial class ThatDateTimeOffset
 				{
 					DateTimeOffset? subject = CurrentTime();
 					DateTimeOffset minimum = DateTimeOffset.MinValue;
-					DateTimeOffset maximum = LaterTime(2)!.Value;
+					DateTimeOffset maximum = EarlierTime(4)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -226,7 +226,7 @@ public sealed partial class ThatDateTimeOffset
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();
-					DateTimeOffset minimum = EarlierTime(2)!.Value;
+					DateTimeOffset minimum = LaterTime(4)!.Value;
 					DateTimeOffset maximum = DateTimeOffset.MaxValue;
 
 					async Task Act()
@@ -241,7 +241,7 @@ public sealed partial class ThatDateTimeOffset
 				{
 					DateTimeOffset? subject = CurrentTime();
 					DateTimeOffset minimum = DateTimeOffset.MinValue;
-					DateTimeOffset? maximum = LaterTime(2);
+					DateTimeOffset? maximum = EarlierTime(4);
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -254,7 +254,7 @@ public sealed partial class ThatDateTimeOffset
 				public async Task WhenNullableMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();
-					DateTimeOffset? minimum = EarlierTime(2);
+					DateTimeOffset? minimum = LaterTime(4);
 					DateTimeOffset maximum = DateTimeOffset.MaxValue;
 
 					async Task Act()
@@ -267,7 +267,7 @@ public sealed partial class ThatDateTimeOffset
 				[Fact]
 				public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 				{
-					DateTimeOffset? subject = EarlierTime(3);
+					DateTimeOffset? subject = LaterTime(3);
 					DateTimeOffset minimum = DateTimeOffset.MinValue;
 					DateTimeOffset? maximum = CurrentTime();
 
@@ -279,14 +279,14 @@ public sealed partial class ThatDateTimeOffset
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 0:03 from the maximum
 						              """);
 				}
 
 				[Fact]
 				public async Task WhenValueIsWithinTheMinimumTolerance_ShouldFail()
 				{
-					DateTimeOffset? subject = LaterTime(3);
+					DateTimeOffset? subject = EarlierTime(3);
 					DateTimeOffset? minimum = CurrentTime();
 					DateTimeOffset maximum = DateTimeOffset.MaxValue;
 
@@ -298,7 +298,7 @@ public sealed partial class ThatDateTimeOffset
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by -0:03 from the minimum
 						              """);
 				}
 
@@ -320,7 +320,7 @@ public sealed partial class ThatDateTimeOffset
 				public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 				{
 					DateTimeOffset? subject = DateTimeOffset.MinValue;
-					DateTimeOffset? expected = CurrentTime();
+					DateTimeOffset? expected = DateTimeOffset.MinValue.AddDays(2);
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(expected).And(DateTimeOffset.MaxValue)

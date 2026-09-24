@@ -110,7 +110,7 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Fact]
-			public async Task Within_WhenToleranceWouldWrapAroundMidnight_ShouldSucceed()
+			public async Task Within_WhenToleranceWouldWrapAroundMidnight_ShouldFail()
 			{
 				TimeOnly subject = new(0, 30);
 				TimeOnly unexpected = TimeOnly.MinValue;
@@ -119,8 +119,13 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotAfter(unexpected)
 						.Within(1.Hours());
 
-				await That(Act).DoesNotThrow()
-					.Because("a tolerance must never make an expectation fail that passes without it");
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after {Formatter.Format(unexpected)} ± 1:00:00,
+					              but it was {Formatter.Format(subject)} which differs by 30:00
+					              """)
+					.Because("the ordering does not wrap around midnight, so the tolerance extends the unnegated expectation to every time on that side");
 			}
 
 			[Fact]
@@ -142,16 +147,22 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Fact]
-			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
+			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
-				TimeOnly subject = LaterTime(3);
+				TimeOnly subject = EarlierTime(2);
 				TimeOnly unexpected = CurrentTime();
 
 				async Task Act()
 					=> await That(subject).IsNotAfter(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after {Formatter.Format(unexpected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:02
+					              """)
+					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 		}
 	}

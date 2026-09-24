@@ -193,16 +193,22 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
-			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
+			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
-				DateTime subject = EarlierTime(2);
+				DateTime subject = LaterTime(2);
 				DateTime unexpected = CurrentTime();
 
 				async Task Act()
 					=> await That(subject).IsNotOnOrBefore(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not on or before {Formatter.Format(unexpected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by 0:02
+					              """)
+					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 		}
 	}

@@ -156,16 +156,22 @@ public sealed partial class ThatTimeSpan
 			}
 
 			[Fact]
-			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
+			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
-				TimeSpan subject = LaterTime(2);
+				TimeSpan subject = EarlierTime(2);
 				TimeSpan unexpected = CurrentTime();
 
 				async Task Act()
 					=> await That(subject).IsNotGreaterThanOrEqualTo(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not greater than or equal to {Formatter.Format(unexpected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:02
+					              """)
+					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 		}
 	}

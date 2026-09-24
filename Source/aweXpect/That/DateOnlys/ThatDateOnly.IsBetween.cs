@@ -74,17 +74,12 @@ public static partial class ThatDateOnly
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = minimum.Value.DayNumber - actual.DayNumber <= (int)timeTolerance.TotalDays &&
 				          actual.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success

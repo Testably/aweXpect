@@ -64,18 +64,13 @@ public static partial class ThatTimeOnly
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			TimeSpan timeTolerance = tolerance.Tolerance
 			                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			if (!IsNegated)
-			{
-				timeTolerance = timeTolerance.Negate();
-			}
-
-			Outcome = expected.Value.Ticks - actual.Ticks >= timeTolerance.Ticks
+			Outcome = expected.Value.Ticks - actual.Ticks >= -timeTolerance.Ticks
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

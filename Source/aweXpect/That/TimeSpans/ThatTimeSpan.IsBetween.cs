@@ -72,17 +72,12 @@ public static partial class ThatTimeSpan
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = actual.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
 				          actual.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success
