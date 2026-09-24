@@ -18,6 +18,8 @@ public partial class CollectionMatchOptions
 			expected.Distinct().ToList())
 		where T : T2
 	{
+		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
+
 #if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
 #else
@@ -67,6 +69,7 @@ public partial class CollectionMatchOptions
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
+		private readonly List<T3> _matchedExpectedItems = new();
 		private readonly List<T3> _missingItems;
 		private readonly int _totalExpectedCount;
 		private readonly HashSet<T> _uniqueItems = new();
@@ -80,6 +83,13 @@ public partial class CollectionMatchOptions
 			_totalExpectedCount = _missingItems.Count;
 		}
 
+		/// <summary>
+		///     Only expected values are compared using the equality options, so an item that matches an expected value
+		///     that an earlier item already matched repeats it, e.g. when ignoring the casing; a predicate or an
+		///     expectation can also match unrelated items.
+		/// </summary>
+		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
 #else
@@ -89,21 +99,59 @@ public partial class CollectionMatchOptions
 		{
 			if (_uniqueItems.Contains(value))
 			{
+				_index++;
 				return (false, null);
 			}
 
-			if (await All(_missingItems, e => AreConsideredEqual(value, e, options), true))
+			int missingIndex = await FindTheMissingItem(value, options);
+			if (missingIndex >= 0)
 			{
+				if (RepeatingAMatchedExpectedItemIsADuplicate)
+				{
+					_matchedExpectedItems.Add(_missingItems[missingIndex]);
+				}
+
+				_missingItems.RemoveAt(missingIndex);
+			}
+			else
+			{
+				// Only an item that would be a deviation is compared with every matched expected item.
+				if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+				    RepeatingAMatchedExpectedItemIsADuplicate &&
+				    await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options)))
+				{
+					_index++;
+					return (false, null);
+				}
+
 				_additionalItems.Add(_index, value);
 			}
 
-			await RemoveFirst(_missingItems, e => AreConsideredEqual(value, e, options));
 			_uniqueItems.Add(value);
 			_index++;
 
 			return _additionalItems.Count > 2 * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
+		}
+
+		/// <returns>The index of the first missing item that the <paramref name="value" /> matches, otherwise <c>-1</c>.</returns>
+#if NET8_0_OR_GREATER
+		private async ValueTask<int>
+#else
+		private async Task<int>
+#endif
+			FindTheMissingItem(T value, IOptionsEquality<T2> options)
+		{
+			for (int i = 0; i < _missingItems.Count; i++)
+			{
+				if (await AreConsideredEqual(value, _missingItems[i], options))
+				{
+					return i;
+				}
+			}
+
+			return -1;
 		}
 
 #if NET8_0_OR_GREATER

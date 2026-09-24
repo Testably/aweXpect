@@ -21,6 +21,8 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
+		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
+
 #if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
 #else
@@ -81,6 +83,7 @@ public partial class CollectionMatchOptions
 		private readonly bool _ignoreInterspersedItems;
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
 		private readonly bool[] _isRepeatedItem;
+		private readonly List<T3> _matchedExpectedItems = new();
 		private readonly List<(int Index, T Item)> _matchingItems = new();
 		private readonly List<T3> _missingItems = new();
 		private readonly Dictionary<int, T> _outOfOrderItems = new();
@@ -113,6 +116,13 @@ public partial class CollectionMatchOptions
 			}
 		}
 
+		/// <summary>
+		///     Only expected values are compared using the equality options, so an item that matches an expected value
+		///     that an earlier item already matched repeats it, e.g. when ignoring the casing; a predicate or an
+		///     expectation can also match unrelated items.
+		/// </summary>
+		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
 #else
@@ -128,7 +138,7 @@ public partial class CollectionMatchOptions
 #pragma warning disable S1871 // The identical branches record the same outcome for distinct reasons and are kept apart to stay readable
 			if (_matchIndex >= _expectedDistinctItems.Length)
 			{
-				if (!_uniqueItems.Add(value))
+				if (await IsDuplicate(value, options, !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains)))
 				{
 					_index++;
 					return (false, null);
@@ -143,7 +153,7 @@ public partial class CollectionMatchOptions
 			}
 			else if (_ignoreInterspersedItems)
 			{
-				if (!_uniqueItems.Add(value))
+				if (await IsDuplicate(value, options, !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains)))
 				{
 					_index++;
 					return (false, null);
@@ -153,7 +163,8 @@ public partial class CollectionMatchOptions
 			}
 			else
 			{
-				if (!_uniqueItems.Add(value))
+				if (await IsDuplicate(value, options,
+					    !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) || _matchIndex > 0))
 				{
 					_index++;
 					return (false, null);
@@ -164,10 +175,17 @@ public partial class CollectionMatchOptions
 #pragma warning restore S1871
 
 			_index++;
-			return _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber
+			return CountDeviations() > 2 * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
 		}
+
+		/// <summary>
+		///     Additional items are no deviation for the containment relation, so they are not counted.
+		/// </summary>
+		private int CountDeviations()
+			=> _incorrectItems.Count + _missingItems.Count +
+			   (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
@@ -193,18 +211,16 @@ public partial class CollectionMatchOptions
 			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
-			if (_uniqueItems.Add(value))
+			if (!_uniqueItems.Contains(value))
 			{
-				if (_ignoreInterspersedItems)
+				bool isDuplicate = _ignoreInterspersedItems
+					? await VerifyTheCurrentValueContinuesTheSubsequence(value, options)
+					: await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
+				if (!isDuplicate)
 				{
-					await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
+					_uniqueItems.Add(value);
+					_distinctIndex++;
 				}
-				else
-				{
-					await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
-				}
-
-				_distinctIndex++;
 			}
 
 			_index++;
@@ -251,8 +267,7 @@ public partial class CollectionMatchOptions
 					_missingItems.Add(item);
 				}
 
-				if (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
-				    2 * maximumNumberOfCollectionItems)
+				if (CountDeviations() > 2 * maximumNumberOfCollectionItems)
 				{
 					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 				}
@@ -342,36 +357,55 @@ public partial class CollectionMatchOptions
 		///     when the last candidate is abandoned, the <paramref name="value" /> and all later items are reported
 		///     against it, unless they still match the item they are aligned with.
 		/// </summary>
+		/// <returns>
+		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
+		///     otherwise be a deviation.
+		/// </returns>
 #if NET8_0_OR_GREATER
-		private async ValueTask
+		private async ValueTask<bool>
 #else
-		private async Task
+		private async Task<bool>
 #endif
 			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
 		{
+			int alignment = _alignment;
 			if (!_runIsBroken)
 			{
 				List<(int Offset, int Cursor)> candidates = await FindTheRemainingCandidates(value, options);
 				if (candidates.Count > 0)
 				{
 					_candidates = candidates;
-					return;
+					RecordTheMatchedExpectedItem(_expectedItems[candidates[0].Cursor - 1]);
+					return false;
 				}
 
-				_alignment = _candidates.Count > 0 ? _candidates[0].Cursor : 0;
-				_runIsBroken = true;
+				alignment = _candidates.Count > 0 ? _candidates[0].Cursor : 0;
 			}
 
-			if (_alignment >= _expectedItems.Length)
+			bool isAdditional = alignment >= _expectedItems.Length;
+			bool isIncorrect = !isAdditional &&
+			                   !await AreConsideredEqual(value, _expectedItems[alignment], options);
+			if ((isAdditional || isIncorrect) && await RepeatsAMatchedExpectedItem(value, options))
+			{
+				return true;
+			}
+
+			if (isAdditional)
 			{
 				_additionalItems.Add(_index, value);
 			}
-			else if (!await AreConsideredEqual(value, _expectedItems[_alignment], options))
+			else if (isIncorrect)
 			{
-				_incorrectItems.Add(_index, (value, _expectedItems[_alignment]));
+				_incorrectItems.Add(_index, (value, _expectedItems[alignment]));
+			}
+			else
+			{
+				RecordTheMatchedExpectedItem(_expectedItems[alignment]);
 			}
 
-			_alignment++;
+			_runIsBroken = true;
+			_alignment = alignment + 1;
+			return false;
 		}
 
 		/// <summary>
@@ -448,10 +482,14 @@ public partial class CollectionMatchOptions
 		///     Consumes the expected items until the <paramref name="value" /> matches, so that gaps in the expected
 		///     collection are allowed, but the subject items must keep their relative order.
 		/// </summary>
+		/// <returns>
+		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
+		///     otherwise be a deviation.
+		/// </returns>
 #if NET8_0_OR_GREATER
-		private async ValueTask
+		private async ValueTask<bool>
 #else
-		private async Task
+		private async Task<bool>
 #endif
 			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
 		{
@@ -464,9 +502,15 @@ public partial class CollectionMatchOptions
 						_missingItems.Add(_expectedItems[j]);
 					}
 
+					RecordTheMatchedExpectedItem(_expectedItems[i]);
 					_matchIndex = i + 1;
-					return;
+					return false;
 				}
+			}
+
+			if (await RepeatsAMatchedExpectedItem(value, options))
+			{
+				return true;
 			}
 
 			if (await Any(_missingItems, m => AreConsideredEqual(value, m, options)))
@@ -477,6 +521,8 @@ public partial class CollectionMatchOptions
 			{
 				_additionalItems.Add(_index, value);
 			}
+
+			return false;
 		}
 
 #if NET8_0_OR_GREATER
@@ -501,6 +547,7 @@ public partial class CollectionMatchOptions
 				}
 
 				_matchingItems.Clear();
+				RecordTheMatchedExpectedItem(_expectedDistinctItems[_matchIndex]);
 				_matchIndex++;
 				_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 				_expectationIndex = 0;
@@ -514,6 +561,7 @@ public partial class CollectionMatchOptions
 			{
 				// The value still matches the expected item it is aligned with, so it is no deviation,
 				// although the run that could have matched was abandoned.
+				RecordTheMatchedExpectedItem(_expectedDistinctItems[_expectationIndex]);
 				_maxMatchIndex = Math.Max(_expectationIndex + 1, _maxMatchIndex);
 			}
 			else
@@ -529,6 +577,7 @@ public partial class CollectionMatchOptions
 #endif
 			VerifyTheCurrentValueIsEqualToTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
+			RecordTheMatchedExpectedItem(_expectedDistinctItems[_matchIndex]);
 			_matchIndex++;
 			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 			_expectationIndex++;
@@ -538,6 +587,51 @@ public partial class CollectionMatchOptions
 				         x => x.Key))
 			{
 				_additionalItems.Remove(key);
+			}
+		}
+
+		/// <summary>
+		///     Adds the <paramref name="value" /> to the unique items, unless it is a duplicate.
+		/// </summary>
+		/// <remarks>
+		///     Only a <paramref name="value" /> that would be a deviation is compared with the matched expected items,
+		///     because an item outside the matched run of the containment relation needs no such comparison.
+		/// </remarks>
+#if NET8_0_OR_GREATER
+		private async ValueTask<bool>
+#else
+		private async Task<bool>
+#endif
+			IsDuplicate(T value, IOptionsEquality<T2> options, bool wouldBeADeviation)
+		{
+			if (_uniqueItems.Contains(value) ||
+			    (wouldBeADeviation && await RepeatsAMatchedExpectedItem(value, options)))
+			{
+				return true;
+			}
+
+			_uniqueItems.Add(value);
+			return false;
+		}
+
+		/// <summary>
+		///     As this compares the <paramref name="value" /> with every matched expected item, it is only checked for an
+		///     item that would otherwise be a deviation.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask<bool>
+#else
+		private async Task<bool>
+#endif
+			RepeatsAMatchedExpectedItem(T value, IOptionsEquality<T2> options)
+			=> RepeatingAMatchedExpectedItemIsADuplicate &&
+			   await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options));
+
+		private void RecordTheMatchedExpectedItem(T3 expected)
+		{
+			if (RepeatingAMatchedExpectedItemIsADuplicate)
+			{
+				_matchedExpectedItems.Add(expected);
 			}
 		}
 

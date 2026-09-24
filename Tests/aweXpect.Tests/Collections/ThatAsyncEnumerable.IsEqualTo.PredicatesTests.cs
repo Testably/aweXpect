@@ -540,10 +540,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "b" at index 1 instead of x => (x == "a") and
-					               contained item "c" at index 2 instead of x => (x == "b") and
-					               lacked 1 of 4 expected items: x => (x == "c")
+					             but it lacked 1 of 4 expected items: x => (x == "a")
 					             
 					             Collection:
 					             [
@@ -579,10 +576,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "a" at index 1 instead of x => (x == "b") and
-					               contained item "b" at index 2 instead of x => (x == "c") and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "a" at index 0 that was not expected
 
 					             Collection:
 					             [

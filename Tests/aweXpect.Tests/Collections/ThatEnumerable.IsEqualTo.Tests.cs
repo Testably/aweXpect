@@ -638,10 +638,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "b" at index 1 instead of "a" and
-					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "c"
+					             but it lacked 1 of 4 expected items: "a"
 
 					             Collection:
 					             [
@@ -673,10 +670,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "a" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "a" at index 0 that was not expected
 
 					             Collection:
 					             [
@@ -693,6 +687,101 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithInfiniteSubject_ShouldFail()
+			{
+				IEnumerable<int> subject = Enumerable.Range(1, int.MaxValue);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it had more than 20 deviations:
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               contained item 11 at index 10 that was not expected,
+					               contained item 12 at index 11 that was not expected,
+					               contained item 13 at index 12 that was not expected,
+					               (… and maybe more)
+
+					             Collection:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and maybe more)
+					             ]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the enumeration stops once no alignment within the maximum number of deviations is left");
+			}
+
+			[Fact]
+			public async Task WithItemInsertedBeforeMoreThan20Items_ShouldOnlyReportTheInsertedItem()
+			{
+				IEnumerable<int> subject = Enumerable.Range(0, 25);
+				int[] expected = Enumerable.Range(1, 24).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 0 at index 0 that was not expected
+
+					             Collection:
+					             [
+					               0,
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               (… and 15 more)
+					             ]
+
+					             Expected:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and 14 more)
+					             ]
+					             """)
+					.Because("the failure reports the fewest edits that align the subject with the expected items, instead of every shifted item");
 			}
 
 			[Fact]
@@ -725,6 +814,30 @@ public sealed partial class ThatEnumerable
 					               "d"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithMissingItemInTheMiddle_ShouldOnlyReportTheMissingItem()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 5,]);
+				int[] expected = [1, 2, 3, 4, 5,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 1 of 5 expected items: 3
+
+					             Collection:
+					             [1, 2, 4, 5]
+
+					             Expected:
+					             [1, 2, 3, 4, 5]
+					             """)
+					.Because("the failure reports the fewest edits that align the subject with the expected items, instead of every shifted item");
 			}
 
 			[Fact]
@@ -775,9 +888,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 that was not expected
+					             but it contained item "c" at index 1 that was not expected
 
 					             Collection:
 					             [
@@ -795,6 +906,31 @@ public sealed partial class ThatEnumerable
 					.Because("the additional item makes the collections differ in any order, too");
 			}
 
+
+			[Fact]
+			public async Task WithMovedItem_ShouldReportItInTheWrongOrder()
+			{
+				IEnumerable<int> subject = ToEnumerable([2, 3, 1,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 1 at index 2 in wrong order
+					             (but the items match in a different order)
+
+					             Collection:
+					             [2, 3, 1]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("an item that the fewest edits remove at one position and insert at another was moved");
+			}
 
 			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
@@ -848,11 +984,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it
-					               contained item 1 at index 0 instead of 2 and
-					               contained item 2 at index 1 instead of 3 and
-					               contained item 4 at index 2 that was not expected and
-					               contained item 2 at index 3 that was not expected and
-					               contained item 3 at index 4 that was not expected
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 4 at index 2 that was not expected
 
 					             Collection:
 					             [1, 2, 4, 2, 3]
@@ -2232,6 +2366,29 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 4, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it contained item 4 at index 2 that was not expected
+
+					             Collection:
+					             [1, 1, 4, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the index counts the position in the subject, not the distinct items");
+			}
 			[Fact]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{

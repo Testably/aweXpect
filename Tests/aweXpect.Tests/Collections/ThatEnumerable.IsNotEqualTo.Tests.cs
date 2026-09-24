@@ -229,6 +229,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithItemInsertedBeforeMoreThan20Items_ShouldSucceed()
+			{
+				IEnumerable<int> subject = Enumerable.Range(0, 25);
+				int[] unexpected = Enumerable.Range(1, 24).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);

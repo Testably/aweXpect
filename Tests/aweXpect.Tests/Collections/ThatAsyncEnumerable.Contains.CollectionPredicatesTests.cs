@@ -39,7 +39,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -700,7 +700,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -2386,7 +2386,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -2963,7 +2963,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [

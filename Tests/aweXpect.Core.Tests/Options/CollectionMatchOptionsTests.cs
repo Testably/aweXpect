@@ -234,6 +234,138 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class IgnoringDuplicatesTests
+	{
+		[Fact]
+		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateInAnyOrder()
+		{
+			string[] subject = ["a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["b", "a",]).InAnyOrder().IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateInSameOrder()
+		{
+			string[] subject = ["a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["a", "b",]).IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContained()
+		{
+			string[] subject = ["a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn(["x", "a", "b", "y",]).IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task
+			WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContainedWithInterspersedItems()
+		{
+			string[] subject = ["a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn(["x", "a", "y", "b",]).IgnoringInterspersedItems()
+					.IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContaining()
+		{
+			string[] subject = ["x", "a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).Contains(["x", "a", "b",]).IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasingWithoutIgnoringCase_ShouldNotBeADuplicate()
+		{
+			string[] subject = ["a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["b", "a",]).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection ["b", "a",] in any order ignoring duplicates,
+				             but it contained item "A" at index 1 that was not expected
+
+				             Collection:
+				             [
+				               "a",
+				               "A",
+				               "b"
+				             ]
+
+				             Expected:
+				             [
+				               "b",
+				               "a"
+				             ]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenTwoItemsMatchTheSameExpectedValue_ShouldBeDuplicates()
+		{
+			string[] subject = ["abc", "axe",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["a.*",]).AsRegex().IgnoringDuplicates();
+
+			await That(Act).DoesNotThrow()
+				.Because("an item that matches an already matched expected value repeats it");
+		}
+
+		[Fact]
+		public async Task WhenTwoItemsMatchTheSamePredicate_ShouldNotBeDuplicates()
+		{
+			int[] subject = [1, 4, 2,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x > 0, x => x == 2,]).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x > 0, x => x == 2,] in any order ignoring duplicates,
+				             but it contained item 4 at index 1 that was not expected
+
+				             Collection:
+				             [1, 4, 2]
+
+				             Expected:
+				             [
+				               x => (x > 0),
+				               x => (x == 2)
+				             ]
+				             """)
+				.Because("a predicate can match unrelated items, so only equal items are duplicates");
+		}
+	}
+
 	public class RestartedMatchTests
 	{
 		[Fact]
@@ -248,7 +380,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportEachItemAtItsPosition()
+		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 5, 2, 2, 3,];
 
@@ -260,12 +392,10 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 1 at index 0 instead of 2 and
-				               contained item 2 at index 1 instead of 3 and
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected and
 				               contained item 5 at index 2 that was not expected and
-				               contained item 2 at index 3 that was not expected and
-				               contained item 2 at index 4 that was not expected and
-				               contained item 3 at index 5 that was not expected
+				               contained item 2 at index 3 that was not expected
 
 				             Collection:
 				             [1, 2, 5, 2, 2, 3]
@@ -273,7 +403,7 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 3]
 				             """)
-				.Because("equality compares each item with the expected item at its position instead of restarting the match");
+				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
 		[Fact]
@@ -336,7 +466,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportEachItemAtItsPosition()
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 2, 3,];
 
@@ -348,10 +478,8 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 1 at index 0 instead of 2 and
-				               contained item 2 at index 1 instead of 3 and
-				               contained item 2 at index 2 that was not expected and
-				               contained item 3 at index 3 that was not expected
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]
@@ -359,12 +487,12 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 3]
 				             """)
-				.Because("equality compares each item with the expected item at its position instead of restarting the match");
+				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
 		[Fact]
 		public async Task
-			WhenTheMatchRestartsAfterAPartialMatchIgnoringDuplicates_ShouldReportTheAbandonedItemsAsAdditional()
+			WhenTheMatchWouldRestartAtARepeatedItemIgnoringDuplicates_ShouldSkipTheRepeatedItem()
 		{
 			string[] subject = ["x", "a", "A", "b",];
 
@@ -375,9 +503,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection ["a", "b",] in order ignoring duplicates ignoring case,
-				             but it
-				               contained item "x" at index 0 that was not expected and
-				               contained item "a" at index 1 that was not expected
+				             but it contained item "x" at index 0 that was not expected
 
 				             Collection:
 				             [
@@ -392,7 +518,8 @@ public class CollectionMatchOptionsTests
 				               "a",
 				               "b"
 				             ]
-				             """);
+				             """)
+				.Because("an item that matches an already matched expected value repeats it instead of restarting the match");
 		}
 	}
 

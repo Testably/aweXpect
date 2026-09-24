@@ -74,12 +74,15 @@ public partial class CollectionMatchOptions
 		private readonly List<T3> _missingItems = new();
 		private readonly Dictionary<int, T> _outOfOrderItems = new();
 		private readonly int _totalExpectedItems;
+		private readonly List<T> _values = new();
 		private int _alignment;
 		private List<int> _candidateOffsets = new();
+		private BoundedEditDistance<T, T3>? _editDistance;
 		private int _expectationIndex = -1;
 		private int _index;
 		private int _matchIndex;
 		private int _maxMatchIndex;
+		private int _positionalDeviations;
 		private bool _runIsBroken;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
@@ -115,7 +118,7 @@ public partial class CollectionMatchOptions
 			}
 			else if (_comparesByPosition)
 			{
-				await VerifyTheCurrentValueMatchesTheItemAtItsPosition(value, options);
+				return await VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
 			}
 			else if (_matchIndex >= _expectedItems.Length)
 			{
@@ -184,7 +187,7 @@ public partial class CollectionMatchOptions
 
 			if (_comparesByPosition)
 			{
-				return VerifyCompleteForPositionalMatch(it, maximumNumber);
+				return await VerifyCompleteForPositionalMatch(it, options, maximumNumber);
 			}
 
 			int consideredExpectedItems = Math.Max(_expectationIndex - 1, _maxMatchIndex);
@@ -206,8 +209,11 @@ public partial class CollectionMatchOptions
 						_missingItems.Add(item);
 					}
 
-					if (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
-					    2 * maximumNumber)
+					// Additional items are no deviation for the containment relation.
+					int additionalItems = _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+						? 0
+						: _additionalItems.Count;
+					if (additionalItems + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
 					{
 						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 					}
@@ -247,24 +253,99 @@ public partial class CollectionMatchOptions
 
 		/// <summary>
 		///     Every subject item was compared with the expected item at its position, so the expected items beyond the
-		///     end of the subject are missing.
+		///     end of the subject are missing; when fewer edits align the subject with the expected items, e.g. because
+		///     an item was inserted, these edits are reported instead.
 		/// </summary>
-		private (bool, string?) VerifyCompleteForPositionalMatch(string it, int maximumNumber)
+#if NET8_0_OR_GREATER
+		private async ValueTask<(bool, string?)>
+#else
+		private async Task<(bool, string?)>
+#endif
+			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			for (int i = _index; i < _expectedItems.Length; i++)
+			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _index);
+			if (_editDistance is not null)
 			{
-				_missingItems.Add(_expectedItems[i]);
-				if (_incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
+				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits(
+					_values, (item, expected) => AreConsideredEqual(item, expected, options));
+				if (edits is not null && edits.Count < positionalDeviations)
 				{
-					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+					return await ReturnEditsError(it, edits, options);
 				}
 			}
 
-			Func<object?, string> formatItem = CreateItemFormatter();
+			if (positionalDeviations > 2 * maximumNumber)
+			{
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+			}
+
+			for (int i = _index; i < _expectedItems.Length; i++)
+			{
+				_missingItems.Add(_expectedItems[i]);
+			}
+
+			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems);
+		}
+
+		/// <summary>
+		///     An additional item that matches a missing item was moved, so both are reported as one item in the wrong
+		///     order.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask<(bool, string?)>
+#else
+		private async Task<(bool, string?)>
+#endif
+			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
+				IOptionsEquality<T2> options)
+		{
+			Dictionary<int, (T Item, T3 Expected)> incorrectItems = new();
+			Dictionary<int, T> additionalItems = new();
+			List<T3> missingItems = new();
+			foreach ((EditKind kind, int subjectIndex, int expectedIndex) in edits)
+			{
+				switch (kind)
+				{
+					case EditKind.Incorrect:
+						incorrectItems.Add(subjectIndex, (_values[subjectIndex], _expectedItems[expectedIndex]));
+						break;
+					case EditKind.Additional:
+						additionalItems.Add(subjectIndex, _values[subjectIndex]);
+						break;
+					default:
+						missingItems.Add(_expectedItems[expectedIndex]);
+						break;
+				}
+			}
+
+			Dictionary<int, T> outOfOrderItems = new();
+			foreach (KeyValuePair<int, T> additionalItem in additionalItems.ToList())
+			{
+				for (int i = 0; i < missingItems.Count; i++)
+				{
+					if (await AreConsideredEqual(additionalItem.Value, missingItems[i], options))
+					{
+						missingItems.RemoveAt(i);
+						additionalItems.Remove(additionalItem.Key);
+						outOfOrderItems.Add(additionalItem.Key, additionalItem.Value);
+						break;
+					}
+				}
+			}
+
+			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems);
+		}
+
+		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
+			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems)
+		{
+			Func<object?, string> formatItem =
+				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems));
-			errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem));
+			errors.AddRange(IncorrectItemsError(incorrectItems));
+			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
+			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -469,21 +550,46 @@ public partial class CollectionMatchOptions
 		///     Equality compares each item with the expected item at its position, so that a deviating item never restarts
 		///     the comparison; only the containment relations and interspersed items search for the expected items.
 		/// </summary>
+		/// <remarks>
+		///     After the first deviation, the edit distance is tracked as well, so that the failure can report inserted or
+		///     removed items instead of every shifted item; the positional deviations are only recorded as far as they
+		///     can be listed.
+		/// </remarks>
 #if NET8_0_OR_GREATER
-		private async ValueTask
+		private async ValueTask<(bool, string?)>
 #else
-		private async Task
+		private async Task<(bool, string?)>
 #endif
-			VerifyTheCurrentValueMatchesTheItemAtItsPosition(T value, IOptionsEquality<T2> options)
+			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IOptionsEquality<T2> options,
+				int maximumNumber)
 		{
-			if (_index >= _expectedItems.Length)
+			_values.Add(value);
+			bool isAdditional = _index >= _expectedItems.Length;
+			if (isAdditional || !await AreConsideredEqual(value, _expectedItems[_index], options))
 			{
-				_additionalItems.Add(_index, value);
+				if (_positionalDeviations++ <= 2 * maximumNumber)
+				{
+					if (isAdditional)
+					{
+						_additionalItems.Add(_index, value);
+					}
+					else
+					{
+						_incorrectItems.Add(_index, (value, _expectedItems[_index]));
+					}
+				}
+
+				_editDistance ??= new BoundedEditDistance<T, T3>(_expectedItems, 2 * maximumNumber, _index);
 			}
-			else if (!await AreConsideredEqual(value, _expectedItems[_index], options))
+
+			_index++;
+			if (_editDistance is not null &&
+			    !await _editDistance.Add(value, (item, expected) => AreConsideredEqual(item, expected, options)))
 			{
-				_incorrectItems.Add(_index, (value, _expectedItems[_index]));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 			}
+
+			return (false, null);
 		}
 
 		private void VerifyTheCurrentValueIsEqualToTheExpectedValue(T value)
