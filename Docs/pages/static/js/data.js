@@ -4110,6 +4110,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -4797,7 +4803,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -5488,7 +5495,8 @@ window.BENCHMARK_DATA = {
           368.76065781911217,
           246.31336043431207,
           366.88434807459515,
-          325.7155992984772
+          325.7155992984772,
+          246.4557346979777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6184,7 +6192,8 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
-          936
+          936,
+          912
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6883,7 +6892,8 @@ window.BENCHMARK_DATA = {
           247.28855617841086,
           191.5841211716334,
           247.6801100730896,
-          232.2529143333435
+          232.2529143333435,
+          203.37873796621957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7076,6 +7086,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11241,6 +11252,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -11851,7 +11868,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -12465,7 +12483,8 @@ window.BENCHMARK_DATA = {
           432805.6280273438,
           309114.3339518229,
           402744.52099609375,
-          426699.6129557292
+          426699.6129557292,
+          331180.2082519531
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13084,7 +13103,8 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
-          628408
+          628408,
+          628384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13706,7 +13726,8 @@ window.BENCHMARK_DATA = {
           2588505.1143229166,
           1767930.7940848214,
           2575607.152604167,
-          2561419.760216346
+          2561419.760216346,
+          1912716.6604166667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14325,7 +14346,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18449,6 +18471,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -19136,7 +19164,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -19827,7 +19856,8 @@ window.BENCHMARK_DATA = {
           616.9647481918335,
           418.5804012005146,
           614.0945189339774,
-          606.9750425338746
+          606.9750425338746,
+          404.67807575372547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20523,7 +20553,8 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
-          1616
+          1616,
+          1592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21222,7 +21253,8 @@ window.BENCHMARK_DATA = {
           515.2972635269165,
           368.9387762387594,
           498.2847960472107,
-          467.1022602830614
+          467.1022602830614,
+          371.5217943925124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21415,6 +21447,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26042,6 +26075,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -26729,7 +26768,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -27420,7 +27460,8 @@ window.BENCHMARK_DATA = {
           371.57226079305013,
           281.1937019983927,
           344.52720368703206,
-          329.71701486294086
+          329.71701486294086,
+          263.3782348950704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28116,7 +28157,8 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
-          1104
+          1104,
+          1080
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28815,7 +28857,8 @@ window.BENCHMARK_DATA = {
           250.52697706222534,
           189.36316787401836,
           243.47133977596576,
-          242.38292394365584
+          242.38292394365584,
+          188.00750862635098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29008,6 +29051,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33635,6 +33679,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -34322,7 +34372,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -35013,7 +35064,8 @@ window.BENCHMARK_DATA = {
           669.1177337646484,
           480.31194613530084,
           625.3137149175008,
-          620.1444105148315
+          620.1444105148315,
+          476.55130367279054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35709,7 +35761,8 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592
+          1592,
+          1576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36408,7 +36461,8 @@ window.BENCHMARK_DATA = {
           1305.3931626637777,
           874.4405344009399,
           1179.566806411743,
-          1175.6374717439924
+          1175.6374717439924,
+          870.0199383417765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36837,6 +36891,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41228,6 +41283,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -41915,7 +41976,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -42606,7 +42668,8 @@ window.BENCHMARK_DATA = {
           2742.400967915853,
           1970.5652867635092,
           2681.35092976888,
-          2623.4026667277017
+          2623.4026667277017,
+          2263.8075921194895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43302,7 +43365,8 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
-          3808
+          3808,
+          4032
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44001,7 +44065,8 @@ window.BENCHMARK_DATA = {
           1425.9506351470948,
           970.213997777303,
           1318.2128634134929,
-          1294.726900736491
+          1294.726900736491,
+          1012.8783800942557
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44194,6 +44259,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48821,6 +48887,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
         "message": "feat: add \u0060IncludingUncasedLetters()\u0060 to the string casing expectations (#1331)"
+      },
+      {
+        "sha": "14b53a3d2593728231817743e73c80985315acbd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
       }
     ],
     "labels": [
@@ -49508,7 +49580,8 @@ window.BENCHMARK_DATA = {
       "7148a396",
       "11ae0085",
       "d9d72aca",
-      "f5b89dba"
+      "f5b89dba",
+      "14b53a3d"
     ],
     "datasets": [
       {
@@ -50199,7 +50272,8 @@ window.BENCHMARK_DATA = {
           3235.9760614122665,
           2304.881059374128,
           3153.5936186654226,
-          3031.907234700521
+          3031.907234700521,
+          2257.967160797119
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50895,7 +50969,8 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
-          3808
+          3808,
+          3792
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51594,7 +51669,8 @@ window.BENCHMARK_DATA = {
           27407.378987630207,
           14889.59039415632,
           26510.617586263023,
-          26177.42107747396
+          26177.42107747396,
+          15204.705733079176
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52287,6 +52363,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
