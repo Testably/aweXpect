@@ -44,10 +44,14 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	{
 		private DelegateValue? _actual;
 
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure && _actual?.ExceededTimeout is not null ? _actual.Exception : null;
+
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
 			_actual = value;
-			if (value.IsNull)
+			if (value.IsNull || value.ExceededTimeout is not null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
@@ -74,6 +78,10 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 			if (_actual?.IsNull != false)
 			{
 				stringBuilder.ItWasNull(it);
+			}
+			else if (_actual.ExceededTimeout is { } exceededTimeout)
+			{
+				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 			}
 			else if (options.ExecutionTimeOptions is not null)
 			{

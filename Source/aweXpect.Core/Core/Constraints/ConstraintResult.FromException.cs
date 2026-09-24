@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
 
 namespace aweXpect.Core.Constraints;
@@ -17,18 +18,22 @@ public abstract partial class ConstraintResult
 	internal class FromException : ConstraintResult
 	{
 		private readonly Exception _exception;
+		private readonly TimeSpan? _exceededTimeout;
 		private readonly ConstraintResult _inner;
 
 		/// <summary>
-		///     A failed <see cref="ConstraintResult" /> due to a thrown <paramref name="exception" />.
+		///     A failed <see cref="ConstraintResult" /> due to a thrown <paramref name="exception" />, or due to the
+		///     subject not finishing within the <paramref name="exceededTimeout" />.
 		/// </summary>
 		public FromException(
 			ConstraintResult inner,
-			Exception exception)
+			Exception exception,
+			TimeSpan? exceededTimeout = null)
 			: base(inner.Grammars)
 		{
 			_inner = inner;
 			_exception = exception;
+			_exceededTimeout = exceededTimeout;
 			FurtherProcessingStrategy = inner.FurtherProcessingStrategy;
 		}
 
@@ -48,6 +53,12 @@ public abstract partial class ConstraintResult
 		/// <inheritdoc cref="ConstraintResult.AppendResult(StringBuilder, string?)" />
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_exceededTimeout is not null)
+			{
+				stringBuilder.ItDidNotFinishWithin("it", _exceededTimeout.Value);
+				return;
+			}
+
 			stringBuilder
 				.Append("it did throw ")
 				.Append(ThatDelegate.FormatForMessage(_exception, indentation));

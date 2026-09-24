@@ -38,14 +38,31 @@ public class DelegateAsyncValueSourceTests
 			=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
 		await That(Act).Throws<XunitException>()
-			.WithMessage($"""
+			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
-			             but it did throw a TaskCanceledException:
-			               {new TaskCanceledException().Message}
+			             but it did not finish within 0:00.050
 			             """).And
-			.WithInner<TaskCanceledException>()
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 			.Because("the timeout must abandon the task instead of awaiting it to completion");
+	}
+
+	[Fact]
+	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_WhoseResult_ShouldFail()
+	{
+		Func<Task<int>> @delegate = () => PendingTask.Of<int>();
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(1).WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception and its result is equal to 1,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>()
+			.Because("the timeout is reported once, and not also as a thrown exception");
 	}
 
 	[Fact]
@@ -60,8 +77,8 @@ public class DelegateAsyncValueSourceTests
 			.WithMessage("""
 			             Expected that @delegate
 			             executes within 0:00.050,
-			             but it was canceled after 0:*
-			             """).AsWildcard()
+			             but it did not finish within 0:00.050
+			             """)
 			.Because("a delegate that ignores the cancelled token must be abandoned as well");
 	}
 }

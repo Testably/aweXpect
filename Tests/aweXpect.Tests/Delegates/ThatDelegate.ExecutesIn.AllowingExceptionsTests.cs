@@ -156,8 +156,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.050 allowing exceptions,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.050
+					             """)
 					.Because("allowing exceptions must not let a delegate pass by being cancelled at the maximum");
 			}
 

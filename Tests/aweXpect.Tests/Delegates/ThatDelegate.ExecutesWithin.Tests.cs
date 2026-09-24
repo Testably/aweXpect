@@ -125,8 +125,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.010
+					             """)
 					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
@@ -206,8 +206,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.010
+					             """)
 					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
@@ -271,8 +271,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.010
+					             """)
 					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
@@ -357,8 +357,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did not finish within 0:00.010
+					             """);
 			}
 
 			[Fact]
@@ -423,8 +423,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.010
+					             """)
 					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
@@ -510,8 +510,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did not finish within 0:00.010
+					             """);
 			}
 
 			[Fact]
@@ -672,8 +672,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that subject
 					             executes within 0:00.010,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.010
+					             """)
 					.Because("the duration is applied as timeout, so the task is abandoned once it elapsed");
 			}
 
@@ -705,8 +705,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.050
+					             """)
 					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 			}
 
@@ -726,8 +726,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.050,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.050
+					             """)
 					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 			}
 		}
@@ -746,8 +746,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:30,
-					             but it was canceled after 0:0*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.050
+					             """)
 					.Because("the 50 ms timeout must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 
@@ -767,8 +767,8 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:30,
-					             but it was canceled after 0:0*
-					             """).AsWildcard()
+					             but it did not finish within 0:00.050
+					             """)
 					.Because("the 50 ms timeout must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 		}

@@ -13,6 +13,7 @@ public partial class ThatDelegateThrows<TException>
 	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
 	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
+	///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	/// </remarks>
 	public ThatDelegateThrows<TException> Within(TimeSpan duration)
 	{

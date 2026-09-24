@@ -160,7 +160,7 @@ An execution time expectation used to await the delegate to completion, so a del
 test run instead of failing at the bound. The upper bound of `ExecutesWithin(d)`, `Throws().Within(d)`,
 `ExecutesIn().AtMost(d)`, `ExecutesIn().Between(a).And(b)` and `ExecutesIn(x).Within(t)` is now applied as timeout,
 so a delegate accepting a `CancellationToken` is cancelled once it elapsed and the expectation fails with
-"was canceled after …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. The task of an asynchronous
+"did not finish within …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. The task of an asynchronous
 delegate is abandoned at that point even if it ignores the token, and so is a `Task<T>` subject under `WithTimeout`
 or `WithCancellation`; only a synchronous delegate still runs to completion. A cancellation fails the
 expectation even with `AllowingExceptions()`, because it aborts the execution instead of timing it. See

@@ -50,6 +50,11 @@ If necessary, provide a [linked cancellation token](https://learn.microsoft.com/
 ## Awaited tasks
 
 A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
-the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. The task is abandoned and
-the expectation is evaluated as if the task had been canceled. A synchronous delegate cannot be abandoned and runs to
-completion.
+the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
+cannot be abandoned and runs to completion.
+
+- When a **timeout** elapses, the expectation fails with "did not finish within …" and a `TimeoutException` as inner
+  exception. This is the same whether the task was abandoned or reacted to the cancellation itself.
+- When the **`CancellationToken`** is cancelled, no limit is known, so the expectation is evaluated as if the task had
+  been canceled: an execution time expectation fails with "was canceled after …", and `DoesNotThrow` reports the
+  cancellation exception.

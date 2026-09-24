@@ -77,13 +77,12 @@ public class AsyncValueSourceTests
 			=> await That(subject).IsEqualTo(1).WithTimeout(50.Milliseconds());
 
 		await That(Act).Throws<XunitException>()
-			.WithMessage($"""
+			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
-			             but it did throw a TaskCanceledException:
-			               {new TaskCanceledException().Message}
+			             but it did not finish within 0:00.050
 			             """).And
-			.WithInner<TaskCanceledException>()
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 			.Because("the timeout must abandon the task instead of awaiting it to completion");
 	}
 
@@ -120,11 +119,10 @@ public class AsyncValueSourceTests
 			=> await That(tcs.Task).IsEqualTo(1).WithTimeout(50.Milliseconds());
 
 		await That(Act).Throws<XunitException>()
-			.WithMessage($"""
+			.WithMessage("""
 			             Expected that tcs.Task
 			             is equal to 1,
-			             but it did throw a TaskCanceledException:
-			               {new TaskCanceledException().Message}
+			             but it did not finish within 0:00.050
 			             """);
 		tcs.TrySetException(exception);
 	}
