@@ -482,6 +482,7 @@ public sealed partial class ThatEnumerable
 					             """)
 					.Because("each item is compared with the expected item at its position, so an item equal to the first expected item does not restart the comparison");
 			}
+
 			[Fact]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
