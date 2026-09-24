@@ -114,16 +114,27 @@ internal class EventuallyExpectationBuilder<TValue>(
 		{
 			Exception? failure = null;
 			TValue? data = default;
-			try
+			bool hasTimedOut = false;
+			using (CancellationTokenSource? attemptCts =
+			       CreateAttemptCancellation(retryTimeout, retryTimeout - Elapsed(), interval, cancellationToken))
 			{
-				data = await subject(cancellationToken).AbandonOnCancellation(cancellationToken);
-				Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
-			}
-			catch (Exception exception)
-			{
-				failure = exception;
-				Customize.aweXpect.TraceWriter.Value?.WriteMessage(
-					$"Checking expectation for {Subject} threw an exception");
+				CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
+				try
+				{
+					data = await subject(attemptToken).AbandonOnCancellation(attemptToken);
+					Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+				}
+				catch (Exception exception)
+				{
+					hasTimedOut = exception is OperationCanceledException &&
+					              attemptCts?.IsCancellationRequested == true &&
+					              !cancellationToken.IsCancellationRequested;
+					failure = hasTimedOut
+						? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
+						: exception;
+					Customize.aweXpect.TraceWriter.Value?.WriteMessage(
+						$"Checking expectation for {Subject} threw an exception");
+				}
 			}
 
 			ConstraintResult? result = null;
@@ -137,11 +148,12 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 
 			TimeSpan remaining = retryTimeout - Elapsed();
-			if (isLastAttempt || remaining <= TimeSpan.Zero)
+			if (isLastAttempt || hasTimedOut || remaining <= TimeSpan.Zero)
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return AppendTimeout(WithFailureCause(result, failure), retryTimeout);
+				return AppendTimeout(WithFailureCause(result, failure, hasTimedOut ? retryTimeout : null),
+					retryTimeout);
 			}
 
 			if (cancellationToken.IsCancellationRequested)
@@ -210,8 +222,35 @@ internal class EventuallyExpectationBuilder<TValue>(
 		return result.AppendExpectationText(sb => sb.Append(" within ").Append(Formatter.Format(timeout)));
 	}
 
-	private static ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure)
-		=> failure is null ? result : new ConstraintResult.FromException(result, failure);
+	/// <summary>
+	///     Bounds an attempt by the <paramref name="remaining" /> retry budget, but gives it at least one
+	///     <paramref name="interval" /> (or the whole <paramref name="retryTimeout" />, if shorter) to finish, or returns
+	///     <see langword="null" /> for an unlimited budget, which only the <paramref name="cancellationToken" /> bounds.
+	/// </summary>
+	/// <remarks>
+	///     The last attempt is made when the budget is used up, so without the minimum it would be abandoned before an
+	///     asynchronous subject had a chance to finish.
+	/// </remarks>
+	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan retryTimeout,
+		TimeSpan remaining,
+		TimeSpan interval,
+		CancellationToken cancellationToken)
+	{
+		if (retryTimeout == TimeSpan.MaxValue)
+		{
+			return null;
+		}
+
+		TimeSpan minimum = interval < retryTimeout ? interval : retryTimeout;
+		TimeSpan limit = remaining > minimum ? remaining : minimum;
+		CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+		cts.CancelAfter((limit > TimeSpan.Zero ? limit : TimeSpan.Zero).ToTimerTimeout());
+		return cts;
+	}
+
+	private static ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure,
+		TimeSpan? exceededTimeout = null)
+		=> failure is null ? result : new ConstraintResult.FromException(result, failure, exceededTimeout);
 
 	private void RestoreContexts(List<ResultContext> initialContexts)
 		=> UpdateContexts(contexts =>

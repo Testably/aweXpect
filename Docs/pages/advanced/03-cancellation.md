@@ -54,7 +54,8 @@ the task returned by an asynchronous delegate, even if it ignores the `Cancellat
 cannot be abandoned and runs to completion.
 
 - When a **timeout** elapses, the expectation fails with "did not finish within …" and a `TimeoutException` as inner
-  exception. This is the same whether the task was abandoned or reacted to the cancellation itself.
+  exception. This is the same whether the task was abandoned or reacted to the cancellation itself. With
+  [`Eventually()`](/docs/expectations/delegates#eventually), the timeout bounds each evaluation in the same way.
 - When the **`CancellationToken`** is cancelled, no limit is known, so the expectation is evaluated as if the task had
   been canceled: an execution time expectation fails with "was canceled after …", and `DoesNotThrow` reports the
   cancellation exception.

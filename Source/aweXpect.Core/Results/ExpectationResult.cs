@@ -83,8 +83,8 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
 	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
-	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries
-	///     instead.
+	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
+	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
 	///     Use
 	///     <c>
@@ -251,8 +251,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
 	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
-	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries
-	///     instead.
+	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
+	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
 	///     Use
 	///     <c>

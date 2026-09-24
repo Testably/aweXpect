@@ -747,6 +747,6 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	///     Replaces the cancellation caused by the <paramref name="timeout" />, so that it is reported the same way,
 	///     whether the awaited task reacted to the cancellation itself or was abandoned.
 	/// </summary>
-	private static TimeoutException CreateTimeoutException(TimeSpan timeout, Exception cancellation)
+	internal static TimeoutException CreateTimeoutException(TimeSpan timeout, Exception cancellation)
 		=> new($"The operation did not finish within {Formatter.Format(timeout)}.", cancellation);
 }
