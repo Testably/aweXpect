@@ -54,6 +54,11 @@ public class NullableNumberToleranceResult<TType, TThat, TSelf>(
 	/// <summary>
 	///     Specifies a <paramref name="tolerance" /> to apply on the number comparison.
 	/// </summary>
+	/// <remarks>
+	///     The tolerance relaxes the bounds of equality, ordering and range expectations, and a subject exactly the
+	///     tolerance away matches wherever the bound itself matches, for example on <c>IsEqualTo</c> or
+	///     <c>IsGreaterThanOrEqualTo</c>, but not on <c>IsGreaterThan</c>.
+	/// </remarks>
 	public TSelf Within(TType tolerance)
 	{
 		options.SetTolerance(tolerance);
