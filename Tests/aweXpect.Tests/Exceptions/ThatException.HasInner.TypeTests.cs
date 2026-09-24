@@ -10,6 +10,26 @@ public sealed partial class ThatException
 			public sealed class ExpectationsTests
 			{
 				[Fact]
+				public async Task WhenCombinedWithTheGenericOverloadAndInnerExceptionHasUnexpectedType_ShouldReportItOnce()
+				{
+					Exception subject = new("outer", new Exception("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner(typeof(CustomException), e => e.HasMessage("foo"))
+							.Or.HasInner<CustomException>(e => e.HasMessage("bar"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException whose Message is equal to "foo" or has an inner ThatException.CustomException whose Message is equal to "bar",
+						             but it had an inner Exception:
+						               inner
+						             """)
+						.Because("both overloads skip the expectations on an inner exception of another type, so they report the same mismatch");
+				}
+
+				[Fact]
 				public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
 				{
 					Exception subject = new("outer", new CustomException("inner"));
@@ -36,9 +56,6 @@ public sealed partial class ThatException
 						             has an inner ThatException.CustomException whose Message is equal to "inner",
 						             but it had an inner Exception:
 						               inner
-						             
-						             Message:
-						             inner
 						             """);
 				}
 
@@ -77,6 +94,25 @@ public sealed partial class ThatException
 						             Message:
 						             inner
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenInnerExceptionHasUnexpectedTypeAndNegatedExpectations_ShouldKeepTheNegation()
+				{
+					Exception subject = new("outer", new Exception("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner(typeof(CustomException), e => e.DoesNotComplyWith(i => i.HasMessage("foo")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException whose Message is not equal to "foo",
+						             but it had an inner Exception:
+						               inner
+						             """)
+						.Because("the expectations on the inner exception are negated, even if they are not applied");
 				}
 
 				[Fact]

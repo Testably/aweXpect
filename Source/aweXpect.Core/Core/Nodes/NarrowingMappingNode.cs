@@ -21,21 +21,23 @@ internal sealed class NarrowingMappingNode<TSource, TTarget, TNarrowed>(
 	: MappingNode<TSource, TTarget>(memberAccessor, expectationTextGenerator)
 {
 	/// <inheritdoc cref="MappingNode{TSource,TTarget}.IsMetByMember(TTarget, IEvaluationContext, CancellationToken)" />
-	protected override Task<ConstraintResult> IsMetByMember(TTarget? value,
+	protected override async Task<ConstraintResult> IsMetByMember(TTarget? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		if (value is TNarrowed narrowedValue)
 		{
-			return IsMetByExpectations(narrowedValue, context, cancellationToken);
+			return await IsMetByExpectations(narrowedValue, context, cancellationToken);
 		}
 
 		if (value is null)
 		{
-			return IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
+			return await IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
 		}
 
-		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(AppendMemberExpectation));
+		ConstraintResult expectationResult = await IsMetByExpectations<TNarrowed>(default,
+			ExpectationTextEvaluationContext.For(context), cancellationToken);
+		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
 	}
 }
 
@@ -54,20 +56,22 @@ internal sealed class NarrowingAsyncMappingNode<TSource, TTarget, TNarrowed>(
 {
 	/// <inheritdoc
 	///     cref="AsyncMappingNode{TSource,TTarget}.IsMetByMember(TTarget, IEvaluationContext, CancellationToken)" />
-	protected override Task<ConstraintResult> IsMetByMember(TTarget? value,
+	protected override async Task<ConstraintResult> IsMetByMember(TTarget? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		if (value is TNarrowed narrowedValue)
 		{
-			return IsMetByExpectations(narrowedValue, context, cancellationToken);
+			return await IsMetByExpectations(narrowedValue, context, cancellationToken);
 		}
 
 		if (value is null)
 		{
-			return IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
+			return await IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
 		}
 
-		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(AppendMemberExpectation));
+		ConstraintResult expectationResult = await IsMetByExpectations<TNarrowed>(default,
+			ExpectationTextEvaluationContext.For(context), cancellationToken);
+		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
 	}
 }
