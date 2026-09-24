@@ -7,13 +7,28 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 Goal of this package is to be more stable than the main aweXpect package, so reduce the risk of version conflicts
 between different extensions.
 
+The samples on this page use the following namespaces:
+
+```csharp
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.Text.Json;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Metadata;
+using aweXpect.Customization;
+using aweXpect.Recording;
+using aweXpect.Results;
+using static aweXpect.Formatting.Format;
+```
+
 ## Expectations
 
 You can extend the expectations for any types, by adding extension methods on `IThat<TType>`.
 
 If you want to verify that a `string` is an absolute path, you specify the following method signature:
 
-```csharp
+```csharp no-compile
 /// <summary>
 ///     Verifies that the <paramref name="subject"/> is an absolute path.
 /// </summary>
@@ -101,12 +116,17 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
         }
 
         value = default;
-        return typeof(string).IsAssignableTo(typeof(TValue));
+        return typeof(TValue).IsAssignableFrom(typeof(string));
     }
 
     public override ConstraintResult Negate() => this;
 }
 ```
+
+:::note[Older target frameworks]
+`NotNullWhenAttribute` is missing in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package,
+e.g. with the [Nullable](https://www.nuget.org/packages/Nullable) package.
+:::
 
 All constraints should also provide the expectations and results for the negated case (so that they are compatible with
 `DoesNotComplyWith`).
@@ -181,7 +201,7 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is no negated path");
+        => stringBuilder.Append("is no absolute path");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
     {
@@ -192,7 +212,7 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
 ```
 
 Note that the `it` parameter is passed to the base class and the inherited `It` property is used in the body: capturing
-the parameter *and* passing it to the base is a compiler error (CS9107).
+the parameter *and* passing it to the base stores it twice, which the compiler warns about (CS9107).
 
 This then also allows you to write an explicit negated expectation with the same constraint using the `.Invert()`
 method:
@@ -203,7 +223,7 @@ method:
 /// </summary>
 public static AndOrResult<string, IThat<string>> IsNoAbsolutePath(
     this IThat<string> subject)
-    => new(subject.ThatIs().ExpectationBuilder.AddConstraint((it, grammars)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars).Invert()),
         subject);
 ```
@@ -319,8 +339,8 @@ This allows expectations to access values either individually or for the whole g
 
 ```csharp
  // both will return the default value 'true'
-int myCustomization1 = Customize.aweXpect.Json().Get().DefaultJsonDocumentOptions.AllowTrailingCommas;
-int myCustomization2 = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
+bool myCustomization1 = Customize.aweXpect.Json().Get().DefaultJsonDocumentOptions.AllowTrailingCommas;
+bool myCustomization2 = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
 ```
 
 And users can customize either individual values or the whole group:
@@ -335,7 +355,7 @@ using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(mySerializerOp
 }
 
 // ...or update the whole group
-JsonCustomizationValue myCustomization = new();
+JsonAwexpectCustomizationExtensions.JsonCustomizationValue myCustomization = new();
 using (Customize.aweXpect.Json().Update(_ => myCustomization))
 {
     // will use the all set properties from the `myCustomization`

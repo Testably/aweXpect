@@ -30,6 +30,8 @@ Equivalency is exposed on three different surfaces.
 configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration).
 
 ```csharp
+using aweXpect.Equivalency; // for the options, e.g. `IgnoringMember`
+
 await Expect.That(album).IsEquivalentTo(expected);
 await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCount"));
 await Expect.That(album).IsNotEquivalentTo(unexpected);
@@ -57,9 +59,10 @@ For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`
 await Expect.That(album).IsEqualTo(expected).Equivalent();
 
 IEnumerable<Track> tracks = //...
-await Expect.That(tracks).Contains(expected).Equivalent();
-await Expect.That(tracks).StartsWith(expected).Equivalent();
-await Expect.That(tracks).All().AreEqualTo(expected).Equivalent(o => o.IgnoringCollectionOrder());
+Track expectedTrack = //...
+await Expect.That(tracks).Contains(expectedTrack).Equivalent();
+await Expect.That(tracks).StartsWith(expectedTrack).Equivalent();
+await Expect.That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.IgnoringCollectionOrder());
 ```
 
 ## Default behaviour
@@ -234,6 +237,10 @@ Expected that subject
 is equivalent to Node { … },
 but it was not:
   Property Next.Next.Next exceeded the maximum recursion depth of 3
+
+Equivalency options:
+ - include public fields and properties
+ - limit the recursion depth to 3
 ```
 
 The depth is counted per path, so two members on the same level are both at the same depth, and members that are
@@ -257,6 +264,8 @@ You can change the default `EquivalencyOptions` that are used when no callback i
 [customization API](/docs/expectations/advanced/customization):
 
 ```csharp
+using aweXpect.Customization;
+
 using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions
   .Set(new EquivalencyOptions().IgnoringCollectionOrder());
 
@@ -303,8 +312,10 @@ For a structural mismatch:
 ```
 Expected that album
 is equivalent to Album {
-    Title = "Abbey Road",
-    Artist = Artist { Name = "The Beatles" }
+    Artist = Artist {
+      Name = "The Beatles"
+    },
+    Title = "Abbey Road"
   },
 but it was not:
   Property Artist.Name differed:
@@ -319,7 +330,10 @@ When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectati
 
 ```
 Expected that midnight
-is equivalent to { Title = is string that is not empty, PlayCount = is int that is greater than 2 },
+is equivalent to {
+    PlayCount = is int that is greater than 2,
+    Title = is string that is not empty
+  },
 but it was not:
   Property PlayCount differed:
        Found: 1

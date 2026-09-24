@@ -75,6 +75,8 @@ await Expect.That((Colors)4).IsNotDefined()
 You can verify that the `enum` has a specific flag or not:
 
 ```csharp
+using System.Text.RegularExpressions;
+
 RegexOptions subject = RegexOptions.Multiline | RegexOptions.IgnoreCase;
 
 await Expect.That(subject).HasFlag(RegexOptions.IgnoreCase)

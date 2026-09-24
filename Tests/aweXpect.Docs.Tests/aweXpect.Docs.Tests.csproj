@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="aweXpect.Chronology"/>
+		<PackageReference Include="IsExternalInit">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<!-- The samples have to bind like they do with the current SDK, which includes `OverloadResolutionPriority`. -->
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.3.0"/>
+	</ItemGroup>
+
+	<!-- The extension samples use System.Text.Json, which an extension for .NET Framework references as a package. -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Scaffold/**"/>
+		<None Include="Scaffold/**"/>
+	</ItemGroup>
+
+</Project>

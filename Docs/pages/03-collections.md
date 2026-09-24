@@ -2,6 +2,14 @@
 
 Describes the possible expectations for collections.
 
+:::info[C# 13 or later]
+Some overloads rely on `[OverloadResolutionPriority]` to bind as described here, e.g. so that a `string` is expected
+as a single item and not as a sequence of characters, or that a `params` list or a collection expression `[…]` is the
+expected collection. The attribute only takes effect with C# 13 or later, which is the default only for .NET 9 and
+later. With an older language version, such a call can bind to a different overload or fail with CS0121, so set
+`<LangVersion>` to `13` or `latest` in a project that targets an older framework.
+:::
+
 ## Equality
 
 You can verify that a collection is equal to another collection:
@@ -19,6 +27,9 @@ await Expect.That(values).IsNotEqualTo([4, 3, 2, 1]).InAnyOrder();
 await Expect.That(values).IsNotEqualTo([1, 1, 3, 3, 2, 2]).IgnoringDuplicates();
 await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().IgnoringDuplicates();
 ```
+
+*Note: The items are compared in the order in which the collection enumerates them, also for a `HashSet<T>`, whose
+order is not defined, so use `InAnyOrder()` for it.*
 
 For certain types you can also specify a tolerance:
 
@@ -210,6 +221,8 @@ await Expect.That(values).DoesNotContain(42);
 You can also set occurrence constraints on `Contain`:
 
 ```csharp
+using aweXpect.Core; // for `Times()`
+
 IEnumerable<int> values = [1, 1, 1, 2];
 
 await Expect.That(values).Contains(1).MoreThan(1.Times());
@@ -381,6 +394,11 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 
 await Expect.That(values).All().Satisfy(i => i <= 20);
 ```
+
+An empty collection satisfies `All()`, like it does `Enumerable.All`, so
+`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds. In contrast,
+[`WithRecursiveInnerExceptions`](/docs/expectations/delegates#recursive-inner-exceptions) and
+`HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 

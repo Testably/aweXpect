@@ -8,9 +8,11 @@ First, you have to start recording callback signals using the `Signaler` class. 
 aweXpect.Signaling" namespace.
 
 ```csharp
+using aweXpect.Signaling;
+
 // ↓ Counts signals from callbacks without parameters
 Signaler signaler = new();
-Signaler<string> signaler = new();
+Signaler<string> stringSignaler = new();
 // ↑ Counts signals from callbacks with a string parameter
 ```
 
@@ -65,6 +67,8 @@ await Expect.That(signaler).Signaled().WithCancellation(cancellationToken)
 You can specify how often a callback must be signaled:
 
 ```csharp
+using aweXpect.Core; // for `Times()`
+
 await Expect.That(signaler).Signaled().AtLeast(3.Times());
 await Expect.That(signaler).Signaled().Exactly(3.Times());
 await Expect.That(signaler).Signaled().AtMost(3.Times());
@@ -103,6 +107,17 @@ signaler.Signal("Let It Be");
 signaler.Signal("Yesterday");
 
 await Expect.That(signaler).Signaled().AtLeast(2.Times()).With(p => p == "Yesterday");
+```
+
+`WhoseParameters` continues with expectations on the collection of recorded parameters:
+
+```csharp
+Signaler<string> signaler = new();
+
+signaler.Signal("Yesterday");
+signaler.Signal("Let It Be");
+
+await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contains("Let It Be");
 ```
 
 *In case of a failed expectation, the recorded parameters will be displayed in the error message.*

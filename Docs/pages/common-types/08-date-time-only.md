@@ -162,6 +162,8 @@ await Expect.That(subject).IsBetween(new DateOnly(2024, 1, 1)).And(new DateOnly(
 ```
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 TimeOnly subject = TimeOnly.FromDateTime(DateTime.Now);
 
 await Expect.That(subject)

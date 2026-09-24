@@ -91,6 +91,8 @@ culture, every other [
 is opt-in:
 
 ```csharp
+using System.Text.RegularExpressions;
+
 string subject = "some\ntext";
 
 await Expect.That(subject).IsEqualTo("^text$").AsRegex(RegexOptions.Multiline);

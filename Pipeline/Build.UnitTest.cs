@@ -76,6 +76,7 @@ partial class Build
 				Solution.Tests.aweXpect_Generators_Tests,
 				Solution.Tests.aweXpect_Tests,
 				Solution.Tests.aweXpect_Internal_Tests,
+				Solution.Tests.aweXpect_Docs_Tests,
 			],
 			_ =>
 			[
@@ -84,6 +85,7 @@ partial class Build
 				Solution.Tests.aweXpect_Generators_Tests,
 				Solution.Tests.aweXpect_Tests,
 				Solution.Tests.aweXpect_Internal_Tests,
+				Solution.Tests.aweXpect_Docs_Tests,
 			],
 		};
 

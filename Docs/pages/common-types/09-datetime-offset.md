@@ -201,8 +201,7 @@ You can verify, the properties of `DateTime` or `DateTimeOffset`:
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc);
-// or
-DateTimeOffset subject = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
+// or: DateTimeOffset subject = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
 
 await Expect.That(subject).HasYear(2024);
 await Expect.That(subject).HasMonth(12);
@@ -224,6 +223,8 @@ await Expect.That(subject).HasMillisecond().EqualTo(189);
 For `DateTime` you can also verify the `Kind` property:
 
 ```csharp
+DateTime subject = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc);
+
 await Expect.That(subject).HasKind(DateTimeKind.Utc);
 // or more explicit
 await Expect.That(subject).HasKind().EqualTo(DateTimeKind.Utc);
@@ -232,6 +233,8 @@ await Expect.That(subject).HasKind().EqualTo(DateTimeKind.Utc);
 For `DateTimeOffset` you can also verify the `Offset` property:
 
 ```csharp
+DateTimeOffset subject = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
+
 await Expect.That(subject).HasOffset(TimeSpan.FromMinutes(90));
 // or more explicit
 await Expect.That(subject).HasOffset().EqualTo(TimeSpan.FromMinutes(90));
@@ -259,5 +262,8 @@ Therefore, it is possible to specify a default tolerance that is used for all `D
 `TimeOnly` and `TimeSpan` comparisons (unless an explicit tolerance is given):
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+using aweXpect.Customization;
+
 IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```

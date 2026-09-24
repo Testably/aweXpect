@@ -20,10 +20,10 @@ await Expect.That(message).IsEqualTo("It's a compliment");
 > Expected that message
 > is equal to "It's a compliment",
 > but it was "It's a complement" which differs at index 12:
->                ↓ (actual)
->   "It's a complement"
->   "It's a compliment"
->                ↑ (expected)
+>            ↓ (actual)
+>   "…a complement"
+>   "…a compliment"
+>            ↑ (expected)
 > ```
 
 ## Why aweXpect?
@@ -84,7 +84,7 @@ The full walkthrough is at [Write your own extension](./write-extension).
 </TabItem>
 <TabItem value="frameworks" label="Any runner">
 
-```csharp
+```csharp no-compile
 [Fact]        // xUnit
 [Test]        // NUnit / TUnit
 [TestMethod]  // MSTest
