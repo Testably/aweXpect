@@ -1,1 +1,3 @@
 #nullable enable
+*REMOVED*aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
+aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Recording;
@@ -24,7 +25,7 @@ public static partial class ThatEventRecording
 		Quantifier quantifier,
 		RepeatedCheckOptions options)
 		: ConstraintResult(grammars),
-			IAsyncConstraint<IEventRecording<TSubject>>
+			IAsyncContextConstraint<IEventRecording<TSubject>>
 		where TSubject : notnull
 	{
 		private IEventRecording<TSubject>? _actual;
@@ -32,7 +33,7 @@ public static partial class ThatEventRecording
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
 
-		public async Task<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual,
+		public async Task<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
@@ -45,7 +46,8 @@ public static partial class ThatEventRecording
 
 			Stopwatch stopwatch = Stopwatch.StartNew();
 			_result = await actual.StopWhen(result =>
-				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout);
+				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout,
+				context);
 			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
 			if (options.Timeout > TimeSpan.Zero)
 			{
