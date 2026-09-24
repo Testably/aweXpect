@@ -118,6 +118,84 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsADifferentString_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollectionContainingTheSubject_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList unexpected = new() { 0, 1, 2, 3, };
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection unexpected in order and contiguous,
+					             but it was
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [
+					               0,
+					               1,
+					               2,
+					               3
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsANonGenericCollectionNotContainingTheSubject_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				ArrayList unexpected = new() { 1, 3, };
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection "foo" in order and contiguous,
+					             but it was
+
+					             Collection:
+					             [
+					               "foo"
+					             ]
+
+					             Expected:
+					             [
+					               "foo"
+					             ]
+					             """)
+					.Because("treating the string as a sequence of characters would let the expectation pass vacuously");
+			}
+
+			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);

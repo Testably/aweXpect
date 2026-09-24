@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -125,6 +126,34 @@ public static partial class ThatEnumerable
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
+
+	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
+		Summary = ContainedIn, NegatedSummary = NotContainedIn,
+		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+		IsContainedInForObjectsCore(
+			IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			string expectedExpression,
+			bool negated)
+		=> IsContainedInForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression,
+			negated);
+
+	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
+		Summary =
+			"Verifies that the collection is contained in a collection of only the provided <paramref name=\"expected\" /> value.",
+		NegatedSummary =
+			"Verifies that the collection is not contained in a collection of only the provided <paramref name=\"unexpected\" /> value.",
+		Remarks = SingleValueRemarks + "\nA <see langword=\"null\" /> argument is still an expected collection that is\n" +
+		          "<see langword=\"null\" /> and throws.")]
+	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, string?>
+		IsContainedInSingleStringCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			string expectedExpression,
+			bool negated)
+		=> IsContainedInForEnumerableCore<string?>(subject, expected is null ? null! : [expected,],
+			expectedExpression, negated);
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedInPredicates, NegatedSummary = NotContainedInPredicates,

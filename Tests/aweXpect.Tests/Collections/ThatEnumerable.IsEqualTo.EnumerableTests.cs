@@ -200,6 +200,46 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsADifferentString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection "foo" in order,
+					             but it contained item "bar" at index 1 that was not expected
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+
+					             Expected:
+					             [
+					               "foo"
+					             ]
+					             """)
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAString_ShouldUseItAsSingleExpectedItem()
+			{
+				IEnumerable subject = ToEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -229,6 +269,29 @@ public sealed partial class ThatEnumerable
 					               (… and maybe more)
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsTheNullLiteral_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection null in order,
+					             but the expected collection was <null>
+
+					             Collection:
+					             [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("a null literal binds to the string overload, but still expects no collection");
 			}
 
 			[Fact]
@@ -343,6 +406,35 @@ public sealed partial class ThatEnumerable
 					=> await That(subject)!.IsEqualTo(expected!);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsTheCharactersOfTheExpectedString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable('f', 'o', 'o');
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection "foo" in order,
+					             but it
+					               contained item 'f' at index 0 that was not expected and
+					               contained item 'o' at index 1 that was not expected and
+					               contained item 'o' at index 2 that was not expected and
+					               lacked the one expected item
+
+					             Collection:
+					             ['f', 'o', 'o']
+
+					             Expected:
+					             [
+					               "foo"
+					             ]
+					             """)
+					.Because("a string argument is a single expected item and not a sequence of characters");
 			}
 
 			[Fact]
