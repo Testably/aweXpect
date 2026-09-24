@@ -1,6 +1,1 @@
 #nullable enable
-*REMOVED*aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
-aweXpect.Options.StringEqualityOptions.StringEqualityOptions(string! parameterName) -> void
-aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
-aweXpect.Core.Sources.DelegateValue.ExceededTimeout.get -> System.TimeSpan?
-aweXpect.Options.StringEqualityOptions.ComparesByOrdinalEquality.get -> bool
