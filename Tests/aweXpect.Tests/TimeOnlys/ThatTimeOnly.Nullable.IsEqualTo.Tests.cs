@@ -68,7 +68,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by -0:01
 						              """);
 				}
 
@@ -123,7 +123,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)}, because we want to test the failure,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by -0:0{actualDifference}
 						              """);
 				}
 

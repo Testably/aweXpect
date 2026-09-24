@@ -62,7 +62,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 18:00:00.0000000 ± 12:00:00,
-					             but it was 06:00:00.0000000
+					             but it was 06:00:00.0000000 which differs by 12:00:00
 					             """)
 					.Because("it must stay the exact complement of is equal to");
 			}
@@ -84,12 +84,16 @@ public sealed partial class ThatTimeOnly
 						.Within(tolerance)
 						.Because("we want to test the failure");
 
+				string difference = actualDifference == 0
+					? ""
+					: $" which differs by -0:0{actualDifference}";
+
 				await That(Act).Throws<XunitException>()
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± {Formatter.Format(tolerance)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{difference}
 					              """);
 			}
 
@@ -107,7 +111,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 23:59:00.0000000 ± 1:00,
-					             but it was 00:00:00.0000000
+					             but it was 00:00:00.0000000 which differs by 1:00
 					             """)
 					.Because("equality uses the shortest distance around the clock face");
 			}

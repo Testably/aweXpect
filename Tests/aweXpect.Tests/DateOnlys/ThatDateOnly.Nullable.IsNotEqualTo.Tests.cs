@@ -122,12 +122,16 @@ public sealed partial class ThatDateOnly
 							.Within(tolerance.Days())
 							.Because("we want to test the failure");
 
+					string difference = actualDifference == 0
+						? ""
+						: $" which differs by -{actualDifference} days";
+
 					await That(Act).Throws<XunitException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)} ± {tolerance} days, because we want to test the failure,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)}{difference}
 						              """);
 				}
 			}

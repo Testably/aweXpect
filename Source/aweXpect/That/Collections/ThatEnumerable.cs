@@ -35,7 +35,8 @@ public static partial class ThatEnumerable
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
 		CollectionMatchOptions matchOptions,
-		bool failsForNullSubject = false)
+		bool failsForNullSubject = false,
+		bool withTolerance = false)
 		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
@@ -111,9 +112,11 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(matchOptions.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine), Grammars));
-			stringBuilder.Append(options);
+			string expectedText = expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine);
+			// A tolerance qualifies the expected values, not their order.
+			stringBuilder.Append(withTolerance
+				? matchOptions.GetExpectation(expectedText + options, Grammars)
+				: matchOptions.GetExpectation(expectedText, Grammars) + options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -407,7 +410,8 @@ public static partial class ThatEnumerable
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
 		CollectionMatchOptions matchOptions,
-		bool failsForNullSubject = false)
+		bool failsForNullSubject = false,
+		bool withTolerance = false)
 		: ConstraintResult.WithEqualToValue<TEnumerable?>(it, grammars, expected is null),
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable?
@@ -499,9 +503,11 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(matchOptions.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine), Grammars));
-			stringBuilder.Append(options);
+			string expectedText = expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine);
+			// A tolerance qualifies the expected values, not their order.
+			stringBuilder.Append(withTolerance
+				? matchOptions.GetExpectation(expectedText + options, Grammars)
+				: matchOptions.GetExpectation(expectedText, Grammars) + options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

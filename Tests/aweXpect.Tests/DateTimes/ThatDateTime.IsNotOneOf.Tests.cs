@@ -205,12 +205,16 @@ public sealed partial class ThatDateTime
 						.Within(tolerance.Seconds())
 						.Because("we want to test the failure");
 
+				string difference = actualDifference == 0
+					? ""
+					: $" which differs by -0:0{actualDifference} from the closest value";
+
 				await That(Act).Throws<XunitException>()
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
 					              is not one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{difference}
 					              """);
 			}
 		}

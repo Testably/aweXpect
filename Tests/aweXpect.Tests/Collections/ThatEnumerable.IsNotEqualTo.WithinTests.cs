@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0m, 2.0m, 3.0m,] in any order ± 0.2,
+						             is not equal to collection [1.0m, 2.0m, 3.0m,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0m, null, 2.0m, 3.0m,] in order ± 0.2,
+						             is not equal to collection [1.0m, null, 2.0m, 3.0m,] ± 0.2 in order,
 						             but it was
 
 						             Collection:
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] in any order ± 0.2,
+						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -117,7 +117,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0, 2.0, 3.0,] in order ± 0.2,
+						             is not equal to collection [1.0, 2.0, 3.0,] ± 0.2 in order,
 						             but it was
 
 						             Collection:
@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
+						              is not equal to collection [value,] ± {Formatter.Format(tolerance)} in order,
 						              but it was
 
 						              Collection:
@@ -194,7 +194,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] in any order ± 0.2,
+						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -221,7 +221,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0, null, 2.0, 3.0,] in any order ± 0.2,
+						             is not equal to collection [1.0, null, 2.0, 3.0,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -257,7 +257,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
+						              is not equal to collection [value,] ± {Formatter.Format(tolerance)} in order,
 						              but it was
 
 						              Collection:
@@ -300,7 +300,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] in any order ± 0.2,
+						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -322,7 +322,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0F, 2.0F, 3.0F,] in any order ± 0.2,
+						             is not equal to collection [1.0F, 2.0F, 3.0F,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -358,7 +358,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
+						              is not equal to collection [value,] ± {Formatter.Format(tolerance)} in order,
 						              but it was
 
 						              Collection:
@@ -399,7 +399,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] in any order ± 0.2,
+						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -426,7 +426,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection [1.0F, null, 2.0F, 3.0F,] in any order ± 0.2,
+						             is not equal to collection [1.0F, null, 2.0F, 3.0F,] ± 0.2 in any order,
 						             but it was
 
 						             Collection:
@@ -462,7 +462,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
+						              is not equal to collection [value,] ± {Formatter.Format(tolerance)} in order,
 						              but it was
 
 						              Collection:
@@ -509,7 +509,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection expected in any order ± 1:00,
+						              is not equal to collection expected ± 1:00 in any order,
 						              but it was
 
 						              Collection:
@@ -553,7 +553,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection expected in any order ± 1:00,
+						              is not equal to collection expected ± 1:00 in any order,
 						              but it was
 
 						              Collection:
@@ -597,7 +597,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection expected in any order ± 1:00,
+						              is not equal to collection expected ± 1:00 in any order,
 						              but it was
 
 						              Collection:
@@ -641,7 +641,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not equal to collection expected in any order ± 1:00,
+						              is not equal to collection expected ± 1:00 in any order,
 						              but it was
 
 						              Collection:
@@ -695,7 +695,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection expected in any order ± 1:00,
+						             is not equal to collection expected ± 1:00 in any order,
 						             but it was
 
 						             Collection:
@@ -741,7 +741,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to collection expected in any order ± 1:00,
+						             is not equal to collection expected ± 1:00 in any order,
 						             but it was
 
 						             Collection:

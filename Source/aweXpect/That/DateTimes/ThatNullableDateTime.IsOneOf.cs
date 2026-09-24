@@ -123,6 +123,7 @@ public static partial class ThatNullableDateTime
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
+				stringBuilder.AppendTimeDifferenceToClosest(Actual, _expected);
 			}
 		}
 

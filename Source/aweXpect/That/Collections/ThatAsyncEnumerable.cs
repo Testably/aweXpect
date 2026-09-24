@@ -454,7 +454,8 @@ public static partial class ThatAsyncEnumerable
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
 		CollectionMatchOptions matchOptions,
-		bool failsForNullSubject = false)
+		bool failsForNullSubject = false,
+		bool withTolerance = false)
 		: ConstraintResult.WithEqualToValue<IAsyncEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 		where TItem : TMatch
@@ -548,8 +549,10 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(matchOptions.GetExpectation(expectedExpression, Grammars));
-			stringBuilder.Append(options);
+			// A tolerance qualifies the expected values, not their order.
+			stringBuilder.Append(withTolerance
+				? matchOptions.GetExpectation(expectedExpression + options, Grammars)
+				: matchOptions.GetExpectation(expectedExpression, Grammars) + options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

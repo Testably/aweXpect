@@ -39,7 +39,7 @@ public class TimeTolerance
 
 		int days = (int)Tolerance.Value.TotalDays;
 		const char plusMinus = '\u00b1';
-		return $" {plusMinus} {days} days";
+		return days == 1 ? $" {plusMinus} 1 day" : $" {plusMinus} {days} days";
 	}
 
 	/// <inheritdoc />

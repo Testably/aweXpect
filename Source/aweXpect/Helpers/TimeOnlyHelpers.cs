@@ -19,6 +19,22 @@ internal static class TimeOnlyHelpers
 	}
 
 	/// <summary>
+	///     The signed <see cref="CircularDistanceTicks" />: positive, when <paramref name="value" /> lies clockwise of
+	///     <paramref name="other" />.
+	/// </summary>
+	public static long CircularDifferenceTicks(this TimeOnly value, TimeOnly other)
+	{
+		long clockwise = Clockwise(value.Ticks - other.Ticks);
+		return clockwise > TimeSpan.TicksPerDay / 2 ? clockwise - TimeSpan.TicksPerDay : clockwise;
+	}
+
+	/// <summary>
+	///     The distance in ticks from <paramref name="start" /> clockwise to <paramref name="value" />.
+	/// </summary>
+	public static long ClockwiseTicksFrom(this TimeOnly value, TimeOnly start)
+		=> Clockwise(value.Ticks - start.Ticks);
+
+	/// <summary>
 	///     Whether <paramref name="value" /> lies on the arc that runs clockwise from <paramref name="minimum" /> to
 	///     <paramref name="maximum" />, extended at both ends by the <paramref name="tolerance" />.
 	/// </summary>

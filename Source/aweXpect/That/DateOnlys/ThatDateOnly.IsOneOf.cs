@@ -92,6 +92,7 @@ public static partial class ThatDateOnly
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.AppendDayDifferenceToClosest(Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

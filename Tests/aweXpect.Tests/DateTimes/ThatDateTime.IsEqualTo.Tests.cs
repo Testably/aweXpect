@@ -47,6 +47,24 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
+			public async Task WhenSubjectDiffersByLessThanAMillisecond_ShouldNotShowTheDifference()
+			{
+				DateTime subject = CurrentTime().AddTicks(1);
+				DateTime expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("a time span is formatted in milliseconds, so the difference would read as zero");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -59,8 +77,26 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -0:01
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsMinValueAndExpectedIsMaxValue_ShouldShowTheDifference()
+			{
+				DateTime subject = DateTime.MinValue;
+				DateTime expected = DateTime.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -3652058.23:59:59.999
+					              """)
+					.Because("the difference between any two date times fits into a time span");
 			}
 
 			[Fact]
@@ -153,7 +189,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)} which differs by -0:04
 					              """);
 			}
 

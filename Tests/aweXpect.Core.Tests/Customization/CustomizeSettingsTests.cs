@@ -86,7 +86,7 @@ public sealed class CustomizeSettingsTests
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
-			              but it was {Formatter.Format(time)}
+			              but it was {Formatter.Format(time)} which differs by -0:00.010
 			              """);
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(10.Milliseconds()))
 		{
@@ -97,7 +97,7 @@ public sealed class CustomizeSettingsTests
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
-			              but it was {Formatter.Format(time)}
+			              but it was {Formatter.Format(time)} which differs by -0:00.010
 			              """)
 			.Because("the default tolerance must be restored once the customization is disposed");
 	}

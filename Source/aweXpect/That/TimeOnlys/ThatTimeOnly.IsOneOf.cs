@@ -93,6 +93,7 @@ public static partial class ThatTimeOnly
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.AppendTimeDifferenceToClosest(Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
