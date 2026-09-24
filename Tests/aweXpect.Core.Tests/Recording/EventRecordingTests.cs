@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Metadata;
 using aweXpect.Recording;
 
@@ -198,6 +199,24 @@ public sealed class EventRecordingTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("The recording was already disposed.").AsSuffix()
 			.Because("a disposed recording is detached and would answer from its frozen queue");
+	}
+
+	[Fact]
+	public async Task WhenEvaluatedEventually_ShouldThrowInvalidOperationExceptionOnTheRetry()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		async Task Act()
+			=> await That(() => recording).Eventually()
+				.Triggered(nameof(CustomEventClass.CustomEvent)).Once()
+				.WithTimeout(TimeSpan.FromSeconds(30));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("every retry is a further evaluation, and a retry of the stopped recording could only see the same frozen snapshot");
 	}
 
 	[Fact]
@@ -602,7 +621,8 @@ public sealed class EventRecordingTests
 
 	private sealed class ForeignRecording : IEventRecording<CustomEventClass>
 	{
-		public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
+		public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+			IEvaluationContext? context = null)
 			=> throw new NotSupportedException();
 	}
 

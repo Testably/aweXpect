@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Recording;
 
@@ -13,6 +14,11 @@ public interface IEventRecording<TSubject>
 	///     Stops the recording of events when checked events <see paramref="areFound" />
 	///     or the <paramref name="timeout" /> elapsed.
 	/// </summary>
-	Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout);
+	/// <remarks>
+	///     A recording that was stopped with the same <paramref name="context" /> can be checked again, so that all
+	///     constraints of one expectation describe the same snapshot.
+	/// </remarks>
+	Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		IEvaluationContext? context = null);
 }
 #pragma warning restore S2326

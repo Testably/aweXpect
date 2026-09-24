@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Threading.Channels;
@@ -35,7 +36,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	private readonly string _subjectExpression;
 
 	private bool _isStopped;
-	private long _stoppedByEvaluation;
+	private IEvaluationContext? _stoppedBy;
 	private bool _stopsAfterEvaluation = true;
 
 	/// <summary>
@@ -90,7 +91,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		{
 			// Nobody ever receives a recording whose construction threw, so the handlers it already attached would
 			// stay on the subject for its lifetime with nothing left that could detach them.
-			Stop();
+			Stop(null);
 			throw;
 		}
 	}
@@ -139,9 +140,10 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	}
 
 #if NET8_0_OR_GREATER
-	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
+	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		IEvaluationContext? context = null)
 	{
-		ThrowIfStopped();
+		ThrowIfStopped(context);
 		try
 		{
 			if (timeout > TimeSpan.Zero && !areFound(this))
@@ -177,16 +179,17 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			if (_stopsAfterEvaluation)
 			{
 				// A predicate that throws must not leave the handlers attached to the subject.
-				Stop();
+				Stop(context);
 			}
 		}
 
 		return this;
 	}
 #else
-	public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
+	public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		IEvaluationContext? context = null)
 	{
-		ThrowIfStopped();
+		ThrowIfStopped(context);
 		DateTime now = DateTime.Now;
 		DateTime endTime = now.Add(timeout);
 		try
@@ -223,7 +226,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			if (_stopsAfterEvaluation)
 			{
 				// A predicate that throws must not leave the handlers attached to the subject.
-				Stop();
+				Stop(context);
 			}
 		}
 
@@ -232,7 +235,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 #endif
 
 	/// <inheritdoc cref="IDisposable.Dispose()" />
-	public void Dispose() => Stop();
+	public void Dispose() => Stop(null);
 
 	/// <summary>
 	///     Keeps recording until <see cref="Dispose" /> instead of stopping with the next evaluation.
@@ -266,10 +269,10 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	public override string ToString()
 		=> _subjectExpression;
 
-	private void Stop()
+	private void Stop(IEvaluationContext? context)
 	{
 		_isStopped = true;
-		_stoppedByEvaluation = ExpectationBuilder.CurrentEvaluation;
+		_stoppedBy = context;
 		foreach (EventRecorder recorder in _recorders.Values)
 		{
 			recorder.Dispose();
@@ -281,10 +284,9 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	///     would silently check stale data and has to fail loudly instead. The constraints of one awaited expectation
 	///     share the evaluation that stopped the recording and all describe that same snapshot, so they are let through.
 	/// </remarks>
-	private void ThrowIfStopped()
+	private void ThrowIfStopped(IEvaluationContext? context)
 	{
-		if (!_isStopped || (_stoppedByEvaluation != 0 &&
-		                    _stoppedByEvaluation == ExpectationBuilder.CurrentEvaluation))
+		if (!_isStopped || (_stoppedBy is not null && ReferenceEquals(_stoppedBy, context)))
 		{
 			return;
 		}
