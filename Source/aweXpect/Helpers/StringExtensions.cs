@@ -1,12 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 
 namespace aweXpect.Helpers;
 
 internal static class StringExtensions
 {
+	/// <summary>
+	///     Checks if the <paramref name="value" /> contains a character of the <paramref name="first" /> or the
+	///     <paramref name="second" /> category.
+	/// </summary>
+	/// <remarks>
+	///     A surrogate pair is categorized as the single character it encodes.
+	/// </remarks>
+	public static bool ContainsCharacterOfCategory(this string value, UnicodeCategory first, UnicodeCategory second)
+	{
+		for (int i = 0; i < value.Length; i++)
+		{
+			UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(value, i);
+			if (category == first || category == second)
+			{
+				return true;
+			}
+
+			if (char.IsSurrogatePair(value, i))
+			{
+				i++;
+			}
+		}
+
+		return false;
+	}
+
 	/// <summary>
 	///     Counts the lines of the <paramref name="value" />, separated by <c>\r\n</c>, <c>\n</c> or <c>\r</c>.
 	/// </summary>
