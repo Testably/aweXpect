@@ -61,11 +61,6 @@ public static partial class ThatDateOnly
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = expected.Value.DayNumber - actual.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;

@@ -157,16 +157,22 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
-			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
+			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
-				DateOnly subject = LaterTime(3);
+				DateOnly subject = EarlierTime(2);
 				DateOnly unexpected = CurrentTime();
 
 				async Task Act()
 					=> await That(subject).IsNotAfter(unexpected)
 						.Within(3.Days());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after {Formatter.Format(unexpected)} ± 3 days,
+					              but it was {Formatter.Format(subject)} which differs by -2 days
+					              """)
+					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 		}
 	}

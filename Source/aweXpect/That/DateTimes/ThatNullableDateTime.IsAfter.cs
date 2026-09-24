@@ -67,7 +67,7 @@ public static partial class ThatNullableDateTime
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, expected.Value.Kind))
 			{
@@ -79,11 +79,6 @@ public static partial class ThatNullableDateTime
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = expected - actual.Value < timeTolerance ? Outcome.Success : Outcome.Failure;
 			}
 

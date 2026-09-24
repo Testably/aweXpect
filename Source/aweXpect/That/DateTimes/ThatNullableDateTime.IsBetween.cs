@@ -78,7 +78,7 @@ public static partial class ThatNullableDateTime
 			Actual = actual;
 			if (actual is null || minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, minimum.Value.Kind))
 			{
@@ -103,11 +103,6 @@ public static partial class ThatNullableDateTime
 		{
 			TimeSpan timeTolerance = tolerance.Tolerance
 			                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			if (IsNegated)
-			{
-				timeTolerance = timeTolerance.Negate();
-			}
-
 			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 

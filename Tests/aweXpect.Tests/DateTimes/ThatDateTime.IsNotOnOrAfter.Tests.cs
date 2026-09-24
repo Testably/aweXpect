@@ -164,7 +164,7 @@ public sealed partial class ThatDateTime
 			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 			{
 				DateTime subject = DateTime.MinValue;
-				DateTime expected = CurrentTime();
+				DateTime expected = DateTime.MinValue.AddDays(2);
 
 				async Task Act()
 					=> await That(subject).IsNotOnOrAfter(expected)
@@ -193,16 +193,22 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
-			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
+			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
-				DateTime subject = LaterTime(2);
+				DateTime subject = EarlierTime(2);
 				DateTime unexpected = CurrentTime();
 
 				async Task Act()
 					=> await That(subject).IsNotOnOrAfter(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not on or after {Formatter.Format(unexpected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:02
+					              """)
+					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 		}
 	}

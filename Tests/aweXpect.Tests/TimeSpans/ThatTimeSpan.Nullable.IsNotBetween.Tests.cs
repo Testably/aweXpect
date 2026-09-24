@@ -213,7 +213,7 @@ public sealed partial class ThatTimeSpan
 				{
 					TimeSpan? subject = CurrentTime();
 					TimeSpan minimum = TimeSpan.MinValue;
-					TimeSpan maximum = LaterTime(2)!.Value;
+					TimeSpan maximum = EarlierTime(4)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -226,7 +226,7 @@ public sealed partial class ThatTimeSpan
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeSpan? subject = CurrentTime();
-					TimeSpan minimum = EarlierTime(2)!.Value;
+					TimeSpan minimum = LaterTime(4)!.Value;
 					TimeSpan maximum = TimeSpan.MaxValue;
 
 					async Task Act()
@@ -241,7 +241,7 @@ public sealed partial class ThatTimeSpan
 				{
 					TimeSpan? subject = CurrentTime();
 					TimeSpan minimum = TimeSpan.MinValue;
-					TimeSpan? maximum = LaterTime(2);
+					TimeSpan? maximum = EarlierTime(4);
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -254,7 +254,7 @@ public sealed partial class ThatTimeSpan
 				public async Task WhenNullableMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeSpan? subject = CurrentTime();
-					TimeSpan? minimum = EarlierTime(2);
+					TimeSpan? minimum = LaterTime(4);
 					TimeSpan maximum = TimeSpan.MaxValue;
 
 					async Task Act()
@@ -267,7 +267,7 @@ public sealed partial class ThatTimeSpan
 				[Fact]
 				public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 				{
-					TimeSpan? subject = EarlierTime(3);
+					TimeSpan? subject = LaterTime(3);
 					TimeSpan minimum = TimeSpan.MinValue;
 					TimeSpan? maximum = CurrentTime();
 
@@ -279,14 +279,14 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 0:03 from the maximum
 						              """);
 				}
 
 				[Fact]
 				public async Task WhenValueIsWithinTheMinimumTolerance_ShouldFail()
 				{
-					TimeSpan? subject = LaterTime(3);
+					TimeSpan? subject = EarlierTime(3);
 					TimeSpan? minimum = CurrentTime();
 					TimeSpan maximum = TimeSpan.MaxValue;
 
@@ -298,7 +298,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by -0:03 from the minimum
 						              """);
 				}
 

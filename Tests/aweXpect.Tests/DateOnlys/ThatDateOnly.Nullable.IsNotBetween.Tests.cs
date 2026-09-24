@@ -214,7 +214,7 @@ public sealed partial class ThatDateOnly
 				{
 					DateOnly? subject = CurrentTime();
 					DateOnly minimum = DateOnly.MinValue;
-					DateOnly maximum = LaterTime(2)!.Value;
+					DateOnly maximum = EarlierTime(4)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -227,7 +227,7 @@ public sealed partial class ThatDateOnly
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
-					DateOnly minimum = EarlierTime(2)!.Value;
+					DateOnly minimum = LaterTime(4)!.Value;
 					DateOnly maximum = DateOnly.MaxValue;
 
 					async Task Act()
@@ -242,7 +242,7 @@ public sealed partial class ThatDateOnly
 				{
 					DateOnly? subject = CurrentTime();
 					DateOnly minimum = DateOnly.MinValue;
-					DateOnly? maximum = LaterTime(2);
+					DateOnly? maximum = EarlierTime(4);
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -255,7 +255,7 @@ public sealed partial class ThatDateOnly
 				public async Task WhenNullableMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
-					DateOnly? minimum = EarlierTime(2);
+					DateOnly? minimum = LaterTime(4);
 					DateOnly maximum = DateOnly.MaxValue;
 
 					async Task Act()
@@ -283,7 +283,7 @@ public sealed partial class ThatDateOnly
 				[Fact]
 				public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 				{
-					DateOnly? subject = EarlierTime(3);
+					DateOnly? subject = LaterTime(3);
 					DateOnly minimum = DateOnly.MinValue;
 					DateOnly? maximum = CurrentTime();
 
@@ -295,14 +295,14 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by 3 days from the maximum
 						              """);
 				}
 
 				[Fact]
 				public async Task WhenValueIsWithinTheMinimumTolerance_ShouldFail()
 				{
-					DateOnly? subject = LaterTime(3);
+					DateOnly? subject = EarlierTime(3);
 					DateOnly? minimum = CurrentTime();
 					DateOnly maximum = DateOnly.MaxValue;
 
@@ -314,7 +314,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
-						              but it was {Formatter.Format(subject)}
+						              but it was {Formatter.Format(subject)} which differs by -3 days from the minimum
 						              """);
 				}
 

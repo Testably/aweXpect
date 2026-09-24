@@ -57,18 +57,13 @@ public static partial class ThatNullableDateOnly
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (!IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
-				Outcome = expected.Value.DayNumber - actual.Value.DayNumber >= (int)timeTolerance.TotalDays
+				Outcome = expected.Value.DayNumber - actual.Value.DayNumber >= -(int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;
 			}

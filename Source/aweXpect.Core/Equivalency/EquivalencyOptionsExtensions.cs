@@ -15,7 +15,11 @@ internal static class EquivalencyOptionsExtensions
 	///     value, which can never be an abstract type the user registered options for. A <see cref="Type" /> member is
 	///     a <c>RuntimeType</c> at runtime, a type that cannot even be named, so an exact match alone would make
 	///     <see cref="EquivalencyOptions.For{TMember}" /> unreachable for it. Interfaces are not considered, because
-	///     several of them can match without an order that decides between them.
+	///     several of them can match without an order that decides between them.<br />
+	///     Without a registration, the <paramref name="defaultValue" /> of the enclosing type applies, except for its
+	///     <see cref="EquivalencyTypeOptions.ComparisonType" />, which describes the enclosing type only: comparing a
+	///     string member by members because its owner is would reduce it to its characters. The comparison type of
+	///     the top-level options is kept instead, because those apply to the whole graph.
 	/// </remarks>
 	internal static EquivalencyTypeOptions GetTypeOptions(this EquivalencyOptions @this, Type? type,
 		EquivalencyTypeOptions defaultValue)
@@ -28,6 +32,14 @@ internal static class EquivalencyOptionsExtensions
 			}
 		}
 
-		return defaultValue;
+		if (defaultValue.ComparisonType == @this.ComparisonType)
+		{
+			return defaultValue;
+		}
+
+		return defaultValue with
+		{
+			ComparisonType = @this.ComparisonType,
+		};
 	}
 }

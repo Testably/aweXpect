@@ -43,6 +43,11 @@ public static partial class ThatEnumerable
 		"Without this overload a collection argument without an item type would bind to the item overload and be\n" +
 		"expected as a single item.";
 
+	private const string SetLookupRemarks =
+		"A set with a custom comparer, e.g. a <c>HashSet&lt;T&gt;</c> created with one, is asked for the item itself, so\n" +
+		"that its comparer decides and the item is counted at most once. Its items are enumerated instead when the\n" +
+		"comparison is changed, e.g. with <c>Using(…)</c>, or when the item is <see langword=\"null\" />.";
+
 	private const string ContainsCollection =
 		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
 
@@ -92,7 +97,7 @@ public static partial class ThatEnumerable
 		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
-		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SetLookupRemarks)]
 	internal static ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		ContainsItemCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -100,13 +105,14 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		Quantifier quantifier = new();
-		ObjectEqualityOptions<TItem> options = new();
+		ContainedItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
 					a => options.AreConsideredEqual(a, expected),
+					a => options.HasDefaultMatchType ? ContainsBySetLookup(a, expected) : null,
 					quantifier).InvertIf(negated)),
 			subject,
 			quantifier,
@@ -114,7 +120,8 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = 1,
-		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = NullLiteralRemarks)]
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue,
+		Remarks = NullLiteralRemarks + "\n" + SetLookupRemarks)]
 	internal static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		ContainsItemForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -129,6 +136,7 @@ public static partial class ThatEnumerable
 				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}", negated),
 					a => options.AreConsideredEqual(a, expected),
+					a => options.ComparesByOrdinalEquality ? ContainsBySetLookup(a, expected) : null,
 					quantifier).InvertIf(negated)),
 			subject,
 			quantifier,
@@ -575,6 +583,36 @@ public static partial class ThatEnumerable
 		return item is null && default(TItem) is null;
 	}
 
+	/// <summary>
+	///     Asks a set <paramref name="collection" /> with a custom comparer itself whether it contains the
+	///     <paramref name="expected" /> item, so that its comparer decides, or returns <see langword="null" /> when the
+	///     items have to be enumerated instead.
+	/// </summary>
+	/// <remarks>
+	///     A set with the default comparer is enumerated, so that the rules of the default equality, e.g. for the
+	///     <see cref="DateTimeKind" /> or for numbers of different types, still apply. A <see langword="null" /> item is
+	///     enumerated, because a set whose comparer rejects <see langword="null" /> throws when asked for it.
+	/// </remarks>
+	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
+		=> expected is not null && ComparerHelpers.IsSetWithCustomComparer(collection)
+			? ((ICollection<TItem>)collection).Contains(expected)
+			: null;
+
+	/// <summary>
+	///     Equality options that tell whether their match type is still the default one.
+	/// </summary>
+	private sealed class ContainedItemEqualityOptions<TItem> : ObjectEqualityOptions<TItem>
+	{
+		private readonly IObjectMatchType _defaultMatchType;
+
+		public ContainedItemEqualityOptions()
+		{
+			_defaultMatchType = MatchType;
+		}
+
+		public bool HasDefaultMatchType => ReferenceEquals(MatchType, _defaultMatchType);
+	}
+
 	private sealed class ContainConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -722,6 +760,7 @@ public static partial class ThatEnumerable
 #else
 		Func<TItem, Task<bool>> predicate,
 #endif
+		Func<IEnumerable<TItem>, bool?> lookup,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
@@ -742,10 +781,16 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			_isFinished = false;
+			if (lookup(actual) is { } isContained)
+			{
+				_count = isContained ? 1 : 0;
+				return Finish(actual);
+			}
+
 			_materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			_count = 0;
-			_isFinished = false;
 			foreach (TItem item in _materializedEnumerable)
 			{
 				if (!await predicate(item))
@@ -767,7 +812,12 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			return Finish(_materializedEnumerable);
+		}
+
+		private AsyncContainConstraint<TItem> Finish(IEnumerable<TItem> collection)
+		{
+			expectationBuilder.AddCollectionContext(collection);
 			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{

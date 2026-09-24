@@ -85,6 +85,20 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoUnexpectedKeysForOneEntry_ShouldSucceed()
+			{
+				IDictionary<string, int> subject =
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, };
+				IDictionary<string, int> unexpected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("both unexpected keys are matched by the key \"a\", so the key \"b\" is left over");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);

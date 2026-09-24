@@ -55,17 +55,12 @@ public static partial class ThatNullableDateTimeOffset
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance
 				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				if (IsNegated)
-				{
-					timeTolerance = timeTolerance.Negate();
-				}
-
 				Outcome = expected - actual.Value < timeTolerance ? Outcome.Success : Outcome.Failure;
 			}
 

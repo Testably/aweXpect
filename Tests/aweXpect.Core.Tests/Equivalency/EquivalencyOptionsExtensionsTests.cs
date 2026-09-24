@@ -69,6 +69,42 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Fact]
+	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldKeepTheComparisonTypeOfTheOptions()
+	{
+		EquivalencyTypeOptions defaultValue = new()
+		{
+			ComparisonType = EquivalencyComparisonType.ByValue,
+		};
+		EquivalencyOptions options = new()
+		{
+			ComparisonType = EquivalencyComparisonType.ByMembers,
+		};
+
+		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyBaseClass), defaultValue);
+
+		await That(result.ComparisonType).IsEqualTo(EquivalencyComparisonType.ByMembers)
+			.Because("the comparison type of the top-level options applies to the whole graph");
+	}
+
+	[Fact]
+	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldNotInheritTheComparisonTypeOfTheDefaultValue()
+	{
+		EquivalencyTypeOptions defaultValue = new()
+		{
+			ComparisonType = EquivalencyComparisonType.ByMembers,
+			IgnoreCollectionOrder = true,
+		};
+		EquivalencyOptions options = new();
+
+		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyBaseClass), defaultValue);
+
+		await That(result.ComparisonType).IsNull()
+			.Because("the comparison type of a registration describes the registered type only, not its members");
+		await That(result.IgnoreCollectionOrder).IsTrue()
+			.Because("the other options of the enclosing type still apply to its members");
+	}
+
+	[Fact]
 	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldUseTheDefaultValue()
 	{
 		EquivalencyTypeOptions defaultValue = new();

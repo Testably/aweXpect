@@ -15,6 +15,11 @@ public record EquivalencyTypeOptions
 	///     <see cref="EquivalencyOptions.DefaultComparisonTypeSelector" /> to
 	///     determine the <see cref="EquivalencyComparisonType" />.
 	/// </summary>
+	/// <remarks>
+	///     Set for a type with <see cref="EquivalencyOptions.For{TMember}" />, it applies to that type only and not to
+	///     its members, because a comparison type rarely suits both a type and its members: comparing a string member by
+	///     members would reduce it to its characters. Set on the top-level options, it applies to the whole graph.
+	/// </remarks>
 	public EquivalencyComparisonType? ComparisonType { get; init; }
 
 	/// <summary>

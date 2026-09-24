@@ -2,6 +2,11 @@
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
+#if NET8_0_OR_GREATER
+using System.Collections.Concurrent;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
+#endif
 
 namespace aweXpect.Tests;
 
@@ -301,12 +306,45 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
-					             but it contained 2 keys and matched 1 expected key
+					             but it contained additional key "b"
 
 					             Dictionary:
 					             {["a"] = 1, ["b"] = 2}
 					             """)
-					.Because("naming the additional keys would overshoot when the comparer is coarser than the default");
+					.Because("the comparer of the subject tells which of its keys were matched");
+			}
+
+			[Fact]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithDifferentlyCasedKeysThatStayDistinct_ShouldSucceed()
+			{
+				IDictionary<string, int> subject =
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, };
+				IDictionary<string, int> expected = ToDictionary(["a", "B",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("every expected key is matched by a different key of the subject");
+			}
+
+			[Theory]
+			[MemberData(nameof(CaseInsensitiveDictionaries))]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoExpectedKeysForOneEntry_ShouldFail(
+				IDictionary<string, int> subject)
+			{
+				IDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it lacked a distinct key for "A" and contained additional key "b"
+					             """).AsPrefix()
+					.Because($"both expected keys are matched by the key \"a\" of the {subject.GetType().Name}");
 			}
 
 			[Fact]
@@ -323,12 +361,50 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
-					             but it contained 1 key and matched 2 expected keys
+					             but it lacked a distinct key for "A"
 
 					             Dictionary:
 					             {["a"] = 1}
 					             """)
 					.Because("the duplicate guard uses the default key equality, not the comparer of the subject");
+			}
+
+			[Fact]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoPairsOfExpectedKeysForTwoEntries_ShouldFail()
+			{
+				IDictionary<string, int> subject =
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, { "c", 1 }, };
+				IDictionary<string, int> expected = ToDictionary(["a", "A", "b", "B",], [1, 1, 1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it lacked a distinct key for each of 2 keys: ["A", "B"] and contained additional key "c"
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 1, ["c"] = 1}
+					             """);
+			}
+
+			public static TheoryData<IDictionary<string, int>> CaseInsensitiveDictionaries()
+			{
+				Dictionary<string, int> entries = new() { { "a", 1 }, { "b", 1 }, };
+				return
+				[
+					new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+#if NET8_0_OR_GREATER
+					new ConcurrentDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase),
+					entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase),
+					entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
+#endif
+				];
 			}
 		}
 
