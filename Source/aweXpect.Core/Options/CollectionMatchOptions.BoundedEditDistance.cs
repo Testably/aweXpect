@@ -128,34 +128,27 @@ public partial class CollectionMatchOptions
 			List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits = new();
 			while (subjectIndex > _start)
 			{
-				byte[] row = _rows[subjectIndex - _start];
-				byte[] previous = _rows[subjectIndex - _start - 1];
-				int offset = expectedIndex - subjectIndex + _maximumEdits;
-				if (expectedIndex > 0 && previous[offset] < _unreachable)
+				EditKind? edit = await TraceBackOneStep(values, subjectIndex, expectedIndex, areConsideredEqual);
+				switch (edit)
 				{
-					bool isEqual = await areConsideredEqual(values[subjectIndex - 1], _expectedItems[expectedIndex - 1]);
-					if (previous[offset] + (isEqual ? 0 : 1) == row[offset])
-					{
-						if (!isEqual)
+					case EditKind.Additional:
+						edits.Add((EditKind.Additional, subjectIndex - 1, -1));
+						subjectIndex--;
+						break;
+					case EditKind.Missing:
+						edits.Add((EditKind.Missing, -1, expectedIndex - 1));
+						expectedIndex--;
+						break;
+					default:
+						if (edit == EditKind.Incorrect)
 						{
 							edits.Add((EditKind.Incorrect, subjectIndex - 1, expectedIndex - 1));
 						}
 
 						subjectIndex--;
 						expectedIndex--;
-						continue;
-					}
+						break;
 				}
-
-				if (offset + 1 < _width && previous[offset + 1] + 1 == row[offset])
-				{
-					edits.Add((EditKind.Additional, subjectIndex - 1, -1));
-					subjectIndex--;
-					continue;
-				}
-
-				edits.Add((EditKind.Missing, -1, expectedIndex - 1));
-				expectedIndex--;
 			}
 
 			for (int index = _start - 1; index >= expectedIndex; index--)
@@ -170,6 +163,38 @@ public partial class CollectionMatchOptions
 
 			edits.Reverse();
 			return edits;
+		}
+
+		/// <summary>
+		///     Finds the cell in the previous row from which the distance of the current cell was computed.
+		/// </summary>
+		/// <returns>
+		///     The edit of this step, or <see langword="null" /> when the item matches the expected item it is aligned
+		///     with.
+		/// </returns>
+#if NET8_0_OR_GREATER
+		private async ValueTask<EditKind?> TraceBackOneStep(List<T> values, int subjectIndex, int expectedIndex,
+			Func<T, T3, ValueTask<bool>> areConsideredEqual)
+#else
+		private async Task<EditKind?> TraceBackOneStep(List<T> values, int subjectIndex, int expectedIndex,
+			Func<T, T3, Task<bool>> areConsideredEqual)
+#endif
+		{
+			byte[] row = _rows[subjectIndex - _start];
+			byte[] previous = _rows[subjectIndex - _start - 1];
+			int offset = expectedIndex - subjectIndex + _maximumEdits;
+			if (expectedIndex > 0 && previous[offset] < _unreachable)
+			{
+				bool isEqual = await areConsideredEqual(values[subjectIndex - 1], _expectedItems[expectedIndex - 1]);
+				if (previous[offset] + (isEqual ? 0 : 1) == row[offset])
+				{
+					return isEqual ? null : EditKind.Incorrect;
+				}
+			}
+
+			return offset + 1 < _width && previous[offset + 1] + 1 == row[offset]
+				? EditKind.Additional
+				: EditKind.Missing;
 		}
 
 		private byte[] CreateRow()
