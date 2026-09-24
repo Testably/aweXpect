@@ -9,14 +9,20 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (byte)1)]
 			[InlineData((byte)1, null)]
-			public async Task ForByte_WhenMinimumOrMaximumIsNull_ShouldSucceed(byte? minimum, byte? maximum)
+			public async Task ForByte_WhenMinimumOrMaximumIsNull_ShouldFail(byte? minimum, byte? maximum)
 			{
 				byte subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -52,7 +58,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
-			public async Task ForDecimal_WhenMinimumOrMaximumIsNull_ShouldSucceed(double? minimumValue,
+			public async Task ForDecimal_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimumValue,
 				double? maximumValue)
 			{
 				decimal subject = 2;
@@ -62,7 +68,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -122,14 +134,20 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
-			public async Task ForDouble_WhenMinimumOrMaximumIsNull_ShouldSucceed(double? minimum, double? maximum)
+			public async Task ForDouble_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimum, double? maximum)
 			{
 				double subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -165,14 +183,20 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.0F)]
 			[InlineData(1.0F, null)]
-			public async Task ForFloat_WhenMinimumOrMaximumIsNull_ShouldSucceed(float? minimum, float? maximum)
+			public async Task ForFloat_WhenMinimumOrMaximumIsNull_ShouldFail(float? minimum, float? maximum)
 			{
 				float subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -221,7 +245,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1)]
 			[InlineData(1, null)]
-			public async Task ForInt_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForInt_WhenMinimumOrMaximumIsNull_ShouldFail(
 				int? minimum, int? maximum)
 			{
 				int subject = 2;
@@ -229,7 +253,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -266,7 +296,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1)]
 			[InlineData(1, null)]
-			public async Task ForInt128_WhenMinimumOrMaximumIsNull_ShouldSucceed(int? minimumValue, int? maximumValue)
+			public async Task ForInt128_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimumValue, int? maximumValue)
 			{
 				Int128 subject = 2;
 				Int128? minimum = minimumValue;
@@ -275,7 +305,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 #endif
 
@@ -324,7 +360,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (long)1)]
 			[InlineData((long)1, null)]
-			public async Task ForLong_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForLong_WhenMinimumOrMaximumIsNull_ShouldFail(
 				long? minimum, long? maximum)
 			{
 				long subject = 2;
@@ -332,7 +368,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -363,6 +405,25 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(null, (byte)1)]
+			[InlineData((byte)1, null)]
+			public async Task ForNullableByte_WhenMinimumOrMaximumIsNull_ShouldFail(byte? minimum, byte? maximum)
+			{
+				byte? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -416,17 +477,23 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
-			public async Task ForNullableDecimal_WhenMinimumOrMaximumIsNull_ShouldSucceed(double? minimumValue,
+			public async Task ForNullableDecimal_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimumValue,
 				double? maximumValue)
 			{
-				decimal subject = 2;
+				decimal? subject = 2;
 				decimal? minimum = minimumValue == null ? null : new decimal(minimumValue.Value);
 				decimal? maximum = maximumValue == null ? null : new decimal(maximumValue.Value);
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -470,15 +537,21 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
-			public async Task ForNullableDouble_WhenMinimumOrMaximumIsNull_ShouldSucceed(double? minimum,
+			public async Task ForNullableDouble_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimum,
 				double? maximum)
 			{
-				double subject = 2;
+				double? subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -514,14 +587,20 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1.1F)]
 			[InlineData(1.1F, null)]
-			public async Task ForNullableFloat_WhenMinimumOrMaximumIsNull_ShouldSucceed(float? minimum, float? maximum)
+			public async Task ForNullableFloat_WhenMinimumOrMaximumIsNull_ShouldFail(float? minimum, float? maximum)
 			{
-				float subject = 2;
+				float? subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -570,7 +649,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1)]
 			[InlineData(1, null)]
-			public async Task ForNullableInt_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForNullableInt_WhenMinimumOrMaximumIsNull_ShouldFail(
 				int? minimum, int? maximum)
 			{
 				int? subject = 2;
@@ -578,7 +657,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -632,7 +717,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1)]
 			[InlineData(1, null)]
-			public async Task ForNullableInt128_WhenMinimumOrMaximumIsNull_ShouldSucceed(int? minimumValue,
+			public async Task ForNullableInt128_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimumValue,
 				int? maximumValue)
 			{
 				Int128? subject = 2;
@@ -642,7 +727,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 #endif
 
@@ -691,7 +782,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (long)1)]
 			[InlineData((long)1, null)]
-			public async Task ForNullableLong_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForNullableLong_WhenMinimumOrMaximumIsNull_ShouldFail(
 				long? minimum, long? maximum)
 			{
 				long? subject = 2;
@@ -699,7 +790,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -751,6 +848,25 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(null, (sbyte)1)]
+			[InlineData((sbyte)1, null)]
+			public async Task ForNullableSbyte_WhenMinimumOrMaximumIsNull_ShouldFail(sbyte? minimum, sbyte? maximum)
+			{
+				sbyte? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Theory]
 			[InlineData((sbyte)2, (sbyte)1, (sbyte)3)]
 			[InlineData((sbyte)2, (sbyte)2, (sbyte)4)]
 			[InlineData((sbyte)2, (sbyte)1, (sbyte)2)]
@@ -796,6 +912,25 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(null, (short)1)]
+			[InlineData((short)1, null)]
+			public async Task ForNullableShort_WhenMinimumOrMaximumIsNull_ShouldFail(short? minimum, short? maximum)
+			{
+				short? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -847,6 +982,25 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(null, (uint)1)]
+			[InlineData((uint)1, null)]
+			public async Task ForNullableUint_WhenMinimumOrMaximumIsNull_ShouldFail(uint? minimum, uint? maximum)
+			{
+				uint? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Theory]
 			[InlineData((uint)2, (uint)1, (uint)3)]
 			[InlineData((uint)2, (uint)2, (uint)4)]
 			[InlineData((uint)2, (uint)1, (uint)2)]
@@ -895,6 +1049,25 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(null, (ulong)1)]
+			[InlineData((ulong)1, null)]
+			public async Task ForNullableUlong_WhenMinimumOrMaximumIsNull_ShouldFail(ulong? minimum, ulong? maximum)
+			{
+				ulong? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Theory]
 			[InlineData((ulong)2, (ulong)1, (ulong)3)]
 			[InlineData((ulong)2, (ulong)2, (ulong)4)]
 			[InlineData((ulong)2, (ulong)1, (ulong)2)]
@@ -940,6 +1113,25 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(null, (ushort)1)]
+			[InlineData((ushort)1, null)]
+			public async Task ForNullableUshort_WhenMinimumOrMaximumIsNull_ShouldFail(ushort? minimum, ushort? maximum)
+			{
+				ushort? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -993,7 +1185,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (sbyte)1)]
 			[InlineData((sbyte)1, null)]
-			public async Task ForSbyte_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForSbyte_WhenMinimumOrMaximumIsNull_ShouldFail(
 				sbyte? minimum, sbyte? maximum)
 			{
 				sbyte subject = 2;
@@ -1001,7 +1193,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -1037,7 +1235,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (short)1)]
 			[InlineData((short)1, null)]
-			public async Task ForShort_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForShort_WhenMinimumOrMaximumIsNull_ShouldFail(
 				short? minimum, short? maximum)
 			{
 				short subject = 2;
@@ -1045,7 +1243,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -1081,7 +1285,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (uint)1)]
 			[InlineData((uint)1, null)]
-			public async Task ForUint_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForUint_WhenMinimumOrMaximumIsNull_ShouldFail(
 				uint? minimum, uint? maximum)
 			{
 				uint subject = 2;
@@ -1089,7 +1293,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -1125,7 +1335,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (ulong)1)]
 			[InlineData((ulong)1, null)]
-			public async Task ForUlong_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForUlong_WhenMinimumOrMaximumIsNull_ShouldFail(
 				ulong? minimum, ulong? maximum)
 			{
 				ulong subject = 2;
@@ -1133,7 +1343,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]
@@ -1169,7 +1385,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, (ushort)1)]
 			[InlineData((ushort)1, null)]
-			public async Task ForUshort_WhenMinimumOrMaximumIsNull_ShouldSucceed(
+			public async Task ForUshort_WhenMinimumOrMaximumIsNull_ShouldFail(
 				ushort? minimum, ushort? maximum)
 			{
 				ushort subject = 2;
@@ -1177,7 +1393,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
+					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Theory]

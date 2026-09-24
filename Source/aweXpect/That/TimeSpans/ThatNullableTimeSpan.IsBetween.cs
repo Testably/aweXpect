@@ -66,17 +66,13 @@ public static partial class ThatNullableTimeSpan
 		TimeSpan? minimum,
 		TimeSpan? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeSpan?>(it, grammars),
+		: OrderingConstraint<TimeSpan?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeSpan?>
 	{
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

@@ -7,6 +7,24 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				Version? subject = new(1, 2);
+				Version? expected = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsGreaterThan(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not greater than <null>,
+					             but it was 1.2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 2);

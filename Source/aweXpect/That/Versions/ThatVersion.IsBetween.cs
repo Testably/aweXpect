@@ -55,7 +55,7 @@ public static partial class ThatVersion
 		ExpectationGrammars grammars,
 		Version? minimum,
 		Version? maximum)
-		: ConstraintResult.WithNotNullValue<Version?>(it, grammars),
+		: OrderingConstraint<Version?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<Version?>
 	{
 		public ConstraintResult IsMetBy(Version? actual)

@@ -42,12 +42,12 @@ You can also verify that the callback will not be signaled:
 await Expect.That(signaler).DidNotSignal();
 ```
 
-*NOTE: The last statement will result never return, unless a timeout or cancellation is specified.
+*NOTE: The last statement would never return, unless a timeout or cancellation is specified.
 Therefore, when nothing is specified, a default timeout of 30 seconds is applied!*
 
 ### Timeout
 
-You can specify a timeout, how long you want to wait for the callback to be signaled:
+You can specify a timeout for how long to wait for the callback to be signaled:
 
 ```csharp
 await Expect.That(signaler).Signaled().Within(TimeSpan.FromSeconds(5))

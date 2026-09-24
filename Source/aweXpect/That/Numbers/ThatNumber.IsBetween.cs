@@ -18,8 +18,8 @@ public static partial class ThatNumber
 	/// </summary>
 	/// <remarks>
 	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
-	///     is never between them.
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsBetween<TNumber>(
 		this IThat<TNumber> subject, TNumber? minimum)
@@ -39,8 +39,8 @@ public static partial class ThatNumber
 	/// </summary>
 	/// <remarks>
 	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
-	///     is never between them.
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsBetween<TNumber>(
@@ -61,8 +61,8 @@ public static partial class ThatNumber
 	/// </summary>
 	/// <remarks>
 	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
-	///     is never between them.
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber> subject, TNumber? minimum)
@@ -82,8 +82,8 @@ public static partial class ThatNumber
 	/// </summary>
 	/// <remarks>
 	///     Both bounds are inclusive. A maximum below the <paramref name="minimum" /> or a <c>NaN</c> bound throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound or a <c>NaN</c> subject
-	///     is never between them.
+	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound fails the expectation as
+	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
@@ -99,7 +99,7 @@ public static partial class ThatNumber
 				options);
 		});
 
-	private sealed class IsInRangeConstraint<TNumber> : ConstraintResult.WithValue<TNumber>,
+	private sealed class IsInRangeConstraint<TNumber> : OrderingConstraint<TNumber>,
 		IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -112,7 +112,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -165,7 +165,7 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithNotNullValue<TNumber?>,
+	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -177,7 +177,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -237,8 +237,8 @@ public static partial class ThatNumber
 
 	private const string IsBetweenRemarks =
 		"Both bounds are inclusive. A maximum below the <paramref name=\"minimum\" /> or a <c>NaN</c> bound throws\n" +
-		"an <see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> bound or a\n" +
-		"<c>NaN</c> subject is never between them.";
+		"an <see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> bound fails the\n" +
+		"expectation as well as its negation. A <c>NaN</c> subject is never between them.";
 
 	[CreateCollectionExpectation("Is{Not}Between", Factory = typeof(NumberToleranceFactory),
 		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
@@ -269,7 +269,7 @@ public static partial class ThatNumber
 			subject,
 			options));
 
-	private sealed class IsInRangeConstraint<TNumber> : ConstraintResult.WithValue<TNumber>,
+	private sealed class IsInRangeConstraint<TNumber> : OrderingConstraint<TNumber>,
 		IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -282,7 +282,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -336,7 +336,7 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithNotNullValue<TNumber?>,
+	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -348,7 +348,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();

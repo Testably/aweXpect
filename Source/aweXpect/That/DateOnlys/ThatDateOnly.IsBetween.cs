@@ -65,7 +65,7 @@ public static partial class ThatDateOnly
 		DateOnly? minimum,
 		DateOnly? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateOnly>(it, grammars),
+		: OrderingConstraint<DateOnly>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateOnly>
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)

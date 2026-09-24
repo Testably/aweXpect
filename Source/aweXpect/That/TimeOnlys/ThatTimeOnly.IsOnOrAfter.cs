@@ -56,7 +56,7 @@ public static partial class ThatTimeOnly
 		ExpectationGrammars grammars,
 		TimeOnly? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeOnly>(it, grammars),
+		: OrderingConstraint<TimeOnly>(it, grammars, expected is null),
 			IValueConstraint<TimeOnly>
 	{
 		public ConstraintResult IsMetBy(TimeOnly actual)

@@ -1338,7 +1338,7 @@ public sealed partial class ThatNumber
 
 			[Theory]
 			[AutoData]
-			public async Task ForInt_WhenExpectedIsNull_ShouldSucceed(
+			public async Task ForInt_WhenExpectedIsNull_ShouldFail(
 				int subject)
 			{
 				int? expected = null;
@@ -1347,7 +1347,13 @@ public sealed partial class ThatNumber
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.IsGreaterThanOrEqualTo(expected));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not greater than or equal to <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 
@@ -1383,7 +1389,7 @@ public sealed partial class ThatNumber
 
 			[Theory]
 			[AutoData]
-			public async Task ForNullableInt_WhenExpectedIsNull_ShouldSucceed(
+			public async Task ForNullableInt_WhenExpectedIsNull_ShouldFail(
 				int? subject)
 			{
 				int? expected = null;
@@ -1392,7 +1398,13 @@ public sealed partial class ThatNumber
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.IsGreaterThanOrEqualTo(expected));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not greater than or equal to <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 

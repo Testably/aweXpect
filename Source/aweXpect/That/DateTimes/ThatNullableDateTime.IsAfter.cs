@@ -57,7 +57,7 @@ public static partial class ThatNullableDateTime
 		ExpectationGrammars grammars,
 		DateTime? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime?>(it, grammars),
+		: OrderingConstraint<DateTime?>(it, grammars, expected is null),
 			IValueConstraint<DateTime?>
 	{
 		private DateTimeKind? _incompatibleKind;
@@ -65,11 +65,7 @@ public static partial class ThatNullableDateTime
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
 			Actual = actual;
-			if (actual is null && expected is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || expected is null)
+			if (actual is null || expected is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

@@ -66,7 +66,7 @@ public static partial class ThatDateTime
 		DateTime? minimum,
 		DateTime? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
+		: OrderingConstraint<DateTime>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime>
 	{
 		private DateTimeKind? _incompatibleKind;

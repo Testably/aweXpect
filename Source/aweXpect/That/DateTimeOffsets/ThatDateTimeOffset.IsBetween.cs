@@ -65,7 +65,7 @@ public static partial class ThatDateTimeOffset
 		DateTimeOffset? minimum,
 		DateTimeOffset? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTimeOffset>(it, grammars),
+		: OrderingConstraint<DateTimeOffset>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTimeOffset>
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset actual)

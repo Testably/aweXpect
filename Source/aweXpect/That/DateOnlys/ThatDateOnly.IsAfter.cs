@@ -46,7 +46,7 @@ public static partial class ThatDateOnly
 		ExpectationGrammars grammars,
 		DateOnly? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateOnly>(it, grammars),
+		: OrderingConstraint<DateOnly>(it, grammars, expected is null),
 			IValueConstraint<DateOnly>
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)

@@ -47,17 +47,13 @@ public static partial class ThatNullableDateTimeOffset
 		ExpectationGrammars grammars,
 		DateTimeOffset? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTimeOffset?>(it, grammars),
+		: OrderingConstraint<DateTimeOffset?>(it, grammars, expected is null),
 			IValueConstraint<DateTimeOffset?>
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
 			Actual = actual;
-			if (actual is null && expected is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || expected is null)
+			if (actual is null || expected is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

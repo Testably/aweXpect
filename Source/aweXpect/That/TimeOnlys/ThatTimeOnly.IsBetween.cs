@@ -59,7 +59,7 @@ public static partial class ThatTimeOnly
 		TimeOnly? minimum,
 		TimeOnly? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeOnly>(it, grammars),
+		: OrderingConstraint<TimeOnly>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeOnly>
 	{
 		public ConstraintResult IsMetBy(TimeOnly actual)

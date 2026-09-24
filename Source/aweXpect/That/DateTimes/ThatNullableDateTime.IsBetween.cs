@@ -68,7 +68,7 @@ public static partial class ThatNullableDateTime
 		DateTime? minimum,
 		DateTime? maximum,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime?>(it, grammars),
+		: OrderingConstraint<DateTime?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime?>
 	{
 		private DateTimeKind? _incompatibleKind;
@@ -76,11 +76,7 @@ public static partial class ThatNullableDateTime
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
 			Actual = actual;
-			if (actual is null && minimum is null && maximum is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || minimum is null || maximum is null)
+			if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

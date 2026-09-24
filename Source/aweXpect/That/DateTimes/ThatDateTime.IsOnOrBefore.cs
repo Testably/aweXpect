@@ -55,7 +55,7 @@ public static partial class ThatDateTime
 		ExpectationGrammars grammars,
 		DateTime? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
+		: OrderingConstraint<DateTime>(it, grammars, expected is null),
 			IValueConstraint<DateTime>
 	{
 		private DateTimeKind? _incompatibleKind;

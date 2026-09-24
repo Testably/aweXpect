@@ -8,6 +8,24 @@ public sealed partial class ThatDateOnly
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				DateOnly subject = CurrentTime();
+				DateOnly? expected = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not after <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();

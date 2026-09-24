@@ -58,17 +58,13 @@ public static partial class ThatNullableTimeOnly
 		ExpectationGrammars grammars,
 		TimeOnly? expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithNotNullValue<TimeOnly?>(it, grammars),
+		: OrderingConstraint<TimeOnly?>(it, grammars, expected is null),
 			IValueConstraint<TimeOnly?>
 	{
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
 			Actual = actual;
-			if (actual is null && expected is null)
-			{
-				Outcome = Outcome.Success;
-			}
-			else if (actual is null || expected is null)
+			if (actual is null || expected is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}

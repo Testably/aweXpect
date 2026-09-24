@@ -47,6 +47,25 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
+			public async Task WhenMaximumIsNull_AndNegated_ShouldFail()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? minimum = subject;
+				DateTime? maximum = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -106,6 +125,25 @@ public sealed partial class ThatDateTime
 
 				await That(Act).DoesNotThrow()
 					.Because("a range with equal bounds is still a valid range");
+			}
+
+			[Fact]
+			public async Task WhenMinimumIsNull_AndNegated_ShouldFail()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? minimum = null;
+				DateTime? maximum = subject;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between <null> and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
 			[Fact]

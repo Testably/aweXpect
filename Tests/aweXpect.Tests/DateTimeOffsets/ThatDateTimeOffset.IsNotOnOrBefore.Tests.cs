@@ -87,7 +87,7 @@ public sealed partial class ThatDateTimeOffset
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			public async Task WhenUnexpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
 				DateTimeOffset? unexpected = null;
@@ -95,7 +95,13 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsNotOnOrBefore(unexpected);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not on or before <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
 			[Fact]
