@@ -643,6 +643,19 @@ public sealed partial class ThatEnumerable
 					             [2, 3]
 					             """);
 			}
+
+			[Fact]
+			public async Task WithSubsetStartingAtTheDeviatingItem_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("containment searches for the expected items anywhere in the subject, so an item that breaks a partial match can start the next one");
+			}
 		}
 
 		public sealed class InSameOrderIgnoringDuplicatesTests

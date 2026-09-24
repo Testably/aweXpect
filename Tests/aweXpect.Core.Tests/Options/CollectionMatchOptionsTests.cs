@@ -120,9 +120,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order using equivalency,
-				             but it
-				               contained item 1 (int) at index 1 instead of 1 (long) and
-				               lacked 1 of 2 expected items: 1
+				             but it contained item 1 (int) at index 1 instead of 1 (long)
 
 				             Collection:
 				             [
@@ -250,8 +248,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task
-			WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheAbandonedItemsAtTheirOwnIndex()
+		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportEachItemAtItsPosition()
 		{
 			int[] subject = [1, 2, 5, 2, 2, 3,];
 
@@ -263,17 +260,20 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 5 at index 2 instead of 3 and
-				               contained item 1 at index 0 that was not expected and
-				               contained item 2 at index 1 that was not expected and
-				               contained item 2 at index 3 that was not expected
+				               contained item 1 at index 0 instead of 2 and
+				               contained item 2 at index 1 instead of 3 and
+				               contained item 5 at index 2 that was not expected and
+				               contained item 2 at index 3 that was not expected and
+				               contained item 2 at index 4 that was not expected and
+				               contained item 3 at index 5 that was not expected
 
 				             Collection:
 				             [1, 2, 5, 2, 2, 3]
 
 				             Expected:
 				             [2, 3]
-				             """);
+				             """)
+				.Because("equality compares each item with the expected item at its position instead of restarting the match");
 		}
 
 		[Fact]
@@ -336,7 +336,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportTheAbandonedItemsAsAdditional()
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportEachItemAtItsPosition()
 		{
 			int[] subject = [1, 2, 2, 3,];
 
@@ -348,15 +348,18 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
 				             but it
-				               contained item 1 at index 0 that was not expected and
-				               contained item 2 at index 1 that was not expected
+				               contained item 1 at index 0 instead of 2 and
+				               contained item 2 at index 1 instead of 3 and
+				               contained item 2 at index 2 that was not expected and
+				               contained item 3 at index 3 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]
 
 				             Expected:
 				             [2, 3]
-				             """);
+				             """)
+				.Because("equality compares each item with the expected item at its position instead of restarting the match");
 		}
 
 		[Fact]

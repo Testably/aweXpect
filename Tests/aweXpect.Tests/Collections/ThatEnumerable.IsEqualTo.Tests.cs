@@ -93,6 +93,65 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task CollectionWithMoreThan20IncorrectItems_ShouldFail()
+			{
+				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				int[] expected = Enumerable.Range(101, 21).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 instead of 101,
+					               contained item 2 at index 1 instead of 102,
+					               contained item 3 at index 2 instead of 103,
+					               contained item 4 at index 3 instead of 104,
+					               contained item 5 at index 4 instead of 105,
+					               contained item 6 at index 5 instead of 106,
+					               contained item 7 at index 6 instead of 107,
+					               contained item 8 at index 7 instead of 108,
+					               contained item 9 at index 8 instead of 109,
+					               contained item 10 at index 9 instead of 110,
+					               (… and maybe more)
+
+					             Collection:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and maybe more)
+					             ]
+
+					             Expected:
+					             [
+					               101,
+					               102,
+					               103,
+					               104,
+					               105,
+					               106,
+					               107,
+					               108,
+					               109,
+					               110,
+					               (… and 11 more)
+					             ]
+					             """)
+					.Because("an item that differs from the expected item at its position is a deviation, too");
+			}
+
+			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
@@ -105,18 +164,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 instead of 100 and
+					               contained item 2 at index 1 instead of 101 and
+					               contained item 3 at index 2 instead of 102 and
+					               contained item 4 at index 3 instead of 103 and
+					               contained item 5 at index 4 instead of 104 and
+					               contained item 6 at index 5 instead of 105 and
+					               contained item 7 at index 6 instead of 106 and
+					               contained item 8 at index 7 instead of 107 and
+					               contained item 9 at index 8 instead of 108 and
+					               contained item 10 at index 9 instead of 109 and
+					               contained item 11 at index 10 instead of 110
 
 					             Collection:
 					             [
@@ -191,17 +250,16 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it
-					               contained item 1 at index 0 that was not expected and
-					               contained item 2 at index 1 that was not expected and
-					               contained item 3 at index 2 that was not expected and
-					               contained item 4 at index 3 that was not expected and
-					               contained item 5 at index 4 that was not expected and
-					               contained item 6 at index 5 that was not expected and
-					               contained item 7 at index 6 that was not expected and
-					               contained item 8 at index 7 that was not expected and
-					               contained item 9 at index 8 that was not expected and
-					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 expected items
+					               contained item 1 at index 0 instead of 101 and
+					               contained item 2 at index 1 instead of 102 and
+					               contained item 3 at index 2 instead of 103 and
+					               contained item 4 at index 3 instead of 104 and
+					               contained item 5 at index 4 instead of 105 and
+					               contained item 6 at index 5 instead of 106 and
+					               contained item 7 at index 6 instead of 107 and
+					               contained item 8 at index 7 instead of 108 and
+					               contained item 9 at index 8 instead of 109 and
+					               contained item 10 at index 9 instead of 110
 					             
 					             Collection:
 					             [
@@ -331,10 +389,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "d" at index 3 instead of "x" and
 					               contained item "e" at index 4 instead of "y" and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					               lacked 1 of 6 expected items: "z"
 
 					             Collection:
 					             [
@@ -483,6 +538,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithDeviationFollowedByTheFirstExpectedItem_ShouldOnlyReportTheDeviation()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 4, 1,]);
+				int[] expected = [1, 2, 1,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 4 at index 1 instead of 2
+
+					             Collection:
+					             [1, 4, 1]
+
+					             Expected:
+					             [1, 2, 1]
+					             """)
+					.Because("each item is compared with the expected item at its position, so an item equal to the first expected item does not restart the comparison");
+			}
+
+			[Fact]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -562,7 +641,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "b" at index 1 instead of "a" and
 					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "a"
+					               lacked 1 of 4 expected items: "c"
 
 					             Collection:
 					             [
@@ -594,7 +673,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it contained item "a" at index 0 that was not expected
+					             but it
+					               contained item "a" at index 1 instead of "b" and
+					               contained item "b" at index 2 instead of "c" and
+					               contained item "c" at index 3 that was not expected
 
 					             Collection:
 					             [
@@ -695,7 +777,7 @@ public sealed partial class ThatEnumerable
 					             is equal to collection expected in order,
 					             but it
 					               contained item "c" at index 1 instead of "b" and
-					               lacked 1 of 2 expected items: "b"
+					               contained item "b" at index 2 that was not expected
 
 					             Collection:
 					             [
@@ -739,9 +821,9 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it lacked 2 of 3 expected items:
-					               2,
-					               1
+					             but it
+					               contained item 1 at index 0 instead of 3 and
+					               contained item 3 at index 2 instead of 1
 					             (but the items match in a different order)
 
 					             Collection:
@@ -766,8 +848,11 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it
-					               contained item 4 at index 2 instead of 3 and
-					               contained item 1 at index 0 that was not expected
+					               contained item 1 at index 0 instead of 2 and
+					               contained item 2 at index 1 instead of 3 and
+					               contained item 4 at index 2 that was not expected and
+					               contained item 2 at index 3 that was not expected and
+					               contained item 3 at index 4 that was not expected
 
 					             Collection:
 					             [1, 2, 4, 2, 3]

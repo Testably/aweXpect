@@ -75,18 +75,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 instead of 100 and
+					               contained item 2 at index 1 instead of 101 and
+					               contained item 3 at index 2 instead of 102 and
+					               contained item 4 at index 3 instead of 103 and
+					               contained item 5 at index 4 instead of 104 and
+					               contained item 6 at index 5 instead of 105 and
+					               contained item 7 at index 6 instead of 106 and
+					               contained item 8 at index 7 instead of 107 and
+					               contained item 9 at index 8 instead of 108 and
+					               contained item 10 at index 9 instead of 109 and
+					               contained item 11 at index 10 instead of 110
 
 					             Collection:
 					             [
@@ -161,17 +161,16 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it
-					               contained item 1 at index 0 that was not expected and
-					               contained item 2 at index 1 that was not expected and
-					               contained item 3 at index 2 that was not expected and
-					               contained item 4 at index 3 that was not expected and
-					               contained item 5 at index 4 that was not expected and
-					               contained item 6 at index 5 that was not expected and
-					               contained item 7 at index 6 that was not expected and
-					               contained item 8 at index 7 that was not expected and
-					               contained item 9 at index 8 that was not expected and
-					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 expected items
+					               contained item 1 at index 0 instead of 101 and
+					               contained item 2 at index 1 instead of 102 and
+					               contained item 3 at index 2 instead of 103 and
+					               contained item 4 at index 3 instead of 104 and
+					               contained item 5 at index 4 instead of 105 and
+					               contained item 6 at index 5 instead of 106 and
+					               contained item 7 at index 6 instead of 107 and
+					               contained item 8 at index 7 instead of 108 and
+					               contained item 9 at index 8 instead of 109 and
+					               contained item 10 at index 9 instead of 110
 					             
 					             Collection:
 					             [
@@ -279,10 +278,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "d" at index 3 instead of "x" and
 					               contained item "e" at index 4 instead of "y" and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					               lacked 1 of 6 expected items: "z"
 
 					             Collection:
 					             [
@@ -396,9 +392,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection [1, 2, 4,] in order,
-					             but it
-					               contained item 3 at index 2 instead of 4 and
-					               lacked 1 of 3 expected items: 4
+					             but it contained item 3 at index 2 instead of 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -442,6 +436,29 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+			[Fact]
+			public async Task WithDeviationFollowedByTheFirstExpectedItem_ShouldOnlyReportTheDeviation()
+			{
+				ImmutableArray<int> subject = [1, 4, 1,];
+				int[] expected = [1, 2, 1,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 4 at index 1 instead of 2
+
+					             Collection:
+					             [1, 4, 1]
+
+					             Expected:
+					             [1, 2, 1]
+					             """)
+					.Because("each item is compared with the expected item at its position, so an item equal to the first expected item does not restart the comparison");
+			}
 			[Fact]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
@@ -522,7 +539,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "b" at index 1 instead of "a" and
 					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "a"
+					               lacked 1 of 4 expected items: "c"
 
 					             Collection:
 					             [
@@ -554,7 +571,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it contained item "a" at index 0 that was not expected
+					             but it
+					               contained item "a" at index 1 instead of "b" and
+					               contained item "b" at index 2 instead of "c" and
+					               contained item "c" at index 3 that was not expected
 
 					             Collection:
 					             [

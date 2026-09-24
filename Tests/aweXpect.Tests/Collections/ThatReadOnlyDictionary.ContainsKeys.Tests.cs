@@ -220,9 +220,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values are equal to collection ["foo", "baz",] in order,
-					             but values [1, 2]
-					               contained item "bar" at index 1 instead of "baz" and
-					               lacked 1 of 2 expected items: "baz"
+					             but values [1, 2] contained item "bar" at index 1 instead of "baz"
 
 					             Collection:
 					             [

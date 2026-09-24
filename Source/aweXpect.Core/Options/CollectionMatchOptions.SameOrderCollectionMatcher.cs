@@ -65,6 +65,7 @@ public partial class CollectionMatchOptions
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
+		private readonly bool _comparesByPosition;
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
@@ -87,6 +88,9 @@ public partial class CollectionMatchOptions
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
+			_comparesByPosition = !ignoreInterspersedItems &&
+			                      !equivalenceRelation.HasFlag(EquivalenceRelations.Contains) &&
+			                      !equivalenceRelation.HasFlag(EquivalenceRelations.IsContainedIn);
 			_expectedItems = expected.ToArray();
 			_totalExpectedItems = _expectedItems.Length;
 		}
@@ -108,6 +112,10 @@ public partial class CollectionMatchOptions
 				{
 					await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
 				}
+			}
+			else if (_comparesByPosition)
+			{
+				await VerifyTheCurrentValueMatchesTheItemAtItsPosition(value, options);
 			}
 			else if (_matchIndex >= _expectedItems.Length)
 			{
@@ -174,6 +182,11 @@ public partial class CollectionMatchOptions
 					: VerifyCompleteForContiguousMatch(it);
 			}
 
+			if (_comparesByPosition)
+			{
+				return VerifyCompleteForPositionalMatch(it, maximumNumber);
+			}
+
 			int consideredExpectedItems = Math.Max(_expectationIndex - 1, _maxMatchIndex);
 			if (_expectedItems.Length > consideredExpectedItems)
 			{
@@ -231,6 +244,31 @@ public partial class CollectionMatchOptions
 			return (error != null, error);
 		}
 #pragma warning restore S3776
+
+		/// <summary>
+		///     Every subject item was compared with the expected item at its position, so the expected items beyond the
+		///     end of the subject are missing.
+		/// </summary>
+		private (bool, string?) VerifyCompleteForPositionalMatch(string it, int maximumNumber)
+		{
+			for (int i = _index; i < _expectedItems.Length; i++)
+			{
+				_missingItems.Add(_expectedItems[i]);
+				if (_incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
+				{
+					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+				}
+			}
+
+			Func<object?, string> formatItem = CreateItemFormatter();
+			List<string> errors = new();
+			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem));
+
+			string? error = ReturnErrorString(it, errors);
+			return (error != null, error);
+		}
 
 		/// <summary>
 		///     The subject is contained in the expected collection, when its items appear there as an uninterrupted run;
@@ -424,6 +462,27 @@ public partial class CollectionMatchOptions
 			else
 			{
 				_additionalItems.Add(_index, value);
+			}
+		}
+
+		/// <summary>
+		///     Equality compares each item with the expected item at its position, so that a deviating item never restarts
+		///     the comparison; only the containment relations and interspersed items search for the expected items.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask
+#else
+		private async Task
+#endif
+			VerifyTheCurrentValueMatchesTheItemAtItsPosition(T value, IOptionsEquality<T2> options)
+		{
+			if (_index >= _expectedItems.Length)
+			{
+				_additionalItems.Add(_index, value);
+			}
+			else if (!await AreConsideredEqual(value, _expectedItems[_index], options))
+			{
+				_incorrectItems.Add(_index, (value, _expectedItems[_index]));
 			}
 		}
 

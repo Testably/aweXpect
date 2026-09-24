@@ -332,9 +332,7 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.AndWhoseTests.TwoCollections whose First is equal to collection [1, 2,] in order and whose Second is equal to collection [1, 2,] in order,
-					             but Second
-					               contained item 3 at index 1 instead of 2 and
-					               lacked 1 of 2 expected items: 2
+					             but Second contained item 3 at index 1 instead of 2
 					             *
 					             """).AsWildcard();
 			}

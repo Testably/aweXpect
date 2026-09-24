@@ -238,9 +238,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it
-					               contained item 4 at index 3 instead of 5 and
-					               lacked 1 of 4 expected items: 5
+					             but it contained item 4 at index 3 instead of 5
 
 					             Collection:
 					             [1, 2, 3, 4]
