@@ -119,16 +119,6 @@ internal static class TimeDifferenceHelpers
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Appends the shorter difference around the clock face between <paramref name="actual" /> and
-	///     <paramref name="expected" />.
-	/// </summary>
-	public static StringBuilder AppendCircularTimeDifference(this StringBuilder stringBuilder, TimeOnly? actual,
-		TimeOnly? expected)
-		=> stringBuilder.AppendTimeDifference(actual is not null && expected is not null
-			? actual.Value.CircularDifferenceTicks(expected.Value)
-			: null);
-
-	/// <summary>
 	///     Appends the difference around the clock face to the closest of the <paramref name="expected" /> values.
 	/// </summary>
 	public static StringBuilder AppendTimeDifferenceToClosest(this StringBuilder stringBuilder, TimeOnly? actual,
@@ -137,6 +127,22 @@ internal static class TimeDifferenceHelpers
 			=> actual is not null && value is not null
 				? actual.Value.CircularDifferenceTicks(value.Value)
 				: (decimal?)null));
+#endif
+
+	private static StringBuilder AppendTimeDifferenceToClosest(this StringBuilder stringBuilder,
+		IEnumerable<decimal?> differenceTicks)
+		=> stringBuilder.AppendTimeDifference(GetSmallest(differenceTicks), "the closest value");
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Appends the shorter difference around the clock face between <paramref name="actual" /> and
+	///     <paramref name="expected" />.
+	/// </summary>
+	public static StringBuilder AppendCircularTimeDifference(this StringBuilder stringBuilder, TimeOnly? actual,
+		TimeOnly? expected)
+		=> stringBuilder.AppendTimeDifference(actual is not null && expected is not null
+			? actual.Value.CircularDifferenceTicks(expected.Value)
+			: null);
 
 	/// <summary>
 	///     Appends the difference in days to the closest of the <paramref name="expected" /> values.
@@ -166,10 +172,6 @@ internal static class TimeDifferenceHelpers
 			: stringBuilder.AppendTimeDifference(afterMaximum, "the maximum");
 	}
 #endif
-
-	private static StringBuilder AppendTimeDifferenceToClosest(this StringBuilder stringBuilder,
-		IEnumerable<decimal?> differenceTicks)
-		=> stringBuilder.AppendTimeDifference(GetSmallest(differenceTicks), "the closest value");
 
 	private static decimal? GetSmallest(IEnumerable<decimal?> differences)
 	{
