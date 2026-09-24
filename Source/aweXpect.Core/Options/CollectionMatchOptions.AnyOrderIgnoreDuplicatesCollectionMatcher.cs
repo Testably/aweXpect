@@ -99,6 +99,7 @@ public partial class CollectionMatchOptions
 		{
 			if (_uniqueItems.Contains(value))
 			{
+				_index++;
 				return (false, null);
 			}
 
@@ -119,6 +120,7 @@ public partial class CollectionMatchOptions
 				    RepeatingAMatchedExpectedItemIsADuplicate &&
 				    await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options)))
 				{
+					_index++;
 					return (false, null);
 				}
 

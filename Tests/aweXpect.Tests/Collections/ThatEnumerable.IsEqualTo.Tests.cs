@@ -2367,6 +2367,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 4, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it contained item 4 at index 2 that was not expected
+
+					             Collection:
+					             [1, 1, 4, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the index counts the position in the subject, not the distinct items");
+			}
+			[Fact]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
