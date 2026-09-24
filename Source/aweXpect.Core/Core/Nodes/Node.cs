@@ -52,7 +52,7 @@ internal abstract class Node
 	public abstract void AddNode(Node node, string? separator = null);
 
 	/// <summary>
-	///     Verifies, if the <paramref name="value" /> satisfies the expectations of the node.
+	///     Verifies if the <paramref name="value" /> satisfies the expectations of the node.
 	/// </summary>
 	public abstract Task<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,

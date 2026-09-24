@@ -1,7 +1,7 @@
 ﻿namespace aweXpect.Core.Constraints;
 
 /// <summary>
-///     The outcome of a <see cref="ConstraintResult" />
+///     The outcome of a <see cref="ConstraintResult" />.
 /// </summary>
 public enum Outcome
 {

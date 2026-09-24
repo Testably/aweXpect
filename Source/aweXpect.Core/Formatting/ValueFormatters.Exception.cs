@@ -25,7 +25,7 @@ public static partial class ValueFormatters
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
-	///     to the <paramref name="stringBuilder" />
+	///     to the <paramref name="stringBuilder" />.
 	/// </summary>
 	/// <remarks>
 	///     An exception is formatted as its type name and message, without namespace, inner exceptions or stack trace.

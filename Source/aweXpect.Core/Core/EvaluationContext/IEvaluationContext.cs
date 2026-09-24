@@ -7,7 +7,7 @@ namespace aweXpect.Core.EvaluationContext;
 ///     The evaluation context.
 /// </summary>
 /// <remarks>
-///     Use it by implementing <see cref="IContextConstraint{TValue}" />
+///     Use it by implementing <see cref="IContextConstraint{TValue}" />.
 /// </remarks>
 public interface IEvaluationContext
 {

@@ -23,7 +23,7 @@ public class ProperCollectionMatchResult<TType, TThat, TItem>(
 	///     Verifies that the two collections differ by at least one additional item.
 	/// </summary>
 	/// <remarks>
-	///     This means, that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
+	///     This means that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
 	///     superset for <c>IsContainedIn</c>.
 	/// </remarks>
 	public CollectionMatchResult<TType, TThat, TItem> Properly()

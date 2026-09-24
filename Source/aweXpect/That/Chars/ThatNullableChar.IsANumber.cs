@@ -9,7 +9,7 @@ namespace aweXpect;
 [CreateExpectationOnNullable<char>("Is{Not}ANumber", "char.IsNumber({value}.Value)",
 	ExpectationText = "is {not} a number",
 	Remarks = """
-	          This means, that the specified Unicode character is categorized as a number.<br />
+	          This means that the specified Unicode character is categorized as a number.<br />
 	          <seealso cref="char.IsNumber(char)" />
 	          """
 )]

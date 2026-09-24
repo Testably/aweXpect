@@ -90,6 +90,7 @@ internal static class SourceGenerationHelper
 			public string? ExpectationText { get; set; }
 			public string? PositiveExpectationText { get; set; }
 			public string? NegativeExpectationText { get; set; }
+			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
 			public string[] Using { get; set; } = [];
 		}
@@ -130,9 +131,11 @@ internal static class SourceGenerationHelper
 		                  """;
 		if (expectationToGenerate.IncludeNegated)
 		{
+			string negatedSummary = expectationToGenerate.NegatedSummary ??
+			                        $"Verifies that the subject {expectationToGenerate.NegatedExpectationText}.";
 			result += $$"""
 			            	/// <summary>
-			            	///     Verifies that the subject {{expectationToGenerate.NegatedExpectationText}}.
+			            	///     {{negatedSummary}}
 			            	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{negatedGuaranteesNotNull}}
 			            	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 			            		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

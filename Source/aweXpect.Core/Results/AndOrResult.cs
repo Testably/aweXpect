@@ -15,7 +15,7 @@ public class AndOrResult<TThat>(
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
-	///     … AND …
+	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>
 	public TThat And
 	{
@@ -27,7 +27,7 @@ public class AndOrResult<TThat>(
 	}
 
 	/// <summary>
-	///     … OR …
+	///     Combines the previous expectation with the next one; at least one of them must be met.
 	/// </summary>
 	public TThat Or
 	{
@@ -66,7 +66,7 @@ public class AndOrResult<TType, TThat, TSelf>(
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
-	///     … AND …
+	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>
 	public TThat And
 	{
@@ -78,7 +78,7 @@ public class AndOrResult<TType, TThat, TSelf>(
 	}
 
 	/// <summary>
-	///     … OR …
+	///     Combines the previous expectation with the next one; at least one of them must be met.
 	/// </summary>
 	public TThat Or
 	{

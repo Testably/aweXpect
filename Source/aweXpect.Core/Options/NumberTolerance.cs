@@ -85,7 +85,7 @@ public class NumberTolerance<TNumber>(
 	}
 
 	/// <summary>
-	///     Verifies if the <paramref name="actual" /> number is within the tolerance to the
+	///     Checks if the <paramref name="actual" /> number is within the tolerance to the
 	///     <paramref name="expected" /> number.
 	/// </summary>
 	public bool IsWithinTolerance(TNumber? actual, TNumber? expected)

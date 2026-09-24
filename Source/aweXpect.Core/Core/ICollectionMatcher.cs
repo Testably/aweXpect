@@ -8,11 +8,11 @@ namespace aweXpect.Core;
 public interface ICollectionMatcher<in T, out T2> where T : T2
 {
 	/// <summary>
-	///     Verifies for each <paramref name="value" /> in the subject, if it results in a failure.
+	///     Verifies for each <paramref name="value" /> in the subject if it results in a failure.
 	/// </summary>
 	/// <remarks>
-	///     When returning true and the error is <see langword="null" /> this indicates, that there are too
-	///     many deviations.
+	///     When returning <see langword="true" /> and the error is <see langword="null" /> this indicates that there
+	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 #if NET8_0_OR_GREATER
@@ -26,8 +26,8 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	///     Verifies if it results in a failure when the enumeration is complete.
 	/// </summary>
 	/// <remarks>
-	///     When returning true and the error is <see langword="null" /> this indicates, that there are too
-	///     many deviations.
+	///     When returning <see langword="true" /> and the error is <see langword="null" /> this indicates that there
+	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 #if NET8_0_OR_GREATER

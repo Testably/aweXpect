@@ -55,7 +55,7 @@ public partial class ThatDelegateThrows<TException>
 			this);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" />.
+	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner<
 		TInnerException>()
@@ -85,7 +85,7 @@ public partial class ThatDelegateThrows<TException>
 			this);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="type" />.
+	///     Verifies that the thrown exception has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
 		Type type)

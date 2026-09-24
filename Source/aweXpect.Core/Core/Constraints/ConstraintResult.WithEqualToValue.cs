@@ -34,7 +34,7 @@ public abstract partial class ConstraintResult
 	///     - <see cref="AppendNormalExpectation" /> / <see cref="AppendNegatedExpectation" />
 	///     which add the normal and negated expectation strings<br />
 	///     - <see cref="AppendNormalResult" /> / <see cref="AppendNegatedResult" />
-	///     which add the normal and negated result strings
+	///     which add the normal and negated result strings.
 	/// </remarks>
 	public abstract class WithEqualToValue<T>(string it, ExpectationGrammars grammars, bool isExpectedNull)
 		: ConstraintResult(grammars)

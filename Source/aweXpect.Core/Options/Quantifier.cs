@@ -5,7 +5,7 @@ using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 namespace aweXpect.Options;
 
 /// <summary>
-///     Quantifier an occurrence.
+///     Quantifies an occurrence.
 /// </summary>
 public class Quantifier
 {
@@ -58,7 +58,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs at least <paramref name="minimum" /> times.
+	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
 	public void AtLeast(int minimum)
 	{
@@ -75,7 +75,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs at most <paramref name="maximum" /> times.
+	///     Verifies that it occurs at most <paramref name="maximum" /> times.
 	/// </summary>
 	public void AtMost(int maximum)
 	{
@@ -92,7 +92,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs between <paramref name="minimum" /> and <paramref name="maximum" /> times.
+	///     Verifies that it occurs between <paramref name="minimum" /> and <paramref name="maximum" /> times.
 	/// </summary>
 	public void Between(int minimum, int maximum)
 	{
@@ -123,7 +123,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs less than <paramref name="maximum" /> times.
+	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
 	/// </summary>
 	public void LessThan(int maximum)
 	{
@@ -140,7 +140,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs more than <paramref name="minimum" /> times.
+	///     Verifies that it occurs more than <paramref name="minimum" /> times.
 	/// </summary>
 	public void MoreThan(int minimum)
 	{
@@ -182,7 +182,7 @@ public class Quantifier
 	}
 
 	/// <summary>
-	///     Verifies, that it occurs exactly <paramref name="expected" /> times.
+	///     Verifies that it occurs exactly <paramref name="expected" /> times.
 	/// </summary>
 	public void Exactly(int expected)
 	{

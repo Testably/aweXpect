@@ -10,7 +10,7 @@ namespace aweXpect;
 [CreateExpectationOnNullable<char>("Is{Not}AnAsciiHexDigit", "char.IsAsciiHexDigit({value}.Value)",
 	ExpectationText = "is {not} an ASCII hex digit",
 	Remarks = """
-	          This means, that the specified Unicode character is categorized as an ASCII hexadecimal digit.<br />
+	          This means that the specified Unicode character is categorized as an ASCII hexadecimal digit.<br />
 	          <seealso cref="char.IsAsciiHexDigit(char)" />
 	          """
 )]

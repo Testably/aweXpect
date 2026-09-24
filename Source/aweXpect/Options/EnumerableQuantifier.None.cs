@@ -6,7 +6,7 @@ namespace aweXpect.Options;
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches none items.
+	///     Matches no items.
 	/// </summary>
 	public static EnumerableQuantifier None(ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
 		=> new NoneQuantifier(expectationGrammars);

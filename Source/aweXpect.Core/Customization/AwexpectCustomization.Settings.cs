@@ -101,7 +101,7 @@ public partial class AwexpectCustomization
 	public record SettingsCustomizationValue
 	{
 		/// <summary>
-		///     If set, applies the cancellation logic for all test.
+		///     If set, applies the cancellation logic for all tests.
 		/// </summary>
 		public TestCancellation? TestCancellation { get; init; }
 

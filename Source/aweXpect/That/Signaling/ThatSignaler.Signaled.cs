@@ -130,8 +130,7 @@ public static partial class ThatSignaler
 	}
 
 	/// <summary>
-	///     Verifies that the expected callback was not signaled
-	///     at least the given number of <paramref name="times" />.
+	///     Verifies that the expected callback was signaled fewer than <paramref name="times" /> times.
 	/// </summary>
 	/// <remarks>
 	///     The expectation waits for the full timeout from <see cref="DidNotSignalResult.Within(TimeSpan)" /> before
@@ -155,8 +154,8 @@ public static partial class ThatSignaler
 	}
 
 	/// <summary>
-	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was not signaled
-	///     at least the given number of <paramref name="times" />.
+	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was signaled fewer than
+	///     <paramref name="times" /> times.
 	/// </summary>
 	/// <remarks>
 	///     The expectation waits for the full timeout from

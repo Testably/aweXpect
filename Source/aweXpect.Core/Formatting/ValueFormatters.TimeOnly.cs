@@ -21,7 +21,7 @@ public static partial class ValueFormatters
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
-	///     to the <paramref name="stringBuilder" />
+	///     to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public static void Format(
 		this ValueFormatter formatter,
@@ -55,7 +55,7 @@ public static partial class ValueFormatters
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
-	///     to the <paramref name="stringBuilder" />
+	///     to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public static void Format(
 		this ValueFormatter formatter,

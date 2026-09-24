@@ -31,7 +31,7 @@ public class SingleItemResult<TCollection, TItem>
 	}
 
 	/// <summary>
-	///     Further expectations on the single <typeparamref name="TItem" />
+	///     Further expectations on the single <typeparamref name="TItem" />.
 	/// </summary>
 	public IThat<TItem> Which
 		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_memberAccessor, " which ",

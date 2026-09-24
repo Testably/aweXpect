@@ -51,7 +51,7 @@ public class CollectionIndexOptions
 		string GetDescription();
 
 		/// <summary>
-		///     Flag indicating, if only a single index is considered a match.
+		///     Flag indicating if only a single index is considered a match.
 		/// </summary>
 		bool OnlySingleIndex();
 	}

@@ -95,7 +95,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		=> base.AppendExpectation(stringBuilder, indentation);
 
 	/// <summary>
-	///     Verifies, if the <paramref name="value" /> of the member satisfies the expectations of the node.
+	///     Verifies if the <paramref name="value" /> of the member satisfies the expectations of the node.
 	/// </summary>
 	protected virtual Task<ConstraintResult> IsMetByMember(TTarget? value,
 		IEvaluationContext context,
@@ -110,7 +110,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		=> IsMetByMember(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
 
 	/// <summary>
-	///     Verifies, if the <paramref name="value" /> satisfies the expectations of the node, without accessing the member.
+	///     Verifies if the <paramref name="value" /> satisfies the expectations of the node, without accessing the member.
 	/// </summary>
 	protected Task<ConstraintResult> IsMetByExpectations<TValue>(TValue? value,
 		IEvaluationContext context,

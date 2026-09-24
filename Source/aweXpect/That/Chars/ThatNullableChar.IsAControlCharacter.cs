@@ -9,7 +9,7 @@ namespace aweXpect;
 [CreateExpectationOnNullable<char>("Is{Not}AControlCharacter", "char.IsControl({value}.Value)",
 	ExpectationText = "is {not} a control character",
 	Remarks = """
-	          This means, that the specified Unicode character is categorized as a control character.<br />
+	          This means that the specified Unicode character is categorized as a control character.<br />
 	          <seealso cref="char.IsControl(char)" />
 	          """
 )]

@@ -92,7 +92,7 @@ internal static class TimeDifferenceHelpers
 	}
 
 	/// <summary>
-	///     Appends the difference to the closest of the <paramref name="expected" /> values, that has a compatible
+	///     Appends the difference to the closest of the <paramref name="expected" /> values that has a compatible
 	///     <see cref="DateTime.Kind" />.
 	/// </summary>
 	public static StringBuilder AppendTimeDifferenceToClosest(this StringBuilder stringBuilder, DateTime? actual,

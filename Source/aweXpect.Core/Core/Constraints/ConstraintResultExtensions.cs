@@ -6,7 +6,7 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Core.Constraints;
 
 /// <summary>
-///     Extensions methods on <see cref="ConstraintResult" />
+///     Extension methods on <see cref="ConstraintResult" />.
 /// </summary>
 public static class ConstraintResultExtensions
 {
@@ -28,7 +28,7 @@ public static class ConstraintResultExtensions
 
 	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> where the expectation is prepended with the
-	///     <paramref name="prefix" />
+	///     <paramref name="prefix" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="prefix" /> is treated as a separator, so a trailing <c>which</c> is dropped when the
@@ -38,7 +38,7 @@ public static class ConstraintResultExtensions
 		=> new ConstraintResultExpectationWrapper(inner, prefix);
 
 	/// <summary>
-	///     Creates a new <see cref="ConstraintResult" /> where the expectation is appended with the <paramref name="suffix" />
+	///     Creates a new <see cref="ConstraintResult" /> where the expectation is appended with the <paramref name="suffix" />.
 	/// </summary>
 	public static ConstraintResult AppendExpectationText(this ConstraintResult inner, Action<StringBuilder>? suffix)
 		=> new ConstraintResultExpectationWrapper(inner, null, suffix);

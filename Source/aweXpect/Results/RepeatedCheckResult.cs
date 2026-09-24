@@ -39,10 +39,10 @@ public class RepeatedCheckResult<TType, TThat>(
 		: AndOrResult<TType, TThat>(expectationBuilder, returnValue)
 	{
 		/// <summary>
-		///     Specify the interval in which the condition should be checked.
+		///     Sets the interval in which the condition should be checked.
 		/// </summary>
 		/// <remarks>
-		///     Defaults to <see cref="RepeatedCheckOptions.DefaultInterval" />, if not specified.
+		///     Defaults to <see cref="RepeatedCheckOptions.DefaultInterval" /> if not specified.
 		/// </remarks>
 		public AndOrResult<TType, TThat> CheckEvery(TimeSpan interval)
 		{

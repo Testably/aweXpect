@@ -3,7 +3,7 @@ using System;
 namespace aweXpect.Recording;
 
 /// <summary>
-///     The result of an <see cref="IEventRecording{TSubject}" />
+///     The result of an <see cref="IEventRecording{TSubject}" />.
 /// </summary>
 public interface IEventRecordingResult
 {

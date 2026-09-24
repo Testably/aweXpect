@@ -228,6 +228,20 @@ public static AndOrResult<string, IThat<string>> IsNoAbsolutePath(
         subject);
 ```
 
+### XML documentation
+
+aweXpect documents its members with the following sentence templates, so that the summaries read alike in IntelliSense:
+
+- **Expectation:** "Verifies that the {subject|collection|dictionary|delegate|thrown exception} {predicate} [the
+  `<paramref name="expected" />` value]."
+- **Negated expectation:** the same sentence with a single "not", using `<paramref name="unexpected" />`. A compound
+  "or" predicate becomes "neither … nor …".
+- **Continuation fragment:** "…{continuation phrase}." with a leading ellipsis and a final period.
+- **Option method:** a third-person verb, e.g. "Ignores casing when comparing the `string`s." or "Uses the provided
+  `<paramref name="comparer" />` for comparing …", never "Verifies that …" or an imperative "Specify …".
+- **Result type:** "The result of an expectation with an underlying value of type `<typeparamref name="TType" />`.
+  `<para />` In addition to the combinations from `<see cref="AndOrResult{TType,TThat}" />`, allows {what it adds}."
+
 ## Customization
 
 You can add you own [customizations](/docs/expectations/advanced/customization) on top of the `AwexpectCustomization`

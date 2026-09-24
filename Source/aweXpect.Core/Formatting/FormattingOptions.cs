@@ -31,17 +31,17 @@ public record FormattingOptions
 	};
 
 	/// <summary>
-	///     Flag indicating, if line-breaks should be used during formatting.
+	///     Flag indicating if line-breaks should be used during formatting.
 	/// </summary>
 	public bool UseLineBreaks { get; init; }
 
 	/// <summary>
-	///     Flag indicating, if the type should be included during formatting.
+	///     Flag indicating if the type should be included during formatting.
 	/// </summary>
 	public bool IncludeType { get; init; }
 
 	/// <summary>
-	///     The indentation prefix for subsequent lines when <see cref="UseLineBreaks" /> is <see langword="true" />
+	///     The indentation prefix for subsequent lines when <see cref="UseLineBreaks" /> is <see langword="true" />.
 	/// </summary>
 	public string Indentation { get; init; } = "";
 
@@ -59,7 +59,7 @@ public record FormattingOptions
 	///     Format the objects on multiple lines with the given <paramref name="indentation" />.
 	/// </summary>
 	/// <remarks>
-	///     Use an indentation of 2 blanks, if the <paramref name="indentation" /> is <see langword="null" />.
+	///     Use an indentation of 2 blanks if the <paramref name="indentation" /> is <see langword="null" />.
 	/// </remarks>
 	public static FormattingOptions Indented(string? indentation = null, bool includeType = false)
 		=> new()

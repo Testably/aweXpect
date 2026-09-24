@@ -14,7 +14,7 @@ public static class Fail
 	/// <summary>
 	///     Explicitly fails the current test.
 	/// </summary>
-	/// <param name="reason">The reason why the test failed</param>
+	/// <param name="reason">The reason why the test failed.</param>
 	[DoesNotReturn]
 	public static void Test(string reason)
 		=> FailIf(true, reason, null);
@@ -22,7 +22,7 @@ public static class Fail
 	/// <summary>
 	///     Explicitly fails the current test.
 	/// </summary>
-	/// <param name="reason">The reason why the test failed</param>
+	/// <param name="reason">The reason why the test failed.</param>
 	/// <param name="innerException">
 	///     The optional exception that caused the failure. It is forwarded as inner exception of the
 	///     framework-specific assertion exception, so that its original stack trace remains available.
@@ -32,18 +32,18 @@ public static class Fail
 		=> FailIf(true, reason, innerException);
 
 	/// <summary>
-	///     Explicitly fails the current test when the <paramref name="condition" /> is <c>false</c>.
+	///     Explicitly fails the current test when the <paramref name="condition" /> is <see langword="false" />.
 	/// </summary>
-	/// <param name="condition">When <c>false</c>, the test will be failed; otherwise it will continue to run</param>
-	/// <param name="reason">The reason why the test was failed</param>
+	/// <param name="condition">When <see langword="false" />, the test will be failed; otherwise it will continue to run.</param>
+	/// <param name="reason">The reason why the test was failed.</param>
 	public static void Unless([DoesNotReturnIf(false)] bool condition, string reason)
 		=> FailIf(!condition, reason, null);
 
 	/// <summary>
-	///     Explicitly fails the current test when the <paramref name="condition" /> is <c>false</c>.
+	///     Explicitly fails the current test when the <paramref name="condition" /> is <see langword="false" />.
 	/// </summary>
-	/// <param name="condition">When <c>false</c>, the test will be failed; otherwise it will continue to run</param>
-	/// <param name="reason">The reason why the test was failed</param>
+	/// <param name="condition">When <see langword="false" />, the test will be failed; otherwise it will continue to run.</param>
+	/// <param name="reason">The reason why the test was failed.</param>
 	/// <param name="innerException">
 	///     The optional exception that caused the failure. It is forwarded as inner exception of the
 	///     framework-specific assertion exception, so that its original stack trace remains available.
@@ -52,18 +52,18 @@ public static class Fail
 		=> FailIf(!condition, reason, innerException);
 
 	/// <summary>
-	///     Explicitly fails the current test when the <paramref name="condition" /> is <c>true</c>.
+	///     Explicitly fails the current test when the <paramref name="condition" /> is <see langword="true" />.
 	/// </summary>
-	/// <param name="condition">When <c>true</c>, the test will be failed; otherwise it will continue to run</param>
-	/// <param name="reason">The reason why the test was failed</param>
+	/// <param name="condition">When <see langword="true" />, the test will be failed; otherwise it will continue to run.</param>
+	/// <param name="reason">The reason why the test was failed.</param>
 	public static void When([DoesNotReturnIf(true)] bool condition, string reason)
 		=> FailIf(condition, reason, null);
 
 	/// <summary>
-	///     Explicitly fails the current test when the <paramref name="condition" /> is <c>true</c>.
+	///     Explicitly fails the current test when the <paramref name="condition" /> is <see langword="true" />.
 	/// </summary>
-	/// <param name="condition">When <c>true</c>, the test will be failed; otherwise it will continue to run</param>
-	/// <param name="reason">The reason why the test was failed</param>
+	/// <param name="condition">When <see langword="true" />, the test will be failed; otherwise it will continue to run.</param>
+	/// <param name="reason">The reason why the test was failed.</param>
 	/// <param name="innerException">
 	///     The optional exception that caused the failure. It is forwarded as inner exception of the
 	///     framework-specific assertion exception, so that its original stack trace remains available.
@@ -74,7 +74,7 @@ public static class Fail
 	/// <summary>
 	///     Explicitly fails the current test as inconclusive.
 	/// </summary>
-	/// <param name="reason">The reason why the test failed</param>
+	/// <param name="reason">The reason why the test failed.</param>
 	[DoesNotReturn]
 	public static void Inconclusive(string reason)
 		=> AweXpectInitialization.State.Value.Inconclusive(reason);
