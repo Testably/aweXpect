@@ -339,8 +339,11 @@ of the failure. If the expectation is cancelled before the timeout expires - via
 the global `TestCancellation` setting - it is reported as inconclusive instead of failed. As everywhere else,
 an explicit `WithTimeout` takes precedence over a global `TestCancellation` timeout.
 
-The timeout bounds how long the delegate is *retried*, not how long a single evaluation may take: it is only
-checked between evaluations, so a delegate that blocks for longer than the timeout still runs to completion.
+The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,
+even if the delegate ignores its `CancellationToken`, which is cancelled at that point, and the expectation fails with
+"did not finish within …" and a `TimeoutException` as inner exception. The last evaluation, which is made when the
+timeout is used up, still gets one check interval (at most the timeout) to finish. A synchronous delegate cannot be
+interrupted, so for it the timeout is only checked between evaluations.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
 `Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Returning the task directly also works with a

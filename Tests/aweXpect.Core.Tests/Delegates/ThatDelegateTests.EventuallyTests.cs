@@ -260,6 +260,97 @@ public sealed partial class ThatDelegateTests
 #endif
 
 		[Fact]
+		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_AndExpectationIsNegated_ShouldFail()
+		{
+			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
+
+			async Task Act()
+				=> await That(subject).Eventually().DoesNotComplyWith(it => it.IsEqualTo(1))
+					.WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is not equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.WithTimeout(30.Seconds())
+				.Because("a negation must not turn an attempt that never finished into a success");
+		}
+
+		[Fact]
+		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_ShouldCancelItsToken()
+		{
+			CancellationToken? attemptToken = null;
+
+			Task<int> Subject(CancellationToken token)
+			{
+				attemptToken = token;
+				return new TaskCompletionSource<int>().Task;
+			}
+
+			async Task Act()
+				=> await That(Subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Subject
+				             is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """)
+				.WithTimeout(30.Seconds());
+			await That(attemptToken?.IsCancellationRequested).IsTrue()
+				.Because("an attempt that is abandoned must also be told to stop");
+		}
+
+		[Fact]
+		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_ShouldFail()
+		{
+			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
+			Stopwatch stopwatch = new();
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			stopwatch.Start();
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.WithTimeout(30.Seconds());
+			stopwatch.Stop();
+
+			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+				.Because("the timeout must abandon an attempt that never finishes instead of awaiting it");
+		}
+
+		[Fact]
+		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_WithCancellation_ShouldFail()
+		{
+			using CancellationTokenSource cts = new(30.Seconds());
+			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1)
+					.WithTimeout(VeryLowTimeout)
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.WithTimeout(20.Seconds())
+				.Because("the timeout must still bound an attempt when a cancellation token is also given");
+		}
+
+		[Fact]
 		public async Task WhenAndChainFails_ShouldNotRepeatTheExpectationPerAttempt()
 		{
 			Counter counter = new();
@@ -275,6 +366,29 @@ public sealed partial class ThatDelegateTests
 				             but it was 0
 				             """);
 			await That(counter.EvaluationCount).IsGreaterThan(1);
+		}
+
+		[Fact]
+		public async Task WhenAnEarlierAttemptIsSlowButFinishesWithinTheTimeout_ShouldSucceed()
+		{
+			Counter counter = new(2);
+
+			async Task<int> Subject()
+			{
+				int value = counter.Value;
+				if (counter.EvaluationCount == 1)
+				{
+					await Task.Delay(50.Milliseconds());
+				}
+
+				return value;
+			}
+
+			async Task Act()
+				=> await That(Subject).Eventually().IsGreaterThan(2).WithTimeout(SuccessTimeout);
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(3);
 		}
 
 		[Fact]
@@ -624,6 +738,34 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenTheLastAttemptIsAsynchronous_ShouldStillEvaluateIt()
+		{
+			Counter counter = new();
+
+			async Task<int> Subject()
+			{
+				await Task.Yield();
+				return counter.Value;
+			}
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
+			{
+				async Task Act()
+					=> await That(Subject).Eventually().IsEqualTo(1).WithTimeout(LowTimeout);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that Subject
+					             is equal to 1 within 0:00.500,
+					             but it was 0 which differs by -1
+					             """)
+					.Because("the last attempt, made when the timeout is used up, must not be abandoned at once");
+			}
+
+			await That(counter.EvaluationCount).IsEqualTo(2);
+		}
+
+		[Fact]
 		public async Task WhenTheSubjectContentChanges_ShouldNotReuseTheCachedEnumerable()
 		{
 			List<int> subject = [];
@@ -689,6 +831,26 @@ public sealed partial class ThatDelegateTests
 
 			await That(Act).DoesNotThrow();
 			await That(counter.EvaluationCount).IsEqualTo(4);
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsInfinite_ShouldOnlyBoundAnAttemptByTheCancellation()
+		{
+			using CancellationTokenSource cts = new(VeryLowTimeout);
+			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1)
+					.WithTimeout(System.Threading.Timeout.InfiniteTimeSpan)
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to 1,
+				             but it could not be verified, because it was already canceled
+				             """)
+				.WithTimeout(30.Seconds());
 		}
 
 		[Theory]

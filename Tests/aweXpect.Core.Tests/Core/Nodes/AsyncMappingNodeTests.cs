@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
@@ -124,6 +125,35 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenAbandonedMemberFaultsLater_ShouldNotRaiseUnobservedTaskException()
+	{
+		NotSupportedException exception = new("foo");
+		bool isRaised = false;
+		EventHandler<UnobservedTaskExceptionEventArgs> handler = (_, e) =>
+		{
+			if (e.Exception.InnerExceptions.Contains(exception))
+			{
+				isRaised = true;
+			}
+		};
+
+		TaskScheduler.UnobservedTaskException += handler;
+		try
+		{
+			await AbandonMemberThatFaultsLater(exception);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+		finally
+		{
+			TaskScheduler.UnobservedTaskException -= handler;
+		}
+
+		await That(isRaised).IsFalse()
+			.Because("the exception of an abandoned member task must be observed, as nobody else awaits it");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenMemberFaults_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
@@ -223,6 +253,59 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task WhenMemberCompletesWithinTheTimeout_ShouldSucceed()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await HasAsyncLength(That(subject),
+					s => Task.Delay(50.Milliseconds()).ContinueWith(_ => s!.Length),
+					length => length.IsEqualTo(3))
+				.WithTimeout(5.Seconds());
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenMemberDoesNotFinishWithinTheTimeout_ShouldAbortTheEvaluation()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await HasAsyncLength(That(subject),
+					_ => new TaskCompletionSource<int>().Task,
+					length => length.IsEqualTo(3))
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<TaskCanceledException>()
+			.WithMessage(new TaskCanceledException().Message)
+			.WithTimeout(30.Seconds())
+			.Because("the timeout must abandon a member task that never finishes, as the cancellation of the evaluation");
+	}
+
+	[Fact]
+	public async Task WhenMemberThrowsWithinTheTimeout_ShouldFail()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await HasAsyncLength(That(subject),
+					_ => Task.Delay(50.Milliseconds())
+						.ContinueWith<int>(_ => throw new NotSupportedException("member failed")),
+					length => length.IsEqualTo(3))
+				.WithTimeout(5.Seconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             length is equal to 3,
+			             but length did throw a NotSupportedException:
+			               member failed
+			             """).And
+			.WithInner<NotSupportedException>(inner => inner.HasMessage("member failed"));
+	}
+
+	[Fact]
 	public async Task WhenNegated_WithValidation_AndFailingMemberExpectation_ShouldSucceed()
 	{
 		string subject = "foo";
@@ -248,6 +331,36 @@ public class AsyncMappingNodeTests
 			             but it had
 			             """);
 	}
+
+	/// <remarks>
+	///     The member task is only reachable from within this method, so that it can be collected afterwards.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static async Task AbandonMemberThatFaultsLater(Exception exception)
+	{
+		TaskCompletionSource<int> tcs = new();
+		using CancellationTokenSource safetyNet = new(30.Seconds());
+		using CancellationTokenRegistration _ = safetyNet.Token.Register(() => tcs.TrySetException(exception));
+		AsyncMappingNode<string, int> node =
+			new(MemberAccessor<string, Task<int>>.FromFunc(_ => tcs.Task, " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		using CancellationTokenSource cts = new(50.Milliseconds());
+
+		async Task Act() => await node.IsMetBy("foo", null!, cts.Token);
+
+		await That(Act).Throws<TaskCanceledException>()
+			.WithMessage(new TaskCanceledException().Message);
+		tcs.TrySetException(exception);
+	}
+
+	private static AndOrResult<string?, IThat<string?>> HasAsyncLength(
+		IThat<string?> subject,
+		Func<string?, Task<int>> length,
+		Action<IThat<int>> expectations)
+		=> new(subject.Get().ExpectationBuilder
+				.ForAsyncMember(MemberAccessor<string?, Task<int>>.FromFunc(length, "length "))
+				.AddExpectations(e => expectations(new ThatSubject<int>(e))),
+			subject);
 
 	private static AndOrResult<string?, IThat<string?>> HasLength(
 		IThat<string?> subject,
