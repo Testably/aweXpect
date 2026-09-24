@@ -844,6 +844,32 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionaryIsNestedInAMember_AndSubjectUsesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
+	{
+		var actual = new
+		{
+			Value = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+			{
+				["a"] = 1,
+			},
+		};
+		var expected = new
+		{
+			Value = new Dictionary<string, int>
+			{
+				["A"] = 1,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the key comparer of the dictionary at that point of the subject decides which keys are the same");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenDictionaryKeyContainsABracket_ShouldNotIgnoreTheEntryForAnotherKey()
 	{
 		Dictionary<string, int> actual = new()
@@ -941,6 +967,146 @@ public sealed class EquivalencyComparisonTests
 		                                                  Element [B] differed:
 		                                                       Found: 2
 		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the key comparer of the subject decides which keys are the same");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithADifferentValue_ShouldReportTheExpectedKey()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [A] differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithAnAdditionalKey_ShouldReportTheKeyCounts()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 2,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It contained 2 keys and matched 1 expected key
+		                                                """).IgnoringNewlineStyle()
+			.Because("naming the additional keys would overshoot when the comparer is coarser than the default");
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It contained 1 key and matched 2 expected keys
+		                                                """).IgnoringNewlineStyle()
+			.Because("one entry of the subject cannot stand in for two entries of the expected dictionary");
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseSensitiveComparer_AndExpectedACaseInsensitiveOne_ShouldReportMissingAndSuperfluousKeys()
+	{
+		Dictionary<string, int> actual = new()
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a] had superfluous 1
+		                                                and
+		                                                  Element [A] was missing 1
+		                                                """).IgnoringNewlineStyle()
+			.Because("the key comparer of the expected dictionary does not decide which keys the subject has");
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseSensitiveComparer_WithAKeyThatOnlyTheExpectedOneUnifies_ShouldReportItAsSuperfluous()
+	{
+		Dictionary<string, int> actual = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		Dictionary<string, int> expected = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [A] had superfluous 1
 		                                                """).IgnoringNewlineStyle();
 	}
 

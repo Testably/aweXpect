@@ -94,7 +94,9 @@ By default, equivalency:
   [ignoring collection order](#ignoring-collection-order) does. One side being a set is enough, so a `HashSet<T>` can
   be compared against an array.
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
-  instead of by position, and reports a differing, missing or superfluous entry under its key.
+  instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
+  looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
+  [`IsEqualTo`](/docs/expectations/collections#dictionaries).
 - Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
   that is referenced more than once is still compared against each of its expected counterparts.
 - Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see

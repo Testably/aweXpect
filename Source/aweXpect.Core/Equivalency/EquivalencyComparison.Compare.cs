@@ -275,8 +275,8 @@ public static partial class EquivalencyComparison
 			if (TryGetDictionary(actual, out IDictionary? actualDictionary) &&
 			    TryGetDictionary(expected, out IDictionary? expectedDictionary))
 			{
-				return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberPath,
-					equivalencyOptions, typeOptions, context);
+				return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberType,
+					memberPath, equivalencyOptions, typeOptions, context);
 			}
 
 			if (actual is IEnumerable actualEnumerable && expected is IEnumerable expectedEnumerable)
@@ -487,6 +487,15 @@ public static partial class EquivalencyComparison
 		=> value.GetType().GetInterfaces()
 			.Any(interfaceType => interfaceType.IsGenericType &&
 			                      matchesDefinition(interfaceType.GetGenericTypeDefinition()));
+
+	/// <remarks>
+	///     Every expected key is looked up through the actual dictionary, so that its key comparer decides which keys
+	///     are the same, as it does for <c>IsEqualTo</c>. That comparer is out of reach, so an actual key only counts
+	///     as matched when it equals a matched expected key by its own <see cref="object.Equals(object)" />. The
+	///     remaining keys are therefore only named as superfluous when as many were found as the entry count asks for,
+	///     because a comparer that considers more keys equal than the default one lets that scan overshoot; otherwise
+	///     only the counts are reported.
+	/// </remarks>
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
 #else
@@ -496,16 +505,77 @@ public static partial class EquivalencyComparison
 			IDictionary actual,
 			IDictionary expected,
 			StringBuilder failureBuilder,
+			MemberType memberType,
 			string memberPath,
 			EquivalencyOptions options,
 			EquivalencyTypeOptions typeOptions,
 			EquivalencyContext context)
 	{
 		bool result = true;
+		HashSet<object> matchedKeys = [];
+		foreach (object? key in expected.Keys)
+		{
+			if (actual.Contains(key))
+			{
+				matchedKeys.Add(key);
+			}
+		}
 
-		foreach (object? key in actual.Keys)
+		if (actual.Count != matchedKeys.Count)
+		{
+			List<object> additionalKeys = [];
+			foreach (object? key in actual.Keys)
+			{
+				if (!matchedKeys.Contains(key))
+				{
+					additionalKeys.Add(key);
+				}
+			}
+
+			if (additionalKeys.Count == actual.Count - matchedKeys.Count)
+			{
+				foreach (object key in additionalKeys)
+				{
+					string elementMemberPath = $"{memberPath}[{key}]";
+					object? actualObject = actual[key];
+					if (typeOptions.MembersToIgnore.Any(memberToIgnore
+						    => AppliesTo(memberToIgnore, MemberType.Element) &&
+						       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
+					{
+						continue;
+					}
+
+					AppendSuperfluousElement(failureBuilder, elementMemberPath, actualObject, context);
+					result = false;
+				}
+			}
+			else
+			{
+				AppendEntry(failureBuilder, memberType, memberPath, context);
+				failureBuilder.Append(" contained ").Append(actual.Count).Append(actual.Count == 1 ? " key" : " keys")
+					.Append(" and matched ").Append(matchedKeys.Count)
+					.Append(matchedKeys.Count == 1 ? " expected key" : " expected keys");
+				result = false;
+			}
+		}
+
+		foreach (object? key in expected.Keys)
 		{
 			string elementMemberPath = $"{memberPath}[{key}]";
+			if (!matchedKeys.Contains(key))
+			{
+				object? expectedObject = expected[key];
+				if (typeOptions.MembersToIgnore.Any(memberToIgnore
+					    => AppliesTo(memberToIgnore, MemberType.Element) &&
+					       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
+				{
+					continue;
+				}
+
+				AppendMissingElement(failureBuilder, elementMemberPath, expectedObject, context);
+				result = false;
+				continue;
+			}
 
 			object? actualObject = actual[key];
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
@@ -514,42 +584,13 @@ public static partial class EquivalencyComparison
 			{
 				continue;
 			}
-			if (expected.Contains(key))
-			{
-				object? expectedObject = expected[key];
 
-				if (!await Compare(actualObject, expectedObject,
-					    options, typeOptions,
-					    failureBuilder, elementMemberPath, MemberType.Element, context))
-				{
-					result = false;
-				}
-			}
-			else
+			if (!await Compare(actualObject, expected[key],
+				    options, typeOptions,
+				    failureBuilder, elementMemberPath, MemberType.Element, context))
 			{
-				AppendSuperfluousElement(failureBuilder, elementMemberPath, actualObject, context);
 				result = false;
 			}
-		}
-
-		foreach (object? key in expected.Keys)
-		{
-			if (actual.Contains(key))
-			{
-				continue;
-			}
-
-			string elementMemberPath = $"{memberPath}[{key}]";
-			object? expectedObject = expected[key];
-			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => AppliesTo(memberToIgnore, MemberType.Element) &&
-				       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
-			{
-				continue;
-			}
-
-			AppendMissingElement(failureBuilder, elementMemberPath, expectedObject, context);
-			result = false;
 		}
 
 		return result;
