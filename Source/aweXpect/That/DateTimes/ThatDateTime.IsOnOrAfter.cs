@@ -71,7 +71,7 @@ public static partial class ThatDateTime
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = expected.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else
 			{

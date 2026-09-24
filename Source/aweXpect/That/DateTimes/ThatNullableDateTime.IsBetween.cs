@@ -84,12 +84,12 @@ public static partial class ThatNullableDateTime
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = minimum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, maximum.Value.Kind))
 			{
 				_incompatibleKind = maximum.Value.Kind;
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+				IsIncomparable = true;
 			}
 			else
 			{

@@ -29,6 +29,30 @@ public sealed partial class ThatDateTime
 				[InlineData(DateTimeKind.Utc, DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Local)]
 				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified, DateTimeKind.Local, DateTimeKind.Local)]
 				[InlineData(DateTimeKind.Local, DateTimeKind.Utc, DateTimeKind.Utc, DateTimeKind.Utc)]
+				public async Task WhenKindsAreIncompatible_AndNegated_ShouldFail(
+					DateTimeKind subjectKind, DateTimeKind minimumKind, DateTimeKind maximumKind,
+					DateTimeKind incompatibleKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime? minimum = DateTime.SpecifyKind(LaterTime()!.Value, minimumKind);
+					DateTime? maximum = DateTime.SpecifyKind(LaterTime(2)!.Value, maximumKind);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(maximum));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+						              but it had Kind {subjectKind}, which cannot be compared with {incompatibleKind}
+						              """)
+						.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified, DateTimeKind.Local, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc, DateTimeKind.Utc, DateTimeKind.Utc)]
 				public async Task WhenKindsAreIncompatible_ShouldFail(
 					DateTimeKind subjectKind, DateTimeKind minimumKind, DateTimeKind maximumKind,
 					DateTimeKind incompatibleKind)

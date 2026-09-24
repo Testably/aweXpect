@@ -63,6 +63,27 @@ public sealed partial class ThatDateTime
 				[Theory]
 				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
 				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				public async Task WhenKindsAreIncompatible_AndNegated_ShouldFail(
+					DateTimeKind subjectKind, DateTimeKind expectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime? expected = DateTime.SpecifyKind(LaterTime()!.Value, expectedKind);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not after {Formatter.Format(expected)},
+						              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+						              """)
+						.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
 				public async Task WhenKindsAreIncompatible_ShouldFail(
 					DateTimeKind subjectKind, DateTimeKind expectedKind)
 				{
