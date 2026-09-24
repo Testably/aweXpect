@@ -87,7 +87,11 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 			sut.AsSuffix().IgnoringTrailingWhiteSpace();
 
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", " ").AsTask();
+#else
 			void Act() => _ = sut.AreConsideredEqual("foo", " ");
+#endif
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And

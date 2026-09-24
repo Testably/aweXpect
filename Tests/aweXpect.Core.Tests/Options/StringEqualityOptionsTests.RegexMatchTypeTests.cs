@@ -75,7 +75,11 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 			sut.AsRegex();
 
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", "").AsTask();
+#else
 			void Act() => _ = sut.AreConsideredEqual("foo", "");
+#endif
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
@@ -103,7 +107,11 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 			sut.AsRegex();
 
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null).AsTask();
+#else
 			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null);
+#endif
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And

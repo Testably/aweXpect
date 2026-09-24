@@ -77,7 +77,11 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 			sut.AsWildcard();
 
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null).AsTask();
+#else
 			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null);
+#endif
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And
