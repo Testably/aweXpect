@@ -112,30 +112,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 		bool isLastAttempt = false;
 		while (true)
 		{
-			Exception? failure = null;
-			TValue? data = default;
-			bool hasTimedOut = false;
-			using (CancellationTokenSource? attemptCts =
-			       CreateAttemptCancellation(retryTimeout, retryTimeout - Elapsed(), interval, cancellationToken))
-			{
-				CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
-				try
-				{
-					data = await subject(attemptToken).AbandonOnCancellation(attemptToken);
-					Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
-				}
-				catch (Exception exception)
-				{
-					hasTimedOut = exception is OperationCanceledException &&
-					              attemptCts?.IsCancellationRequested == true &&
-					              !cancellationToken.IsCancellationRequested;
-					failure = hasTimedOut
-						? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
-						: exception;
-					Customize.aweXpect.TraceWriter.Value?.WriteMessage(
-						$"Checking expectation for {Subject} threw an exception");
-				}
-			}
+			(TValue? data, Exception? failure, bool hasTimedOut) = await EvaluateSubject(subject, retryTimeout,
+				retryTimeout - Elapsed(), interval, cancellationToken);
 
 			ConstraintResult? result = null;
 			if (failure is null)
@@ -168,23 +146,68 @@ internal class EventuallyExpectationBuilder<TValue>(
 			// attempt that would only leave a sliver of the budget is the last one; otherwise the sliver becomes an
 			// additional wait and evaluation right at the deadline.
 			isLastAttempt = remaining - wait < EventuallyExpectationBuilder.CancellationTolerance;
-
-			// The wait is not cancelled by the token itself: Task.Delay would register its own callback on it and
-			// the cancellation callbacks run in reverse order, so the wait could continue before the callback
-			// above recorded when the cancellation was requested.
-			using (CancellationTokenSource waitCts = new())
+			if (await IsCancelledDuring(wait, cancellation.Task))
 			{
-				Task delay = Task.Delay(wait, waitCts.Token);
-				if (await Task.WhenAny(delay, cancellation.Task) != delay)
-				{
-					waitCts.Cancel();
-					isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
-				}
+				isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
 			}
 
 			currentContext = new EvaluationContext.EvaluationContext();
 			RestoreContexts(initialContexts);
 		}
+	}
+
+	/// <summary>
+	///     Evaluates the <paramref name="subject" /> for one attempt, which
+	///     <see cref="CreateAttemptCancellation" /> bounds.
+	/// </summary>
+	private async Task<(TValue? Data, Exception? Failure, bool HasTimedOut)> EvaluateSubject(
+		Func<CancellationToken, Task<TValue>> subject,
+		TimeSpan retryTimeout,
+		TimeSpan remaining,
+		TimeSpan interval,
+		CancellationToken cancellationToken)
+	{
+		using CancellationTokenSource? attemptCts =
+			CreateAttemptCancellation(retryTimeout, remaining, interval, cancellationToken);
+		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
+		try
+		{
+			TValue data = await subject(attemptToken).AbandonOnCancellation(attemptToken);
+			Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+			return (data, null, false);
+		}
+		catch (Exception exception)
+		{
+			bool hasTimedOut = exception is OperationCanceledException &&
+			                   attemptCts?.IsCancellationRequested == true &&
+			                   !cancellationToken.IsCancellationRequested;
+			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
+				$"Checking expectation for {Subject} threw an exception");
+			return (default, hasTimedOut
+				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
+				: exception, hasTimedOut);
+		}
+	}
+
+	/// <summary>
+	///     Waits for the <paramref name="wait" /> and returns whether the <paramref name="cancellation" /> cut it short.
+	/// </summary>
+	/// <remarks>
+	///     The wait is not cancelled by the token itself: <see cref="Task.Delay(TimeSpan, CancellationToken)" /> would
+	///     register its own callback on it and the cancellation callbacks run in reverse order, so the wait could
+	///     continue before the callback in <see cref="IsMetRepeatedly" /> recorded when the cancellation was requested.
+	/// </remarks>
+	private static async Task<bool> IsCancelledDuring(TimeSpan wait, Task cancellation)
+	{
+		using CancellationTokenSource waitCts = new();
+		Task delay = Task.Delay(wait, waitCts.Token);
+		if (await Task.WhenAny(delay, cancellation) == delay)
+		{
+			return false;
+		}
+
+		waitCts.Cancel();
+		return true;
 	}
 
 	/// <summary>

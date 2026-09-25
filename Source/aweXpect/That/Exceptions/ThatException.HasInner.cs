@@ -76,7 +76,7 @@ public static partial class ThatException
 		=> new(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception?, Exception?>(
-					e => type.IsInstanceOfType(e?.InnerException) ? e?.InnerException : null,
+					e => e?.InnerException is { } inner && type.IsInstanceOfType(inner) ? inner : null,
 					" which ",
 					false)
 				.Validate((it, grammars)

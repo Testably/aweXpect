@@ -3239,7 +3239,9 @@ public sealed class EquivalencyComparisonTests
 
 	private sealed class EqualToAnything
 	{
+#pragma warning disable CA1822 // the comparison only reads instance members
 		public int Length => 2;
+#pragma warning restore CA1822
 
 		public override bool Equals(object? obj) => true;
 
@@ -3473,7 +3475,9 @@ public sealed class EquivalencyComparisonTests
 
 	private sealed class WithThrowingEquals
 	{
+#pragma warning disable CA1822 // the comparison only reads instance members
 		public int Value => 1;
+#pragma warning restore CA1822
 
 		public override bool Equals(object? obj) => throw new NotSupportedException("equals");
 

@@ -421,7 +421,7 @@ public sealed partial class ThatEnumerable
 			private sealed class ThrowingForNullComparer : IEqualityComparer<string?>
 			{
 				public bool Equals(string? x, string? y)
-					=> x is null || y is null ? throw new ArgumentNullException() : x == y;
+					=> x is null || y is null ? throw new ArgumentNullException(x is null ? nameof(x) : nameof(y)) : x == y;
 
 				public int GetHashCode(string? obj) => 0;
 			}
