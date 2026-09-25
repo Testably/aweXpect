@@ -400,11 +400,8 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatAwaiting(1).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage(
-				$"Error evaluating *AwaitingConstraint constraint with value 1: {new TaskCanceledException().Message}")
-			.AsWildcard().And
-			.WithInner<TaskCanceledException>()
+		await That(Act).Throws<TaskCanceledException>()
+			.WithMessage(new TaskCanceledException().Message)
 			.Because("only a timeout is reported as a failed expectation, a requested cancellation still aborts");
 	}
 

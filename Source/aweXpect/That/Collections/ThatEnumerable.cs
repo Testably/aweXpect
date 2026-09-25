@@ -610,7 +610,7 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materialized)
 			{
-				if (_predicate(item))
+				if (UserCode.Invoke(_predicate, item))
 				{
 					_matchingItems.Add(item, _matchingCount + _notMatchingCount);
 					_matchingCount++;
@@ -916,7 +916,7 @@ public static partial class ThatEnumerable
 					_itemType = item.GetType();
 				}
 
-				if (_predicate(item))
+				if (UserCode.Invoke(_predicate, item))
 				{
 					_matchingCount++;
 					_matchingItems.Add(item);
@@ -1406,7 +1406,7 @@ public static partial class ThatEnumerable
 			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
 			foreach (TItem item in materialized)
 			{
-				TMember current = memberAccessor(item);
+				TMember current = UserCode.Invoke(memberAccessor, item);
 				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
 				{
 					// The order of incompatible items cannot be verified, so the negated check fails as well.
@@ -1422,7 +1422,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(sortOrder, comparer.Compare(previous, current)))
+				if (IsOutOfOrder(sortOrder, UserCode.Invoke(() => comparer.Compare(previous, current))))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";
@@ -1506,7 +1506,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				TMember current = memberAccessor(typedItem);
+				TMember current = UserCode.Invoke(memberAccessor, typedItem);
 				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
 				{
 					// The order of incompatible items cannot be verified, so the negated check fails as well.
@@ -1522,7 +1522,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(sortOrder, comparer.Compare(previous, current)))
+				if (IsOutOfOrder(sortOrder, UserCode.Invoke(() => comparer.Compare(previous, current))))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";

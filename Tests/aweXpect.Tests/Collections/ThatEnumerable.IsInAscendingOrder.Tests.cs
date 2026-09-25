@@ -132,6 +132,32 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				IEnumerable<string> subject = ToEnumerable(["a", "b",]);
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder().Using(new ThrowingComparer(exception));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in ascending order using ThrowingComparer,
+					             but it did throw an InvalidOperationException:
+					               comparer failed
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a comparer that throws fails the expectation instead of aborting its evaluation");
+			}
+
+			[Fact]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "a",]);
@@ -230,6 +256,39 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenMemberSelectorThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("selector failed");
+				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder(x => x.Value == 2 ? throw exception : x.Value);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in ascending order by x => x.Value == 2 ? throw exception : x.Value,
+					             but it did throw an InvalidOperationException:
+					               selector failed
+
+					             Collection:
+					             [
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 1
+					               },
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 2
+					               },
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 3
+					               }
+					             ]
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a member selector that throws fails the expectation instead of aborting its evaluation");
+			}
 		}
 
 		public sealed class NegatedMemberTests
@@ -272,6 +331,40 @@ public sealed partial class ThatEnumerable
 					               }
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberSelectorThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("selector failed");
+				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsInAscendingOrder(x => x.Value == 2 ? throw exception : x.Value));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not in ascending order by x => x.Value == 2 ? throw exception : x.Value,
+					             but it did throw an InvalidOperationException:
+					               selector failed
+
+					             Collection:
+					             [
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 1
+					               },
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 2
+					               },
+					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
+					                 Value = 3
+					               }
+					             ]
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a member selector that threw answered nothing, so the negation fails as well");
 			}
 		}
 
@@ -367,6 +460,11 @@ public sealed partial class ThatEnumerable
 		private sealed class MyIntClass(int value)
 		{
 			public int Value { get; } = value;
+		}
+
+		private sealed class ThrowingComparer(Exception exception) : IComparer<string>
+		{
+			public int Compare(string? x, string? y) => throw exception;
 		}
 	}
 }

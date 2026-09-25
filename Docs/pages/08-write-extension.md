@@ -228,6 +228,18 @@ public static AndOrResult<string, IThat<string>> IsNoAbsolutePath(
         subject);
 ```
 
+### Code of the caller
+
+When a constraint calls code of the caller while it is evaluated, e.g. a predicate, a member selector or a comparer,
+call it through `UserCode.Invoke`. An exception it throws then fails the expectation and its negation alike, with the
+exception as inner exception, instead of aborting the evaluation:
+
+```csharp no-compile
+Outcome = UserCode.Invoke(predicate, actual) ? Outcome.Success : Outcome.Failure;
+```
+
+An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
+
 ## Customization
 
 You can add you own [customizations](/docs/expectations/advanced/customization) on top of the `AwexpectCustomization`

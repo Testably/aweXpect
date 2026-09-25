@@ -21,7 +21,7 @@ public static partial class ThatStream
 						// ReSharper disable once LocalizableElement
 						$"The {paramName} length must be greater than or equal to zero."));
 			}
-		}, IsUnreadableStreamProperty);
+		});
 
 	/// <summary>
 	///     Verifies that the length of the <see cref="Stream" /> subject is equal to the <paramref name="expected" />

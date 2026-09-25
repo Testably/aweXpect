@@ -95,6 +95,21 @@ public partial class ThatAsyncEnumerable
 		}
 	}
 
+	/// <summary>
+	///     Returns an <see cref="IAsyncEnumerable{T}" /> with the <paramref name="items" />, whose enumeration throws
+	///     the <paramref name="exception" /> afterwards.
+	/// </summary>
+	private static async IAsyncEnumerable<int> ThrowAfter(Exception exception, params int[] items)
+	{
+		foreach (int item in items)
+		{
+			await Task.Yield();
+			yield return item;
+		}
+
+		throw exception;
+	}
+
 	public sealed class ThrowWhenIteratingTwiceAsyncEnumerable : IAsyncEnumerable<int>
 	{
 		private bool _isEnumerated;

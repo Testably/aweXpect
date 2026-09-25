@@ -47,6 +47,7 @@ public static partial class ThatString
 		where TType : IParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
+		private Exception? _exception;
 		private string? _exceptionMessage;
 		private TType? _parsedValue;
 
@@ -57,6 +58,9 @@ public static partial class ThatString
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _exception;
 
 		public ConstraintResult IsMetBy(string? actual)
 		{
@@ -74,6 +78,7 @@ public static partial class ThatString
 			}
 			catch (Exception ex)
 			{
+				_exception = ex;
 				if (string.IsNullOrEmpty(ex.Message) || ex.Message.Length < 2)
 				{
 					_exceptionMessage = "an unknown error occurred";

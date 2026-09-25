@@ -99,7 +99,7 @@ public static partial class ThatGeneric
 		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (IsMet(actual, cancellationToken) || _exception is not null)
+			if (IsMet(actual, cancellationToken))
 			{
 				return this;
 			}
@@ -119,7 +119,7 @@ public static partial class ThatGeneric
 						break;
 					}
 
-					if (IsMet(actual, cancellationToken) || _exception is not null)
+					if (IsMet(actual, cancellationToken))
 					{
 						return this;
 					}
@@ -143,6 +143,7 @@ public static partial class ThatGeneric
 				return false;
 			}
 
+			_exception = null;
 			// The base class negates the outcome on read, so the raw predicate result is stored here.
 			Outcome = isSatisfied ? Outcome.Success : Outcome.Failure;
 			return isSatisfied != IsNegated;

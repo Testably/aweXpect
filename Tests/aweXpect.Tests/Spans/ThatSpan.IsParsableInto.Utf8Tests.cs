@@ -48,7 +48,9 @@ public sealed partial class ThatSpan
 					             Expected that subject.AsSpan()
 					             is parsable into int,
 					             but it was not, because the input string 'abc' was not in a correct format
-					             """);
+					             """).And
+					.Whose(e => e.InnerException, i => i.Is<FormatException>())
+					.Because("the exception of the parser tells why the span is not parsable");
 			}
 
 			[Fact]

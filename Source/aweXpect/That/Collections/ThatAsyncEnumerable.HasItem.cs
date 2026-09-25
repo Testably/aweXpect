@@ -172,7 +172,7 @@ public static partial class ThatAsyncEnumerable
 
 				_hasIndex = true;
 				_actual = item;
-				bool isMatch = predicate(item);
+				bool isMatch = UserCode.Invoke(predicate, item);
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
 				if (isMatch)
 				{

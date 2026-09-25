@@ -153,10 +153,8 @@ public static class PropertyResult
 		IThat<TItem> subject,
 		Func<TItem, long?> mapper,
 		string propertyExpression,
-		Action<long?, string>? validation = null,
-		Func<Exception, bool>? isExpectedPropertyException = null)
-		: Long<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation,
-			ExpectationGrammars.None, isExpectedPropertyException);
+		Action<long?, string>? validation = null)
+		: Long<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see langword="long" /> property of a <typeparamref name="TValue" /> which continues on
@@ -165,18 +163,13 @@ public static class PropertyResult
 	/// <remarks>
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
-	///     <para />
-	///     The <paramref name="isExpectedPropertyException" /> marks the exceptions from the <paramref name="mapper" />
-	///     that are a legitimate answer about the property instead of a defect: they fail the expectation and its
-	///     negation alike, because the property was never read.
 	/// </remarks>
 	public class Long<TValue, TType, TThat>(
 		TThat subject,
 		Func<TValue, long?> mapper,
 		string propertyExpression,
 		Action<long?, string>? validation = null,
-		ExpectationGrammars grammars = ExpectationGrammars.None,
-		Func<Exception, bool>? isExpectedPropertyException = null)
+		ExpectationGrammars grammars = ExpectationGrammars.None)
 		where TThat : IThat<TType>
 	{
 		/// <summary>
@@ -280,8 +273,7 @@ public static class PropertyResult
 							mapper,
 							propertyExpression,
 							new StructComparison<long>(expected, condition, expectation, negatedExpectation,
-								isOrderedAgainstNull),
-							isExpectedPropertyException)),
+								isOrderedAgainstNull))),
 				subject);
 	}
 
@@ -679,8 +671,7 @@ public static class PropertyResult
 		ExpectationGrammars grammars,
 		Func<TItem, TProperty?> mapper,
 		string propertyExpression,
-		StructComparison<TProperty> comparison,
-		Func<Exception, bool>? isExpectedPropertyException = null)
+		StructComparison<TProperty> comparison)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
@@ -705,7 +696,7 @@ public static class PropertyResult
 			{
 				_value = mapper(actual);
 			}
-			catch (Exception exception) when (isExpectedPropertyException?.Invoke(exception) == true)
+			catch (Exception exception)
 			{
 				_exception = exception;
 				return this;
@@ -774,12 +765,32 @@ public static class PropertyResult
 		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IAsyncConstraint<TItem>
 	{
+		private Exception? _exception;
 		private string? _value;
+
+		/// <inheritdoc />
+		public override Outcome Outcome
+		{
+			get => _exception is null ? base.Outcome : Outcome.Failure;
+			protected set => base.Outcome = value;
+		}
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _exception;
 
 		public async Task<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_value = mapper(actual);
+			try
+			{
+				_value = mapper(actual);
+			}
+			catch (Exception exception)
+			{
+				_exception = exception;
+				return this;
+			}
+
 			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
 			if (expectationBuilder is not null && !string.IsNullOrEmpty(_value))
 			{
@@ -816,7 +827,17 @@ public static class PropertyResult
 		///     which member <c>it</c> refers to.
 		/// </remarks>
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(propertyExpression, Grammars, _value, expected));
+		{
+			if (_exception is not null)
+			{
+				stringBuilder.Append(It).Append(" could not read the ").Append(propertyExpression)
+					.Append(", because it did throw ")
+					.Append(ThatDelegate.FormatForMessage(_exception, indentation));
+				return;
+			}
+
+			stringBuilder.Append(options.GetExtendedFailure(propertyExpression, Grammars, _value, expected));
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);

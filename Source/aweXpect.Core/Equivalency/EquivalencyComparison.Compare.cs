@@ -38,19 +38,7 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-		bool isEqual;
-		try
-		{
-			isEqual = isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected);
-		}
-		catch (Exception exception)
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException(
-					$"The equals method of {Formatter.Format(isDecidedByExpected ? expected.GetType() : actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
-					exception));
-		}
-
+		bool isEqual = UserCode.Invoke(() => isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected));
 		if (!isEqual)
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
@@ -351,8 +339,8 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualFieldValue = actualFieldAccessor.Invoke(actual);
-				object? expectedFieldValue = field.GetValue(expected);
+				object? actualFieldValue = UserCode.Invoke(actualFieldAccessor, actual);
+				object? expectedFieldValue = UserCode.Invoke(field.GetValue, expected);
 
 				if (!await Compare(actualFieldValue, expectedFieldValue,
 					    options, typeOptions,
@@ -390,8 +378,8 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualPropertyValue = actualPropertyAccessor.Invoke(actual);
-				object? expectedPropertyValue = property.GetValue(expected);
+				object? actualPropertyValue = UserCode.Invoke(actualPropertyAccessor, actual);
+				object? expectedPropertyValue = UserCode.Invoke(property.GetValue, expected);
 
 				if (!await Compare(actualPropertyValue, expectedPropertyValue,
 					    options, typeOptions,

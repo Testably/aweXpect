@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -147,6 +148,7 @@ public class Signaler<TParameter>
 	private CountdownEvent? _countdownEvent;
 	private int _counter;
 	private Func<TParameter, bool>? _predicate;
+	private Exception? _predicateException;
 	private ManualResetEventSlim? _resetEvent;
 
 	/// <summary>
@@ -164,13 +166,29 @@ public class Signaler<TParameter>
 	/// <summary>
 	///     Signals that the callback was executed with the provided <paramref name="parameter" />.
 	/// </summary>
+	/// <remarks>
+	///     It runs on the thread of the code that signals, so an exception of the predicate of a pending <c>Wait</c>
+	///     is not thrown here, but ends the wait and is thrown by the <c>Wait</c> instead.
+	/// </remarks>
 	public void Signal(TParameter parameter)
 	{
 		lock (_lock)
 		{
 			Interlocked.Increment(ref _counter);
 			_parameters.Add(parameter);
-			if (_predicate?.Invoke(parameter) != false)
+			bool isMatch;
+			try
+			{
+				isMatch = _predicate?.Invoke(parameter) != false;
+			}
+			catch (Exception exception)
+			{
+				_predicateException ??= exception;
+				EndTheWait();
+				return;
+			}
+
+			if (isMatch)
 			{
 				_resetEvent?.Set();
 				_countdownEvent?.Signal();
@@ -189,6 +207,8 @@ public class Signaler<TParameter>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
 	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
+	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
+	///     another thread signaled.
 	/// </remarks>
 	public SignalerResult<TParameter> Wait(
 		Func<TParameter, bool>? predicate = null,
@@ -198,6 +218,7 @@ public class Signaler<TParameter>
 		_predicate = predicate;
 		lock (_lock)
 		{
+			_predicateException = null;
 			if (GetMatchingCount(predicate) == 0)
 			{
 				_resetEvent = new ManualResetEventSlim();
@@ -211,6 +232,7 @@ public class Signaler<TParameter>
 			{
 				if (_resetEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 				{
+					ThrowIfThePredicateThrew();
 					return new SignalerResult<TParameter>(true, _parameters.ToArray());
 				}
 			}
@@ -223,6 +245,7 @@ public class Signaler<TParameter>
 				_resetEvent.Dispose();
 			}
 
+			ThrowIfThePredicateThrew();
 			return new SignalerResult<TParameter>(false, _parameters.ToArray());
 		}
 
@@ -241,6 +264,8 @@ public class Signaler<TParameter>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
 	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
+	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
+	///     another thread signaled.
 	/// </remarks>
 	public SignalerResult<TParameter> Wait(
 		Times amount,
@@ -258,6 +283,7 @@ public class Signaler<TParameter>
 
 		lock (_lock)
 		{
+			_predicateException = null;
 			int actualCount = GetMatchingCount(predicate);
 			if (actualCount >= amount.Value)
 			{
@@ -272,6 +298,7 @@ public class Signaler<TParameter>
 		{
 			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
+				ThrowIfThePredicateThrew();
 				return new SignalerResult<TParameter>(true, _parameters.ToArray());
 			}
 		}
@@ -284,7 +311,35 @@ public class Signaler<TParameter>
 			_countdownEvent.Dispose();
 		}
 
+		ThrowIfThePredicateThrew();
 		return new SignalerResult<TParameter>(false, _parameters.ToArray());
+	}
+
+	/// <remarks>
+	///     A wait that already ended has disposed its event, so there is nobody left to wake.
+	/// </remarks>
+	private void EndTheWait()
+	{
+		try
+		{
+			_resetEvent?.Set();
+			if (_countdownEvent is { IsSet: false, } countdownEvent)
+			{
+				countdownEvent.Signal(countdownEvent.CurrentCount);
+			}
+		}
+		catch (ObjectDisposedException)
+		{
+			// Ignore a wait that already ended
+		}
+	}
+
+	private void ThrowIfThePredicateThrew()
+	{
+		if (_predicateException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_predicateException).Throw();
+		}
 	}
 
 	private int GetMatchingCount(Func<TParameter, bool>? predicate)

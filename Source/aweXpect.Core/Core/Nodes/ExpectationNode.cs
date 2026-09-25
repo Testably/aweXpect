@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Nodes;
 
@@ -143,12 +145,14 @@ internal class ExpectationNode : Node
 				result = await asyncContextConstraint.IsMetBy(value, context, cancellationToken);
 			}
 		}
-		catch (Exception e) when (e is not ArgumentException && _constraint is not null)
+		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 		{
-			throw Tracing.WriteException(
-				new InvalidOperationException(
-					$"Error evaluating {Formatter.Format(_constraint.GetType())} constraint with value {Formatter.Format(value)}: {e.Message}",
-					e));
+			result = MemberExceptionResult.Create(await GetExpectationResult(_constraint!, context, cancellationToken),
+				e.Exception, "it", value);
+		}
+		catch (UserCodeException e)
+		{
+			ExceptionDispatchInfo.Capture(e.Exception).Throw();
 		}
 
 		if (_inner != null)
@@ -162,6 +166,20 @@ internal class ExpectationNode : Node
 			new InvalidOperationException(
 				$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}"));
 	}
+
+	/// <summary>
+	///     The expectation of the <paramref name="constraint" />, for when its evaluation was aborted by code of the caller.
+	/// </summary>
+	private static async Task<ConstraintResult> GetExpectationResult(IConstraint constraint,
+		IEvaluationContext context, CancellationToken cancellationToken)
+		=> constraint switch
+		{
+			IExpectationTextConstraint expectationTextConstraint
+				=> await expectationTextConstraint.GetExpectationResult(
+					ExpectationTextEvaluationContext.For(context), cancellationToken),
+			ConstraintResult constraintResult => constraintResult,
+			_ => new ConstraintExpectationResult(constraint),
+		};
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{

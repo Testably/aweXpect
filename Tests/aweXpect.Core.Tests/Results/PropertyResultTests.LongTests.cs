@@ -119,10 +119,10 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
-		public async Task EqualTo_WhenReadingThePropertyThrowsAnExpectedException_ShouldFail()
+		public async Task EqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
-			PropertyResult.Long<MyClass?> sut =
-				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => true);
+			InvalidOperationException exception = new("foo");
+			PropertyResult.Long<MyClass?> sut = MyClass.HasThrowingLongValue(exception);
 
 			async Task Act()
 				=> await sut.EqualTo(42L);
@@ -133,22 +133,9 @@ public sealed partial class PropertyResultTests
 				             has long value equal to 42,
 				             but it could not read the long value, because it did throw an InvalidOperationException:
 				               foo
-				             """)
-				.Because("a property that the caller declared unreadable fails the expectation");
-		}
-
-		[Fact]
-		public async Task EqualTo_WhenReadingThePropertyThrowsAnUnexpectedException_ShouldThrowTheWrappedException()
-		{
-			PropertyResult.Long<MyClass?> sut =
-				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => false);
-
-			async Task Act()
-				=> await sut.EqualTo(42L);
-
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Error evaluating*constraint with value*foo").AsWildcard()
-				.Because("an undeclared exception remains a defect");
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("a property that cannot be read fails the expectation, whatever it throws");
 		}
 
 		[Fact]
@@ -344,10 +331,10 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
-		public async Task NotEqualTo_WhenReadingThePropertyThrowsAnExpectedException_ShouldFail()
+		public async Task NotEqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
-			PropertyResult.Long<MyClass?> sut =
-				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => true);
+			InvalidOperationException exception = new("foo");
+			PropertyResult.Long<MyClass?> sut = MyClass.HasThrowingLongValue(exception);
 
 			async Task Act()
 				=> await sut.NotEqualTo(42L);
@@ -358,7 +345,8 @@ public sealed partial class PropertyResultTests
 				             has long value not equal to 42,
 				             but it could not read the long value, because it did throw an InvalidOperationException:
 				               foo
-				             """)
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 				.Because("a property that was never read cannot prove inequality either");
 		}
 

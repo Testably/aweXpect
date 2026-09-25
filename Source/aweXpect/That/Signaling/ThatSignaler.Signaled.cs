@@ -329,15 +329,15 @@ public static partial class ThatSignaler
 				{
 					// Measured inside the task, so that a busy thread pool does not count as waited time.
 					Stopwatch stopwatch = Stopwatch.StartNew();
-					SignalerResult<TParameter> result = determinableAmount > 1
+					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
-						: actual.Wait(o.Matches, timeout, cancellationToken);
+						: actual.Wait(o.Matches, timeout, cancellationToken));
 					_waitedTime = o.Timeout is null ? null : stopwatch.Elapsed;
 					return result;
 				},
 				CancellationToken.None);
 
-			_actualCount = Actual.Parameters.Count(p => o.Matches(p));
+			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p));
 
 			Outcome = quantifier.Check(_actualCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;

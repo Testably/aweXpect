@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 
 namespace aweXpect.Options;
 
@@ -8,7 +9,7 @@ internal class PredicateOptions<TItem>
 	private string? _predicateDescription;
 
 	public bool Matches(TItem item)
-		=> _predicate is null || _predicate(item);
+		=> _predicate is null || UserCode.Invoke(_predicate, item);
 
 	internal void SetPredicate(Func<TItem, bool> predicate, string predicateDescription)
 	{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core;
 
@@ -34,6 +35,25 @@ public abstract class ResultContext
 	///     The content of the context.
 	/// </summary>
 	public abstract Task<string?> GetContent(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	///     The content of the context, or <see langword="null" /> when code of the caller throws while it is created.
+	/// </summary>
+	/// <remarks>
+	///     The exception already failed the expectation, e.g. when a context lists the items of a subject whose
+	///     enumeration threw, so it must not abort the failure message.
+	/// </remarks>
+	internal async Task<string?> GetContentUnlessUserCodeThrows(CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await GetContent(cancellationToken);
+		}
+		catch (UserCodeException)
+		{
+			return null;
+		}
+	}
 
 	/// <summary>
 	///     A <see cref="ResultContext" /> from a fixed <see langword="string" /> content.

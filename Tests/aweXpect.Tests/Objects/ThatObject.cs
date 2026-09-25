@@ -41,4 +41,11 @@ public sealed partial class ThatObject
 	private sealed class MyGenericDerivedClass : MyGenericBaseClass;
 
 	private sealed class MyDictionaryClass : Dictionary<string, int>;
+
+	private sealed class ThrowingEqualsClass(Exception exception)
+	{
+		public override bool Equals(object? obj) => throw exception;
+
+		public override int GetHashCode() => 0;
+	}
 }

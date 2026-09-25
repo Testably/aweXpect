@@ -270,7 +270,7 @@ public static partial class ThatAsyncEnumerable
 			List<(TItem Item, int MemberIndex)> items = [];
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
-				items.Add((item, await occurrences.Add(memberAccessor(item))));
+				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item))));
 			}
 
 			List<TItem> collection = items.ConvertAll(x => x.Item);

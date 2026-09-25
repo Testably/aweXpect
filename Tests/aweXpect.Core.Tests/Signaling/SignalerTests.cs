@@ -266,6 +266,34 @@ public sealed class SignalerTests
 			await That(result).IsEqualTo(expectedResult);
 		}
 
+		[Fact]
+		public async Task Signal_AfterATimedOutWait_WhenThePredicateOfTheWaitThrows_ShouldNotThrow()
+		{
+			Signaler<int> signaler = new();
+			signaler.Wait(2.Times(), _ => throw new InvalidOperationException("predicate failed"),
+				10.Milliseconds());
+
+			void Act()
+				=> signaler.Signal(1);
+
+			await That(Act).DoesNotThrow()
+				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
+		}
+
+		[Fact]
+		public async Task Signal_WhenThePredicateOfTheWaitThrows_ShouldNotThrow()
+		{
+			Signaler<int> signaler = new();
+			signaler.Wait(_ => throw new InvalidOperationException("predicate failed"), TimeSpan.Zero);
+
+			void Act()
+				=> signaler.Signal(1);
+
+			await That(Act).DoesNotThrow()
+				.Because("the signal is sent on the thread of the code under test, which must not receive the exception");
+			await That(signaler.IsSignaled()).IsTrue();
+		}
+
 		[Theory]
 		[InlineData(2)]
 		[InlineData(3)]
@@ -554,6 +582,54 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
 				.And.IsGreaterThanOrEqualTo(10.Milliseconds());
+		}
+
+		[Fact]
+		public async Task Wait_WithPredicate_Single_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
+		{
+			Signaler<int> signaler = new();
+			InvalidOperationException exception = new("predicate failed");
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(1);
+			});
+
+			Stopwatch sw = new();
+			sw.Start();
+
+			void Act()
+				=> signaler.Wait(_ => throw exception, 10.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("predicate failed");
+			sw.Stop();
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the exception ends the wait instead of letting it run into the timeout");
+		}
+
+		[Fact]
+		public async Task Wait_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
+		{
+			Signaler<int> signaler = new();
+			InvalidOperationException exception = new("predicate failed");
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(1);
+			});
+
+			Stopwatch sw = new();
+			sw.Start();
+
+			void Act()
+				=> signaler.Wait(2.Times(), _ => throw exception, 10.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("predicate failed");
+			sw.Stop();
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
 		[Theory]

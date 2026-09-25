@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -9,6 +11,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 {
 	private readonly IEnumerator<T> _enumerator;
 	private readonly List<T> _materializedItems = new();
+	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable<T> enumerable)
 	{
@@ -42,7 +45,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 		}
 
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (_enumerator.MoveNext())
+		while (MoveNext())
 		{
 			T item = _enumerator.Current;
 			_materializedItems.Add(item);
@@ -53,6 +56,28 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 	}
 
 	#endregion
+
+	/// <remarks>
+	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
+	///     it cannot be mistaken for the end of the source.
+	/// </remarks>
+	private bool MoveNext()
+	{
+		if (_sourceException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_sourceException).Throw();
+		}
+
+		try
+		{
+			return UserCode.Invoke(_enumerator.MoveNext);
+		}
+		catch (Exception exception)
+		{
+			_sourceException = exception;
+			throw;
+		}
+	}
 }
 
 internal sealed class MaterializingEnumerable : IEnumerable, ICountable
@@ -60,6 +85,7 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 	private readonly IEnumerator _enumerator;
 	private readonly List<object?> _materializedItems = new();
 	private bool _isMaterializedCompletely;
+	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable enumerable)
 	{
@@ -93,7 +119,7 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 			yield return materializedItem;
 		}
 
-		while (!_isMaterializedCompletely && _enumerator.MoveNext())
+		while (!_isMaterializedCompletely && MoveNext())
 		{
 			object? item = _enumerator.Current;
 			_materializedItems.Add(item);
@@ -109,4 +135,23 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 	}
 
 	#endregion
+
+	/// <inheritdoc cref="MaterializingEnumerable{T}.MoveNext()" />
+	private bool MoveNext()
+	{
+		if (_sourceException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_sourceException).Throw();
+		}
+
+		try
+		{
+			return UserCode.Invoke(_enumerator.MoveNext);
+		}
+		catch (Exception exception)
+		{
+			_sourceException = exception;
+			throw;
+		}
+	}
 }

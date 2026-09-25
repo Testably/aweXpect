@@ -59,6 +59,46 @@ public sealed partial class ThatReadOnlyDictionary
 		public sealed class WhoseValueTests
 		{
 			[Fact]
+			public async Task WhenKeyExists_ButLookingUpTheValueThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("lookup failed");
+				IReadOnlyDictionary<int, string> subject = new ThrowingLookupDictionary(exception, 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).ContainsKey(2).WhoseValue.IsEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains key 2 whose value is equal to "foo",
+					             but value [2] did throw an InvalidOperationException:
+					               lookup failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a value that cannot be looked up fails the expectation instead of aborting its evaluation");
+			}
+
+			[Fact]
+			public async Task WhenKeyExists_ButLookingUpTheValueThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("lookup failed");
+				IReadOnlyDictionary<int, string> subject = new ThrowingLookupDictionary(exception, 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.ContainsKey(2).WhoseValue.IsEqualTo("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain key 2 whose value is equal to "foo",
+					             but value [2] did throw an InvalidOperationException:
+					               lookup failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a value that was never looked up cannot prove the negation either");
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_ButValueDoesNotMatch_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);

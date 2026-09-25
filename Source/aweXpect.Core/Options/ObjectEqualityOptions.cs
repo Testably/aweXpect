@@ -52,7 +52,7 @@ internal static class ObjectEqualityOptions
 			}
 
 			if (expected is TActual castedExpected &&
-			    EqualityComparer<TActual>.Default.Equals(actual, castedExpected))
+			    UserCode.Invoke(() => EqualityComparer<TActual>.Default.Equals(actual, castedExpected)))
 			{
 				return new ValueTask<bool>(true);
 			}
@@ -63,7 +63,7 @@ internal static class ObjectEqualityOptions
 				return new ValueTask<bool>(true);
 			}
 
-			return new ValueTask<bool>(Equals(actual, expected));
+			return new ValueTask<bool>(UserCode.Invoke(() => Equals(actual, expected)));
 		}
 
 		private static bool AreNumericsEqual(object actual, object expected)

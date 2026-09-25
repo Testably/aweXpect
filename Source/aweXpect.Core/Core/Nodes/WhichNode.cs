@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ internal class WhichNode<TSource, TMember> : Node
 {
 	private readonly Func<TSource, Task<TMember?>>? _asyncMemberAccessor;
 	private readonly Func<TSource, TMember?>? _memberAccessor;
+	private readonly string _memberName = "it";
 	private readonly bool _negateMemberOnly;
 	private readonly Node? _parent;
 	private readonly string? _separator;
@@ -23,12 +25,14 @@ internal class WhichNode<TSource, TMember> : Node
 		Node? parent,
 		Func<TSource, TMember?> memberAccessor,
 		string? separator = null,
-		bool negateMemberOnly = false)
+		bool negateMemberOnly = false,
+		string? memberName = null)
 	{
 		_parent = parent;
 		_memberAccessor = memberAccessor;
 		_separator = separator;
 		_negateMemberOnly = negateMemberOnly;
+		_memberName = memberName ?? _memberName;
 	}
 
 	public WhichNode(
@@ -122,7 +126,27 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 
 		TSource? source = ResolveSource(parentResult, value);
-		TMember? matchingValue = await ComputeMatchingValueAsync(source);
+		TMember? matchingValue;
+		try
+		{
+			matchingValue = await ComputeMatchingValueAsync(source);
+		}
+		catch (Exception exception)
+		{
+			Exception cause = exception is UserCodeException userCodeException
+				? userCodeException.Exception
+				: exception;
+			if (MemberExceptionResult.IsCancellationOf(cause, cancellationToken))
+			{
+				ExceptionDispatchInfo.Capture(cause).Throw();
+			}
+
+			ConstraintResult exceptionResult = MemberExceptionResult.Create(
+				await _inner.IsMetBy<TMember>(default, ExpectationTextEvaluationContext.For(context),
+					cancellationToken), cause, _memberName, default(TMember));
+			return CombineResults(parentResult, exceptionResult, _separator ?? "",
+				FurtherProcessingStrategy.IgnoreResult, default);
+		}
 
 		ConstraintResult innerResult = await _inner.IsMetBy(matchingValue, context, cancellationToken);
 		return CombineResults(parentResult, innerResult, _separator ?? "", FurtherProcessingStrategy.IgnoreResult,

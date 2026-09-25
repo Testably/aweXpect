@@ -331,6 +331,83 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenMemberAccessorIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			_ => throw new OperationCanceledException("canceled", cts.Token), memberName: "value [1]");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		async Task Act()
+			=> await whichNode.IsMetBy("foo", null!, cts.Token);
+
+		await That(Act).Throws<OperationCanceledException>()
+			.WithMessage("canceled")
+			.Because("a requested cancellation aborts the evaluation instead of failing it");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberAccessorThrowsFromUserCode_ShouldFailWithTheExceptionOfTheCaller()
+	{
+		MyException exception = new();
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			_ => UserCode.Invoke<int>(() => throw exception), memberName: "value [1]");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsSameAs(exception)
+			.Because("the exception of the caller is reported instead of the one that carried it out of the accessor");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberAccessorThrows_ShouldFailWithTheException()
+	{
+		MyException exception = new();
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			_ => throw exception, " whose value ", memberName: "value [1]");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsSameAs(exception);
+		await That(sb.ToString()).IsEqualTo(" whose value e2");
+		await That(result.GetResultText()).IsEqualTo("""
+		                                             value [1] did throw a MyException:
+		                                               IsMetBy_WhenMemberAccessorThrows_ShouldFailWithTheException
+		                                             """);
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberAccessorThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
+	{
+		MyException exception = new();
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			_ => throw exception, " whose value ", memberName: "value [1]");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("an accessor that threw answered nothing, so the negation fails as well");
+		await That(negated.FailureCause).IsSameAs(exception);
+		await That(negated.GetResultText()).IsEqualTo("""
+		                                              value [1] did throw a MyException:
+		                                                IsMetBy_WhenMemberAccessorThrows_WhenNegated_ShouldNegateExpectationAndStillFail
+		                                              """);
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenOuterTypeDoesNotMatchButParentExposesProjectedValue_ShouldFallBackToParentProjection()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "abcd", ""));
