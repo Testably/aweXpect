@@ -28,6 +28,25 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenItThrows_ShouldRenderAPlaceholderInTheFailureMessage()
+	{
+		MyThrowingFormattableClass subject = new();
+		using IDisposable lifetime = ValueFormatter.Register(
+			new MyThrowingCustomFormatter(new InvalidOperationException("formatter failed")));
+
+		async Task Act()
+			=> await That(subject).IsNull();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is null,
+			             but it was [the formatter did throw an InvalidOperationException: formatter failed]
+			             """)
+			.Because("what the formatter appended before it threw is discarded");
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenNull_ShouldUseDefaultNullString()
 	{
 		using IDisposable lifetime = ValueFormatter.Register(new MyCustomFormatter("my-string"));
@@ -68,4 +87,20 @@ public class ValueFormatterTests
 	{
 		public int Value { get; set; }
 	}
+
+	private sealed class MyThrowingCustomFormatter(Exception exception) : IValueFormatter
+	{
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is MyThrowingFormattableClass)
+			{
+				stringBuilder.Append("partial");
+				throw exception;
+			}
+
+			return false;
+		}
+	}
+
+	private sealed class MyThrowingFormattableClass;
 }

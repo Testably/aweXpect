@@ -8,7 +8,9 @@ using aweXpect.Core;
 #endif
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Formatting;
 
@@ -47,11 +49,23 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (!ValueFormatter.RegisteredValueFormatters.IsEmpty &&
-		    ValueFormatter.RegisteredValueFormatters.Any(item
-			    => item.Value.TryFormat(stringBuilder, value, options)))
+		if (!ValueFormatter.RegisteredValueFormatters.IsEmpty)
 		{
-			return;
+			int length = stringBuilder.Length;
+			try
+			{
+				if (ValueFormatter.RegisteredValueFormatters.Any(item
+					    => item.Value.TryFormat(stringBuilder, value, options)))
+				{
+					return;
+				}
+			}
+			catch (Exception exception)
+			{
+				stringBuilder.Length = length;
+				stringBuilder.Append(FormatThrownException("the formatter", exception));
+				return;
+			}
 		}
 
 		switch (value)
@@ -159,6 +173,17 @@ public static partial class ValueFormatters
 
 		FormatObject(stringBuilder, value,
 			options ?? FormattingOptions.MultipleLines, context);
+	}
+
+	/// <summary>
+	///     The placeholder for a value that could not be formatted, because code of the caller threw the
+	///     <paramref name="exception" />, so that building a failure message does not throw and hide the failure.
+	/// </summary>
+	private static string FormatThrownException(string thrower, Exception exception)
+	{
+		exception = (exception as UserCodeException)?.Exception ?? exception;
+		exception = (exception as TargetInvocationException)?.InnerException ?? exception;
+		return $"[{thrower} did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: {exception.Message}]";
 	}
 
 #if NET8_0_OR_GREATER

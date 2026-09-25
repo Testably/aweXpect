@@ -32,21 +32,39 @@ public static partial class ValueFormatters
 			stringBuilder.Append("] = ");
 			Format(Formatter, stringBuilder, pairValue, pairOptions, context);
 		}
-		else if (IsAnonymousType(value.GetType()) || HasDefaultToStringImplementation(value))
-		{
-			context ??= new FormattingContext();
-			WriteTypeAndMemberValues(value, stringBuilder, options with
-			{
-				IncludeType = false,
-			}, context);
-		}
-		else if (options.UseLineBreaks)
-		{
-			stringBuilder.Append(value.ToString().Indent(indentFirstLine: false));
-		}
 		else
 		{
-			stringBuilder.Append(value);
+			string? toString = null;
+			if (!IsAnonymousType(value.GetType()))
+			{
+				try
+				{
+					toString = value.ToString();
+				}
+				catch (Exception exception)
+				{
+					stringBuilder.Append(FormatThrownException(
+						$"ToString of {Formatter.Format(value.GetType())}", exception));
+					return;
+				}
+			}
+
+			if (toString is null || toString == value.GetType().ToString())
+			{
+				context ??= new FormattingContext();
+				WriteTypeAndMemberValues(value, stringBuilder, options with
+				{
+					IncludeType = false,
+				}, context);
+			}
+			else if (options.UseLineBreaks)
+			{
+				stringBuilder.Append(toString.Indent(indentFirstLine: false));
+			}
+			else
+			{
+				stringBuilder.Append(toString);
+			}
 		}
 	}
 
@@ -114,13 +132,6 @@ public static partial class ValueFormatters
 		return true;
 	}
 
-	private static bool HasDefaultToStringImplementation(object value)
-	{
-		string? str = value.ToString();
-
-		return str is null || str == value.GetType().ToString();
-	}
-
 	/// <remarks>
 	///     An anonymous type renders itself through a compiler-generated <see cref="object.ToString()" /> that passes
 	///     every member through its own one, so a <see cref="Type" /> member reads as <c>System.Int64</c> where the
@@ -169,10 +180,9 @@ public static partial class ValueFormatters
 		{
 			formattedValue = Formatter.Format(member.GetValue(value), options, context);
 		}
-		catch (Exception ex)
+		catch (Exception exception)
 		{
-			ex = (ex as TargetInvocationException)?.InnerException ?? ex;
-			formattedValue = $"[Member '{member.Name}' threw an exception: '{ex.Message}']";
+			formattedValue = FormatThrownException(member.Name, exception);
 		}
 
 		stringBuilder.Append($"{new string(' ', indentation)}{member.Name} = ");

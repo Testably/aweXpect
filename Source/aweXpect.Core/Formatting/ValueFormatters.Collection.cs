@@ -124,8 +124,29 @@ public static partial class ValueFormatters
 			TotalItemCount = null,
 		});
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 	private static void FormatItems<T>(
+		ValueFormatter formatter,
+		StringBuilder stringBuilder,
+		IEnumerable value,
+		IEnumerable<T> items,
+		int? totalCount,
+		FormattingOptions? options,
+		Func<ValueFormatter, T, FormattingOptions, string> formatItem)
+	{
+		int length = stringBuilder.Length;
+		try
+		{
+			AppendItems(formatter, stringBuilder, value, items, totalCount, options, formatItem);
+		}
+		catch (Exception exception)
+		{
+			stringBuilder.Length = length;
+			stringBuilder.Append(FormatThrownException("the enumeration", exception));
+		}
+	}
+
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+	private static void AppendItems<T>(
 		ValueFormatter formatter,
 		StringBuilder stringBuilder,
 		IEnumerable value,

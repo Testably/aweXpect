@@ -124,9 +124,12 @@ public sealed partial class ThatEnumerable
 					             has item matching x => x == 3,
 					             but it did throw an InvalidOperationException:
 					               enumeration failed
+
+					             Collection:
+					             [the enumeration did throw an InvalidOperationException: enumeration failed]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
-					.Because("the collection cannot be listed either, so the failure message leaves it out");
+					.Because("the collection cannot be listed either, so the formatter renders a placeholder instead");
 			}
 
 			[Fact]
