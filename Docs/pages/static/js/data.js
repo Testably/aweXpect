@@ -4140,6 +4140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -4832,7 +4838,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -5528,7 +5535,8 @@ window.BENCHMARK_DATA = {
           334.8974219640096,
           380.4438170115153,
           309.2303461294908,
-          162.10056506670438
+          162.10056506670438,
+          241.9545815785726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6225,6 +6233,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -6933,7 +6942,8 @@ window.BENCHMARK_DATA = {
           264.95683066050213,
           257.78558756510415,
           241.6386832169124,
-          135.95577567418417
+          135.95577567418417,
+          230.99256037076313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7126,6 +7136,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11326,6 +11337,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -11941,7 +11958,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -12560,7 +12578,8 @@ window.BENCHMARK_DATA = {
           448683.5196614583,
           433309.02034505206,
           422913.3953125,
-          219935.76381835938
+          219935.76381835938,
+          302810.2771344866
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13180,6 +13199,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -13811,7 +13831,8 @@ window.BENCHMARK_DATA = {
           2641279.505301339,
           2615403.064583333,
           2520124.980769231,
-          1312694.349330357
+          1312694.349330357,
+          1765410.9028645833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14435,7 +14456,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18589,6 +18611,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -19281,7 +19309,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -19977,7 +20006,8 @@ window.BENCHMARK_DATA = {
           565.4947686876569,
           568.425791867574,
           532.5304430552891,
-          294.2913992588337
+          294.2913992588337,
+          437.31962765180145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20674,6 +20704,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -21382,7 +21413,8 @@ window.BENCHMARK_DATA = {
           490.3035710016886,
           562.0343593188694,
           468.6073079109192,
-          265.5732650416238
+          265.5732650416238,
+          394.3921975135803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21575,6 +21607,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26237,6 +26270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -26929,7 +26968,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -27625,7 +27665,8 @@ window.BENCHMARK_DATA = {
           345.38215919641345,
           358.7025234018053,
           336.97117062977384,
-          173.28220529556273
+          173.28220529556273,
+          265.1044013659159
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28322,6 +28363,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -29030,7 +29072,8 @@ window.BENCHMARK_DATA = {
           257.240458215986,
           260.19358180363974,
           234.91125158163217,
-          133.63013918059212
+          133.63013918059212,
+          260.7137795130412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29223,6 +29266,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33885,6 +33929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -34577,7 +34627,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -35273,7 +35324,8 @@ window.BENCHMARK_DATA = {
           632.7823322931926,
           604.840633392334,
           588.1439423194298,
-          339.47937596638997
+          339.47937596638997,
+          434.7333507537842
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35970,6 +36022,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -36678,7 +36731,8 @@ window.BENCHMARK_DATA = {
           1214.0112387793404,
           1210.7062016805014,
           1271.4010334014893,
-          638.9035935084025
+          638.9035935084025,
+          997.948850886027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37107,6 +37161,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41533,6 +41588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -42225,7 +42286,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -42921,7 +42983,8 @@ window.BENCHMARK_DATA = {
           3066.1807594299316,
           3030.016466522217,
           2923.1399696895055,
-          1605.770192082723
+          1605.770192082723,
+          1613.3105629512243
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43622,7 +43685,8 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
-          4032
+          4032,
+          4168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44326,7 +44390,8 @@ window.BENCHMARK_DATA = {
           1449.1962752024333,
           1362.9447317759195,
           1284.651495107015,
-          689.0055833498637
+          689.0055833498637,
+          993.2851346333822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44519,6 +44584,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49181,6 +49247,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
         "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
+      },
+      {
+        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
+        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
       }
     ],
     "labels": [
@@ -49873,7 +49945,8 @@ window.BENCHMARK_DATA = {
       "1e0600a1",
       "adf00ff4",
       "5be679d9",
-      "33ac0bdb"
+      "33ac0bdb",
+      "e50f5061"
     ],
     "datasets": [
       {
@@ -50569,7 +50642,8 @@ window.BENCHMARK_DATA = {
           3117.8327437180737,
           2929.22376196725,
           2844.4870118361255,
-          1633.9709972381593
+          1633.9709972381593,
+          1699.4059089933123
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51270,7 +51344,8 @@ window.BENCHMARK_DATA = {
           3792,
           3792,
           3792,
-          3792
+          3792,
+          3928
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51974,7 +52049,8 @@ window.BENCHMARK_DATA = {
           28760.40278930664,
           26582.58759358724,
           26036.971883920523,
-          10554.614458211263
+          10554.614458211263,
+          13557.310091291156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52675,7 +52751,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
