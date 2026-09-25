@@ -14,7 +14,7 @@ public static partial class ThatDelegateThrows
 		WithParamName<TException>(
 			this ThatDelegateThrows<TException> subject)
 		where TException : ArgumentException?
-		=> new(subject, e => (e as ArgumentException)?.ParamName, "ParamName",
+		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name",
 			grammars: ExpectationGrammars.Active | ExpectationGrammars.Nested);
 
 	/// <summary>

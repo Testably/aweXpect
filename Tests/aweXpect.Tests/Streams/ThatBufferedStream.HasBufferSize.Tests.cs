@@ -472,7 +472,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has buffer size not equal to {bufferSize},
+					              does not have buffer size equal to {bufferSize},
 					              but it had buffer size {bufferSize}
 					              """);
 			}
@@ -488,7 +488,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has buffer size not equal to 0,
+					             does not have buffer size equal to 0,
 					             but it was <null>
 					             """);
 			}

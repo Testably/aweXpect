@@ -17,7 +17,7 @@ public sealed partial class ThatDelegate
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
-					             throws exactly an Exception with Message equal to "foo",
+					             throws exactly an Exception with message equal to "foo",
 					             but it did not throw any exception
 					             """);
 			}
@@ -135,7 +135,7 @@ public sealed partial class ThatDelegate
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
-					             throws exactly an Exception with Message equal to "foo",
+					             throws exactly an Exception with message equal to "foo",
 					             but it did not throw any exception
 					             """);
 			}

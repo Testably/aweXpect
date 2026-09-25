@@ -13,7 +13,7 @@ public static partial class ThatException
 	public static PropertyResult.String<Exception?, TException, IThat<TException>> HasParamName<TException>(
 		this IThat<TException> subject)
 		where TException : ArgumentException?
-		=> new(subject, e => (e as ArgumentException)?.ParamName, "ParamName");
+		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name");
 
 	/// <summary>
 	///     Verifies that the actual <see cref="ArgumentException" /> has an <paramref name="expected" /> param name.

@@ -42,7 +42,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it had Kind {subjectKind}, which cannot be compared with {incompatibleKind}
+					              but it had kind {subjectKind}, which cannot be compared with {incompatibleKind}
 					              """);
 			}
 

@@ -163,7 +163,7 @@ Only `IsNotEqualTo` and `IsNotOneOf` succeed, because the two values are never e
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Utc);
 
-// fails with "but it had Kind Utc, which cannot be compared with Local"
+// fails with "but it had kind Utc, which cannot be compared with Local"
 await Expect.That(subject).IsBefore(new DateTime(2024, 12, 25, 0, 0, 0, DateTimeKind.Local));
 
 await Expect.That(subject).IsNotEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Local));

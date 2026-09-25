@@ -232,7 +232,7 @@ await Expect.That(exception).HasMessage("my exception");
 ```
 
 All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
-message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has Message …". The analyzer
+message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer
 rule `aweXpect0003` flags it and offers to switch to the `With…` twin or to insert `.Which`.
 
 ## Execution time

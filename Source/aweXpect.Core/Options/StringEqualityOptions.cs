@@ -225,6 +225,34 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
+	///     Get an extended failure text that states which value <paramref name="it" /> had in its
+	///     <paramref name="member" />.
+	/// </summary>
+	/// <remarks>
+	///     The match types phrase their failure with the member as the subject (<c>message was …</c>, <c>message did
+	///     not match…</c>), so it is rephrased here; a failure of a custom match type is kept as it is.
+	/// </remarks>
+	internal string GetExtendedMemberFailure(string it, string member, ExpectationGrammars grammars,
+		string? actual, string? expected)
+	{
+		string failure = GetExtendedFailure(member, grammars, actual, expected);
+		string wasPrefix = member + " was ";
+		if (failure.StartsWith(wasPrefix, StringComparison.Ordinal))
+		{
+			return $"{it} had {member} {failure.Substring(wasPrefix.Length)}";
+		}
+
+		string didNotMatchPrefix = member + " did not match";
+		if (failure.StartsWith(didNotMatchPrefix, StringComparison.Ordinal))
+		{
+			return
+				$"{it} had {member} {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} which {failure.Substring(member.Length + 1)}";
+		}
+
+		return failure;
+	}
+
+	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">

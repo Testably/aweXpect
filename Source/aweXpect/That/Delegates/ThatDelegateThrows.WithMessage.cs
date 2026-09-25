@@ -13,7 +13,7 @@ public static partial class ThatDelegateThrows
 	public static PropertyResult.String<Exception?, TException, ThatDelegateThrows<TException>> WithMessage<TException>(
 		this ThatDelegateThrows<TException> subject)
 		where TException : Exception?
-		=> new(subject, e => e?.Message, "Message",
+		=> new(subject, e => e?.Message, "message",
 			grammars: ExpectationGrammars.Active | ExpectationGrammars.Nested,
 			includeValueInContext: true);
 

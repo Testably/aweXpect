@@ -563,7 +563,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has length not equal to {length},
+					              does not have length equal to {length},
 					              but it had length {length}
 					              """);
 			}
@@ -580,7 +580,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has length not equal to 3,
+					             does not have length equal to 3,
 					             but it could not read the length, because it did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
@@ -598,7 +598,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has length not equal to 1,
+					             does not have length equal to 1,
 					             but it was <null>
 					             """);
 			}

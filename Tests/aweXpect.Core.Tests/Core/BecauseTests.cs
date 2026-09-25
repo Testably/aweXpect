@@ -338,8 +338,8 @@ public class BecauseTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
-			             throws a MyException with Message equal to "bar", because of reasons,
-			             but Message was "foo" which differs at index 0:
+			             throws a MyException with message equal to "bar", because of reasons,
+			             but it had message "foo" which differs at index 0:
 			                ↓ (actual)
 			               "foo"
 			               "bar"

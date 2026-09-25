@@ -42,7 +42,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it had Kind {subjectKind}, which cannot be compared with {incompatibleKind}
+					              but it had kind {subjectKind}, which cannot be compared with {incompatibleKind}
 					              """)
 					.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
 			}
@@ -66,7 +66,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it had Kind {subjectKind}, which cannot be compared with {incompatibleKind}
+					              but it had kind {subjectKind}, which cannot be compared with {incompatibleKind}
 					              """);
 			}
 
@@ -135,7 +135,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}, because the subject must be comparable to both bounds,
-					              but it had Kind Local, which cannot be compared with Utc
+					              but it had kind Local, which cannot be compared with Utc
 					              """);
 			}
 
@@ -203,7 +203,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}, because the subject must be comparable to both bounds,
-					              but it had Kind Local, which cannot be compared with Utc
+					              but it had kind Local, which cannot be compared with Utc
 					              """);
 			}
 
@@ -432,7 +432,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
-					              but it had Kind Local, which cannot be compared with Utc
+					              but it had kind Local, which cannot be compared with Utc
 					              """);
 			}
 

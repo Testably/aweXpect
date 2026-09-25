@@ -400,7 +400,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is not in ascending order,
-					              but it had {Formatter.Format(Local)} with Kind Local and {Formatter.Format(Utc)} with Kind Utc, which cannot be compared
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -427,7 +427,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is not in ascending order by x => x.Value,
-					              but it had {Formatter.Format(Local)} with Kind Local and {Formatter.Format(Utc)} with Kind Utc, which cannot be compared
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -443,7 +443,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is not in ascending order,
-					              but it had {Formatter.Format(Local)} with Kind Local and {Formatter.Format(Utc)} with Kind Utc, which cannot be compared
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -459,7 +459,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is not in ascending order by x => x.NullableValue,
-					              but it had {Formatter.Format(Local)} with Kind Local and {Formatter.Format(Utc)} with Kind Utc, which cannot be compared
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}
 

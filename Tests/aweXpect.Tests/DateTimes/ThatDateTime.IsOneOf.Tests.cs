@@ -108,7 +108,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+					              but it had kind {subjectKind}, which cannot be compared with {expectedKind}
 					              """);
 			}
 
@@ -201,7 +201,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)}, because no alternative can be compared to the subject,
-					              but it had Kind Utc, which cannot be compared with Local
+					              but it had kind Utc, which cannot be compared with Local
 					              """);
 			}
 
@@ -251,7 +251,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
-					              but it had Kind Utc, which cannot be compared with Local
+					              but it had kind Utc, which cannot be compared with Local
 					              """);
 			}
 

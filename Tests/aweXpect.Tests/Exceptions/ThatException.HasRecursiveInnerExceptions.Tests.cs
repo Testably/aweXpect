@@ -112,7 +112,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recursive inner exceptions whose Message is equal to "inner" for all items,
+					             has recursive inner exceptions whose message is equal to "inner" for all items,
 					             but it had no inner exceptions
 
 					             Collection:

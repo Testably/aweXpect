@@ -50,7 +50,7 @@ internal static class DateTimeKindHelpers
 				return null;
 			}
 
-			return $"had {Formatter.Format(first)} with Kind {first.Value.Kind} and {Formatter.Format(value)} with Kind {value.Value.Kind}, which cannot be compared";
+			return $"had {Formatter.Format(first)} with kind {first.Value.Kind} and {Formatter.Format(value)} with kind {value.Value.Kind}, which cannot be compared";
 		};
 	}
 }

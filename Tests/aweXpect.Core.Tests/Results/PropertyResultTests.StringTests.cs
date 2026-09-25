@@ -22,7 +22,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value containing "{expected}",
-				              but string value was "{actual}"*
+				              but it had string value "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -41,7 +41,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value containing "FOO",
-				             but string value was "something with foo in it"
+				             but it had string value "something with foo in it"
 				             """);
 		}
 
@@ -128,7 +128,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value ending with "{expected}",
-				              but string value was "{actual}"*
+				              but it had string value "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -202,7 +202,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value equal to "{expected}",
-				              but string value was "{actual}"*
+				              but it had string value "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -221,7 +221,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "FOO",
-				             but string value was "foo" which differs at index 0:
+				             but it had string value "foo" which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "FOO"
@@ -313,8 +313,8 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that subject
-				              has string value not containing "{expected}",
-				              but string value was "{actual}"
+				              does not have string value containing "{expected}",
+				              but it had string value "{actual}"
 				              """);
 		}
 
@@ -332,8 +332,8 @@ public sealed partial class PropertyResultTests
 				.OnlyIf(ignoringCase)
 				.WithMessage("""
 				             Expected that subject
-				             has string value not containing "FOO" ignoring case,
-				             but string value was "something with foo in it"
+				             does not have string value containing "FOO" ignoring case,
+				             but it had string value "something with foo in it"
 				             """);
 		}
 
@@ -403,8 +403,8 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that subject
-				              has string value not ending with "{unexpected}",
-				              but string value was "{actual}"
+				              does not have string value ending with "{unexpected}",
+				              but it had string value "{actual}"
 				              """);
 		}
 
@@ -486,8 +486,8 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has string value not equal to "foo",
-				             but string value was "foo"
+				             does not have string value equal to "foo",
+				             but it had string value "foo"
 				             """);
 		}
 
@@ -505,8 +505,8 @@ public sealed partial class PropertyResultTests
 				.OnlyIf(ignoringCase)
 				.WithMessage("""
 				             Expected that subject
-				             has string value not equal to "FOO" ignoring case,
-				             but string value was "foo"
+				             does not have string value equal to "FOO" ignoring case,
+				             but it had string value "foo"
 				             """);
 		}
 
@@ -566,7 +566,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has string value not equal to "bar",
+				             does not have string value equal to "bar",
 				             but it could not read the string value, because it did throw an InvalidOperationException:
 				               foo
 				             """).And
@@ -585,7 +585,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has string value not equal to <null>,
+				             does not have string value equal to <null>,
 				             but it was <null>
 				             """)
 				.Because("a null subject has no string value to compare, whatever the unexpected value is");
@@ -602,7 +602,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has string value not equal to "foo",
+				             does not have string value equal to "foo",
 				             but it was <null>
 				             """);
 		}
@@ -620,8 +620,8 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that subject
-				              has string value not starting with "{unexpected}",
-				              but string value was "{actual}"
+				              does not have string value starting with "{unexpected}",
+				              but it had string value "{actual}"
 				              """);
 		}
 
@@ -708,7 +708,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value starting with "{expected}",
-				              but string value was "{actual}"*
+				              but it had string value "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -779,9 +779,9 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value containing "foo" and has string value containing "baz",
-					             but string value was "foo-bar"
+					             but it had string value "foo-bar"
 
-					             string value:
+					             String value:
 					             foo-bar
 					             """)
 					.Because("a chained expectation over the same property must not repeat the identical block");
@@ -799,9 +799,9 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but string value was "foo"*
+					             but it had string value "foo"*
 
-					             string value:
+					             String value:
 					             foo
 					             """).AsWildcard();
 			}
@@ -818,7 +818,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but string value was "foo" which differs at index 0:
+					             but it had string value "foo" which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"
@@ -839,7 +839,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but string value was "" with a length of 0 which is shorter than the expected length of 3 and misses:
+					             but it had string value "" with a length of 0 which is shorter than the expected length of 3 and misses:
 					               "bar"
 					             """)
 					.Because("an empty value would only add an empty block");
@@ -861,7 +861,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             with string value equal to "bar",
-					             but string value was "foo"*
+					             but it had string value "foo"*
 					             """).AsWildcard();
 			}
 
@@ -892,8 +892,8 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has string value not equal to "foo",
-					             but string value was "foo"
+					             does not have string value equal to "foo",
+					             but it had string value "foo"
 					             """);
 			}
 
@@ -910,7 +910,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             have string value equal to "bar",
-					             but string value was "foo"*
+					             but it had string value "foo"*
 					             """).AsWildcard();
 			}
 		}
@@ -927,7 +927,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but string value was "foo"*
+					             but it had string value "foo"*
 					             """).AsWildcard()
 					.Because("a constraint typed at the narrowed type would silently never be matched");
 			}

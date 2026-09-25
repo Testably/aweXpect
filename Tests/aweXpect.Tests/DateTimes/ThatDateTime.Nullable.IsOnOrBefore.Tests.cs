@@ -58,7 +58,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(expected)},
-						              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+						              but it had kind {subjectKind}, which cannot be compared with {expectedKind}
 						              """)
 						.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
 				}
@@ -79,7 +79,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or before {Formatter.Format(expected)},
-						              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+						              but it had kind {subjectKind}, which cannot be compared with {expectedKind}
 						              """);
 				}
 
@@ -167,7 +167,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or before {Formatter.Format(expected)}, because a Local and a Utc value cannot be ordered without guessing the offset,
-						              but it had Kind Utc, which cannot be compared with Local
+						              but it had kind Utc, which cannot be compared with Local
 						              """);
 				}
 
@@ -230,7 +230,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or before {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
-						              but it had Kind Utc, which cannot be compared with Local
+						              but it had kind Utc, which cannot be compared with Local
 						              """);
 				}
 

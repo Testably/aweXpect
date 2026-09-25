@@ -404,7 +404,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has revision not equal to <null>,
+					             does not have revision equal to <null>,
 					             but it was <null>
 					             """);
 			}
@@ -421,7 +421,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has revision not equal to {unexpected},
+					              does not have revision equal to {unexpected},
 					              but it was <null>
 					              """);
 			}
@@ -462,7 +462,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has revision not equal to {Formatter.Format(unexpected)},
+					              does not have revision equal to {Formatter.Format(unexpected)},
 					              but it had revision 13
 					              """);
 			}

@@ -26,7 +26,7 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 		{
 			_expectationBuilder.And("")
 				.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
-				.ForWhich<DelegateValue<T>, T?>(d => d.Value, " and its result ", "the result");
+				.ForWhich<DelegateValue<T>, T?>(d => d.Value, " and its result ", "it");
 			return new ThatSubject<T?>(_expectationBuilder);
 		}
 	}

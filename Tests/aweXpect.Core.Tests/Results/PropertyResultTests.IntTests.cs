@@ -353,7 +353,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has int value not equal to <null>,
+				             does not have int value equal to <null>,
 				             but it was <null>
 				             """)
 				.Because("a null subject has no int value to compare, whatever the unexpected value is");
@@ -370,7 +370,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has int value not equal to 42,
+				             does not have int value equal to 42,
 				             but it was <null>
 				             """);
 		}

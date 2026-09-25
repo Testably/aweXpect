@@ -38,8 +38,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message containing "foo",
-						             but Message was "FOO"
+						             throws an exception with message containing "foo",
+						             but it had message "FOO"
 
 						             Message:
 						             FOO
@@ -90,8 +90,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws a ThatDelegate.CustomException with Message containing "foo",
-						             but Message was "FOO"
+						             throws a ThatDelegate.CustomException with message containing "foo",
+						             but it had message "FOO"
 
 						             Message:
 						             FOO
@@ -125,8 +125,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message containing "expected other text",
-						             but Message was "expected actual text"
+						             throws an exception with message containing "expected other text",
+						             but it had message "expected actual text"
 
 						             Message:
 						             expected actual text
@@ -147,8 +147,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message ending with "foo",
-						             but Message was "foo and some other text"*
+						             throws an exception with message ending with "foo",
+						             but it had message "foo and some other text"*
 
 						             Message:
 						             foo and some other text
@@ -201,8 +201,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message equal to "expected other text",
-						             but Message was "actual text" which differs at index 0:
+						             throws an exception with message equal to "expected other text",
+						             but it had message "actual text" which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"
@@ -232,8 +232,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message not containing "foo" ignoring case,
-						             but Message was "_FOO_BAR"
+						             throws an exception with message not containing "foo" ignoring case,
+						             but it had message "_FOO_BAR"
 
 						             Message:
 						             _FOO_BAR
@@ -297,8 +297,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message not containing "foo",
-						             but Message was "some text before foo"
+						             throws an exception with message not containing "foo",
+						             but it had message "some text before foo"
 
 						             Message:
 						             some text before foo
@@ -319,8 +319,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message not ending with "foo",
-						             but Message was "some text before foo"
+						             throws an exception with message not ending with "foo",
+						             but it had message "some text before foo"
 
 						             Message:
 						             some text before foo
@@ -345,8 +345,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message not equal to "foo" ignoring case,
-						             but Message was "FOO"
+						             throws an exception with message not equal to "foo" ignoring case,
+						             but it had message "FOO"
 
 						             Message:
 						             FOO
@@ -368,8 +368,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message not matching "foo*",
-						             but Message was "foo-bar"
+						             throws an exception with message not matching "foo*",
+						             but it had message "foo-bar"
 
 						             Message:
 						             foo-bar
@@ -432,8 +432,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message not starting with "foo",
-						             but Message was "foo and some other text"
+						             throws an exception with message not starting with "foo",
+						             but it had message "foo and some other text"
 
 						             Message:
 						             foo and some other text
@@ -454,8 +454,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message starting with "foo",
-						             but Message was "some text before foo"*
+						             throws an exception with message starting with "foo",
+						             but it had message "some text before foo"*
 
 						             Message:
 						             some text before foo
@@ -510,8 +510,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with Message equal to "foo",
-						             but Message was "FOO" which differs at index 0:
+						             throws an exception with message equal to "foo",
+						             but it had message "FOO" which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -536,8 +536,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws a ThatDelegate.CustomException with Message equal to "foo",
-						             but Message was "FOO" which differs at index 0:
+						             throws a ThatDelegate.CustomException with message equal to "foo",
+						             but it had message "FOO" which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -575,8 +575,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with Message equal to "expected other text",
-						             but Message was "actual text" which differs at index 0:
+						             throws an exception with message equal to "expected other text",
+						             but it had message "actual text" which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"

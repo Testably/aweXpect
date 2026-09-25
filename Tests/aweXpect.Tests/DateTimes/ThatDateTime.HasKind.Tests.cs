@@ -94,7 +94,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has kind not equal to {Formatter.Format(unexpected)},
+					              does not have kind equal to {Formatter.Format(unexpected)},
 					              but it had kind Utc
 					              """);
 			}

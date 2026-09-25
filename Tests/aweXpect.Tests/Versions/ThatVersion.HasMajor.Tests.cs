@@ -404,7 +404,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has major not equal to <null>,
+					             does not have major equal to <null>,
 					             but it was <null>
 					             """);
 			}
@@ -421,7 +421,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has major not equal to {unexpected},
+					              does not have major equal to {unexpected},
 					              but it was <null>
 					              """);
 			}
@@ -462,7 +462,7 @@ public sealed partial class ThatVersion
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has major not equal to {Formatter.Format(unexpected)},
+					              does not have major equal to {Formatter.Format(unexpected)},
 					              but it had major 2010
 					              """);
 			}

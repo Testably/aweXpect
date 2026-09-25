@@ -342,7 +342,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has long value not equal to 42,
+				             does not have long value equal to 42,
 				             but it could not read the long value, because it did throw an InvalidOperationException:
 				               foo
 				             """).And

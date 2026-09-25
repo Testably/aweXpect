@@ -418,7 +418,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has second not equal to {Formatter.Format(unexpected)},
+						              does not have second equal to {Formatter.Format(unexpected)},
 						              but it had second 15
 						              """);
 				}
@@ -435,7 +435,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has second not equal to <null>,
+						             does not have second equal to <null>,
 						             but it was <null>
 						             """);
 				}
@@ -452,7 +452,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has second not equal to {unexpected},
+						              does not have second equal to {unexpected},
 						              but it was <null>
 						              """);
 				}

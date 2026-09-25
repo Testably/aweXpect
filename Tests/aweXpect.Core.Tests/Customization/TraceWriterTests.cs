@@ -60,7 +60,7 @@ public class TraceWriterTests
 			.IsEqualTo("Checking expectation for callback delegate throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
-			.IsEqualTo("  Successfully verified that callback throws an exception with Message equal to \"foo\"");
+			.IsEqualTo("  Successfully verified that callback throws an exception with message equal to \"foo\"");
 	}
 
 	[Fact]
@@ -78,7 +78,7 @@ public class TraceWriterTests
 			.IsEqualTo("Checking expectation for callback delegate returning int throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
-			.IsEqualTo("  Successfully verified that callback throws an exception with Message equal to \"foo\"");
+			.IsEqualTo("  Successfully verified that callback throws an exception with message equal to \"foo\"");
 	}
 
 	[Fact]
