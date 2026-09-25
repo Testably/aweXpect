@@ -26,6 +26,44 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenBoolItemsDoNotMatch_ShouldRenderThemOnOneLine()
+			{
+				bool[] subject = [false, false,];
+
+				async Task Act()
+					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is True for at least one item,
+					             but none of 2 were
+
+					             Collection:
+					             [False, False]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenEnumItemsDoNotMatch_ShouldRenderThemOnOneLine()
+			{
+				DayOfWeek[] subject = [DayOfWeek.Monday, DayOfWeek.Tuesday,];
+
+				async Task Act()
+					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(DayOfWeek.Sunday));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to Sunday for at least one item,
+					             but none of 2 were
+
+					             Collection:
+					             [Monday, Tuesday]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMultipleItemsMatch_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 2, 3, 2,];
@@ -52,6 +90,25 @@ public sealed partial class ThatEnumerable
 
 					             Collection:
 					             [1, 2, 3, 4, 5]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNullableEnumItemsDoNotMatch_ShouldRenderThemOnOneLine()
+			{
+				DayOfWeek?[] subject = [DayOfWeek.Monday, null,];
+
+				async Task Act()
+					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(DayOfWeek.Sunday));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to Sunday for at least one item,
+					             but none of 2 were
+
+					             Collection:
+					             [Monday, <null>]
 					             """);
 			}
 

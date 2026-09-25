@@ -1,6 +1,8 @@
 ﻿using System.Text;
 #if NET8_0_OR_GREATER
+using System.Globalization;
 using System.Runtime.InteropServices;
+using aweXpect.Core.Tests.TestHelpers;
 #endif
 
 namespace aweXpect.Core.Tests.Formatting;
@@ -117,6 +119,43 @@ public partial class ValueFormatters
 
 #if NET8_0_OR_GREATER
 		[Fact]
+		public async Task Numbers_Half_MinAndMaxValue_ShouldUseCSharpSyntax()
+		{
+			string maxValueResult = Formatter.Format(Half.MaxValue);
+			string minValueResult = Formatter.Format(Half.MinValue);
+			string maxValueWithTypeResult = Formatter.Format(Half.MaxValue, FormattingOptions.WithType);
+			string minValueObjectResult = Formatter.Format((object?)Half.MinValue);
+
+			await That(maxValueResult).IsEqualTo("Half.MaxValue");
+			await That(minValueResult).IsEqualTo("Half.MinValue");
+			await That(maxValueWithTypeResult).IsEqualTo("Half.MaxValue");
+			await That(minValueObjectResult).IsEqualTo("Half.MinValue");
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Theory]
+		[InlineData(2, "2.0")]
+		[InlineData(1.5, "1.5")]
+		[InlineData(11.3, "11.3")]
+		public async Task Numbers_Half_ShouldHaveAtLeastOneDecimalDigit(double doubleValue, string expectedResult)
+		{
+			Half value = (Half)doubleValue;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("Half has at least one decimal digit like float and double, but no digits beyond its precision");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Fact]
 		public async Task Numbers_Half_ShouldReturnExpectedValue()
 		{
 			Half value = (Half)11.3;
@@ -180,6 +219,48 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+		[Fact]
+		public async Task Numbers_Integers_MinAndMaxValue_ShouldUsePlainValue()
+		{
+			string intResult = Formatter.Format(int.MaxValue);
+			string longResult = Formatter.Format(long.MinValue);
+			string ulongResult = Formatter.Format(ulong.MaxValue, FormattingOptions.WithType);
+
+			await That(intResult).IsEqualTo("2147483647");
+			await That(longResult).IsEqualTo("-9223372036854775808");
+			await That(ulongResult).IsEqualTo("ulong 18446744073709551615");
+		}
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task Numbers_Integers_ShouldUseInvariantCulture()
+		{
+			using CultureOverride _ = new("sv-SE");
+			StringBuilder sb = new();
+			Formatter.Format(sb, (sbyte)-1);
+			Formatter.Format(sb, (short)-2);
+			Formatter.Format(sb, -3);
+			Formatter.Format(sb, -4L);
+			Formatter.Format(sb, (nint)(-5));
+			Formatter.Format(sb, (int?)-6, FormattingOptions.WithType);
+
+			string[] results =
+			[
+				Formatter.Format((sbyte)-1),
+				Formatter.Format((short)-2),
+				Formatter.Format(-3),
+				Formatter.Format(-4L),
+				Formatter.Format((nint)(-5)),
+				Formatter.Format((object?)-6, FormattingOptions.WithType),
+			];
+
+			await That(CultureInfo.CurrentCulture.NumberFormat.NegativeSign).IsEqualTo("−")
+				.Because("ICU renders negative numbers in sv-SE with the Unicode minus sign");
+			await That(string.Join(" ", results)).IsEqualTo("-1 -2 -3 -4 -5 int -6");
+			await That(sb.ToString()).IsEqualTo("-1-2-3-4-5int -6");
+		}
+#endif
 
 #if NET8_0_OR_GREATER
 		[Theory]
@@ -804,6 +885,24 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Theory]
+		[InlineData(2, "decimal 2.0")]
+		[InlineData(1.12, "decimal 1.12")]
+		public async Task Numbers_WithType_Decimal_ShouldHaveAtLeastOneDecimalDigit(double doubleValue,
+			string expectedResult)
+		{
+			decimal value = new(doubleValue);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Fact]
 		public async Task Numbers_WithType_Decimal_ShouldReturnExpectedValue()
 		{
@@ -816,6 +915,23 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value, FormattingOptions.WithType);
 
 			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Theory]
+		[InlineData(2, "double 2.0")]
+		[InlineData(0.1 + 0.2, "double 0.3")]
+		public async Task Numbers_WithType_Double_ShouldHaveAtLeastOneDecimalDigit(double value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the type prefix must not change how the value is rendered, on any runtime");
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
@@ -835,6 +951,26 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Theory]
+		[InlineData(2, "Half 2.0")]
+		[InlineData(1.5, "Half 1.5")]
+		public async Task Numbers_WithType_Half_ShouldHaveAtLeastOneDecimalDigit(double doubleValue,
+			string expectedResult)
+		{
+			Half value = (Half)doubleValue;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
 
 #if NET8_0_OR_GREATER
 		[Fact]
@@ -1186,6 +1322,22 @@ public partial class ValueFormatters
 		{
 			sbyte value = -4;
 			string expectedResult = "sbyte -4";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Theory]
+		[InlineData(2F, "float 2.0")]
+		[InlineData(1.12F, "float 1.12")]
+		public async Task Numbers_WithType_Single_ShouldHaveAtLeastOneDecimalDigit(float value, string expectedResult)
+		{
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value, FormattingOptions.WithType);

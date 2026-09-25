@@ -53,8 +53,8 @@ public sealed partial class ThatTimeSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is greater than the maximum time span,
-					             but it was the maximum time span
+					             is greater than TimeSpan.MaxValue,
+					             but it was TimeSpan.MaxValue
 					             """);
 			}
 
@@ -70,8 +70,8 @@ public sealed partial class ThatTimeSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is greater than the minimum time span,
-					             but it was the minimum time span
+					             is greater than TimeSpan.MinValue,
+					             but it was TimeSpan.MinValue
 					             """);
 			}
 

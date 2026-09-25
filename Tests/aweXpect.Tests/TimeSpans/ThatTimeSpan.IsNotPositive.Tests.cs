@@ -18,7 +18,7 @@ public sealed partial class ThatTimeSpan
 					.WithMessage("""
 					             Expected that subject
 					             is not positive,
-					             but it was the maximum time span
+					             but it was TimeSpan.MaxValue
 					             """);
 			}
 

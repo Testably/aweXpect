@@ -8,6 +8,22 @@ public partial class ValueFormatters
 	public sealed class TimeSpanTests
 	{
 		[Fact]
+		public async Task MinAndMaxValue_ShouldUseCSharpSyntax()
+		{
+			string maxValueResult = Formatter.Format(TimeSpan.MaxValue);
+			string minValueResult = Formatter.Format(TimeSpan.MinValue);
+			string maxValueWithTypeResult = Formatter.Format(TimeSpan.MaxValue, FormattingOptions.WithType);
+			string minValueObjectResult = Formatter.Format((object?)TimeSpan.MinValue);
+			string nullableResult = Formatter.Format((TimeSpan?)TimeSpan.MaxValue);
+
+			await That(maxValueResult).IsEqualTo("TimeSpan.MaxValue");
+			await That(minValueResult).IsEqualTo("TimeSpan.MinValue");
+			await That(maxValueWithTypeResult).IsEqualTo("TimeSpan.MaxValue");
+			await That(minValueObjectResult).IsEqualTo("TimeSpan.MinValue");
+			await That(nullableResult).IsEqualTo("TimeSpan.MaxValue");
+		}
+
+		[Fact]
 		public async Task Nullable_ShouldIncludeSingleDigitMinuteEvenWhenOnlySecondsAreSpecified()
 		{
 			TimeSpan? value = 12.Seconds();
@@ -151,6 +167,25 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Theory]
+		[InlineData(-10_000_000L, "-0:01")]
+		[InlineData(-15_000L, "-0:00.0015")]
+		[InlineData(-936_000_000_000L, "-1.02:00:00")]
+		public async Task ShouldPrefixNegativeValuesWithMinus(long ticks, string expectedResult)
+		{
+			TimeSpan value = TimeSpan.FromTicks(ticks);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a negative time span must not read like the positive one");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Fact]
 		public async Task ShouldSupportDoubleDigitDays()
 		{
@@ -263,6 +298,27 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Theory]
+		[InlineData(1L, "0:00.0000001")]
+		[InlineData(15_000L, "0:00.0015")]
+		[InlineData(10_000L, "0:00.001")]
+		[InlineData(100_000L, "0:00.010")]
+		[InlineData(12_345_678L, "0:01.2345678")]
+		public async Task ShouldSupportTicksBelowMilliseconds(long ticks, string expectedResult)
+		{
+			TimeSpan value = TimeSpan.FromTicks(ticks);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("ticks below the millisecond are shown with trailing zeros trimmed, whole milliseconds with three digits");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Fact]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
@@ -283,6 +339,22 @@ public partial class ValueFormatters
 		{
 			TimeSpan value = 3.Minutes(20.Seconds());
 			string expectedResult = "TimeSpan 3:20";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithType_WhenNegative_ShouldPrefixMinusAfterType()
+		{
+			TimeSpan value = TimeSpan.FromSeconds(-200);
+			string expectedResult = "TimeSpan -3:20";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value, FormattingOptions.WithType);

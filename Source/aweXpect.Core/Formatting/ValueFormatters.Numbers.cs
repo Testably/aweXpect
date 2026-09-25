@@ -18,8 +18,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"byte {value}",
-			_ => value.ToString(),
+			true => $"byte {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -37,7 +37,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("byte ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -84,8 +84,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"sbyte {value}",
-			_ => value.ToString(),
+			true => $"sbyte {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -103,7 +103,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("sbyte ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -150,8 +150,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"short {value}",
-			_ => value.ToString(),
+			true => $"short {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -169,7 +169,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("short ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -216,8 +216,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"ushort {value}",
-			_ => value.ToString(),
+			true => $"ushort {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -235,7 +235,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("ushort ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -282,8 +282,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"int {value}",
-			_ => value.ToString(),
+			true => $"int {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -301,7 +301,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("int ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -348,8 +348,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"uint {value}",
-			_ => value.ToString(),
+			true => $"uint {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -367,7 +367,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("uint ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -414,8 +414,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"long {value}",
-			_ => value.ToString(),
+			true => $"long {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -433,7 +433,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("long ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -480,8 +480,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"ulong {value}",
-			_ => value.ToString(),
+			true => $"ulong {value.ToString(CultureInfo.InvariantCulture)}",
+			_ => value.ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -499,7 +499,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("ulong ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -550,7 +550,7 @@ public static partial class ValueFormatters
 			(true, float.PositiveInfinity) => "float +\u221e",
 			(true, float.MinValue) => "float.MinValue",
 			(true, float.MaxValue) => "float.MaxValue",
-			(true, _) => $"float {value.ToString(CultureInfo.InvariantCulture)}",
+			(true, _) => $"float {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
 			(_, float.NegativeInfinity) => "-\u221e",
 			(_, float.PositiveInfinity) => "+\u221e",
 			(_, float.MinValue) => "float.MinValue",
@@ -617,7 +617,7 @@ public static partial class ValueFormatters
 			(true, double.PositiveInfinity) => "double +\u221e",
 			(true, double.MinValue) => "double.MinValue",
 			(true, double.MaxValue) => "double.MaxValue",
-			(true, _) => $"double {value.ToString(CultureInfo.InvariantCulture)}",
+			(true, _) => $"double {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
 			(_, double.NegativeInfinity) => "-\u221e",
 			(_, double.PositiveInfinity) => "+\u221e",
 			(_, double.MinValue) => "double.MinValue",
@@ -690,12 +690,29 @@ public static partial class ValueFormatters
 			return options?.IncludeType == true ? "Half +\u221e" : "+\u221e";
 		}
 
-		if (options?.IncludeType == true)
+		if (value == Half.MinValue)
 		{
-			return $"Half {value.ToString(CultureInfo.InvariantCulture)}";
+			return "Half.MinValue";
 		}
 
-		return value.ToString(CultureInfo.InvariantCulture);
+		if (value == Half.MaxValue)
+		{
+			return "Half.MaxValue";
+		}
+
+		// The custom format "0.0###\u2026" would render digits beyond the precision of a Half (11.3 as "11.297").
+		string formattedValue = value.ToString(CultureInfo.InvariantCulture);
+		if (Half.IsFinite(value) && formattedValue.IndexOfAny(['.', 'E']) < 0)
+		{
+			formattedValue += ".0";
+		}
+
+		if (options?.IncludeType == true)
+		{
+			return $"Half {formattedValue}";
+		}
+
+		return formattedValue;
 	}
 #endif
 
@@ -842,7 +859,7 @@ public static partial class ValueFormatters
 		{
 			(true, decimal.MinValue) => "decimal.MinValue",
 			(true, decimal.MaxValue) => "decimal.MaxValue",
-			(true, _) => $"decimal {value.ToString(CultureInfo.InvariantCulture)}",
+			(true, _) => $"decimal {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
 			(_, decimal.MinValue) => "decimal.MinValue",
 			(_, decimal.MaxValue) => "decimal.MaxValue",
 			(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
@@ -903,8 +920,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"nint {value}",
-			_ => value.ToString(),
+			true => $"nint {((long)value).ToString(CultureInfo.InvariantCulture)}",
+			_ => ((long)value).ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -922,7 +939,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("nint ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(((long)value).ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>
@@ -969,8 +986,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"nuint {value}",
-			_ => value.ToString(),
+			true => $"nuint {((ulong)value).ToString(CultureInfo.InvariantCulture)}",
+			_ => ((ulong)value).ToString(CultureInfo.InvariantCulture),
 		};
 
 	/// <summary>
@@ -988,7 +1005,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append("nuint ");
 		}
 
-		stringBuilder.Append(value);
+		stringBuilder.Append(((ulong)value).ToString(CultureInfo.InvariantCulture));
 	}
 
 	/// <summary>

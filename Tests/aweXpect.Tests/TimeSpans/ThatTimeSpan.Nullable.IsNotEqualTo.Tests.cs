@@ -21,8 +21,8 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to the maximum time span, because we want to test the failure,
-						             but it was the maximum time span
+						             is not equal to TimeSpan.MaxValue, because we want to test the failure,
+						             but it was TimeSpan.MaxValue
 						             """);
 				}
 
@@ -39,8 +39,8 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to the minimum time span, because we want to test the failure,
-						             but it was the minimum time span
+						             is not equal to TimeSpan.MinValue, because we want to test the failure,
+						             but it was TimeSpan.MinValue
 						             """);
 				}
 

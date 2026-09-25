@@ -31,7 +31,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage("""
 						             Expected that subject
 						             is not negative,
-						             but it was the minimum time span
+						             but it was TimeSpan.MinValue
 						             """);
 				}
 

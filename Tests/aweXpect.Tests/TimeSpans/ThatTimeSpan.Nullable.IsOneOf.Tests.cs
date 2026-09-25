@@ -73,7 +73,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is one of {Formatter.Format(expected)},
-						              but it was the minimum time span
+						              but it was TimeSpan.MinValue
 						              """)
 						.Because("a difference that exceeds the range of a time span must fail instead of overflow");
 				}

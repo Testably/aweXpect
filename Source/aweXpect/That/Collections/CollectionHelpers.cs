@@ -408,6 +408,7 @@ internal static class CollectionHelpers
 	{
 		Type[] singleLineTypes =
 		[
+			typeof(bool),
 			typeof(char),
 			typeof(byte),
 			typeof(sbyte),
@@ -426,7 +427,7 @@ internal static class CollectionHelpers
 			typeof(Half),
 #endif
 		];
-		if (count < 10 && singleLineTypes.Contains(type))
+		if (count < 10 && (type.IsEnum || singleLineTypes.Contains(type)))
 		{
 			return FormattingOptions.SingleLine with
 			{
@@ -437,7 +438,7 @@ internal static class CollectionHelpers
 		Type? underlyingType = Nullable.GetUnderlyingType(type);
 
 		if (count < 10 && underlyingType != null &&
-		    singleLineTypes.Contains(underlyingType))
+		    (underlyingType.IsEnum || singleLineTypes.Contains(underlyingType)))
 		{
 			return FormattingOptions.SingleLine with
 			{
