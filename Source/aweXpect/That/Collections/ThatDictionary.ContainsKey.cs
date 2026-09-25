@@ -17,6 +17,7 @@ public static partial class ThatDictionary
 			TKey expected)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		expected.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -35,6 +36,7 @@ public static partial class ThatDictionary
 			TKey unexpected)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		unexpected.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>

@@ -670,6 +670,11 @@ public sealed class GuaranteesNotNullTests
 			return "a";
 		}
 
+		if (type == typeof(object))
+		{
+			return new object();
+		}
+
 		if (type.IsArray)
 		{
 			return CreateSingleElementArray(type.GetElementType()!);
@@ -762,6 +767,7 @@ public sealed class GuaranteesNotNullTests
 		Array array = Array.CreateInstance(elementType, 1);
 		array.SetValue(
 			elementType == typeof(string) ? "a" :
+			elementType == typeof(object) ? new object() :
 			elementType.IsValueType ? Activator.CreateInstance(elementType) : null,
 			0);
 		return array;

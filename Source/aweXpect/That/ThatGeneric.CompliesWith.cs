@@ -24,6 +24,7 @@ public static partial class ThatGeneric
 	public static RepeatedCheckResult<T, IThat<T>> CompliesWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
+		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((expectationBuilder, _, grammars) =>
@@ -42,6 +43,7 @@ public static partial class ThatGeneric
 	public static RepeatedCheckResult<T, IThat<T>> DoesNotComplyWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
+		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((expectationBuilder, _, grammars) =>

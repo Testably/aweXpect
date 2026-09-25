@@ -91,6 +91,19 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
+
+				async Task Act()
+					=> await That(subject).HasItemThat(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
 			{
 				IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable(new MyClass(1));

@@ -22,10 +22,13 @@ public static partial class ThatAsyncEnumerable
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint<TItem>(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 	}
 
 	public partial class Elements
@@ -35,10 +38,13 @@ public static partial class ThatAsyncEnumerable
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 			ComplyWith(Action<IThatSubject<string?>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint<string?>(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 	}
 
 	private sealed class ComplyWithConstraint<TItem>

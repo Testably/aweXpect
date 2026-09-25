@@ -96,6 +96,54 @@ public sealed partial class ThatGeneric
 					.And.WithParamName("expectations");
 			}
 
+			[Fact]
+			public async Task WhenAsyncMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose((Func<MyClass, Task<int>>)null!, v => v.IsEqualTo(1));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberSelector").And
+					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose((Func<MyClass, int>)null!, v => v.IsEqualTo(1));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberSelector").And
+					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenValueTaskMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose((Func<MyClass, ValueTask<int>>)null!, v => v.IsEqualTo(1));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberSelector").And
+					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenConditionIsNotSatisfied_ShouldFail(int value)

@@ -55,6 +55,19 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Item> subject = [new(Utc), new(Local),];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder((Func<Item, DateTime>)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenMemberKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<Item> subject = [new(Utc), new(Local),];

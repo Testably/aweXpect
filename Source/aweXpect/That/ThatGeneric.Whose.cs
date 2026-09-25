@@ -27,6 +27,7 @@ public static partial class ThatGeneric
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
 	{
+		memberSelector.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
@@ -58,6 +59,7 @@ public static partial class ThatGeneric
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
 	{
+		memberSelector.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
@@ -88,7 +90,10 @@ public static partial class ThatGeneric
 		Action<IThatSubject<TMember?>> expectations,
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
-		=> subject.Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+	{
+		memberSelector.ThrowIfNull();
+		return subject.Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+	}
 
 	/// <summary>
 	///     Appends the text for the <paramref name="member" /> in the form the enclosing

@@ -28,6 +28,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<IEnumerable<TItem>?> HasItemThat<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>?>(
@@ -45,6 +46,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<IEnumerable?> HasItemThat(
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable?>(
@@ -62,6 +64,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<ImmutableArray<TItem>> HasItemThat<TItem>(
 		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
@@ -80,6 +83,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<IEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>?>(
@@ -98,6 +102,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<IEnumerable?> DoesNotHaveItemThat(
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable?>(
@@ -115,6 +120,7 @@ public static partial class ThatEnumerable
 	public static HasItemResult<ImmutableArray<TItem>> DoesNotHaveItemThat<TItem>(
 		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(

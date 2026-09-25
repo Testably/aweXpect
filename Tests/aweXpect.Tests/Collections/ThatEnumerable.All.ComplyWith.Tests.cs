@@ -158,6 +158,19 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
 				{
 					int[][] subject = [[1, 2,], [1, 3,],];
@@ -439,6 +452,19 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [1, 2, 3, 4, 5]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(null!));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 			}
 		}

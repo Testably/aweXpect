@@ -105,6 +105,32 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
+
+				async Task Act()
+					=> await That(subject).HasItem(predicate: null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_WhenNegated_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem(predicate: null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;

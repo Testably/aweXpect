@@ -10,6 +10,22 @@ public sealed partial class ThatReadOnlyDictionary
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IReadOnlyDictionary<string, int> subject = new Dictionary<string, int>
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsKey(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);

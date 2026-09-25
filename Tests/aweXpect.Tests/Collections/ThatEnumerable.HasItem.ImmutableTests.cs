@@ -82,6 +82,32 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				ImmutableArray<int> subject = [0, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).HasItem(predicate: null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_WhenNegated_ShouldThrowArgumentNullException()
+			{
+				ImmutableArray<int> subject = [0, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem(predicate: null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithInvalidMatch_ShouldNotMatch()
 			{
 				ImmutableArray<int> subject = [0, 1, 2, 3, 4,];

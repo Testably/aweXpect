@@ -59,6 +59,22 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainKeys("bar", null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -97,6 +113,22 @@ public sealed partial class ThatDictionary
 					=> await That(subject).DoesNotComplyWith(d => d.DoesNotContainKeys(42, 2));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(d => d.DoesNotContainKeys("bar", null!));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 		}
 

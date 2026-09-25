@@ -61,6 +61,7 @@ public static partial class ThatAsyncEnumerable
 			string predicateExpression,
 			bool negated)
 	{
+		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(

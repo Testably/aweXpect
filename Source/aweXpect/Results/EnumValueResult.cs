@@ -138,9 +138,12 @@ public class EnumValueResult<TItem>
 
 	private AndOrResult<TItem, IThat<TItem>> AddBetween(decimal? minimum, decimal? maximum,
 		string formattedMinimum, string formattedMaximum)
-		=> Add(actual => actual >= minimum && actual <= maximum,
+	{
+		ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+		return Add(actual => actual >= minimum && actual <= maximum,
 			$"between {formattedMinimum} and {formattedMaximum}",
 			isOrderedAgainstNull: minimum is null || maximum is null);
+	}
 
 	private AndOrResult<TItem, IThat<TItem>> Add(
 		Func<decimal?, bool> condition,

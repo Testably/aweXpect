@@ -19,6 +19,11 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		expected.ThrowIfNullOrEmpty();
+		foreach (TKey key in expected)
+		{
+			key.ThrowIfNull(false);
+		}
+
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -26,7 +31,7 @@ public static partial class ThatDictionary
 			subject,
 			expected,
 			dictionary => new KeyedValues<TKey, TValue?>(expected
-				.Where(key => key is not null && ContainsKey(dictionary, key))
+				.Where(key => ContainsKey(dictionary, key))
 				.Select(key => new KeyValuePair<TKey, TValue?>(key,
 					GetLookup(dictionary)(key, out TValue? value) ? value : default)))
 		);
@@ -41,6 +46,11 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		unexpected.ThrowIfNullOrEmpty();
+		foreach (TKey key in unexpected)
+		{
+			key.ThrowIfNull(true);
+		}
+
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>

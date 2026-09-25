@@ -11,6 +11,39 @@ public sealed partial class ThatDictionary
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsKey(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_WhenNegated_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(d => d.ContainsKey(null!));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
+					.Because("a null key would otherwise let the negated expectation pass for every dictionary");
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
