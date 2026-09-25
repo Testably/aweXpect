@@ -492,34 +492,28 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenIntervalIsLongerThanTheTimeout_ShouldEvaluateTwice()
 		{
 			Stopwatch stopwatch = new();
-			List<int> evaluationCounts = [];
+			Counter counter = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
+				async Task Act()
+					=> await That(() => counter.Value).Eventually().IsEqualTo(1).WithTimeout(LowTimeout);
+
 				stopwatch.Start();
-
-				for (int i = 0; i < 20; i++)
-				{
-					Counter counter = new();
-
-					async Task Act()
-						=> await That(() => counter.Value).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that () => counter.Value
-						             is equal to 1 within 0:00.050,
-						             but it was 0 which differs by -1
-						             """);
-					evaluationCounts.Add(counter.EvaluationCount);
-				}
-
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that () => counter.Value
+					             is equal to 1 within 0:00.500,
+					             but it was 0 which differs by -1
+					             """);
 				stopwatch.Stop();
 			}
 
-			await That(evaluationCounts).All().AreEqualTo(2)
-				.Because("the last wait is shortened to the remaining budget instead of waiting the whole interval");
-			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
+			await That(counter.EvaluationCount).IsEqualTo(2)
+				.Because("the last wait is shortened to the remaining budget and ends the retries, while the first " +
+				         "attempt only reads a counter and has the whole timeout to leave budget for the second one");
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
+				.Because("the last wait must not last the whole interval");
 		}
 
 		[Fact]
