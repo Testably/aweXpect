@@ -197,8 +197,9 @@ internal static class CollectionHelpers
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
 						() => Formatter.Format(HideCount(value.MaterializedItems),
-								typeof(TItem).GetFormattingOption(value.Count, value.Count))
-							.AppendIsIncomplete(isIncomplete),
+								typeof(TItem).GetFormattingOption(value.Count ?? value.MaterializedItems.Count,
+									value.Count))
+							.AppendIsIncomplete(isIncomplete || value.Count is null),
 						-1));
 			}
 		});
@@ -210,7 +211,7 @@ internal static class CollectionHelpers
 	/// </summary>
 	/// <remarks>
 	///     For expectations that report a cancelled evaluation as undecided, which must not be aborted instead, when the
-	///     cancellation abandons an item the <paramref name="source" /> is still waiting for.
+	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
 	/// </remarks>
 	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
 		[EnumeratorCancellation] CancellationToken cancellationToken)

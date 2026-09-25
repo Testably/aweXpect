@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
+#endif
+using System.Text;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Core.Tests.Formatting;
@@ -156,6 +159,28 @@ public partial class ValueFormatters
 					"the compiler-generated ToString would render the type as System.Int64, where the rest of the message says long");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task WhenAsyncIterator_ShouldDisplayTheAsyncEnumerableType()
+		{
+			static async IAsyncEnumerable<int> Numbers()
+			{
+				await Task.Yield();
+				yield return 1;
+			}
+
+			object value = Numbers();
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo("IAsyncEnumerable<int>")
+				.Because("the items cannot be listed synchronously and the fields only show the state of the iterator");
+			await That(sb.ToString()).IsEqualTo("IAsyncEnumerable<int>");
+		}
+#endif
 
 		[Fact]
 		public async Task WhenClassContainsField_ShouldDisplayFieldValue()

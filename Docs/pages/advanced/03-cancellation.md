@@ -66,9 +66,12 @@ The `CancellationToken` of the expectation, which includes the timeout, is passe
 and the expectation stops waiting for the next item once it is cancelled, even if the enumerable ignores the token.
 After that, the enumerable is not advanced any further.
 
+An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
+regardless of whether it occurs while waiting for an item or between two items:
+
 - Expectations that report a cancellation as "could not be verified, because it was already canceled", like the
   quantified expectations (e.g. `All()` or `None()`), `HasCount` or `IsEmpty`, do so as well when the cancellation or
-  timeout occurs while they wait for an item, and list the items received so far.
+  timeout occurs during the enumeration, and list the items received so far.
 - All other expectations fail with "did not finish within …" and a `TimeoutException` as inner exception when a
   **timeout** elapses, and abort with an `InvalidOperationException` whose inner exception is the
   `OperationCanceledException` when the **`CancellationToken`** is cancelled.
