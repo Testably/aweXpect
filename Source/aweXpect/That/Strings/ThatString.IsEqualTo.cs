@@ -17,7 +17,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new IsEqualToConstraint(expectationBuilder, it, grammars, expected, options)),

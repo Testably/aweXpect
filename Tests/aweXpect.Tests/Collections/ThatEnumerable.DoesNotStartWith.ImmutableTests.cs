@@ -14,6 +14,20 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				ImmutableArray<string?> subject = ["foo",];
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("").AsRegexThroughOptions();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task ShouldSupportCaseInsensitiveComparison()
 			{
 				ImmutableArray<string?> subject = ["FOO", "BAR",];

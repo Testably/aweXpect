@@ -13,6 +13,20 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class InSameOrderTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo",]);
+				IEnumerable<string> expected = ["",];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));

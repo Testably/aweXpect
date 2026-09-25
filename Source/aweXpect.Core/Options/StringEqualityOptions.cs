@@ -27,13 +27,6 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private IStringMatchType _matchType = ExactMatch;
 
 	/// <summary>
-	///     Initializes the options for a pattern that the caller received as <c>expected</c>.
-	/// </summary>
-	public StringEqualityOptions() : this("expected")
-	{
-	}
-
-	/// <summary>
 	///     Initializes the options for a pattern that the caller received as <paramref name="parameterName" />, which
 	///     an unusable pattern is reported against.
 	/// </summary>

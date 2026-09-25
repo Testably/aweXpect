@@ -70,7 +70,7 @@ public static partial class ThatAsyncEnumerable
 		private StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>> AreUniqueCore(
 			bool expectUnique)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -110,7 +110,7 @@ public static partial class ThatAsyncEnumerable
 			Func<string?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -222,7 +222,7 @@ public static partial class ThatAsyncEnumerable
 			Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)

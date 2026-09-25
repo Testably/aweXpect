@@ -65,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 			string? expected)
 	{
 		IElements iElements = elements;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)

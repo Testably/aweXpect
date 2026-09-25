@@ -15,7 +15,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task AreConsideredEqual_WhenExpectedIsNotAString_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			async Task Act() => await sut.AreConsideredEqual("42", 42);
@@ -29,7 +29,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			async Task Act() => await sut.AreConsideredEqual(new string('a', 100), CatastrophicPattern);
@@ -48,7 +48,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldMatchOnlyTheEmptyValue(string actual,
 			bool expectMatch)
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			bool result = await sut.AreConsideredEqual(actual, "");
@@ -60,7 +60,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
@@ -74,7 +74,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowBeforeTheTaskIsAwaited()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 #if NET8_0_OR_GREATER
@@ -106,7 +106,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task AsWildcard_ShouldReturnSameInstance()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 
 			StringEqualityOptions result = sut.AsWildcard();
 
@@ -121,7 +121,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_ShouldCountTheMatchesOfThePattern(string actual, string expected,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			int result = await sut.CountOccurrences(actual, expected);
@@ -138,7 +138,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_ShouldTreatNewlinesLikeAnyOtherCharacter(string actual, string expected,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			int result = await sut.CountOccurrences(actual, expected);
@@ -150,7 +150,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard().IgnoringCase();
 
 			int result = await sut.CountOccurrences("AxB ayb", "a?b");
@@ -161,7 +161,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task CountOccurrences_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			async Task Act() => await sut.CountOccurrences(new string('a', 100), CatastrophicPattern);
@@ -177,7 +177,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldReturnZero()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			int result = await sut.CountOccurrences("foo", "");
@@ -189,7 +189,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task CountOccurrences_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			async Task Act() => await sut.CountOccurrences("foo", null!);
@@ -206,7 +206,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenPatternMatchesTheEmptyString_ShouldIgnoreEmptyMatches(string actual,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
 			int result = await sut.CountOccurrences(actual, "*");
@@ -220,7 +220,7 @@ public sealed partial class StringEqualityOptionsTests
 		[InlineData(true, "matches \"foo\" ignoring case")]
 		public async Task GetExpectation_ShouldRenderTheIgnoreCaseOption(bool ignoreCase, string expected)
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard().IgnoringCase(ignoreCase);
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Active);

@@ -78,7 +78,7 @@ public static partial class ThatEnumerable
 		private StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> AreUniqueCore(
 			bool expectUnique)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -119,7 +119,7 @@ public static partial class ThatEnumerable
 			Func<string?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -237,7 +237,7 @@ public static partial class ThatEnumerable
 			Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -345,7 +345,7 @@ public static partial class ThatEnumerable
 			Func<object?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -453,7 +453,7 @@ public static partial class ThatEnumerable
 			Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -522,7 +522,7 @@ public static partial class ThatEnumerable
 
 		private StringEqualityResult<TEnumerable, IThat<TEnumerable>> AreUniqueCore(bool expectUnique)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -561,7 +561,7 @@ public static partial class ThatEnumerable
 			Func<string?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
