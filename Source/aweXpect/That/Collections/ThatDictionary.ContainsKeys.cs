@@ -21,7 +21,7 @@ public static partial class ThatDictionary
 		expected.ThrowIfNullOrEmpty();
 		foreach (TKey key in expected)
 		{
-			key.ThrowIfNull(nameof(expected));
+			key.ThrowIfNull(false);
 		}
 
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -48,7 +48,7 @@ public static partial class ThatDictionary
 		unexpected.ThrowIfNullOrEmpty();
 		foreach (TKey key in unexpected)
 		{
-			key.ThrowIfNull(nameof(unexpected));
+			key.ThrowIfNull(true);
 		}
 
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
