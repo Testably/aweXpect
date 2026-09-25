@@ -13,6 +13,20 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith("").AsRegexThroughOptions();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceAsyncEnumerable subject = new();

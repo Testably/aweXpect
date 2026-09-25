@@ -62,7 +62,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
@@ -180,7 +180,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>

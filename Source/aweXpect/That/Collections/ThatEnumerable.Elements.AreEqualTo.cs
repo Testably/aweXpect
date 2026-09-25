@@ -133,7 +133,7 @@ public static partial class ThatEnumerable
 			string? expected)
 	{
 		IElements iElements = elements;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
@@ -156,7 +156,7 @@ public static partial class ThatEnumerable
 		where TEnumerable : struct, IEnumerable<string?>
 	{
 		IElementsForStructEnumerable<TEnumerable> iElements = elements;
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 			expectationBuilder.AddConstraint((it, grammars)

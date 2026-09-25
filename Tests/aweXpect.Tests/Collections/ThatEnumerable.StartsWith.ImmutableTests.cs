@@ -94,6 +94,19 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableStringTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				ImmutableArray<string?> subject = ["foo",];
+
+				async Task Act()
+					=> await That(subject).StartsWith("").AsRegexThroughOptions();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
 			public async Task ShouldIncludeOptionsInFailureMessage()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];

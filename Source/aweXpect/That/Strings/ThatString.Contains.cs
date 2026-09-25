@@ -28,7 +28,7 @@ public static partial class ThatString
 		}
 
 		Quantifier quantifier = new();
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, expected, quantifier, options)),
@@ -66,7 +66,7 @@ public static partial class ThatString
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
-		string? expected,
+		string expected,
 		Quantifier quantifier,
 		StringEqualityOptions options)
 		: ConstraintResult(grammars),
@@ -80,7 +80,7 @@ public static partial class ThatString
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
@@ -140,12 +140,7 @@ public static partial class ThatString
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
-			}
-			else if (expected is null)
-			{
-				Formatter.Format(stringBuilder, _actual);
-				stringBuilder.Append(" cannot be validated against <null>");
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{

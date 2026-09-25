@@ -26,7 +26,7 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		StringEqualityOptions options = new StringEqualityOptions().AsPrefix();
+		StringEqualityOptions options = new StringEqualityOptions(nameof(expected)).AsPrefix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new StartsWithConstraint(expectationBuilder, it, grammars, expected, options)),

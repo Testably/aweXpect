@@ -508,7 +508,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(expected, nameof(expected));
 			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(expected));
 			options.Containing();
 			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
@@ -526,7 +526,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(expected, nameof(expected));
 			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(expected));
 			options.AsSuffix();
 			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
@@ -538,7 +538,7 @@ public static class PropertyResult
 			string? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(expected));
 			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
 
@@ -620,7 +620,7 @@ public static class PropertyResult
 		{
 			ThrowIfNullOrEmpty(expected, nameof(expected));
 			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(expected));
 			options.AsPrefix();
 			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}

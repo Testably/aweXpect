@@ -169,6 +169,19 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class StringTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).StartsWith("").AsRegexThroughOptions();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
 			public async Task ShouldIncludeOptionsInFailureMessage()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);

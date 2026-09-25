@@ -141,6 +141,19 @@ public sealed partial class ThatException
 		public sealed class EqualToTests
 		{
 			[Fact]
+			public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				Exception subject = new("foo");
+
+				async Task Act()
+					=> await That(subject).HasMessage().EqualTo("").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
 			public async Task CanUseWildcardCheck()
 			{
 				Exception subject = new("foo-bar");
