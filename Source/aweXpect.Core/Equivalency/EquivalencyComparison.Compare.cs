@@ -610,7 +610,7 @@ public static partial class EquivalencyComparison
 	{
 		private readonly MethodInfo _compare = comparerType.GetMethod(nameof(IComparer<object>.Compare))!;
 
-		public int Compare(object? x, object? y) => (int)InvokeComparer(_compare, comparer, x!, y!)!;
+		int IComparer<object>.Compare(object? x, object? y) => (int)InvokeComparer(_compare, comparer, x!, y!)!;
 	}
 
 	/// <remarks>

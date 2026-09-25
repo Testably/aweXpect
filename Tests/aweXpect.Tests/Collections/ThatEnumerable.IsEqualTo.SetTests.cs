@@ -193,7 +193,7 @@ public sealed partial class ThatEnumerable
 			{
 				public bool Equals(string? x, string? y)
 					=> x is null || y is null
-						? throw new ArgumentNullException()
+						? throw new ArgumentNullException(x is null ? nameof(x) : nameof(y))
 						: StringComparer.OrdinalIgnoreCase.Equals(x, y);
 
 				public int GetHashCode(string? obj) => obj!.Length;
