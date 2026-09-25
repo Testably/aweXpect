@@ -4,8 +4,8 @@ Describes the possible expectations for verifying events.
 
 ## Recording
 
-First, you have to start a recording of events. This can be done with the `.Record().Events()` extension method in the "
-aweXpect.Recording" namespace.
+First, you have to start a recording of events. This can be done with the `.Record().Events()` extension method in the
+`aweXpect.Recording` namespace:
 
 ```csharp
 using aweXpect.Recording;
@@ -38,7 +38,7 @@ recorded, and an expectation on the skipped event fails with the reason; recordi
 An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Every
 constraint of that one expectation still sees the recorded events, because `.And` and `.Or` combine into a single
 expectation. A further expectation on the same recording fails, so that it cannot silently answer from the events
-that were recorded until then.
+that were recorded until then:
 
 ```csharp
 IEventRecording<MyClass> recording = subject.Record().Events();
@@ -98,7 +98,7 @@ event to be triggered less than twice.
 
 ## Filtering
 
-You can filter the recorded events based on their parameters.
+You can filter the recorded events based on their parameters:
 
 ```csharp
 IEventRecording<MyClass> recording = subject.Record().Events();
@@ -108,42 +108,6 @@ subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
 
 await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10);
-```
-
-## Timeout
-
-You can specify a timeout within the expected events should be triggered:
-
-```csharp
-using aweXpect.Chronology; // from the aweXpect.Chronology package
-
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-_ = Task.Delay(2.Seconds()).ContinueWith(_ => {
-    // Trigger the events in the background
-    subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-    subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
-});
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10)
-  .Within(3.Seconds());
-```
-
-The `.Within(TimeSpan)` method will wait up to 3 seconds for the expected events and
-finish successfully as soon as the events are triggered.
-
-More precisely, it stops as soon as the outcome can no longer change, and otherwise waits for the
-whole timeout. For an expectation with an upper bound (`DidNotTrigger`, `Never()`,
-`AtMost(2.Times())`, `Exactly(1)`) that means the opposite: it waits out the timeout to be sure no
-further event arrives, and returns early only when one event too many is recorded.
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-// Waits for 3 seconds and expects that no ThresholdReached event is triggered in that time
-await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached))
-  .Within(3.Seconds());
 ```
 
 ### Sender
@@ -176,9 +140,45 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .With<ThresholdReachedEventArgs>(e => e.Threshold < 10);
 ```
 
+## Timeout
+
+You can specify a timeout within which the expected events must be triggered:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+_ = Task.Delay(2.Seconds()).ContinueWith(_ => {
+    // Trigger the events in the background
+    subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
+    subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
+});
+
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
+  .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10)
+  .Within(3.Seconds());
+```
+
+The `.Within(TimeSpan)` method will wait up to 3 seconds for the expected events and
+finish successfully as soon as the events are triggered.
+
+More precisely, it stops as soon as the outcome can no longer change, and otherwise waits for the
+whole timeout. For an expectation with an upper bound (`DidNotTrigger`, `Never()`,
+`AtMost(2.Times())`, `Exactly(1)`) that means the opposite: it waits out the timeout to be sure no
+further event arrives, and returns early only when one event too many is recorded:
+
+```csharp
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+// Waits for 3 seconds and expects that no ThresholdReached event is triggered in that time
+await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached))
+  .Within(3.Seconds());
+```
+
 ## Counting
 
-You can verify that an event was recorded a specific number of times
+You can verify that an event was recorded a specific number of times:
 
 ```csharp
 using aweXpect.Core; // for `Times()`
@@ -192,12 +192,17 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .Between(1).And(2.Times());
 ```
 
-You can use the same occurrence constraints as in the [contain](/docs/expectations/collections#contain) method:
+You can use the same occurrence constraints as in the [contain](/docs/expectations/collections#contained-items) method:
 
 - `AtLeast(2.Times())`
 - `AtMost(3.Times())`
 - `Between(1).And(4.Times())`
 - `Exactly(0.Times())`
+- `MoreThan(1.Times())`
+- `LessThan(3.Times())`
+- `Once()`
+- `Twice()`
+- `Never()`
 
 ## Special events
 
@@ -232,7 +237,7 @@ an event that was triggered with a `null` or empty property name notifies that *
 satisfies `TriggeredPropertyChangedFor` for every property name and lets `DidNotTriggerPropertyChangedFor`
 fail for every property name. A whitespace-only name is a name like any other.  
 Expecting the `null` or the empty property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches
-only the events that notify that all properties changed, but no named one - and without distinguishing the two
+only the events that notify that all properties changed, but no named one, and without distinguishing the two
 spellings, which the contract allows interchangeably.
 
 ## Trimming and Native AOT

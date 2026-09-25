@@ -4,8 +4,8 @@ Describes the possible expectations for working with callbacks.
 
 ## Signaler
 
-First, you have to start recording callback signals using the `Signaler` class. This class is available in the "
-aweXpect.Signaling" namespace.
+First, you have to start recording callback signals using the `Signaler` class. This class is available in the
+`aweXpect.Signaling` namespace:
 
 ```csharp
 using aweXpect.Signaling;
@@ -16,7 +16,7 @@ Signaler<string> stringSignaler = new();
 // ↑ Counts signals from callbacks with a string parameter
 ```
 
-Then, you can signal the callback on the recording.
+Then, you can signal the callback on the recording:
 
 ```csharp
 class MyClass

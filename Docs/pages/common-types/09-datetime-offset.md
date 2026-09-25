@@ -2,25 +2,6 @@
 
 Describes the possible expectations for `DateTime` and `DateTimeOffset`.
 
-## The `Kind` of a `DateTime`
-
-A `DateTimeKind.Local` and a `DateTimeKind.Utc` value denote different points in time even when their date and time
-components are identical, so aweXpect refuses to compare them: the expectation fails and reports that the subject
-differed in the `Kind` property. A `DateTimeKind.Unspecified` value is compatible with both.
-
-```csharp
-DateTime subject = new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Local);
-
-await Expect.That(subject).IsNotEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Utc));
-await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Unspecified));
-```
-
-This applies to all comparisons: `IsEqualTo`, `IsOneOf`, `IsAfter`, `IsBefore`, `IsOnOrAfter`, `IsOnOrBefore` and
-`IsBetween`, as well as to their negated counterparts, which succeed for such a pair. For `IsBetween` the subject must
-be comparable to both bounds; for `IsOneOf` an alternative with an incompatible `Kind` can never be the match, but the
-remaining alternatives are still considered. `DateTimeOffset` carries an explicit offset instead of a `Kind` and is
-therefore always comparable.
-
 ## Equality
 
 You can verify that the `DateTime` or `DateTimeOffset` is equal to another one or not:
@@ -43,7 +24,7 @@ You can also specify a tolerance:
 DateTime subject = new DateTime(2024, 12, 24);
 
 await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 23)).Within(TimeSpan.FromDays(1))
-  .Because("we accept values between 2024-12-23 and 2024-12-25");
+  .Because("we accept values between 2024-12-22 and 2024-12-24");
 ```
 
 ```csharp
@@ -170,19 +151,27 @@ await Expect.That(subject).IsBetween(DateTime.Today).And(DateTime.Now).Within(Ti
 
 ## Kind
 
-A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants for the same
-ticks, so they cannot be compared. The equality and ordering expectations on `DateTime` fail for such a pair,
-the ordering expectations (`IsAfter`, `IsBefore`, `IsBetween`, …) in their negated form as well:
+A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants even when their date
+and time components are identical, so aweXpect refuses to compare them. A value with `DateTimeKind.Unspecified` is
+compatible with both kinds. `DateTimeOffset` carries an explicit offset instead of a `Kind` and is therefore always
+comparable.
+
+`IsEqualTo`, `IsOneOf`, `IsAfter`, `IsBefore`, `IsOnOrAfter`, `IsOnOrBefore` and `IsBetween` fail for such a pair, and so
+do the negated ordering expectations `IsNotAfter`, `IsNotBefore`, `IsNotOnOrAfter`, `IsNotOnOrBefore` and `IsNotBetween`.
+Only `IsNotEqualTo` and `IsNotOneOf` succeed, because the two values are never equal:
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Utc);
 
 // fails with "but it had Kind Utc, which cannot be compared with Local"
 await Expect.That(subject).IsBefore(new DateTime(2024, 12, 25, 0, 0, 0, DateTimeKind.Local));
+
+await Expect.That(subject).IsNotEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Local));
+await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Unspecified));
 ```
 
-`IsOneOf` ignores an expected value with the other kind. A value with `DateTimeKind.Unspecified` is compatible with
-both kinds. `DateTimeOffset` values are always comparable.
+For `IsBetween` and `IsNotBetween` the subject must be comparable to both bounds. For `IsOneOf` and `IsNotOneOf` an
+alternative with an incompatible `Kind` can never be the match, but the remaining alternatives are still considered.
 
 The same rule applies wherever a `DateTime` is compared as a value: collection expectations such as `IsEqualTo` or
 `Contains`, and `IsEquivalentTo` for a `DateTime` member. Two values that differ only in their kind never match

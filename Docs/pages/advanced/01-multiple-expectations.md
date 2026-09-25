@@ -4,7 +4,7 @@ You can combine multiple expectations in different ways:
 
 ## On the same property
 
-Simply use `.And` or `.Or` to combine multiple expectations, e.g.
+Simply use `.And` or `.Or` to combine multiple expectations:
 
 ```csharp
 string subject = "something different";
@@ -24,7 +24,7 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 `.And` binds tighter than `.Or`, so `A.And.B.Or.C` is evaluated as `(A && B) || C`.
 
 `.Or` short-circuits: as soon as one alternative is met, the following ones are not evaluated anymore, which allows
-using it as a guard, e.g.
+using it as a guard:
 
 ```csharp
 string? subject = null;
@@ -35,8 +35,7 @@ await Expect.That(subject).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(2))
 
 ## On different properties of the same subject
 
-Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`,
-e.g.
+Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`:
 
 ```csharp
   public record Album(int TrackCount, string Title);
@@ -57,7 +56,7 @@ e.g.
 >                 ↑ (expected)
 > ```
 
-When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result, e.g.
+When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result:
 
 ```csharp
   await Expect.That(subject)
@@ -66,7 +65,7 @@ When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply 
 
 ## On different subjects
 
-Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expectations, e.g.
+Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expectations:
 
 ```csharp
   string subjectA = "ABC";

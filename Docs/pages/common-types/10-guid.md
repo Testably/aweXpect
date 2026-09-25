@@ -17,7 +17,7 @@ await Expect.That(subject).IsNotEqualTo(Guid.Parse("cdd7a485-40a1-4bba-bb8b-d0e9
 
 ## One of
 
-You can verify that the `Guid` is one of many alternatives.
+You can verify that the `Guid` is one of many alternatives:
 
 ```csharp
 Guid subject = Guid.Parse("5c01d9d2-66f7-4782-8c14-e54eae9aaacc");

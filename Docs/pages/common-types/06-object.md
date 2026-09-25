@@ -74,7 +74,7 @@ succeeds.*
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
-[equivalency](/docs/expectations/equivalency) page for details and configuration options.
+[equivalency](/docs/expectations/equivalency) page for details and configuration options:
 
 ```csharp
 class Album(string title)
@@ -136,7 +136,7 @@ await Expect.That(subject).IsNull();
 await Expect.That(new object()).IsNotNull();
 ```
 
-## Satisfy
+## Condition
 
 You can verify that any object satisfies a given predicate:
 
@@ -160,7 +160,7 @@ Track subject = new() {
 await Expect.That(subject).Satisfies(x => x.IsPlayed == true).Within(2.Seconds());
 ```
 
-## Comply with
+## Nested expectation
 
 You can verify that any object complies with an expectation:
 
