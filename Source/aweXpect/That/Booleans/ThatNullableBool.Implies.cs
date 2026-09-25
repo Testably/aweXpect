@@ -21,6 +21,20 @@ public static partial class ThatNullableBool
 				=> new ImpliesConstraint(it, grammars, consequent)),
 			subject);
 
+	/// <summary>
+	///     Verifies that the subject does not imply the <paramref name="consequent" /> value.
+	/// </summary>
+	/// <remarks>
+	///     <c>A does not imply B</c> is equivalent to <c>A AND NOT B</c>.<br />
+	///     <seealso href="https://mathworld.wolfram.com/Implies.html" />
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<bool?, IThat<bool?>> DoesNotImply(this IThat<bool?> subject,
+		bool consequent)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new ImpliesConstraint(it, grammars, consequent).Invert()),
+			subject);
+
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)
 		: ConstraintResult.WithNotNullValue<bool?>(it, grammars),
 			IValueConstraint<bool?>

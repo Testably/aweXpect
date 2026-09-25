@@ -47,7 +47,7 @@ Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` 
 
 ## Implication
 
-You can verify that `a` implies `b` (*find [here](https://mathworld.wolfram.com/Implies.html) a mathematical
+You can verify that `a` implies `b` or not (*find [here](https://mathworld.wolfram.com/Implies.html) a mathematical
 explanation*):
 
 ```csharp
@@ -55,4 +55,5 @@ bool a = false;
 bool b = true;
 
 await Expect.That(a).Implies(b);
+await Expect.That(b).DoesNotImply(a);
 ```
