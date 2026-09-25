@@ -91,10 +91,7 @@ public static partial class ThatString
 			if (Outcome != Outcome.Success && !string.IsNullOrEmpty(actual))
 			{
 				expectationBuilder.AddStringContext("Actual", actual, this);
-				if (!string.IsNullOrEmpty(expected))
-				{
-					expectationBuilder.AddStringContext("Expected", expected, this);
-				}
+				expectationBuilder.AddStringContext("Expected", expected, this);
 			}
 			
 			return this;
