@@ -21,6 +21,25 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenBoolItemsDoNotMatch_ShouldRenderThemOnOneLine()
+			{
+				IAsyncEnumerable<bool> subject = ToAsyncEnumerable(false, false);
+
+				async Task Act()
+					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is True for at least one item,
+					             but none of 2 were
+
+					             Collection:
+					             [False, False]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);

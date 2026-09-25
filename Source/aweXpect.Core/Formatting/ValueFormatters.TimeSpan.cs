@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace aweXpect.Formatting;
@@ -63,19 +64,24 @@ public static partial class ValueFormatters
 
 		if (value == TimeSpan.MaxValue)
 		{
-			stringBuilder.Append("the maximum time span");
+			stringBuilder.Append("TimeSpan.MaxValue");
 			return;
 		}
 
 		if (value == TimeSpan.MinValue)
 		{
-			stringBuilder.Append("the minimum time span");
+			stringBuilder.Append("TimeSpan.MinValue");
 			return;
 		}
 
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("TimeSpan ");
+		}
+
+		if (value.Value < TimeSpan.Zero)
+		{
+			stringBuilder.Append('-');
 		}
 
 		TimeSpan absoluteValue = value.Value.Duration();
@@ -113,8 +119,18 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append(absoluteValue.Seconds);
+		AppendFractionOfSecond(stringBuilder, absoluteValue);
+	}
 
-		if (absoluteValue.Milliseconds > 0)
+	private static void AppendFractionOfSecond(StringBuilder stringBuilder, TimeSpan absoluteValue)
+	{
+		long fractionTicks = absoluteValue.Ticks % TimeSpan.TicksPerSecond;
+		if (fractionTicks % TimeSpan.TicksPerMillisecond != 0)
+		{
+			stringBuilder.Append('.');
+			stringBuilder.Append(fractionTicks.ToString("0000000", CultureInfo.InvariantCulture).TrimEnd('0'));
+		}
+		else if (absoluteValue.Milliseconds > 0)
 		{
 			stringBuilder.Append('.');
 			stringBuilder.Append(absoluteValue.Milliseconds.ToString("000"));

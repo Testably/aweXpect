@@ -1,4 +1,5 @@
 using System.Text;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Formatting;
 
@@ -13,8 +14,8 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
 		{
-			true => $"char '{value}'",
-			_ => $"'{value}'",
+			true => $"char '{value.ToString().DisplayWhitespace()}'",
+			_ => $"'{value.ToString().DisplayWhitespace()}'",
 		};
 
 	/// <summary>
@@ -33,7 +34,7 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append('\'');
-		stringBuilder.Append(value);
+		stringBuilder.Append(value.ToString().DisplayWhitespace());
 		stringBuilder.Append('\'');
 	}
 

@@ -49,7 +49,7 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
-			public async Task WhenSubjectDiffersByLessThanAMillisecond_ShouldNotShowTheDifference()
+			public async Task WhenSubjectDiffersByLessThanAMillisecond_ShouldShowTheDifference()
 			{
 				DateTime subject = CurrentTime().AddTicks(1);
 				DateTime expected = CurrentTime();
@@ -61,9 +61,9 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by 0:00.0000001
 					              """)
-					.Because("a time span is formatted in milliseconds, so the difference would read as zero");
+					.Because("a time span shows the ticks below the millisecond, so the difference does not read as zero");
 			}
 
 			[Fact]
@@ -96,7 +96,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}, which differs by -3652058.23:59:59.999
+					              but it was {Formatter.Format(subject)}, which differs by -3652058.23:59:59.9999999
 					              """)
 					.Because("the difference between any two date times fits into a time span");
 			}

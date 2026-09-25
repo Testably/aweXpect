@@ -144,7 +144,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of {Formatter.Format(expected)},
-						              but it was the minimum time span
+						              but it was TimeSpan.MinValue
 						              """)
 						.Because("an earlier candidate that is far away must not hide a matching later candidate");
 				}

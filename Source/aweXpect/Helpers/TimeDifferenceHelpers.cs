@@ -11,9 +11,10 @@ internal static class TimeDifferenceHelpers
 	///     <paramref name="reference" /> it was measured from.
 	/// </summary>
 	/// <remarks>
-	///     The sign is written explicitly, because the time span formatter only writes the magnitude. The difference is
-	///     omitted when the formatter cannot show it: below one millisecond it would read as zero, and at or beyond
-	///     the range of a <see cref="TimeSpan" /> it has no value to format.
+	///     The sign is written explicitly and only the magnitude is formatted, so that the output does not depend on
+	///     whether the time span formatter of the referenced aweXpect.Core writes a sign. The difference is omitted when
+	///     the formatter cannot show it: below one tick it would read as zero, and at or beyond the range of a
+	///     <see cref="TimeSpan" /> it has no value to format.
 	/// </remarks>
 	public static StringBuilder AppendTimeDifference(this StringBuilder stringBuilder, decimal? differenceTicks,
 		string? reference = null)
@@ -24,7 +25,7 @@ internal static class TimeDifferenceHelpers
 		}
 
 		decimal magnitude = Math.Abs(differenceTicks.Value);
-		if (magnitude < TimeSpan.TicksPerMillisecond || magnitude >= TimeSpan.MaxValue.Ticks)
+		if (magnitude < 1 || magnitude >= TimeSpan.MaxValue.Ticks)
 		{
 			return stringBuilder;
 		}

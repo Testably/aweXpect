@@ -54,6 +54,28 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Theory]
+		[InlineData('\n', "'\\n'")]
+		[InlineData('\r', "'\\r'")]
+		[InlineData('\t', "'\\t'")]
+		[InlineData('\'', "'''")]
+		[InlineData('"', "'\"'")]
+		public async Task Value_ShouldDisplayWhitespaceLikeSingleLineStrings(char value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			string withTypeResult = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("line breaks and tabs are escaped like in single-line strings, while quotes are not");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(withTypeResult).IsEqualTo($"char {expectedResult}");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Fact]
 		public async Task Value_WithType_ShouldAddSingleQuotes()
 		{

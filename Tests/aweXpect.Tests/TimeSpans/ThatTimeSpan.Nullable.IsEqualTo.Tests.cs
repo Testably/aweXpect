@@ -73,8 +73,8 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to the minimum time span,
-						             but it was the maximum time span
+						             is equal to TimeSpan.MinValue,
+						             but it was TimeSpan.MaxValue
 						             """)
 						.Because("a difference that exceeds the range of a time span must fail instead of overflow");
 				}
@@ -91,8 +91,8 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to the maximum time span,
-						             but it was the minimum time span
+						             is equal to TimeSpan.MaxValue,
+						             but it was TimeSpan.MinValue
 						             """)
 						.Because("a difference that exceeds the range of a time span must fail instead of overflow");
 				}
@@ -137,8 +137,8 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is equal to the maximum time span ± {Formatter.Format(TimeSpan.MaxValue)},
-						              but it was the minimum time span
+						              is equal to TimeSpan.MaxValue ± {Formatter.Format(TimeSpan.MaxValue)},
+						              but it was TimeSpan.MinValue
 						              """)
 						.Because("the two values are further apart than the largest possible tolerance");
 				}
