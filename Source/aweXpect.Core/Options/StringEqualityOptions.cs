@@ -70,18 +70,23 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		}
 
 		expectedString = Normalize(expectedString);
-		ValidatePattern(expectedString);
-		return AreConsideredEqualToPattern(Normalize(actual), expectedString);
+		Regex? regex = ValidatePattern(expectedString);
+		return AreConsideredEqualToPattern(Normalize(actual), expectedString, regex);
 	}
 
 	/// <summary>
 	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
-	///     <paramref name="expected" /> pattern.
+	///     <paramref name="expected" /> pattern, which was parsed as <paramref name="regex" /> for a regex match type.
 	/// </summary>
-	private async ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected)
+	private async ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected, Regex? regex)
 	{
 		try
 		{
+			if (regex is not null)
+			{
+				return actual is not null && regex.IsMatch(actual);
+			}
+
 			return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
 		}
 		catch (RegexMatchTimeoutException exception)
@@ -106,8 +111,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	{
 		actual = Normalize(actual);
 		expected = Normalize(expected);
-		ValidatePattern(expected);
-		int? count = expected.Length == 0 ? 0 : CountOccurrencesWithoutWindow(actual, expected);
+		Regex? regex = ValidatePattern(expected);
+		int? count = expected.Length == 0 ? 0 : CountOccurrencesWithoutWindow(actual, expected, regex);
 		if (count is not null)
 		{
 			return new ValueTask<int>(count.Value);
@@ -120,7 +125,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern for
 	///     match types that cannot be counted with a window of the expected length, or returns <see langword="null" />.
 	/// </summary>
-	private int? CountOccurrencesWithoutWindow(string actual, string expected)
+	private int? CountOccurrencesWithoutWindow(string actual, string expected, Regex? regex)
 	{
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
 		if (_matchType is BlockMatchType)
@@ -132,9 +137,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		{
 			// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
 			// with a window of the expected length.
-			if (_matchType is RegexMatchType regexMatchType)
+			if (regex is not null)
 			{
-				return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
+				return RegexMatchType.CountOccurrences(actual, regex);
 			}
 
 			if (_matchType is WildcardMatchType)
@@ -530,41 +535,57 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Verifies that the <paramref name="expected" /> value is a usable pattern for the current match type.
+	///     Verifies that the <paramref name="expected" /> value is a usable pattern for the current match type and
+	///     returns the parsed <see cref="Regex" /> for a regex pattern.
 	/// </summary>
 	/// <remarks>
-	///     A <see langword="null" /> pattern matches no value and an empty regex, prefix or suffix pattern matches every
-	///     value, so such an expectation says nothing about the subject. This can only be detected while the expectation
-	///     is verified, because the match type can also be set after the pattern.
+	///     A <see langword="null" /> pattern describes nothing to look for and an empty regex, prefix or suffix pattern
+	///     matches every value, so such an expectation says nothing about the subject. This can only be detected while
+	///     the expectation is verified, because the match type can also be set after the pattern.
 	/// </remarks>
-	private void ValidatePattern(string? expected)
+	private Regex? ValidatePattern(string? expected)
 	{
-		if (expected?.Length == 0 && _matchType is PrefixMatchType or SuffixMatchType)
+		string? patternKind = _matchType switch
 		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException(
-				$"The '{_parameterName}' {(_matchType is PrefixMatchType ? "prefix" : "suffix")} cannot be empty.",
-				_parameterName));
-		}
-
-		bool isRegex = _matchType is RegexMatchType;
-		if (!isRegex && _matchType is not WildcardMatchType)
+			PrefixMatchType => "prefix",
+			SuffixMatchType => "suffix",
+			RegexMatchType => "regex pattern",
+			WildcardMatchType => "wildcard pattern",
+			_ => null,
+		};
+		if (patternKind is null)
 		{
-			return;
+			return null;
 		}
 
 		if (expected is null)
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentNullException(_parameterName,
-				$"The '{_parameterName}' {(isRegex ? "regex" : "wildcard")} pattern cannot be null."));
+				$"The '{_parameterName}' {patternKind} cannot be null."));
 		}
 
-		if (isRegex && expected.Length == 0)
+		if (expected.Length == 0 && _matchType is not WildcardMatchType)
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException($"The '{_parameterName}' regex pattern cannot be empty.",
+			throw Tracing.WriteException(new ArgumentException($"The '{_parameterName}' {patternKind} cannot be empty.",
 				_parameterName));
+		}
+
+		if (_matchType is not RegexMatchType regexMatchType)
+		{
+			return null;
+		}
+
+		try
+		{
+			return regexMatchType.CreateRegex(expected, _ignoreCase);
+		}
+		catch (ArgumentException exception) when (exception is not ArgumentOutOfRangeException)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{_parameterName}' regex pattern is invalid: {exception.Message}", _parameterName, exception));
 		}
 	}
 }

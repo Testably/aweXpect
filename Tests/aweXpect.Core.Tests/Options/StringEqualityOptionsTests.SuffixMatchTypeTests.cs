@@ -51,6 +51,22 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Theory]
+		[InlineData("foo")]
+		[InlineData(null)]
+		public async Task AreConsideredEqual_WhenExpectedIsNull_ShouldThrowArgumentNullException(string? actual)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix();
+
+			async Task Act() => await sut.AreConsideredEqual(actual, (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' suffix cannot be null.").AsPrefix()
+				.Because("a missing suffix is rejected before the subject is looked at");
+		}
+
+		[Theory]
 		[InlineData(true, false)]
 		[InlineData(false, true)]
 		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException(
@@ -138,20 +154,15 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(expectMatch);
 		}
 
-		[Theory]
-		[InlineData("foo", null, false)]
-		[InlineData(null, "foo", false)]
-		[InlineData(null, null, true)]
-		public async Task AreConsideredEqual_WhenSubjectOrExpectedIsNull_ShouldOnlyMatchWhenBothAreNull(
-			string? actual, string? expected, bool expectMatch)
+		[Fact]
+		public async Task AreConsideredEqual_WhenSubjectIsNull_ShouldReturnFalse()
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(null, "foo");
 
-			await That(result).IsEqualTo(expectMatch)
-				.Because("a missing suffix is not rejected, but it can only match a missing subject");
+			await That(result).IsFalse();
 		}
 
 		[Theory]
@@ -179,6 +190,20 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' suffix cannot be empty.").AsPrefix().And
 				.WithParamName("unexpected")
+				.Because("a negated expectation receives the suffix as 'unexpected'");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenExpectedIsNull_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsSuffix();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The 'unexpected' suffix cannot be null.").AsPrefix()
 				.Because("a negated expectation receives the suffix as 'unexpected'");
 		}
 

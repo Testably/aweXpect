@@ -7,7 +7,7 @@ public sealed partial class ThatString
 		public sealed class AsSuffixTests
 		{
 			[Fact]
-			public async Task WhenActualAndExpectedAreNull_ShouldSucceed()
+			public async Task WhenActualAndExpectedAreNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
 				string? expected = null;
@@ -15,7 +15,10 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' suffix cannot be null.").AsPrefix()
+					.Because("'is null' is never expressed through a suffix");
 			}
 
 			[Fact]
@@ -65,7 +68,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
 				string? expected = null;
@@ -73,12 +76,9 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             ends with <null>,
-					             but it was "some text"
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' suffix cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -231,6 +231,19 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
 					.WithParamName("expected")
 					.Because("the negated expectation is just as meaningless as the positive one");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(null).AsSuffix());
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' suffix cannot be null.").AsPrefix();
 			}
 
 			[Fact]
