@@ -8,6 +8,22 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: true, canWrite: true));
+
+				async Task Act()
+					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsReadOnly());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Chunks are read-only,
+					             but Chunks were not
+					             """);
+			}
+
 			[Theory]
 			[InlineData(false, false)]
 			[InlineData(false, true)]

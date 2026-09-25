@@ -18,7 +18,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is not empty,
-					             but it was
+					             but it was ""
 					             """);
 			}
 

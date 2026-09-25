@@ -51,6 +51,6 @@ public static partial class ThatString
 			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -21,7 +21,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to dictionary unexpected,
-					             but it did
+					             but it was
 
 					             Dictionary:
 					             {["a"] = 1, ["b"] = 2}

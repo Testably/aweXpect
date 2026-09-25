@@ -43,12 +43,12 @@ public static partial class ThatStream
 			=> stringBuilder.Append(Grammars.Verb("is write-only", "are write-only"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was not");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was not", " were not"));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is not write-only", "are not write-only"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 	}
 }

@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not empty,
-					             but it was
+					             but it was empty
 					             """);
 			}
 
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not empty,
-					             but it was
+					             but it was empty
 					             """);
 			}
 		}
