@@ -254,7 +254,7 @@ public sealed partial class ThatObject
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And
-					.WithMessage("The type cannot be null.").AsPrefix();
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

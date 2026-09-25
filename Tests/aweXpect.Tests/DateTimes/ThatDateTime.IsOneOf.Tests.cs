@@ -36,7 +36,7 @@ public sealed partial class ThatDateTime
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -155,7 +155,7 @@ public sealed partial class ThatDateTime
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]

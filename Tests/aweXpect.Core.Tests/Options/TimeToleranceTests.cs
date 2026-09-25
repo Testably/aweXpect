@@ -109,7 +109,7 @@ public class TimeToleranceTests
 		void Act() => sut.SetTolerance(-1.Seconds());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithMessage("*Tolerance must be non-negative*").AsWildcard();
+			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
 	}
 
 	[Fact]

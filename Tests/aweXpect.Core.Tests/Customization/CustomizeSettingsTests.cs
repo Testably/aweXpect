@@ -109,7 +109,7 @@ public sealed class CustomizeSettingsTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("value").And
-			.WithMessage("Tolerance must be non-negative").AsPrefix()
+			.WithMessage("The tolerance must not be negative.").AsPrefix()
 			.Because("a negative default tolerance tightens every time comparison instead of widening it");
 	}
 

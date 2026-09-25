@@ -41,7 +41,7 @@ public class HasItemResult<TCollection>(
 			if (index < 0)
 			{
 				throw Tracing.WriteException(
-					new ArgumentOutOfRangeException(nameof(index), "The index must be greater than or equal to 0."));
+					new ArgumentOutOfRangeException(nameof(index), "The index must not be negative."));
 			}
 
 			_index = index;

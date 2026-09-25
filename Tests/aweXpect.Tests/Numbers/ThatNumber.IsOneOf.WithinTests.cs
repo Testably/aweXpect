@@ -115,7 +115,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(new decimal(-0.1));
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -172,7 +172,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(new decimal(-0.1));
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -278,7 +278,7 @@ public sealed partial class ThatNumber
 					=> await That(12.5).IsOneOf(12.0, 13.0).Within(double.NaN);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
 					.WithParamName("tolerance")
 					.Because("NaN is not a negative tolerance, so it needs its own message");
 			}
@@ -293,7 +293,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -336,7 +336,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -445,7 +445,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1F);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -488,7 +488,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1F);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -622,7 +622,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -665,7 +665,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -708,7 +708,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -751,7 +751,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -863,7 +863,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(new decimal(-0.1));
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -922,7 +922,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(new decimal(-0.1));
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -965,7 +965,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1010,7 +1010,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1053,7 +1053,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1F);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1097,7 +1097,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-0.1F);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1140,7 +1140,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1183,7 +1183,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1226,7 +1226,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1270,7 +1270,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1313,7 +1313,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1357,7 +1357,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1400,7 +1400,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1444,7 +1444,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1665,7 +1665,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1708,7 +1708,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1751,7 +1751,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 
@@ -1794,7 +1794,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsOneOf(expected).Within(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 

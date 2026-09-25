@@ -6,6 +6,24 @@ namespace aweXpect.Core.Helpers;
 internal static class ThrowHelper
 {
 	/// <summary>
+	///     Rejects a negative count, because an occurrence count is never below zero.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
+	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
+	/// </remarks>
+	public static void ThrowIfCountIsNegative(int count, string? description = null,
+		[CallerArgumentExpression(nameof(count))] string? paramName = null)
+	{
+		if (count < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				$"The {description ?? paramName} must not be negative."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects an inverted range, so that a negated expectation cannot silently succeed on a range that can
 	///     never contain anything.
 	/// </summary>

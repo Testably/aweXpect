@@ -253,7 +253,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -267,7 +267,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix()
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
 					.Because("a null string is still a missing expected collection and not a null item");
 			}
 
@@ -294,7 +294,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]

@@ -22,7 +22,7 @@ public class TimeTolerance
 		if (tolerance < TimeSpan.Zero)
 		{
 			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be non-negative"));
+				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 		}
 
 		Tolerance = tolerance;

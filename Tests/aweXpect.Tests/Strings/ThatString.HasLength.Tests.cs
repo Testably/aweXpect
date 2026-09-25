@@ -31,7 +31,7 @@ public sealed partial class ThatString
 					=> await That(subject).HasLength(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
+					.WithMessage("*The expected length must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -93,7 +93,7 @@ public sealed partial class ThatString
 					=> await That(subject).HasLength().EqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
+					.WithMessage("*The expected length must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -438,7 +438,7 @@ public sealed partial class ThatString
 					=> await That(subject).HasLength().NotEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected length must be greater than or equal to zero*")
+					.WithMessage("*The unexpected length must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("unexpected");
 			}

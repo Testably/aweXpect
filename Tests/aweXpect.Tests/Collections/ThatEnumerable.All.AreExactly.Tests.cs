@@ -231,7 +231,7 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("type").And
-						.WithMessage("The type cannot be null.").AsPrefix();
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 
 				[Fact]

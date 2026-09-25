@@ -58,14 +58,18 @@ internal static class ThrowHelper
 	/// <summary>
 	///     Rejects a negative count, because an occurrence count is never below zero.
 	/// </summary>
-	public static void ThrowIfCountIsNegative(int count,
+	/// <remarks>
+	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
+	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
+	/// </remarks>
+	public static void ThrowIfCountIsNegative(int count, string? description = null,
 		[CallerArgumentExpression(nameof(count))] string? paramName = null)
 	{
 		if (count < 0)
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
-				$"The parameter '{paramName}' must be non-negative"));
+				$"The {description ?? paramName} must not be negative."));
 		}
 	}
 
@@ -92,8 +96,8 @@ internal static class ThrowHelper
 		if (minimum is not null && maximum is not null && maximum.Value.CompareTo(minimum.Value) < 0)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentOutOfRangeException(nameof(maximum),
-				"The maximum must be greater than or equal to the minimum.");
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
+				"The maximum must be greater than or equal to the minimum."));
 		}
 	}
 
@@ -106,8 +110,8 @@ internal static class ThrowHelper
 		if (minimum is not null && maximum is not null && maximum.CompareTo(minimum) < 0)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentOutOfRangeException(nameof(maximum),
-				"The maximum must be greater than or equal to the minimum.");
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
+				"The maximum must be greater than or equal to the minimum."));
 		}
 	}
 

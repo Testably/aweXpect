@@ -14,7 +14,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("minimum").And
-				.WithMessage("The parameter 'minimum' must be non-negative").AsPrefix();
+				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -27,7 +27,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("maximum").And
-				.WithMessage("The parameter 'maximum' must be non-negative").AsPrefix();
+				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -53,7 +53,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("maximum").And
-				.WithMessage("The parameter 'maximum' must be non-negative").AsPrefix();
+				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -66,7 +66,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("minimum").And
-				.WithMessage("The parameter 'minimum' must be non-negative").AsPrefix();
+				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -79,7 +79,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("expected").And
-				.WithMessage("The parameter 'expected' must be non-negative").AsPrefix();
+				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -105,7 +105,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("expected").And
-				.WithMessage("The parameter 'expected' must be non-negative").AsPrefix();
+				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -118,7 +118,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("expected").And
-				.WithMessage("The parameter 'expected' must be non-negative").AsPrefix()
+				.WithMessage("The expected count must not be negative.").AsPrefix()
 				.Because("a count is never negative, so the negated expectation would hold for every collection");
 		}
 
@@ -132,7 +132,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("expected").And
-				.WithMessage("The parameter 'expected' must be non-negative").AsPrefix();
+				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -145,7 +145,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("maximum").And
-				.WithMessage("The parameter 'maximum' must be non-negative").AsPrefix();
+				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -158,7 +158,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("minimum").And
-				.WithMessage("The parameter 'minimum' must be non-negative").AsPrefix();
+				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
 		[Fact]
@@ -171,7 +171,7 @@ public sealed class QuantifierArgumentValidation
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("maximum").And
-				.WithMessage("The parameter 'maximum' must be non-negative").AsPrefix()
+				.WithMessage("The maximum must not be negative.").AsPrefix()
 				.Because("the negated form is where a nonsensical count would otherwise pass unnoticed");
 		}
 

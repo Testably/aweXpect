@@ -36,7 +36,7 @@ public sealed partial class ThatEnum
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Theory]
@@ -78,7 +78,7 @@ public sealed partial class ThatEnum
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Theory]

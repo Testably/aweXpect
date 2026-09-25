@@ -68,7 +68,7 @@ public sealed class EventTriggerResultTests
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
-			.WithMessage("The predicate cannot be null.").AsPrefix();
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Fact]
@@ -83,7 +83,7 @@ public sealed class EventTriggerResultTests
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
-			.WithMessage("The predicate cannot be null.").AsPrefix();
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Fact]
@@ -98,7 +98,7 @@ public sealed class EventTriggerResultTests
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
-			.WithMessage("The predicate cannot be null.").AsPrefix();
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Fact]
@@ -113,7 +113,7 @@ public sealed class EventTriggerResultTests
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
-			.WithMessage("The predicate cannot be null.").AsPrefix();
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Fact]

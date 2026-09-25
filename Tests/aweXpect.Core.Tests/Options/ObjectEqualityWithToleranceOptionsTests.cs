@@ -46,7 +46,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
-			.WithMessage("Tolerance must be non-negative").AsPrefix();
+			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
 	[Fact]
@@ -59,7 +59,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
-			.WithMessage("Tolerance must not be NaN").AsPrefix()
+			.WithMessage("The tolerance must not be NaN.").AsPrefix()
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
 
@@ -73,7 +73,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
-			.WithMessage("Tolerance must be non-negative").AsPrefix();
+			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
 	[Fact]

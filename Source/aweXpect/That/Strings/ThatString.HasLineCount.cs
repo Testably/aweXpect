@@ -23,7 +23,7 @@ public static partial class ThatString
 				throw Tracing.WriteException(
 					new ArgumentOutOfRangeException(paramName, value,
 						// ReSharper disable once LocalizableElement
-						$"The {paramName} line count must be greater than or equal to zero."));
+						$"The {paramName} line count must not be negative."));
 			}
 		});
 

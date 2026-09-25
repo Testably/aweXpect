@@ -22,7 +22,7 @@ public class TriggerEventFilter
 	{
 		// ReSharper disable once LocalizableElement
 		_ = predicate ?? throw Tracing.WriteException(
-			new ArgumentNullException(nameof(predicate), "The predicate cannot be null."));
+			new ArgumentNullException(nameof(predicate), "The 'predicate' cannot be null."));
 		if (_predicates.Count != 0)
 		{
 			_toString.Append(" and");

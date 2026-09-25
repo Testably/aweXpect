@@ -24,9 +24,15 @@ internal static class ExceptionHelpers
 		if (parameter is null)
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentNullException(paramName, $"The {paramName} cannot be null."));
+			throw Tracing.WriteException(new ArgumentNullException(paramName, $"The {Describe(paramName)} cannot be null."));
 		}
 	}
+
+	/// <summary>
+	///     Quotes the <paramref name="paramName" /> and follows the polarity names, which are adjectives, with a noun.
+	/// </summary>
+	private static string Describe(string? paramName)
+		=> paramName is "expected" or "unexpected" ? $"'{paramName}' value" : $"'{paramName}'";
 
 	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter,
 		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)

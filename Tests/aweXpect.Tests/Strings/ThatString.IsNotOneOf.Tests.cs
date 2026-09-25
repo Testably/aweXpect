@@ -105,7 +105,7 @@ public sealed partial class ThatString
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -134,7 +134,7 @@ public sealed partial class ThatString
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]

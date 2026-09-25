@@ -31,14 +31,14 @@ public class NumberTolerance<TNumber>(
 		{
 			throw Tracing.WriteException(
 				new ArgumentOutOfRangeException(nameof(tolerance),
-					"Tolerance must not be NaN"));
+					"The tolerance must not be NaN."));
 		}
 
 		if (tolerance.CompareTo(default) < 0)
 		{
 			throw Tracing.WriteException(
 				new ArgumentOutOfRangeException(nameof(tolerance),
-					"Tolerance must be non-negative"));
+					"The tolerance must not be negative."));
 		}
 
 		Tolerance = tolerance;

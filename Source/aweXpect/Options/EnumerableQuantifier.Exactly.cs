@@ -11,7 +11,7 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public static EnumerableQuantifier Exactly(int expected)
 	{
-		ThrowHelper.ThrowIfCountIsNegative(expected);
+		ThrowHelper.ThrowIfCountIsNegative(expected, "expected count");
 		return new ExactlyQuantifier(expected);
 	}
 
