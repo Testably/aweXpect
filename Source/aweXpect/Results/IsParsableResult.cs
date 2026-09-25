@@ -29,6 +29,6 @@ public class IsParsableResult<TType>(
 				}
 
 				return default;
-			}, " which "));
+			}, " that "));
 }
 #endif

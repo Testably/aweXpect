@@ -33,7 +33,7 @@ public class ManualExpectationBuilder<TValue>(
 	///     English requires do-support for every verb but <c>be</c>, so the pro-verb is <c>were</c> exactly when the
 	///     expectation text is headed by a form of <c>be</c> (<c>is equal to 1</c>) and <c>did</c> otherwise. Deriving it
 	///     from the whole expectation text rather than from the innermost constraint keeps a mapped expectation
-	///     (<c>has length which is equal to 3</c>) tied to the verb the reader actually sees. An expectation without a
+	///     (<c>has length that is equal to 3</c>) tied to the verb the reader actually sees. An expectation without a
 	///     text of its own falls back to <c>were</c>.
 	/// </remarks>
 	public string GetResultVerb()

@@ -24,7 +24,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1 within 0:00.050, because of reasons,
-				             but it was 0 which differs by -1
+				             but it was 0, which differs by -1
 				             """);
 		}
 
@@ -42,7 +42,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
-				             but it was 0 which differs by -1 and it was 0 which differs by -2
+				             but it was 0, which differs by -1 and it was 0, which differs by -2
 				             """);
 		}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1 within 0:01,
-					             but it was 0 which differs by -1
+					             but it was 0, which differs by -1
 					             """);
 			}
 
@@ -84,7 +84,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1 within 0:00.050,
-					             but it was 0 which differs by -1
+					             but it was 0, which differs by -1
 					             """);
 				stopwatch.Stop();
 			}
@@ -241,7 +241,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1 or is equal to 2 within 0:00.050,
-				             but it was 0 which differs by -1 and it was 0 which differs by -2
+				             but it was 0, which differs by -1 and it was 0, which differs by -2
 				             """);
 		}
 
@@ -504,7 +504,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1 within 0:00.500,
-					             but it was 0 which differs by -1
+					             but it was 0, which differs by -1
 					             """);
 				stopwatch.Stop();
 			}
@@ -661,7 +661,7 @@ public sealed partial class ThatDelegateTests
 				.HasMessage("""
 				            Expected that () => counter.Value
 				            is equal to 1 within 0:00.050,
-				            but it was 0 which differs by -1
+				            but it was 0, which differs by -1
 				            """);
 		}
 
@@ -780,7 +780,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that Subject
 					             is equal to 1 within 0:00.500,
-					             but it was 0 which differs by -1
+					             but it was 0, which differs by -1
 					             """)
 					.Because("the last attempt, made when the timeout is used up, must not be abandoned at once");
 			}
@@ -837,7 +837,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => observed = Math.Min(observed + 1, 3)
 				             is equal to 0 within 0:00.500,
-				             but it was 3 which differs by 3
+				             but it was 3, which differs by 3
 				             """);
 		}
 
@@ -905,7 +905,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1 within 0:00.050,
-				             but it was 0 which differs by -1
+				             but it was 0, which differs by -1
 				             """)
 				.Because("the tighter limit wins, so a later timeout must not loosen an earlier one");
 		}
@@ -923,7 +923,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1 within 0:00,
-				             but it was 0 which differs by -1
+				             but it was 0, which differs by -1
 				             """);
 			await That(counter.EvaluationCount).IsEqualTo(1);
 		}

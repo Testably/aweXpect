@@ -104,7 +104,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value is equal to "foo",
-					             but value [2] was "bar" which differs at index 0:
+					             but value [2] was "bar", which differs at index 0:
 					                ↓ (actual)
 					               "bar"
 					               "foo"
@@ -136,7 +136,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value has Length whose ToString() is equal to "4",
-					             but ToString() was "3" which differs at index 0:
+					             but ToString() was "3", which differs at index 0:
 					                ↓ (actual)
 					               "3"
 					               "4"
@@ -156,8 +156,8 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains key 2 whose value has Length which is equal to 4,
-					             but Length was 3 which differs by -1
+					             contains key 2 whose value has Length that is equal to 4,
+					             but Length was 3, which differs by -1
 					             """)
 					.Because("the value connector already introduced the subject, so the member must not repeat \"whose\"");
 			}

@@ -48,7 +48,7 @@ internal static class CollectionHelpers
 
 	/// <summary>
 	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
-	///     subject, rendered as <c>has {memberName} which …</c>.
+	///     subject, rendered as <c>has {memberName} that …</c>.
 	/// </summary>
 	internal static IThat<IEnumerable<TItem>?> ForCollectionMember<TSource, TItem>(
 		this IThat<TSource> subject,
@@ -56,7 +56,7 @@ internal static class CollectionHelpers
 		string memberName)
 		=> new ThatSubject<IEnumerable<TItem>?>(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, memberName))
-			.ForWhich(memberAccessor, " which ",
+			.ForWhich(memberAccessor, " that ",
 				expectationGrammar: grammars => grammars | ExpectationGrammars.Plural, negateMemberOnly: true));
 
 	/// <summary>
@@ -97,20 +97,21 @@ internal static class CollectionHelpers
 
 	/// <summary>
 	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
-	///     <c>has lines which …</c>.
+	///     <c>has lines that …</c>.
 	/// </summary>
 	/// <remarks>
-	///     The parent renders the separator <c>" which "</c> before it knows that a quantifier follows, and
-	///     <c>which at least 2 are …</c> is not grammatical, so the separator is completed to <c>" of which "</c>.
+	///     The parent renders the separator <c>" that "</c> before it knows that a quantifier follows, and
+	///     <c>that at least 2 are …</c> is not grammatical, so the separator is replaced with <c>" of which "</c>.
 	/// </remarks>
 	internal static void AppendNestedQuantifier(this StringBuilder stringBuilder, EnumerableQuantifier quantifier,
 		bool isNegated)
 	{
-		const string which = " which ";
-		if (stringBuilder.Length >= which.Length &&
-		    stringBuilder.ToString(stringBuilder.Length - which.Length, which.Length) == which)
+		const string that = " that ";
+		if (stringBuilder.Length >= that.Length &&
+		    stringBuilder.ToString(stringBuilder.Length - that.Length, that.Length) == that)
 		{
-			stringBuilder.Insert(stringBuilder.Length - which.Length + 1, "of ");
+			stringBuilder.Length -= that.Length;
+			stringBuilder.Append(" of which ");
 		}
 
 		if (isNegated)

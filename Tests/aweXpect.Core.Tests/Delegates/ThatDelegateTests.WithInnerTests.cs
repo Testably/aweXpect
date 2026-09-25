@@ -54,7 +54,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner exception which is null,
+				             throws a MyException with an inner exception that is null,
 				             but it had no inner exception
 				             """);
 		}
@@ -209,7 +209,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException whose message is equal to "foo",
-				             but message was "inner" which differs at index 0:
+				             but message was "inner", which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -253,8 +253,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo" and whose message is equal to "foo",
-				             but it was MyException: inner and message was "inner" which differs at index 0:
+				             throws a MyException with an inner MyException that satisfies i => i?.Message == "foo" and whose message is equal to "foo",
+				             but it was MyException: inner and message was "inner", which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -277,7 +277,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo",
+				             throws a MyException with an inner MyException that satisfies i => i?.Message == "foo",
 				             but it was MyException: inner
 				             """);
 		}
@@ -295,7 +295,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException whose Message is equal to "foo",
-				             but Message was "inner" which differs at index 0:
+				             but Message was "inner", which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -414,7 +414,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException whose message is equal to "foo",
-				             but message was "inner" which differs at index 0:
+				             but message was "inner", which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -437,7 +437,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException which is null,
+				             throws a MyException with an inner MyException that is null,
 				             but it was MyException: inner
 				             """);
 		}
@@ -455,7 +455,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner exception whose message is equal to "foo",
-				             but message was "inner" which differs at index 0:
+				             but message was "inner", which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -478,7 +478,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner exception which satisfies i => i?.Message == "foo",
+				             throws a MyException with an inner exception that satisfies i => i?.Message == "foo",
 				             but it was MyException: inner
 				             """);
 		}

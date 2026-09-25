@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($$"""
 						               Expected that subject
-						               has item exactly of type MyClass matching _ => false at index 2,
+						               has an item exactly of type MyClass matching _ => false at index 2,
 						               but it had item MyClass {
 						                 StringValue = "",
 						                 Value = 2
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyClass matching _ => true at index 3,
+						              has an item exactly of type MyClass matching _ => true at index 3,
 						              but it did not contain any item at index 3
 
 						              Collection:
@@ -86,7 +86,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass matching _ => true,
+						             has an item exactly of type MyBaseClass matching _ => true,
 						             but it did not contain any item
 
 						             Collection:
@@ -105,7 +105,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass matching _ => true,
+						             has an item exactly of type MyBaseClass matching _ => true,
 						             but it was <null>
 						             """);
 				}
@@ -121,7 +121,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass matching _ => true at index 0,
+						             has an item exactly of type MyBaseClass matching _ => true at index 0,
 						             but it was <null>
 						             """);
 				}
@@ -137,7 +137,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type uint matching _ => true,
+						              has an item exactly of type uint matching _ => true,
 						              but it did not match at any index
 
 						              Collection:
@@ -156,7 +156,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyBaseClass matching _ => true,
+						              has an item exactly of type MyBaseClass matching _ => true,
 						              but it did not match at any index
 
 						              Collection:
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyClass matching _ => true,
+						              has an item exactly of type MyClass matching _ => true,
 						              but it did not match at any index
 
 						              Collection:
@@ -194,7 +194,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass matching _ => true with invalid match,
+						             has an item exactly of type MyBaseClass matching _ => true with invalid match,
 						             but it did not contain any item with invalid match
 
 						             Collection:
@@ -248,7 +248,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($$"""
 						               Expected that subject
-						               has item exactly of type MyClass at index 2,
+						               has an item exactly of type MyClass at index 2,
 						               but it had item MyBaseClass {
 						                 Value = 2
 						               } at index 2
@@ -280,7 +280,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyBaseClass at index 3,
+						              has an item exactly of type MyBaseClass at index 3,
 						              but it did not contain any item at index 3
 
 						              Collection:
@@ -299,7 +299,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass,
+						             has an item exactly of type MyBaseClass,
 						             but it did not contain any item
 
 						             Collection:
@@ -318,7 +318,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass,
+						             has an item exactly of type MyBaseClass,
 						             but it was <null>
 						             """);
 				}
@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass at index 0,
+						             has an item exactly of type MyBaseClass at index 0,
 						             but it was <null>
 						             """);
 				}
@@ -350,7 +350,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type uint,
+						              has an item exactly of type uint,
 						              but it did not match at any index
 
 						              Collection:
@@ -369,7 +369,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyBaseClass,
+						              has an item exactly of type MyBaseClass,
 						              but it did not match at any index
 
 						              Collection:
@@ -388,7 +388,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has item exactly of type MyClass,
+						              has an item exactly of type MyClass,
 						              but it did not match at any index
 
 						              Collection:
@@ -407,7 +407,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item exactly of type MyBaseClass with invalid match,
+						             has an item exactly of type MyBaseClass with invalid match,
 						             but it did not contain any item with invalid match
 
 						             Collection:

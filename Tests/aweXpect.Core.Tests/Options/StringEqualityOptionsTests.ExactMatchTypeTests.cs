@@ -18,7 +18,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "FOO\nBAR",
-				             but it was "foo\nbar" which differs on line 1 and column 1:
+				             but it was "foo\nbar", which differs on line 1 and column 1:
 				                ↓ (actual)
 				               "foo\nbar"
 				               "FOO\nBAR"
@@ -38,7 +38,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "bar",
-				             but it was "foo" which differs at index 0:
+				             but it was "foo", which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "bar"
@@ -58,7 +58,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "\tsomething\r\nelse",
-				             but it was "foo\nbar" which differs on line 1 and column 1:
+				             but it was "foo\nbar", which differs on line 1 and column 1:
 				                ↓ (actual)
 				               "foo\nbar"
 				               "\tsomething\r\nelse"
@@ -78,7 +78,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
 				             throws an exception with message equal to "bar",
-				             but it had message "foo" which differs at index 0:
+				             but it had message "foo", which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "bar"

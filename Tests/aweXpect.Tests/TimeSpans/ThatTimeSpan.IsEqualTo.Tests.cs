@@ -62,7 +62,7 @@ public sealed partial class ThatTimeSpan
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:01
+					              but it was {Formatter.Format(subject)}, which differs by -0:01
 					              """);
 			}
 
@@ -97,7 +97,7 @@ public sealed partial class ThatTimeSpan
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was the maximum time span which differs by 0:01
+					              but it was the maximum time span, which differs by 0:01
 					              """)
 					.Because("a difference within the range of a time span is shown even at the limits");
 			}
@@ -149,7 +149,7 @@ public sealed partial class ThatTimeSpan
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """)
 					.Because("the applied default tolerance is part of the expectation");
 			}
@@ -281,7 +281,7 @@ public sealed partial class ThatTimeSpan
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """);
 			}
 		}

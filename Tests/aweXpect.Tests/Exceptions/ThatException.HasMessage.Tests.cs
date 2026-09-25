@@ -190,7 +190,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "expected other text",
-					             but it had message "actual text" which differs at index 0:
+					             but it had message "actual text", which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"
@@ -608,7 +608,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "expected other text",
-					             but it had message "actual text" which differs at index 0:
+					             but it had message "actual text", which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"

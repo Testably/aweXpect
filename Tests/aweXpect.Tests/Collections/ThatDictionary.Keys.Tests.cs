@@ -19,7 +19,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which contain an item equal to 0 at least once,
+					             has keys that contain an item equal to 0 at least once,
 					             but it did not contain it
 
 					             Collection:
@@ -49,7 +49,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which do not contain an item equal to 2,
+					             has keys that do not contain an item equal to 2,
 					             but it contained it at least once
 					             """);
 			}
@@ -76,7 +76,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which do not contain an item equal to 0,
+					             has keys that do not contain an item equal to 0,
 					             but it was <null>
 					             """);
 			}
@@ -92,7 +92,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which contain an item equal to 0 at least once,
+					             has keys that contain an item equal to 0 at least once,
 					             but it was <null>
 					             """);
 			}
@@ -126,7 +126,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which contain an item equal to 2 at least once,
+					             has keys that contain an item equal to 2 at least once,
 					             but it was <null>
 					             """);
 			}

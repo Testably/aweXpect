@@ -218,7 +218,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has item equal to 2 for all items,
+						             has an item equal to 2 for all items,
 						             but only 1 of at least 2 did
 
 						             Not matching items:
@@ -268,7 +268,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             whose StringValue has Length which is equal to 5 for all items,
+						             whose StringValue has Length that is equal to 5 for all items,
 						             but none of 1 did
 
 						             Not matching items:

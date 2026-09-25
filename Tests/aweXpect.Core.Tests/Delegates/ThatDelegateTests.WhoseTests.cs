@@ -17,7 +17,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetValueAsync() is equal to 2,
-				             but GetValueAsync() was 1 which differs by -1
+				             but GetValueAsync() was 1, which differs by -1
 				             """);
 		}
 

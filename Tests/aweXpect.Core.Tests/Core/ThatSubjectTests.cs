@@ -141,7 +141,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that Throwing
-			             throws an InvalidOperationException with an inner exception which is of type InvalidCastException,
+			             throws an InvalidOperationException with an inner exception that is of type InvalidCastException,
 			             but it was ArgumentException
 
 			             Actual:

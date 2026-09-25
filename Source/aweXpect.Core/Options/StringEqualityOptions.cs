@@ -246,7 +246,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		if (failure.StartsWith(didNotMatchPrefix, StringComparison.Ordinal))
 		{
 			return
-				$"{it} had {member} {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} which {failure.Substring(member.Length + 1)}";
+				$"{it} had {member} {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}, which {failure.Substring(member.Length + 1)}";
 		}
 
 		return failure;

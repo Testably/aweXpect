@@ -26,7 +26,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item exactly of type MyClass at index 1,
+						             does not have an item exactly of type MyClass at index 1,
 						             but it had item MyClass {
 						               StringValue = "",
 						               Value = 1
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item exactly of type MyBaseClass at index 0,
+						             does not have an item exactly of type MyBaseClass at index 0,
 						             but it was <null>
 						             """);
 				}
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item exactly of type int matching x => x == 1 at index 1,
+						             does not have an item exactly of type int matching x => x == 1 at index 1,
 						             but it had item 1 at index 1
 
 						             Collection:

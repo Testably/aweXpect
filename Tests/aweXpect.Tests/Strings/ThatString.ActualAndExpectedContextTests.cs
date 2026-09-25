@@ -43,7 +43,7 @@ public sealed partial class ThatString
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "The quick brown fox jumps…",
-				             but it was "The quick brown fox jumps…" which differs at index 80:
+				             but it was "The quick brown fox jumps…", which differs at index 80:
 				                                ↓ (actual)
 				               "…far away from here"
 				               "…far away from home"
@@ -70,7 +70,7 @@ public sealed partial class ThatString
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "short",
-				             but it was "this subject is longer than…" which differs at index 0:
+				             but it was "this subject is longer than…", which differs at index 0:
 				                ↓ (actual)
 				               "this subject is longer than thirty characters"
 				               "short"
@@ -91,7 +91,7 @@ public sealed partial class ThatString
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "foo\nbaz",
-				             but it was "foo\nbar" which differs on line 2 and column 3:
+				             but it was "foo\nbar", which differs on line 2 and column 3:
 				                       ↓ (actual)
 				               "foo\nbar"
 				               "foo\nbaz"

@@ -79,7 +79,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:01
+					              but it was {Formatter.Format(subject)}, which differs by -0:01
 					              """);
 			}
 
@@ -96,7 +96,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -3652058.23:59:59.999
+					              but it was {Formatter.Format(subject)}, which differs by -3652058.23:59:59.999
 					              """)
 					.Because("the difference between any two date times fits into a time span");
 			}
@@ -164,7 +164,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """)
 					.Because("the applied default tolerance is part of the expectation");
 			}
@@ -203,7 +203,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """)
 					.Because("an explicit tolerance replaces the default tolerance");
 			}
@@ -259,7 +259,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """);
 			}
 

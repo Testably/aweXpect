@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an inner exception which is of type InvalidCastException,
+					             has an inner exception that is of type InvalidCastException,
 					             but it was ArgumentException
 
 					             Actual:
@@ -194,7 +194,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which is of type IDictionary<,>,
+					             has a single item that is of type IDictionary<,>,
 					             but it was List<int>
 
 					             Actual:

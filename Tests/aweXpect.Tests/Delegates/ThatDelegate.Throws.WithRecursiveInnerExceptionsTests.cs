@@ -75,7 +75,7 @@ public sealed partial class ThatDelegate
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that action
-					             throws an exception with recursive inner exceptions which are empty,
+					             throws an exception with recursive inner exceptions that are empty,
 					             but recursive inner exceptions were [
 					               ThatDelegate.CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
 					             ]
@@ -181,7 +181,7 @@ public sealed partial class ThatDelegate
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that action
-					             throws an exception with recursive inner exceptions which are empty,
+					             throws an exception with recursive inner exceptions that are empty,
 					             but it had no inner exceptions
 					             """)
 					.Because("the existence of an inner exception is required before the inner exceptions are inspected");

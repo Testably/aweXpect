@@ -295,7 +295,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
-						              but it was {Formatter.Format(subject)} which differs by 3 days from the maximum
+						              but it was {Formatter.Format(subject)}, which differs by 3 days from the maximum
 						              """);
 				}
 
@@ -314,7 +314,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
-						              but it was {Formatter.Format(subject)} which differs by -3 days from the minimum
+						              but it was {Formatter.Format(subject)}, which differs by -3 days from the minimum
 						              """);
 				}
 

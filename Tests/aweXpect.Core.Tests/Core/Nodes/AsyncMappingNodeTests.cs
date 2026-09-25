@@ -14,10 +14,10 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 public class AsyncMappingNodeTests
 {
 	[Theory]
-	[InlineData(" which ", "whose bar", "foo whose bar")]
-	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
 	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
-	public async Task AppendExpectation_WhenMemberTextEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+	public async Task AppendExpectation_WhenMemberTextEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string memberText, string memberExpectation, string expectedExpectation)
 	{
 		ExpectationNode node = new();

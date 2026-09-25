@@ -220,7 +220,7 @@ public class CollectionMatchOptionsTests
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			"is contained in collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
-			"is contained in collection [1] which has at least one additional item in order and contiguous")]
+			"is contained in collection [1] that has at least one additional item in order and contiguous")]
 		public async Task ShouldOnlyClaimContiguityForTheContainmentRelations(
 			CollectionMatchOptions.EquivalenceRelations equivalenceRelations,
 			string expected)

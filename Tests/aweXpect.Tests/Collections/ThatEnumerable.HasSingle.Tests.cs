@@ -531,7 +531,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which is greater than 2,
+					             has a single item that is greater than 2,
 					             but it contained more than one item
 
 					             Collection:
@@ -554,7 +554,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which is greater than 4,
+					             has a single item that is greater than 4,
 					             but it was empty
 					             """);
 			}
@@ -570,7 +570,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which is greater than 4,
+					             has a single item that is greater than 4,
 					             but it was 3
 					             """);
 			}
@@ -597,7 +597,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a single item which is equal to 3,
+					             does not have a single item that is equal to 3,
 					             but it had the single item 3
 
 					             Collection:
@@ -638,7 +638,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a single item which is equal to 3,
+					             does not have a single item that is equal to 3,
 					             but it was <null>
 					             """);
 			}
@@ -655,7 +655,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item whose Length is equal to 4,
-					             but Length was 3 which differs by -1
+					             but Length was 3, which differs by -1
 					             """);
 			}
 		}

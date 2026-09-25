@@ -41,7 +41,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -89,7 +89,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -175,7 +175,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -247,7 +247,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -294,7 +294,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -345,7 +345,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 #endif
@@ -407,7 +407,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -483,7 +483,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -561,7 +561,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -621,7 +621,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -678,7 +678,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -718,7 +718,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -802,7 +802,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 #endif
@@ -848,7 +848,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -906,7 +906,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -964,7 +964,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1022,7 +1022,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1080,7 +1080,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1138,7 +1138,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1203,7 +1203,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1250,7 +1250,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1296,7 +1296,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1342,7 +1342,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1388,7 +1388,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1424,13 +1424,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1510,13 +1510,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(expectedDifference)}
+					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(expectedDifference)}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(expectedDifference)}
+					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(expectedDifference)}
 					              """);
 			}
 
@@ -1566,13 +1566,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1594,13 +1594,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1623,13 +1623,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1651,13 +1651,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1679,13 +1679,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1707,13 +1707,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1735,13 +1735,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1763,13 +1763,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(-131008.0)}
+					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(-131008.0)}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(-131008.0)}
+					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(-131008.0)}
 					              """);
 			}
 
@@ -1790,13 +1790,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              but it was {Formatter.Format(subject)}, which differs by -{Formatter.Format(nuint.MaxValue)}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              but it was {Formatter.Format(subject)}, which differs by -{Formatter.Format(nuint.MaxValue)}
 					              """);
 			}
 
@@ -1817,13 +1817,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              but it was {Formatter.Format(subject)}, which differs by -{Formatter.Format(nuint.MaxValue)}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              but it was {Formatter.Format(subject)}, which differs by -{Formatter.Format(nuint.MaxValue)}
 					              """);
 			}
 #endif

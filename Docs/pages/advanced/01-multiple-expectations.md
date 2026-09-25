@@ -14,7 +14,7 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 > ```
 > Expected that subject
 > starts with "some" and ends with "text",
-> but it was "something different" which differs before index 17:
+> but it was "something different", which differs before index 17:
 >                     ↓ (actual)
 >   "something different"
 >                  "text"
@@ -49,7 +49,7 @@ Use the `Whose`-syntax to access different properties of a common subject and co
 > ```
 > Expected that subject
 > whose TrackCount is greater than 1 and whose Title is equal to "Dark Side of the Moon",
-> but TrackCount was 1 and Title was "Dark Side of the Sun" which differs at index 17:
+> but TrackCount was 1 and Title was "Dark Side of the Sun", which differs at index 17:
 >                 ↓ (actual)
 >   "…Side of the Sun"
 >   "…Side of the Moon"
@@ -81,7 +81,7 @@ Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expecta
 >  [01] Expected that subjectA is equal to "ABC"
 >  [02] Expected that subjectB is equal to "DEF"
 > but
->  [02] it was "XYZ" which differs at index 0:
+>  [02] it was "XYZ", which differs at index 0:
 >          ↓ (actual)
 >         "XYZ"
 >         "DEF"

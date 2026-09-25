@@ -21,7 +21,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose message is equal to "inner" and whose message is equal to "other",
-						             but message was "inner" which differs at index 0:
+						             but message was "inner", which differs at index 0:
 						                ↓ (actual)
 						               "inner"
 						               "other"
@@ -112,7 +112,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose message is equal to "some other message",
-						             but message was "inner" which differs at index 0:
+						             but message was "inner", which differs at index 0:
 						                ↓ (actual)
 						               "inner"
 						               "some other message"
@@ -157,7 +157,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException which is equivalent to {
+						             has an inner ThatException.CustomException that is equivalent to {
 						                 Message = "other"
 						               },
 						             but it was not:
@@ -181,7 +181,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner exception which is of type ThatException.CustomException,
+						             has an inner exception that is of type ThatException.CustomException,
 						             but it was Exception
 
 						             Actual:
@@ -201,7 +201,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException that satisfies i => i?.Message == "inner",
 						             but it had no inner exception
 						             """);
 				}
@@ -236,7 +236,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException that satisfies i => i?.Message == "inner",
 						             but it had an inner Exception:
 						               inner
 						             """);
@@ -254,7 +254,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException that satisfies i => i?.Message == "inner",
 						             but it was <null>
 						             """);
 				}
@@ -336,7 +336,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
+						             does not have an inner ThatException.CustomException that satisfies i => i?.Message == "inner",
 						             but it had an inner ThatException.CustomException:
 						               inner
 						             """);

@@ -85,7 +85,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose message is equal to "some other message",
-						             but message was "inner" which differs at index 0:
+						             but message was "inner", which differs at index 0:
 						                ↓ (actual)
 						               "inner"
 						               "some other message"

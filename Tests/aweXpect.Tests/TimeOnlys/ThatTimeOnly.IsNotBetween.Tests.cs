@@ -262,7 +262,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 12:00:00,
-					              but it was {Formatter.Format(subject)} which differs by 12:00:00 from the maximum
+					              but it was {Formatter.Format(subject)}, which differs by 12:00:00 from the maximum
 					              """)
 					.Because("twelve hours on both sides of a single time cover the whole clock face");
 			}
@@ -282,7 +282,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by 0:03 from the maximum
+					              but it was {Formatter.Format(subject)}, which differs by 0:03 from the maximum
 					              """);
 			}
 
@@ -301,7 +301,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:03 from the minimum
+					              but it was {Formatter.Format(subject)}, which differs by -0:03 from the minimum
 					              """);
 			}
 		}

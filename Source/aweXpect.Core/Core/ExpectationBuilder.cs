@@ -407,8 +407,8 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     Set <paramref name="negateMemberOnly" /> when the previous expectation only navigates to the member, so that
-	///     a negation applies to the member expectation ("has keys which do not contain 0") instead of the whole
-	///     expectation ("does not have a single item which is equal to 3").
+	///     a negation applies to the member expectation ("has keys that do not contain 0") instead of the whole
+	///     expectation ("does not have a single item that is equal to 3").
 	///     <para />
 	///     If accessing the member throws, the expectations on the member fail with <c>… did throw …</c> and the
 	///     exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An

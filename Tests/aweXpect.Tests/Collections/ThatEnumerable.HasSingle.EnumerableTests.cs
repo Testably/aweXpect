@@ -501,7 +501,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which satisfies x => (int?)x > 2,
+					             has a single item that satisfies x => (int?)x > 2,
 					             but it contained more than one item
 
 					             Collection:
@@ -524,7 +524,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which satisfies x => (int?)x > 4,
+					             has a single item that satisfies x => (int?)x > 4,
 					             but it was empty
 					             """);
 			}
@@ -540,7 +540,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which satisfies x => (int?)x > 4,
+					             has a single item that satisfies x => (int?)x > 4,
 					             but it was 3
 					             """);
 			}

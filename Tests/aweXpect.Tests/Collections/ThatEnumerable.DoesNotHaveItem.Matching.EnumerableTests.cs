@@ -26,7 +26,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              does not have item matching _ => true at index 2,
+						              does not have an item matching _ => true at index 2,
 						              but it had item 2 at index 2
 
 						              Collection:
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item matching _ => true at index 0,
+						             does not have an item matching _ => true at index 0,
 						             but it was <null>
 						             """);
 				}
@@ -81,7 +81,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item of type int at index 1,
+						             does not have an item of type int at index 1,
 						             but it had item 1 at index 1
 
 						             Collection:
@@ -123,7 +123,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item of type int matching x => x == 1 at index 1,
+						             does not have an item of type int matching x => x == 1 at index 1,
 						             but it had item 1 at index 1
 
 						             Collection:

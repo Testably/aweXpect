@@ -23,7 +23,7 @@ public static partial class ThatString
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<string?, IEnumerable<string?>>(
 					s => s.GetLines(),
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars) => new HasLinesConstraint(it, grammars))
 				.AddExpectations(e => expectations(

@@ -276,10 +276,10 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(" which ", "whose bar", "foo whose bar")]
-	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
 	[InlineData(" whose ", "whose bar", "foo whose whose bar")]
-	public async Task AddMapping_WhenSeparatorEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+	public async Task AddMapping_WhenSeparatorEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
 		ExpectationNode node = new();
@@ -294,16 +294,16 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
-	public async Task AddMapping_WhenSeparatorEndsWithWhich_ShouldRenderRightExpectationAfterIt()
+	public async Task AddMapping_WhenSeparatorEndsWithThat_ShouldRenderRightExpectationAfterIt()
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Failure, "foo")));
-		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " which "))
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " that "))
 			.AddConstraint(new DummyValueConstraint<int>(_ => new PrecedingTextConstraintResult()));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
 
-		await That(result.GetExpectationText()).IsEqualTo("foo which follows \"which \"");
+		await That(result.GetExpectationText()).IsEqualTo("foo that follows \" that \"");
 	}
 
 	[Fact]

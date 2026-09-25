@@ -65,7 +65,7 @@ public sealed class CustomizeFormattingTests
 				.WithMessage("""
 				             Expected that actual
 				             is equal to "this is another text with…",
-				             but it was "this is some text with lots…" which differs at index 8:
+				             but it was "this is some text with lots…", which differs at index 8:
 				                        ↓ (actual)
 				               "this is some text…"
 				               "this is another…"
@@ -83,7 +83,7 @@ public sealed class CustomizeFormattingTests
 			.WithMessage("""
 			             Expected that actual
 			             is equal to "this is another text with…",
-			             but it was "this is some text with lots…" which differs at index 8:
+			             but it was "this is some text with lots…", which differs at index 8:
 			                        ↓ (actual)
 			               "this is some text with lots of words after the first…"
 			               "this is another text with lots of words after the first…"

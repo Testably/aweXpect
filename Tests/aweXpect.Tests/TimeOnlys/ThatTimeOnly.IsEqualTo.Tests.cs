@@ -39,7 +39,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -0:01
+					              but it was {Formatter.Format(subject)}, which differs by -0:01
 					              """);
 			}
 
@@ -72,7 +72,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 00:01:00.0000000 ± 1:00,
-					             but it was 23:59:00.0000000 which differs by -2:00
+					             but it was 23:59:00.0000000, which differs by -2:00
 					             """)
 					.Because("the applied default tolerance is part of the expectation");
 			}
@@ -105,7 +105,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 18:00:00.0000000 ± 11:59:00,
-					             but it was 06:00:00.0000000 which differs by 12:00:00
+					             but it was 06:00:00.0000000, which differs by 12:00:00
 					             """)
 					.Because("opposite times are exactly 12 hours apart on the clock face");
 			}
@@ -146,7 +146,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:0{actualDifference}
+					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference}
 					              """);
 			}
 
@@ -164,7 +164,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 00:01:00.0000000 ± 1:00,
-					             but it was 23:59:00.0000000 which differs by -2:00
+					             but it was 23:59:00.0000000, which differs by -2:00
 					             """)
 					.Because("the difference must be the circular distance that the comparison used");
 			}

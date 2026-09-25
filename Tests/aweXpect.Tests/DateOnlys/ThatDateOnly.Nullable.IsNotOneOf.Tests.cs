@@ -272,7 +272,7 @@ public sealed partial class ThatDateOnly
 
 					string difference = actualDifference == 0
 						? ""
-						: $" which differs by -{actualDifference} days from the closest value";
+						: $", which differs by -{actualDifference} days from the closest value";
 
 					await That(Act).Throws<XunitException>()
 						.OnlyIf(expectToThrow)

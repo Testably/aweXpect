@@ -124,7 +124,7 @@ public sealed partial class ThatDateOnly
 
 					string difference = actualDifference == 0
 						? ""
-						: $" which differs by -{actualDifference} days";
+						: $", which differs by -{actualDifference} days";
 
 					await That(Act).Throws<XunitException>()
 						.OnlyIf(expectToThrow)

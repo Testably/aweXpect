@@ -15,7 +15,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -32,7 +32,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -49,7 +49,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -66,7 +66,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -83,7 +83,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -100,7 +100,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -117,7 +117,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -134,7 +134,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -151,7 +151,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -168,7 +168,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 
@@ -185,7 +185,7 @@ public sealed class NumberTests
 			.WithMessage($"""
 			              Expected that subject
 			              is equal to {Formatter.Format(expected)},
-			              but it was {Formatter.Format(subject)} which differs by
+			              but it was {Formatter.Format(subject)}, which differs by
 			              """).AsPrefix();
 	}
 }

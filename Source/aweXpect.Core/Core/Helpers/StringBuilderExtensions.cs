@@ -22,8 +22,8 @@ internal static class StringBuilderExtensions
 	///     Appends the <paramref name="separator" /> followed by the expectation of the <paramref name="right" /> result.
 	/// </summary>
 	/// <remarks>
-	///     A trailing <c>which</c> in the <paramref name="separator" /> is dropped, when the expectation of the
-	///     <paramref name="right" /> result starts with its own <c>whose</c>, to avoid rendering <c>which whose</c>.
+	///     A trailing <c>that</c> in the <paramref name="separator" /> is dropped, when the expectation of the
+	///     <paramref name="right" /> result starts with its own <c>whose</c>, to avoid rendering <c>that whose</c>.
 	/// </remarks>
 	public static void AppendSeparatedExpectation(this StringBuilder stringBuilder, string separator,
 		ConstraintResult right)
@@ -34,15 +34,15 @@ internal static class StringBuilderExtensions
 	///     <paramref name="appendRight" />.
 	/// </summary>
 	/// <remarks>
-	///     A trailing <c>which</c> in the <paramref name="separator" /> is dropped, when the appended expectation starts
-	///     with its own <c>whose</c>, to avoid rendering <c>which whose</c>.
+	///     A trailing <c>that</c> in the <paramref name="separator" /> is dropped, when the appended expectation starts
+	///     with its own <c>whose</c>, to avoid rendering <c>that whose</c>.
 	/// </remarks>
 	public static void AppendSeparatedExpectation(this StringBuilder stringBuilder, string separator,
 		Action<StringBuilder> appendRight)
 	{
-		const string which = "which ";
+		const string that = "that ";
 		const string whose = "whose ";
-		if (!separator.EndsWith(which, StringComparison.Ordinal))
+		if (!separator.EndsWith(that, StringComparison.Ordinal))
 		{
 			stringBuilder.Append(separator);
 			appendRight(stringBuilder);
@@ -56,7 +56,7 @@ internal static class StringBuilderExtensions
 		if (text.StartsWith(separator, StringComparison.Ordinal) &&
 		    string.CompareOrdinal(text, separator.Length, whose, 0, whose.Length) == 0)
 		{
-			stringBuilder.Append(separator, 0, separator.Length - which.Length);
+			stringBuilder.Append(separator, 0, separator.Length - that.Length);
 			stringBuilder.Append(text, separator.Length, text.Length - separator.Length);
 		}
 		else

@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order,
-					             but it had 1 before 3 which is not in descending order
+					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
 					             [
@@ -110,7 +110,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order,
-					             but it had "A" before "a" which is not in descending order
+					             but it had "A" before "a", which is not in descending order
 
 					             Collection:
 					             [
@@ -143,7 +143,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order,
-					             but it had "a" before "c" which is not in descending order
+					             but it had "a" before "c", which is not in descending order
 
 					             Collection:
 					             [
@@ -197,7 +197,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order by x => x.Value,
-					             but it had 1 before 3 which is not in descending order
+					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
 					             [
@@ -302,7 +302,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order by x => x.Value,
-					             but it had "A" before "a" which is not in descending order
+					             but it had "A" before "a", which is not in descending order
 
 					             Collection:
 					             [
@@ -340,7 +340,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order by x => x.Value,
-					             but it had "a" before "c" which is not in descending order
+					             but it had "a" before "c", which is not in descending order
 
 					             Collection:
 					             [

@@ -43,7 +43,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2024-01-01T11:00:00.0000000+00:00,
-					             but it was 2024-01-01T12:00:00.0000000+02:00 which differs by -1:00:00
+					             but it was 2024-01-01T12:00:00.0000000+02:00, which differs by -1:00:00
 					             """)
 					.Because("the subject is 10:00 UTC, which is one hour before the expected instant");
 			}
@@ -61,7 +61,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)}, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:01
+					              but it was {Formatter.Format(subject)}, which differs by -0:01
 					              """);
 			}
 
@@ -118,7 +118,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
 					              """);
 			}
 

@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
-					             but it had 3 before 1 which is not in ascending order
+					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
 					             [1, 1, 2, 3, 1]
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x is MyIntClass c ? c.Value : 0,
-					             but it had 3 before 1 which is not in ascending order
+					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
 					             [

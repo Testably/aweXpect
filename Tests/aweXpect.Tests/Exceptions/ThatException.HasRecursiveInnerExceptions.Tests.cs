@@ -131,7 +131,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recursive inner exceptions which have exactly 0 items,
+					             has recursive inner exceptions that have exactly 0 items,
 					             but it had no inner exceptions
 
 					             Collection:
@@ -305,7 +305,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recursive inner exceptions which are empty,
+					             has recursive inner exceptions that are empty,
 					             but it was <null>
 					             """);
 			}
@@ -394,7 +394,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have recursive inner exceptions which have exactly one item,
+					             does not have recursive inner exceptions that have exactly one item,
 					             but it had
 					             
 					             Collection:
@@ -448,7 +448,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have recursive inner exceptions which are empty,
+					             does not have recursive inner exceptions that are empty,
 					             but it was <null>
 					             """);
 			}

@@ -909,7 +909,7 @@ public static partial class ThatAsyncEnumerable
 				if (IsOutOfOrder(UserCode.Invoke(() => comparer.Compare(previous, current), "the comparer")))
 				{
 					_failureText ??=
-						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";
+						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
 				}
 
 				if (_failureText != null && index > maximumNumberOfCollectionItems)

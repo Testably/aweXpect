@@ -106,7 +106,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with " \t some text",
-					             but it was "some text" which misses some whitespace (" \t " at the beginning)
+					             but it was "some text", which misses some whitespace (" \t " at the beginning)
 					             """);
 			}
 
@@ -123,7 +123,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "some text \t ",
-					             but it was "some text" with a length of 9 which is shorter than the expected length of 12 and misses:
+					             but it was "some text" with a length of 9, which is shorter than the expected length of 12 and misses:
 					               " 	 "
 					             """);
 			}
@@ -141,7 +141,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "some text",
-					             but it was " \t some text and more" which has unexpected whitespace (" \t " at the beginning)
+					             but it was " \t some text and more", which has unexpected whitespace (" \t " at the beginning)
 					             """);
 			}
 
@@ -158,7 +158,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "some text without out",
-					             but it was "some text with" with a length of 14 which is shorter than the expected length of 21 and misses:
+					             but it was "some text with" with a length of 14, which is shorter than the expected length of 21 and misses:
 					               "out out"
 					             """);
 			}
@@ -188,7 +188,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "expected other text",
-					             but it was "actual text" which differs at index 0:
+					             but it was "actual text", which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"

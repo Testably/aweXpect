@@ -19,7 +19,7 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<Exception?, Exception?>.FromFunc(
 						e => e?.InnerException,
 						"the inner exception"),
-					(_, s) => s.Append(" which "),
+					(_, s) => s.Append(" that "),
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
@@ -46,7 +46,7 @@ public partial class ThatDelegateThrows<TException>
 		where TInnerException : Exception
 		=> new(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
@@ -76,7 +76,7 @@ public partial class ThatDelegateThrows<TException>
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception, Exception?>(
 					e => type.IsInstanceOfType(e.InnerException) ? e.InnerException : null,
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))

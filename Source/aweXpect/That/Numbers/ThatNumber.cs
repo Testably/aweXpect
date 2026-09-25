@@ -68,7 +68,7 @@ public static partial class ThatNumber
 				TNumber? difference = actual - expected;
 				if (IsFinite(difference))
 				{
-					stringBuilder.Append(" which differs by ");
+					stringBuilder.Append(", which differs by ");
 					Formatter.Format(stringBuilder, difference);
 					return;
 				}
@@ -86,7 +86,7 @@ public static partial class ThatNumber
 				TNumber? magnitude = actual > expected ? actual - expected : expected - actual;
 				if (IsFinite(magnitude))
 				{
-					stringBuilder.Append(actual > expected ? " which differs by " : " which differs by -");
+					stringBuilder.Append(actual > expected ? ", which differs by " : ", which differs by -");
 					Formatter.Format(stringBuilder, magnitude);
 					return;
 				}
@@ -152,7 +152,7 @@ public static partial class ThatNumber
 		TNumber? difference = CalculateSignedDifference(actual.Value, expected.Value);
 		if (IsFinite(difference))
 		{
-			stringBuilder.Append(" which differs by ");
+			stringBuilder.Append(", which differs by ");
 			Formatter.Format(stringBuilder, difference);
 			return;
 		}
@@ -163,8 +163,8 @@ public static partial class ThatNumber
 			if (IsFinite(magnitude))
 			{
 				stringBuilder.Append(actual.Value.CompareTo(expected.Value) >= 0
-					? " which differs by "
-					: " which differs by -");
+					? ", which differs by "
+					: ", which differs by -");
 				Formatter.Format(stringBuilder, magnitude);
 				return;
 			}
@@ -220,11 +220,11 @@ public static partial class ThatNumber
 		{
 			// The decimal formatter would render a trailing ".0" for the difference of two integers.
 			case decimal integerDifference:
-				stringBuilder.Append(" which differs by ")
+				stringBuilder.Append(", which differs by ")
 					.Append(integerDifference.ToString(CultureInfo.InvariantCulture));
 				break;
 			case double floatingPointDifference when IsFinite<double>(floatingPointDifference):
-				stringBuilder.Append(" which differs by ");
+				stringBuilder.Append(", which differs by ");
 				Formatter.Format(stringBuilder, floatingPointDifference);
 				break;
 		}

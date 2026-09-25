@@ -202,7 +202,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message equal to "expected other text",
-						             but it had message "actual text" which differs at index 0:
+						             but it had message "actual text", which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"
@@ -511,7 +511,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message equal to "foo",
-						             but it had message "FOO" which differs at index 0:
+						             but it had message "FOO", which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -537,7 +537,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.CustomException with message equal to "foo",
-						             but it had message "FOO" which differs at index 0:
+						             but it had message "FOO", which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -576,7 +576,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message equal to "expected other text",
-						             but it had message "actual text" which differs at index 0:
+						             but it had message "actual text", which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"

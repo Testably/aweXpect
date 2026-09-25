@@ -339,7 +339,7 @@ public class BecauseTests
 			.WithMessage("""
 			             Expected that subject
 			             throws a MyException with message equal to "bar", because of reasons,
-			             but it had message "foo" which differs at index 0:
+			             but it had message "foo", which differs at index 0:
 			                ↓ (actual)
 			               "foo"
 			               "bar"
@@ -367,7 +367,7 @@ public class BecauseTests
 			              [02] Expected that 1 is equal to 2, because of the second reason
 			             but
 			              [01] it was True
-			              [02] it was 1 which differs by -1
+			              [02] it was 1, which differs by -1
 			             """);
 	}
 

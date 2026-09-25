@@ -118,7 +118,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with " \t some text",
-					             but it was "some text" which is shorter than the expected length of 12 and misses the prefix:
+					             but it was "some text", which is shorter than the expected length of 12 and misses the prefix:
 					               " \t "
 					             """);
 			}
@@ -136,7 +136,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text \t ",
-					             but it was "some text" which differs before index 8:
+					             but it was "some text", which differs before index 8:
 					                            ↓ (actual)
 					                   "some text"
 					               "some text \t "
@@ -157,7 +157,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text",
-					             but it was "and some text \t " which differs before index 15:
+					             but it was "and some text \t ", which differs before index 15:
 					                                ↓ (actual)
 					               "and some text \t "
 					                       "some text"
@@ -178,7 +178,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text without out",
-					             but it was "text without out" which is shorter than the expected length of 21 and misses the prefix:
+					             but it was "text without out", which is shorter than the expected length of 21 and misses the prefix:
 					               "some "
 					             """);
 			}
@@ -208,7 +208,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "other text",
-					             but it was "actual text" which differs before index 5:
+					             but it was "actual text", which differs before index 5:
 					                     ↓ (actual)
 					               "actual text"
 					                "other text"

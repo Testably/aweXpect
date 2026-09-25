@@ -44,7 +44,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.DoesNotContain("a"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which do not contain "a",*""").AsWildcard();
+				.WithMessage("""*has lines that do not contain "a",*""").AsWildcard();
 		}
 
 		[Fact]
@@ -54,7 +54,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.DoesNotEndWith("b"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which do not end with ["b"],*""").AsWildcard();
+				.WithMessage("""*has lines that do not end with ["b"],*""").AsWildcard();
 		}
 
 		[Fact]
@@ -64,7 +64,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.DoesNotStartWith("a"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which do not start with ["a"],*""").AsWildcard();
+				.WithMessage("""*has lines that do not start with ["a"],*""").AsWildcard();
 		}
 
 		[Fact]
@@ -74,7 +74,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.EndsWith("a"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which end with ["a"],*""").AsWildcard();
+				.WithMessage("""*has lines that end with ["a"],*""").AsWildcard();
 		}
 
 		[Fact]
@@ -84,7 +84,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.HasCount().NotEqualTo(2));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which do not have exactly 2 items,*").AsWildcard();
+				.WithMessage("*has lines that do not have exactly 2 items,*").AsWildcard();
 		}
 
 		[Fact]
@@ -94,7 +94,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.HasItem("c"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which have item equal to "c",*""").AsWildcard();
+				.WithMessage("""*has lines that have an item equal to "c",*""").AsWildcard();
 		}
 
 		[Fact]
@@ -104,7 +104,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.HasItemThat(i => i.IsEqualTo("c")));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which have item that is equal to "c",*""").AsWildcard();
+				.WithMessage("""*has lines that have an item that is equal to "c",*""").AsWildcard();
 		}
 
 		[Fact]
@@ -114,7 +114,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.HasSingle());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which have a single item,*").AsWildcard();
+				.WithMessage("*has lines that have a single item,*").AsWildcard();
 		}
 
 		[Fact]
@@ -124,7 +124,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("b\na").HasLines(lines => lines.IsInAscendingOrder());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which are in ascending order,*").AsWildcard();
+				.WithMessage("*has lines that are in ascending order,*").AsWildcard();
 		}
 
 		[Fact]
@@ -134,7 +134,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("").HasLines(lines => lines.IsNotEmpty());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which are not empty,*").AsWildcard();
+				.WithMessage("*has lines that are not empty,*").AsWildcard();
 		}
 
 		[Fact]
@@ -144,7 +144,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.IsNotInAscendingOrder());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which are not in ascending order,*").AsWildcard();
+				.WithMessage("*has lines that are not in ascending order,*").AsWildcard();
 		}
 
 		[Fact]
@@ -156,7 +156,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.IsNotOneOf(unexpected).Using(new AllEqualComparer()));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which are not one of [<null>] using AllEqualComparer,*").AsWildcard();
+				.WithMessage("*has lines that are not one of [<null>] using AllEqualComparer,*").AsWildcard();
 		}
 
 		[Fact]
@@ -168,7 +168,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.IsOneOf(expected));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which are one of [<null>],*").AsWildcard();
+				.WithMessage("*has lines that are one of [<null>],*").AsWildcard();
 		}
 
 		[Fact]
@@ -178,7 +178,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.StartsWith("b"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which start with ["b"],*""").AsWildcard();
+				.WithMessage("""*has lines that start with ["b"],*""").AsWildcard();
 		}
 
 		[Fact]
@@ -251,7 +251,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]
@@ -263,7 +263,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]
@@ -275,7 +275,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem("a"));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]
@@ -287,7 +287,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem((object?)1));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]
@@ -299,7 +299,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item that*").AsWildcard();
+				.WithMessage("*does not have an item that*").AsWildcard();
 		}
 
 		[Fact]
@@ -311,7 +311,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => Equals(x, 1)));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 	}
 
@@ -339,7 +339,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]
@@ -351,7 +351,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item that*").AsWildcard();
+				.WithMessage("*does not have an item that*").AsWildcard();
 		}
 
 		[Fact]
@@ -363,7 +363,7 @@ public sealed class NestedCollectionGrammar
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have item*").AsWildcard();
+				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
 		[Fact]

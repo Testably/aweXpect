@@ -72,7 +72,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order,
-					             but it had 1 before 3 which is not in descending order
+					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
 					             [3, 3, 2, 1, 3]
@@ -234,7 +234,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in descending order by x => x.Value,
-					             but it had 1 before 3 which is not in descending order
+					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
 					             [

@@ -25,7 +25,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "SOME",
-					             but it was "Some arbitrary text" which differs at index 1:
+					             but it was "Some arbitrary text", which differs at index 1:
 					                 ↓ (actual)
 					               "Some arbitrary text"
 					               "SOME"
@@ -47,7 +47,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "TEXT" ignoring case,
-					             but it was "some arbitrary text" which differs at index 0:
+					             but it was "some arbitrary text", which differs at index 0:
 					                ↓ (actual)
 					               "some arbitrary text"
 					               "TEXT"
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "other" ignoring indentation,
-					             but it was "some arbitrary text" which differs at index 4:
+					             but it was "some arbitrary text", which differs at index 4:
 					                ↓ (actual)
 					               "some arbitrary text"
 					               "other"
@@ -108,7 +108,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "SOME" using IgnoreCaseForVocalsComparer,
-					             but it was "some arbitrary text" which differs at index 0:
+					             but it was "some arbitrary text", which differs at index 0:
 					                ↓ (actual)
 					               "some arbitrary text"
 					               "SOME"
@@ -188,7 +188,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "text",
-					             but it was "some arbitrary text" which differs at index 0:
+					             but it was "some arbitrary text", which differs at index 0:
 					                ↓ (actual)
 					               "some arbitrary text"
 					               "text"
@@ -238,7 +238,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             starts with "text and more",
-					             but it was "text" with a length of 4 which is shorter than the expected length of 13 and misses:
+					             but it was "text" with a length of 4, which is shorter than the expected length of 13 and misses:
 					               " and more"
 					             """);
 			}

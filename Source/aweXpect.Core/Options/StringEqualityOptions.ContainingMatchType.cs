@@ -59,7 +59,7 @@ public partial class StringEqualityOptions
 			if (actual.Length < expected.Length)
 			{
 				contains +=
-					$" with a length of {actual.Length} which is shorter than the expected length of {expected.Length}";
+					$" with a length of {actual.Length}, which is shorter than the expected length of {expected.Length}";
 			}
 
 			return contains;

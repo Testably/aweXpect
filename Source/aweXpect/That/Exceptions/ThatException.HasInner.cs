@@ -16,7 +16,7 @@ public static partial class ThatException
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
@@ -45,7 +45,7 @@ public static partial class ThatException
 		where TInnerException : Exception?
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
@@ -77,7 +77,7 @@ public static partial class ThatException
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception?, Exception?>(
 					e => e?.InnerException is { } inner && type.IsInstanceOfType(inner) ? inner : null,
-					" which ",
+					" that ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))

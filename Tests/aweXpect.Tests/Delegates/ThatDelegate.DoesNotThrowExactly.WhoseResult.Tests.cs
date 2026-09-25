@@ -55,7 +55,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw exactly a ThatDelegate.CustomException and its result is equal to {value + 1},
-						              but it was {value} which differs by -1
+						              but it was {value}, which differs by -1
 						              """);
 				}
 
@@ -118,7 +118,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw exactly a ThatDelegate.CustomException and its result is equal to {value + 1},
-						              but it was {value} which differs by -1
+						              but it was {value}, which differs by -1
 						              """);
 				}
 

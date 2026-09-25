@@ -145,7 +145,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage("""
 					             Expected that subject
 					             is between 2024-01-01T11:00:00.0000000+00:00 and 2024-01-01T13:00:00.0000000+00:00,
-					             but it was 2024-01-01T12:00:00.0000000+02:00 which differs by -1:00:00 from the minimum
+					             but it was 2024-01-01T12:00:00.0000000+02:00, which differs by -1:00:00 from the minimum
 					             """)
 					.Because("the subject is 10:00 UTC, which is one hour before the minimum instant");
 			}
@@ -177,7 +177,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)} which differs by -0:01 from the minimum
+					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the minimum
 					              """);
 			}
 
@@ -195,7 +195,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)} which differs by 0:01 from the maximum
+					              but it was {Formatter.Format(subject)}, which differs by 0:01 from the maximum
 					              """);
 			}
 
@@ -258,7 +258,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by 0:04 from the maximum
+					              but it was {Formatter.Format(subject)}, which differs by 0:04 from the maximum
 					              """);
 			}
 
@@ -277,7 +277,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:04 from the minimum
+					              but it was {Formatter.Format(subject)}, which differs by -0:04 from the minimum
 					              """);
 			}
 
@@ -296,7 +296,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by 0:04 from the maximum
+					              but it was {Formatter.Format(subject)}, which differs by 0:04 from the maximum
 					              """);
 			}
 
@@ -315,7 +315,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithMessage($"""
 					              Expected that subject
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-					              but it was {Formatter.Format(subject)} which differs by -0:04 from the minimum
+					              but it was {Formatter.Format(subject)}, which differs by -0:04 from the minimum
 					              """);
 			}
 
