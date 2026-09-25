@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.6582940541781,
           263.0858057339986,
           183.93454241752625,
           251.53007752100626,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           162.10056506670438,
           241.9545815785726,
           354.9138753230755,
-          330.47076206207277
+          330.47076206207277,
+          286.55542169298445
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -438,7 +438,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -462,6 +461,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.14610471044267,
           261.2859146935599,
           192.79404819011688,
           247.8645476613726,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           135.95577567418417,
           230.99256037076313,
           234.43503063065666,
-          277.0887091841017
+          277.0887091841017,
+          268.40035581588745
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          327633.0501302083,
           331048.90040940506,
           230373.07579752605,
           314467.8298339844,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           219935.76381835938,
           302810.2771344866,
           414575.8200683594,
-          445190.5305989583
+          445190.5305989583,
+          336645.06989397324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1046,7 +1046,6 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
-          617976,
           618120,
           618120,
           618120,
@@ -1070,6 +1069,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2586987.552864583,
           2724957.017708333,
           1782350.6969401042,
           2348554.0094866073,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1312694.349330357,
           1765410.9028645833,
           2495256.078125,
-          2261677.1007254464
+          2261677.1007254464,
+          1918723.2403738839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841611,
           4841651,
-          4841635
+          4841635,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
       {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          470.77930974960327,
           477.6969051996867,
           346.825883769989,
           442.220506631411,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           294.2913992588337,
           437.31962765180145,
           561.2740639368693,
-          572.2930903116862
+          572.2930903116862,
+          479.8030530489408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1654,7 +1654,6 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1678,6 +1677,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          466.8591782365526,
           527.1061539332072,
           382.2924120766776,
           491.2416307742779,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           265.5732650416238,
           394.3921975135803,
           464.85439586639404,
-          506.42377713521324
+          506.42377713521324,
+          514.1353323276227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.58846728006998,
           273.95314671198526,
           202.72048400243122,
           262.6667138508388,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           173.28220529556273,
           265.1044013659159,
           341.4331901868184,
-          340.2542008399963
+          340.2542008399963,
+          298.8287676493327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2262,7 +2262,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2286,6 +2285,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.56093287467957,
           258.6540732383728,
           187.199236090978,
           233.8532139778137,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           133.63013918059212,
           260.7137795130412,
           249.27881676355997,
-          290.4156669298808
+          290.4156669298808,
+          295.770979983466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          490.89194914499916,
           521.7357479731241,
           403.890355237325,
           515.2771126202175,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           339.47937596638997,
           434.7333507537842,
           584.3941752570016,
-          619.9223340352377
+          619.9223340352377,
+          516.2475307171161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1256,
           1256,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1576,
           1576
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1164.362004500169,
           1273.134701792399,
           872.9681192398072,
           1124.8603125254313,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           638.9035935084025,
           997.948850886027,
           1164.684745495136,
-          1292.890371831258
+          1292.890371831258,
+          1165.7716802869525
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1888.4566846575055,
           2009.3580899919782,
           1449.5176886149816,
           1882.2657455716815,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1605.770192082723,
           1613.3105629512243,
           2960.5992584228516,
-          2781.722848256429
+          2781.722848256429,
+          1947.3610178629558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3478,7 +3478,6 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
           3104,
           3104,
           3104,
@@ -3507,6 +3506,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          4168,
           4168,
           4168,
           4168
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1286.7029768625896,
           1399.1628487904866,
           974.7943617502848,
           1300.85202730619,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           689.0055833498637,
           993.2851346333822,
           1286.4451543367827,
-          1424.523985417684
+          1424.523985417684,
+          1308.3196460088095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
-        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
-      },
-      {
         "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
-      "1155bcb9",
       "9da1cf49",
       "f39be118",
       "2694582c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2490.8498107910154,
           2551.3759628295898,
           1928.0050836290632,
           2565.6355715433756,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1633.9709972381593,
           1699.4059089933123,
           2904.773911339896,
-          2746.697520446777
+          2746.697520446777,
+          1990.7065361567907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4086,7 +4086,6 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
-          2944,
           3296,
           3296,
           3296,
@@ -4115,6 +4114,7 @@ window.BENCHMARK_DATA = {
           3792,
           3792,
           3792,
+          3928,
           3928,
           3928,
           3928
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26092.071990966797,
           27594.802510579426,
           15316.923490397136,
           19356.340165201822,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           10554.614458211263,
           13557.310091291156,
           26436.324474628156,
-          24352.103568522136
+          24352.103568522136,
+          15694.400777963492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33468
+          33468,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
