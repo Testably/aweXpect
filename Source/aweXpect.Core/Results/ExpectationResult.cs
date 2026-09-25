@@ -83,8 +83,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
 	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
-	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
-	///     and abandons the attempt that is still running when it is used up.
+	///     <c>did not finish within …</c>.
 	///     <para />
 	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
 	///     the expectation itself (e.g. <c>ExecutesIn().AtMost(…)</c>) or the global timeout.
@@ -256,8 +255,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
 	///     abandoned when the <paramref name="timeout" /> elapses before it completes, and the expectation fails with
-	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
-	///     and abandons the attempt that is still running when it is used up.
+	///     <c>did not finish within …</c>.
 	///     <para />
 	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
 	///     the expectation itself (e.g. <c>ExecutesIn().AtMost(…)</c>) or the global timeout.

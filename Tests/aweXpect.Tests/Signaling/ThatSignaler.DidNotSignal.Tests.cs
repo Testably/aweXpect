@@ -23,7 +23,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
+					             has never recorded the callback within 0:30,
 					             but it could not be verified, because it was already canceled
 					             """)
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
@@ -67,7 +67,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
+					             has never recorded the callback within 0:30,
 					             but it did not finish within 0:00.050
 					             """).And
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -88,9 +88,9 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
-					             but it was recorded once
-					             """);
+					             has never recorded the callback within 0:30,
+					             but it was recorded once after 0:*
+					             """).AsWildcard();
 			}
 		}
 
@@ -110,7 +110,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
+					             has never recorded the callback within 0:30,
 					             but it could not be verified, because it was already canceled
 					             """)
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
@@ -154,7 +154,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
+					             has never recorded the callback within 0:30,
 					             but it did not finish within 0:00.050
 					             """).And
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -175,11 +175,11 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has never recorded the callback,
+					             has never recorded the callback within 0:30,
 					             but it was recorded once in [
 					               42
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

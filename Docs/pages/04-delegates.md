@@ -309,23 +309,27 @@ The delegate is re-evaluated every
 configured in [`DefaultEventuallyTimeout`](/docs/expectations/advanced/customization) (defaults to `30s`)
 expires. The last wait is shortened so that it never exceeds the timeout, which means that an interval
 that is longer than the timeout results in exactly two evaluations. You can overwrite the timeout per
-expectation with `WithTimeout`:
+expectation with `Within` and the interval with `CheckEvery`, in either order:
 
 ```csharp
-await Expect.That(() => sut.MyProp).Eventually().IsGreaterThan(5).WithTimeout(5.Seconds());
+await Expect.That(() => sut.MyProp).Eventually().Within(5.Seconds()).CheckEvery(50.Milliseconds())
+  .IsGreaterThan(5);
 // using aweXpect.Chronology
 ```
 
-`WithTimeout(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is
-canceled.
+`Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is
+canceled. A negative timeout or an interval that is not positive is rejected, and each of them can only be
+specified once.
+
+`WithTimeout` does not change the timeout of the retries, but cancels the evaluation like everywhere else.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires
 while the delegate is still throwing, the expectation fails and the last exception is reported as the cause
 of the failure. If the expectation is canceled before the timeout expires (via `WithCancellation` or via
-`TestCancellation.FromCancellationToken`), it is reported as inconclusive instead of failed, while a global
-`TestCancellation.FromTimeout` that elapses first fails it with "did not finish within …". As everywhere else,
-the tighter timeout wins: a global `TestCancellation` timeout that is shorter than `WithTimeout` still ends the
-retries, and calling `WithTimeout` more than once applies the shortest timeout.
+`TestCancellation.FromCancellationToken`), it is reported as inconclusive instead of failed, while a `WithTimeout`
+or a global `TestCancellation.FromTimeout` that elapses first fails it with "did not finish within …". As everywhere
+else, the tighter timeout wins: such a timeout that is shorter than `Within` ends the retries, and a longer one does
+not extend them.
 
 The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,
 even if the delegate ignores its `CancellationToken`, which is canceled at that point, and the expectation fails with

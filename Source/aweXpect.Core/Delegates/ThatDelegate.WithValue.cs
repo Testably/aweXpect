@@ -34,9 +34,8 @@ public abstract partial class ThatDelegate
 		///     <c>Customize.aweXpect.Settings().DefaultCheckInterval</c> until the expectations are met or the timeout
 		///     expires.<br />
 		///     The timeout defaults to <c>Customize.aweXpect.Settings().DefaultEventuallyTimeout</c> and can be
-		///     overwritten per expectation with
-		///     <see cref="Results.ExpectationResult{TType,TSelf}.WithTimeout(TimeSpan)" />; use
-		///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> to retry until the expectations are met.<br />
+		///     overwritten per expectation with <see cref="EventuallySubject{T}.Within(TimeSpan)" />, the interval with
+		///     <see cref="EventuallySubject{T}.CheckEvery(TimeSpan)" />.<br />
 		///     An exception thrown by the delegate counts as an unmet expectation and is retried.<br />
 		///     An asynchronous attempt that is still running when the timeout is used up is abandoned and its
 		///     <see cref="CancellationToken" /> canceled, and the expectation fails with <c>did not finish within …</c>;
@@ -44,7 +43,7 @@ public abstract partial class ThatDelegate
 		///     finish.<br />
 		///     When the expectation is canceled before the timeout expires, it is reported as inconclusive.
 		/// </remarks>
-		public IThatSubject<T> Eventually()
-			=> new ThatSubject<T>(new EventuallyExpectationBuilder<T>(_subject, ExpectationBuilder.Subject));
+		public EventuallySubject<T> Eventually()
+			=> new(new EventuallyExpectationBuilder<T>(_subject, ExpectationBuilder.Subject));
 	}
 }

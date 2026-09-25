@@ -55,7 +55,7 @@ public sealed class CustomizeSettingsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => 1
-				             is equal to 2 within 0:00.100,
+				             eventually is equal to 2 within 0:00.100,
 				             but it was 1, which differs by -1
 				             """);
 			stopwatch.Stop();

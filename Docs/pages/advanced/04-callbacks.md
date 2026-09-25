@@ -43,7 +43,8 @@ await Expect.That(signaler).DidNotSignal();
 ```
 
 *NOTE: The last statement would never return, unless a timeout or cancellation is specified.
-Therefore, when nothing is specified, a default timeout of 30 seconds is applied!*
+Therefore, when nothing is specified, a default timeout of 30 seconds is applied, and a failure message shows it
+(e.g. "within 0:30")!*
 
 ### Timeout
 

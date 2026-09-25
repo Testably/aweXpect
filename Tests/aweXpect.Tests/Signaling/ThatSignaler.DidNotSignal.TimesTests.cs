@@ -56,8 +56,8 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times,
-					             but it was recorded ? times
+					             has recorded the callback less than 3 times within 0:30,
+					             but it was recorded ? times after 0:*
 					             """).AsWildcard();
 			}
 
@@ -79,9 +79,9 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than twice,
-					             but it was recorded twice
-					             """);
+					             has recorded the callback less than twice within 0:30,
+					             but it was recorded twice after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -104,12 +104,12 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times,
+					             has recorded the callback less than 3 times within 0:30,
 					             but it was recorded ? times in [
 					               1,
 					               2,
 					               3*
-					             ]
+					             ] after 0:*
 					             """).AsWildcard();
 			}
 
@@ -132,13 +132,13 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times,
+					             has recorded the callback less than 3 times within 0:30,
 					             but it was recorded 3 times in [
 					               1,
 					               2,
 					               3
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

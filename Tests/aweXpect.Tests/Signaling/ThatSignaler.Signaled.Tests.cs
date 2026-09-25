@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using aweXpect.Customization;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -23,9 +24,52 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once,
+					             has recorded the callback at least once within 0:30,
 					             but it could not be verified, because it was already canceled
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenDefaultTimeoutElapses_ShouldNameTheDefaultTimeout()
+			{
+				Signaler signaler = new();
+
+				using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(50.Milliseconds()))
+				{
+					async Task Act() =>
+						await That(signaler).Signaled();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that signaler
+						             has recorded the callback at least once within 0:00.050,
+						             but it was never recorded within 0:00.*
+						             """).AsWildcard()
+						.Because("the failure must show that the default timeout applied");
+				}
+			}
+
+			[Fact]
+			public async Task WhenDefaultTimeoutIsInfinite_ShouldNotNameIt()
+			{
+				Signaler signaler = new();
+				using CancellationTokenSource cts = new(50.Milliseconds());
+				CancellationToken token = cts.Token;
+
+				using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout
+					       .Set(Timeout.InfiniteTimeSpan))
+				{
+					async Task Act() =>
+						await That(signaler).Signaled().WithCancellation(token);
+
+					await That(Act).Throws<InconclusiveException>()
+						.WithMessage("""
+						             Expected that signaler
+						             has recorded the callback at least once,
+						             but it could not be verified, because it was already canceled
+						             """)
+						.Because("an infinite timeout does not add any information to the expectation");
+				}
 			}
 
 			[Fact]
@@ -71,7 +115,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once,
+					             has recorded the callback at least once within 0:30,
 					             but it did not finish within 0:00.050
 					             """).And
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
@@ -107,7 +151,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once,
+					             has recorded the callback at least once within 0:30,
 					             but it could not be verified, because it was already canceled
 					             """);
 			}

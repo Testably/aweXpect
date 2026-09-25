@@ -46,3 +46,14 @@ aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringTrailingWhiteSpa
 *REMOVED*aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.SetMatchType(aweXpect.Core.IObjectMatchType! matchType, string! optionName) -> void
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.Eventually() -> aweXpect.Core.IThatSubject<T>!
+aweXpect.Delegates.EventuallySubject<T>
+aweXpect.Delegates.EventuallySubject<T>.CheckEvery(System.TimeSpan interval) -> aweXpect.Delegates.EventuallySubject<T>
+aweXpect.Delegates.EventuallySubject<T>.EventuallySubject() -> void
+aweXpect.Delegates.EventuallySubject<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Delegates.EventuallySubject<T>.Is<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Delegates.EventuallySubject<T>.IsExactly<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Delegates.EventuallySubject<T>.IsNot<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Delegates.EventuallySubject<T>.IsNotExactly<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Delegates.EventuallySubject<T>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.EventuallySubject<T>
+aweXpect.Delegates.ThatDelegate.WithValue<T>.Eventually() -> aweXpect.Delegates.EventuallySubject<T>
