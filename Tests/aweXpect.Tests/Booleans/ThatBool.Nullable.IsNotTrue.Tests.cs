@@ -11,7 +11,7 @@ public sealed partial class ThatBool
 				[Theory]
 				[InlineData(false)]
 				[InlineData(null)]
-				public async Task WhenFalseOrNull_ShouldFail(bool? subject)
+				public async Task WhenFalseOrNull_ShouldSucceed(bool? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsNotTrue();
