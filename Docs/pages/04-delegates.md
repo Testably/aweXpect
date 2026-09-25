@@ -47,7 +47,7 @@ to `13` or `latest`, return the task directly (`Expect.That(() => x.RunAsync())`
 (`void Act() => throw new X();`) and pass it.
 :::
 
-## No exception {#not-throw}
+## No exception
 
 You can verify that the delegate does not throw any exception:
 
