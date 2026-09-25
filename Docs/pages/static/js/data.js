@@ -4158,6 +4158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -4853,7 +4859,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -5552,7 +5559,8 @@ window.BENCHMARK_DATA = {
           162.10056506670438,
           241.9545815785726,
           354.9138753230755,
-          330.47076206207277
+          330.47076206207277,
+          286.55542169298445
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6249,6 +6257,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -6963,7 +6972,8 @@ window.BENCHMARK_DATA = {
           135.95577567418417,
           230.99256037076313,
           234.43503063065666,
-          277.0887091841017
+          277.0887091841017,
+          268.40035581588745
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7156,6 +7166,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11377,6 +11388,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -11995,7 +12012,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -12617,7 +12635,8 @@ window.BENCHMARK_DATA = {
           219935.76381835938,
           302810.2771344866,
           414575.8200683594,
-          445190.5305989583
+          445190.5305989583,
+          336645.06989397324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13237,6 +13256,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -13874,7 +13894,8 @@ window.BENCHMARK_DATA = {
           1312694.349330357,
           1765410.9028645833,
           2495256.078125,
-          2261677.1007254464
+          2261677.1007254464,
+          1918723.2403738839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14501,7 +14522,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841611,
           4841651,
-          4841635
+          4841635,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18673,6 +18695,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -19368,7 +19396,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -20067,7 +20096,8 @@ window.BENCHMARK_DATA = {
           294.2913992588337,
           437.31962765180145,
           561.2740639368693,
-          572.2930903116862
+          572.2930903116862,
+          479.8030530489408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20764,6 +20794,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -21478,7 +21509,8 @@ window.BENCHMARK_DATA = {
           265.5732650416238,
           394.3921975135803,
           464.85439586639404,
-          506.42377713521324
+          506.42377713521324,
+          514.1353323276227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21671,6 +21703,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26354,6 +26387,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -27049,7 +27088,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -27748,7 +27788,8 @@ window.BENCHMARK_DATA = {
           173.28220529556273,
           265.1044013659159,
           341.4331901868184,
-          340.2542008399963
+          340.2542008399963,
+          298.8287676493327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28445,6 +28486,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -29159,7 +29201,8 @@ window.BENCHMARK_DATA = {
           133.63013918059212,
           260.7137795130412,
           249.27881676355997,
-          290.4156669298808
+          290.4156669298808,
+          295.770979983466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29352,6 +29395,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34035,6 +34079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -34730,7 +34780,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -35429,7 +35480,8 @@ window.BENCHMARK_DATA = {
           339.47937596638997,
           434.7333507537842,
           584.3941752570016,
-          619.9223340352377
+          619.9223340352377,
+          516.2475307171161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36126,6 +36178,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -36840,7 +36893,8 @@ window.BENCHMARK_DATA = {
           638.9035935084025,
           997.948850886027,
           1164.684745495136,
-          1292.890371831258
+          1292.890371831258,
+          1165.7716802869525
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37269,6 +37323,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41716,6 +41771,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -42411,7 +42472,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -43110,7 +43172,8 @@ window.BENCHMARK_DATA = {
           1605.770192082723,
           1613.3105629512243,
           2960.5992584228516,
-          2781.722848256429
+          2781.722848256429,
+          1947.3610178629558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43812,6 +43875,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          4168,
           4168,
           4168,
           4168
@@ -44521,7 +44585,8 @@ window.BENCHMARK_DATA = {
           689.0055833498637,
           993.2851346333822,
           1286.4451543367827,
-          1424.523985417684
+          1424.523985417684,
+          1308.3196460088095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44714,6 +44779,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49397,6 +49463,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
         "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
+      },
+      {
+        "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
+        "message": "refactor: address Sonar findings (#1374)"
       }
     ],
     "labels": [
@@ -50092,7 +50164,8 @@ window.BENCHMARK_DATA = {
       "33ac0bdb",
       "e50f5061",
       "1c1e3359",
-      "250bac89"
+      "250bac89",
+      "e2846045"
     ],
     "datasets": [
       {
@@ -50791,7 +50864,8 @@ window.BENCHMARK_DATA = {
           1633.9709972381593,
           1699.4059089933123,
           2904.773911339896,
-          2746.697520446777
+          2746.697520446777,
+          1990.7065361567907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51493,6 +51567,7 @@ window.BENCHMARK_DATA = {
           3792,
           3792,
           3792,
+          3928,
           3928,
           3928,
           3928
@@ -52202,7 +52277,8 @@ window.BENCHMARK_DATA = {
           10554.614458211263,
           13557.310091291156,
           26436.324474628156,
-          24352.103568522136
+          24352.103568522136,
+          15694.400777963492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52906,7 +52982,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33468
+          33468,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
