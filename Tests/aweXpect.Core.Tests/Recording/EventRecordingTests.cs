@@ -136,13 +136,35 @@ public sealed class EventRecordingTests
 				.Within(TimeSpan.FromSeconds(30))
 				.WithCancellation(cts.Token);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<InconclusiveException>()
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut at least once within 0:30,
-			             but it was never recorded in [] within 0:0*
-			             """).AsWildcard()
+			             but it could not be verified, because it was already canceled
+			             """)
 			.Because("the cancellation of the evaluation ends the wait long before the timeout");
+	}
+
+	[Fact]
+	public async Task WhenCancelled_WhenTheEventIsExpectedNever_ShouldNotSucceed()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(TimeSpan.FromMilliseconds(50));
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Never()
+				.Within(TimeSpan.FromSeconds(30))
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that recording
+			             has never recorded the CustomEvent event on sut within 0:30,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("the event could still be raised in the remaining time, so the cancelled wait proves nothing");
 	}
 
 	[Fact]
@@ -640,6 +662,27 @@ public sealed class EventRecordingTests
 			.WithMessage(
 				"The recording was already stopped and cannot be continued. Call .UntilDisposed() before the first expectation.")
 			.Because("the handlers are already detached, so nothing could be recorded from then on");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_WhenWaitingConcurrently_ShouldWakeUpEveryWaiter()
+	{
+		CustomEventClass subject = new();
+		using IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
+		Task<IEventRecordingResult> first = recording.StopWhen(
+			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) >= 1, TimeSpan.FromSeconds(30));
+		Task<IEventRecordingResult> second = recording.StopWhen(
+			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) >= 2, TimeSpan.FromSeconds(30));
+
+		subject.NotifyCustomEvent(1);
+		await Task.WhenAny(first, Task.Delay(TimeSpan.FromSeconds(10)));
+		subject.NotifyCustomEvent(2);
+		await Task.WhenAny(second, Task.Delay(TimeSpan.FromSeconds(10)));
+
+		await That(first.IsCompleted).IsTrue()
+			.Because("a later waiter must not take the notification away from an earlier one");
+		await That(second.IsCompleted).IsTrue()
+			.Because("a finished waiter must not stop the notification of the waiters that are still waiting");
 	}
 
 	[Fact]

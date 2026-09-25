@@ -53,6 +53,12 @@ public static partial class ThatEventRecording
 			{
 				_waitedTime = stopwatch.Elapsed;
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
+				if (!_stoppedEarly && cancellationToken.IsCancellationRequested)
+				{
+					// A cancellation can end the wait before the timeout, so the events recorded until then decide nothing.
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 			}
 
 			Outcome = quantifier.Check(eventCount, true) ?? quantifier.IsNegated ? Outcome.Success : Outcome.Failure;
@@ -88,6 +94,12 @@ public static partial class ThatEventRecording
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it);
+				return;
+			}
+
+			if (Outcome == Outcome.Undecided)
+			{
+				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
 				return;
 			}
 
