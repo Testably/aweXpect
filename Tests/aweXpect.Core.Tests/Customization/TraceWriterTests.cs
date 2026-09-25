@@ -88,12 +88,12 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesWithin(500.Milliseconds());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds());
 		}
 
 		await That(traceWriter.Messages).IsEqualTo([
 			"Checking expectation for callback delegate returning in 0:*",
-			"  Successfully verified that callback executes within 0:00.500",
+			"  Successfully verified that callback executes in at most 0:00.500",
 		]).AsWildcard();
 	}
 
@@ -104,12 +104,12 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesWithin(500.Milliseconds());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds());
 		}
 
 		await That(traceWriter.Messages).HasCount(2);
 		await That(traceWriter.Messages[0]).IsEqualTo("Checking expectation for callback delegate returning int 4 in 0:00").AsPrefix();
-		await That(traceWriter.Messages[1]).IsEqualTo("  Successfully verified that callback executes within 0:00.500");
+		await That(traceWriter.Messages[1]).IsEqualTo("  Successfully verified that callback executes in at most 0:00.500");
 	}
 
 	[Fact]

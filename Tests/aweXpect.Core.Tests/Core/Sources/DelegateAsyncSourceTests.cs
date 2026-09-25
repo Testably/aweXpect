@@ -85,23 +85,6 @@ public class DelegateAsyncSourceTests
 	}
 
 	[Fact]
-	public async Task WhenDelegateExceedsTheDurationOfExecutesWithin_ShouldFail()
-	{
-		Func<Task> @delegate = () => PendingTask.Of<int>();
-
-		async Task Act()
-			=> await That(@delegate).ExecutesWithin(50.Milliseconds());
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that @delegate
-			             executes within 0:00.050,
-			             but it did not finish within 0:00.050
-			             """)
-			.Because("the duration must abandon the task instead of awaiting it to completion");
-	}
-
-	[Fact]
 	public async Task WhenDelegateExceedsTheDurationOfThrowsWithin_ShouldFail()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -142,12 +125,12 @@ public class DelegateAsyncSourceTests
 		Func<CancellationToken, Task> @delegate = _ => PendingTask.Of<int>();
 
 		async Task Act()
-			=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that @delegate
-			             executes within 0:00.050,
+			             executes in at most 0:00.050,
 			             but it did not finish within 0:00.050
 			             """)
 			.Because("a delegate that ignores the cancelled token must be abandoned as well");

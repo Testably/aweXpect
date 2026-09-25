@@ -261,7 +261,8 @@ is applied as timeout (a tighter timeout, e.g. from `WithTimeout(…)`, still ap
 hanging. `AtLeast` has no upper bound and therefore applies no timeout. The task of an asynchronous delegate is
 abandoned once the timeout elapsed, even if the delegate ignores or does not accept a `CancellationToken`, and the
 expectation fails the same way. A synchronous delegate cannot be interrupted and runs to completion, however long
-that takes; neither `WithTimeout` nor `WithCancellation` changes that.
+that takes; neither `WithTimeout` nor `WithCancellation` changes that. The duration of `Throws().Within(…)` is applied
+as timeout the same way.
 
 ### Allowing exceptions
 
@@ -286,24 +287,6 @@ expectation no longer says anything about the delegate completing. Consider whet
 what was thrown: for an upper bound on a delegate that is *expected* to throw, `Throws<TException>().Within(…)`
 states both at once.
 :::
-
-### Time limit
-
-There is also a shorthand expectation for a delegate that finishes the execution without throwing an exception
-in (at most) a given time:
-
-```csharp
-await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300))
-  .Because("it should only take about 200ms");
-```
-
-The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
-`CancellationToken` is canceled once it elapsed. The task of an asynchronous delegate is abandoned at that point,
-even if the delegate ignores or does not accept a `CancellationToken`, and the expectation fails with "did not finish
-within …". A synchronous delegate cannot be interrupted
-and runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that.
-A longer `WithTimeout` does not loosen the duration, as the tighter timeout always wins, and
-`Timeout.InfiniteTimeSpan` imposes no limit.
 
 ## Eventually
 

@@ -71,12 +71,12 @@ public class DelegateAsyncValueSourceTests
 		Func<CancellationToken, Task<int>> @delegate = _ => PendingTask.Of<int>();
 
 		async Task Act()
-			=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that @delegate
-			             executes within 0:00.050,
+			             executes in at most 0:00.050,
 			             but it did not finish within 0:00.050
 			             """)
 			.Because("a delegate that ignores the cancelled token must be abandoned as well");
