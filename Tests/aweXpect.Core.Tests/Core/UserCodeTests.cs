@@ -22,7 +22,7 @@ public sealed class UserCodeTests
 
 		async Task Act()
 			=> await UserCode.InvokeAsync<int>(() => throw new OperationCanceledException("canceled", cts.Token),
-				cts.Token);
+				cancellationToken: cts.Token);
 
 		await That(Act).Throws<OperationCanceledException>()
 			.WithMessage("canceled")
@@ -35,7 +35,7 @@ public sealed class UserCodeTests
 		OperationCanceledException exception = new("nothing was canceled");
 
 		async Task Act()
-			=> await UserCode.InvokeAsync<int>(() => throw exception, CancellationToken.None);
+			=> await UserCode.InvokeAsync<int>(() => throw exception, cancellationToken: CancellationToken.None);
 
 		await That(Act).Throws<UserCodeException>()
 			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And

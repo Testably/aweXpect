@@ -117,7 +117,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 
 		try
 		{
-			return await UserCode.InvokeAsync(() => MoveNextOrAbandon(enumerator), _cancellationToken);
+			return await UserCode.InvokeAsync(() => MoveNextOrAbandon(enumerator), cancellationToken: _cancellationToken);
 		}
 		catch (Exception exception) when (!(exception is OperationCanceledException &&
 		                                    _cancellationToken.IsCancellationRequested))

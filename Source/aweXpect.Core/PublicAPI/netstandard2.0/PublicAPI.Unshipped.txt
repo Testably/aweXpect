@@ -40,7 +40,7 @@ aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.Long(TThat subject, S
 aweXpect.Core.UserCode
 static aweXpect.Core.UserCode.Invoke<TArgument, TResult>(System.Func<TArgument, TResult>! callback, TArgument argument, string? thrower = null) -> TResult
 static aweXpect.Core.UserCode.Invoke<TResult>(System.Func<TResult>! callback, string? thrower = null) -> TResult
-static aweXpect.Core.UserCode.InvokeAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>>! callback, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken), string? thrower = null) -> System.Threading.Tasks.ValueTask<TResult>
+static aweXpect.Core.UserCode.InvokeAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>>! callback, string? thrower = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResult>
 aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
 aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
 *REMOVED*aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
