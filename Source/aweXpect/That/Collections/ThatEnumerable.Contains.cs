@@ -594,7 +594,7 @@ public static partial class ThatEnumerable
 	///     enumerated, because a set whose comparer rejects <see langword="null" /> throws when asked for it.
 	/// </remarks>
 	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
-		=> expected is not null && ComparerHelpers.IsSetWithCustomComparer(collection)
+		=> expected is not null && CollectionComparerHelpers.IsSetWithCustomComparer(collection)
 			? ((ICollection<TItem>)collection).Contains(expected)
 			: null;
 
