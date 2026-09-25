@@ -96,7 +96,13 @@ By default, equivalency:
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
   instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
   looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](/docs/expectations/collections#dictionaries).
+  [`IsEqualTo`](/docs/expectations/collections#dictionaries). Two expected keys that this comparer considers the same
+  cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
+  from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
+  `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
+  when reflection is unavailable (by default when publishing with Native AOT), the matched keys are told apart by
+  their own `Equals`, so two such keys are only noticed when the entry counts differ, and a type that only implements
+  `IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys up by their own `Equals`.
 - Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
   that is referenced more than once is still compared against each of its expected counterparts.
 - Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see
