@@ -15,7 +15,7 @@ Customize.aweXpect.Settings().TestCancellation
 
 *Note: Like all customization options, the setter returns an `IDisposable` that will remove the cancellation on `Dispose()`.*
 
-You can overwrite or apply the timeout also on individual expectations, using the `WithTimeout(TimeSpan)` method, e.g.
+You can overwrite or apply the timeout also on individual expectations, using the `WithTimeout(TimeSpan)` method:
 ```csharp
 IAsyncEnumerable<int> myEnumerable = // ...
 await Expect.That(myEnumerable).All().AreEqualTo(1)
@@ -36,7 +36,7 @@ Customize.aweXpect.Settings().TestCancellation
 
 *Note: Like all customization options, the setter returns an `IDisposable` that will remove the cancellation on `Dispose()`.*
 
-You can overwrite or apply the `CancellationToken` also on individual expectations, using the `WithCancellation(CancellationToken)` method, e.g. 
+You can overwrite or apply the `CancellationToken` also on individual expectations, using the `WithCancellation(CancellationToken)` method:
 ```csharp
 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
 IAsyncEnumerable<int> myEnumerable = // ...

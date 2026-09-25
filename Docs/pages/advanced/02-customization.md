@@ -5,7 +5,7 @@ You can customize certain behavior or specify default values to use globally.
 All customizations are located in the static `Customize.aweXpect` class. Customization values are grouped and have a dedicated `Get` and `Set` method.
 The `Set` method always returns a lifetime scope which is an `IDisposable` object that will revert the customization value to its previous value upon disposal.
 
-The customization options are applied in an [async context](https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1) which means that they don't directly influence other parallel tests.
+The customization options are applied in an [async context](https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1) which means that they don't directly influence other parallel tests:
 
 ```csharp
 using aweXpect.Customization;

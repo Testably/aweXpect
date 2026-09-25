@@ -47,7 +47,7 @@ to `13` or `latest`, return the task directly (`Expect.That(() => x.RunAsync())`
 (`void Act() => throw new X();`) and pass it.
 :::
 
-## Not throw
+## No exception {#not-throw}
 
 You can verify that the delegate does not throw any exception:
 
@@ -83,7 +83,7 @@ or fails with a message about the delegate. The analyzer rule `aweXpect0004` rep
 `.DoesNotThrow().WhoseResult`. A delegate without a return value has nothing to compare at all.
 :::
 
-## Throw exception
+## Thrown exception
 
 You can verify that the delegate throws an exception:
 
@@ -159,7 +159,7 @@ You can use the same configuration options as when [comparing strings](/docs/exp
 
 ## Inner exceptions
 
-You can verify the inner exception of the thrown exception;
+You can verify the inner exception of the thrown exception:
 
 ```csharp
 void Act() => throw new CustomException("outer", new CustomException("inner"));
@@ -182,7 +182,7 @@ The exception must have at least one inner exception.
 
 ### Other members
 
-You can recursively verify additional members of the exception:
+You can verify additional members of the exception:
 
 ```csharp
 var exception = new CustomException("outer", hResult: 12345);
@@ -237,7 +237,7 @@ rule `aweXpect0003` flags it and offers to switch to the `With…` twin or to in
 
 ## Execution time
 
-You can verify that the execution time of a delegate:
+You can verify the execution time of a delegate:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -255,7 +255,7 @@ await Expect.That(Task.Delay(200)).ExecutesIn().Between(100.Milliseconds()).And(
 A delegate that throws an exception fails these expectations, however fast it did so: a crash is not a measurement
 of execution time.
 
-The upper bound — the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance —
+The upper bound is the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance. It
 is applied as timeout (a subsequent `WithTimeout(…)` overwrites it), so that a delegate accepting a
 `CancellationToken` is cancelled once it elapsed and the expectation fails with "did not finish within …" instead of
 hanging. `AtLeast` has no upper bound and therefore applies no timeout. The task of an asynchronous delegate is

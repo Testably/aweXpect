@@ -1,13 +1,13 @@
 # Equivalency
 
-Describes how to verify that two objects are *equivalent* — that is, structurally equal — rather than referentially or
+Describes how to verify that two objects are *equivalent* (that is, structurally equal) rather than referentially or
 strictly equal. Equivalency walks both objects recursively and compares them member by member.
 
 ## Overview
 
 Equality (`IsEqualTo`) delegates to `object.Equals`, which for most reference types means *reference* equality.
 Equivalency instead compares the public state of two objects field by field and property by property, recursing into
-nested objects and collections. Two objects are equivalent when every included member compares as equivalent.
+nested objects and collections. Two objects are equivalent when every included member compares as equivalent:
 
 ```csharp
 class Album(string title)
@@ -27,7 +27,7 @@ Equivalency is exposed on three different surfaces.
 ### Direct on objects
 
 `IsEquivalentTo` and `IsNotEquivalentTo` are extension methods on any object. They accept an optional callback to
-configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration).
+configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration):
 
 ```csharp
 using aweXpect.Equivalency; // for the options, e.g. `IgnoringMember`
@@ -40,7 +40,7 @@ await Expect.That(album).IsNotEquivalentTo(unexpected);
 ### On collection elements
 
 `AreEquivalentTo` checks every selected element of an `IEnumerable<T>` (or `IAsyncEnumerable<T>`) against a single
-expected value, using the same equivalency comparison.
+expected value, using the same equivalency comparison:
 
 ```csharp
 IEnumerable<Track> tracks = //...
@@ -53,7 +53,7 @@ await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMe
 ### As a modifier on equality assertions
 
 For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`, `StartsWith`, `EndsWith`, `HasItem`,
-`All().AreEqualTo(...)`, …), append `.Equivalent()` to switch the comparison from `Equals` to structural equivalency.
+`All().AreEqualTo(...)`, …), append `.Equivalent()` to switch the comparison from `Equals` to structural equivalency:
 
 ```csharp
 await Expect.That(album).IsEqualTo(expected).Equivalent();
@@ -91,7 +91,7 @@ By default, equivalency:
   equal string, however many of its members another object shares, and swapping the subject and the expectation does
   not change the result.
 - Ignores a type's own `Equals` while comparing it by members, so two objects are equivalent exactly when their
-  members are — an `Equals` that reports everything as equal cannot hide differing members, and one that reports
+  members are: an `Equals` that reports everything as equal cannot hide differing members, and one that reports
   nothing as equal cannot reject matching ones. To let `Equals` decide instead, compare the type
   [by value](#comparing-by-value-or-by-members).
 - Respects collection **order** when comparing `IEnumerable<T>`, except for a set (`ISet<T>` or `IReadOnlySet<T>`),
@@ -112,7 +112,7 @@ By default, equivalency:
   that is referenced more than once is still compared against each of its expected counterparts.
 - Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see
   [Limiting the recursion depth](#limiting-the-recursion-depth)).
-- Honours `IEqualityComparer` if either side implements it — that comparer wins over the structural walk.
+- Honours `IEqualityComparer` if either side implements it: that comparer wins over the structural walk.
 - Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
   verifying anything. Either include the relevant members, compare the type
   [by value](#comparing-by-value-or-by-members), or exclude all members explicitly with `IncludeMembers.None`.
@@ -120,7 +120,7 @@ By default, equivalency:
 ## Configuration
 
 All equivalency overloads accept an `options` callback that receives an `EquivalencyOptions` (or
-`EquivalencyOptions<TExpected>`) record. The fluent methods are chainable.
+`EquivalencyOptions<TExpected>`) record. The fluent methods are chainable:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
@@ -172,7 +172,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 ### Including fields and properties
 
 You can change which fields and properties participate in the comparison. Both methods accept an `IncludeMembers` flags
-enum with the values `None`, `Public`, `Internal` and `Private`.
+enum with the values `None`, `Public`, `Internal` and `Private`:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
@@ -205,7 +205,7 @@ differs from the least.
 You can apply options to a specific member type only. Type-specific options override the top-level options for members
 of that type. They also apply to a member whose runtime type derives from `T`, because an instance of an abstract type
 is always an instance of a derived type, and the runtime type of a `Type` member is the internal `RuntimeType` rather
-than `Type` itself. When several registrations match, the most derived one wins.
+than `Type` itself. When several registrations match, the most derived one wins:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
@@ -224,7 +224,7 @@ changing the default itself.
 Each type can be compared either by value (`Equals`) or by walking its members. The default is determined by the type
 itself (see [Default behaviour](#default-behaviour)). By value, `Equals` decides alone and in both directions; by
 members, `Equals` is ignored and only the members count. Comparing by value is therefore how you ask for the equality
-a type defines for itself — a value object that compares only its `Id`, for example. One side being compared by value
+a type defines for itself (a value object that compares only its `Id`, for example). One side being compared by value
 is enough; when it is only the expectation, the expectation's `Equals` decides, since the subject is compared by
 members, which ignores its `Equals`. To override for a specific type:
 
@@ -252,7 +252,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o with
 
 Equivalency walks nested objects recursively, so a graph that is deep enough would overflow the stack and take the
 whole test process with it. The comparison therefore stops after 100 nested objects on a single path and reports the
-member path at which the limit was hit — shown here with the limit lowered to 3:
+member path at which the limit was hit (shown here with the limit lowered to 3):
 
 ```
 Expected that subject
@@ -298,7 +298,7 @@ using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOpt
 
 Equivalency lets you compare against an *anonymous expectation object* in which individual members assert their own
 expectations via `It.Is<T>()`. Think of it as a playlist filter: each property carries its own criterion rather than a
-concrete value.
+concrete value:
 
 ```csharp
 class Track

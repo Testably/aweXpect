@@ -92,7 +92,7 @@ await Expect.That(subject).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan.F
 
 ## After
 
-You can verify that the `DateOnly` or `TimeOnly` is (on or) after another value
+You can verify that the `DateOnly` or `TimeOnly` is (on or) after another value:
 
 ```csharp
 DateOnly subject = DateOnly.FromDateTime(DateTime.Now);
@@ -124,7 +124,7 @@ await Expect.That(subject).IsAfter(TimeOnly.FromDateTime(DateTime.Now)).Within(T
 
 ## Before
 
-You can verify that the `DateOnly` or `TimeOnly` is (on or) before another value
+You can verify that the `DateOnly` or `TimeOnly` is (on or) before another value:
 
 ```csharp
 DateOnly subject = DateOnly.FromDateTime(DateTime.Now);
@@ -188,7 +188,7 @@ await Expect.That(subject)
 
 ## Properties
 
-You can verify the properties of the `DateTime`:
+You can verify the properties of the `DateOnly`:
 
 ```csharp
 DateOnly subject = new DateOnly(2024, 12, 31);

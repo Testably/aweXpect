@@ -19,7 +19,7 @@ These benchmarks compare aweXpect's happy-path overhead - passing assertions, th
 
 <Tabs groupId="aweXpectBenchmark">
 
-<TabItem value="String" label="String">
+<TabItem value="String" label="String" default>
 
 Verifies that two `string` values are equal, ignoring case.
 
@@ -37,7 +37,7 @@ _stringSubject.Should().BeEquivalentTo(_stringExpectation, o => o.IgnoringCase()
 
 </TabItem>
 
-<TabItem value="Bool" label="Boolean" default>
+<TabItem value="Bool" label="Boolean">
 
 Verifies that a boolean subject is `true`.
 

@@ -74,7 +74,7 @@ succeeds.*
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
-[equivalency](/docs/expectations/equivalency) page for details and configuration options.
+[equivalency](/docs/expectations/equivalency) page for details and configuration options:
 
 ```csharp
 class Album(string title)

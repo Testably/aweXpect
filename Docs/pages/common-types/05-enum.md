@@ -85,5 +85,5 @@ await Expect.That(subject).DoesNotHaveFlag(RegexOptions.ExplicitCapture)
   .Because("it does not have the 'ExplicitCapture' flag");
 ```
 
-`HasFlag` is the one `Has…` expectation without a continuation: it asks whether a bit is set, not how two
-ordered values compare, so `GreaterThan`, `Between` and the rest would have no meaning for it.
+Unlike the property-style `Has…` expectations such as `HasValue`, `HasFlag` has no continuation: it asks whether a bit
+is set, not how two ordered values compare, so `GreaterThan`, `Between` and the rest would have no meaning for it.

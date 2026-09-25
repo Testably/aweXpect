@@ -279,7 +279,7 @@ not individual properties)*
 
 ### Add a customization group
 
-You can also add a group of customization values that can be changed individually or as a whole
+You can also add a group of customization values that can be changed individually or as a whole:
 
 ```csharp
 public static class JsonAwexpectCustomizationExtensions
@@ -398,7 +398,7 @@ silently verifies less than it claims to. An extension takes part in this in two
 An extension method whose argument reaches an equivalency comparison or an event recording only reveals an open type
 parameter at its own call site, so it has to carry the marker that lets the source generator register the type at the
 consumer's call site: `[RequiresMemberMetadata]` for a value that is compared, `[RequiresEventMetadata]` for a subject
-that is recorded.
+that is recorded:
 
 ```csharp
 public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject)

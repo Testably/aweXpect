@@ -31,9 +31,8 @@ await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().Ignor
 *Note: The items are compared in the order in which the collection enumerates them, also for a `HashSet<T>`, whose
 order is not defined, so use `InAnyOrder()` for it.*
 
-A set that was created with a custom comparer (the same sets as for [`Contains`](#contain)) compares its items with
-that comparer. The same applies to [`Contains` with a subset](#contain-subset) and to
-[`IsContainedIn`](#be-contained-in). Only the comparer of the subject is used, not the one of an expected set. A custom
+A set that was created with a custom comparer (the same sets as for [`Contains`](#contained-items)) compares its items
+with that comparer. The same applies to [`Contains` with a subset](#subset) and to [`IsContainedIn`](#superset). Only the comparer of the subject is used, not the one of an expected set. A custom
 comparer, equivalency or a string option such as `IgnoringCase()` takes precedence over the comparer of the set:
 
 ```csharp
@@ -57,7 +56,7 @@ This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `Date
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## Has count
+## Count
 
 You can verify the number of items in a collection:
 
@@ -82,9 +81,9 @@ await Expect.That(values).HasCount().Between(8).And(12)
 	.Because("item count should be '>= 8 AND <= 12'");
 ```
 
-## All be
+## Equality of all items
 
-You can verify that all items in the collection are equal to the `expected` value
+You can verify that all items in the collection are equal to the `expected` value:
 
 ```csharp
 await Expect.That([1, 1, 1]).All().AreEqualTo(1);
@@ -101,8 +100,8 @@ await Expect.That(albums).All().AreEqualTo(expected).Equivalent();
 await Expect.That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
 ```
 
-For strings, you can configure this expectation to ignore case, ignore newline style, ignoring leading or trailing
-white-space, or use a custom `IEqualityComparer<string>`:
+For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
+leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["foo", "FOO", "Foo"]).All().AreEqualTo("foo").IgnoringCase();
@@ -183,8 +182,8 @@ await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
 await Expect.That(["a", "b"]).All().AreUnique().IgnoringCase();
 ```
 
-A set that was created with a custom comparer (the same sets as for [`Contains`](#contain)) never holds two items that
-its comparer considers equal, so its items are unique, unless a custom comparer or a string option such as
+A set that was created with a custom comparer (the same sets as for [`Contains`](#contained-items)) never holds two
+items that its comparer considers equal, so its items are unique, unless a custom comparer or a string option such as
 `IgnoringCase()` changes the comparison.
 
 For dictionaries, verify the [values](#keys-and-values) instead, as the keys are unique by design.
@@ -224,7 +223,7 @@ decides.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## Contain
+## Contained items
 
 You can verify that the collection contains a specific item or not:
 
@@ -300,7 +299,7 @@ await Expect.That(values).Contains(x => x == 1).Between(1).And(5.Times());
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-### Contain subset
+### Subset
 
 You can verify that a collection contains another collection as a subset:
 
@@ -323,7 +322,7 @@ items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringIn
 
 To check for a proper subset, append `.Properly()` (which would fail for equal collections).
 
-### Be contained in
+### Superset
 
 You can verify that a collection is contained in another collection (it is a superset):
 
@@ -346,7 +345,7 @@ without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unle
 
 To check for a proper superset, append `.Properly()` (which would fail for equal collections).
 
-## Start with
+## Collection start
 
 You can verify if a collection starts with another collection or not:
 
@@ -368,8 +367,8 @@ await Expect.That(albums).StartsWith(expected).Equivalent();
 await Expect.That(albums).StartsWith(expected).Using(new AlbumComparer());
 ```
 
-For strings, you can configure this expectation to ignore case, ignore newline style, ignoring leading or trailing
-white-space, or use a custom `IEqualityComparer<string>`:
+For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
+leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
@@ -377,7 +376,7 @@ await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## End with
+## Collection end
 
 You can verify if a collection ends with another collection or not:
 
@@ -399,8 +398,8 @@ await Expect.That(albums).EndsWith(expected).Equivalent();
 await Expect.That(albums).EndsWith(expected).Using(new AlbumComparer());
 ```
 
-For strings, you can configure this expectation to ignore case, ignore newline style, ignoring leading or trailing
-white-space, or use a custom `IEqualityComparer<string>`:
+For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
+leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
@@ -411,13 +410,13 @@ await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
 *Caution: this method will always have to completely materialize the enumerable!*
 
 
-## Have
+## Number of matching items
 
 Specifications that count the elements in a collection that satisfy specific conditions.
 
 ### All
 
-You can verify that all items in the collection, satisfy an expectation:
+You can verify that all items in the collection satisfy an expectation:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 20);
@@ -434,7 +433,7 @@ An empty collection satisfies `All()`, like it does `Enumerable.All`, so
 
 ### More than
 
-You can verify that more than `minimum` items in the collection, satisfy an expectation:
+You can verify that more than `minimum` items in the collection satisfy an expectation:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 20);
@@ -519,7 +518,7 @@ await Expect.That(values).Exactly(9).Satisfy(i => i < 10);
 
 ### None
 
-You can verify that not item in the collection, satisfies an expectation:
+You can verify that no item in the collection satisfies an expectation:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 20);
@@ -527,7 +526,7 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 await Expect.That(values).None().Satisfy(i => i > 20);
 ```
 
-You can also verify that the collection is empty.
+You can also verify that the collection is empty:
 
 ```csharp
 IEnumerable<int> values = Array.Empty<int>();
@@ -537,9 +536,9 @@ await Expect.That(values).IsEmpty();
 
 *Note: The same expectations work also for `IAsyncEnumerable<T>`.*
 
-## Have single
+## Single item
 
-You can verify that the collection contains a single element that satisfies an expectation.
+You can verify that the collection contains a single element that satisfies an expectation:
 
 ```csharp
 IEnumerable<int> values = [42];
@@ -574,9 +573,9 @@ await Expect.That(result).IsGreaterThan(41);
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 
-## Have item at index
+## Item at index
 
-You can verify that the collection contains an item that satisfies the expectation on a given index (or any index).
+You can verify that the collection contains an item that satisfies the expectation on a given index (or any index):
 
 ```csharp
 IEnumerable<string> values = ["0th item", "1st item", "2nd item", "3rd item"];
@@ -586,7 +585,7 @@ await Expect.That(values).HasItem("2nd item").AtIndex(1).FromEnd(); // at the ze
 await Expect.That(values).HasItem(it => it.StartsWith("2nd")); // at any index
 ```
 
-You can also check that the item matches a specific type
+You can also check that the item matches a specific type:
 
 ```csharp
 IEnumerable<INotification> values = //...
@@ -601,7 +600,7 @@ await Expect.That(values).HasItem().MatchingExactly<UserCreatedNotification>().A
 await Expect.That(values).HasItem().MatchingExactly<UserDeletedNotification>(x => x.UserId == 3);
 ```
 
-You can also use expectations on the individual items.
+You can also use expectations on the individual items:
 
 ```csharp
 IEnumerable<string> values = ["0th item", "1st item", "2nd item", "3rd item"];
@@ -611,7 +610,7 @@ await Expect.That(values).HasItemThat(it => it.StartsWith("2nd").And.EndsWith("i
 ```
 
 Each of these expectations has a negated counterpart. It is satisfied when the index holds a different item, and also
-when the collection is too short to have an item at that index.
+when the collection is too short to have an item at that index:
 
 ```csharp
 IEnumerable<string> values = ["0th item", "1st item"];

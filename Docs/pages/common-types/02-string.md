@@ -104,7 +104,7 @@ never fail.
 
 ### Prefix / Suffix
 
-You can also verify that the subject starts with or ends with a given string.
+You can also verify that the subject starts with or ends with a given string:
 
 ```csharp
 string subject = "Abbey Road";
@@ -210,7 +210,7 @@ await Expect.That(subject).HasLines(lines => lines.All().Satisfy(line => line?.L
 
 Lines are separated by `\r\n`, `\n` or `\r`, which are all treated equivalently.  
 A single trailing line terminator does not start a new line, so `"Come together\n"` has one line and
-`""` has none — matching how `File.ReadLines` counts the lines of a file:
+`""` has none, matching how `File.ReadLines` counts the lines of a file:
 
 ```csharp
 await Expect.That("").HasLineCount().EqualTo(0);
