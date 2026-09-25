@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -184,7 +185,7 @@ public static partial class ThatSignaler
 	}
 
 	private static void AppendNormalCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
-		SignalerOptions options)
+		SignalerOptions options, TimeSpan? defaultTimeout)
 	{
 		if (quantifier.IsNever)
 		{
@@ -196,16 +197,30 @@ public static partial class ThatSignaler
 		}
 
 		stringBuilder.Append(options);
+		if (defaultTimeout is not null && defaultTimeout != Timeout.InfiniteTimeSpan)
+		{
+			stringBuilder.Append(" within ");
+			Formatter.Format(stringBuilder, defaultTimeout.Value);
+		}
 	}
 
 	private static void AppendNegatedCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
-		SignalerOptions options)
+		SignalerOptions options, TimeSpan? defaultTimeout)
 	{
 		// Rendering the complementary quantifier makes e.g. DidNotSignal() read like Signaled().Never().
 		quantifier.Negate();
-		AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
+		AppendNormalCallbackExpectation(stringBuilder, quantifier, options, defaultTimeout);
 		quantifier.Negate();
 	}
+
+	/// <summary>
+	///     Returns the <see cref="Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" />
+	///     when the wait falls back to it, so that the expectation can show it.
+	/// </summary>
+	private static TimeSpan? GetDefaultTimeout(SignalerOptions options, int determinableAmount)
+		=> options.Timeout is null && determinableAmount > 0
+			? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()
+			: null;
 
 	private static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
 	{
@@ -267,6 +282,7 @@ public static partial class ThatSignaler
 		SignalerOptions options)
 		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncConstraint<Signaler>
 	{
+		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
 		public async Task<ConstraintResult> IsMetBy(Signaler actual, CancellationToken cancellationToken)
@@ -279,7 +295,8 @@ public static partial class ThatSignaler
 			}
 
 			int determinableAmount = quantifier.DeterminableAmount;
-			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
+			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
+			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(() =>
@@ -289,7 +306,7 @@ public static partial class ThatSignaler
 					SignalerResult result = determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), timeout, cancellationToken)
 						: actual.Wait(timeout, cancellationToken);
-					_waitedTime = options.Timeout is null ? null : stopwatch.Elapsed;
+					_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : stopwatch.Elapsed;
 					return result;
 				},
 				CancellationToken.None);
@@ -300,7 +317,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
+			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -310,7 +327,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options);
+			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -325,6 +342,7 @@ public static partial class ThatSignaler
 			IAsyncConstraint<Signaler<TParameter>>
 	{
 		private int _actualCount;
+		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -340,7 +358,8 @@ public static partial class ThatSignaler
 
 			SignalerOptions<TParameter> o = options;
 			int determinableAmount = quantifier.DeterminableAmount;
-			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
+			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
+			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(() =>
@@ -350,7 +369,7 @@ public static partial class ThatSignaler
 					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
 						: actual.Wait(o.Matches, timeout, cancellationToken), "the predicate");
-					_waitedTime = o.Timeout is null ? null : stopwatch.Elapsed;
+					_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : stopwatch.Elapsed;
 					return result;
 				},
 				CancellationToken.None);
@@ -363,7 +382,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
+			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -380,7 +399,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options);
+			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

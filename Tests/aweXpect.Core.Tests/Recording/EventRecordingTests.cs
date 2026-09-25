@@ -254,9 +254,8 @@ public sealed class EventRecordingTests
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
 		async Task Act()
-			=> await That(() => recording).Eventually()
-				.Triggered(nameof(CustomEventClass.CustomEvent)).Once()
-				.WithTimeout(TimeSpan.FromSeconds(30));
+			=> await That(() => recording).Eventually().Within(TimeSpan.FromSeconds(30))
+				.Triggered(nameof(CustomEventClass.CustomEvent)).Once();
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(

@@ -76,12 +76,12 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than twice with p => p > 1,
+					             has recorded the callback less than twice with p => p > 1 within 0:30,
 					             but it was recorded * in [
 					               1,
 					               2,
 					               *
-					             ]
+					             ] after 0:*
 					             """).AsWildcard();
 			}
 
@@ -106,14 +106,14 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than twice with p => p > 2,
+					             has recorded the callback less than twice with p => p > 2 within 0:30,
 					             but it was recorded twice in [
 					               1,
 					               2,
 					               3,
 					               4
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

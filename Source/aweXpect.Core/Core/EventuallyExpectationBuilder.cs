@@ -46,6 +46,39 @@ internal class EventuallyExpectationBuilder<TValue>(
 	string subjectExpression)
 	: ExpectationBuilder(subjectExpression)
 {
+	private TimeSpan? _interval;
+	private TimeSpan? _retryTimeout;
+
+	/// <summary>
+	///     Sets the <paramref name="interval" /> in which the subject is re-evaluated.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="interval" /> is not positive.</exception>
+	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
+	public void CheckEvery(TimeSpan interval)
+	{
+		if (interval <= TimeSpan.Zero)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
+		}
+
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_interval is not null, nameof(CheckEvery));
+		_interval = interval;
+	}
+
+	/// <summary>
+	///     Sets the <paramref name="timeout" /> until the expectations must be met.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
+	public void Within(TimeSpan timeout)
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_retryTimeout is not null, nameof(Within));
+		_retryTimeout = timeout;
+	}
+
 	/// <inheritdoc />
 	internal override async Task<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
@@ -87,7 +120,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 	private TimeSpan GetRetryTimeout()
 	{
-		TimeSpan retryTimeout = Timeout ?? Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get();
+		TimeSpan retryTimeout = _retryTimeout ?? Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get();
 		if (retryTimeout == System.Threading.Timeout.InfiniteTimeSpan)
 		{
 			return TimeSpan.MaxValue;
@@ -102,7 +135,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		TimeSpan retryTimeout,
 		CancellationToken cancellationToken)
 	{
-		TimeSpan interval = Customize.aweXpect.Settings().DefaultCheckInterval.Get();
+		TimeSpan interval = _interval ?? Customize.aweXpect.Settings().DefaultCheckInterval.Get();
 		List<ResultContext> initialContexts = new(GetContexts());
 		EvaluationContext.EvaluationContext currentContext = context;
 		Stopwatch stopwatch = new();
