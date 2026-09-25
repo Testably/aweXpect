@@ -302,13 +302,13 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = Numbers();
 
 			async Task Act()
-				=> await That(subject).DoesNotContain(item => BlockUntilCancelled(sourceToken, item == 2))
+				=> await That(subject).DoesNotContain(item => BlockUntilCancelled(item == 2, sourceToken))
 					.WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             does not contain an item matching item => BlockUntilCancelled(sourceToken, item == 2),
+				             does not contain an item matching item => BlockUntilCancelled(item == 2, sourceToken),
 				             but it did not finish within 0:00.050
 				             """)
 				.Because("a timeout between two items must not be mistaken for the end of the source");
@@ -366,7 +366,7 @@ public sealed partial class ThatAsyncEnumerable
 		///     Blocks the evaluation between two items until it is cancelled, bounded by half a minute, so that a
 		///     regression fails the test instead of hanging the test run.
 		/// </remarks>
-		private static bool BlockUntilCancelled(CancellationToken cancellationToken, bool result)
+		private static bool BlockUntilCancelled(bool result, CancellationToken cancellationToken)
 		{
 			cancellationToken.WaitHandle.WaitOne(30.Seconds());
 			return result;
