@@ -22,7 +22,7 @@ await Expect.That(myEnumerable).All().AreEqualTo(1)
     .WithTimeout(TimeSpan.FromSeconds(10));
 ```
 
-*Note: A local timeout will replace the global one and not be applied additionally.
+*Note: A local timeout will replace the global one and not be applied additionally.*
 
 
 ## `CancellationToken`

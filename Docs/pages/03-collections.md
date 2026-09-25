@@ -123,7 +123,7 @@ This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `Date
 
 You can add expectations that a certain number of elements must meet.
 
-### Comply with
+### Nested expectation
 
 You can verify that items in a collection comply with an expectation on the individual elements:
 
@@ -139,7 +139,7 @@ await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-### Satisfy
+### Condition
 
 You can verify that items in a collection satisfy a condition:
 
@@ -324,7 +324,7 @@ To check for a proper subset, append `.Properly()` (which would fail for equal c
 
 ### Superset
 
-You can verify that a collection is contained in another collection (it is a superset):
+You can verify that a collection is contained in another collection (the other collection is a superset):
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 3);
@@ -656,7 +656,7 @@ await Expect.That(values.AsEnumerable())
     .IsEqualTo([new KeyValuePair<int, string>(42, "foo"), new KeyValuePair<int, string>(43, "bar")]);
 ```
 
-### Contain entry
+### Entry
 
 You can verify that a dictionary contains the `expected` entry, which is looked up by its key, too:
 
@@ -675,7 +675,7 @@ Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
 await Expect.That(values).Contains(new KeyValuePair<int, string>(42, "foo"));
 ```
 
-### Contain key(s)
+### Keys
 
 You can verify that a dictionary contains the `expected` key(s):
 
@@ -700,7 +700,7 @@ await Expect.That(values).ContainsKeys(43, 44).WhoseValues.Contains("bar");
 await Expect.That(values).ContainsKeys(43, 44).WhoseValues.All().ComplyWith(v => v.StartsWith("ba"));
 ```
 
-### Contain value(s)
+### Values
 
 You can verify that a dictionary contains the `expected` value(s):
 

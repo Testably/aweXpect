@@ -286,7 +286,7 @@ what was thrown: for an upper bound on a delegate that is *expected* to throw, `
 states both at once.
 :::
 
-### Execute within
+### Time limit
 
 There is also a shorthand expectation for a delegate that finishes the execution without throwing an exception
 in (at most) a given time:
@@ -335,8 +335,8 @@ cancelled.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires
 while the delegate is still throwing, the expectation fails and the last exception is reported as the cause
-of the failure. If the expectation is cancelled before the timeout expires - via `WithCancellation` or via
-the global `TestCancellation` setting - it is reported as inconclusive instead of failed. As everywhere else,
+of the failure. If the expectation is cancelled before the timeout expires (via `WithCancellation` or via
+the global `TestCancellation` setting), it is reported as inconclusive instead of failed. As everywhere else,
 an explicit `WithTimeout` takes precedence over a global `TestCancellation` timeout.
 
 The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,

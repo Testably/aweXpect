@@ -4,8 +4,8 @@ Describes the possible expectations for verifying events.
 
 ## Recording
 
-First, you have to start a recording of events. This can be done with the `.Record().Events()` extension method in the "
-aweXpect.Recording" namespace:
+First, you have to start a recording of events. This can be done with the `.Record().Events()` extension method in the
+`aweXpect.Recording` namespace:
 
 ```csharp
 using aweXpect.Recording;
@@ -142,7 +142,7 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
 
 ## Timeout
 
-You can specify a timeout within the expected events should be triggered:
+You can specify a timeout within which the expected events must be triggered:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -237,7 +237,7 @@ an event that was triggered with a `null` or empty property name notifies that *
 satisfies `TriggeredPropertyChangedFor` for every property name and lets `DidNotTriggerPropertyChangedFor`
 fail for every property name. A whitespace-only name is a name like any other.  
 Expecting the `null` or the empty property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches
-only the events that notify that all properties changed, but no named one - and without distinguishing the two
+only the events that notify that all properties changed, but no named one, and without distinguishing the two
 spellings, which the contract allows interchangeably.
 
 ## Trimming and Native AOT

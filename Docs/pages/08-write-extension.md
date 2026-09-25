@@ -150,14 +150,14 @@ inherited `It` property, which the default result texts use.
 
 Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
 
-> A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null` - equality and
+> A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
 > identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
 
 A `null` subject does not mean "the expectation is false", it means there is no value to inspect and the question
 cannot be answered. Negating an unanswerable question does not make it true, which is why the rule covers the negated
 case as well.
 
-- Your expectation **inspects the subject** - its length, its type, its items, whether it is empty. There is nothing to
+- Your expectation **inspects the subject**: its length, its type, its items, whether it is empty. There is nothing to
   inspect when the subject is `null`, so it has to fail, in the negated case as well: `IsNotEmpty()` fails for a `null`
   subject just like `IsEmpty()` does, and so does `DoesNotComplyWith(x => x.IsEmpty())`. Use
   `ConstraintResult.WithNotNullValue<T>`.
@@ -166,13 +166,13 @@ case as well.
   `IsNotEqualTo("foo")` succeeds. Use `ConstraintResult.WithEqualToValue<T>` and pass whether the expected value is
   `null`; that flag is what makes the subject fail on the side where `null` is not a legitimate answer.
 
-Do not read the second case as "any value the caller supplied" - `HasValue(2)` takes one and still fails for `null`,
+Do not read the second case as "any value the caller supplied": `HasValue(2)` takes one and still fails for `null`,
 because it inspects the subject rather than comparing it. Only equality and identity give `null` a meaning on both
 sides; an ordering or a range does not, which is why `IsGreaterThan` and `IsNotBetween` use
 `ConstraintResult.WithNotNullValue<T>`.
 
-Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all - a non-nullable `bool`, `int` or
-`DateTime` - or when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
+Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all (a non-nullable `bool`, `int` or
+`DateTime`), or when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
 `IsNull()` or `IsOneOf(...)`. It applies no `null` policy of its own, so deciding the outcome with
 `Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure is inverted into a success
 when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is applied.
