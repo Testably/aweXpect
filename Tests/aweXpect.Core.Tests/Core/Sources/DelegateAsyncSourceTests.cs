@@ -19,7 +19,7 @@ public class DelegateAsyncSourceTests
 	}
 
 	[Fact]
-	public async Task WhenCancellationIsRequestedBeforeTheDelegateCompletes_ShouldFail()
+	public async Task WhenCancellationIsRequestedBeforeTheDelegateCompletes_ShouldBeInconclusive()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
 		using CancellationTokenSource cts = new();
@@ -28,14 +28,12 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithCancellation(cts.Token);
 
-		await That(Act).Throws<XunitException>()
-			.WithMessage($"""
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
-			             but it did throw a TaskCanceledException:
-			               {new TaskCanceledException().Message}
-			             """).And
-			.WithInner<TaskCanceledException>()
+			             but it could not be verified, because it was already canceled
+			             """)
 			.Because("the cancellation must stop waiting for a delegate that does not observe it");
 	}
 
@@ -199,6 +197,46 @@ public class DelegateAsyncSourceTests
 			             """).And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 			.Because("a cancellation by the timeout is reported the same way, whether the delegate or the timeout won");
+	}
+
+	[Fact]
+	public async Task WhenDelegateThrowsItsOwnOperationCanceledException_ShouldFail()
+	{
+		OperationCanceledException exception = new("my own reason");
+		Func<CancellationToken, Task> @delegate = async _ =>
+		{
+			await Task.Yield();
+			throw exception;
+		};
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow().WithTimeout(30.Seconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it did throw an OperationCanceledException:
+			               my own reason
+			             """).And
+			.WithInner<OperationCanceledException>(inner => inner.IsSameAs(exception))
+			.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
+	}
+
+	[Fact]
+	public async Task WhenDelegateThrowsItsOwnOperationCanceledException_Throws_ShouldSucceed()
+	{
+		Func<CancellationToken, Task> @delegate = async _ =>
+		{
+			await Task.Yield();
+			throw new OperationCanceledException("my own reason");
+		};
+
+		async Task Act()
+			=> await That(@delegate).Throws<OperationCanceledException>().WithTimeout(30.Seconds());
+
+		await That(Act).DoesNotThrow()
+			.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
 	}
 
 	[Fact]

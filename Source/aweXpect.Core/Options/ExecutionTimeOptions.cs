@@ -35,11 +35,8 @@ public class ExecutionTimeOptions
 	/// <summary>
 	///     Checks if the <paramref name="exception" /> leaves the outcome to the measured duration.
 	/// </summary>
-	/// <remarks>
-	///     A cancellation is never allowed, because it aborts the execution instead of timing it.
-	/// </remarks>
 	internal bool AllowsException(Exception? exception)
-		=> exception is null || (AreExceptionsAllowed && exception is not OperationCanceledException);
+		=> exception is null || AreExceptionsAllowed;
 
 	/// <summary>
 	///     Checks if the <paramref name="actual" /> value is within the required limit.

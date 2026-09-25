@@ -54,13 +54,9 @@ await Expect.That(signaler).Signaled().Within(TimeSpan.FromSeconds(5))
   .Because("it should take at most 5 seconds to complete");
 ```
 
-Alternatively you can also use a `CancellationToken` for a timeout:
-
-```csharp
-CancellationToken cancellationToken = new CancellationTokenSource(5000).Token;
-await Expect.That(signaler).Signaled().WithCancellation(cancellationToken)
-  .Because("it should be completed, before the cancellationToken is cancelled");
-```
+A `CancellationToken` (`WithCancellation`) also ends the wait, but the signals received until then decide nothing, so
+the expectation is then [inconclusive](/docs/expectations/advanced/cancellation#outcome) instead of failed or
+successful. Use `Within(…)` to limit how long to wait.
 
 ### Amount
 

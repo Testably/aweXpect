@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
@@ -29,7 +27,7 @@ internal static class EventuallyExpectationBuilder
 	/// <remarks>
 	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> truncates to whole milliseconds and its timer does
 	///     not share the clock of the stopwatch that measures the retry budget, so a wait that consumed the whole
-	///     budget can be cancelled a fraction of a millisecond before the stopwatch agrees.
+	///     budget can be canceled a fraction of a millisecond before the stopwatch agrees.
 	/// </remarks>
 	public static readonly TimeSpan CancellationTolerance = TimeSpan.FromMilliseconds(2);
 
@@ -72,7 +70,19 @@ internal class EventuallyExpectationBuilder<TValue>(
 		using CancellationTokenSource cancellationCts =
 			CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 		cancellationCts.CancelAfter(cancellationTimeout.Value.ToTimerTimeout());
-		return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationCts.Token);
+		ConstraintResult result =
+			await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationCts.Token);
+		if (result.Outcome == Outcome.Undecided && cancellationCts.IsCancellationRequested &&
+		    !cancellationToken.IsCancellationRequested)
+		{
+			return AppendTimeout(new ConstraintResult.FromException(result,
+					ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout.Value,
+						new OperationCanceledException(cancellationCts.Token)),
+					cancellationTimeout.Value),
+				retryTimeout);
+		}
+
+		return result;
 	}
 
 	private TimeSpan GetRetryTimeout()
@@ -118,15 +128,24 @@ internal class EventuallyExpectationBuilder<TValue>(
 			ConstraintResult? result = null;
 			if (failure is null)
 			{
-				result = await rootNode.IsMetBy(data, currentContext, cancellationToken);
-				if (result.Outcome == Outcome.Success)
+				try
+				{
+					result = await rootNode.IsMetBy(data, currentContext, cancellationToken);
+				}
+				catch (OperationCanceledException exception) when (cancellationToken.IsCancellationRequested)
+				{
+					failure = exception;
+				}
+
+				if (result?.Outcome == Outcome.Success)
 				{
 					return result;
 				}
 			}
 
 			TimeSpan remaining = retryTimeout - Elapsed();
-			if (isLastAttempt || hasTimedOut || remaining <= TimeSpan.Zero)
+			bool isCanceled = failure is OperationCanceledException && cancellationToken.IsCancellationRequested;
+			if (!isCanceled && (isLastAttempt || hasTimedOut || remaining <= TimeSpan.Zero))
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
@@ -138,7 +157,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return new UndecidedResult(WithFailureCause(result, failure));
+				return new ConstraintResult.FromCancellation(WithFailureCause(result, failure));
 			}
 
 			TimeSpan wait = NextInterval(interval, remaining);
@@ -193,7 +212,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	///     Waits for the <paramref name="wait" /> and returns whether the <paramref name="cancellation" /> cut it short.
 	/// </summary>
 	/// <remarks>
-	///     The wait is not cancelled by the token itself: <see cref="Task.Delay(TimeSpan, CancellationToken)" /> would
+	///     The wait is not canceled by the token itself: <see cref="Task.Delay(TimeSpan, CancellationToken)" /> would
 	///     register its own callback on it and the cancellation callbacks run in reverse order, so the wait could
 	///     continue before the callback in <see cref="IsMetRepeatedly" /> recorded when the cancellation was requested.
 	/// </remarks>
@@ -284,38 +303,4 @@ internal class EventuallyExpectationBuilder<TValue>(
 				contexts.Add(resultContext);
 			}
 		});
-
-	/// <summary>
-	///     A <see cref="ConstraintResult" /> for expectations that were cancelled before they could be verified.
-	/// </summary>
-	private sealed class UndecidedResult(ConstraintResult inner) : ConstraintResult(inner.Grammars)
-	{
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => Outcome.Undecided;
-
-			// The outcome of a cancelled expectation is always undecided, so the value is discarded.
-			protected set => _ = value;
-		}
-
-		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> inner.AppendExpectation(stringBuilder, indentation);
-
-		/// <inheritdoc cref="ConstraintResult.AppendResult(StringBuilder, string?)" />
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it").Append(CancelledResultSuffix);
-
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<T>([NotNullWhen(true)] out T? value) where T : default
-			=> inner.TryGetValue(out value);
-
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
-		{
-			inner.Negate();
-			return this;
-		}
-	}
 }

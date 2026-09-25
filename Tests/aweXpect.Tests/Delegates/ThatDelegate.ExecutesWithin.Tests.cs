@@ -98,8 +98,11 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:05,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did throw a TaskCanceledException:
+					               *
+					             """).AsWildcard().And
+					.WithInner<TaskCanceledException>()
+					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception");
 			}
 
 			[Fact]
@@ -179,8 +182,11 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:05,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did throw a TaskCanceledException:
+					               *
+					             """).AsWildcard().And
+					.WithInner<TaskCanceledException>()
+					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception");
 			}
 
 			[Fact]
@@ -329,8 +335,11 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:05,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did throw a TaskCanceledException:
+					               *
+					             """).AsWildcard().And
+					.WithInner<TaskCanceledException>()
+					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception");
 			}
 
 			[Fact]
@@ -481,8 +490,11 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:05,
-					             but it was canceled after 0:*
-					             """).AsWildcard();
+					             but it did throw a TaskCanceledException:
+					               *
+					             """).AsWildcard().And
+					.WithInner<TaskCanceledException>()
+					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception");
 			}
 
 			[Fact]
@@ -784,12 +796,12 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithCancellation(cancelledToken);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:30,
-					             but it was canceled after 0:0*
-					             """).AsWildcard()
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
 					.Because("the already canceled token must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 
@@ -806,12 +818,12 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(30.Seconds()).WithCancellation(cancelledToken);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:30,
-					             but it was canceled after 0:0*
-					             """).AsWildcard()
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
 					.Because("the already canceled token must cancel the delegate within seconds, long before the 30 s duration would");
 			}
 		}

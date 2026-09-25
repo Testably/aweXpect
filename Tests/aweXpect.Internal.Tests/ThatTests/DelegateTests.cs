@@ -155,8 +155,17 @@ public sealed class DelegateTests
 		void Delegate(CancellationToken t)
 			=> t.ThrowIfCancellationRequested();
 
-		await That(Delegate).Throws<OperationCanceledException>()
-			.WithCancellation(token);
+		async Task Act()
+			=> await That(Delegate).Throws<OperationCanceledException>()
+				.WithCancellation(token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that Delegate
+			             throws an OperationCanceledException,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
 	[Fact]
@@ -236,8 +245,17 @@ public sealed class DelegateTests
 		Task Delegate(CancellationToken t)
 			=> Task.FromCanceled(t);
 
-		await That(Delegate).Throws<OperationCanceledException>()
-			.WithCancellation(token);
+		async Task Act()
+			=> await That(Delegate).Throws<OperationCanceledException>()
+				.WithCancellation(token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that Delegate
+			             throws an OperationCanceledException,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
 	[Fact]
@@ -317,8 +335,17 @@ public sealed class DelegateTests
 		Task<int> Delegate(CancellationToken t)
 			=> Task.FromCanceled<int>(t);
 
-		await That(Delegate).Throws<OperationCanceledException>()
-			.WithCancellation(token);
+		async Task Act()
+			=> await That(Delegate).Throws<OperationCanceledException>()
+				.WithCancellation(token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that Delegate
+			             throws an OperationCanceledException,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
 	[Fact]
@@ -402,8 +429,17 @@ public sealed class DelegateTests
 			return 0;
 		}
 
-		await That(Delegate).Throws<OperationCanceledException>()
-			.WithCancellation(token);
+		async Task Act()
+			=> await That(Delegate).Throws<OperationCanceledException>()
+				.WithCancellation(token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that Delegate
+			             throws an OperationCanceledException,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
 	[Fact]

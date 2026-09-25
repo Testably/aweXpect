@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -14,14 +13,11 @@ public sealed partial class ThatSignaler
 			public async Task WhenNotTriggeredOftenEnough_ShouldSucceed()
 			{
 				Signaler signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal();
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(2.Times()).WithCancellation(token);
+					await That(signaler).DidNotSignal(2.Times()).Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,15 +26,12 @@ public sealed partial class ThatSignaler
 			public async Task WhenNotTriggeredWithParameter_ShouldSucceeded()
 			{
 				Signaler<int> signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal(1);
 				signaler.Signal(2);
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(3.Times()).WithCancellation(token);
+					await That(signaler).DidNotSignal(3.Times()).Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}

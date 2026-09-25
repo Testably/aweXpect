@@ -17,7 +17,7 @@ public static partial class ThatGeneric
 	/// <remarks>
 	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
 	///     exception, which a negation does not invert. An <see cref="OperationCanceledException" /> thrown while the
-	///     evaluation is cancelled aborts the evaluation instead.
+	///     evaluation is canceled aborts the evaluation instead.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
@@ -46,9 +46,8 @@ public static partial class ThatGeneric
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
-	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" /> and a timeout fails it with
-	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
+	///     negation does not invert. Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a
+	///     timeout fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(2)]
@@ -78,9 +77,8 @@ public static partial class ThatGeneric
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
-	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" /> and a timeout fails it with
-	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
+	///     negation does not invert. Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a
+	///     timeout fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(1)]

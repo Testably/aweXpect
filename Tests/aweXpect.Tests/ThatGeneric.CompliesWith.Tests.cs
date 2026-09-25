@@ -1,5 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Local
 
+using System.Threading;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatGeneric
@@ -89,6 +91,25 @@ public sealed partial class ThatGeneric
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
+			{
+				int subject = 1;
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(30.Seconds())
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2 within 0:30,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds());
+			}
+
+			[Fact]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				MyChangingClass subject = new(42);
@@ -105,14 +126,12 @@ public sealed partial class ThatGeneric
 					             is equivalent to {
 					                 HasWaitedEnough = True
 					               } within 0:30,
-					             but it was not:
-					               Property HasWaitedEnough differed:
-					                    Found: False
-					                 Expected: True
+					             but it did not finish within 0:00.050
 
 					             Equivalency options:
 					              - include public fields and properties
-					             """);
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
 			[Theory]

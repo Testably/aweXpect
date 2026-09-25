@@ -10,7 +10,7 @@ public sealed partial class ThatSignaler
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNotTriggered_ShouldFail()
+			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler signaler = new();
 				using CancellationTokenSource cts = new();
@@ -20,12 +20,28 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WithCancellation(token);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once,
-					             but it was never recorded
+					             but it could not be verified, because it was already canceled
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenNotTriggered_ShouldFail()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Within(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once within 0:00.050,
+					             but it was never recorded within 0:00.*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -42,6 +58,23 @@ public sealed partial class ThatSignaler
 					             has recorded the callback at least once,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTimeoutElapses_ShouldFail()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
 			[Fact]
@@ -62,7 +95,7 @@ public sealed partial class ThatSignaler
 		public sealed class WithParameterTests
 		{
 			[Fact]
-			public async Task WhenNotTriggered_ShouldFail()
+			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler<int> signaler = new();
 				using CancellationTokenSource cts = new(50.Milliseconds());
@@ -71,12 +104,28 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WithCancellation(token);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once,
-					             but it was never recorded
+					             but it could not be verified, because it was already canceled
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenNotTriggered_ShouldFail()
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Within(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once within 0:00.050,
+					             but it was never recorded within 0:00.*
+					             """).AsWildcard();
 			}
 
 			[Fact]

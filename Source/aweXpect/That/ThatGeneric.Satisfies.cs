@@ -110,20 +110,12 @@ public static partial class ThatGeneric
 				sw.Start();
 				do
 				{
-					try
-					{
-						await Task.Delay(options.Interval.NextCheckInterval(), cancellationToken);
-					}
-					catch (TaskCanceledException)
-					{
-						break;
-					}
-
+					await Task.Delay(options.Interval.NextCheckInterval(), cancellationToken);
 					if (IsMet(actual, cancellationToken))
 					{
 						return this;
 					}
-				} while (sw.Elapsed <= options.Timeout && !cancellationToken.IsCancellationRequested);
+				} while (sw.Elapsed <= options.Timeout);
 			}
 
 			return this;

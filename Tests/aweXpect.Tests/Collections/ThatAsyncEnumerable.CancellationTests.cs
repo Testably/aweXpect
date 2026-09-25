@@ -50,8 +50,12 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<OperationCanceledException>()
-				.WithMessage(new OperationCanceledException().Message)
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not contain an item matching item => Cancel(cts, item == 3),
+				             but it could not be verified, because it was already canceled
+				             """)
 				.Because("a cancellation between two items must not be mistaken for the end of the source");
 		}
 
@@ -64,8 +68,12 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<OperationCanceledException>()
-				.WithMessage(new OperationCanceledException().Message)
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains an item matching item => Cancel(cts, item == 3) at least once,
+				             but it could not be verified, because it was already canceled
+				             """)
 				.Because("a cancellation between two items must not be reported as a missing item");
 		}
 
@@ -79,8 +87,15 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).IsEqualTo([1, 2, 3]).Using(new CancellingComparer(cts))
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<OperationCanceledException>()
-				.WithMessage(new OperationCanceledException().Message)
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [1, 2, 3] in order using ThatAsyncEnumerable.CancellationTests.CancellingComparer,
+				             but it could not be verified, because it was already canceled
+
+				             Expected:
+				             [1, 2, 3]
+				             """)
 				.Because("a cancellation between two items must not be reported as missing items");
 		}
 
@@ -115,8 +130,12 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<OperationCanceledException>()
-				.WithMessage(new TaskCanceledException().Message)
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains an item equal to 1 at least once,
+				             but it could not be verified, because it was already canceled
+				             """)
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
 		}
 
@@ -303,23 +322,24 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
-		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldReportACountAsNotVerified()
+		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailACount()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
 
 			async Task Act()
 				=> await That(subject).HasCount(3).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 3 items,
-				             but it could not be verified, because it was already canceled
+				             but it did not finish within 0:00.050
 
 				             Collection:
 				             [1, 2, (… and maybe more)]
-				             """)
-				.Because("an expectation that reports a cancellation as not verified does so for a pending item as well");
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a timeout is reported the same way, whichever expectation was pending");
 		}
 
 		/// <remarks>

@@ -681,7 +681,7 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WhenTestCancellationTimeoutExpires_ShouldBeInconclusive()
+		public async Task WhenTestCancellationTimeoutExpires_ShouldFail()
 		{
 			Counter counter = new();
 			Stopwatch stopwatch = new();
@@ -692,12 +692,13 @@ public sealed partial class ThatDelegateTests
 				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
 
 				stopwatch.Start();
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1,
-					             but it could not be verified, because it was already canceled
-					             """)
+					             is equal to 1 within *,
+					             but it did not finish within 0:00.050
+					             """).AsWildcard().And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 					.WithTimeout(30.Seconds());
 				stopwatch.Stop();
 			}

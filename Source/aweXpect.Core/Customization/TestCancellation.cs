@@ -4,7 +4,7 @@ using System.Threading;
 namespace aweXpect.Customization;
 
 /// <summary>
-///     The behaviour for cancelling tests.
+///     The behaviour for canceling tests.
 /// </summary>
 public class TestCancellation
 {

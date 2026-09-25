@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -14,47 +13,41 @@ public sealed partial class ThatSignaler
 			public async Task WhenNotTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal();
 				signaler.Signal();
 
 				async Task Act() =>
-					await That(signaler).Signaled(3.Times()).WithCancellation(token);
+					await That(signaler).Signaled(3.Times()).Within(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least 3 times,
-					             but it was only recorded twice
-					             """);
+					             has recorded the callback at least 3 times within 0:00.050,
+					             but it was only recorded twice within 0:00.*
+					             """).AsWildcard();
 			}
 
 			[Fact]
 			public async Task WhenNotTriggeredWithParameter_ShouldFail()
 			{
 				Signaler<int> signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal(1);
 				signaler.Signal(2);
 
 				async Task Act() =>
-					await That(signaler).Signaled(3.Times()).WithCancellation(token);
+					await That(signaler).Signaled(3.Times()).Within(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least 3 times,
+					             has recorded the callback at least 3 times within 0:00.050,
 					             but it was only recorded twice in [
 					               1,
 					               2
-					             ]
-					             """);
+					             ] within 0:00.*
+					             """).AsWildcard();
 			}
 
 			[Fact]

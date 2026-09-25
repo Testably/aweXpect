@@ -17,7 +17,7 @@ public class SignalerResult(bool isSuccess, int counter)
 	/// </summary>
 	/// <remarks>
 	///     This flag will be <see langword="false" /> if the timeout expired
-	///     or the <see cref="CancellationToken" /> was cancelled prior to enough triggered callbacks;
+	///     or the <see cref="CancellationToken" /> was canceled prior to enough triggered callbacks;
 	///     otherwise <see langword="true" />.
 	/// </remarks>
 	public bool IsSuccess { get; } = isSuccess;

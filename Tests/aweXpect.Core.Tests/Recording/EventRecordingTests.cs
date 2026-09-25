@@ -590,6 +590,48 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenTimeoutElapses_ShouldFail()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent))
+				.Within(TimeSpan.FromSeconds(30))
+				.WithTimeout(TimeSpan.FromMilliseconds(50));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut at least once within 0:30,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("the timeout of the expectation ends the wait long before the recording timeout");
+	}
+
+	[Fact]
+	public async Task WhenTimeoutElapses_WhenTheEventIsExpectedNever_ShouldFail()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Never()
+				.Within(TimeSpan.FromSeconds(30))
+				.WithTimeout(TimeSpan.FromMilliseconds(50));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has never recorded the CustomEvent event on sut within 0:30,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("the event could still be raised in the remaining time, so the interrupted wait proves nothing");
+	}
+
+	[Fact]
 	public async Task WhenUntilDisposed_OnAnotherImplementation_ShouldThrowNotSupportedException()
 	{
 		ForeignRecording sut = new();

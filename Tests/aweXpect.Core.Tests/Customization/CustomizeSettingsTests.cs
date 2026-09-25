@@ -130,9 +130,17 @@ public sealed class CustomizeSettingsTests
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
 		{
+			async Task Act()
+				=> await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
+					.DoesNotThrow();
+
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
-				.Throws<TaskCanceledException>();
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
+				             does not throw any exception,
+				             but it could not be verified, because it was already canceled
+				             """);
 			stopwatch.Stop();
 		}
 
@@ -207,10 +215,18 @@ public sealed class CustomizeSettingsTests
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cts.Token)))
 		{
+			async Task Act()
+				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
+					.Throws<TaskCanceledException>()
+					.WithCancellation(cancelledToken);
+
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(delay, cancellationToken))
-				.Throws<TaskCanceledException>()
-				.WithCancellation(cancelledToken);
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+				             throws a TaskCanceledException,
+				             but it could not be verified, because it was already canceled
+				             """);
 			stopwatch.Stop();
 		}
 
