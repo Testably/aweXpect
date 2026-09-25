@@ -85,11 +85,13 @@ public sealed partial class ThatString
 				string subject = "foo";
 				string[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(expected);
+				object Act()
+					=> That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -112,11 +114,13 @@ public sealed partial class ThatString
 				string subject = "foo";
 				string?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(expected);
+				object Act()
+					=> That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -160,6 +164,58 @@ public sealed partial class ThatString
 					              is not one of {Formatter.Format(expected)},
 					              but it was <null>
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				string subject = "foo";
+				string[] values = ["bar", "foo",];
+				IEnumerable<string> unexpected = Factory.GetSingleUseEnumerable(values);
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(values)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAnEmptySequence_ShouldThrowArgumentException()
+			{
+				string subject = "foo";
+				IEnumerable<string> unexpected = Factory.GetSingleUseEnumerable<string>();
+
+				object Act()
+					=> That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("a lazily evaluated sequence is also checked when the expectation is built");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsInfiniteAndContainsTheSubject_ShouldFail()
+			{
+				string subject = "item-8";
+				IEnumerable<string> unexpected = Factory.GetFibonacciNumbers(i => $"item-{i}");
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(unexpected)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("the values are only enumerated until the subject is found");
 			}
 
 			[Theory]

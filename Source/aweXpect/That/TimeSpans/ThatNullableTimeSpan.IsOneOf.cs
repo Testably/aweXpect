@@ -26,11 +26,11 @@ public static partial class ThatNullableTimeSpan
 		IEnumerable<TimeSpan?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TimeSpan?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -53,21 +53,17 @@ public static partial class ThatNullableTimeSpan
 		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan?>
 	{
-		private IEnumerable<TimeSpan?> _expected = expected;
-
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
-			IReadOnlyList<TimeSpan?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
-			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
-				Outcome = expectedValues.Any(value => value != null &&
-				                                      IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
+				Outcome = expected.Any(value => value != null &&
+				                                IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -78,7 +74,7 @@ public static partial class ThatNullableTimeSpan
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -86,13 +82,13 @@ public static partial class ThatNullableTimeSpan
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			stringBuilder.AppendTimeDifferenceToClosest(Actual, _expected);
+			stringBuilder.AppendTimeDifferenceToClosest(Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
 

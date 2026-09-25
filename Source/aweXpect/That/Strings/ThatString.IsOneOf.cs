@@ -26,11 +26,11 @@ public static partial class ThatString
 		IEnumerable<string?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expected, options).InvertIf(negated)),
+				=> new IsOneOfConstraint(it, grammars, expectedValues, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -61,21 +61,14 @@ public static partial class ThatString
 		{
 			Actual = actual;
 			StringEqualityOptions stringEqualityOptions = options;
-			bool hasValues = false;
 			foreach (string? value in expectedValues)
 			{
-				hasValues = true;
 				if (await stringEqualityOptions
 					    .AreConsideredEqual(actual, value))
 				{
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			_hasNothingToInspect = actual is null && options.InspectsSubject;

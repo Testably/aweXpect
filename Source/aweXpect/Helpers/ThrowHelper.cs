@@ -8,9 +8,6 @@ namespace aweXpect.Helpers;
 
 internal static class ThrowHelper
 {
-	public static ArgumentException EmptyCollection()
-		=> new("You have to provide at least one expected value!");
-
 	/// <summary>
 	///     Rejects a key that occurs more than once in the <paramref name="entries" /> of a dictionary expectation and
 	///     returns them materialized, so that a sequence which can only be enumerated once survives both the guard
@@ -56,21 +53,6 @@ internal static class ThrowHelper
 		}
 
 		return materializedEntries;
-	}
-
-	/// <summary>
-	///     Rejects an empty set of expected <paramref name="values" /> and returns them materialized, so that a
-	///     sequence which can only be enumerated once survives both the guard and the subsequent comparison.
-	/// </summary>
-	public static IReadOnlyList<T> EnsureNotEmpty<T>(IEnumerable<T> values)
-	{
-		IReadOnlyList<T> materializedValues = values as IReadOnlyList<T> ?? values.ToList();
-		if (materializedValues.Count == 0)
-		{
-			throw Tracing.WriteException(EmptyCollection());
-		}
-
-		return materializedValues;
 	}
 
 	/// <summary>

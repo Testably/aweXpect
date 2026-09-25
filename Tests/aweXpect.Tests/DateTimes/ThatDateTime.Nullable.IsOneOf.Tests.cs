@@ -37,11 +37,27 @@ public sealed partial class ThatDateTime
 					DateTime? subject = CurrentTime();
 					DateTime[] expected = [];
 
+					object Act()
+						=> That(subject).IsOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+						.Because("an empty set is rejected when the expectation is built, before it is awaited");
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsInfiniteAndContainsTheSubject_ShouldSucceed()
+				{
+					DateTime start = CurrentTime()!.Value;
+					DateTime? subject = start.AddDays(8);
+					IEnumerable<DateTime?> expected = Factory.GetFibonacciNumbers<DateTime?>(i => start.AddDays(i));
+
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!");
+					await That(Act).DoesNotThrow()
+						.Because("the values are only enumerated until the subject is found");
 				}
 
 				[Fact]
@@ -155,11 +171,13 @@ public sealed partial class ThatDateTime
 					DateTime? subject = CurrentTime();
 					DateTime?[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsOneOf(expected);
+					object Act()
+						=> That(subject).IsOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!");
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
 				[Fact]
@@ -253,11 +271,12 @@ public sealed partial class ThatDateTime
 					DateTime? subject = null;
 					DateTime[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsOneOf(expected);
+					object Act()
+						=> That(subject).IsOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!")
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
@@ -282,11 +301,12 @@ public sealed partial class ThatDateTime
 					DateTime? subject = null;
 					DateTime?[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsOneOf(expected);
+					object Act()
+						=> That(subject).IsOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!")
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 

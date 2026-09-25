@@ -28,11 +28,11 @@ public static partial class ThatDateOnly
 		IEnumerable<DateOnly?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -61,20 +61,13 @@ public static partial class ThatDateOnly
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			foreach (DateOnly? value in expected)
 			{
-				hasValues = true;
 				if (value != null && Math.Abs(actual.DayNumber - value.Value.DayNumber) <= (int)timeTolerance.TotalDays)
 				{
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

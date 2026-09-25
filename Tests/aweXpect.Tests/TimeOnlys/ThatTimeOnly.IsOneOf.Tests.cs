@@ -17,11 +17,13 @@ public sealed partial class ThatTimeOnly
 				TimeOnly subject = CurrentTime();
 				TimeOnly[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -61,11 +63,13 @@ public sealed partial class ThatTimeOnly
 				TimeOnly subject = CurrentTime();
 				TimeOnly?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]

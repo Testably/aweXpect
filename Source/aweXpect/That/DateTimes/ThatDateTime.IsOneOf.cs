@@ -27,11 +27,11 @@ public static partial class ThatDateTime
 		IEnumerable<DateTime?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<DateTime?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -61,12 +61,10 @@ public static partial class ThatDateTime
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)
 			{
-				hasValues = true;
 				if (value is null)
 				{
 					continue;
@@ -85,11 +83,6 @@ public static partial class ThatDateTime
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			_incompatibleKind = hasComparableValue ? null : incomparableKind;

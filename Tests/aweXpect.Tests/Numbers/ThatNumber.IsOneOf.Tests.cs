@@ -400,16 +400,49 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForInt_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				int subject = 1;
+				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(2, 3);
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [2, 3],
+					             but it was 1
+					             """)
+					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
+			}
+
+			[Fact]
 			public async Task ForInt_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int subject = 1;
 				int[] expected = [];
 
+				object Act()
+					=> That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
+			}
+
+			[Fact]
+			public async Task ForInt_WhenExpectedIsInfiniteAndContainsTheSubject_ShouldSucceed()
+			{
+				int subject = 8;
+				IEnumerable<int> expected = Factory.GetFibonacciNumbers();
+
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+				await That(Act).DoesNotThrow()
+					.Because("the values are only enumerated until the subject is found");
 			}
 
 			[Fact]
@@ -432,11 +465,13 @@ public sealed partial class ThatNumber
 				int subject = 1;
 				int?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -829,11 +864,13 @@ public sealed partial class ThatNumber
 				int? subject = 1;
 				int[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -856,11 +893,13 @@ public sealed partial class ThatNumber
 				int? subject = 1;
 				int?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]

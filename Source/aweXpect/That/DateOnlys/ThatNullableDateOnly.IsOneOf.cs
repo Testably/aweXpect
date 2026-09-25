@@ -28,11 +28,11 @@ public static partial class ThatNullableDateOnly
 		IEnumerable<DateOnly?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -55,25 +55,21 @@ public static partial class ThatNullableDateOnly
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
 	{
-		private IEnumerable<DateOnly?> _expected = expected;
-
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
-			IReadOnlyList<DateOnly?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
-			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				Outcome = expectedValues.Any(value => value != null &&
-				                                      Math.Abs(actual.Value.DayNumber - value.Value.DayNumber) <=
-				                                      (int)timeTolerance.TotalDays)
+				Outcome = expected.Any(value => value != null &&
+				                                Math.Abs(actual.Value.DayNumber - value.Value.DayNumber) <=
+				                                (int)timeTolerance.TotalDays)
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -84,7 +80,7 @@ public static partial class ThatNullableDateOnly
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance.ToDayString());
 		}
 
@@ -92,13 +88,13 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			stringBuilder.AppendDayDifferenceToClosest(Actual, _expected);
+			stringBuilder.AppendDayDifferenceToClosest(Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance.ToDayString());
 		}
 

@@ -27,11 +27,11 @@ public static partial class ThatNullableDateTimeOffset
 		IEnumerable<DateTimeOffset?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<DateTimeOffset?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -54,24 +54,20 @@ public static partial class ThatNullableDateTimeOffset
 		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
 	{
-		private IEnumerable<DateTimeOffset?> _expected = expected;
-
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
-			IReadOnlyList<DateTimeOffset?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
-			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				Outcome = expectedValues.Any(value => value != null &&
-				                                      actual - value.Value <= timeTolerance &&
-				                                      actual - value.Value >= timeTolerance.Negate())
+				Outcome = expected.Any(value => value != null &&
+				                                actual - value.Value <= timeTolerance &&
+				                                actual - value.Value >= timeTolerance.Negate())
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -82,7 +78,7 @@ public static partial class ThatNullableDateTimeOffset
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -90,13 +86,13 @@ public static partial class ThatNullableDateTimeOffset
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			stringBuilder.AppendTimeDifferenceToClosest(Actual, _expected);
+			stringBuilder.AppendTimeDifferenceToClosest(Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, _expected);
+			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
 

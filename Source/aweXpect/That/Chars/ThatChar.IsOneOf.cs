@@ -24,9 +24,9 @@ public static partial class ThatChar
 		IEnumerable<char?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<char?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues).InvertIf(negated)),
 			subject);
 	}
 
@@ -47,23 +47,9 @@ public static partial class ThatChar
 		public ConstraintResult IsMetBy(char actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (char? value in expected)
-			{
-				hasValues = true;
-				if (actual.Equals(value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => actual.Equals(value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

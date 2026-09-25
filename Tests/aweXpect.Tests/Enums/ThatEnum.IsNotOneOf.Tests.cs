@@ -16,11 +16,13 @@ public sealed partial class ThatEnum
 				MyColors subject = MyColors.Blue;
 				MyColors[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(expected);
+				object Act()
+					=> That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -56,11 +58,13 @@ public sealed partial class ThatEnum
 				MyColors subject = MyColors.Blue;
 				MyColors?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(expected);
+				object Act()
+					=> That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]

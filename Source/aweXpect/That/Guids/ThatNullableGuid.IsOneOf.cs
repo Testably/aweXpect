@@ -25,9 +25,9 @@ public static partial class ThatNullableGuid
 		IEnumerable<Guid?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<Guid?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues).InvertIf(negated)),
 			subject);
 	}
 
@@ -48,23 +48,9 @@ public static partial class ThatNullableGuid
 		public ConstraintResult IsMetBy(Guid? actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (Guid? value in expected)
-			{
-				hasValues = true;
-				if (actual.Equals(value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => actual.Equals(value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
