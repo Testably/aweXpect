@@ -116,6 +116,20 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
+	///     value would silently replace the earlier one.
+	/// </summary>
+	public static void ThrowIfOptionIsAlreadySpecified(bool isAlreadySpecified, string option)
+	{
+		if (isAlreadySpecified)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"{option} cannot be specified more than once."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects a recursion depth below one at the call site, so that the exception names the caller's parameter
 	///     instead of the option that is set from it.
 	/// </summary>

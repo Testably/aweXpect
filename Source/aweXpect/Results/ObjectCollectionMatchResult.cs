@@ -59,16 +59,4 @@ public class ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>(
 		collectionMatchOptions.IgnoringDuplicates();
 		return (TSelf)this;
 	}
-
-	/// <summary>
-	///     Ignores items that appear in between the matched items.
-	/// </summary>
-	/// <remarks>
-	///     This option has no effect when <see cref="InAnyOrder()" /> is used.
-	/// </remarks>
-	public TSelf IgnoringInterspersedItems()
-	{
-		collectionMatchOptions.IgnoringInterspersedItems();
-		return (TSelf)this;
-	}
 }

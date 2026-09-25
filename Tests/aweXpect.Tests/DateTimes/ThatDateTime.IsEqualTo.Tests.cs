@@ -221,6 +221,30 @@ public sealed partial class ThatDateTime
 					.Because("only a date without a time of day has to reject a sub-day remainder");
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			{
+				DateTime subject = CurrentTime();
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(subject).Within(1.Seconds()).Within(2.Seconds());
+					}
+					else
+					{
+						await That(subject).IsEqualTo(subject).Within(1.Seconds()).Within(2.Seconds());
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second tolerance would silently replace the first one");
+			}
+
 			[Fact]
 			public async Task WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{

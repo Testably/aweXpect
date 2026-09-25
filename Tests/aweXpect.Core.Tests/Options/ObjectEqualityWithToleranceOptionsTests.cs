@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -34,6 +35,33 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(evaluation).IsSameAs(sut)
 			.Because("an explicit tolerance does not depend on a setting");
+	}
+
+	[Fact]
+	public async Task Using_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityWithToleranceOptions<double, double> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(0.1);
+
+		void Act() => sut.Using(new AllEqualComparer());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be combined with Within.")
+			.Because("the comparer would silently replace the tolerance");
+	}
+
+	[Fact]
+	public async Task Using_WithDefaultTolerance_ShouldNotThrow()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithDefaultTolerance(() => 5);
+
+		void Act() => sut.Using(new AllEqualComparer());
+
+		await That(Act).DoesNotThrow()
+			.Because("a default tolerance is not an explicit option");
 	}
 
 	[Fact]
@@ -85,5 +113,53 @@ public class ObjectEqualityWithToleranceOptionsTests
 		void Act() => sut.Within(0.0);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task Within_WhenComparerIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityWithToleranceOptions<double, double> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Using(new AllEqualComparer());
+
+		void Act() => sut.Within(0.1);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Within cannot be combined with Using.")
+			.Because("the tolerance would silently replace the comparer");
+	}
+
+	[Fact]
+	public async Task Within_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityWithToleranceOptions<double, double> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(0.1);
+
+		void Act() => sut.Within(0.2);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Within cannot be specified more than once.")
+			.Because("the second tolerance would silently replace the first one");
+	}
+
+	[Fact]
+	public async Task Within_WithDefaultTolerance_ShouldNotThrow()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithDefaultTolerance(() => 5);
+
+		void Act() => sut.Within(1);
+
+		await That(Act).DoesNotThrow()
+			.Because("a default tolerance is not an explicit option");
+	}
+
+	private sealed class AllEqualComparer : IEqualityComparer<object>
+	{
+		public new bool Equals(object? x, object? y) => true;
+
+		public int GetHashCode(object obj) => 0;
 	}
 }

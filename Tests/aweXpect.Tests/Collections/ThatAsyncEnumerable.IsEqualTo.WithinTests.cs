@@ -14,6 +14,32 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class DecimalTests
 			{
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException(bool negated)
+				{
+					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.1m, 3.1m);
+
+					async Task Act()
+					{
+						if (negated)
+						{
+							await That(subject).IsNotEqualTo([1.0m, 2.0m, 3.0m,]).Within(0.2m)
+								.Using(new AllEqualComparer());
+						}
+						else
+						{
+							await That(subject).IsEqualTo([1.0m, 2.0m, 3.0m,]).Within(0.2m)
+								.Using(new AllEqualComparer());
+						}
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Using cannot be combined with Within.")
+						.Because("the comparer would silently replace the tolerance");
+				}
+
 				[Fact]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{

@@ -11,6 +11,19 @@ public sealed partial class ThatEnumerable
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder().Using(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("comparer").And
+					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3, 1,]);
@@ -65,6 +78,19 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+					=> await That(subject).IsNotInAscendingOrder().Using(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("comparer").And
+					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+			}
+
 			[Fact]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldSucceed()
 			{
@@ -143,7 +169,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is in ascending order using ThrowingComparer,
+					             is in ascending order using ThatEnumerable.IsInAscendingOrder.ThrowingComparer,
 					             but it did throw an InvalidOperationException:
 					               comparer failed
 

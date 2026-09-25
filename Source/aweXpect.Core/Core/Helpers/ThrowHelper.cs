@@ -39,6 +39,28 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects the <paramref name="option" /> when the <paramref name="existingOption" /> already specified the
+	///     same setting, because the later option would silently replace the earlier one.
+	/// </summary>
+	public static void ThrowIfOptionIsAlreadySpecified(string? existingOption, string option)
+	{
+		if (existingOption is not null)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(existingOption == option
+				? $"{option} cannot be specified more than once."
+				: $"{option} cannot be combined with {existingOption}."));
+		}
+	}
+
+	/// <summary>
+	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
+	///     value would silently replace the earlier one.
+	/// </summary>
+	public static void ThrowIfOptionIsAlreadySpecified(bool isAlreadySpecified, string option)
+		=> ThrowIfOptionIsAlreadySpecified(isAlreadySpecified ? option : null, option);
+
+	/// <summary>
 	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
 	///     only ever be unsatisfiable or vacuous.
 	/// </summary>

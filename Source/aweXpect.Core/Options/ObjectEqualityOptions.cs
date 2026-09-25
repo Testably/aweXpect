@@ -197,6 +197,8 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </summary>
 	protected IObjectMatchType MatchType = ObjectEqualityOptions.EqualsMatch;
 
+	private string? _matchTypeOption;
+
 	/// <inheritdoc />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
 		=> MatchType.AreConsideredEqual(actual, expected);
@@ -213,6 +215,20 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     Specifies a new <see cref="IObjectMatchType" /> to use for matching two objects.
 	/// </summary>
 	public void SetMatchType(IObjectMatchType matchType) => MatchType = matchType;
+
+	/// <summary>
+	///     Specifies the <paramref name="matchType" /> of the option named <paramref name="optionName" /> to use for
+	///     matching two objects.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	///     Another option already specified how two objects are compared, or the same option was already specified.
+	/// </exception>
+	public void SetMatchType(IObjectMatchType matchType, string optionName)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
+		_matchTypeOption = optionName;
+		MatchType = matchType;
+	}
 
 	/// <summary>
 	///     Get an extended failure text.

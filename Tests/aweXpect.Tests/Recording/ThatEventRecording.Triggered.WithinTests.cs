@@ -383,6 +383,52 @@ public sealed partial class ThatEventRecording
 					             but it was <null>
 					             """);
 			}
+
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool never)
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				async Task Act()
+				{
+					if (never)
+					{
+						await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+							.Never().Within(1.Seconds()).Within(2.Seconds());
+					}
+					else
+					{
+						await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+							.Within(1.Seconds()).Within(2.Seconds());
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second timeout would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsZero_ShouldMentionTheTimeout()
+			{
+				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
+
+				async Task Act()
+					=> await That(subject!).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(TimeSpan.Zero);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recorded the CustomEvent event at least once within 0:00,
+					             but it was <null>
+					             """)
+					.Because("an explicit timeout is named like on a signaler, even when it is zero");
+			}
 		}
 	}
 }

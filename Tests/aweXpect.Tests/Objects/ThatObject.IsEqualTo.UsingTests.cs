@@ -8,6 +8,45 @@ public sealed partial class ThatObject
 	{
 		public sealed class UsingTests
 		{
+			[Theory]
+			[InlineData(false, false)]
+			[InlineData(false, true)]
+			[InlineData(true, false)]
+			[InlineData(true, true)]
+			public async Task WhenCombinedWithEquivalent_ShouldThrowInvalidOperationException(bool comparerFirst,
+				bool negated)
+			{
+				OuterClass subject = new()
+				{
+					Value = "Foo",
+				};
+
+				async Task Act()
+				{
+					switch (comparerFirst, negated)
+					{
+						case (true, false):
+							await That(subject).IsEqualTo(subject).Using(new MyComparer(true)).Equivalent();
+							break;
+						case (true, true):
+							await That(subject).IsNotEqualTo(subject).Using(new MyComparer(true)).Equivalent();
+							break;
+						case (false, false):
+							await That(subject).IsEqualTo(subject).Equivalent().Using(new MyComparer(true));
+							break;
+						case (false, true):
+							await That(subject).IsNotEqualTo(subject).Equivalent().Using(new MyComparer(true));
+							break;
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(comparerFirst
+						? "Equivalent cannot be combined with Using."
+						: "Using cannot be combined with Equivalent.")
+					.Because("the second option would silently replace the comparison of the first one");
+			}
+
 			[Fact]
 			public async Task WhenComparerConsidersDifferent_ShouldFail()
 			{
@@ -50,6 +89,56 @@ public sealed partial class ThatObject
 					=> await That(subject).IsEqualTo(expected).Using(new MyComparer(true));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException(bool negated)
+			{
+				OuterClass subject = new();
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(subject).Using(null!);
+					}
+					else
+					{
+						await That(subject).IsEqualTo(subject).Using(null!);
+					}
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("comparer").And
+					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+			}
+
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			{
+				OuterClass subject = new();
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(subject)
+							.Using(new MyComparer(true)).Using(new MyComparer(false));
+					}
+					else
+					{
+						await That(subject).IsEqualTo(subject)
+							.Using(new MyComparer(true)).Using(new MyComparer(false));
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be specified more than once.")
+					.Because("the second comparer would silently replace the first one");
 			}
 
 			private sealed class MyComparer(bool considerEqual) : IEqualityComparer<object>

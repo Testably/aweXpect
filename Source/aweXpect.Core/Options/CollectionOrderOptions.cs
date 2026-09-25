@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -18,7 +19,11 @@ public record CollectionOrderOptions<TItem>
 	/// <summary>
 	///     Set the comparer to use to compare the order of items.
 	/// </summary>
-	public void SetComparer(IComparer<TItem> comparer) => _comparer = comparer;
+	public void SetComparer(IComparer<TItem> comparer)
+	{
+		comparer.ThrowIfNull();
+		_comparer = comparer;
+	}
 
 	private static IComparer<TItem> GetDefaultComparer()
 		=> typeof(TItem) == typeof(string) ? (IComparer<TItem>)StringComparer.Ordinal : Comparer<TItem>.Default;
@@ -31,6 +36,6 @@ public record CollectionOrderOptions<TItem>
 			return "";
 		}
 
-		return $" using {_comparer.GetType().Name}";
+		return $" using {Formatter.Format(_comparer.GetType())}";
 	}
 }

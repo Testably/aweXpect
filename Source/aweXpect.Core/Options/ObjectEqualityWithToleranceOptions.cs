@@ -18,11 +18,14 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	///     Specifies the <paramref name="tolerance" /> within which the actual value is considered equal to the expected
 	///     value.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	///     Another option already specified how two objects are compared, or a tolerance is already set.
+	/// </exception>
 	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
 	{
 		ThrowIfToleranceIsInvalid(tolerance);
-		MatchType = new WithinMatchType(() => tolerance, false, isWithinTolerance,
-			toString ?? DefaultToleranceFormatter);
+		SetMatchType(new WithinMatchType(() => tolerance, false, isWithinTolerance,
+			toString ?? DefaultToleranceFormatter), nameof(Within));
 		return this;
 	}
 

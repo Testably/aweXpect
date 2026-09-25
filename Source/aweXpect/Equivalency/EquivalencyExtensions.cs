@@ -26,7 +26,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectEqualityResult<TType, TThat, TElement, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.SetMatchType(
-			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)));
+			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)), nameof(Equivalent));
 		return (TSelf)result;
 	}
 
@@ -39,7 +39,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectHasItemResult<TCollection, TItem, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TItem>>)result).Options.SetMatchType(
-			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)));
+			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)), nameof(Equivalent));
 		return (TSelf)result;
 	}
 
@@ -52,7 +52,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectCountResult<TType, TThat, TElement, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.SetMatchType(
-			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)));
+			new EquivalencyComparer(EquivalencyOptionsExtensions.FromCallback(options)), nameof(Equivalent));
 		return (TSelf)result;
 	}
 

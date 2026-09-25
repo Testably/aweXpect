@@ -1,5 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Numerics;
 #endif
@@ -25,6 +26,7 @@ public class NumberTolerance<TNumber>(
 	/// <summary>
 	///     Sets the tolerance to apply on the number comparisons.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public void SetTolerance(TNumber tolerance)
 	{
 		if (IsNaN(tolerance))
@@ -41,6 +43,7 @@ public class NumberTolerance<TNumber>(
 					"The tolerance must not be negative."));
 		}
 
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
 		Tolerance = tolerance;
 	}
 

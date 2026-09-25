@@ -3978,6 +3978,43 @@ public sealed partial class ThatEnumerable
 
 		public sealed class InSameOrderIgnoringInterspersedItemsTests
 		{
+			[Theory]
+			[InlineData(false, false)]
+			[InlineData(false, true)]
+			[InlineData(true, false)]
+			[InlineData(true, true)]
+			public async Task WhenCombinedWithInAnyOrder_ShouldThrowInvalidOperationException(bool inAnyOrderFirst,
+				bool negated)
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+				{
+					switch (inAnyOrderFirst, negated)
+					{
+						case (true, false):
+							await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringInterspersedItems();
+							break;
+						case (true, true):
+							await That(subject).IsNotContainedIn(expected).InAnyOrder().IgnoringInterspersedItems();
+							break;
+						case (false, false):
+							await That(subject).IsContainedIn(expected).IgnoringInterspersedItems().InAnyOrder();
+							break;
+						case (false, true):
+							await That(subject).IsNotContainedIn(expected).IgnoringInterspersedItems().InAnyOrder();
+							break;
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(inAnyOrderFirst
+						? "IgnoringInterspersedItems cannot be combined with InAnyOrder."
+						: "InAnyOrder cannot be combined with IgnoringInterspersedItems.")
+					.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
+			}
+
 			[Fact]
 			public async Task WithEmptySubjectAndManyExpectedItems_ShouldSucceed()
 			{

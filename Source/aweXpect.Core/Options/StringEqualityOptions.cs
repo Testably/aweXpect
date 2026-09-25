@@ -303,26 +303,25 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Specifies a specific <see cref="IEqualityComparer{T}" /> to use for comparing <see langword="string" />s.
 	/// </summary>
 	/// <remarks>
-	///     If set to <see langword="null" /> (default), uses the <see cref="StringComparer.Ordinal" /> or
-	///     <see cref="StringComparer.OrdinalIgnoreCase" /> depending on whether the casing is ignored.
+	///     Without a comparer, the <see cref="StringComparer.Ordinal" /> or <see cref="StringComparer.OrdinalIgnoreCase" />
+	///     is used depending on whether the casing is ignored.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The casing is already ignored via <see cref="IgnoringCase(bool)" />, or the expected value is matched as a
-	///     regex or wildcard pattern.
+	///     A comparer is already set, the casing is already ignored via <see cref="IgnoringCase(bool)" />, or the
+	///     expected value is matched as a regex or wildcard pattern.
 	/// </exception>
-	public StringEqualityOptions Using(IEqualityComparer<string>? comparer)
+	public StringEqualityOptions Using(IEqualityComparer<string> comparer)
 	{
-		if (comparer is not null)
+		comparer.ThrowIfNull();
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, nameof(Using));
+		if (_ignoreCase)
 		{
-			if (_ignoreCase)
-			{
-				throw CaseAndComparerConflict();
-			}
+			throw CaseAndComparerConflict();
+		}
 
-			if (_matchType is RegexMatchType or WildcardMatchType)
-			{
-				throw ComparerAndPatternConflict();
-			}
+		if (_matchType is RegexMatchType or WildcardMatchType)
+		{
+			throw ComparerAndPatternConflict();
 		}
 
 		_comparer = comparer;
