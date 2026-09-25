@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has item matching x => x == 2 ? throw exception : false,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 
 					             Collection:
@@ -198,7 +198,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have item matching x => x == 2 ? throw exception : false,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 
 					             Collection:

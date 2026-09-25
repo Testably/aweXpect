@@ -133,9 +133,8 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 		catch (Exception exception)
 		{
-			Exception cause = exception is UserCodeException userCodeException
-				? userCodeException.Exception
-				: exception;
+			UserCodeException? userCodeException = exception as UserCodeException;
+			Exception cause = userCodeException?.Exception ?? exception;
 			if (MemberExceptionResult.IsCancellationOf(cause, cancellationToken))
 			{
 				ExceptionDispatchInfo.Capture(cause).Throw();
@@ -143,7 +142,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 			ConstraintResult exceptionResult = MemberExceptionResult.Create(
 				await _inner.IsMetBy<TMember>(default, ExpectationTextEvaluationContext.For(context),
-					cancellationToken), cause, _memberName, default(TMember));
+					cancellationToken), cause, userCodeException?.Thrower ?? _memberName, default(TMember));
 			return CombineResults(parentResult, exceptionResult, _separator ?? "",
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}

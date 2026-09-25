@@ -53,7 +53,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy x => x!.Length > 5,
-					             but it did throw a NullReferenceException:
+					             but the predicate did throw a NullReferenceException:
 					             """).AsPrefix().And
 					.Whose(e => e.InnerException, i => i.Is<NullReferenceException>());
 			}

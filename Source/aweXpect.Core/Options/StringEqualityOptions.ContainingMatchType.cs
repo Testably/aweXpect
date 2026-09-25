@@ -31,7 +31,7 @@ public partial class StringEqualityOptions
 			for (int index = 0; index <= actual.Length - expected.Length; index++)
 			{
 				string candidate = actual.Substring(index, expected.Length);
-				if (UserCode.Invoke(() => comparer.Equals(candidate, expected)))
+				if (UserCode.Invoke(() => comparer.Equals(candidate, expected), "the comparer"))
 				{
 					return true;
 				}

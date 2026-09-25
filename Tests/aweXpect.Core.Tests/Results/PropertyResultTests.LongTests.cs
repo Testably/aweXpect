@@ -131,7 +131,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has long value equal to 42,
-				             but it could not read the long value, because it did throw an InvalidOperationException:
+				             but long value did throw an InvalidOperationException:
 				               foo
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -343,7 +343,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             does not have long value equal to 42,
-				             but it could not read the long value, because it did throw an InvalidOperationException:
+				             but long value did throw an InvalidOperationException:
 				               foo
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))

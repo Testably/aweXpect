@@ -258,7 +258,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have message equal to "foo",
-					             but it could not read the message, because it did throw an InvalidOperationException:
+					             but message did throw an InvalidOperationException:
 					               message failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -575,7 +575,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "foo",
-					             but it could not read the message, because it did throw an InvalidOperationException:
+					             but message did throw an InvalidOperationException:
 					               message failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))

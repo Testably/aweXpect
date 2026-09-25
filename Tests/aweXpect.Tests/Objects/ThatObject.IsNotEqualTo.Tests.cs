@@ -53,7 +53,7 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.ThrowingEqualsClass { },
-					             but it did throw an InvalidOperationException:
+					             but Equals of ThatObject.ThrowingEqualsClass did throw an InvalidOperationException:
 					               equals failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))

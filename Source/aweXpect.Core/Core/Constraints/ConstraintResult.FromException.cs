@@ -20,19 +20,22 @@ public abstract partial class ConstraintResult
 		private readonly Exception _exception;
 		private readonly TimeSpan? _exceededTimeout;
 		private readonly ConstraintResult _inner;
+		private readonly string _it;
 
 		/// <summary>
 		///     A failed <see cref="ConstraintResult" /> due to a thrown <paramref name="exception" />, or due to the
-		///     subject not finishing within the <paramref name="exceededTimeout" />.
+		///     subject <paramref name="it" /> not finishing within the <paramref name="exceededTimeout" />.
 		/// </summary>
 		public FromException(
 			ConstraintResult inner,
 			Exception exception,
+			string it,
 			TimeSpan? exceededTimeout = null)
 			: base(inner.Grammars)
 		{
 			_inner = inner;
 			_exception = exception;
+			_it = it;
 			_exceededTimeout = exceededTimeout;
 			FurtherProcessingStrategy = inner.FurtherProcessingStrategy;
 		}
@@ -55,12 +58,12 @@ public abstract partial class ConstraintResult
 		{
 			if (_exceededTimeout is not null)
 			{
-				stringBuilder.ItDidNotFinishWithin("it", _exceededTimeout.Value);
+				stringBuilder.ItDidNotFinishWithin(_it, _exceededTimeout.Value);
 				return;
 			}
 
 			stringBuilder
-				.Append("it did throw ")
+				.Append(_it).Append(" did throw ")
 				.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 		}
 

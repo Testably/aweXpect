@@ -37,7 +37,8 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int,
-					             but it was not, because the input string 'abc' was not in a correct format
+					             but Parse of int did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
 					             """).And
 					.Whose(e => e.InnerException, i => i.Is<FormatException>())
 					.Because("the exception of the parser tells why the string is not parsable");
@@ -68,7 +69,8 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is parsable into uint using {cultureName},
-					              but it was not, because the input string '{subject}' was not in a correct format
+					              but Parse of uint did throw a FormatException:
+					                The input string '{subject}' was not in a correct format.
 					              """);
 			}
 
@@ -116,7 +118,8 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into TimeSpan which is less than 0:10,
-					             but it was not, because string 'abc' was not recognized as a valid TimeSpan
+					             but Parse of TimeSpan did throw a FormatException:
+					               String 'abc' was not recognized as a valid TimeSpan.
 					             """);
 			}
 

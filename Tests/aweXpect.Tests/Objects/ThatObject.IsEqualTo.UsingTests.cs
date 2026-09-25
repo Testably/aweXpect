@@ -141,12 +141,50 @@ public sealed partial class ThatObject
 					.Because("the second comparer would silently replace the first one");
 			}
 
+			[Fact]
+			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				OuterClass subject = new()
+				{
+					Value = "Foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(subject).Using(new ThrowingComparer(exception));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to ThatObject.OuterClass {
+					                 Inner = <null>,
+					                 Value = "Foo"
+					               } using ThatObject.IsEqualTo.UsingTests.ThrowingComparer,
+					             but the comparer did throw an InvalidOperationException:
+					               comparer failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
 			private sealed class MyComparer(bool considerEqual) : IEqualityComparer<object>
 			{
 				#region IEqualityComparer<object> Members
 
 				bool IEqualityComparer<object>.Equals(object? x, object? y)
 					=> considerEqual;
+
+				public int GetHashCode(object obj)
+					=> obj.GetHashCode();
+
+				#endregion
+			}
+
+			private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<object>
+			{
+				#region IEqualityComparer<object> Members
+
+				bool IEqualityComparer<object>.Equals(object? x, object? y)
+					=> throw exception;
 
 				public int GetHashCode(object obj)
 					=> obj.GetHashCode();

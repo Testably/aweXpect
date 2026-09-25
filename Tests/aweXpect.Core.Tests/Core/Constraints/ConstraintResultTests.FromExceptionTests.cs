@@ -13,7 +13,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 			StringBuilder sb = new();
 
 			sut.AppendExpectation(sb);
@@ -22,11 +22,25 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task AppendResult_ExceededTimeout_ShouldNameTheSubject()
+		{
+			DummyConstraintResult inner = new(Outcome.Success, "foo");
+			Exception exception = new("bar");
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "the subject",
+				TimeSpan.FromSeconds(2));
+			StringBuilder sb = new();
+
+			sut.AppendResult(sb);
+
+			await That(sb.ToString()).IsEqualTo("the subject did not finish within 0:02");
+		}
+
+		[Fact]
 		public async Task AppendResult_Exception_ShouldAppendExpectedValue()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 			StringBuilder sb = new();
 
 			sut.AppendResult(sb);
@@ -35,11 +49,24 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task AppendResult_Exception_ShouldNameTheSubject()
+		{
+			DummyConstraintResult inner = new(Outcome.Success, "foo");
+			Exception exception = new("bar");
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "the subject");
+			StringBuilder sb = new();
+
+			sut.AppendResult(sb);
+
+			await That(sb.ToString()).IsEqualTo($"the subject did throw an Exception:{Environment.NewLine}  bar");
+		}
+
+		[Fact]
 		public async Task AppendResult_SpecificException_ShouldAppendExpectedValue()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			ArgumentException exception = new("bar");
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 			StringBuilder sb = new();
 
 			sut.AppendResult(sb);
@@ -52,7 +79,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
@@ -78,7 +105,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
 		}
@@ -98,7 +125,7 @@ public partial class ConstraintResultTests
 		private class MyFromExceptionConstraintResult(
 			ConstraintResult inner,
 			Exception exception)
-			: ConstraintResult.FromException(inner, exception)
+			: ConstraintResult.FromException(inner, exception, "it")
 		{
 			public void SetOutcome(Outcome outcome) => Outcome = outcome;
 		}

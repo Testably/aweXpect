@@ -190,7 +190,7 @@ public sealed class AndNodeTests
 	{
 		Exception exception = new("foo");
 		AndNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "left"), exception)));
+			new DummyConstraintResult(Outcome.Failure, "left"), exception, "it")));
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "right")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
@@ -204,7 +204,7 @@ public sealed class AndNodeTests
 		Exception exception = new("foo");
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "left")));
 		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "right"), exception)));
+			new DummyConstraintResult(Outcome.Failure, "right"), exception, "it")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
@@ -248,7 +248,7 @@ public sealed class AndNodeTests
 		Outcome other, Outcome expectedOutcome)
 	{
 		AndNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure), new Exception("foo"))));
+			new DummyConstraintResult(Outcome.Failure), new Exception("foo"), "it")));
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);

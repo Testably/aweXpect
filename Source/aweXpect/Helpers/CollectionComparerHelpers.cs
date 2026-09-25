@@ -73,15 +73,15 @@ internal static class CollectionComparerHelpers
 	public static Func<T, T, bool>? GetCustomSetEquality<T>(IEnumerable<T> collection)
 		=> collection switch
 		{
-			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y)),
+			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y), "the comparer"),
 			SortedSet<T> set when IsCustom(set.Comparer)
-				=> (x, y) => UserCode.Invoke(() => set.Comparer.Compare(x, y)) == 0,
+				=> (x, y) => UserCode.Invoke(() => set.Comparer.Compare(x, y), "the comparer") == 0,
 #if NET8_0_OR_GREATER
 			ImmutableHashSet<T> set when IsCustom(set.KeyComparer)
-				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Equals(x, y)),
+				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Equals(x, y), "the comparer"),
 			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
-				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Compare(x, y)) == 0,
-			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y)),
+				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Compare(x, y), "the comparer") == 0,
+			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y), "the comparer"),
 #endif
 			_ => null,
 		};

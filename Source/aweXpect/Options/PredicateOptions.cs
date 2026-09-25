@@ -9,7 +9,7 @@ internal class PredicateOptions<TItem>
 	private string? _predicateDescription;
 
 	public bool Matches(TItem item)
-		=> _predicate is null || UserCode.Invoke(_predicate, item);
+		=> _predicate is null || UserCode.Invoke(_predicate, item, "the predicate");
 
 	internal void SetPredicate(Func<TItem, bool> predicate, string predicateDescription)
 	{

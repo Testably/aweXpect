@@ -77,7 +77,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies x => x!.Length > 3,
-					             but it did throw a NullReferenceException:
+					             but the predicate did throw a NullReferenceException:
 					             """).AsPrefix().And
 					.Whose(e => e.InnerException, i => i.Is<NullReferenceException>())
 					.Because("a careless predicate meeting a null subject must be reported as a failed expectation");
@@ -109,7 +109,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => throw exception,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """)
 					.Because("a predicate that threw answered nothing, so it fails the negation just as it fails the expectation");
@@ -128,7 +128,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => throw new OperationCanceledException("nothing was canceled"),
-					             but it did throw an OperationCanceledException:
+					             but the predicate did throw an OperationCanceledException:
 					               nothing was canceled
 					             """)
 					.Because("only a cancellation that was actually requested may abort the evaluation");
@@ -147,7 +147,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => throw exception,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
@@ -325,7 +325,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies ThrowingPredicate within 0:00.200,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed again
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(lastException));
@@ -358,7 +358,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy ThrowingPredicate within 0:00.200,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed again
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(lastException));

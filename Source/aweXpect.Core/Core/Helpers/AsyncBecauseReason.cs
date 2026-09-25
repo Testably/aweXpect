@@ -45,7 +45,8 @@ internal struct AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 			}
 			catch (Exception exception)
 			{
-				resolvedReason = $"the reason could not be determined: {Formatter.Format(exception)}";
+				resolvedReason =
+					$"the reason did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: {exception.Message}";
 			}
 
 			if (string.IsNullOrEmpty(resolvedReason))

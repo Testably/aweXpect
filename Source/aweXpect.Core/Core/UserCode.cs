@@ -19,7 +19,11 @@ public static class UserCode
 	/// <summary>
 	///     Calls the <paramref name="callback" /> of the caller.
 	/// </summary>
-	public static TResult Invoke<TResult>(Func<TResult> callback)
+	/// <param name="callback">The code of the caller.</param>
+	/// <param name="thrower">
+	///     Who threw in the failure message (e.g. <c>the predicate</c>), or <see langword="null" /> for the subject.
+	/// </param>
+	public static TResult Invoke<TResult>(Func<TResult> callback, string? thrower = null)
 	{
 		try
 		{
@@ -27,14 +31,39 @@ public static class UserCode
 		}
 		catch (Exception exception) when (exception is not UserCodeException)
 		{
-			throw new UserCodeException(exception);
+			throw new UserCodeException(exception, thrower);
+		}
+	}
+
+	/// <summary>
+	///     Calls the <paramref name="callback" /> of the caller.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="thrower" /> is only created when the <paramref name="callback" /> throws, so that a name
+	///     that has to be formatted costs nothing while the code of the caller succeeds.
+	/// </remarks>
+	internal static TResult Invoke<TResult>(Func<TResult> callback, Func<string> thrower)
+	{
+		try
+		{
+			return callback();
+		}
+		catch (Exception exception) when (exception is not UserCodeException)
+		{
+			throw new UserCodeException(exception, thrower());
 		}
 	}
 
 	/// <summary>
 	///     Calls the <paramref name="callback" /> of the caller with the <paramref name="argument" />.
 	/// </summary>
-	public static TResult Invoke<TArgument, TResult>(Func<TArgument, TResult> callback, TArgument argument)
+	/// <param name="callback">The code of the caller.</param>
+	/// <param name="argument">The argument of the <paramref name="callback" />.</param>
+	/// <param name="thrower">
+	///     Who threw in the failure message (e.g. <c>the predicate</c>), or <see langword="null" /> for the subject.
+	/// </param>
+	public static TResult Invoke<TArgument, TResult>(Func<TArgument, TResult> callback, TArgument argument,
+		string? thrower = null)
 	{
 		try
 		{
@@ -42,19 +71,24 @@ public static class UserCode
 		}
 		catch (Exception exception) when (exception is not UserCodeException)
 		{
-			throw new UserCodeException(exception);
+			throw new UserCodeException(exception, thrower);
 		}
 	}
 
 	/// <summary>
 	///     Calls the asynchronous <paramref name="callback" /> of the caller.
 	/// </summary>
+	/// <param name="callback">The code of the caller.</param>
+	/// <param name="thrower">
+	///     Who threw in the failure message (e.g. <c>the predicate</c>), or <see langword="null" /> for the subject.
+	/// </param>
+	/// <param name="cancellationToken">The cancellation of the evaluation.</param>
 	/// <remarks>
 	///     An <see cref="OperationCanceledException" /> while the <paramref name="cancellationToken" /> is canceled is
 	///     thrown as it is, so that the caller can react to the cancellation before it aborts the evaluation.
 	/// </remarks>
 	public static async ValueTask<TResult> InvokeAsync<TResult>(Func<ValueTask<TResult>> callback,
-		CancellationToken cancellationToken = default)
+		string? thrower = null, CancellationToken cancellationToken = default)
 	{
 		try
 		{
@@ -64,7 +98,14 @@ public static class UserCode
 		                                  !(exception is OperationCanceledException &&
 		                                    cancellationToken.IsCancellationRequested))
 		{
-			throw new UserCodeException(exception);
+			throw new UserCodeException(exception, thrower);
 		}
 	}
+
+	/// <summary>
+	///     Returns the name of the <see cref="object.Equals(object)" /> method of the <paramref name="value" /> for the
+	///     failure message.
+	/// </summary>
+	internal static string EqualsOf(object value)
+		=> $"Equals of {Formatter.Format(value.GetType())}";
 }

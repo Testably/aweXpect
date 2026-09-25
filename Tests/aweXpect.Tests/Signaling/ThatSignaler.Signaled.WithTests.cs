@@ -101,7 +101,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once with p => p == 2 ? throw exception : false within 0:10,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
@@ -130,7 +130,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback with p => p == 2 ? throw exception : false within 0:10,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))

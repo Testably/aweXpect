@@ -285,7 +285,7 @@ public static partial class ThatAsyncEnumerable
 					items.Add(item);
 				}
 
-				if (UserCode.Invoke(predicate, item))
+				if (UserCode.Invoke(predicate, item, "the predicate"))
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);

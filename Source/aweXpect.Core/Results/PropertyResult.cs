@@ -709,8 +709,7 @@ public static class PropertyResult
 		{
 			if (_exception is not null)
 			{
-				stringBuilder.Append(It).Append(" could not read the ").Append(propertyExpression)
-					.Append(", because it did throw ")
+				stringBuilder.Append(propertyExpression).Append(" did throw ")
 					.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 				return;
 			}
@@ -827,8 +826,7 @@ public static class PropertyResult
 		{
 			if (_exception is not null)
 			{
-				stringBuilder.Append(It).Append(" could not read the ").Append(propertyExpression)
-					.Append(", because it did throw ")
+				stringBuilder.Append(propertyExpression).Append(" did throw ")
 					.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 				return;
 			}

@@ -1109,7 +1109,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains an item matching x => x == 2 ? throw exception : false at least once,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))

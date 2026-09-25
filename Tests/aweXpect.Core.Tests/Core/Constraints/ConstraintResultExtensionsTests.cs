@@ -51,7 +51,7 @@ public sealed class ConstraintResultExtensionsTests
 		{
 			Exception exception = new("foo");
 			ConstraintResult inner = new ConstraintResult.FromException(
-				new DummyConstraintResult(Outcome.Failure, "foo"), exception);
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, "it");
 			ConstraintResult sut = inner.Fail("bar", 1);
 
 			await That(sut.FailureCause).IsSameAs(exception);
@@ -125,7 +125,7 @@ public sealed class ConstraintResultExtensionsTests
 		{
 			Exception exception = new("foo");
 			ConstraintResult inner = new ConstraintResult.FromException(
-				new DummyConstraintResult(Outcome.Failure, "foo"), exception);
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, "it");
 			ConstraintResult sut = inner.UseValue(1);
 
 			await That(sut.FailureCause).IsSameAs(exception);
@@ -154,7 +154,7 @@ public sealed class ConstraintResultExtensionsTests
 		{
 			Exception exception = new("foo");
 			ConstraintResult inner = new ConstraintResult.FromException(
-				new DummyConstraintResult(Outcome.Failure, "foo"), exception);
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, "it");
 			ConstraintResult sut = inner.AppendExpectationText(s => s.Append("bar"));
 
 			await That(sut.FailureCause).IsSameAs(exception);
