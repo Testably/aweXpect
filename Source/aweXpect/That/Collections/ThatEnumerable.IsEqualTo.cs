@@ -41,7 +41,8 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the value overloads, so that an empty collection expression binds to them\n" +
 		"instead of to this one.";
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
+		Remarks = SetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -49,14 +50,15 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					usesDefaultEquality: () => options.HasDefaultMatchType);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -64,7 +66,8 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
+		Remarks = SetComparerRemarks)]
 	internal static StringCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsEqualToForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -79,7 +82,8 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					usesDefaultEquality: () => options.ComparesByOrdinalEquality);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

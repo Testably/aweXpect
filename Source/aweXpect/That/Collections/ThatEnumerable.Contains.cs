@@ -48,6 +48,11 @@ public static partial class ThatEnumerable
 		"that its comparer decides and the item is counted at most once. Its items are enumerated instead when the\n" +
 		"comparison is changed, e.g. with <c>Using(…)</c>, or when the item is <see langword=\"null\" />.";
 
+	private const string SetComparerRemarks =
+		"A subject that is a set with a custom comparer, e.g. a <c>HashSet&lt;T&gt;</c> created with one, compares its items\n" +
+		"with that comparer, unless the comparison is changed, e.g. with <c>Using(…)</c>. The comparer of an expected set\n" +
+		"is not used.";
+
 	private const string ContainsCollection =
 		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
 
@@ -105,7 +110,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		Quantifier quantifier = new();
-		ContainedItemEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -293,7 +298,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
-		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + SetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		ContainsCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -302,14 +308,15 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true).InvertIf(negated)),
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
 			subject,
 			options,
 			matchOptions,
@@ -318,7 +325,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
-		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + SetComparerRemarks)]
 	internal static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		ContainsForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -334,7 +342,8 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true).InvertIf(negated)),
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.ComparesByOrdinalEquality).InvertIf(negated)),
 			subject,
 			options,
 			matchOptions,
@@ -599,13 +608,13 @@ public static partial class ThatEnumerable
 			: null;
 
 	/// <summary>
-	///     Equality options that tell whether their match type is still the default one.
+	///     Equality options for the items of a collection that tell whether their match type is still the default one.
 	/// </summary>
-	private sealed class ContainedItemEqualityOptions<TItem> : ObjectEqualityOptions<TItem>
+	private sealed class ItemEqualityOptions<TItem> : ObjectEqualityOptions<TItem>
 	{
 		private readonly IObjectMatchType _defaultMatchType;
 
-		public ContainedItemEqualityOptions()
+		public ItemEqualityOptions()
 		{
 			_defaultMatchType = MatchType;
 		}

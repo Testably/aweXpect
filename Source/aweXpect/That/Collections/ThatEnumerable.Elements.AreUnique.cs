@@ -22,6 +22,10 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are unique, i.e. they occur exactly once in the collection.
 		/// </summary>
+		/// <remarks>
+		///     A set with a custom comparer never holds two items that its comparer considers equal, so its items count as
+		///     unique without being compared, unless the comparison is changed, e.g. with <c>Using(…)</c>.
+		/// </remarks>
 		public StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> AreUnique()
 			=> AreUniqueCore(true);
 
@@ -46,6 +50,10 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are not unique, i.e. they occur more than once in the collection.
 		/// </summary>
+		/// <remarks>
+		///     A set with a custom comparer never holds two items that its comparer considers equal, so its items count as
+		///     unique without being compared, unless the comparison is changed, e.g. with <c>Using(…)</c>.
+		/// </remarks>
 		public StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> AreNotUnique()
 			=> AreUniqueCore(false);
 
@@ -80,7 +88,8 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						a => options.ComparesByOrdinalEquality && CollectionComparerHelpers.IsSetWithCustomComparer(a))),
 				_subject,
 				options);
 		}
@@ -132,6 +141,10 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are unique, i.e. they occur exactly once in the collection.
 		/// </summary>
+		/// <remarks>
+		///     A set with a custom comparer never holds two items that its comparer considers equal, so its items count as
+		///     unique without being compared, unless the comparison is changed, e.g. with <c>Using(…)</c>.
+		/// </remarks>
 		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem> AreUnique()
 			=> AreUniqueCore(true);
 
@@ -156,6 +169,10 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are not unique, i.e. they occur more than once in the collection.
 		/// </summary>
+		/// <remarks>
+		///     A set with a custom comparer never holds two items that its comparer considers equal, so its items count as
+		///     unique without being compared, unless the comparison is changed, e.g. with <c>Using(…)</c>.
+		/// </remarks>
 		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem> AreNotUnique()
 			=> AreUniqueCore(false);
 
@@ -180,7 +197,7 @@ public static partial class ThatEnumerable
 		private ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem> AreUniqueCore(
 			bool expectUnique)
 		{
-			ObjectEqualityOptions<TItem> options = new();
+			ItemEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -190,7 +207,8 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						a => options.HasDefaultMatchType && CollectionComparerHelpers.IsSetWithCustomComparer(a))),
 				_subject,
 				options);
 		}
@@ -560,6 +578,11 @@ public static partial class ThatEnumerable
 		}
 	}
 
+	/// <remarks>
+	///     When <paramref name="isUniqueBySubject" /> holds for the subject, e.g. for a set with a custom comparer
+	///     whose comparison was not changed, every item is unique without being compared, because a set never holds two
+	///     items that its comparer considers equal.
+	/// </remarks>
 	private sealed class AreUniqueConstraint<TItem, TMember>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -572,7 +595,8 @@ public static partial class ThatEnumerable
 #else
 		Func<TMember, TMember, Task<bool>> areConsideredEqual,
 #endif
-		bool expectUnique)
+		bool expectUnique,
+		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null)
 		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
@@ -590,6 +614,18 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			if (isUniqueBySubject?.Invoke(actual) == true)
+			{
+				foreach (TItem item in materialized)
+				{
+					Record(item, expectUnique);
+				}
+
+				Complete();
+				ExpectationBuilder.AddCollectionContext(materialized);
+				return this;
+			}
+
 			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
 			List<(TItem Item, int MemberIndex)> items = [];
 			foreach (TItem item in materialized)

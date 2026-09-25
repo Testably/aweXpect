@@ -44,7 +44,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
-		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + SetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedInCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -53,7 +54,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -61,7 +62,8 @@ public static partial class ThatEnumerable
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true);
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.HasDefaultMatchType);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -72,7 +74,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
-		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + SetComparerRemarks)]
 	internal static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsContainedInForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -89,7 +92,8 @@ public static partial class ThatEnumerable
 			{
 				IsEqualToConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true);
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.ComparesByOrdinalEquality);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

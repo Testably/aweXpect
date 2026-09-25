@@ -6,6 +6,48 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class DoesNotContain
 	{
+		public sealed class SetCollectionTests
+		{
+			[Fact]
+			public async Task Using_ShouldOverrideTheComparerOfTheSet()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(["A", "B",]).InAnyOrder().Using(StringComparer.Ordinal);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldFail()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(["B", "A",]).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection ["B", "A",] in any order,
+					             but it did
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+
+					             Expected:
+					             [
+					               "B",
+					               "A"
+					             ]
+					             """);
+			}
+		}
+
 		public sealed class SetItemTests
 		{
 			[Fact]
