@@ -4116,6 +4116,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -4804,7 +4810,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -5496,7 +5503,8 @@ window.BENCHMARK_DATA = {
           246.31336043431207,
           366.88434807459515,
           325.7155992984772,
-          246.4557346979777
+          246.4557346979777,
+          334.8974219640096
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6193,6 +6201,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912
         ],
         "borderColor": "#63A2AC",
@@ -6893,7 +6902,8 @@ window.BENCHMARK_DATA = {
           191.5841211716334,
           247.6801100730896,
           232.2529143333435,
-          203.37873796621957
+          203.37873796621957,
+          264.95683066050213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7086,6 +7096,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11258,6 +11269,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -11869,7 +11886,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -12484,7 +12502,8 @@ window.BENCHMARK_DATA = {
           309114.3339518229,
           402744.52099609375,
           426699.6129557292,
-          331180.2082519531
+          331180.2082519531,
+          448683.5196614583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13104,6 +13123,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384
         ],
         "borderColor": "#63A2AC",
@@ -13727,7 +13747,8 @@ window.BENCHMARK_DATA = {
           1767930.7940848214,
           2575607.152604167,
           2561419.760216346,
-          1912716.6604166667
+          1912716.6604166667,
+          2641279.505301339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14347,7 +14368,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18477,6 +18499,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -19165,7 +19193,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -19857,7 +19886,8 @@ window.BENCHMARK_DATA = {
           418.5804012005146,
           614.0945189339774,
           606.9750425338746,
-          404.67807575372547
+          404.67807575372547,
+          565.4947686876569
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20554,6 +20584,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -21254,7 +21285,8 @@ window.BENCHMARK_DATA = {
           368.9387762387594,
           498.2847960472107,
           467.1022602830614,
-          371.5217943925124
+          371.5217943925124,
+          490.3035710016886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21447,6 +21479,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26081,6 +26114,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -26769,7 +26808,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -27461,7 +27501,8 @@ window.BENCHMARK_DATA = {
           281.1937019983927,
           344.52720368703206,
           329.71701486294086,
-          263.3782348950704
+          263.3782348950704,
+          345.38215919641345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28158,6 +28199,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -28858,7 +28900,8 @@ window.BENCHMARK_DATA = {
           189.36316787401836,
           243.47133977596576,
           242.38292394365584,
-          188.00750862635098
+          188.00750862635098,
+          257.240458215986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29051,6 +29094,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33685,6 +33729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -34373,7 +34423,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -35065,7 +35116,8 @@ window.BENCHMARK_DATA = {
           480.31194613530084,
           625.3137149175008,
           620.1444105148315,
-          476.55130367279054
+          476.55130367279054,
+          632.7823322931926
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35762,6 +35814,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576
         ],
         "borderColor": "#63A2AC",
@@ -36462,7 +36515,8 @@ window.BENCHMARK_DATA = {
           874.4405344009399,
           1179.566806411743,
           1175.6374717439924,
-          870.0199383417765
+          870.0199383417765,
+          1214.0112387793404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36891,6 +36945,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41289,6 +41344,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -41977,7 +42038,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -42669,7 +42731,8 @@ window.BENCHMARK_DATA = {
           1970.5652867635092,
           2681.35092976888,
           2623.4026667277017,
-          2263.8075921194895
+          2263.8075921194895,
+          3066.1807594299316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43366,6 +43429,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          4032,
           4032
         ],
         "borderColor": "#63A2AC",
@@ -44066,7 +44130,8 @@ window.BENCHMARK_DATA = {
           970.213997777303,
           1318.2128634134929,
           1294.726900736491,
-          1012.8783800942557
+          1012.8783800942557,
+          1449.1962752024333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44259,6 +44324,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -48893,6 +48959,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 00:06:20 2026 \u002B0200",
         "message": "chore: restore the default build scope after the 3.0.0-pre.8 release  (#1364)"
+      },
+      {
+        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
+        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
       }
     ],
     "labels": [
@@ -49581,7 +49653,8 @@ window.BENCHMARK_DATA = {
       "11ae0085",
       "d9d72aca",
       "f5b89dba",
-      "14b53a3d"
+      "14b53a3d",
+      "1e0600a1"
     ],
     "datasets": [
       {
@@ -50273,7 +50346,8 @@ window.BENCHMARK_DATA = {
           2304.881059374128,
           3153.5936186654226,
           3031.907234700521,
-          2257.967160797119
+          2257.967160797119,
+          3117.8327437180737
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50970,6 +51044,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          3792,
           3792
         ],
         "borderColor": "#63A2AC",
@@ -51670,7 +51745,8 @@ window.BENCHMARK_DATA = {
           14889.59039415632,
           26510.617586263023,
           26177.42107747396,
-          15204.705733079176
+          15204.705733079176,
+          28760.40278930664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52363,6 +52439,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
