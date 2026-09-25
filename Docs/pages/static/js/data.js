@@ -4152,6 +4152,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -4846,7 +4852,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -5544,7 +5551,8 @@ window.BENCHMARK_DATA = {
           309.2303461294908,
           162.10056506670438,
           241.9545815785726,
-          354.9138753230755
+          354.9138753230755,
+          330.47076206207277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6241,6 +6249,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -6953,7 +6962,8 @@ window.BENCHMARK_DATA = {
           241.6386832169124,
           135.95577567418417,
           230.99256037076313,
-          234.43503063065666
+          234.43503063065666,
+          277.0887091841017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7146,6 +7156,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11360,6 +11371,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -11977,7 +11994,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -12598,7 +12616,8 @@ window.BENCHMARK_DATA = {
           422913.3953125,
           219935.76381835938,
           302810.2771344866,
-          414575.8200683594
+          414575.8200683594,
+          445190.5305989583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13218,6 +13237,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -13853,7 +13873,8 @@ window.BENCHMARK_DATA = {
           2520124.980769231,
           1312694.349330357,
           1765410.9028645833,
-          2495256.078125
+          2495256.078125,
+          2261677.1007254464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14479,7 +14500,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841611,
-          4841651
+          4841651,
+          4841635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18645,6 +18667,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -19339,7 +19367,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -20037,7 +20066,8 @@ window.BENCHMARK_DATA = {
           532.5304430552891,
           294.2913992588337,
           437.31962765180145,
-          561.2740639368693
+          561.2740639368693,
+          572.2930903116862
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20734,6 +20764,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -21446,7 +21477,8 @@ window.BENCHMARK_DATA = {
           468.6073079109192,
           265.5732650416238,
           394.3921975135803,
-          464.85439586639404
+          464.85439586639404,
+          506.42377713521324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21639,6 +21671,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26315,6 +26348,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -27009,7 +27048,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -27707,7 +27747,8 @@ window.BENCHMARK_DATA = {
           336.97117062977384,
           173.28220529556273,
           265.1044013659159,
-          341.4331901868184
+          341.4331901868184,
+          340.2542008399963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28404,6 +28445,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -29116,7 +29158,8 @@ window.BENCHMARK_DATA = {
           234.91125158163217,
           133.63013918059212,
           260.7137795130412,
-          249.27881676355997
+          249.27881676355997,
+          290.4156669298808
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29309,6 +29352,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33985,6 +34029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -34679,7 +34729,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -35377,7 +35428,8 @@ window.BENCHMARK_DATA = {
           588.1439423194298,
           339.47937596638997,
           434.7333507537842,
-          584.3941752570016
+          584.3941752570016,
+          619.9223340352377
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36074,6 +36126,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -36786,7 +36839,8 @@ window.BENCHMARK_DATA = {
           1271.4010334014893,
           638.9035935084025,
           997.948850886027,
-          1164.684745495136
+          1164.684745495136,
+          1292.890371831258
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37215,6 +37269,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41655,6 +41710,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -42349,7 +42410,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -43047,7 +43109,8 @@ window.BENCHMARK_DATA = {
           2923.1399696895055,
           1605.770192082723,
           1613.3105629512243,
-          2960.5992584228516
+          2960.5992584228516,
+          2781.722848256429
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43749,6 +43812,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          4168,
           4168,
           4168
         ],
@@ -44456,7 +44520,8 @@ window.BENCHMARK_DATA = {
           1284.651495107015,
           689.0055833498637,
           993.2851346333822,
-          1286.4451543367827
+          1286.4451543367827,
+          1424.523985417684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44649,6 +44714,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49325,6 +49391,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
         "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
+      },
+      {
+        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
+        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
       }
     ],
     "labels": [
@@ -50019,7 +50091,8 @@ window.BENCHMARK_DATA = {
       "5be679d9",
       "33ac0bdb",
       "e50f5061",
-      "1c1e3359"
+      "1c1e3359",
+      "250bac89"
     ],
     "datasets": [
       {
@@ -50717,7 +50790,8 @@ window.BENCHMARK_DATA = {
           2844.4870118361255,
           1633.9709972381593,
           1699.4059089933123,
-          2904.773911339896
+          2904.773911339896,
+          2746.697520446777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51419,6 +51493,7 @@ window.BENCHMARK_DATA = {
           3792,
           3792,
           3792,
+          3928,
           3928,
           3928
         ],
@@ -52126,7 +52201,8 @@ window.BENCHMARK_DATA = {
           26036.971883920523,
           10554.614458211263,
           13557.310091291156,
-          26436.324474628156
+          26436.324474628156,
+          24352.103568522136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52829,7 +52905,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
