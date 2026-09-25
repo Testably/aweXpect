@@ -120,7 +120,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or after {Formatter.Format(expected)},
-						              but it was {Formatter.Format(subject)} which differs by -0:01
+						              but it was {Formatter.Format(subject)}, which differs by -0:01
 						              """);
 				}
 
@@ -197,7 +197,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or after {Formatter.Format(expected)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by -0:04
+						              but it was {Formatter.Format(subject)}, which differs by -0:04
 						              """);
 				}
 
@@ -248,7 +248,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is on or after {Formatter.Format(expected)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by -0:04
+						              but it was {Formatter.Format(subject)}, which differs by -0:04
 						              """);
 				}
 

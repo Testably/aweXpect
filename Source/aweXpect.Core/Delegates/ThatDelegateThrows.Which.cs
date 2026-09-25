@@ -8,5 +8,5 @@ public partial class ThatDelegateThrows<TException>
 	///     Further expectations on the <typeparamref name="TException" />.
 	/// </summary>
 	public IThat<TException> Which
-		=> new ThatSubject<TException>(ExpectationBuilder.And(" which "));
+		=> new ThatSubject<TException>(ExpectationBuilder.And(" that "));
 }

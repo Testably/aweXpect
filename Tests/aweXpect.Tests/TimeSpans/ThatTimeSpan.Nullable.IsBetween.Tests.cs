@@ -160,7 +160,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-						              but it was {Formatter.Format(subject)} which differs by -0:01 from the minimum
+						              but it was {Formatter.Format(subject)}, which differs by -0:01 from the minimum
 						              """);
 				}
 
@@ -178,7 +178,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-						              but it was {Formatter.Format(subject)} which differs by 0:01 from the maximum
+						              but it was {Formatter.Format(subject)}, which differs by 0:01 from the maximum
 						              """);
 				}
 
@@ -255,7 +255,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by 0:04 from the maximum
+						              but it was {Formatter.Format(subject)}, which differs by 0:04 from the maximum
 						              """);
 				}
 
@@ -274,7 +274,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by -0:04 from the minimum
+						              but it was {Formatter.Format(subject)}, which differs by -0:04 from the minimum
 						              """);
 				}
 
@@ -293,7 +293,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by 0:04 from the maximum
+						              but it was {Formatter.Format(subject)}, which differs by 0:04 from the maximum
 						              """);
 				}
 
@@ -312,7 +312,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage($"""
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by -0:04 from the minimum
+						              but it was {Formatter.Format(subject)}, which differs by -0:04 from the minimum
 						              """);
 				}
 

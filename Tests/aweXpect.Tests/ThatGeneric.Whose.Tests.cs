@@ -162,7 +162,7 @@ public sealed partial class ThatGeneric
 					.WithMessage($"""
 					              Expected that subject
 					              whose Value is equal to {Formatter.Format(expectedValue)},
-					              but Value was {Formatter.Format(value)} which differs by -1
+					              but Value was {Formatter.Format(value)}, which differs by -1
 					              """);
 			}
 
@@ -196,7 +196,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsync() is equal to 2,
-					             but GetValueAsync() was 1 which differs by -1
+					             but GetValueAsync() was 1, which differs by -1
 					             """);
 			}
 
@@ -245,7 +245,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose async o => await o.GetValueAsync() is equal to 2,
-					             but async o => await o.GetValueAsync() was 1 which differs by -1
+					             but async o => await o.GetValueAsync() was 1, which differs by -1
 					             """);
 			}
 
@@ -264,7 +264,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsValueTaskAsync() is equal to 2,
-					             but GetValueAsValueTaskAsync() was 1 which differs by -1
+					             but GetValueAsValueTaskAsync() was 1, which differs by -1
 					             """);
 			}
 
@@ -300,7 +300,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that () => subject
 					             does not throw any exception and its result is not null and whose GetValueAsync() is equal to 2,
-					             but GetValueAsync() was 1 which differs by -1
+					             but GetValueAsync() was 1, which differs by -1
 					             """);
 			}
 
@@ -337,7 +337,7 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             whose FaultedAsync() is equal to 1 or whose Value is equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed and Value was 0 which differs by -1
+					               async member failed and Value was 0, which differs by -1
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
@@ -911,7 +911,7 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Value has ToString() which is not equal to "1",
+					             whose Value has ToString() that is not equal to "1",
 					             but ToString() was "1"
 					             """)
 					.Because("the negation reaches the innermost expectation and leaves the member text alone");
@@ -931,8 +931,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Value has ToString() which is equal to "2",
-					             but ToString() was "1" which differs at index 0:
+					             whose Value has ToString() that is equal to "2",
+					             but ToString() was "1", which differs at index 0:
 					                ↓ (actual)
 					               "1"
 					               "2"
@@ -957,7 +957,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose Value has ToString() whose t!.Length is equal to 2,
-					             but t!.Length was 1 which differs by -1
+					             but t!.Length was 1, which differs by -1
 					             """)
 					.Because("each member introduces its own subject again for the next one");
 			}
@@ -984,8 +984,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Items have a single item which is equal to 2,
-					             but Items was 1 which differs by -1
+					             whose Items have a single item that is equal to 2,
+					             but Items was 1, which differs by -1
 					             """);
 			}
 
@@ -1001,8 +1001,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item whose Items have a single item which is equal to 2,
-					             but Items was 1 which differs by -1
+					             has a single item whose Items have a single item that is equal to 2,
+					             but Items was 1, which differs by -1
 					             """);
 			}
 

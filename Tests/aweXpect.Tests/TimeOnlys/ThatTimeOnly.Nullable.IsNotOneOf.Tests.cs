@@ -256,7 +256,7 @@ public sealed partial class ThatTimeOnly
 
 					string difference = actualDifference == 0
 						? ""
-						: $" which differs by -0:0{actualDifference} from the closest value";
+						: $", which differs by -0:0{actualDifference} from the closest value";
 
 					await That(Act).Throws<XunitException>()
 						.OnlyIf(expectToThrow)
@@ -281,7 +281,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of {Formatter.Format(unexpected)} ± 1:00,
-						              but it was 00:00:00.0000000 which differs by 1:00 from the closest value
+						              but it was 00:00:00.0000000, which differs by 1:00 from the closest value
 						              """)
 						.Because("equality uses the shortest distance around the clock face");
 				}

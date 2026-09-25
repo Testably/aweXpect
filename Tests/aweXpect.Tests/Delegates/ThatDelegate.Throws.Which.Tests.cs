@@ -38,7 +38,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception whose HResult is equal to {expectedHResult},
-						              but HResult was {hResult} which differs by -1
+						              but HResult was {hResult}, which differs by -1
 						              """);
 				}
 			}
@@ -72,7 +72,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a MyException whose Message is equal to "foo",
-						             but Message was "ShouldIncludeWhichInErrorMessa…" which differs at index 0:
+						             but Message was "ShouldIncludeWhichInErrorMessa…", which differs at index 0:
 						                ↓ (actual)
 						               "ShouldIncludeWhichInErrorMessage"
 						               "foo"

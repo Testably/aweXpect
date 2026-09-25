@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item matching _ => true at index 2,
+					              does not have an item matching _ => true at index 2,
 					              but it had item 2 at index 2
 
 					              Collection:
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item matching _ => true,
+					             does not have an item matching _ => true,
 					             but it was <null>
 					             """);
 			}
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item matching _ => true at index 0,
+					             does not have an item matching _ => true at index 0,
 					             but it was <null>
 					             """);
 			}
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item matching a => a == 1,
+					             does not have an item matching a => a == 1,
 					             but it had item 1
 
 					             Collection:
@@ -199,7 +199,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item equal to {unexpected} at index 2,
+					              does not have an item equal to {unexpected} at index 2,
 					              but it had item {unexpected} at index 2
 
 					              Collection:
@@ -263,7 +263,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 42,
+					             does not have an item equal to 42,
 					             but it was <null>
 					             """);
 			}
@@ -280,7 +280,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 42 at index 0,
+					             does not have an item equal to 42 at index 0,
 					             but it was <null>
 					             """);
 			}
@@ -296,7 +296,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 1,
+					             does not have an item equal to 1,
 					             but it had item 1
 
 					             Collection:
@@ -326,7 +326,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 1 at index 0 and does not have item equal to 2 at index 1,
+					             does not have an item equal to 1 at index 0 and does not have an item equal to 2 at index 1,
 					             but it had item 1 at index 0 and it had item 2 at index 1
 
 					             Collection:
@@ -375,7 +375,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item starting with "b" at index 1,
+					             does not have an item starting with "b" at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -398,7 +398,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item matching regex "b[aeiou]?r" at index 1,
+					             does not have an item matching regex "b[aeiou]?r" at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -435,7 +435,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item ending with "r" at index 1,
+					             does not have an item ending with "r" at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -458,7 +458,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item matching "b?r" at index 1,
+					             does not have an item matching "b?r" at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -483,7 +483,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(ignoreCase)
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to "BAR" ignoring case at index 1,
+					             does not have an item equal to "BAR" ignoring case at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -509,7 +509,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(ignoreIndentation)
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to "c\nd" ignoring indentation at index 1,
+					             does not have an item equal to "c\nd" ignoring indentation at index 1,
 					             but it had item "c\n  d" at index 1
 
 					             Collection:
@@ -535,7 +535,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(ignoreNewlineStyle)
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to "c\r\nd" ignoring newline style at index 1,
+					             does not have an item equal to "c\r\nd" ignoring newline style at index 1,
 					             but it had item "c\nd" at index 1
 
 					             Collection:
@@ -569,7 +569,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item equal to "bar" at index 2,
+					              does not have an item equal to "bar" at index 2,
 					              but it had item "bar" at index 2
 
 					              Collection:
@@ -599,7 +599,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to "bar" at index 0,
+					             does not have an item equal to "bar" at index 0,
 					             but it was <null>
 					             """);
 			}
@@ -615,7 +615,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to "bAr" using IgnoreCaseForVocalsComparer at index 1,
+					             does not have an item equal to "bAr" using IgnoreCaseForVocalsComparer at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:
@@ -642,7 +642,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equivalent to MyClass {
+					             does not have an item equivalent to MyClass {
 					               StringValue = "",
 					               Value = 2
 					             } at index 2,
@@ -714,7 +714,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 4 using AllEqualComparer at index 1,
+					             does not have an item equal to 4 using AllEqualComparer at index 1,
 					             but it had item 2 at index 1
 
 					             Collection:
@@ -761,7 +761,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item equal to {unexpected} at index 2 from end,
+					              does not have an item equal to {unexpected} at index 2 from end,
 					              but it had item {unexpected} at index 2 from end
 
 					              Collection:
@@ -811,7 +811,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have item equal to 42 at index 0 from end,
+					             does not have an item equal to 42 at index 0 from end,
 					             but it was <null>
 					             """);
 			}

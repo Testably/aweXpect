@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item that is equal to 2 at index 2,
+					              does not have an item that is equal to 2 at index 2,
 					              but it had item 2 at index 2
 
 					              Collection:
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have item that is equal to 1,
+					              does not have an item that is equal to 1,
 					              but it had item 1
 
 					              Collection:

@@ -195,7 +195,7 @@ public sealed class PluralMemberGrammar
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             whose Items have Name which is equal to "bar" for all items,
+				             whose Items have Name that is equal to "bar" for all items,
 				             but none of 2 did
 				             *
 				             """).AsWildcard()

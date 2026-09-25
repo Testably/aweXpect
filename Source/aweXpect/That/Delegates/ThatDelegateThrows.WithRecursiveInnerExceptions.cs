@@ -28,7 +28,7 @@ public static partial class ThatDelegateThrows
 					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFunc(
 						e => e.GetInnerExceptions(),
 						"recursive inner exceptions"),
-					(_, s) => s.Append(" which "))
+					(_, s) => s.Append(" that "))
 				.Validate((it, grammars) => new ThatException.HasRecursiveInnerExceptionsConstraint(
 					it, grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested))
 				.AddExpectations(e => expectations(new ThatSubject<IEnumerable<Exception>>(e)),

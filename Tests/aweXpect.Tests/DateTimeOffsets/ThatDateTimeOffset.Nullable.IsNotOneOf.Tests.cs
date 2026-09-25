@@ -255,7 +255,7 @@ public sealed partial class ThatDateTimeOffset
 
 					string difference = actualDifference == 0
 						? ""
-						: $" which differs by -0:0{actualDifference} from the closest value";
+						: $", which differs by -0:0{actualDifference} from the closest value";
 
 					await That(Act).Throws<XunitException>()
 						.OnlyIf(expectToThrow)

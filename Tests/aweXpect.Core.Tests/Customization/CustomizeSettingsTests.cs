@@ -56,7 +56,7 @@ public sealed class CustomizeSettingsTests
 				.WithMessage("""
 				             Expected that () => 1
 				             is equal to 2 within 0:00.100,
-				             but it was 1 which differs by -1
+				             but it was 1, which differs by -1
 				             """);
 			stopwatch.Stop();
 		}
@@ -151,7 +151,7 @@ public sealed class CustomizeSettingsTests
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
-			              but it was {Formatter.Format(time)} which differs by -0:00.010
+			              but it was {Formatter.Format(time)}, which differs by -0:00.010
 			              """);
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(10.Milliseconds()))
 		{
@@ -162,7 +162,7 @@ public sealed class CustomizeSettingsTests
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
-			              but it was {Formatter.Format(time)} which differs by -0:00.010
+			              but it was {Formatter.Format(time)}, which differs by -0:00.010
 			              """)
 			.Because("the default tolerance must be restored once the customization is disposed");
 	}

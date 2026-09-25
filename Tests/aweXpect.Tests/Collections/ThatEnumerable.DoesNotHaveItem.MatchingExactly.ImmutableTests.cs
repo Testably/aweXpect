@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item exactly of type MyClass at index 1,
+						             does not have an item exactly of type MyClass at index 1,
 						             but it had item MyClass {
 						               StringValue = "",
 						               Value = 1
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have item exactly of type MyClass matching x => x.Value == 1 at index 1,
+						             does not have an item exactly of type MyClass matching x => x.Value == 1 at index 1,
 						             but it had item MyClass {
 						               StringValue = "",
 						               Value = 1

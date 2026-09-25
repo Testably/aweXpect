@@ -99,13 +99,13 @@ public static partial class ThatGeneric
 	/// </summary>
 	/// <remarks>
 	///     A connector that already introduced the subject cannot be followed by a second relative pronoun, so the
-	///     member becomes the object of the connector's clause and its expectations are attached with <c>which</c>.
+	///     member becomes the object of the connector's clause and its expectations are attached with <c>that</c>.
 	/// </remarks>
 	private static void AppendMember(StringBuilder stringBuilder, ExpectationGrammars grammars, MemberAccessor member)
 	{
 		if (grammars.HasFlag(ExpectationGrammars.Introduced))
 		{
-			stringBuilder.Append(grammars.Verb("has ", "have ")).Append(member).Append("which ");
+			stringBuilder.Append(grammars.Verb("has ", "have ")).Append(member).Append("that ");
 		}
 		else
 		{
@@ -118,7 +118,7 @@ public static partial class ThatGeneric
 	///     <paramref name="enclosingGrammars" /> required.
 	/// </summary>
 	/// <remarks>
-	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>which</c> of the
+	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>that</c> of the
 	///     other form is dropped again before a nested <c>whose</c>.<br />
 	///     The number of the member follows its static type alone: a collection other than a <see langword="string" />
 	///     or a dictionary is plural (<c>whose Items are</c>), anything else is singular, whatever the number of the

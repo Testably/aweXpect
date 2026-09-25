@@ -76,8 +76,8 @@ public sealed class WhichNodeTests
 	}
 
 	[Theory]
-	[InlineData(" which ", "whose bar", "foo whose bar")]
-	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
 	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
 	public async Task AppendExpectation_WithParent_ShouldMatchTheResultExpectation(
 		string separator, string rightExpectation, string expectedExpectation)
@@ -778,10 +778,10 @@ public sealed class WhichNodeTests
 	}
 
 	[Theory]
-	[InlineData(" which ", "whose bar", "foo whose bar")]
-	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
 	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
-	public async Task WhenSeparatorEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+	public async Task WhenSeparatorEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -814,7 +814,7 @@ public sealed class WhichNodeTests
 			.WithMessage("""
 			             Expected that subject
 			             is of type WhichNodeTests.Dummy whose Value is equal to "bar",
-			             but Value was "foo" which differs at index 0:
+			             but Value was "foo", which differs at index 0:
 			                ↓ (actual)
 			               "foo"
 			               "bar"
@@ -865,7 +865,7 @@ public sealed class WhichNodeTests
 			.WithMessage("""
 			             Expected that subject
 			             has a single item whose Length is equal to 4,
-			             but Length was 3 which differs by -1
+			             but Length was 3, which differs by -1
 			             """);
 	}
 

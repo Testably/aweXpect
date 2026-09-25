@@ -29,7 +29,7 @@ internal static class TimeDifferenceHelpers
 			return stringBuilder;
 		}
 
-		stringBuilder.Append(differenceTicks.Value < 0 ? " which differs by -" : " which differs by ");
+		stringBuilder.Append(differenceTicks.Value < 0 ? ", which differs by -" : ", which differs by ");
 		Formatter.Format(stringBuilder, TimeSpan.FromTicks((long)magnitude));
 		return stringBuilder.AppendReference(reference);
 	}
@@ -46,7 +46,7 @@ internal static class TimeDifferenceHelpers
 			return stringBuilder;
 		}
 
-		stringBuilder.Append(" which differs by ").Append(differenceDays.Value)
+		stringBuilder.Append(", which differs by ").Append(differenceDays.Value)
 			.Append(differenceDays.Value is 1 or -1 ? " day" : " days");
 		return stringBuilder.AppendReference(reference);
 	}

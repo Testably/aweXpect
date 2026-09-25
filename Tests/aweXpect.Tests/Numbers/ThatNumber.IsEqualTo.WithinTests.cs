@@ -31,7 +31,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -66,7 +66,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -150,7 +150,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -306,7 +306,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -483,7 +483,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -526,7 +526,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -569,7 +569,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -604,7 +604,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -647,7 +647,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -741,7 +741,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was 12.5 which differs by {expectedDifference}
+					              but it was 12.5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -826,7 +826,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -869,7 +869,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -912,7 +912,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -955,7 +955,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -998,7 +998,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1027,7 +1027,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1056,7 +1056,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1085,7 +1085,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1128,7 +1128,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1171,7 +1171,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1200,7 +1200,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1229,7 +1229,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1,
-					              but it was 5 which differs by {expectedDifference}
+					              but it was 5, which differs by {expectedDifference}
 					              """);
 			}
 		}

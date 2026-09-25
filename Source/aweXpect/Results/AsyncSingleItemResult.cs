@@ -35,7 +35,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	///     Further expectations on the single item.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_asyncMemberAccessor, " which "));
+		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;

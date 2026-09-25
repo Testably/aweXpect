@@ -22,7 +22,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least twice with x => x > 0 within 0:00.050 with parameters that all are unique,
+					             has recorded the callback at least twice with x => x > 0 within 0:00.050 with parameters of which all are unique,
 					             but it was never recorded within 0:00.*
 
 					             Collection:
@@ -60,8 +60,8 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once with parameters that have Count() which is equal to 2,
-					             but Count() was 1 which differs by -1
+					             has recorded the callback at least once with parameters that have Count() that is equal to 2,
+					             but Count() was 1, which differs by -1
 					             """);
 			}
 
@@ -79,7 +79,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least once with parameters that all satisfy x => x < 1,
+					             has recorded the callback at least once with parameters of which all satisfy x => x < 1,
 					             but none of 1 did
 					             
 					             Not matching items:

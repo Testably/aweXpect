@@ -46,7 +46,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)},
-						              but it was {Formatter.Format(subject)} which differs by -0:01
+						              but it was {Formatter.Format(subject)}, which differs by -0:01
 						              """);
 				}
 
@@ -124,7 +124,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 0:03, because we want to test the failure,
-						              but it was {Formatter.Format(subject)} which differs by -0:04
+						              but it was {Formatter.Format(subject)}, which differs by -0:04
 						              """);
 				}
 
@@ -142,7 +142,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 1:00:00,
-						              but it was {Formatter.Format(subject)} which differs by -29:00
+						              but it was {Formatter.Format(subject)}, which differs by -29:00
 						              """)
 						.Because("the ordering does not wrap around midnight, so the tolerance extends the unnegated expectation to every time on that side");
 				}
@@ -161,7 +161,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by -0:04
+						              but it was {Formatter.Format(subject)}, which differs by -0:04
 						              """);
 				}
 
@@ -179,7 +179,7 @@ public sealed partial class ThatTimeOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 0:03,
-						              but it was {Formatter.Format(subject)} which differs by 0:02
+						              but it was {Formatter.Format(subject)}, which differs by 0:02
 						              """)
 						.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 				}

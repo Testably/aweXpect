@@ -649,7 +649,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it contained item "a" at index 0 instead of an item that has s!.Length which is equal to 2
+					             but it contained item "a" at index 0 instead of an item that has s!.Length that is equal to 2
 
 					             Collection:
 					             [
@@ -658,7 +658,7 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               an item that has s!.Length which is equal to 2
+					               an item that has s!.Length that is equal to 2
 					             ]
 					             """)
 					.Because("the connector of an expected item already introduced its subject");

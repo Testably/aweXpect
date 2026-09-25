@@ -29,6 +29,6 @@ public class IsUtf8SpanParsableResult<TType>(
 				}
 
 				return default;
-			}, " which "));
+			}, " that "));
 }
 #endif

@@ -117,7 +117,7 @@ public sealed partial class ThatSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject.AsSpan()
-					             is parsable into double which is less than 10.0,
+					             is parsable into double that is less than 10.0,
 					             but Parse of double did throw a FormatException:
 					               The input string 'abc' was not in a correct format.
 					             """);

@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "Text",
-					             but it was "some arbitrary text" which differs before index 15:
+					             but it was "some arbitrary text", which differs before index 15:
 					                               ↓ (actual)
 					               "some arbitrary text"
 					                              "Text"
@@ -46,7 +46,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "SOME" ignoring case,
-					             but it was "some arbitrary text" which differs before index 18:
+					             but it was "some arbitrary text", which differs before index 18:
 					                                  ↓ (actual)
 					               "some arbitrary text"
 					                              "SOME"
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "Text" using IgnoreCaseForVocalsComparer,
-					             but it was "some arbitrary text" which differs before index 15:
+					             but it was "some arbitrary text", which differs before index 15:
 					                               ↓ (actual)
 					               "some arbitrary text"
 					                              "Text"
@@ -162,7 +162,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some",
-					             but it was "some arbitrary text" which differs before index 18:
+					             but it was "some arbitrary text", which differs before index 18:
 					                                  ↓ (actual)
 					               "some arbitrary text"
 					                              "some"
@@ -224,7 +224,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "more than text",
-					             but it was "text" which is shorter than the expected length of 14 and misses the prefix:
+					             but it was "text", which is shorter than the expected length of 14 and misses the prefix:
 					               "more than "
 					             """);
 			}

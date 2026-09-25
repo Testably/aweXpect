@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "abd",
-					             but it was "abc" which differs at index 2:
+					             but it was "abc", which differs at index 2:
 					                  ↓ (actual)
 					               "abc"
 					               "abd"

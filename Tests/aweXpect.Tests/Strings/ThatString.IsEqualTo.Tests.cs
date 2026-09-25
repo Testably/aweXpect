@@ -145,7 +145,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "",
-					             but it was "some text" with a length of 9 which is longer than the expected length of 0 and has superfluous:
+					             but it was "some text" with a length of 9, which is longer than the expected length of 0 and has superfluous:
 					               "some text"
 					             """)
 					.Because("comparing a string against the empty string is a legitimate expectation");
@@ -200,7 +200,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to " \t some text",
-					             but it was "some text" which misses some whitespace (" \t " at the beginning)
+					             but it was "some text", which misses some whitespace (" \t " at the beginning)
 					             """);
 			}
 
@@ -217,7 +217,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "some text \t ",
-					             but it was "some text" which misses some whitespace (" \t " at the end)
+					             but it was "some text", which misses some whitespace (" \t " at the end)
 					             """);
 			}
 
@@ -234,7 +234,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "some text",
-					             but it was " \t some text" which has unexpected whitespace (" \t " at the beginning)
+					             but it was " \t some text", which has unexpected whitespace (" \t " at the beginning)
 					             """);
 			}
 
@@ -251,7 +251,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "some text",
-					             but it was "some text \t " which has unexpected whitespace (" \t " at the end)
+					             but it was "some text \t ", which has unexpected whitespace (" \t " at the end)
 					             """);
 			}
 
@@ -268,7 +268,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "some text with",
-					             but it was "some text without out" with a length of 21 which is longer than the expected length of 14 and has superfluous:
+					             but it was "some text without out" with a length of 21, which is longer than the expected length of 14 and has superfluous:
 					               "out out"
 					             """);
 			}
@@ -286,7 +286,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "some text without out",
-					             but it was "some text with" with a length of 14 which is shorter than the expected length of 21 and misses:
+					             but it was "some text with" with a length of 14, which is shorter than the expected length of 21 and misses:
 					               "out out"
 					             """);
 			}
@@ -316,7 +316,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "expected other text",
-					             but it was "actual text" which differs at index 0:
+					             but it was "actual text", which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"
@@ -349,7 +349,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to "foo\nbar" ignoring indentation,
-					              but it was "foo\nbaz" which differs on line 2 and column 7:
+					              but it was "foo\nbaz", which differs on line 2 and column 7:
 					                        ↓ (actual)
 					                "foo\nbaz"
 					                "foo\nbar"
@@ -462,7 +462,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ignoring leading whitespace,
-					              but it was {Formatter.Format(subject.TrimStart())} which differs at index {index}:
+					              but it was {Formatter.Format(subject.TrimStart())}, which differs at index {index}:
 					                 ↓ (actual)
 					                "foo"
 					                "bar"
@@ -486,7 +486,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to " bar" ignoring leading whitespace,
-					             but it was "foo" which differs at index 0:
+					             but it was "foo", which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"
@@ -507,7 +507,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ignoring leading whitespace,
-					              but it was {Formatter.Format(subject.TrimStart())} which differs on line {line} and column {column}:
+					              but it was {Formatter.Format(subject.TrimStart())}, which differs on line {line} and column {column}:
 					                 ↓ (actual)
 					                {Formatter.Format(subject.TrimStart())}
 					                {Formatter.Format(expected.TrimStart())}
@@ -531,7 +531,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to " \n bar" ignoring leading whitespace,
-					             but it was "foo\nbar" which differs on line 1 and column 1:
+					             but it was "foo\nbar", which differs on line 1 and column 1:
 					                ↓ (actual)
 					               "foo\nbar"
 					               "bar"
@@ -570,7 +570,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to "foo\r\nbaz" ignoring newline style,
-					              but it was "foo\nbar" which differs on line 2 and column 3:
+					              but it was "foo\nbar", which differs on line 2 and column 3:
 					                        ↓ (actual)
 					                "foo\nbar"
 					                "foo\nbaz"
@@ -610,7 +610,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to "foo-bar" ignoring trailing whitespace,
-					              but it was "foo-boo\nbaz" which differs on line 1 and column 6:
+					              but it was "foo-boo\nbaz", which differs on line 1 and column 6:
 					                      ↓ (actual)
 					                "foo-boo\nbaz"
 					                "foo-bar"
@@ -634,7 +634,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo-bar" ignoring trailing whitespace,
-					             but it was "foo-boo" which differs at index 5:
+					             but it was "foo-boo", which differs at index 5:
 					                     ↓ (actual)
 					               "foo-boo"
 					               "foo-bar"

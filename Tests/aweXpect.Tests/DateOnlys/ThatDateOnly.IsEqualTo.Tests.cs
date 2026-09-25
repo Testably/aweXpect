@@ -39,7 +39,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -1 day
+					              but it was {Formatter.Format(subject)}, which differs by -1 day
 					              """);
 			}
 
@@ -72,7 +72,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1 day,
-					              but it was {Formatter.Format(subject)} which differs by -2 days
+					              but it was {Formatter.Format(subject)}, which differs by -2 days
 					              """)
 					.Because("the default is truncated to whole days and the applied part is named in the expectation");
 			}
@@ -94,7 +94,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -2 days
+					              but it was {Formatter.Format(subject)}, which differs by -2 days
 					              """)
 					.Because("a default below one day is truncated to zero days and must not read as ± 0 days");
 			}
@@ -169,7 +169,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1 day,
-					              but it was {Formatter.Format(subject)} which differs by -3 days
+					              but it was {Formatter.Format(subject)}, which differs by -3 days
 					              """);
 			}
 
@@ -194,7 +194,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± {tolerance} days, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -{actualDifference} days
+					              but it was {Formatter.Format(subject)}, which differs by -{actualDifference} days
 					              """);
 			}
 		}

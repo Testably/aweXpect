@@ -31,7 +31,7 @@ public static class ConstraintResultExtensions
 	///     <paramref name="prefix" />.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="prefix" /> is treated as a separator, so a trailing <c>which</c> is dropped when the
+	///     The <paramref name="prefix" /> is treated as a separator, so a trailing <c>that</c> is dropped when the
 	///     expectation of <paramref name="inner" /> starts with its own <c>whose</c>.
 	/// </remarks>
 	public static ConstraintResult PrependExpectationText(this ConstraintResult inner, Action<StringBuilder>? prefix)

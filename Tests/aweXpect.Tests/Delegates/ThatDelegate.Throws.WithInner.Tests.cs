@@ -130,7 +130,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -155,7 +155,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -194,7 +194,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "bar" and whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -268,7 +268,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with an inner ThatDelegate.CustomException which satisfies e => e?.Value == "bar",
+						             throws an exception with an inner ThatDelegate.CustomException that satisfies e => e?.Value == "bar",
 						             but it had an inner ThatDelegate.OtherException:
 						               foo
 						             """);
@@ -349,7 +349,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -546,7 +546,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -572,7 +572,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
-						             but message was "bar" which differs at index 0:
+						             but message was "bar", which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"

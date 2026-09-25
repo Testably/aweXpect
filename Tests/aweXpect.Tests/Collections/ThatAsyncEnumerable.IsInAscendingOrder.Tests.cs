@@ -23,7 +23,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
-					             but it had 3 before 1 which is not in ascending order
+					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
 					             [1, 1, 2, 3, 1]
@@ -105,7 +105,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
-					             but it had "a" before "A" which is not in ascending order
+					             but it had "a" before "A", which is not in ascending order
 
 					             Collection:
 					             [
@@ -138,7 +138,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
-					             but it had "c" before "a" which is not in ascending order
+					             but it had "c" before "a", which is not in ascending order
 
 					             Collection:
 					             [
@@ -192,7 +192,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
-					             but it had 3 before 1 which is not in ascending order
+					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
 					             [
@@ -297,7 +297,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
-					             but it had "a" before "A" which is not in ascending order
+					             but it had "a" before "A", which is not in ascending order
 
 					             Collection:
 					             [
@@ -336,7 +336,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
-					             but it had "c" before "a" which is not in ascending order
+					             but it had "c" before "a", which is not in ascending order
 
 					             Collection:
 					             [

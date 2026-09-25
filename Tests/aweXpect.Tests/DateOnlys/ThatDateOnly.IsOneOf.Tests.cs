@@ -111,7 +111,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)} which differs by -1 day from the closest value
+					              but it was {Formatter.Format(subject)}, which differs by -1 day from the closest value
 					              """);
 			}
 
@@ -152,7 +152,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)} ± {tolerance} days, because we want to test the failure,
-					              but it was {Formatter.Format(subject)} which differs by -{actualDifference} days from the closest value
+					              but it was {Formatter.Format(subject)}, which differs by -{actualDifference} days from the closest value
 					              """);
 			}
 		}

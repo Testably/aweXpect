@@ -294,9 +294,9 @@ public sealed class AndNodeTests
 	}
 
 	[Theory]
-	[InlineData(" which ", "whose bar", "foo whose bar")]
-	[InlineData(" which ", "is bar", "foo which is bar")]
-	[InlineData(" which ", "whosever bar", "foo which whosever bar")]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
+	[InlineData(" that ", "whosever bar", "foo that whosever bar")]
 	[InlineData(" and ", "whose bar", "foo and whose bar")]
 	public async Task Result_WithSeparator_ShouldOnlyDropWhichBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)

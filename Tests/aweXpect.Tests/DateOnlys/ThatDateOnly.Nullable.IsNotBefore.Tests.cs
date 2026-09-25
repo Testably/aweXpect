@@ -46,7 +46,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)},
-						              but it was {Formatter.Format(subject)} which differs by -1 day
+						              but it was {Formatter.Format(subject)}, which differs by -1 day
 						              """);
 				}
 
@@ -124,7 +124,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 3 days, because we want to test the failure,
-						              but it was {Formatter.Format(subject)} which differs by -4 days
+						              but it was {Formatter.Format(subject)}, which differs by -4 days
 						              """);
 				}
 
@@ -171,7 +171,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 3 days,
-						              but it was {Formatter.Format(subject)} which differs by -4 days
+						              but it was {Formatter.Format(subject)}, which differs by -4 days
 						              """);
 				}
 
@@ -189,7 +189,7 @@ public sealed partial class ThatDateOnly
 						.WithMessage($"""
 						              Expected that subject
 						              is not before {Formatter.Format(unexpected)} ± 3 days,
-						              but it was {Formatter.Format(subject)} which differs by 2 days
+						              but it was {Formatter.Format(subject)}, which differs by 2 days
 						              """)
 						.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 				}

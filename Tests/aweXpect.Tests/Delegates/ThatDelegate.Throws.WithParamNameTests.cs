@@ -37,7 +37,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an ArgumentException with param name containing "somethingElse",
-						             but it had param name "message" with a length of 7 which is shorter than the expected length of 13
+						             but it had param name "message" with a length of 7, which is shorter than the expected length of 13
 						             """);
 				}
 			}
@@ -73,7 +73,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an ArgumentException with param name equal to "somethingElse",
-						             but it had param name "message" which differs at index 0:
+						             but it had param name "message", which differs at index 0:
 						                ↓ (actual)
 						               "message"
 						               "somethingElse"
@@ -221,7 +221,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an ArgumentException with param name equal to "somethingElse",
-						             but it had param name "message" which differs at index 0:
+						             but it had param name "message", which differs at index 0:
 						                ↓ (actual)
 						               "message"
 						               "somethingElse"

@@ -185,7 +185,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -216,7 +216,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
 				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
@@ -297,7 +297,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -328,7 +328,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
 				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 

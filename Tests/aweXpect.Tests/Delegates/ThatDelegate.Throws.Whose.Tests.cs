@@ -46,7 +46,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
-						              but HResult was {hResult} which differs by -1
+						              but HResult was {hResult}, which differs by -1
 						              """);
 				}
 
@@ -122,7 +122,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an HResultException whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
-						              but HResult was {hResult} which differs by -1
+						              but HResult was {hResult}, which differs by -1
 						              """);
 				}
 
@@ -171,7 +171,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsync() is equal to {expectedValue},
-						              but GetValueAsync() was {value} which differs by -1
+						              but GetValueAsync() was {value}, which differs by -1
 						              """);
 				}
 
@@ -203,7 +203,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsValueTaskAsync() is equal to {expectedValue},
-						              but GetValueAsValueTaskAsync() was {value} which differs by -1
+						              but GetValueAsValueTaskAsync() was {value}, which differs by -1
 						              """);
 				}
 			}

@@ -20,7 +20,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException whose HResult is equal to 5 and whose InnerException is null,
-				             but HResult was -2146233088 which differs by -2146233093
+				             but HResult was -2146233088, which differs by -2146233093
 				             """);
 		}
 
@@ -37,7 +37,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException which has HResult equal to 5 and whose InnerException is null,
+				             throws a MyException that has HResult equal to 5 and whose InnerException is null,
 				             but it had HResult -2146233088
 				             """);
 		}
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException whose HResult is equal to 5,
-				             but HResult was -2146233088 which differs by -2146233093
+				             but HResult was -2146233088, which differs by -2146233093
 				             """);
 		}
 
@@ -72,7 +72,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws an exception whose HResult is equal to 5,
-				             but HResult was -2146233088 which differs by -2146233093
+				             but HResult was -2146233088, which differs by -2146233093
 				             """);
 		}
 	}

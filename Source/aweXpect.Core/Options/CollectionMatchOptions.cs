@@ -240,10 +240,10 @@ public partial class CollectionMatchOptions(
 				=> $"{grammars.Verb("is", "are")} not contained in collection {expectedExpression}",
 			(EquivalenceRelations.IsContainedInProperly, false)
 				=> $"{grammars.Verb("is", "are")} contained in collection {expectedExpression} " +
-				   "which has at least one additional item",
+				   "that has at least one additional item",
 			(EquivalenceRelations.IsContainedInProperly, true)
 				=> $"{grammars.Verb("is", "are")} not contained in collection {expectedExpression} " +
-				   "which has at least one additional item",
+				   "that has at least one additional item",
 			(_, false) => $"{grammars.Verb("is", "are")} equal to collection {expectedExpression}",
 			(_, true) => $"{grammars.Verb("is", "are")} not equal to collection {expectedExpression}",
 		};

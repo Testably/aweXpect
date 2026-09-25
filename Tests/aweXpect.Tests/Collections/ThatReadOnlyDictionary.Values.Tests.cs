@@ -20,7 +20,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique for all items,
+					             has values that are unique for all items,
 					             but only 2 of 4 were
 
 					             Not matching items:
@@ -53,7 +53,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique not for all items,
+					             has values that are unique not for all items,
 					             but it was <null>
 					             """);
 			}
@@ -69,7 +69,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique for all items,
+					             has values that are unique for all items,
 					             but it was <null>
 					             """);
 			}
@@ -85,7 +85,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique ignoring case for all items,
+					             has values that are unique ignoring case for all items,
 					             but none of 2 were
 
 					             Not matching items:
@@ -131,7 +131,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which contain "bar" at least once,
+					             has values that contain "bar" at least once,
 					             but it was <null>
 					             """);
 			}

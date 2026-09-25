@@ -101,7 +101,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is parsable into int which is greater than 2 and is less than 3,
+					             is parsable into int that is greater than 2 and is less than 3,
 					             but it was <null>
 					             """);
 			}
@@ -117,7 +117,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is parsable into TimeSpan which is less than 0:10,
+					             is parsable into TimeSpan that is less than 0:10,
 					             but Parse of TimeSpan did throw a FormatException:
 					               String 'abc' was not recognized as a valid TimeSpan.
 					             """);

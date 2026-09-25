@@ -79,7 +79,7 @@ public sealed partial class ThatSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that "abc".AsSpan()
-					             is parsable into TimeSpan which is less than 0:10,
+					             is parsable into TimeSpan that is less than 0:10,
 					             but Parse of TimeSpan did throw a FormatException:
 					               String 'abc' was not recognized as a valid TimeSpan.
 					             """);

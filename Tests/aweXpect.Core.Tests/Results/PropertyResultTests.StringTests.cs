@@ -221,7 +221,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "FOO",
-				             but it had string value "foo" which differs at index 0:
+				             but it had string value "foo", which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "FOO"
@@ -818,7 +818,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it had string value "foo" which differs at index 0:
+					             but it had string value "foo", which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"
@@ -839,7 +839,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it had string value "" with a length of 0 which is shorter than the expected length of 3 and misses:
+					             but it had string value "" with a length of 0, which is shorter than the expected length of 3 and misses:
 					               "bar"
 					             """)
 					.Because("an empty value would only add an empty block");

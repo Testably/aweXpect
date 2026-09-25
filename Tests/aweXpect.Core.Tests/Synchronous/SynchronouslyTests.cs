@@ -53,7 +53,7 @@ public class SynchronouslyTests
 			.WithMessage("""
 			             Expected that value
 			             is equal to 2,
-			             but it was 3 which differs by 1
+			             but it was 3, which differs by 1
 			             """));
 	}
 
