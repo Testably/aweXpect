@@ -4128,6 +4128,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -4818,7 +4824,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -5512,7 +5519,8 @@ window.BENCHMARK_DATA = {
           325.7155992984772,
           246.4557346979777,
           334.8974219640096,
-          380.4438170115153
+          380.4438170115153,
+          309.2303461294908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6209,6 +6217,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912
@@ -6913,7 +6922,8 @@ window.BENCHMARK_DATA = {
           232.2529143333435,
           203.37873796621957,
           264.95683066050213,
-          257.78558756510415
+          257.78558756510415,
+          241.6386832169124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7106,6 +7116,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11292,6 +11303,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -11905,7 +11922,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -12522,7 +12540,8 @@ window.BENCHMARK_DATA = {
           426699.6129557292,
           331180.2082519531,
           448683.5196614583,
-          433309.02034505206
+          433309.02034505206,
+          422913.3953125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13142,6 +13161,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384
@@ -13769,7 +13789,8 @@ window.BENCHMARK_DATA = {
           2561419.760216346,
           1912716.6604166667,
           2641279.505301339,
-          2615403.064583333
+          2615403.064583333,
+          2520124.980769231
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14390,6 +14411,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -18533,6 +18555,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -19223,7 +19251,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -19917,7 +19946,8 @@ window.BENCHMARK_DATA = {
           606.9750425338746,
           404.67807575372547,
           565.4947686876569,
-          568.425791867574
+          568.425791867574,
+          532.5304430552891
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20614,6 +20644,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592
@@ -21318,7 +21349,8 @@ window.BENCHMARK_DATA = {
           467.1022602830614,
           371.5217943925124,
           490.3035710016886,
-          562.0343593188694
+          562.0343593188694,
+          468.6073079109192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21511,6 +21543,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26159,6 +26192,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -26849,7 +26888,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -27543,7 +27583,8 @@ window.BENCHMARK_DATA = {
           329.71701486294086,
           263.3782348950704,
           345.38215919641345,
-          358.7025234018053
+          358.7025234018053,
+          336.97117062977384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28240,6 +28281,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080
@@ -28944,7 +28986,8 @@ window.BENCHMARK_DATA = {
           242.38292394365584,
           188.00750862635098,
           257.240458215986,
-          260.19358180363974
+          260.19358180363974,
+          234.91125158163217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29137,6 +29180,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33785,6 +33829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -34475,7 +34525,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -35169,7 +35220,8 @@ window.BENCHMARK_DATA = {
           620.1444105148315,
           476.55130367279054,
           632.7823322931926,
-          604.840633392334
+          604.840633392334,
+          588.1439423194298
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35866,6 +35918,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576
@@ -36570,7 +36623,8 @@ window.BENCHMARK_DATA = {
           1175.6374717439924,
           870.0199383417765,
           1214.0112387793404,
-          1210.7062016805014
+          1210.7062016805014,
+          1271.4010334014893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36999,6 +37053,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41411,6 +41466,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -42101,7 +42162,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -42795,7 +42857,8 @@ window.BENCHMARK_DATA = {
           2623.4026667277017,
           2263.8075921194895,
           3066.1807594299316,
-          3030.016466522217
+          3030.016466522217,
+          2923.1399696895055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43492,6 +43555,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          4032,
           4032,
           4032,
           4032
@@ -44196,7 +44260,8 @@ window.BENCHMARK_DATA = {
           1294.726900736491,
           1012.8783800942557,
           1449.1962752024333,
-          1362.9447317759195
+          1362.9447317759195,
+          1284.651495107015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44389,6 +44454,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49037,6 +49103,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
         "message": "fix: skip properties without a public getter when formatting by reflection (#1367)"
+      },
+      {
+        "sha": "5be679d92c0e78ae5c586cf294a75986b5b5ec20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
+        "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
       }
     ],
     "labels": [
@@ -49727,7 +49799,8 @@ window.BENCHMARK_DATA = {
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
-      "adf00ff4"
+      "adf00ff4",
+      "5be679d9"
     ],
     "datasets": [
       {
@@ -50421,7 +50494,8 @@ window.BENCHMARK_DATA = {
           3031.907234700521,
           2257.967160797119,
           3117.8327437180737,
-          2929.22376196725
+          2929.22376196725,
+          2844.4870118361255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51118,6 +51192,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          3792,
           3792,
           3792,
           3792
@@ -51822,7 +51897,8 @@ window.BENCHMARK_DATA = {
           26177.42107747396,
           15204.705733079176,
           28760.40278930664,
-          26582.58759358724
+          26582.58759358724,
+          26036.971883920523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52515,6 +52591,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
