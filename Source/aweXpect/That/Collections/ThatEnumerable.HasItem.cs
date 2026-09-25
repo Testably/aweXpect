@@ -62,6 +62,7 @@ public static partial class ThatEnumerable
 			string predicateExpression,
 			bool negated)
 	{
+		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>?>(
@@ -144,6 +145,7 @@ public static partial class ThatEnumerable
 			string predicateExpression,
 			bool negated)
 	{
+		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable?>(
@@ -189,6 +191,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
+		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<TCollection>(

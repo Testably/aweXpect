@@ -56,6 +56,19 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					ImmutableArray<int> subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
 			}
 
 			public sealed class ImmutableNegatedTests
@@ -100,6 +113,19 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [1, 1, 1]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					ImmutableArray<int> subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(null!));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 			}
 		}

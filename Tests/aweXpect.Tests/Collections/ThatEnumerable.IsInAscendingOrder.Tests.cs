@@ -258,6 +258,19 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder((Func<MyIntClass, int>)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenMemberSelectorThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("selector failed");
@@ -331,6 +344,20 @@ public sealed partial class ThatEnumerable
 					               }
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsInAscendingOrder((Func<MyIntClass, int>)null!));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

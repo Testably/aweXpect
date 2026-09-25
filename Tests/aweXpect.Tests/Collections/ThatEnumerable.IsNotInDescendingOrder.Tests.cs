@@ -223,6 +223,19 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<MyIntClass> subject = ToEnumerable([3, 2, 1,], x => new MyIntClass(x));
+
+				async Task Act()
+					=> await That(subject).IsNotInDescendingOrder((Func<MyIntClass, int>)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+			}
 		}
 
 		public sealed class NegatedMemberTests

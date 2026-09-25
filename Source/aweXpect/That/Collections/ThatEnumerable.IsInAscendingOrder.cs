@@ -248,6 +248,7 @@ public static partial class ThatEnumerable
 			bool isNegated,
 			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 	{
+		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
@@ -290,6 +291,7 @@ public static partial class ThatEnumerable
 			string memberExpression,
 			bool isNegated)
 	{
+		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>(
@@ -317,6 +319,7 @@ public static partial class ThatEnumerable
 			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 		where TCollection : IEnumerable<TItem>
 	{
+		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, TCollection, IThat<TCollection>>(

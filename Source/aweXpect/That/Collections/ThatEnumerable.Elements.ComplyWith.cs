@@ -24,10 +24,13 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
@@ -167,10 +170,13 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 			ComplyWith(Action<IThatSubject<string?>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<string?>?>,
@@ -308,10 +314,13 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			ComplyWith(Action<IThatSubject<object?>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable?>,
@@ -457,10 +466,13 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
-			=> new(
+		{
+			expectations.ThrowIfNull();
+			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
 				_subject);
+		}
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable>,

@@ -102,6 +102,19 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				ImmutableArray<int> subject = [0, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithInvalidMatch_ShouldNotMatch()
 			{
 				ImmutableArray<int> subject = [0, 1, 2, 3, 4,];

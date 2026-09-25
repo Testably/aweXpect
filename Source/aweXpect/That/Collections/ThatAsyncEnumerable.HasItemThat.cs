@@ -23,6 +23,7 @@ public static partial class ThatAsyncEnumerable
 	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(
@@ -39,6 +40,7 @@ public static partial class ThatAsyncEnumerable
 	public static HasItemResult<IAsyncEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
+		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(

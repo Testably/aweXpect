@@ -8,6 +8,19 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData("foo", false)]
 			[InlineData("bar", true)]

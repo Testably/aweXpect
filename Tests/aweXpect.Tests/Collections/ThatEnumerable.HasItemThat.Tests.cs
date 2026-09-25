@@ -124,6 +124,19 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenItemsUseNestedWhose_ShouldRevertToWhoseForTheInnerMember()
 			{
 				MyClass[] subject = [new(1, "foo"),];

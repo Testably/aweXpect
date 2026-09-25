@@ -146,6 +146,19 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
 				{
 					IAsyncEnumerable<int[]> subject = ToAsyncEnumerable<int[]>([1, 2,], [1, 3,]);
@@ -280,6 +293,19 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "ant", "avocado");
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenNotAllItemsMatch_ShouldFail()
 				{
 					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "banana", "avocado");
@@ -366,6 +392,19 @@ public sealed partial class ThatAsyncEnumerable
 						             Collection:
 						             [1, 2, 3, 4, 5]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(null!));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 			}
 		}

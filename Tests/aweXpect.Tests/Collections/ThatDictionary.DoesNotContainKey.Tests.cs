@@ -55,6 +55,22 @@ public sealed partial class ThatDictionary
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["foo"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainKey(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
+			}
 		}
 
 		public sealed class OverloadTests

@@ -134,6 +134,7 @@ public static partial class ThatAsyncEnumerable
 			bool isNegated,
 			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 	{
+		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(

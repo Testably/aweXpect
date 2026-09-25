@@ -34,6 +34,19 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					ImmutableArray<string?> subject = ["apple", "ant", "avocado",];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenNotAllItemsMatch_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["apple", "banana", "avocado",];
@@ -90,6 +103,19 @@ public sealed partial class ThatEnumerable
 						               "ant"
 						             ]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					ImmutableArray<string?> subject = ["apple", "ant",];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(null!));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 			}
 		}

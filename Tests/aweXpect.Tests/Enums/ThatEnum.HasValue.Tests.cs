@@ -17,6 +17,33 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task Between_WhenMaximumIsBelowMinimum_AndNegated_ShouldThrowArgumentOutOfRangeException()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().Between(5L).And(2L));
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("an inverted range would let the negated expectation succeed for every value");
+			}
+
+			[Fact]
+			public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().Between(5L).And(2L);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData(null, 3L)]
 			[InlineData(1L, null)]
@@ -57,6 +84,19 @@ public sealed partial class ThatEnum
 					=> await That(subject).HasValue().Between(1L).And(3L);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Between_WhenUnsignedMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				EnumULong subject = EnumULong.UInt64LessOne;
+
+				async Task Act()
+					=> await That(subject).HasValue().Between(ulong.MaxValue).And((ulong)long.MaxValue);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
 			[Fact]
