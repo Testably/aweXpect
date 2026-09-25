@@ -1,2 +1,4 @@
 #nullable enable
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterExplicitProperty<T, TMember>(string! name, System.Func<T, TMember>! getValue) -> void
+*REMOVED*aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
+aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!

@@ -47,7 +47,7 @@ public static partial class ThatEventRecording
 			Stopwatch stopwatch = Stopwatch.StartNew();
 			_result = await actual.StopWhen(result =>
 				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout,
-				context);
+				context, cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
 			if (options.Timeout > TimeSpan.Zero)
 			{

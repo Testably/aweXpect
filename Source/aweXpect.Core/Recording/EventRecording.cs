@@ -9,6 +9,8 @@ using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Threading.Channels;
+#else
+using System.Diagnostics;
 #endif
 
 namespace aweXpect.Recording;
@@ -142,41 +144,50 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 
 #if NET8_0_OR_GREATER
 	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		IEvaluationContext? context = null)
+		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
 	{
 		ThrowIfStopped(context);
 		try
 		{
-			if (timeout > TimeSpan.Zero && !areFound(this))
+			if (timeout > TimeSpan.Zero)
 			{
 				Channel<bool> channel = Channel.CreateUnbounded<bool>();
-				using CancellationTokenSource cts = new(timeout.ToTimerTimeout());
-				CancellationToken token = cts.Token;
+				// Registered before the first check, so that an event in between still ends the wait.
 				foreach (EventRecorder recorder in _recorders.Values)
 				{
 					recorder.Register(channel.Writer);
 				}
 
-				try
+				if (!areFound(this))
 				{
-#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
-					await foreach (bool _ in channel.Reader.ReadAllAsync(token))
+					using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+					cts.CancelAfter(timeout.ToTimerTimeout());
+					try
 					{
-						if (areFound(this))
+#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
+						await foreach (bool _ in channel.Reader.ReadAllAsync(cts.Token))
 						{
-							break;
+							if (areFound(this))
+							{
+								break;
+							}
 						}
-					}
 #pragma warning restore S3267
-				}
-				catch (OperationCanceledException)
-				{
-					// Ignore cancellation
+					}
+					catch (OperationCanceledException)
+					{
+						// Ignore cancellation
+					}
 				}
 			}
 		}
 		finally
 		{
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Register(null);
+			}
+
 			if (_stopsAfterEvaluation)
 			{
 				// A predicate that throws must not leave the handlers attached to the subject.
@@ -187,43 +198,48 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		return this;
 	}
 #else
-	public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		IEvaluationContext? context = null)
+	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
 	{
 		ThrowIfStopped(context);
-		DateTime now = DateTime.Now;
-		DateTime endTime = timeout < DateTime.MaxValue - now ? now.Add(timeout) : DateTime.MaxValue;
 		try
 		{
-			if (timeout > TimeSpan.Zero && !areFound(this))
+			if (timeout > TimeSpan.Zero)
 			{
-				using (ManualResetEventSlim ms = new())
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				// Not disposed, because an event raised on another thread may still release it after the wait ended.
+				SemaphoreSlim signal = new(0);
+				// Registered before the first check, so that an event in between still ends the wait.
+				foreach (EventRecorder recorder in _recorders.Values)
 				{
-					foreach (EventRecorder recorder in _recorders.Values)
-					{
-						recorder.Register(ms);
-					}
+					recorder.Register(signal);
+				}
 
-					while (true)
+				try
+				{
+					while (!areFound(this))
 					{
-						now = DateTime.Now;
-						if (now >= endTime)
-						{
-							break;
-						}
-
-						ms.Reset();
-						ms.Wait((endTime - now).ToTimerTimeout());
-						if (areFound(this))
+						TimeSpan remaining = timeout - stopwatch.Elapsed;
+						if (remaining <= TimeSpan.Zero ||
+						    !await signal.WaitAsync(remaining.ToTimerTimeout(), cancellationToken))
 						{
 							break;
 						}
 					}
 				}
+				catch (OperationCanceledException)
+				{
+					// Ignore cancellation
+				}
 			}
 		}
 		finally
 		{
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Register(null);
+			}
+
 			if (_stopsAfterEvaluation)
 			{
 				// A predicate that throws must not leave the handlers attached to the subject.
@@ -231,7 +247,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			}
 		}
 
-		return Task.FromResult<IEventRecordingResult>(this);
+		return this;
 	}
 #endif
 

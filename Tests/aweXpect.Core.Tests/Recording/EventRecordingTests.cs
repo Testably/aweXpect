@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Metadata;
 using aweXpect.Recording;
@@ -119,6 +121,28 @@ public sealed class EventRecordingTests
 			.WithMessage(
 				"Event Typo was not recorded on sut, only [\"OtherEvent\"]. No handler could be attached to [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
 			.Because("a skipped event is missing from the recorded ones for a reason that the message has to name");
+	}
+
+	[Fact]
+	public async Task WhenCancelled_ShouldStopWaiting()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(TimeSpan.FromMilliseconds(50));
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent))
+				.Within(TimeSpan.FromSeconds(30))
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut at least once within 0:30,
+			             but it was never recorded in [] within 0:0*
+			             """).AsWildcard()
+			.Because("the cancellation of the evaluation ends the wait long before the timeout");
 	}
 
 	[Fact]
@@ -526,6 +550,24 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenTheEventIsPostedToASingleThreadedSynchronizationContext_ShouldWaitForIt()
+	{
+		int eventCount = await SingleThreadedSynchronizationContext.Run(async () =>
+		{
+			CustomEventClass subject = new();
+			IEventRecording<CustomEventClass> recording = subject.Record().Events();
+			SynchronizationContext.Current!.Post(_ => subject.NotifyCustomEvent(1), null);
+
+			IEventRecordingResult result = await recording.StopWhen(
+				r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) > 0, TimeSpan.FromSeconds(5));
+			return result.GetEventCount(nameof(CustomEventClass.CustomEvent));
+		});
+
+		await That(eventCount).IsEqualTo(1)
+			.Because("waiting must not block the only thread that can deliver the event");
+	}
+
+	[Fact]
 	public async Task WhenUntilDisposed_OnAnotherImplementation_ShouldThrowNotSupportedException()
 	{
 		ForeignRecording sut = new();
@@ -640,7 +682,7 @@ public sealed class EventRecordingTests
 	private sealed class ForeignRecording : IEventRecording<CustomEventClass>
 	{
 		public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-			IEvaluationContext? context = null)
+			IEvaluationContext? context = null, CancellationToken cancellationToken = default)
 			=> throw new NotSupportedException();
 	}
 
@@ -721,5 +763,38 @@ public sealed class EventRecordingTests
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
+	}
+
+	/// <remarks>
+	///     Runs all continuations on one dedicated thread, like the UI thread of WPF or WinForms does.
+	/// </remarks>
+	private sealed class SingleThreadedSynchronizationContext : SynchronizationContext
+	{
+		private readonly BlockingCollection<(SendOrPostCallback Callback, object? State)> _queue = new();
+
+		public override void Post(SendOrPostCallback d, object? state) => _queue.Add((d, state));
+
+		public static async Task<T> Run<T>(Func<Task<T>> action)
+		{
+			TaskCompletionSource<Task<T>> started = new(TaskCreationOptions.RunContinuationsAsynchronously);
+			Thread thread = new(() =>
+			{
+				SingleThreadedSynchronizationContext context = new();
+				SetSynchronizationContext(context);
+				Task<T> task = action();
+				task.ContinueWith(_ => context._queue.CompleteAdding(), TaskScheduler.Default);
+				foreach ((SendOrPostCallback callback, object? state) in context._queue.GetConsumingEnumerable())
+				{
+					callback(state);
+				}
+
+				started.SetResult(task);
+			})
+			{
+				IsBackground = true,
+			};
+			thread.Start();
+			return await await started.Task;
+		}
 	}
 }

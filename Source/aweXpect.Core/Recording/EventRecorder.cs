@@ -20,7 +20,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 #if NET8_0_OR_GREATER
 	private ChannelWriter<bool>? _channelWriter;
 #else
-	private ManualResetEventSlim? _ms;
+	private SemaphoreSlim? _signal;
 #endif
 
 	public void Dispose()
@@ -28,7 +28,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 #if NET8_0_OR_GREATER
 		_channelWriter = null;
 #else
-		_ms = null;
+		_signal = null;
 #endif
 		_onDispose?.Invoke();
 	}
@@ -141,15 +141,15 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 	}
 
 #if NET8_0_OR_GREATER
-	public void Register(ChannelWriter<bool> channel)
+	public void Register(ChannelWriter<bool>? channel)
 		=> _channelWriter = channel;
 
 	private void NotifyRecordedEvent() => _channelWriter?.TryWrite(true);
 #else
-	public void Register(ManualResetEventSlim ms)
-		=> _ms = ms;
+	public void Register(SemaphoreSlim? signal)
+		=> _signal = signal;
 
-	private void NotifyRecordedEvent() => _ms?.Set();
+	private void NotifyRecordedEvent() => _signal?.Release();
 #endif
 
 	/// <summary>
