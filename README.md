@@ -24,7 +24,7 @@ Assert unit tests in natural language using awesome expectations.
 
 
 3. See the [documentation](https://docs.testably.org/aweXpect/getting-started#write-your-first-expectation) or
-   the [migration guide](https://docs.testably.org/aweXpect/getting-started#migration) for more information.
+   the [migration guide](https://docs.testably.org/aweXpect/migration) for more information.
 
 ## Features
 
