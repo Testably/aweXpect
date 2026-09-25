@@ -57,11 +57,7 @@ public partial class CollectionMatchOptions
 		/// <returns>
 		///     <see langword="true" />, when the subject can still be aligned within the maximum number of edits.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		public async ValueTask<bool> Add(T value, Func<T, T3, ValueTask<bool>> areConsideredEqual)
-#else
-		public async Task<bool> Add(T value, Func<T, T3, Task<bool>> areConsideredEqual)
-#endif
 		{
 			int subjectIndex = _start + _rows.Count - 1;
 			byte[] previous = _rows[_rows.Count - 1];
@@ -109,13 +105,8 @@ public partial class CollectionMatchOptions
 		///     The edits in the order of the subject, or <see langword="null" /> when more than the maximum number of edits
 		///     are needed.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		public async ValueTask<List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>?>
 			GetEdits(List<T> values, Func<T, T3, ValueTask<bool>> areConsideredEqual)
-#else
-		public async Task<List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>?>
-			GetEdits(List<T> values, Func<T, T3, Task<bool>> areConsideredEqual)
-#endif
 		{
 			int subjectIndex = _start + _rows.Count - 1;
 			int expectedIndex = _expectedItems.Length;
@@ -172,13 +163,8 @@ public partial class CollectionMatchOptions
 		///     The edit of this step, or <see langword="null" /> when the item matches the expected item it is aligned
 		///     with.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<EditKind?> TraceBackOneStep(List<T> values, int subjectIndex, int expectedIndex,
 			Func<T, T3, ValueTask<bool>> areConsideredEqual)
-#else
-		private async Task<EditKind?> TraceBackOneStep(List<T> values, int subjectIndex, int expectedIndex,
-			Func<T, T3, Task<bool>> areConsideredEqual)
-#endif
 		{
 			byte[] row = _rows[subjectIndex - _start];
 			byte[] previous = _rows[subjectIndex - _start - 1];

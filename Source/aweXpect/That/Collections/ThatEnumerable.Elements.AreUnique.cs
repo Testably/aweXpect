@@ -590,11 +590,7 @@ public static partial class ThatEnumerable
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, TMember> memberAccessor,
-#if NET8_0_OR_GREATER
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-#else
-		Func<TMember, TMember, Task<bool>> areConsideredEqual,
-#endif
 		bool expectUnique,
 		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null)
 		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
@@ -657,11 +653,7 @@ public static partial class ThatEnumerable
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<object?, TMember> memberAccessor,
-#if NET8_0_OR_GREATER
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-#else
-		Func<TMember, TMember, Task<bool>> areConsideredEqual,
-#endif
 		bool expectUnique)
 		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
 				expectationText, "were"),

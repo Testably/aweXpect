@@ -21,18 +21,10 @@ internal readonly struct BecauseReason(string reason) : IBecauseReason
 	public override string ToString()
 		=> _message.Value;
 	
-#if NET8_0_OR_GREATER
 	public ValueTask<ConstraintResult>
-#else
-	public Task<ConstraintResult>
-#endif
 	ApplyTo(ConstraintResult result)
 	{
 		string message = _message.Value;
-#if NET8_0_OR_GREATER
-		return ValueTask.FromResult(result.AppendExpectationText(e => e.Append(message)));
-#else
-		return Task.FromResult(result.AppendExpectationText(e => e.Append(message)));
-#endif
+		return new ValueTask<ConstraintResult>(result.AppendExpectationText(e => e.Append(message)));
 	}
 }

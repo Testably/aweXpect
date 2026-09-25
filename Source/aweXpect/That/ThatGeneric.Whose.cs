@@ -69,7 +69,6 @@ public static partial class ThatGeneric
 		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
 	}
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
 	///     <paramref name="memberSelector" />.
@@ -90,7 +89,6 @@ public static partial class ThatGeneric
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
 		=> subject.Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
-#endif
 
 	/// <summary>
 	///     Appends the text for the <paramref name="member" /> in the form the enclosing

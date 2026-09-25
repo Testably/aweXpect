@@ -65,46 +65,26 @@ public partial class StringEqualityOptions
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool>
-#else
-		public Task<bool>
-#endif
 			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null && expected is null)
 			{
-#if NET8_0_OR_GREATER
-				return ValueTask.FromResult(true);
-#else
-				return Task.FromResult(true);
-#endif
+				return new ValueTask<bool>(true);
 			}
 
 			if (actual is null || expected is null)
 			{
-#if NET8_0_OR_GREATER
-				return ValueTask.FromResult(false);
-#else
-				return Task.FromResult(false);
-#endif
+				return new ValueTask<bool>(false);
 			}
 
 			if (comparer is not null)
 			{
-#if NET8_0_OR_GREATER
-				return ValueTask.FromResult(Contains(actual, expected, comparer));
-#else
-				return Task.FromResult(Contains(actual, expected, comparer));
-#endif
+				return new ValueTask<bool>(Contains(actual, expected, comparer));
 			}
 			
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-#else
-			return Task.FromResult(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-#endif
+			return new ValueTask<bool>(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

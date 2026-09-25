@@ -9,11 +9,7 @@ namespace aweXpect;
 ///     members are the same.
 /// </summary>
 internal sealed class OccurrenceCounter<TMember>(
-#if NET8_0_OR_GREATER
 	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual)
-#else
-	Func<TMember, TMember, Task<bool>> areConsideredEqual)
-#endif
 {
 	private readonly List<TMember> _distinctMembers = [];
 	private readonly List<int> _occurrences = [];

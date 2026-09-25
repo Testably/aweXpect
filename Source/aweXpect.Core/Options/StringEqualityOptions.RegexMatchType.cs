@@ -111,21 +111,13 @@ public partial class StringEqualityOptions
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool>
-#else
-		public Task<bool>
-#endif
 		AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 			IEqualityComparer<string>? comparer)
 		{
 			if (actual is null || expected is null)
 			{
-#if NET8_0_OR_GREATER
-				return ValueTask.FromResult(false);
-#else
-				return Task.FromResult(false);
-#endif
+				return new ValueTask<bool>(false);
 			}
 
 			RegexOptions options = Options;
@@ -134,11 +126,7 @@ public partial class StringEqualityOptions
 				options |= IgnoreCaseOptions;
 			}
 
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(Regex.IsMatch(actual, expected, options, RegexTimeout));
-#else
-			return Task.FromResult(Regex.IsMatch(actual, expected, options, RegexTimeout));
-#endif
+			return new ValueTask<bool>(Regex.IsMatch(actual, expected, options, RegexTimeout));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

@@ -210,11 +210,7 @@ public static partial class EquivalencyComparison
 	///     Receives the options of the enclosing object instead of those of <paramref name="actual" />, because the
 	///     options that apply to <paramref name="expected" /> have to be looked up from there as well.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
-#else
-	private static async Task<bool>
-#endif
 		Compare<TActual, TExpected>(
 			TActual actual,
 			TExpected expected,
@@ -321,11 +317,7 @@ public static partial class EquivalencyComparison
 	///     which is also the kind a scoped ignore rule applies to. Only when neither kind exists does a property the
 	///     actual type implements explicitly for an interface match by its short name.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
-#else
-	private static async Task<bool>
-#endif
 		CompareObjects<TActual, TExpected>([DisallowNull] TActual actual,
 			[DisallowNull] TExpected expected,
 			StringBuilder failureBuilder, MemberType memberType, string memberPath,
@@ -664,11 +656,7 @@ public static partial class EquivalencyComparison
 	///     that considers more keys equal than the default one lets that scan overshoot; otherwise only the counts are
 	///     reported.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
-#else
-	private static async Task<bool>
-#endif
 		CompareDictionaries(
 			IDictionary actual,
 			object? actualKeyComparer,
@@ -776,11 +764,7 @@ public static partial class EquivalencyComparison
 
 		return result;
 	}
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
-#else
-	private static async Task<bool>
-#endif
 		CompareEnumerables(
 			IEnumerable actual,
 			IEnumerable expected,
@@ -870,11 +854,7 @@ public static partial class EquivalencyComparison
 	///     really differ. Which two are reported against each other still decides how much the message helps, so the
 	///     leftovers are paired by the fewest differences rather than by their position.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
-#else
-	private static async Task<bool>
-#endif
 		CompareInAnyOrder(
 			object?[] actualObjects,
 			object?[] expectedObjects,
@@ -1009,11 +989,7 @@ public static partial class EquivalencyComparison
 		/// <summary>
 		///     Matches as many expected elements as possible.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		public async ValueTask
-#else
-		public async Task
-#endif
 			MatchAll()
 		{
 			for (int i = 0; i < _expectedIndices.Length; i++)
@@ -1037,11 +1013,7 @@ public static partial class EquivalencyComparison
 		///     have to weigh all combinations against each other, which a failure message does not justify. Sorting
 		///     the candidates keeps the pairing to one sort on top of the comparisons the matching already needed.
 		/// </remarks>
-#if NET8_0_OR_GREATER
 		public async ValueTask<(int Actual, int Expected)[]>
-#else
-		public async Task<(int Actual, int Expected)[]>
-#endif
 			GetLeftovers()
 		{
 			List<int> unmatchedActual = [];
@@ -1091,11 +1063,7 @@ public static partial class EquivalencyComparison
 			return leftovers.ToArray();
 		}
 
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			TryMatch(int expectedIndex, bool[] visited)
 		{
 			for (int offset = 0; offset < _actualIndices.Length; offset++)
@@ -1123,11 +1091,7 @@ public static partial class EquivalencyComparison
 		///     belong in the failure message. Its differences are counted nonetheless, so the count is taken from the
 		///     context and restored afterwards, which keeps them out of the count of the message that is kept.
 		/// </remarks>
-#if NET8_0_OR_GREATER
 		private async ValueTask<(bool IsEquivalent, int DifferenceCount)>
-#else
-		private async Task<(bool IsEquivalent, int DifferenceCount)>
-#endif
 			GetResult(int actualIndex, int expectedIndex)
 		{
 			if (_results[actualIndex, expectedIndex] is { } cachedResult)

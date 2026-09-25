@@ -231,11 +231,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
-#if NET8_0_OR_GREATER
 		Func<TItem, ValueTask<bool>> predicate,
-#else
-			Func<TItem, Task<bool>> predicate,
-#endif
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),

@@ -132,7 +132,6 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberDoesNotMatch_ShouldFail()
 			{
@@ -173,7 +172,6 @@ public sealed partial class ThatObject
 					             but GetValueAsValueTaskAsync() was 42
 					             """);
 			}
-#endif
 
 			[Fact]
 			public async Task WhenAsyncMemberFaults_ShouldFail()
@@ -214,7 +212,6 @@ public sealed partial class ThatObject
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberFaults_ShouldFail()
 			{
@@ -233,7 +230,6 @@ public sealed partial class ThatObject
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
-#endif
 
 			[Fact]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
@@ -265,13 +261,11 @@ public sealed partial class ThatObject
 					throw new InvalidOperationException("async member failed");
 				}
 
-#if NET8_0_OR_GREATER
 				public async ValueTask<int> FaultedValueTaskAsync()
 				{
 					await Task.Yield();
 					throw new InvalidOperationException("async member failed");
 				}
-#endif
 #pragma warning restore CA1822
 
 				public async Task<int> GetValueAsync()
@@ -280,13 +274,11 @@ public sealed partial class ThatObject
 					return Value;
 				}
 
-#if NET8_0_OR_GREATER
 				public async ValueTask<int> GetValueAsValueTaskAsync()
 				{
 					await Task.Yield();
 					return Value;
 				}
-#endif
 			}
 		}
 

@@ -395,13 +395,8 @@ public partial class CollectionMatchOptions(
 		}
 	}
 
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool> All<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate,
 		bool invert = false)
-#else
-	private static async Task<bool> All<T>(IEnumerable<T> items, Func<T, Task<bool>> predicate,
-		bool invert = false)
-#endif
 	{
 		foreach (T item in items)
 		{
@@ -414,13 +409,8 @@ public partial class CollectionMatchOptions(
 		return true;
 	}
 
-#if NET8_0_OR_GREATER
 	private static async ValueTask<bool> Any<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate,
 		bool invert = false)
-#else
-	private static async Task<bool> Any<T>(IEnumerable<T> items, Func<T, Task<bool>> predicate,
-		bool invert = false)
-#endif
 	{
 		foreach (T item in items)
 		{
@@ -433,13 +423,8 @@ public partial class CollectionMatchOptions(
 		return false;
 	}
 
-#if NET8_0_OR_GREATER
 	private static async ValueTask<List<TMember>> Filter<T, TMember>(IEnumerable<T> items,
 		Func<T, ValueTask<bool>> predicate, Func<T, TMember> memberSelector)
-#else
-	private static async Task<List<TMember>> Filter<T, TMember>(IEnumerable<T> items,
-		Func<T, Task<bool>> predicate, Func<T, TMember> memberSelector)
-#endif
 	{
 		List<TMember> list = new();
 		foreach (T item in items)
@@ -453,11 +438,7 @@ public partial class CollectionMatchOptions(
 		return list;
 	}
 
-#if NET8_0_OR_GREATER
 	private static async ValueTask<T?> FirstOrDefault<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate)
-#else
-	private static async Task<T?> FirstOrDefault<T>(IEnumerable<T> items, Func<T, Task<bool>> predicate)
-#endif
 	{
 		foreach (T item in items)
 		{
@@ -470,11 +451,7 @@ public partial class CollectionMatchOptions(
 		return default;
 	}
 
-#if NET8_0_OR_GREATER
 	private static async ValueTask RemoveFirst<T>(List<T> items, Func<T, ValueTask<bool>> predicate)
-#else
-	private static async Task RemoveFirst<T>(List<T> items, Func<T, Task<bool>> predicate)
-#endif
 	{
 		int index = -1;
 		foreach (T item in items)
@@ -513,11 +490,7 @@ public partial class CollectionMatchOptions(
 		/// <summary>
 		///     Verifies if the <paramref name="value" /> is met by the expectation.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		public async ValueTask<bool> IsMetBy(TItem value)
-#else
-		public async Task<bool> IsMetBy(TItem value)
-#endif
 		{
 			ConstraintResult result = await ItemExpectationBuilder.IsMetBy(value, _context, _cancellationToken);
 			return result.Outcome == Outcome.Success;

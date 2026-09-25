@@ -764,11 +764,7 @@ public static partial class ThatEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 		Func<TItem, ValueTask<bool>> predicate,
-#else
-		Func<TItem, Task<bool>> predicate,
-#endif
 		Func<IEnumerable<TItem>, bool?> lookup,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
@@ -1063,11 +1059,7 @@ public static partial class ThatEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 		Func<TItem, ValueTask<bool>> predicate,
-#else
-		Func<TItem, Task<bool>> predicate,
-#endif
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<TEnumerable?>

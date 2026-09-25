@@ -15,11 +15,7 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
-#if NET8_0_OR_GREATER
 	public ValueTask<(bool, string?)>
-#else
-	public Task<(bool, string?)>
-#endif
 		Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber);
 
 	/// <summary>
@@ -30,10 +26,6 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
-#if NET8_0_OR_GREATER
 	public ValueTask<(bool, string?)>
-#else
-	public Task<(bool, string?)>
-#endif
 		VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber);
 }

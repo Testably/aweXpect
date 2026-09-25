@@ -168,13 +168,8 @@ public static partial class ThatEnumerable
 		/// </remarks>
 		private sealed class SetEqualityOptions(Func<TItem, TItem, bool> areEqual) : IOptionsEquality<TMatch>
 		{
-#if NET8_0_OR_GREATER
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> ValueTask.FromResult(AreEqual(actual, expected));
-#else
-			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> Task.FromResult(AreEqual(actual, expected));
-#endif
+				=> new ValueTask<bool>(AreEqual(actual, expected));
 
 			private bool AreEqual<TExpected>(TMatch actual, TExpected expected)
 				=> actual is TItem typedActual && expected is TItem typedExpected
@@ -302,13 +297,8 @@ public static partial class ThatEnumerable
 
 		private sealed class NoOptions : IOptionsEquality<TMatch>
 		{
-#if NET8_0_OR_GREATER
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> ValueTask.FromResult(Equals(actual, expected));
-#else
-			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> Task.FromResult(Equals(actual, expected));
-#endif
+				=> new ValueTask<bool>(Equals(actual, expected));
 		}
 	}
 
@@ -428,13 +418,8 @@ public static partial class ThatEnumerable
 
 		private sealed class NoOptions : IOptionsEquality<TMatch>
 		{
-#if NET8_0_OR_GREATER
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> ValueTask.FromResult(Equals(actual, expected));
-#else
-			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> Task.FromResult(Equals(actual, expected));
-#endif
+				=> new ValueTask<bool>(Equals(actual, expected));
 		}
 	}
 
@@ -530,11 +515,7 @@ public static partial class ThatEnumerable
 		/// </summary>
 		private sealed class UntypedOptions(IOptionsEquality<TMatch> options) : IOptionsEquality<object?>
 		{
-#if NET8_0_OR_GREATER
 			public async ValueTask<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
-#else
-			public async Task<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
-#endif
 				=> TryCastItem(actual, out TMatch typedActual)
 				   && await options.AreConsideredEqual(typedActual, (TItem)(object?)expected!);
 		}
@@ -731,11 +712,7 @@ public static partial class ThatEnumerable
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Func<ExpectationGrammars, string> _expectationText;
-#if NET8_0_OR_GREATER
 		private readonly Func<TItem, ValueTask<bool>> _predicate;
-#else
-		private readonly Func<TItem, Task<bool>> _predicate;
-#endif
 		private readonly EnumerableQuantifier _quantifier;
 		private readonly string _verb;
 		private int _matchingCount;
@@ -750,11 +727,7 @@ public static partial class ThatEnumerable
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 			Func<TItem, ValueTask<bool>> predicate,
-#else
-			Func<TItem, Task<bool>> predicate,
-#endif
 			string verb) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
@@ -1048,11 +1021,7 @@ public static partial class ThatEnumerable
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Func<ExpectationGrammars, string> _expectationText;
-#if NET8_0_OR_GREATER
 		private readonly Func<object?, ValueTask<bool>> _predicate;
-#else
-		private readonly Func<object?, Task<bool>> _predicate;
-#endif
 		private readonly EnumerableQuantifier _quantifier;
 		private readonly string _verb;
 		private Type? _itemType;
@@ -1068,11 +1037,7 @@ public static partial class ThatEnumerable
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 			Func<object?, ValueTask<bool>> predicate,
-#else
-			Func<object?, Task<bool>> predicate,
-#endif
 			string verb) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;

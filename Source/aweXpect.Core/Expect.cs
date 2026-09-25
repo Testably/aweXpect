@@ -57,7 +57,6 @@ public static class Expect
 			new ValueSource<SpanWrapper<T>>(new SpanWrapper<T>(subject)), doNotPopulateThisValue));
 #endif
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Specifies expectations for the current asynchronous <paramref name="subject" />.
 	/// </summary>
@@ -65,7 +64,6 @@ public static class Expect
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
 		=> new ThatSubject<T>(new ExpectationBuilder<T>(
 			new AsyncValueSource<T>(subject.AsTask()), doNotPopulateThisValue));
-#endif
 
 	/// <summary>
 	///     Specifies expectations for the current <see cref="Action" /> <paramref name="delegate" />.
@@ -145,7 +143,6 @@ public static class Expect
 			doNotPopulateThisValue));
 #endif
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Specifies expectations for the current <see cref="ValueTask" /> <paramref name="subject" />.
 	/// </summary>
@@ -157,7 +154,6 @@ public static class Expect
 	public static ThatDelegate.WithoutValue That(ValueTask subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
 		=> That(subject.AsTask(), doNotPopulateThisValue);
-#endif
 
 	/// <summary>
 	///     Specifies expectations for the current <see cref="Func{TValue}" /> <paramref name="delegate" />.

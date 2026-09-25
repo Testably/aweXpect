@@ -188,7 +188,6 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-#if NET8_0_OR_GREATER
 				[Theory]
 				[AutoData]
 				public async Task WhenValueTaskMemberIsDifferent_ShouldFail(int value)
@@ -207,7 +206,6 @@ public sealed partial class ThatDelegate
 						              but GetValueAsValueTaskAsync() was {value} which differs by -1
 						              """);
 				}
-#endif
 			}
 
 			public sealed class AsyncMemberFaultTests
@@ -231,7 +229,6 @@ public sealed partial class ThatDelegate
 						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				}
 
-#if NET8_0_OR_GREATER
 				[Fact]
 				public async Task WhenValueTaskMemberFaults_ShouldFail()
 				{
@@ -250,7 +247,6 @@ public sealed partial class ThatDelegate
 						             """)
 						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				}
-#endif
 			}
 
 			public sealed class MemberExpectationThrowsOnDefaultTests
@@ -284,20 +280,16 @@ public sealed partial class ThatDelegate
 					throw new InvalidOperationException("async member failed");
 				}
 
-#if NET8_0_OR_GREATER
 				public async ValueTask<int> FaultedValueTaskAsync()
 				{
 					await Task.Yield();
 					throw new InvalidOperationException("async member failed");
 				}
-#endif
 #pragma warning restore CA1822
 
 				public Task<int> GetValueAsync() => Task.FromResult(value);
 
-#if NET8_0_OR_GREATER
 				public ValueTask<int> GetValueAsValueTaskAsync() => new(value);
-#endif
 			}
 
 			private sealed class MyException(Base payload) : Exception

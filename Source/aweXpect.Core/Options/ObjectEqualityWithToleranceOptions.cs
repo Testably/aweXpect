@@ -105,29 +105,16 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		#region IEquality Members
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		{
 			if (actual is null && expected is null)
 			{
-				return ValueTask.FromResult(true);
+				return new ValueTask<bool>(true);
 			}
 
-			return ValueTask.FromResult(actual is TSubject typedActual && expected is TSubject typedExpected &&
-			                            isWithinTolerance(typedActual, typedExpected, tolerance()));
+			return new ValueTask<bool>(actual is TSubject typedActual && expected is TSubject typedExpected &&
+			                           isWithinTolerance(typedActual, typedExpected, tolerance()));
 		}
-#else
-		public Task<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		{
-			if (actual is null && expected is null)
-			{
-				return Task.FromResult(true);
-			}
-
-			return Task.FromResult(actual is TSubject typedActual && expected is TSubject typedExpected &&
-			                       isWithinTolerance(typedActual, typedExpected, tolerance()));
-		}
-#endif
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)

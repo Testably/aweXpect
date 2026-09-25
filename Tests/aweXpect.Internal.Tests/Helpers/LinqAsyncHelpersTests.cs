@@ -40,9 +40,5 @@ public sealed class LinqAsyncHelpersTests
 		}
 	}
 
-#if NET8_0_OR_GREATER
-	private static ValueTask<bool> Is42Predicate(int value) => ValueTask.FromResult(value == 42);
-#else
-	private static Task<bool> Is42Predicate(int value) => Task.FromResult(value == 42);
-#endif
+	private static ValueTask<bool> Is42Predicate(int value) => new ValueTask<bool>(value == 42);
 }
