@@ -22,10 +22,12 @@ await Expect.That(myEnumerable).All().AreEqualTo(1)
     .WithTimeout(TimeSpan.FromSeconds(10));
 ```
 
-*Note: The tighter timeout wins. A local timeout that is longer than the global one, or than the limit of the
-expectation itself (e.g. `ExecutesWithin` or `Throws().Within`), does not loosen it, and calling `WithTimeout` more
-than once applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a negative timeout is
-rejected when the expectation is built.*
+:::note
+The tighter timeout wins. A local timeout that is longer than the global one, or than the limit of the expectation
+itself (e.g. `ExecutesWithin` or `Throws().Within`), does not loosen it, and calling `WithTimeout` more than once
+applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a negative timeout is rejected when the
+expectation is built.
+:::
 
 
 ## `CancellationToken`
