@@ -10,7 +10,7 @@ public sealed class StringCollectionMatchResultTests
 	[Fact]
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new("expected");
 		CollectionMatchOptions collectionMatchOptions = new();
 		StringCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
@@ -22,7 +22,7 @@ public sealed class StringCollectionMatchResultTests
 	[Fact]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new("expected");
 		CollectionMatchOptions collectionMatchOptions = new();
 		StringCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);

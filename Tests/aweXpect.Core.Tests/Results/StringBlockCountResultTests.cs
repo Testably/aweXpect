@@ -11,7 +11,7 @@ public sealed class StringBlockCountResultTests
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
 		Quantifier quantifier = new();
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new("expected");
 		StringEqualityTypeCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		StringBlockCountResult<int[], IThat<int[]>> result = sut.AsBlock();
@@ -26,7 +26,7 @@ public sealed class StringBlockCountResultTests
 	[Fact]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new("expected");
 		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new Quantifier(), options)
 			.AsBlock();
 
@@ -39,7 +39,7 @@ public sealed class StringBlockCountResultTests
 	[Fact]
 	public async Task Using_ShouldSetComparer()
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new("expected");
 		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new Quantifier(), options)
 			.AsBlock();
 

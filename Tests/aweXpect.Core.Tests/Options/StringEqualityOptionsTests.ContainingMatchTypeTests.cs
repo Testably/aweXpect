@@ -9,7 +9,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Fact]
 		public async Task Contains_ShouldReturnSameInstance()
 		{
-			StringEqualityOptions sut = new();
+			StringEqualityOptions sut = new("expected");
 
 			StringEqualityOptions result = sut.Containing();
 
