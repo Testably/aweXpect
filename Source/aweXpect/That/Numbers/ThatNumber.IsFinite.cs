@@ -56,7 +56,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not seen as finite.
 	/// </summary>
 	/// <remarks>
-	///     Not finite means either infinity or not a number (NaN) or <see langword="null" />.
+	///     Not finite means either infinity or not a number (NaN). A <see langword="null" /> subject fails.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> subject)
@@ -155,7 +155,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("IsNotFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
 		Summary = IsNotFiniteSummary,
-		Remarks = "Not finite means either infinity or not a number (NaN) or <see langword=\"null\" />.")]
+		Remarks = "Not finite means either infinity or not a number (NaN). A <see langword=\"null\" /> subject fails.")]
 	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits)

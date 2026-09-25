@@ -76,6 +76,6 @@ public record SignalerOptions<TParameter> : SignalerOptions
 			(null, null) => "",
 			(null, _) => $" within {Formatter.Format(Timeout.Value)}",
 			(_, null) => _builder.ToString(),
-			(_, _) => _builder.Append($" within {Formatter.Format(Timeout.Value)}").ToString(),
+			(_, _) => $"{_builder} within {Formatter.Format(Timeout.Value)}",
 		};
 }
