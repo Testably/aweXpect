@@ -711,24 +711,8 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		using CancellationTokenSource? timeoutCts = timeout is null
-			? null
-			: CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		CancellationToken token = cancellationToken;
-		if (timeoutCts is not null)
-		{
-			timeoutCts.CancelAfter(timeout!.Value.ToTimerTimeout());
-			token = timeoutCts.Token;
-		}
-
-		bool IsTimeoutElapsed()
-			=> timeoutCts?.IsCancellationRequested == true && !cancellationToken.IsCancellationRequested;
-
-		bool HasTimedOut(Exception? exception)
-			=> exception is OperationCanceledException && IsTimeoutElapsed();
-
-		bool IsCanceled(Exception? exception)
-			=> exception is OperationCanceledException && cancellationToken.IsCancellationRequested;
+		using Cancellation cancellation = new(timeout, cancellationToken);
+		CancellationToken token = cancellation.Token;
 
 		TValue data;
 		try
@@ -740,7 +724,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			ConstraintResult result = await FromException(exception);
+			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			return result;
@@ -748,15 +732,12 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 
 		if (data is DelegateValue delegateValue)
 		{
-			if (timeout is { } exceededTimeout && HasTimedOut(delegateValue.Exception))
+			if (cancellation.IsCanceled(delegateValue.Exception))
 			{
-				data = (TValue)(object)delegateValue.WithExceededTimeout(exceededTimeout,
-					CreateTimeoutException(exceededTimeout, delegateValue.Exception!));
+				return await FromException(rootNode, context, cancellation, delegateValue.Exception!);
 			}
-			else if (IsCanceled(delegateValue.Exception))
-			{
-				return await FromException(delegateValue.Exception!);
-			}
+
+			data = WithExceededTimeout(data, delegateValue, cancellation);
 		}
 
 		ConstraintResult constraintResult;
@@ -764,34 +745,57 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			constraintResult = await rootNode.IsMetBy(data, context, token);
 		}
-		catch (Exception exception) when (HasTimedOut(exception) || IsCanceled(exception))
+		catch (Exception exception) when (cancellation.HasTimedOut(exception) || cancellation.IsCanceled(exception))
 		{
-			return await FromException(exception);
+			return await FromException(rootNode, context, cancellation, exception);
 		}
 
-		// A constraint that stops at the cancellation leaves its outcome undecided, which a timeout decides.
-		if (constraintResult.Outcome == Outcome.Undecided && timeout is { } elapsedTimeout && IsTimeoutElapsed())
+		return DecideByTimeout(constraintResult, cancellation);
+	}
+
+	/// <summary>
+	///     Decides the undecided outcome of a constraint that stopped at the cancellation, when it was caused by the
+	///     timeout.
+	/// </summary>
+	private static ConstraintResult DecideByTimeout(ConstraintResult result, Cancellation cancellation)
+	{
+		if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } timeout &&
+		    cancellation.IsTimeoutElapsed())
 		{
-			return new ConstraintResult.FromException(constraintResult,
-				CreateTimeoutException(elapsedTimeout, new OperationCanceledException(token)), elapsedTimeout);
+			return new ConstraintResult.FromException(result,
+				CreateTimeoutException(timeout, new OperationCanceledException(cancellation.Token)), timeout);
 		}
 
-		return constraintResult;
+		return result;
+	}
 
-		async Task<ConstraintResult> FromException(Exception exception)
+	private static TValue WithExceededTimeout(TValue data, DelegateValue delegateValue, Cancellation cancellation)
+	{
+		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(delegateValue.Exception))
 		{
-			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
-			if (timeout is { } exceededTimeout && HasTimedOut(exception))
-			{
-				return new ConstraintResult.FromException(expectation,
-					CreateTimeoutException(exceededTimeout, exception), exceededTimeout);
-			}
-
-			return IsCanceled(exception)
-				? new ConstraintResult.FromCancellation(expectation)
-				: new ConstraintResult.FromException(expectation, exception);
+			return (TValue)(object)delegateValue.WithExceededTimeout(timeout,
+				CreateTimeoutException(timeout, delegateValue.Exception!));
 		}
+
+		return data;
+	}
+
+	private static async Task<ConstraintResult> FromException(Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		Cancellation cancellation,
+		Exception exception)
+	{
+		ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
+			EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellation.Token);
+		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(exception))
+		{
+			return new ConstraintResult.FromException(expectation,
+				CreateTimeoutException(timeout, exception), timeout);
+		}
+
+		return cancellation.IsCanceled(exception)
+			? new ConstraintResult.FromCancellation(expectation)
+			: new ConstraintResult.FromException(expectation, exception);
 	}
 
 	/// <summary>
@@ -800,4 +804,45 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	/// </summary>
 	internal static TimeoutException CreateTimeoutException(TimeSpan timeout, Exception cancellation)
 		=> new($"The operation did not finish within {Formatter.Format(timeout)}.", cancellation);
+
+	/// <summary>
+	///     Links the <see cref="Timeout" /> to the cancellation token of the caller, so that a cancellation caused by the
+	///     timeout can be told apart from one requested by the caller.
+	/// </summary>
+	private sealed class Cancellation : IDisposable
+	{
+		private readonly CancellationToken _cancellationToken;
+		private readonly CancellationTokenSource? _timeoutCts;
+
+		public Cancellation(TimeSpan? timeout, CancellationToken cancellationToken)
+		{
+			Timeout = timeout;
+			_cancellationToken = cancellationToken;
+			Token = cancellationToken;
+			if (timeout is not null)
+			{
+				_timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+				_timeoutCts.CancelAfter(timeout.Value.ToTimerTimeout());
+				Token = _timeoutCts.Token;
+			}
+		}
+
+		public TimeSpan? Timeout { get; }
+
+		/// <summary>
+		///     The token for the evaluation, which is also canceled when the <see cref="Timeout" /> elapses.
+		/// </summary>
+		public CancellationToken Token { get; }
+
+		public void Dispose() => _timeoutCts?.Dispose();
+
+		public bool IsTimeoutElapsed()
+			=> _timeoutCts?.IsCancellationRequested == true && !_cancellationToken.IsCancellationRequested;
+
+		public bool HasTimedOut(Exception? exception)
+			=> exception is OperationCanceledException && IsTimeoutElapsed();
+
+		public bool IsCanceled(Exception? exception)
+			=> exception is OperationCanceledException && _cancellationToken.IsCancellationRequested;
+	}
 }
