@@ -4134,6 +4134,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -4825,7 +4831,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -5520,7 +5527,8 @@ window.BENCHMARK_DATA = {
           246.4557346979777,
           334.8974219640096,
           380.4438170115153,
-          309.2303461294908
+          309.2303461294908,
+          162.10056506670438
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6217,6 +6225,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -6923,7 +6932,8 @@ window.BENCHMARK_DATA = {
           203.37873796621957,
           264.95683066050213,
           257.78558756510415,
-          241.6386832169124
+          241.6386832169124,
+          135.95577567418417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7116,6 +7126,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11309,6 +11320,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -11923,7 +11940,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -12541,7 +12559,8 @@ window.BENCHMARK_DATA = {
           331180.2082519531,
           448683.5196614583,
           433309.02034505206,
-          422913.3953125
+          422913.3953125,
+          219935.76381835938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13161,6 +13180,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -13790,7 +13810,8 @@ window.BENCHMARK_DATA = {
           1912716.6604166667,
           2641279.505301339,
           2615403.064583333,
-          2520124.980769231
+          2520124.980769231,
+          1312694.349330357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14413,7 +14434,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18561,6 +18583,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -19252,7 +19280,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -19947,7 +19976,8 @@ window.BENCHMARK_DATA = {
           404.67807575372547,
           565.4947686876569,
           568.425791867574,
-          532.5304430552891
+          532.5304430552891,
+          294.2913992588337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20644,6 +20674,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -21350,7 +21381,8 @@ window.BENCHMARK_DATA = {
           371.5217943925124,
           490.3035710016886,
           562.0343593188694,
-          468.6073079109192
+          468.6073079109192,
+          265.5732650416238
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21543,6 +21575,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26198,6 +26231,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -26889,7 +26928,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -27584,7 +27624,8 @@ window.BENCHMARK_DATA = {
           263.3782348950704,
           345.38215919641345,
           358.7025234018053,
-          336.97117062977384
+          336.97117062977384,
+          173.28220529556273
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28281,6 +28322,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -28987,7 +29029,8 @@ window.BENCHMARK_DATA = {
           188.00750862635098,
           257.240458215986,
           260.19358180363974,
-          234.91125158163217
+          234.91125158163217,
+          133.63013918059212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29180,6 +29223,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33835,6 +33879,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -34526,7 +34576,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -35221,7 +35272,8 @@ window.BENCHMARK_DATA = {
           476.55130367279054,
           632.7823322931926,
           604.840633392334,
-          588.1439423194298
+          588.1439423194298,
+          339.47937596638997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35918,6 +35970,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -36624,7 +36677,8 @@ window.BENCHMARK_DATA = {
           870.0199383417765,
           1214.0112387793404,
           1210.7062016805014,
-          1271.4010334014893
+          1271.4010334014893,
+          638.9035935084025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37053,6 +37107,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41472,6 +41527,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -42163,7 +42224,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -42858,7 +42920,8 @@ window.BENCHMARK_DATA = {
           2263.8075921194895,
           3066.1807594299316,
           3030.016466522217,
-          2923.1399696895055
+          2923.1399696895055,
+          1605.770192082723
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43555,6 +43618,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          4032,
           4032,
           4032,
           4032,
@@ -44261,7 +44325,8 @@ window.BENCHMARK_DATA = {
           1012.8783800942557,
           1449.1962752024333,
           1362.9447317759195,
-          1284.651495107015
+          1284.651495107015,
+          689.0055833498637
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44454,6 +44519,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49109,6 +49175,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 09:54:26 2026 \u002B0200",
         "message": "test: disable discovery enumeration for unserializable member data and stop a flaky eventually test (#1371)"
+      },
+      {
+        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
+        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
       }
     ],
     "labels": [
@@ -49800,7 +49872,8 @@ window.BENCHMARK_DATA = {
       "14b53a3d",
       "1e0600a1",
       "adf00ff4",
-      "5be679d9"
+      "5be679d9",
+      "33ac0bdb"
     ],
     "datasets": [
       {
@@ -50495,7 +50568,8 @@ window.BENCHMARK_DATA = {
           2257.967160797119,
           3117.8327437180737,
           2929.22376196725,
-          2844.4870118361255
+          2844.4870118361255,
+          1633.9709972381593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51192,6 +51266,7 @@ window.BENCHMARK_DATA = {
           3808,
           3808,
           3808,
+          3792,
           3792,
           3792,
           3792,
@@ -51898,7 +51973,8 @@ window.BENCHMARK_DATA = {
           15204.705733079176,
           28760.40278930664,
           26582.58759358724,
-          26036.971883920523
+          26036.971883920523,
+          10554.614458211263
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52591,6 +52667,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
