@@ -1,5 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Options;
@@ -17,6 +18,7 @@ public class TimeTolerance
 	/// <summary>
 	///     Sets the tolerance to apply on the time comparisons.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public virtual void SetTolerance(TimeSpan tolerance)
 	{
 		if (tolerance < TimeSpan.Zero)
@@ -25,6 +27,7 @@ public class TimeTolerance
 				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 		}
 
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
 		Tolerance = tolerance;
 	}
 

@@ -113,6 +113,32 @@ public class TimeToleranceTests
 	}
 
 	[Fact]
+	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
+	{
+		TimeTolerance sut = new();
+		sut.SetTolerance(1.Seconds());
+
+		void Act() => sut.SetTolerance(2.Seconds());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Within cannot be specified more than once.")
+			.Because("the second tolerance would silently replace the first one");
+	}
+
+	[Fact]
+	public async Task WhenToleranceIsSetWithACustomizedDefault_ShouldNotThrow()
+	{
+		TimeTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+
+		void Act() => sut.SetTolerance(1.Seconds());
+
+		await That(Act).DoesNotThrow()
+			.Because("a customized default is not an explicit tolerance");
+		await That(sut.Tolerance).IsEqualTo(1.Seconds());
+	}
+
+	[Fact]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
 		TimeTolerance sut = new();

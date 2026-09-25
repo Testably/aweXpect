@@ -104,6 +104,19 @@ public class NumberToleranceTests
 	}
 
 	[Fact]
+	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
+	{
+		NumberTolerance<int> sut = new((_, _) => null);
+		sut.SetTolerance(1);
+
+		void Act() => sut.SetTolerance(2);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Within cannot be specified more than once.")
+			.Because("the second tolerance would silently replace the first one");
+	}
+
+	[Fact]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);

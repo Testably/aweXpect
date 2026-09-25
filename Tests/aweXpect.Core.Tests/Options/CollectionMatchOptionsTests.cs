@@ -366,6 +366,35 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class IgnoringInterspersedItemsTests
+	{
+		[Fact]
+		public async Task WhenInAnyOrderIsSpecified_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.InAnyOrder();
+
+			void Act() => sut.IgnoringInterspersedItems();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringInterspersedItems cannot be combined with InAnyOrder.")
+				.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
+		}
+
+		[Fact]
+		public async Task WhenInAnyOrderIsSpecifiedAfterwards_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringInterspersedItems();
+
+			void Act() => sut.InAnyOrder();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("InAnyOrder cannot be combined with IgnoringInterspersedItems.")
+				.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
+		}
+	}
+
 	public class RestartedMatchTests
 	{
 		[Fact]

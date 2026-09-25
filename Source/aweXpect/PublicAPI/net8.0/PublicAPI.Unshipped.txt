@@ -1,1 +1,25 @@
 #nullable enable
+*REMOVED*aweXpect.Results.CollectionMatchResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
+*REMOVED*aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
+*REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.IgnoringInterspersedItems() -> TSelf!
+*REMOVED*aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TItem>!
+*REMOVED*aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.CollectionMatchResult<TType, TThat, TItem>!
+*REMOVED*aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionMatchResult<TType, TThat>!
+aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>
+aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>.CollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>
+aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>.CollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
+aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>
+aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>.ObjectCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>
+aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
+aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>.ObjectCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TItem>!
+aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.CollectionContainmentResult<TType, TThat, TItem>!
+aweXpect.Results.StringCollectionContainmentResult<TType, TThat>
+aweXpect.Results.StringCollectionContainmentResult<TType, TThat>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>
+aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.IgnoringInterspersedItems() -> TSelf!
+aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionContainmentResult<TType, TThat>!

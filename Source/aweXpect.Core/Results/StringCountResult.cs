@@ -79,6 +79,26 @@ public class StringCountResult<TType, TThat, TSelf>(
 	}
 
 	/// <summary>
+	///     Ignores leading white-space when comparing <see langword="string" />s,
+	///     according to the <paramref name="ignoreLeadingWhiteSpace" /> parameter.
+	/// </summary>
+	public TSelf IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
+	{
+		options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
+		return (TSelf)this;
+	}
+
+	/// <summary>
+	///     Ignores trailing white-space when comparing <see langword="string" />s,
+	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
+	/// </summary>
+	public TSelf IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)
+	{
+		options.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
+		return (TSelf)this;
+	}
+
+	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="string" />s.
 	/// </summary>
 	public TSelf Using(

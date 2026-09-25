@@ -938,6 +938,32 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Theory]
+			[InlineData(" foo", true)]
+			[InlineData("goo", false)]
+			public async Task WhenIgnoringLeadingWhiteSpace_ShouldIgnoreLeadingWhiteSpace(string match,
+				bool expectSuccess)
+			{
+				string[] subject = ["  foo", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).Contains(match).IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              contains {Formatter.Format(match)} ignoring leading whitespace at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "  foo",
+					                "bar",
+					                "baz"
+					              ]
+					              """);
+			}
+
+			[Theory]
 			[InlineData("fo\ro", true)]
 			[InlineData("go\ro", false)]
 			public async Task WhenIgnoringNewlineStyle_ShouldIgnoreNewlineStyle(string match, bool expectSuccess)
@@ -959,6 +985,32 @@ public sealed partial class ThatEnumerable
 					                "fo{nl.DisplayWhitespace()}o",
 					                "ba{nl.DisplayWhitespace()}r",
 					                "ba{nl.DisplayWhitespace()}z"
+					              ]
+					              """);
+			}
+
+			[Theory]
+			[InlineData("foo ", true)]
+			[InlineData("goo", false)]
+			public async Task WhenIgnoringTrailingWhiteSpace_ShouldIgnoreTrailingWhiteSpace(string match,
+				bool expectSuccess)
+			{
+				string[] subject = ["foo  ", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).Contains(match).IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              contains {Formatter.Format(match)} ignoring trailing whitespace at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "foo  ",
+					                "bar",
+					                "baz"
 					              ]
 					              """);
 			}

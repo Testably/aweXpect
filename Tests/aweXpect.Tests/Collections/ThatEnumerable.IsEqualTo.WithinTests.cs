@@ -132,6 +132,54 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenCombinedWithEquivalent_ShouldThrowInvalidOperationException(bool negated)
+				{
+					IEnumerable<double> subject = [1.1, 2.1, 3.1,];
+
+					async Task Act()
+					{
+						if (negated)
+						{
+							await That(subject).IsNotEqualTo([1.0, 2.0, 3.0,]).Within(0.2).Equivalent();
+						}
+						else
+						{
+							await That(subject).IsEqualTo([1.0, 2.0, 3.0,]).Within(0.2).Equivalent();
+						}
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Equivalent cannot be combined with Within.")
+						.Because("equivalency would silently replace the tolerance");
+				}
+
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException(bool negated)
+				{
+					IEnumerable<double> subject = [1.1, 2.1, 3.1,];
+
+					async Task Act()
+					{
+						if (negated)
+						{
+							await That(subject).IsNotEqualTo([1.0, 2.0, 3.0,]).Within(0.2).Using(new AllEqualComparer());
+						}
+						else
+						{
+							await That(subject).IsEqualTo([1.0, 2.0, 3.0,]).Within(0.2).Using(new AllEqualComparer());
+						}
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Using cannot be combined with Within.")
+						.Because("the comparer would silently replace the tolerance");
+				}
+
 				[Fact]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{

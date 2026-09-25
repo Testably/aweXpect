@@ -67,7 +67,15 @@ public partial class CollectionMatchOptions(
 	/// <summary>
 	///     Ignores the order in the subject and expected values.
 	/// </summary>
-	public void InAnyOrder() => _inAnyOrder = true;
+	/// <exception cref="InvalidOperationException">
+	///     Interspersed items are already ignored via <see cref="IgnoringInterspersedItems()" />.
+	/// </exception>
+	public void InAnyOrder()
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(
+			_ignoringInterspersedItems ? nameof(IgnoringInterspersedItems) : null, nameof(InAnyOrder));
+		_inAnyOrder = true;
+	}
 
 	/// <summary>
 	///     Ignores duplicates in both collections.
@@ -80,7 +88,15 @@ public partial class CollectionMatchOptions(
 	/// <summary>
 	///     Ignores items that appear in between the matched items.
 	/// </summary>
-	public void IgnoringInterspersedItems() => _ignoringInterspersedItems = true;
+	/// <exception cref="InvalidOperationException">
+	///     The order is already ignored via <see cref="InAnyOrder()" />.
+	/// </exception>
+	public void IgnoringInterspersedItems()
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_inAnyOrder ? nameof(InAnyOrder) : null,
+			nameof(IgnoringInterspersedItems));
+		_ignoringInterspersedItems = true;
+	}
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable.

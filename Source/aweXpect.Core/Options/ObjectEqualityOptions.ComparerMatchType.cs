@@ -10,9 +10,13 @@ public partial class ObjectEqualityOptions<TSubject>
 	/// <summary>
 	///     Specifies a specific <see cref="IEqualityComparer{T}" /> to use for comparing <see cref="object" />s.
 	/// </summary>
+	/// <exception cref="System.InvalidOperationException">
+	///     Another option already specified how two objects are compared, or a comparer is already set.
+	/// </exception>
 	public ObjectEqualityOptions<TSubject> Using(IEqualityComparer<object> comparer)
 	{
-		MatchType = new ComparerMatchType(comparer);
+		comparer.ThrowIfNull();
+		SetMatchType(new ComparerMatchType(comparer), nameof(Using));
 		return this;
 	}
 

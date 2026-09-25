@@ -60,6 +60,32 @@ public sealed partial class ThatObject
 					.Because("an Equals that throws fails the expectation instead of aborting its evaluation");
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenEquivalentIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			{
+				OuterClass subject = new();
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(subject).Equivalent()
+							.Equivalent(o => o);
+					}
+					else
+					{
+						await That(subject).IsEqualTo(subject).Equivalent()
+							.Equivalent(o => o);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Equivalent cannot be specified more than once.")
+					.Because("the second equivalency options would silently replace the first ones");
+			}
+
 			[Fact]
 			public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 			{

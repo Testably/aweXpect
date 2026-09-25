@@ -1,6 +1,7 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Customization;
+using aweXpect.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Options;
@@ -16,6 +17,8 @@ public class RepeatedCheckOptions
 	public static readonly TimeSpan DefaultInterval = TimeSpan.FromMilliseconds(100);
 
 	private ICheckInterval? _interval;
+	private bool _isIntervalSpecified;
+	private bool _isTimeoutSpecified;
 
 	/// <summary>
 	///     The interval in which the condition should be checked.
@@ -38,6 +41,7 @@ public class RepeatedCheckOptions
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> until the condition must be met.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public void Within(TimeSpan timeout)
 	{
 		if (timeout < TimeSpan.Zero)
@@ -45,6 +49,8 @@ public class RepeatedCheckOptions
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(timeout), "The timeout must not be negative."));
 		}
 
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isTimeoutSpecified, nameof(Within));
+		_isTimeoutSpecified = true;
 		Timeout = timeout;
 	}
 
@@ -54,6 +60,7 @@ public class RepeatedCheckOptions
 	/// <remarks>
 	///     Defaults to <see cref="RepeatedCheckOptions.DefaultInterval" /> if not specified.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
 	public void CheckEvery(TimeSpan interval)
 	{
 		if (interval <= TimeSpan.Zero)
@@ -61,13 +68,15 @@ public class RepeatedCheckOptions
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 		}
 
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIntervalSpecified, nameof(CheckEvery));
+		_isIntervalSpecified = true;
 		Interval = new FixedCheckInterval(interval);
 	}
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
 	{
-		if (Timeout == TimeSpan.Zero)
+		if (!_isTimeoutSpecified)
 		{
 			return "";
 		}

@@ -291,6 +291,32 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo([1, 2, 3,])
+							.Using(new AllEqualComparer()).Using(new AllDifferentComparer());
+					}
+					else
+					{
+						await That(subject).IsEqualTo([1, 2, 3,])
+							.Using(new AllEqualComparer()).Using(new AllDifferentComparer());
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be specified more than once.")
+					.Because("the second comparer would silently replace the first one");
+			}
+
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
@@ -371,6 +397,42 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo([1, 2, 3,]);
 				
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(false, false)]
+			[InlineData(false, true)]
+			[InlineData(true, false)]
+			[InlineData(true, true)]
+			public async Task WhenUsingIsCombinedWithEquivalent_ShouldThrowInvalidOperationException(
+				bool comparerFirst, bool negated)
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+				{
+					switch (comparerFirst, negated)
+					{
+						case (true, false):
+							await That(subject).IsEqualTo([1, 2, 3,]).Using(new AllEqualComparer()).Equivalent();
+							break;
+						case (true, true):
+							await That(subject).IsNotEqualTo([1, 2, 3,]).Using(new AllEqualComparer()).Equivalent();
+							break;
+						case (false, false):
+							await That(subject).IsEqualTo([1, 2, 3,]).Equivalent().Using(new AllEqualComparer());
+							break;
+						case (false, true):
+							await That(subject).IsNotEqualTo([1, 2, 3,]).Equivalent().Using(new AllEqualComparer());
+							break;
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(comparerFirst
+						? "Equivalent cannot be combined with Using."
+						: "Using cannot be combined with Equivalent.")
+					.Because("the second option would silently replace the comparison of the first one");
 			}
 
 			[Fact]

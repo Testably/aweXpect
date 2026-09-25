@@ -216,6 +216,31 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task ForDouble_WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+				bool negated)
+			{
+				double subject = 12.5;
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(12.5).Within(0.1).Within(0.2);
+					}
+					else
+					{
+						await That(subject).IsEqualTo(12.5).Within(0.1).Within(0.2);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second tolerance would silently replace the first one");
+			}
+
+			[Theory]
 			[InlineData(12.5F, 12.6F)]
 			[InlineData(12.5F, 12.4F)]
 			public async Task ForFloat_WhenInsideTolerance_ShouldSucceed(
@@ -664,6 +689,31 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
+			}
+
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task ForNullableDouble_WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+				bool negated)
+			{
+				double? subject = 12.5;
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo(12.5).Within(0.1).Within(0.2);
+					}
+					else
+					{
+						await That(subject).IsEqualTo(12.5).Within(0.1).Within(0.2);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second tolerance would silently replace the first one");
 			}
 
 			[Theory]

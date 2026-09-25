@@ -63,6 +63,56 @@ public sealed partial class ThatString
 					.Because("the comparer used to win silently, which also removed the casing from the message");
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException(bool negated)
+			{
+				string subject = "ABC";
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo("abc").Using(null!);
+					}
+					else
+					{
+						await That(subject).IsEqualTo("abc").Using(null!);
+					}
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("comparer").And
+					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+			}
+
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			{
+				string subject = "ABC";
+
+				async Task Act()
+				{
+					if (negated)
+					{
+						await That(subject).IsNotEqualTo("abc")
+							.Using(StringComparer.Ordinal).Using(StringComparer.OrdinalIgnoreCase);
+					}
+					else
+					{
+						await That(subject).IsEqualTo("abc")
+							.Using(StringComparer.Ordinal).Using(StringComparer.OrdinalIgnoreCase);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be specified more than once.")
+					.Because("the second comparer would silently replace the first one");
+			}
+
 			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldFail()
 			{

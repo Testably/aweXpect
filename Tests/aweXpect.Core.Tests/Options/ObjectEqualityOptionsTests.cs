@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -27,6 +28,82 @@ public class ObjectEqualityOptionsTests
 		bool result = await sut.AreConsideredEqual(actual, expected);
 
 		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task SetMatchType_WithOptionName_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		void Act() => sut.SetMatchType(new DummyMatchType(), "Custom");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Custom cannot be combined with Using.")
+			.Because("the match type would silently replace the comparer");
+	}
+
+	[Fact]
+	public async Task SetMatchType_WithOptionName_WhenTheSameOptionIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.SetMatchType(new DummyMatchType(), "Custom");
+
+		void Act() => sut.SetMatchType(new DummyMatchType(), "Custom");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Custom cannot be specified more than once.")
+			.Because("the second match type would silently replace the first one");
+	}
+
+	[Fact]
+	public async Task SetMatchType_WithoutOptionName_ShouldReplaceTheMatchType()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		sut.SetMatchType(new DummyMatchType());
+
+		await That(sut.ToString()).IsEqualTo("dummy")
+			.Because("without an option name the match type is set as is, e.g. to resolve a default");
+	}
+
+	[Fact]
+	public async Task Using_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		void Act() => sut.Using(new AllEqualComparer());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be specified more than once.")
+			.Because("the second comparer would silently replace the first one");
+	}
+
+	[Fact]
+	public async Task Using_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.SetMatchType(new DummyMatchType(), "Custom");
+
+		void Act() => sut.Using(new AllEqualComparer());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be combined with Custom.")
+			.Because("the comparer would silently replace the match type");
+	}
+
+	[Fact]
+	public async Task Using_WithNull_ShouldThrowArgumentNullException()
+	{
+		ObjectEqualityOptions<object> sut = new();
+
+		void Act() => sut.Using(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("comparer").And
+			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 	}
 
 	public static TheoryData<object, object> DifferentNumbers() => new()
@@ -103,4 +180,27 @@ public class ObjectEqualityOptionsTests
 		},
 #endif
 	};
+
+	private sealed class AllEqualComparer : IEqualityComparer<object>
+	{
+		public new bool Equals(object? x, object? y) => true;
+
+		public int GetHashCode(object obj) => 0;
+	}
+
+	private sealed class DummyMatchType : IObjectMatchType
+	{
+		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
+			=> new(true);
+
+		public string GetExpectation(string expected, ExpectationGrammars grammars) => "";
+
+		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+			=> "";
+
+		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+			=> "";
+
+		public override string ToString() => "dummy";
+	}
 }

@@ -145,7 +145,6 @@ public sealed partial class StringEqualityOptionsTests
 		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
-		[InlineData(nameof(StringEqualityOptions.Using))]
 		public async Task ComparesByOrdinalEquality_WhenTheOptionIsReset_ShouldBeTrue(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -515,6 +514,19 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task Using_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.Using(StringComparer.OrdinalIgnoreCase);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Using cannot be specified more than once.")
+				.Because("the second comparer would silently replace the first one");
+		}
+
+		[Fact]
 		public async Task Using_WhenCaseIsExplicitlyNotIgnored_ShouldNotThrow()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -564,39 +576,29 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task Using_WithNull_ShouldResetTheComparer()
+		public async Task Using_WithNull_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal).Using(null);
 
-			void Act() => sut.AsRegex().IgnoringCase();
+			void Act() => sut.Using(null!);
 
-			await That(Act).DoesNotThrow()
-				.Because("without a comparer neither combination conflicts anymore");
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("comparer").And
+				.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 		}
 
 		[Fact]
-		public async Task Using_WithNull_WhenCaseIsIgnored_ShouldNotThrow()
+		public async Task Using_WithNull_WhenAComparerIsUsed_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase();
+			sut.Using(StringComparer.Ordinal);
 
-			void Act() => sut.Using(null);
+			void Act() => sut.Using(null!);
 
-			await That(Act).DoesNotThrow()
-				.Because("no comparer is set that could compete with the casing option");
-		}
-
-		[Fact]
-		public async Task Using_WithNull_WhenMatchingAsRegex_ShouldNotThrow()
-		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
-
-			void Act() => sut.Using(null);
-
-			await That(Act).DoesNotThrow()
-				.Because("no comparer is set that the regex engine could not honour");
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("comparer").And
+				.WithMessage("The 'comparer' cannot be null.").AsPrefix()
+				.Because("a comparer cannot be reset to the default one");
 		}
 
 		private static void Change(StringEqualityOptions options, string option, bool enable)
@@ -640,7 +642,7 @@ public sealed partial class StringEqualityOptionsTests
 					options.IgnoringTrailingWhiteSpace(enable);
 					break;
 				case "Using":
-					options.Using(enable ? StringComparer.Ordinal : null);
+					options.Using(StringComparer.Ordinal);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(option), option, null);

@@ -669,6 +669,32 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Theory]
+			[InlineData(" foo", true)]
+			[InlineData("goo", false)]
+			public async Task WhenIgnoringLeadingWhiteSpace_ShouldIgnoreLeadingWhiteSpace(string match,
+				bool expectSuccess)
+			{
+				IAsyncEnumerable<string> sut = ToAsyncEnumerable(["  foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(sut).Contains(match).IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that sut
+					              contains {Formatter.Format(match)} ignoring leading whitespace at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "  foo",
+					                "bar",
+					                "baz"
+					              ]
+					              """);
+			}
+
+			[Theory]
 			[InlineData("fo\ro", true)]
 			[InlineData("go\ro", false)]
 			public async Task WhenIgnoringNewlineStyle_ShouldIgnoreNewlineStyle(string match, bool expectSuccess)
@@ -690,6 +716,32 @@ public sealed partial class ThatAsyncEnumerable
 					                "fo{nl.DisplayWhitespace()}o",
 					                "ba{nl.DisplayWhitespace()}r",
 					                "ba{nl.DisplayWhitespace()}z"
+					              ]
+					              """);
+			}
+
+			[Theory]
+			[InlineData("foo ", true)]
+			[InlineData("goo", false)]
+			public async Task WhenIgnoringTrailingWhiteSpace_ShouldIgnoreTrailingWhiteSpace(string match,
+				bool expectSuccess)
+			{
+				IAsyncEnumerable<string> sut = ToAsyncEnumerable(["foo  ", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(sut).Contains(match).IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that sut
+					              contains {Formatter.Format(match)} ignoring trailing whitespace at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "foo  ",
+					                "bar",
+					                "baz"
 					              ]
 					              """);
 			}

@@ -200,6 +200,23 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenTimeoutIsZero_ShouldMentionTheTimeout()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo(1)).Within(TimeSpan.Zero);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1 within 0:00,
+					             but it was 1
+					             """)
+					.Because("an explicit timeout is named like on a signaler, even when it is zero");
+			}
+
 			private sealed class MyChangingClass(int numberOfChanges)
 			{
 				private int _iterations;

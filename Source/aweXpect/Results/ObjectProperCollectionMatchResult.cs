@@ -8,7 +8,7 @@ namespace aweXpect.Results;
 ///     The result for verifying that a collection contains or is contained in another collection.
 /// </summary>
 /// <remarks>
-///     <seealso cref="ObjectCollectionMatchResult{TType,TThat,TItem}" />
+///     <seealso cref="ObjectCollectionContainmentResult{TType,TThat,TElement}" />
 /// </remarks>
 public class ObjectProperCollectionMatchResult<TType, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
@@ -16,7 +16,8 @@ public class ObjectProperCollectionMatchResult<TType, TThat, TItem>(
 	ObjectEqualityOptions<TItem> options,
 	CollectionMatchOptions collectionMatchOptions,
 	CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation)
-	: ObjectCollectionMatchResult<TType, TThat, TItem>(expectationBuilder, returnValue, options, collectionMatchOptions)
+	: ObjectCollectionContainmentResult<TType, TThat, TItem>(expectationBuilder, returnValue, options,
+		collectionMatchOptions)
 {
 	private readonly CollectionMatchOptions _collectionMatchOptions = collectionMatchOptions;
 
@@ -27,7 +28,7 @@ public class ObjectProperCollectionMatchResult<TType, TThat, TItem>(
 	///     This means that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
 	///     superset for <c>IsContainedIn</c>.
 	/// </remarks>
-	public ObjectCollectionMatchResult<TType, TThat, TItem> Properly()
+	public ObjectCollectionContainmentResult<TType, TThat, TItem> Properly()
 	{
 		_collectionMatchOptions.SetEquivalenceRelation(properEquivalenceRelation);
 		return this;
