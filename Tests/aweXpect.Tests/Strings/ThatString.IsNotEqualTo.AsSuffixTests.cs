@@ -50,21 +50,18 @@ public sealed partial class ThatString
 					.Because("a null has no content to inspect, just as for DoesNotEndWith");
 			}
 
-			[Fact]
-			public async Task WhenSuffixIsNull_ShouldFailForANullSubject()
+			[Theory]
+			[InlineData("some text")]
+			[InlineData(null)]
+			public async Task WhenSuffixIsNull_ShouldThrowArgumentNullException(string? subject)
 			{
-				string? subject = null;
-
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(null).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not end with <null>,
-					             but it was <null>
-					             """)
-					.Because("a null suffix inspects nothing, so it remains a plain equality check");
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' suffix cannot be null.").AsPrefix()
+					.Because("a missing suffix is rejected before the subject is looked at");
 			}
 		}
 	}

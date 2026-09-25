@@ -29,7 +29,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task AsPrefix_WhenUnexpectedContainsNull_ShouldFail()
+			public async Task AsPrefix_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
 				IEnumerable<string?> unexpected = ["foo", null,];
@@ -37,13 +37,10 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)} as prefix,
-					              but it was <null>
-					              """)
-					.Because("a null value inspects nothing, so it remains a plain equality check");
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' prefix cannot be null.").AsPrefix()
+					.Because("a missing prefix is rejected like a missing regex pattern");
 			}
 
 			[Fact]

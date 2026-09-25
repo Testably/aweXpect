@@ -100,7 +100,8 @@ await Expect.That(subject).IsEqualTo("^text$").AsRegex(RegexOptions.Multiline);
 
 An empty pattern is rejected with an `ArgumentException` and a `null` pattern with an `ArgumentNullException`, because
 an empty pattern matches every subject and a `null` pattern matches no subject, so one of the two expectations could
-never fail.
+never fail. A pattern that is not a valid regex is rejected with an `ArgumentException` that carries the parse error as
+its inner exception, even for a `null` subject.
 
 ### Prefix / Suffix
 
@@ -114,12 +115,12 @@ await Expect.That(subject).IsEqualTo("Road").AsSuffix();
 ```
 
 An empty prefix or suffix is rejected with an `ArgumentException`, because every subject starts and ends with the empty
-string, so such an expectation says nothing about the subject.
+string, so such an expectation says nothing about the subject. A `null` prefix or suffix is rejected with an
+`ArgumentNullException`, just like a `null` pattern.
 
 :::note[A `null` subject has no content to match]
 Every match type except the plain comparison asks about the content of the subject, so it fails for a `null` subject in
-both directions, exactly like `StartsWith` and `DoesNotStartWith` do. Only a `null` pattern stays a plain equality
-check, so `IsEqualTo(null).AsPrefix()` still succeeds.
+both directions, exactly like `StartsWith` and `DoesNotStartWith` do.
 :::
 
 ## One of

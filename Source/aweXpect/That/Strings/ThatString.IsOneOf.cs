@@ -48,8 +48,7 @@ public static partial class ThatString
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		/// <remarks>
 		///     A match type other than the exact one inspects the content of the subject, which a <see langword="null" />
-		///     does not have, so it fails in both polarities. A <see langword="null" /> value inspects nothing and still
-		///     matches a <see langword="null" /> subject as a plain equality check.
+		///     does not have, so it fails in both polarities.
 		/// </remarks>
 		public override Outcome Outcome
 		{

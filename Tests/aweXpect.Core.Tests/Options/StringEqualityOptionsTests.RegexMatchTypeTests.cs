@@ -83,6 +83,23 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an unusable pattern must throw at the call instead of inside the returned task");
 		}
 
+		[Theory]
+		[InlineData("foo")]
+		[InlineData(null)]
+		public async Task AreConsideredEqual_WhenPatternIsInvalid_ShouldThrowArgumentException(string? actual)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual(actual, "a(");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage($"The 'expected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
+				.WithParamName("expected").And
+				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("a(")))
+				.Because("a broken pattern is rejected before the subject is looked at");
+		}
+
 		[Fact]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
@@ -139,6 +156,20 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected")
+				.Because("a negated expectation receives the pattern as 'unexpected'");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsInvalid_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("unexpected");
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", "a(");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage($"The 'unexpected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
 				.WithParamName("unexpected")
 				.Because("a negated expectation receives the pattern as 'unexpected'");
 		}
@@ -261,8 +292,10 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act() => await sut.CountOccurrences("foo", "[");
 
 			await That(Act).Throws<ArgumentException>()
-				.WithMessage("*[*").AsWildcard()
-				.Because("an invalid pattern must still fail immediately, but the message is localized");
+				.WithMessage($"The 'expected' regex pattern is invalid: {GetParseError("[")}").AsPrefix().And
+				.WithParamName("expected").And
+				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("[")))
+				.Because("counting the occurrences parses the same pattern and must fail the same way");
 		}
 
 		[Fact]
@@ -406,6 +439,20 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenPatternIsInvalid_ShouldThrowArgumentException()
+		{
+			string sut = "foo";
+
+			async Task Act()
+				=> await That(sut).IsEqualTo("a(").AsRegex();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage($"The 'expected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
+				.WithParamName("expected").And
+				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("a(")));
+		}
+
+		[Fact]
 		public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			string sut = "foo";
@@ -435,6 +482,21 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenSubjectIsNullAndPatternIsInvalid_ShouldThrowArgumentException()
+		{
+			string? sut = null;
+
+			async Task Act()
+				=> await That(sut).IsNotEqualTo("a(").AsRegex();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage($"The 'unexpected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
+				.WithParamName("unexpected").And
+				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("a(")))
+				.Because("a broken pattern must not go unnoticed only because the subject is null");
+		}
+
+		[Fact]
 		public async Task WhenSubjectIsNull_ShouldFail()
 		{
 			string? sut = null;
@@ -448,6 +510,23 @@ public sealed partial class StringEqualityOptionsTests
 				             matches regex ".*",
 				             but it was <null>
 				             """);
+		}
+
+		/// <remarks>
+		///     The parse error is localized and differs between the target frameworks.
+		/// </remarks>
+		private static string GetParseError(string pattern)
+		{
+			try
+			{
+				_ = new Regex(pattern);
+			}
+			catch (ArgumentException exception)
+			{
+				return exception.Message;
+			}
+
+			throw new InvalidOperationException($"The pattern '{pattern}' is valid.");
 		}
 	}
 }

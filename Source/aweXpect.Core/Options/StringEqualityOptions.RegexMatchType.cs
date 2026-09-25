@@ -63,24 +63,38 @@ public partial class StringEqualityOptions
 		public RegexOptions Options { get; } = regexOptions;
 
 		/// <summary>
-		///     Counts the non-overlapping matches of the <paramref name="expected" /> pattern in the
-		///     <paramref name="actual" /> value.
+		///     Parses the <paramref name="expected" /> pattern with the <see cref="Options" /> and the timeout.
 		/// </summary>
-		/// <remarks>
-		///     Empty matches are not counted, because they do not cover anything in the <paramref name="actual" /> value,
-		///     consistent with an empty expected value which never occurs.
-		/// </remarks>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase,
-			RegexOptions additionalOptions = RegexOptions.None)
+		public Regex CreateRegex(string expected, bool ignoreCase)
 		{
-			RegexOptions options = additionalOptions;
+			RegexOptions options = Options;
 			if (ignoreCase)
 			{
 				options |= IgnoreCaseOptions;
 			}
 
+			return new Regex(expected, options, RegexTimeout);
+		}
+
+		/// <summary>
+		///     Counts the non-overlapping matches of the <paramref name="expected" /> pattern in the
+		///     <paramref name="actual" /> value.
+		/// </summary>
+		public static int CountOccurrences(string actual, string expected, bool ignoreCase,
+			RegexOptions additionalOptions)
+			=> CountOccurrences(actual, new RegexMatchType(additionalOptions).CreateRegex(expected, ignoreCase));
+
+		/// <summary>
+		///     Counts the non-overlapping matches of the <paramref name="regex" /> in the <paramref name="actual" /> value.
+		/// </summary>
+		/// <remarks>
+		///     Empty matches are not counted, because they do not cover anything in the <paramref name="actual" /> value,
+		///     consistent with an empty expected value which never occurs.
+		/// </remarks>
+		public static int CountOccurrences(string actual, Regex regex)
+		{
 			int count = 0;
-			foreach (Match match in Regex.Matches(actual, expected, options, RegexTimeout))
+			foreach (Match match in regex.Matches(actual))
 			{
 				if (match.Length > 0)
 				{
@@ -120,13 +134,7 @@ public partial class StringEqualityOptions
 				return new ValueTask<bool>(false);
 			}
 
-			RegexOptions options = Options;
-			if (ignoreCase)
-			{
-				options |= IgnoreCaseOptions;
-			}
-
-			return new ValueTask<bool>(Regex.IsMatch(actual, expected, options, RegexTimeout));
+			return new ValueTask<bool>(CreateRegex(expected, ignoreCase).IsMatch(actual));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

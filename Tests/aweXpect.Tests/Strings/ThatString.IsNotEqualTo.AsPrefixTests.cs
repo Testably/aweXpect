@@ -6,21 +6,18 @@ public sealed partial class ThatString
 	{
 		public sealed class AsPrefixTests
 		{
-			[Fact]
-			public async Task WhenPrefixIsNull_ShouldFailForANullSubject()
+			[Theory]
+			[InlineData("some text")]
+			[InlineData(null)]
+			public async Task WhenPrefixIsNull_ShouldThrowArgumentNullException(string? subject)
 			{
-				string? subject = null;
-
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(null).AsPrefix();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not start with <null>,
-					             but it was <null>
-					             """)
-					.Because("a null prefix inspects nothing, so it remains a plain equality check");
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' prefix cannot be null.").AsPrefix()
+					.Because("a missing prefix is rejected before the subject is looked at");
 			}
 
 			[Fact]

@@ -52,12 +52,11 @@ public static partial class ThatString
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		/// <remarks>
 		///     A match type other than the exact one inspects the content of the subject, which a <see langword="null" />
-		///     does not have, so it fails in both polarities. A <see langword="null" /> pattern inspects nothing and
-		///     degenerates to a plain equality check, for which <see langword="null" /> is a legitimate answer.
+		///     does not have, so it fails in both polarities.
 		/// </remarks>
 		public override Outcome Outcome
 		{
-			get => Actual is null && expected is not null && options.InspectsSubject
+			get => Actual is null && options.InspectsSubject
 				? Outcome.Failure
 				: base.Outcome;
 			protected set => base.Outcome = value;
