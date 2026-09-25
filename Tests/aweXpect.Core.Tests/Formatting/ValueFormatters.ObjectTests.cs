@@ -11,6 +11,60 @@ public partial class ValueFormatters
 	public sealed class ObjectTests
 	{
 		[Fact]
+		public async Task InFailureMessage_WhenMemberGetterThrows_ShouldRenderAPlaceholder()
+		{
+			object subject = new ClassWithExceptionProperty(new InvalidOperationException("getter failed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was ValueFormatters.ObjectTests.ClassWithExceptionProperty {
+				                 Value = [Value did throw an InvalidOperationException: getter failed]
+				               }
+				             """);
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenMemberToStringThrows_ShouldRenderAPlaceholderForTheMember()
+		{
+			object subject = new ClassWithThrowingToStringMember(
+				new ClassWithThrowingToString(new InvalidOperationException("ToString failed")));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was ValueFormatters.ObjectTests.ClassWithThrowingToStringMember {
+				                 Inner = [ToString of ValueFormatters.ObjectTests.ClassWithThrowingToString did throw an InvalidOperationException: ToString failed]
+				               }
+				             """)
+				.Because("the getter of the member succeeded, only formatting its value failed");
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenToStringThrows_ShouldRenderAPlaceholder()
+		{
+			object subject = new ClassWithThrowingToString(new InvalidOperationException("ToString failed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [ToString of ValueFormatters.ObjectTests.ClassWithThrowingToString did throw an InvalidOperationException: ToString failed]
+				             """);
+		}
+
+		[Fact]
 		public async Task ShouldDisplayNestedObjects()
 		{
 			Dummy value = new()
@@ -293,7 +347,7 @@ public partial class ValueFormatters
 			Exception exception = new("foo");
 			object value = new ClassWithExceptionProperty(exception);
 			string expectedResult =
-				"ValueFormatters.ObjectTests.ClassWithExceptionProperty { Value = [Member 'Value' threw an exception: 'foo'] }";
+				"ValueFormatters.ObjectTests.ClassWithExceptionProperty { Value = [Value did throw an Exception: foo] }";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value, FormattingOptions.SingleLine);
@@ -450,6 +504,19 @@ public partial class ValueFormatters
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
+		}
+
+		private sealed class ClassWithThrowingToString(Exception exception)
+		{
+			/// <inheritdoc />
+			public override string ToString()
+				=> throw exception;
+		}
+
+		private sealed class ClassWithThrowingToStringMember(ClassWithThrowingToString inner)
+		{
+			// ReSharper disable once UnusedMember.Local
+			public ClassWithThrowingToString Inner => inner;
 		}
 
 		private sealed class ClassWithToString(string value)

@@ -75,6 +75,22 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task InFailureMessage_WhenEnumerationThrows_ShouldRenderAPlaceholder()
+		{
+			object subject = Throwing(new InvalidOperationException("enumeration failed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [the enumeration did throw an InvalidOperationException: enumeration failed]
+				             """);
+		}
+
+		[Fact]
 		public async Task InFailureMessage_WhenLazySequenceWasFullyEnumerated_ShouldNameTheNumberOfRemainingItems()
 		{
 			IEnumerable<int> subject = Lazy(Enumerable.Range(1, 25));
@@ -313,6 +329,12 @@ public partial class ValueFormatters
 			{
 				yield return item;
 			}
+		}
+
+		private static IEnumerable<int> Throwing(Exception exception)
+		{
+			yield return 1;
+			throw exception;
 		}
 
 		private sealed class ReadOnlyCollection(int[] items) : IReadOnlyCollection<int>

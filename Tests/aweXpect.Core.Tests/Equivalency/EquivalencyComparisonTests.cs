@@ -2120,7 +2120,7 @@ public sealed class EquivalencyComparisonTests
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to EquivalencyComparisonTests.WithThrowingGetter {
-			                 Value = [Member 'Value' threw an exception: 'getter failed']
+			                 Value = [Value did throw an InvalidOperationException: getter failed]
 			               },
 			             but it did throw an InvalidOperationException:
 			               getter failed
@@ -2145,7 +2145,7 @@ public sealed class EquivalencyComparisonTests
 			.WithMessage("""
 			             Expected that actual
 			             is not equivalent to EquivalencyComparisonTests.WithThrowingGetter {
-			                 Value = [Member 'Value' threw an exception: 'getter failed']
+			                 Value = [Value did throw an InvalidOperationException: getter failed]
 			               },
 			             but it did throw an InvalidOperationException:
 			               getter failed
