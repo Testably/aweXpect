@@ -40,6 +40,26 @@ public sealed partial class ThatStream
 					.Because("a broken stream cannot answer what its length is");
 			}
 
+			[Fact]
+			public async Task WhenReadingTheLengthThrowsAnyOtherException_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("The stream is broken.");
+				Stream subject = new UnreadableStream(exception);
+
+				async Task Act()
+					=> await That(subject).HasLength(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to 3,
+					             but it could not read the length, because it did throw an InvalidOperationException:
+					               The stream is broken.
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a stream cannot answer what its length is, whatever it throws");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectHasDifferentLength_ShouldFail(long length)
@@ -625,6 +645,26 @@ public sealed partial class ThatStream
 					             does not have length equal to 3,
 					             but it had length 3
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenReadingTheLengthThrowsAnyOtherException_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("The stream is broken.");
+				Stream subject = new UnreadableStream(exception);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have length equal to 3,
+					             but it could not read the length, because it did throw an InvalidOperationException:
+					               The stream is broken.
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("negating a question that cannot be answered does not make it true");
 			}
 
 			[Fact]

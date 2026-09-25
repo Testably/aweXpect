@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 #endif
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -72,12 +73,15 @@ internal static class CollectionComparerHelpers
 	public static Func<T, T, bool>? GetCustomSetEquality<T>(IEnumerable<T> collection)
 		=> collection switch
 		{
-			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Equals(x, y),
-			SortedSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Compare(x, y) == 0,
+			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y)),
+			SortedSet<T> set when IsCustom(set.Comparer)
+				=> (x, y) => UserCode.Invoke(() => set.Comparer.Compare(x, y)) == 0,
 #if NET8_0_OR_GREATER
-			ImmutableHashSet<T> set when IsCustom(set.KeyComparer) => (x, y) => set.KeyComparer.Equals(x, y),
-			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => (x, y) => set.KeyComparer.Compare(x, y) == 0,
-			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Equals(x, y),
+			ImmutableHashSet<T> set when IsCustom(set.KeyComparer)
+				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Equals(x, y)),
+			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
+				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Compare(x, y)) == 0,
+			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y)),
 #endif
 			_ => null,
 		};

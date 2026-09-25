@@ -115,10 +115,8 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(
 						nameof(CustomEventWithParametersClass<string, int?, bool, DateTime, int>.CustomEvent));
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage(
-						"*The CustomEvent event contains too many parameters (5): [string, int?, bool, DateTime, int]")
-					.AsWildcard()
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage("The CustomEvent event contains too many parameters (5): [string, int?, bool, DateTime, int]")
 					.Because("the recording skips an event it cannot attach to, so the reason surfaces on the expectation that asks for it");
 			}
 		}

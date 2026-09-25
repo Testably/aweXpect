@@ -90,6 +90,20 @@ public partial class ThatEnumerable
 		}
 	}
 
+	/// <summary>
+	///     Returns an <see cref="IEnumerable{T}" /> with the <paramref name="items" />, whose enumeration throws the
+	///     <paramref name="exception" /> afterwards.
+	/// </summary>
+	private static IEnumerable<int> ThrowAfter(Exception exception, params int[] items)
+	{
+		foreach (int item in items)
+		{
+			yield return item;
+		}
+
+		throw exception;
+	}
+
 	public sealed class ThrowWhenIteratingTwiceEnumerable : IEnumerable<int>
 	{
 		private bool _isEnumerated;

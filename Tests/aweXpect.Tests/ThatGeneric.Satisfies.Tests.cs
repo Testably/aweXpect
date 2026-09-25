@@ -56,9 +56,8 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Satisfies(CancelingPredicate).WithCancellation(cts.Token);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Error evaluating*constraint*evaluation canceled").AsWildcard().And
-					.WithInner<OperationCanceledException>(inner => inner.HasMessage("evaluation canceled"))
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage("evaluation canceled")
 					.Because("a cancellation that was actually requested aborts the evaluation instead of answering the expectation");
 			}
 
@@ -257,29 +256,92 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenPredicateThrows_ShouldFailWithoutRetrying()
+			public async Task WhenPredicateThrowsUntilItReturnsTrue_ShouldSucceed()
 			{
 				int count = 0;
 				Other subject = new();
 
 				bool ThrowingPredicate(Other _)
 				{
-					count++;
-					throw new InvalidOperationException("predicate failed");
+					if (++count <= 2)
+					{
+						throw new InvalidOperationException("not yet");
+					}
+
+					return true;
 				}
 
 				async Task Act()
-					=> await That(subject).Satisfies(ThrowingPredicate).Within(30.Seconds());
+					=> await That(subject).Satisfies(ThrowingPredicate).Within(5.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an exception is only a failed attempt, so the predicate is retried like any other failure");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldRetryAndFailWithTheLastException()
+			{
+				int count = 0;
+				InvalidOperationException lastException = new("predicate failed again");
+				Other subject = new();
+
+				bool ThrowingPredicate(Other _)
+				{
+					if (++count == 1)
+					{
+						throw new InvalidOperationException("predicate failed");
+					}
+
+					throw lastException;
+				}
+
+				async Task Act()
+					=> await That(subject).Satisfies(ThrowingPredicate).Within(200.Milliseconds())
+						.CheckEvery(10.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             satisfies ThrowingPredicate within 0:30,
+					             satisfies ThrowingPredicate within 0:00.200,
 					             but it did throw an InvalidOperationException:
-					               predicate failed
-					             """);
-				await That(count).IsEqualTo(1)
-					.Because("a predicate that throws cannot turn true later on, so retrying it is pointless");
+					               predicate failed again
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(lastException));
+				await That(count).IsGreaterThan(1)
+					.Because("an exception is only a failed attempt, so the predicate is retried until the time runs out");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_WhenNegated_ShouldRetryAndFailWithTheLastException()
+			{
+				int count = 0;
+				InvalidOperationException lastException = new("predicate failed again");
+				Other subject = new();
+
+				bool ThrowingPredicate(Other _)
+				{
+					if (++count == 1)
+					{
+						throw new InvalidOperationException("predicate failed");
+					}
+
+					throw lastException;
+				}
+
+				async Task Act()
+					=> await That(subject).DoesNotSatisfy(ThrowingPredicate).Within(200.Milliseconds())
+						.CheckEvery(10.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy ThrowingPredicate within 0:00.200,
+					             but it did throw an InvalidOperationException:
+					               predicate failed again
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(lastException));
+				await That(count).IsGreaterThan(1)
+					.Because("an exception is only a failed attempt, so the predicate is retried until the time runs out");
 			}
 
 			[Theory]

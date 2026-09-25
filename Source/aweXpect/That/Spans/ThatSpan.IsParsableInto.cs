@@ -80,6 +80,7 @@ public static partial class ThatSpan
 		where TType : ISpanParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
+		private Exception? _exception;
 		private string? _exceptionMessage;
 		private TType? _parsedValue;
 
@@ -90,6 +91,9 @@ public static partial class ThatSpan
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _exception;
 
 		public ConstraintResult IsMetBy(SpanWrapper<char> actual)
 		{
@@ -102,6 +106,7 @@ public static partial class ThatSpan
 			}
 			catch (Exception ex)
 			{
+				_exception = ex;
 				if (string.IsNullOrEmpty(ex.Message) || ex.Message.Length < 2)
 				{
 					_exceptionMessage = "an unknown error occurred";
@@ -156,6 +161,7 @@ public static partial class ThatSpan
 		where TType : IUtf8SpanParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
+		private Exception? _exception;
 		private string? _exceptionMessage;
 		private TType? _parsedValue;
 
@@ -166,6 +172,9 @@ public static partial class ThatSpan
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _exception;
 
 		public ConstraintResult IsMetBy(SpanWrapper<byte> actual)
 		{
@@ -178,6 +187,7 @@ public static partial class ThatSpan
 			}
 			catch (Exception ex)
 			{
+				_exception = ex;
 				if (string.IsNullOrEmpty(ex.Message) || ex.Message.Length < 2)
 				{
 					_exceptionMessage = "an unknown error occurred";

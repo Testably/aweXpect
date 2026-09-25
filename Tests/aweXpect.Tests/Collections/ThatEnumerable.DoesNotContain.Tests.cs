@@ -973,6 +973,26 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(x => x == 2 ? throw exception : false);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item matching x => x == 2 ? throw exception : false,
+					             but it did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a predicate that threw answered nothing, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;

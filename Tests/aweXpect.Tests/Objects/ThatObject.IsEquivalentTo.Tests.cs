@@ -1342,7 +1342,7 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenEqualsThrows_AndTypeIsComparedByValue_ShouldThrowInvalidOperationException()
+			public async Task WhenEqualsThrows_AndTypeIsComparedByValue_ShouldFailWithTheException()
 			{
 				ThrowingOnEqualsClass subject = new()
 				{
@@ -1360,10 +1360,23 @@ public sealed partial class ThatObject
 							ComparisonType = EquivalencyComparisonType.ByValue,
 						}));
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage(
-						"*The equals method of ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass threw an NotSupportedException:*")
-					.AsWildcard();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass {
+					                 Value = 1
+					               },
+					             but it did throw a NotSupportedException:
+					               no equality here
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - for ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass:
+					                - include public fields and properties
+					                - compare types by value
+					             """).And
+					.Whose(e => e.InnerException, i => i.Is<NotSupportedException>())
+					.Because("an Equals that throws answers nothing, so it fails the expectation");
 			}
 
 			private sealed class AlwaysEqualClass

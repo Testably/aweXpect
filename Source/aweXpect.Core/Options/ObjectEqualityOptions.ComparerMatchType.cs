@@ -22,7 +22,7 @@ public partial class ObjectEqualityOptions<TSubject>
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new ValueTask<bool>(comparer.Equals(actual, expected));
+			=> new ValueTask<bool>(UserCode.Invoke(() => comparer.Equals(actual, expected)));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)

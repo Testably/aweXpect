@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace aweXpect.Tests;
 
@@ -27,6 +28,30 @@ public partial class ThatReadOnlyDictionary
 		public IEnumerable<TKey> Keys => inner.Keys;
 
 		public IEnumerable<TValue> Values => inner.Values;
+	}
+
+	/// <summary>
+	///     A dictionary that knows its keys, but throws the <paramref name="exception" /> when a value is looked up.
+	/// </summary>
+	public sealed class ThrowingLookupDictionary(Exception exception, params int[] keys)
+		: IReadOnlyDictionary<int, string>
+	{
+		public IEnumerator<KeyValuePair<int, string>> GetEnumerator()
+			=> keys.Select(key => new KeyValuePair<int, string>(key, "")).GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public int Count => keys.Length;
+
+		public bool ContainsKey(int key) => keys.Contains(key);
+
+		public bool TryGetValue(int key, out string value) => throw exception;
+
+		public string this[int key] => throw exception;
+
+		public IEnumerable<int> Keys => keys;
+
+		public IEnumerable<string> Values => throw exception;
 	}
 
 	public static IReadOnlyDictionary<TKey, TValue> ToDictionary<TKey, TValue>(TKey[] keys, TValue[] values)

@@ -560,7 +560,7 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowInvalidOperationException()
+	public async Task IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
 		ExpectationNode node = new();
@@ -569,15 +569,13 @@ public class ExpectationNodeTests
 		async Task Act() =>
 			await node.IsMetBy(44, null!, CancellationToken.None);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithInner<MyException>(x => x.HasMessage(exception.Message)).And
-			.WithMessage("""
-			             Error evaluating DummyAsyncConstraint<int> constraint with value 44: IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowInvalidOperationException
-			             """);
+		await That(Act).Throws<MyException>()
+			.WithMessage("IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowTheException")
+			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenAsyncContextConstraintThrowsException_ShouldThrowInvalidOperationException()
+	public async Task IsMetBy_WhenAsyncContextConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
 		ExpectationNode node = new();
@@ -586,15 +584,13 @@ public class ExpectationNodeTests
 		async Task Act() =>
 			await node.IsMetBy(45, null!, CancellationToken.None);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithInner<MyException>(x => x.HasMessage(exception.Message)).And
-			.WithMessage("""
-			             Error evaluating DummyAsyncContextConstraint<int> constraint with value 45: IsMetBy_WhenAsyncContextConstraintThrowsException_ShouldThrowInvalidOperationException
-			             """);
+		await That(Act).Throws<MyException>()
+			.WithMessage("IsMetBy_WhenAsyncContextConstraintThrowsException_ShouldThrowTheException")
+			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenContextConstraintThrowsException_ShouldThrowInvalidOperationException()
+	public async Task IsMetBy_WhenContextConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
 		ExpectationNode node = new();
@@ -603,15 +599,69 @@ public class ExpectationNodeTests
 		async Task Act() =>
 			await node.IsMetBy(43, null!, CancellationToken.None);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithInner<MyException>(x => x.HasMessage(exception.Message)).And
-			.WithMessage("""
-			             Error evaluating DummyContextConstraint<int> constraint with value 43: IsMetBy_WhenContextConstraintThrowsException_ShouldThrowInvalidOperationException
-			             """);
+		await That(Act).Throws<MyException>()
+			.WithMessage("IsMetBy_WhenContextConstraintThrowsException_ShouldThrowTheException")
+			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenValueConstraintThrowsException_ShouldThrowInvalidOperationException()
+	public async Task IsMetBy_WhenUserCodeIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<int>(() => throw new OperationCanceledException("canceled", cts.Token),
+			"yeah!", "not yeah!"));
+
+		async Task Act() =>
+			await node.IsMetBy(1, null!, cts.Token);
+
+		await That(Act).Throws<OperationCanceledException>()
+			.WithMessage("canceled")
+			.Because("a requested cancellation aborts the evaluation instead of failing it");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenUserCodeThrows_ShouldFailWithTheException()
+	{
+		MyException exception = new();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<int>(() => throw exception, "yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		sb.Append(", but ");
+		result.AppendResult(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsSameAs(exception);
+		await That(sb.ToString()).IsEqualTo("""
+		                                    yeah!, but it did throw a MyException:
+		                                      IsMetBy_WhenUserCodeThrows_ShouldFailWithTheException
+		                                    """);
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenUserCodeThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
+	{
+		MyException exception = new();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<int>(() => throw exception, "yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("code that threw answered nothing, so the negation fails as well");
+		await That(negated.FailureCause).IsSameAs(exception);
+		await That(sb.ToString()).IsEqualTo("not yeah!");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenValueConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
 		ExpectationNode node = new();
@@ -620,11 +670,9 @@ public class ExpectationNodeTests
 		async Task Act() =>
 			await node.IsMetBy("42", null!, CancellationToken.None);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithInner<MyException>(x => x.HasMessage(exception.Message)).And
-			.WithMessage("""
-			             Error evaluating DummyValueConstraint<string> constraint with value "42": IsMetBy_WhenValueConstraintThrowsException_ShouldThrowInvalidOperationException
-			             """);
+		await That(Act).Throws<MyException>()
+			.WithMessage("IsMetBy_WhenValueConstraintThrowsException_ShouldThrowTheException")
+			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
 	[Fact]

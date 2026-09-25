@@ -111,7 +111,7 @@ public partial class StringEqualityOptions
 
 			if (comparer is not null)
 			{
-				return new ValueTask<bool>(comparer.Equals(actual, expected));
+				return new ValueTask<bool>(UserCode.Invoke(() => comparer.Equals(actual, expected)));
 			}
 			
 			return new ValueTask<bool>(string.Equals(actual, expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));

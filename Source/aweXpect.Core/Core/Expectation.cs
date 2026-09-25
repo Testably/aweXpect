@@ -232,7 +232,7 @@ public abstract class Expectation
 			result.ConstraintResult.AppendResult(sb);
 			foreach (ResultContext context in GetContexts(0, outcomes).OrderByDescending(x => x.Priority))
 			{
-				string? content = await context.GetContent(cancellationToken);
+				string? content = await context.GetContentUnlessUserCodeThrows(cancellationToken);
 				if (content is null)
 				{
 					continue;

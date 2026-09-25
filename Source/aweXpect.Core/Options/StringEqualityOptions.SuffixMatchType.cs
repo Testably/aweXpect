@@ -112,7 +112,8 @@ public partial class StringEqualityOptions
 
 			if (comparer is not null)
 			{
-			return new ValueTask<bool>(actual.Length >= expected.Length && comparer.Equals(actual[^expected.Length..], expected));
+			return new ValueTask<bool>(actual.Length >= expected.Length &&
+			                           UserCode.Invoke(() => comparer.Equals(actual[^expected.Length..], expected)));
 			}
 
 			return new ValueTask<bool>(actual.EndsWith(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));

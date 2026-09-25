@@ -30,7 +30,8 @@ public partial class StringEqualityOptions
 
 			for (int index = 0; index <= actual.Length - expected.Length; index++)
 			{
-				if (comparer.Equals(actual.Substring(index, expected.Length), expected))
+				string candidate = actual.Substring(index, expected.Length);
+				if (UserCode.Invoke(() => comparer.Equals(candidate, expected)))
 				{
 					return true;
 				}

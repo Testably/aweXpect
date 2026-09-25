@@ -246,6 +246,26 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenReadingTheMessageThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("message failed");
+				Exception subject = new ThrowingMessageException(exception);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has Message not equal to "foo",
+					             but it could not read the Message, because it did throw an InvalidOperationException:
+					               message failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a message that was never read cannot prove inequality either");
+			}
+
+			[Fact]
 			public async Task WhenStringsAreEqual_ShouldFail()
 			{
 				string actual = "my text";
@@ -542,6 +562,26 @@ public sealed partial class ThatException
 
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenReadingTheMessageThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("message failed");
+				Exception subject = new ThrowingMessageException(exception);
+
+				async Task Act()
+					=> await That(subject).HasMessage("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has Message equal to "foo",
+					             but it could not read the Message, because it did throw an InvalidOperationException:
+					               message failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a message that cannot be read fails the expectation instead of aborting its evaluation");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenStringsAreEqual_ShouldSucceed(string actual)
@@ -594,6 +634,11 @@ public sealed partial class ThatException
 					             but it was <null>
 					             """);
 			}
+		}
+
+		private sealed class ThrowingMessageException(Exception exception) : Exception
+		{
+			public override string Message => throw exception;
 		}
 	}
 }

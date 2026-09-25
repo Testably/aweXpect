@@ -1993,23 +1993,67 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
-	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_ShouldNameTheExpectedType()
+	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_ShouldFailWithTheException()
 	{
 		WithProperty actual = new(1);
 		WithThrowingEquals expected = new();
-		EquivalencyOptions options = new EquivalencyOptions()
-			.For<WithThrowingEquals>(o => o with
-			{
-				ComparisonType = EquivalencyComparisonType.ByValue,
-			});
 
 		async Task Act()
-			=> await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+			=> await That(actual).IsEquivalentTo(expected, o => o
+				.For<WithThrowingEquals>(t => t with
+				{
+					ComparisonType = EquivalencyComparisonType.ByValue,
+				}));
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage(
-				"The equals method of EquivalencyComparisonTests.WithThrowingEquals threw an NotSupportedException: equals")
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to EquivalencyComparisonTests.WithThrowingEquals {
+			                 Value = 1
+			               },
+			             but it did throw a NotSupportedException:
+			               equals
+
+			             Equivalency options:
+			              - include public fields and properties
+			              - for EquivalencyComparisonTests.WithThrowingEquals:
+			                - include public fields and properties
+			                - compare types by value
+			             """).And
+			.Whose(e => e.InnerException, i => i.Is<NotSupportedException>())
 			.Because("the Equals that is called belongs to the expected value, which is the only side compared by value");
+	}
+
+	[Fact]
+	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_WhenNegated_ShouldFail()
+	{
+		WithProperty actual = new(1);
+		WithThrowingEquals unexpected = new();
+
+		async Task Act()
+			=> await That(actual).IsNotEquivalentTo(unexpected, o => o
+				.For<WithThrowingEquals>(t => t with
+				{
+					ComparisonType = EquivalencyComparisonType.ByValue,
+				}));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is not equivalent to EquivalencyComparisonTests.WithThrowingEquals {
+			                 Value = 1
+			               },
+			             but it did throw a NotSupportedException:
+			               equals
+
+			             Equivalency options:
+			              - include public fields and properties
+			              - for EquivalencyComparisonTests.WithThrowingEquals:
+			                - include public fields and properties
+			                - compare types by value
+			             """).And
+			.Whose(e => e.InnerException, i => i.Is<NotSupportedException>())
+			.Because("an Equals that threw answered nothing, so the negation fails as well");
 	}
 
 	[Fact]
@@ -2064,17 +2108,53 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
-	public async Task WhenGetterThrows_ShouldThrowTheGetterException()
+	public async Task WhenGetterThrows_ShouldFailWithTheGetterException()
 	{
 		WithThrowingGetter actual = new("getter failed");
 		WithThrowingGetter expected = new("getter failed");
 
 		async Task Act()
-			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("getter failed")
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to EquivalencyComparisonTests.WithThrowingGetter {
+			                 Value = [Member 'Value' threw an exception: 'getter failed']
+			               },
+			             but it did throw an InvalidOperationException:
+			               getter failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """).And
+			.Whose(e => e.InnerException, i => i.Is<InvalidOperationException>())
 			.Because("reflection wraps the exception, while a registered accessor lets it through, so both paths have to agree");
+	}
+
+	[Fact]
+	public async Task WhenGetterThrows_WhenNegated_ShouldFailWithTheGetterException()
+	{
+		WithThrowingGetter actual = new("getter failed");
+		WithThrowingGetter unexpected = new("getter failed");
+
+		async Task Act()
+			=> await That(actual).IsNotEquivalentTo(unexpected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is not equivalent to EquivalencyComparisonTests.WithThrowingGetter {
+			                 Value = [Member 'Value' threw an exception: 'getter failed']
+			               },
+			             but it did throw an InvalidOperationException:
+			               getter failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """).And
+			.Whose(e => e.InnerException, i => i.Is<InvalidOperationException>())
+			.Because("a getter that threw answered nothing, so the negation fails as well");
 	}
 
 	[Fact]

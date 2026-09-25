@@ -40,6 +40,27 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenEqualsThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("equals failed");
+				ThrowingEqualsClass subject = new(exception);
+				ThrowingEqualsClass expected = new(exception);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to ThatObject.ThrowingEqualsClass { },
+					             but it did throw an InvalidOperationException:
+					               equals failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("an Equals that throws fails the expectation instead of aborting its evaluation");
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 			{
 				MyClass? subject = null;

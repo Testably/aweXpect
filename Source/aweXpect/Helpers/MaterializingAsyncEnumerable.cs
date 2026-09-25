@@ -1,8 +1,10 @@
 ﻿#if NET8_0_OR_GREATER
 using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -12,6 +14,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	private readonly IAsyncEnumerable<T> _enumerable;
 	private readonly List<T> _materializedItems = new();
 	private IAsyncEnumerator<T>? _enumerator;
+	private Exception? _sourceException;
 
 	private MaterializingAsyncEnumerable(IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken)
 	{
@@ -45,7 +48,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 
 		_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (await MoveNextOrAbandon(_enumerator))
+		while (await MoveNext(_enumerator))
 		{
 			T item = _enumerator.Current;
 			_materializedItems.Add(item);
@@ -99,6 +102,29 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 		}
 
 		return new MaterializingAsyncEnumerable<T>(enumerable, cancellationToken);
+	}
+
+	/// <remarks>
+	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
+	///     it cannot be mistaken for the end of the source.
+	/// </remarks>
+	private async ValueTask<bool> MoveNext(IAsyncEnumerator<T> enumerator)
+	{
+		if (_sourceException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_sourceException).Throw();
+		}
+
+		try
+		{
+			return await UserCode.InvokeAsync(() => MoveNextOrAbandon(enumerator), _cancellationToken);
+		}
+		catch (Exception exception) when (!(exception is OperationCanceledException &&
+		                                    _cancellationToken.IsCancellationRequested))
+		{
+			_sourceException = exception;
+			throw;
+		}
 	}
 
 	private ValueTask<bool> MoveNextOrAbandon(IAsyncEnumerator<T> enumerator)

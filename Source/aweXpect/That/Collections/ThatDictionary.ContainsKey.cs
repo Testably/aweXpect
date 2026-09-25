@@ -56,7 +56,9 @@ public static partial class ThatDictionary
 		public ConstraintResult IsMetBy(TDictionary? actual)
 		{
 			Actual = actual;
-			Outcome = actual is not null && ContainsKey(actual, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual is not null && UserCode.Invoke(() => ContainsKey(actual, expected))
+				? Outcome.Success
+				: Outcome.Failure;
 			if (Outcome != Outcome.Success)
 			{
 				AddDictionaryContext(expectationBuilder, actual);

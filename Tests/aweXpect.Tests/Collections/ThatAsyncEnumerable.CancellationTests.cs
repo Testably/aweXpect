@@ -50,11 +50,8 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage(
-					$"Error evaluating ThatAsyncEnumerable.ContainConstraint<int> constraint with value *: {new OperationCanceledException().Message}")
-				.AsWildcard().And
-				.WithInner<OperationCanceledException>()
+			await That(Act).Throws<OperationCanceledException>()
+				.WithMessage(new OperationCanceledException().Message)
 				.Because("a cancellation between two items must not be mistaken for the end of the source");
 		}
 
@@ -67,11 +64,8 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage(
-					$"Error evaluating ThatAsyncEnumerable.ContainConstraint<int> constraint with value *: {new OperationCanceledException().Message}")
-				.AsWildcard().And
-				.WithInner<OperationCanceledException>()
+			await That(Act).Throws<OperationCanceledException>()
+				.WithMessage(new OperationCanceledException().Message)
 				.Because("a cancellation between two items must not be reported as a missing item");
 		}
 
@@ -85,11 +79,8 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).IsEqualTo([1, 2, 3]).Using(new CancellingComparer(cts))
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage(
-					$"Error evaluating ThatAsyncEnumerable.IsEqualToConstraint<int, int> constraint with value *: {new OperationCanceledException().Message}")
-				.AsWildcard().And
-				.WithInner<OperationCanceledException>()
+			await That(Act).Throws<OperationCanceledException>()
+				.WithMessage(new OperationCanceledException().Message)
 				.Because("a cancellation between two items must not be reported as missing items");
 		}
 
@@ -124,11 +115,8 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage(
-					$"Error evaluating ThatAsyncEnumerable.AsyncContainConstraint<int> constraint with value *: {new TaskCanceledException().Message}")
-				.AsWildcard().And
-				.WithInner<OperationCanceledException>()
+			await That(Act).Throws<OperationCanceledException>()
+				.WithMessage(new TaskCanceledException().Message)
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
 		}
 

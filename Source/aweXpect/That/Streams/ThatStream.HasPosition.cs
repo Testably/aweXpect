@@ -21,7 +21,7 @@ public static partial class ThatStream
 						// ReSharper disable once LocalizableElement
 						$"The {paramName} position must not be negative."));
 			}
-		}, IsUnreadableStreamProperty);
+		});
 
 	/// <summary>
 	///     Verifies that the position of the <see cref="Stream" /> subject is equal to the <paramref name="expected" />

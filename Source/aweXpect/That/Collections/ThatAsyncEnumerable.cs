@@ -75,7 +75,7 @@ public static partial class ThatAsyncEnumerable
 
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
-				if (_predicate(item))
+				if (UserCode.Invoke(_predicate, item))
 				{
 					_matchingCount++;
 					_matchingItems.Add(item);
@@ -892,7 +892,7 @@ public static partial class ThatAsyncEnumerable
 			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
 			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
 			{
-				TMember current = memberAccessor(item);
+				TMember current = UserCode.Invoke(memberAccessor, item);
 				if (_failureText == null && incompatibilityCheck?.Invoke(current) is { } incompatibility)
 				{
 					_failureText = $"{It} {incompatibility}";
@@ -906,7 +906,7 @@ public static partial class ThatAsyncEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(comparer.Compare(previous, current)))
+				if (IsOutOfOrder(UserCode.Invoke(() => comparer.Compare(previous, current))))
 				{
 					_failureText ??=
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)} which is not in {sortOrder.ToString().ToLower()} order";

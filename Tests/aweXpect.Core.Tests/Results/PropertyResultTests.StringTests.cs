@@ -265,6 +265,26 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("foo");
+			StringProperty sut = MyClass.HasThrowingStringValue(exception);
+
+			async Task Act()
+				=> await sut.EqualTo("bar");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value equal to "bar",
+				             but it could not read the string value, because it did throw an InvalidOperationException:
+				               foo
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("a property that cannot be read fails the expectation instead of aborting its evaluation");
+		}
+
+		[Fact]
 		public async Task EqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -532,6 +552,26 @@ public sealed partial class PropertyResultTests
 				.WithParamName("unexpected").And
 				.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
 				.Because("the negated expectation receives the pattern as 'unexpected'");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("foo");
+			StringProperty sut = MyClass.HasThrowingStringValue(exception);
+
+			async Task Act()
+				=> await sut.NotEqualTo("bar");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value not equal to "bar",
+				             but it could not read the string value, because it did throw an InvalidOperationException:
+				               foo
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("a property that was never read cannot prove inequality either");
 		}
 
 		[Fact]

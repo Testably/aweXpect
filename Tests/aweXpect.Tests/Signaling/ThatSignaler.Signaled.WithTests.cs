@@ -80,6 +80,71 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
+			public async Task WhenPredicateThrowsWhileSignaling_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				Signaler<int> signaler = new();
+				bool signalThrew = false;
+
+				_ = Task.Delay(10.Milliseconds())
+					.ContinueWith(_ =>
+					{
+						try
+						{
+							signaler.Signal(1);
+							signaler.Signal(2);
+						}
+						catch (Exception)
+						{
+							signalThrew = true;
+						}
+					});
+
+				async Task Act() =>
+					await That(signaler).Signaled().With(p => p == 2 ? throw exception : false)
+						.Within(10.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once with p => p == 2 ? throw exception : false within 0:10,
+					             but it did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+				await That(signalThrew).IsFalse()
+					.Because("the predicate runs on the thread of the code under test, which must not receive its exception");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrowsWhileSignaling_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				Signaler<int> signaler = new();
+
+				_ = Task.Delay(10.Milliseconds())
+					.ContinueWith(_ =>
+					{
+						signaler.Signal(1);
+						signaler.Signal(2);
+					});
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().With(p => p == 2 ? throw exception : false)
+						.Within(10.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback with p => p == 2 ? throw exception : false within 0:10,
+					             but it did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a predicate that threw answered nothing, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenTriggeredMoreOftenMatchingPredicate_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();

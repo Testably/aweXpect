@@ -626,7 +626,7 @@ public static partial class ThatEnumerable
 			List<(TItem Item, int MemberIndex)> items = [];
 			foreach (TItem item in materialized)
 			{
-				items.Add((item, await occurrences.Add(memberAccessor(item))));
+				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item))));
 				if (cancellationToken.IsCancellationRequested)
 				{
 					Outcome = Outcome.Undecided;
@@ -682,7 +682,7 @@ public static partial class ThatEnumerable
 			foreach (object? item in materialized)
 			{
 				_itemType ??= item?.GetType();
-				items.Add((item, await occurrences.Add(memberAccessor(item))));
+				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item))));
 				if (cancellationToken.IsCancellationRequested)
 				{
 					Outcome = Outcome.Undecided;

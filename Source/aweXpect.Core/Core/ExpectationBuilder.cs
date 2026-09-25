@@ -397,6 +397,11 @@ public abstract class ExpectationBuilder
 	///     Set <paramref name="negateMemberOnly" /> when the previous expectation only navigates to the member, so that
 	///     a negation applies to the member expectation ("has keys which do not contain 0") instead of the whole
 	///     expectation ("does not have a single item which is equal to 3").
+	///     <para />
+	///     If accessing the member throws, the expectations on the member fail with <c>… did throw …</c> and the
+	///     exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
+	///     <see cref="OperationCanceledException" /> thrown while the evaluation is cancelled aborts the evaluation
+	///     instead.
 	/// </remarks>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, TTarget?> memberAccessor,
@@ -427,7 +432,8 @@ public abstract class ExpectationBuilder
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 		ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
 
-		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator, negateMemberOnly);
+		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator, negateMemberOnly,
+			replaceIt);
 		return this;
 	}
 
@@ -436,6 +442,11 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     The member is a single value, so its expectations are in singular form.
+	///     <para />
+	///     If accessing or awaiting the member throws, the expectations on the member fail with <c>… did throw …</c> and
+	///     the exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
+	///     <see cref="OperationCanceledException" /> thrown while the evaluation is cancelled aborts the evaluation
+	///     instead.
 	/// </remarks>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
@@ -526,7 +537,7 @@ public abstract class ExpectationBuilder
 		{
 			foreach (ResultContext context in contexts.OrderByDescending(x => x.Priority))
 			{
-				string? content = await context.GetContent(cancellationToken);
+				string? content = await context.GetContentUnlessUserCodeThrows(cancellationToken);
 				if (content is null)
 				{
 					continue;
@@ -742,10 +753,9 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			return await rootNode.IsMetBy(data, context, token);
 		}
-		// The ExpectationNode wraps the cancellation of a constraint in an InvalidOperationException.
-		catch (Exception exception) when (HasTimedOut(exception) || HasTimedOut(exception.InnerException))
+		catch (Exception exception) when (HasTimedOut(exception))
 		{
-			return await FromException(exception as OperationCanceledException ?? exception.InnerException!);
+			return await FromException(exception);
 		}
 
 		async Task<ConstraintResult> FromException(Exception exception)

@@ -137,6 +137,26 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenEnumeratingTheSubjectThrows_ShouldFailWithTheExceptionAsInnerException()
+				{
+					InvalidOperationException exception = new("enumeration failed");
+					IEnumerable<int> subject = ThrowAfter(exception, 1, 2);
+
+					async Task Act()
+						=> await That(subject).All().Satisfy(x => x > 0);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x > 0 for all items,
+						             but it did throw an InvalidOperationException:
+						               enumeration failed
+						             """).And
+						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+						.Because("a subject that cannot be enumerated fails the expectation instead of aborting its evaluation");
+				}
+
+				[Fact]
 				public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 				{
 					IEnumerable<int> subject = Factory.GetFibonacciNumbers();
@@ -147,6 +167,46 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("predicate").And
 						.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
+				public async Task WhenPredicateThrowsArgumentOutOfRangeException_ShouldFailWithTheExceptionAsInnerException()
+				{
+					List<int> values = [1, 2,];
+					int[] subject = [0, 1, 2,];
+
+					async Task Act()
+						=> await That(subject).All().Satisfy(i => values[i] > 0);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies i => values[i] > 0 for all items,
+						             but it did throw an ArgumentOutOfRangeException:
+						               *
+						             """).AsWildcard().And
+						.Whose(e => e.InnerException, i => i.Is<ArgumentOutOfRangeException>())
+						.Because("an argument exception from the predicate is not a validation by aweXpect");
+				}
+
+				[Fact]
+				public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+				{
+					InvalidOperationException exception = new("predicate failed");
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).All().Satisfy(x => x < 3 ? true : throw exception);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x < 3 ? true : throw exception for all items,
+						             but it did throw an InvalidOperationException:
+						               predicate failed
+						             """).And
+						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+						.Because("a predicate that throws fails the expectation instead of aborting its evaluation");
 				}
 
 				[Fact]
@@ -300,6 +360,27 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [1, 1, 1, 1, 1, 1, 1]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+				{
+					InvalidOperationException exception = new("predicate failed");
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it =>
+							it.All().Satisfy(x => x < 3 ? true : throw exception));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x < 3 ? true : throw exception not for all items,
+						             but it did throw an InvalidOperationException:
+						               predicate failed
+						             """).And
+						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+						.Because("a predicate that threw answered nothing, so the negation fails as well");
 				}
 
 				[Fact]

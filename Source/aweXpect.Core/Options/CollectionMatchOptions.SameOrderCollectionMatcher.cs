@@ -44,7 +44,7 @@ public partial class CollectionMatchOptions
 	{
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> new ValueTask<bool>(expected.Compile().Invoke(value));
+			=> new ValueTask<bool>(UserCode.Invoke(expected.Compile(), value));
 	}
 
 	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
