@@ -1,4 +1,5 @@
 ﻿using aweXpect.Chronology;
+using aweXpect.Customization;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -26,7 +27,31 @@ public class TimeToleranceTests
 		string result = sut.ToDayString();
 
 		await That(result).IsEmpty()
-			.Because("the default tolerance is not part of the expectation text, so a customized default below one day never reads as ± 0 days");
+			.Because("without a customized default no tolerance applies");
+	}
+
+	[Fact]
+	public async Task ToDayString_WhenToleranceIsNotSet_ShouldIgnoreADefaultBelowOneDay()
+	{
+		TimeTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(12.Hours());
+
+		string result = sut.ToDayString();
+
+		await That(result).IsEmpty()
+			.Because("a default below one day is truncated to zero days and must not read as ± 0 days");
+	}
+
+	[Fact]
+	public async Task ToDayString_WhenToleranceIsNotSet_ShouldUseTheWholeDaysOfTheDefault()
+	{
+		TimeTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		string result = sut.ToDayString();
+
+		await That(result).IsEqualTo(" ± 1 day")
+			.Because("only the whole days of the default tolerance apply to a date");
 	}
 
 	[Fact]
@@ -38,6 +63,42 @@ public class TimeToleranceTests
 		string result = sut.ToDayString();
 
 		await That(result).IsEqualTo(" ± 1 day");
+	}
+
+	[Fact]
+	public async Task ToString_WhenToleranceIsNotSet_ShouldBeEmpty()
+	{
+		TimeTolerance sut = new();
+
+		string result = sut.ToString();
+
+		await That(result).IsEmpty()
+			.Because("without a customized default no tolerance applies");
+	}
+
+	[Fact]
+	public async Task ToString_WhenToleranceIsNotSet_ShouldUseTheDefault()
+	{
+		TimeTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 0:00.015")
+			.Because("the applied default tolerance is part of the expectation");
+	}
+
+	[Fact]
+	public async Task ToString_WhenToleranceIsSet_ShouldIgnoreTheDefault()
+	{
+		TimeTolerance sut = new();
+		sut.SetTolerance(TimeSpan.Zero);
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 0:00")
+			.Because("an explicit tolerance replaces the default tolerance and is always named");
 	}
 
 	[Fact]

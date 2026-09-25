@@ -129,9 +129,9 @@ internal static class ThrowHelper
 	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
 	///     would silently drop it.
 	/// </summary>
-	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan? tolerance)
+	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan tolerance)
 	{
-		if (tolerance is not null && tolerance.Value.Ticks % TimeSpan.TicksPerDay != 0)
+		if (tolerance.Ticks % TimeSpan.TicksPerDay != 0)
 		{
 			throw Tracing.WriteException(
 				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be a whole number of days"));

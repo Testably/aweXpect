@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -530,6 +531,100 @@ public sealed partial class ThatEnumerable
 						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
 						              """);
 				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateTime now = DateTime.Now;
+					IEnumerable<DateTime> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items of a collection fall back to the default tolerance, as a single value does");
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					DateTime now = DateTime.Now;
+					IEnumerable<DateTime> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected).InAnyOrder();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1:00 in any order,
+						              but it
+						                contained item {Formatter.Format(now.AddHours(2))} at index 1 that was not expected and
+						                lacked 1 of 3 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
+
+						              Collection:
+						              [
+						                {Formatter.Format(now.AddHours(1))},
+						                {Formatter.Format(now.AddHours(2))},
+						                {Formatter.Format(now.AddHours(3))}
+						              ]
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("the applied default tolerance is part of the expectation");
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldUseTheExplicitTolerance()
+				{
+					DateTime now = DateTime.Now;
+					IEnumerable<DateTime> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Hours());
+						await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1:00 in any order,
+						              but it
+						                contained item {Formatter.Format(now.AddHours(2))} at index 1 that was not expected and
+						                lacked 1 of 3 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
+
+						              Collection:
+						              [
+						                {Formatter.Format(now.AddHours(1))},
+						                {Formatter.Format(now.AddHours(2))},
+						                {Formatter.Format(now.AddHours(3))}
+						              ]
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("an explicit tolerance replaces the default tolerance");
+				}
 			}
 
 			public sealed class NullableDateTimeTests
@@ -580,6 +675,26 @@ public sealed partial class ThatEnumerable
 						              Expected:
 						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateTime now = DateTime.Now;
+					IEnumerable<DateTime?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items of a collection fall back to the default tolerance, as a single value does");
 				}
 			}
 
@@ -648,6 +763,26 @@ public sealed partial class ThatEnumerable
 						              Expected:
 						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items of a collection fall back to the default tolerance, as a single value does");
 				}
 
 				[Fact]
@@ -726,6 +861,26 @@ public sealed partial class ThatEnumerable
 						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
 						              """);
 				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateTimeOffset now = DateTimeOffset.Now;
+					IEnumerable<DateTimeOffset?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTimeOffset?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items of a collection fall back to the default tolerance, as a single value does");
+				}
 			}
 
 			public sealed class TimeSpanTests
@@ -773,6 +928,38 @@ public sealed partial class ThatEnumerable
 						               3:00:00
 						             ]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					IEnumerable<TimeSpan> subject = [1.Hours(),];
+					IEnumerable<TimeSpan> expected = [3602.Seconds(),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected ± 0:01 in order,
+						             but it contained item 1:00:00 at index 0 instead of 1:00:02
+
+						             Collection:
+						             [
+						               1:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:00:02
+						             ]
+						             """)
+						.Because("the applied default tolerance is part of the expectation");
 				}
 
 				[Fact]
@@ -862,6 +1049,23 @@ public sealed partial class ThatEnumerable
 						               3:00:00
 						             ]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					IEnumerable<TimeSpan?> subject = [1.Hours(), null, 2.Hours(), 3.Hours(),];
+					IEnumerable<TimeSpan?> expected = [61.Minutes(), null, 119.Minutes(), 3.Hours(),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items of a collection fall back to the default tolerance, as a single value does");
 				}
 			}
 		}

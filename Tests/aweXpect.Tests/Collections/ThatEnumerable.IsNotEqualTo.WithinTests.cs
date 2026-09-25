@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -533,6 +534,37 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyAndMentionIt()
+				{
+					DateTime now = DateTime.Now;
+					IEnumerable<DateTime> subject =
+						[now.AddHours(1), now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime> expected =
+						[now.AddHours(1).AddMinutes(1), now.AddHours(2).AddMinutes(-1), now.AddHours(3),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsNotEqualTo(expected).InAnyOrder();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection expected ± 1:00 in any order,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("the default tolerance also applies to the negated collection expectation");
 				}
 			}
 

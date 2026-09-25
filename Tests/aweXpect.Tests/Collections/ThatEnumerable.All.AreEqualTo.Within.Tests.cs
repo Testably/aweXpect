@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -484,6 +485,58 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateTimeOffsetTests
 				{
+					[Fact]
+					public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						IEnumerable<DateTimeOffset> subject =
+							[now.AddMinutes(1), now.ToOffset(TimeSpan.FromHours(3)), now.AddMinutes(-1),];
+
+						async Task Act()
+						{
+							using IDisposable __ =
+								Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+							await That(subject).All().AreEqualTo(now);
+						}
+
+						await That(Act).DoesNotThrow()
+							.Because("the items of a collection fall back to the default tolerance, as a single value does");
+					}
+
+					[Fact]
+					public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+					{
+						DateTimeOffset now = DateTimeOffset.Now;
+						IEnumerable<DateTimeOffset> subject = [now.AddMinutes(1), now, now.AddMinutes(-2),];
+
+						async Task Act()
+						{
+							using IDisposable __ =
+								Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+							await That(subject).All().AreEqualTo(now);
+						}
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
+							              but only 2 of 3 were
+
+							              Not matching items:
+							              [
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+
+							              Collection:
+							              [
+							                {Formatter.Format(now.AddMinutes(1))},
+							                {Formatter.Format(now)},
+							                {Formatter.Format(now.AddMinutes(-2))}
+							              ]
+							              """)
+							.Because("the applied default tolerance is part of the expectation");
+					}
+
 					[Fact]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{

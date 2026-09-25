@@ -490,6 +490,9 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
+				? objectOptions.ForEvaluation()
+				: options;
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			if (IsNegated)
 			{
@@ -511,7 +514,7 @@ public static partial class ThatAsyncEnumerable
 					_items.Add(item);
 				}
 
-				var (result, failure) = await matcher.Verify(It, item, options, maximumNumber);
+				var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
 				if (result)
 				{
 					_failure = failure ?? TooManyDeviationsError();
@@ -523,7 +526,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			await expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedEnumerable<TItem>);
-			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, options, maximumNumber);
+			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, itemOptions, maximumNumber);
 			if (completedResult)
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();

@@ -56,6 +56,28 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
+			public async Task WhenTheDefaultToleranceIsAtLeastOneDay_ShouldMentionItsWholeDays()
+			{
+				DateOnly subject = EarlierTime(2);
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 1 day,
+					              but it was {Formatter.Format(subject)} which differs by -2 days
+					              """)
+					.Because("the default is truncated to whole days and the applied part is named in the expectation");
+			}
+
+			[Fact]
 			public async Task WhenTheDefaultToleranceIsBelowOneDay_ShouldNotMentionTheTolerance()
 			{
 				DateOnly subject = EarlierTime(2);
@@ -124,14 +146,14 @@ public sealed partial class ThatDateOnly
 				DateOnly subject = LaterTime();
 				DateOnly expected = CurrentTime();
 
-				async Task Act()
-					=> await That(subject).IsEqualTo(expected)
+				object Act()
+					=> That(subject).IsEqualTo(expected)
 						.Within(hours.Hours() + minutes.Minutes());
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("tolerance").And
 					.WithMessage("Tolerance must be a whole number of days").AsPrefix()
-					.Because("a date has no time of day, so the remainder would be dropped without notice");
+					.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 			}
 
 			[Fact]

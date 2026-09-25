@@ -1,4 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
+using aweXpect.Customization;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatTimeOnly
@@ -51,6 +53,28 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				TimeOnly subject = new(23, 59);
+				TimeOnly expected = new(0, 1);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 00:01:00.0000000 ± 1:00,
+					             but it was 23:59:00.0000000 which differs by -2:00
+					             """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Fact]

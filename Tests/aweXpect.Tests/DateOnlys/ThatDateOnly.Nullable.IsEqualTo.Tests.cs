@@ -119,8 +119,8 @@ public sealed partial class ThatDateOnly
 					DateOnly? subject = null;
 					DateOnly? expected = null;
 
-					async Task Act()
-						=> await That(subject).IsEqualTo(expected)
+					object Act()
+						=> That(subject).IsEqualTo(expected)
 							.Within(23.Hours());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()

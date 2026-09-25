@@ -1,3 +1,5 @@
+using aweXpect.Customization;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTime
@@ -144,6 +146,28 @@ public sealed partial class ThatDateTime
 					              but it had Kind Utc, which cannot be compared with Local
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? expected = LaterTime(4);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(3.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
+			}
 		}
 
 		public sealed class WithinTests
@@ -160,6 +184,28 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
 					.WithParamName("tolerance");
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldUseTheExplicitTolerance()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? expected = LaterTime(4);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(10.Seconds());
+					await That(subject).IsEqualTo(expected).Within(3.Seconds());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              """)
+					.Because("an explicit tolerance replaces the default tolerance");
 			}
 
 			[Fact]

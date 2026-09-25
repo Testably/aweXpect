@@ -23,7 +23,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? minimum)
 	{
-		TimeTolerance tolerance = new();
+		TimeTolerance tolerance = new DayTolerance();
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -47,7 +47,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? minimum)
 	{
-		TimeTolerance tolerance = new();
+		TimeTolerance tolerance = new DayTolerance();
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -70,7 +70,6 @@ public static partial class ThatDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
-			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{

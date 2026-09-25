@@ -240,6 +240,14 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		=> MatchType.AreConsideredEqual(actual, expected);
 
 	/// <summary>
+	///     Returns the options to use for all comparisons of one evaluation.
+	/// </summary>
+	/// <remarks>
+	///     Options that depend on a customized setting read it once here instead of on every comparison.
+	/// </remarks>
+	public virtual IOptionsEquality<TSubject> ForEvaluation() => this;
+
+	/// <summary>
 	///     Specifies a new <see cref="IObjectMatchType" /> to use for matching two objects.
 	/// </summary>
 	public void SetMatchType(IObjectMatchType matchType) => MatchType = matchType;

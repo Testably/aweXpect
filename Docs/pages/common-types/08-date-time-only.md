@@ -3,9 +3,12 @@
 Describes the possible expectations for `DateOnly` and `TimeOnly`.
 
 :::note[`DateOnly` tolerances are counted in days]
-A `DateOnly` has no time of day, so a tolerance must be a whole number of days. Anything else — for example
-`Within(TimeSpan.FromHours(23))` — throws an `ArgumentOutOfRangeException` instead of silently rounding down to a
-tolerance you did not ask for.
+A `DateOnly` has no time of day, so a tolerance must be a whole number of days. Anything else, for example
+`Within(TimeSpan.FromHours(23))`, throws an `ArgumentOutOfRangeException` as soon as it is specified instead of silently
+rounding down to a tolerance you did not ask for.
+
+The [default tolerance](/docs/expectations/common-types/datetime-offset#default-tolerance) is shared with the other time
+types, so it is not rejected: only its whole days apply to a `DateOnly`, and a default below one day has no effect.
 :::
 
 :::note[`TimeOnly` is a clock face]

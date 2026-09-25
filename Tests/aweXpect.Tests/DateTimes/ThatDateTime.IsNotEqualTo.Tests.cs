@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Customization;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTime
 {
@@ -83,6 +85,28 @@ public sealed partial class ThatDateTime
 						.Because("we also test the kind property");
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? unexpected = LaterTime(3);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(3.Seconds());
+					await That(subject).IsNotEqualTo(unexpected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not equal to {Formatter.Format(unexpected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:03
+					              """)
+					.Because("the default tolerance also narrows the negated expectation and is named in it");
 			}
 
 			[Fact]
