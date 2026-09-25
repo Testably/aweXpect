@@ -436,11 +436,13 @@ public partial class ValueFormatters
 
 		private sealed class ClassWithWriteOnlyProperty
 		{
+#pragma warning disable CA1822 // a static property would already be excluded, so it must be an instance member
 			// ReSharper disable once ValueParameterNotUsed
 			public int Hidden
 			{
 				set { }
 			}
+#pragma warning restore CA1822
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
