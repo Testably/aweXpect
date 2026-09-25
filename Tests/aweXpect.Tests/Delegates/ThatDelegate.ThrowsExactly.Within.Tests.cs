@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 					Action? subject = null;
 
 					async Task Act()
-						=> await That(subject!).ThrowsExactly<CustomException>().Within(-1.Milliseconds());
+						=> await That(subject!).ThrowsExactly<CustomException>().Within(-5.Milliseconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("duration").And
@@ -236,7 +236,7 @@ public sealed partial class ThatDelegate
 					Action? subject = null;
 
 					async Task Act()
-						=> await That(subject!).ThrowsExactly(typeof(CustomException)).Within(-1.Milliseconds());
+						=> await That(subject!).ThrowsExactly(typeof(CustomException)).Within(-5.Milliseconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("duration").And

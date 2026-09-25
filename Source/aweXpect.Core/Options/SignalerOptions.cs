@@ -14,18 +14,22 @@ public record SignalerOptions
 	/// <summary>
 	///     The timeout to use for the recording.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
 	public TimeSpan? Timeout { get; set; }
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
-	{
-		if (Timeout == null)
-		{
-			return "";
-		}
+		=> WithinText();
 
-		return $" within {Formatter.Format(Timeout.Value)}";
-	}
+	/// <remarks>
+	///     An infinite timeout is omitted, because it does not add any information to the expectation.
+	/// </remarks>
+	private protected string WithinText()
+		=> Timeout is null || Timeout == System.Threading.Timeout.InfiniteTimeSpan
+			? ""
+			: $" within {Formatter.Format(Timeout.Value)}";
 }
 
 /// <summary>
@@ -71,11 +75,5 @@ public record SignalerOptions<TParameter> : SignalerOptions
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
-		=> (_builder, Timeout) switch
-		{
-			(null, null) => "",
-			(null, _) => $" within {Formatter.Format(Timeout.Value)}",
-			(_, null) => _builder.ToString(),
-			(_, _) => $"{_builder} within {Formatter.Format(Timeout.Value)}",
-		};
+		=> $"{_builder}{WithinText()}";
 }

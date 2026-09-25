@@ -384,6 +384,65 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut at least once,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
+					.Because("an infinite timeout imposes no limit, so only the cancellation ends the wait");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsInfinite_ShouldWaitUntilTheEventIsTriggered()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				_ = Task.Delay(20.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvent());
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(System.Threading.Timeout.InfiniteTimeSpan);
+
+				await That(Act).DoesNotThrow().WithTimeout(10.Seconds());
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(-5.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("timeout").And
+					.WithMessage("The timeout must not be negative.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData(false)]
 			[InlineData(true)]

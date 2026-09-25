@@ -24,8 +24,13 @@ public class SignalCountResult(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public SignalCountResult Within(TimeSpan timeout)
 	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		options.Timeout = timeout;
 		return this;
 	}
@@ -63,8 +68,13 @@ public class SignalCountResult<TParameter, TSelf>(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public TSelf Within(TimeSpan timeout)
 	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		options.Timeout = timeout;
 		return (TSelf)this;
 	}

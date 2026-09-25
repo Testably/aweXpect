@@ -1,5 +1,6 @@
 using System;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Signaling;
 
 namespace aweXpect.Customization;
@@ -30,22 +31,40 @@ public partial class AwexpectCustomization
 			_awexpectCustomization = awexpectCustomization;
 			DefaultCheckInterval = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultCheckInterval,
-				v => Update(p => p with
+				interval =>
 				{
-					DefaultCheckInterval = v,
-				}));
+					if (interval <= TimeSpan.Zero)
+					{
+						// ReSharper disable once LocalizableElement
+						throw Tracing.WriteException(
+							new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
+					}
+
+					return Update(p => p with
+					{
+						DefaultCheckInterval = interval,
+					});
+				});
 			DefaultEventuallyTimeout = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultEventuallyTimeout,
-				v => Update(p => p with
+				timeout =>
 				{
-					DefaultEventuallyTimeout = v,
-				}));
+					ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+					return Update(p => p with
+					{
+						DefaultEventuallyTimeout = timeout,
+					});
+				});
 			DefaultSignalerTimeout = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultSignalerTimeout,
-				v => Update(p => p with
+				timeout =>
 				{
-					DefaultSignalerTimeout = v,
-				}));
+					ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+					return Update(p => p with
+					{
+						DefaultSignalerTimeout = timeout,
+					});
+				});
 			DefaultTimeComparisonTolerance = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultTimeComparisonTolerance,
 				tolerance =>

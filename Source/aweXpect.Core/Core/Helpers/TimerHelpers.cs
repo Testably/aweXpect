@@ -16,4 +16,27 @@ internal static class TimerHelpers
 	/// </remarks>
 	public static TimeSpan ToTimerTimeout(this TimeSpan timeout)
 		=> (long)timeout.TotalMilliseconds > int.MaxValue ? Timeout.InfiniteTimeSpan : timeout;
+
+	/// <summary>
+	///     Returns the tighter of both limits, where <see langword="null" /> and <see cref="Timeout.InfiniteTimeSpan" />
+	///     impose no limit.
+	/// </summary>
+	/// <remarks>
+	///     Helpers and extensions can set a limit the caller does not see, so a later limit must never loosen an
+	///     earlier one.
+	/// </remarks>
+	public static TimeSpan? Tighter(TimeSpan? first, TimeSpan? second)
+	{
+		if (first is null || first == Timeout.InfiniteTimeSpan)
+		{
+			return second ?? first;
+		}
+
+		if (second is null || second == Timeout.InfiniteTimeSpan)
+		{
+			return first;
+		}
+
+		return first < second ? first : second;
+	}
 }

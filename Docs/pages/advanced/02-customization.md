@@ -69,13 +69,15 @@ Under `Customize.aweXpect.Settings()` you have:
     This will use the returned `CancellationToken` internally and also forward it to the [delegates](/docs/expectations/delegates).
 
 - **DefaultCheckInterval**  
-  The default interval for repeatedly checking the condition on an object.
+  The default interval for repeatedly checking the condition on an object. It must be positive.
 
 - **DefaultEventuallyTimeout**  
   The default timeout until the expectations of [`Eventually()`](/docs/expectations/delegates) on a delegate must be met.
+  It must not be negative; `Timeout.InfiniteTimeSpan` retries until the expectations are met.
 
 - **DefaultSignalerTimeout**  
-  The default timeout for the [`Signaler`](/docs/expectations/advanced/callbacks).
+  The default timeout for the [`Signaler`](/docs/expectations/advanced/callbacks). It must not be negative;
+  `Timeout.InfiniteTimeSpan` waits without a limit.
 
 - **DefaultTimeComparisonTolerance**  
   The default tolerance when date or time values are compared without an explicit tolerance, see [Default Tolerance](/docs/expectations/common-types/datetime-offset#default-tolerance).

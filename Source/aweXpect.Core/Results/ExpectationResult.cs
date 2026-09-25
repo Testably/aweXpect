@@ -86,6 +86,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
 	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
+	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
+	///     the expectation itself (e.g. <c>ExecutesWithin</c>) or the global timeout.
+	///     <see cref="Timeout.InfiniteTimeSpan" /> imposes no limit.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation
@@ -93,6 +97,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     </c>
 	///     to apply the <paramref name="timeout" /> globally.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public ExpectationResult WithTimeout(TimeSpan timeout)
 	{
 		expectationBuilder.WithTimeout(timeout);
@@ -254,6 +259,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     <c>did not finish within …</c>. For <c>Eventually()</c>, the <paramref name="timeout" /> limits the retries,
 	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
+	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
+	///     the expectation itself (e.g. <c>ExecutesWithin</c>) or the global timeout.
+	///     <see cref="Timeout.InfiniteTimeSpan" /> imposes no limit.
+	///     <para />
 	///     Use
 	///     <c>
 	///         Customize.aweXpect.Settings().TestCancellation
@@ -261,6 +270,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     </c>
 	///     to apply the <paramref name="timeout" /> globally.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public TSelf WithTimeout(TimeSpan timeout)
 	{
 		expectationBuilder.WithTimeout(timeout);

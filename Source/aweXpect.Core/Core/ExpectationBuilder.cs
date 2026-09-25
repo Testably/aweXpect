@@ -70,6 +70,11 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     The explicit timeout to be applied to the expectation.
 	/// </summary>
+	/// <remarks>
+	///     It is the tightest of all timeouts added with <see cref="WithTimeout(TimeSpan)" />. The evaluation is also
+	///     limited by the timeout from <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />, if
+	///     it is tighter.
+	/// </remarks>
 	public TimeSpan? Timeout { get; private set; }
 
 	/// <summary>
@@ -328,8 +333,16 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Adds a <paramref name="timeout" /> to be used by the constraints.
 	/// </summary>
+	/// <remarks>
+	///     The tighter timeout wins, so a <paramref name="timeout" /> that is longer than one added before does not
+	///     loosen it. <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public void WithTimeout(TimeSpan timeout)
-		=> Timeout = timeout;
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		Timeout = TimerHelpers.Tighter(Timeout, timeout);
+	}
 
 	/// <summary>
 	///     Adds a <paramref name="reason" /> to the expectation.
@@ -585,7 +598,9 @@ public abstract class ExpectationBuilder
 		CancellationToken cancellationToken = CancellationToken ??
 		                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 		                                      System.Threading.CancellationToken.None;
-		ConstraintResult result = await IsMet(GetRootNode(), context, timeSystem, Timeout ?? testCancellation?.Timeout,
+		TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
+		ConstraintResult result = await IsMet(GetRootNode(), context, timeSystem,
+			timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
 			cancellationToken);
 		return await ApplyReasons(result);
 	}

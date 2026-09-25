@@ -15,14 +15,17 @@ Customize.aweXpect.Settings().TestCancellation
 
 *Note: Like all customization options, the setter returns an `IDisposable` that will remove the cancellation on `Dispose()`.*
 
-You can overwrite or apply the timeout also on individual expectations, using the `WithTimeout(TimeSpan)` method:
+You can also apply a timeout on individual expectations, using the `WithTimeout(TimeSpan)` method:
 ```csharp
 IAsyncEnumerable<int> myEnumerable = // ...
 await Expect.That(myEnumerable).All().AreEqualTo(1)
     .WithTimeout(TimeSpan.FromSeconds(10));
 ```
 
-*Note: A local timeout will replace the global one and not be applied additionally.*
+*Note: The tighter timeout wins. A local timeout that is longer than the global one, or than the limit of the
+expectation itself (e.g. `ExecutesWithin` or `Throws().Within`), does not loosen it, and calling `WithTimeout` more
+than once applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a negative timeout is
+rejected when the expectation is built.*
 
 
 ## `CancellationToken`

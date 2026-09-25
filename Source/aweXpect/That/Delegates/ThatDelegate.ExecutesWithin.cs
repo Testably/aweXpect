@@ -15,18 +15,20 @@ public static partial class ThatDelegate
 	///     without throwing an exception.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
-	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
-	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
+	///     The <paramref name="duration" /> is applied as timeout (a tighter timeout, e.g. from <c>WithTimeout(…)</c>,
+	///     still applies), so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled
+	///     once it elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="duration" /> is negative.</exception>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> ExecutesWithin<TValue>(
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
 		TimeSpan duration)
 	{
-		ThrowHelper.ThrowIfDurationIsNegative(duration);
+		ThrowHelper.ThrowIfTimeoutIsNegative(duration);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder.WithTimeout(duration);
 		return new ExpectationResult<TValue>(expectationBuilder
@@ -38,22 +40,41 @@ public static partial class ThatDelegate
 	///     without throwing an exception.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
-	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
-	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
+	///     The <paramref name="duration" /> is applied as timeout (a tighter timeout, e.g. from <c>WithTimeout(…)</c>,
+	///     still applies), so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled
+	///     once it elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="duration" /> is negative.</exception>
 	[GuaranteesNotNull]
 	public static ExpectationResult ExecutesWithin(
 		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
 		TimeSpan duration)
 	{
-		ThrowHelper.ThrowIfDurationIsNegative(duration);
+		ThrowHelper.ThrowIfTimeoutIsNegative(duration);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder.WithTimeout(duration);
 		return new ExpectationResult(expectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration)));
+	}
+
+	private static bool IsWithin(TimeSpan actual, TimeSpan duration)
+		=> duration == System.Threading.Timeout.InfiniteTimeSpan || actual <= duration;
+
+	/// <remarks>
+	///     An infinite <paramref name="duration" /> is omitted, because it does not add any information to the
+	///     expectation.
+	/// </remarks>
+	private static void AppendExecutesWithin(StringBuilder stringBuilder, TimeSpan duration)
+	{
+		stringBuilder.Append("executes");
+		if (duration != System.Threading.Timeout.InfiniteTimeSpan)
+		{
+			stringBuilder.Append(" within ");
+			Formatter.Format(stringBuilder, duration);
+		}
 	}
 
 	private sealed class ExecutesWithinConstraint<T>(string it, ExpectationGrammars grammars, TimeSpan duration)
@@ -75,7 +96,7 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = actual.Exception is null && actual.Duration <= duration
+				Outcome = actual.Exception is null && IsWithin(actual.Duration, duration)
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -84,10 +105,7 @@ public static partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("executes within ");
-			Formatter.Format(stringBuilder, duration);
-		}
+			=> AppendExecutesWithin(stringBuilder, duration);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -148,7 +166,7 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = actual.Exception is null && actual.Duration <= duration
+				Outcome = actual.Exception is null && IsWithin(actual.Duration, duration)
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -157,10 +175,7 @@ public static partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("executes within ");
-			Formatter.Format(stringBuilder, duration);
-		}
+			=> AppendExecutesWithin(stringBuilder, duration);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{

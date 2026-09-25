@@ -18,7 +18,8 @@ public interface IEventRecording<TSubject>
 	/// </summary>
 	/// <remarks>
 	///     <paramref name="areFound" /> is checked initially and after each recorded event, for at most the
-	///     <paramref name="timeout" />. A <paramref name="timeout" /> that is not positive does not wait at all.<br />
+	///     <paramref name="timeout" />. A <paramref name="timeout" /> that is not positive does not wait at all, except
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, which waits without a limit.<br />
 	///     A cancellation ends the wait like the <paramref name="timeout" /> does, so the result describes the events
 	///     recorded until then.<br />
 	///     A recording that was stopped with the same <paramref name="context" /> can be checked again, so that all

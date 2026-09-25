@@ -27,6 +27,21 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	[InlineData(-5)]
+	public async Task DefaultCheckInterval_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int milliseconds)
+	{
+		void Act() => Customize.aweXpect.Settings().DefaultCheckInterval.Set(milliseconds.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("interval").And
+			.WithMessage("The interval must be positive.").AsPrefix()
+			.Because("an interval is validated like CheckEvery, which rejects zero, negative and infinite intervals");
+		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
+	}
+
 	[Fact]
 	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
 	{
@@ -52,6 +67,31 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Fact]
+	public async Task DefaultEventuallyTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(-5.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix();
+		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
+	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	public async Task DefaultEventuallyTimeout_WhenZeroOrInfinite_ShouldBeAccepted(int milliseconds)
+	{
+		TimeSpan timeout = milliseconds.Milliseconds();
+
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(timeout))
+		{
+			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(timeout)
+				.Because("-1 ms is the infinite timeout, which imposes no limit");
+		}
+	}
+
+	[Fact]
 	public async Task DefaultSignalerTimeout_ShouldBeUsedInSignaler()
 	{
 		Signaler signaler = new();
@@ -72,6 +112,31 @@ public sealed class CustomizeSettingsTests
 			SignalerResult result = signaler.Wait();
 			await That(result.IsSuccess).IsTrue();
 			await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(30000.Milliseconds());
+		}
+	}
+
+	[Fact]
+	public async Task DefaultSignalerTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(-5.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix();
+		await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(30.Seconds());
+	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	public async Task DefaultSignalerTimeout_WhenZeroOrInfinite_ShouldBeAccepted(int milliseconds)
+	{
+		TimeSpan timeout = milliseconds.Milliseconds();
+
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(timeout))
+		{
+			await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(timeout)
+				.Because("-1 ms is the infinite timeout, which imposes no limit");
 		}
 	}
 
@@ -102,15 +167,27 @@ public sealed class CustomizeSettingsTests
 			.Because("the default tolerance must be restored once the customization is disposed");
 	}
 
-	[Fact]
-	public async Task DefaultTimeComparisonTolerance_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	[Theory]
+	[InlineData(-1)]
+	[InlineData(-5)]
+	public async Task DefaultTimeComparisonTolerance_WhenNegative_ShouldThrowArgumentOutOfRangeException(
+		int milliseconds)
 	{
-		void Act() => Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(-1.Milliseconds());
+		void Act() => Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(milliseconds.Milliseconds());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
 			.WithMessage("The tolerance must not be negative.").AsPrefix()
 			.Because("a negative default tolerance tightens every time comparison instead of widening it");
+	}
+
+	[Fact]
+	public async Task DefaultTimeComparisonTolerance_WhenZero_ShouldBeAccepted()
+	{
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(TimeSpan.Zero))
+		{
+			await That(Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get()).IsEqualTo(TimeSpan.Zero);
+		}
 	}
 
 	[Fact]
@@ -151,6 +228,7 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		Stopwatch stopwatch = new();
+		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
@@ -159,18 +237,42 @@ public sealed class CustomizeSettingsTests
 					.Throws<TaskCanceledException>();
 
 			stopwatch.Start();
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
-				             throws a TaskCanceledException,
-				             but it did not finish within 0:00.100
-				             """)
-				.WithTimeout(30.Seconds());
+			exception = await Record.ExceptionAsync(Act);
 			stopwatch.Stop();
 		}
 
+		await That(exception).IsExactly<XunitException>().And
+			.HasMessage("""
+			            Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
+			            throws a TaskCanceledException,
+			            but it did not finish within 0:00.100
+			            """);
 		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(10.Seconds());
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
+	}
+
+	[Fact]
+	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
+	{
+		Exception? exception;
+		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
+			       .Set(TestCancellation.FromTimeout(LowTimeout)))
+		{
+			async Task Act()
+				=> await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
+					.Throws<TaskCanceledException>()
+					.WithTimeout(20.Seconds());
+
+			exception = await Record.ExceptionAsync(Act);
+		}
+
+		await That(exception).IsExactly<XunitException>().And
+			.HasMessage("""
+			            Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
+			            throws a TaskCanceledException,
+			            but it did not finish within 0:00.100
+			            """)
+			.Because("the tighter limit wins, so a longer local timeout must not loosen the global one");
 	}
 
 	[Fact]
@@ -234,7 +336,7 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Fact]
-	public async Task WithTimeout_OverwritesTheCancellationToken()
+	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
 		Stopwatch stopwatch = new();

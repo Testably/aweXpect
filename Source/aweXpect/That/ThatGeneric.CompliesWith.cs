@@ -82,7 +82,7 @@ public static partial class ThatGeneric
 				return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 			}
 
-			if (_options.Timeout > TimeSpan.Zero)
+			if (_options.IsRepeated)
 			{
 				Stopwatch sw = new();
 				sw.Start();
@@ -94,7 +94,7 @@ public static partial class ThatGeneric
 					{
 						return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 					}
-				} while (sw.Elapsed <= _options.Timeout);
+				} while (_options.IsWithinTimeout(sw.Elapsed));
 			}
 
 			return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));

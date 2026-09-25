@@ -104,7 +104,7 @@ public static partial class ThatGeneric
 				return this;
 			}
 
-			if (options.Timeout > TimeSpan.Zero)
+			if (options.IsRepeated)
 			{
 				Stopwatch sw = new();
 				sw.Start();
@@ -115,7 +115,7 @@ public static partial class ThatGeneric
 					{
 						return this;
 					}
-				} while (sw.Elapsed <= options.Timeout);
+				} while (options.IsWithinTimeout(sw.Elapsed));
 			}
 
 			return this;
