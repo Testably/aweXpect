@@ -646,6 +646,7 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTestCancellationExpiresWithTheTimeout_ShouldFailAndNotBeInconclusive()
 		{
 			Counter counter = new();
+			Exception? exception;
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(VeryLowTimeout))
 			using (IDisposable ___ = Customize.aweXpect.Settings().TestCancellation
@@ -653,14 +654,15 @@ public sealed partial class ThatDelegateTests
 			{
 				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that () => counter.Value
-					             is equal to 1 within 0:00.050,
-					             but it was 0 which differs by -1
-					             """)
-					.WithTimeout(30.Seconds());
+				exception = await Record.ExceptionAsync(Act);
 			}
+
+			await That(exception).IsExactly<XunitException>().And
+				.HasMessage("""
+				            Expected that () => counter.Value
+				            is equal to 1 within 0:00.050,
+				            but it was 0 which differs by -1
+				            """);
 		}
 
 		[Fact]
@@ -685,6 +687,7 @@ public sealed partial class ThatDelegateTests
 		{
 			Counter counter = new();
 			Stopwatch stopwatch = new();
+			Exception? exception;
 
 			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.FromTimeout(VeryLowTimeout)))
@@ -692,18 +695,43 @@ public sealed partial class ThatDelegateTests
 				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
 
 				stopwatch.Start();
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that () => counter.Value
-					             is equal to 1 within *,
-					             but it did not finish within 0:00.050
-					             """).AsWildcard().And
-					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
-					.WithTimeout(30.Seconds());
+				exception = await Record.ExceptionAsync(Act);
 				stopwatch.Stop();
 			}
 
+			await That(exception).IsExactly<XunitException>().And
+				.HasMessage("""
+				            Expected that () => counter.Value
+				            is equal to 1 within *,
+				            but it did not finish within 0:00.050
+				            """).AsWildcard().And
+				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+		}
+
+		[Fact]
+		public async Task WhenTestCancellationTimeoutIsShorterThanTheTimeout_ShouldFail()
+		{
+			Counter counter = new();
+			Exception? exception;
+
+			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
+				       .Set(TestCancellation.FromTimeout(VeryLowTimeout)))
+			{
+				async Task Act()
+					=> await That(() => counter.Value).Eventually().IsEqualTo(1).WithTimeout(SuccessTimeout);
+
+				exception = await Record.ExceptionAsync(Act);
+			}
+
+			await That(exception).IsExactly<XunitException>().And
+				.HasMessage("""
+				            Expected that () => counter.Value
+				            is equal to 1 within 0:05,
+				            but it did not finish within 0:00.050
+				            """).And
+				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("the tighter limit wins, so the test cancellation also bounds an explicit timeout");
 		}
 
 		[Fact]
@@ -848,16 +876,48 @@ public sealed partial class ThatDelegateTests
 				.WithTimeout(30.Seconds());
 		}
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(-500)]
-		public async Task WhenTimeoutIsNotPositive_ShouldOnlyEvaluateOnce(int timeoutInMilliseconds)
+		[Fact]
+		public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Counter counter = new();
 
 			async Task Act()
 				=> await That(() => counter.Value).Eventually().IsEqualTo(1)
-					.WithTimeout(TimeSpan.FromMilliseconds(timeoutInMilliseconds));
+					.WithTimeout(-500.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix();
+			await That(counter.EvaluationCount).IsEqualTo(0)
+				.Because("the timeout is validated when the expectation is built");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsSetTwice_ShouldUseTheShorterTimeout()
+		{
+			Counter counter = new();
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().IsEqualTo(1)
+					.WithTimeout(VeryLowTimeout).WithTimeout(SuccessTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that () => counter.Value
+				             is equal to 1 within 0:00.050,
+				             but it was 0 which differs by -1
+				             """)
+				.Because("the tighter limit wins, so a later timeout must not loosen an earlier one");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsZero_ShouldOnlyEvaluateOnce()
+		{
+			Counter counter = new();
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().IsEqualTo(1)
+					.WithTimeout(TimeSpan.Zero);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""

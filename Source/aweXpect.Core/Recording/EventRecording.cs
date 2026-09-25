@@ -150,7 +150,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		ThrowIfStopped(context);
 		try
 		{
-			if (timeout > TimeSpan.Zero)
+			if (timeout > TimeSpan.Zero || timeout == System.Threading.Timeout.InfiniteTimeSpan)
 			{
 				await WaitUntil(areFound, timeout, cancellationToken);
 			}

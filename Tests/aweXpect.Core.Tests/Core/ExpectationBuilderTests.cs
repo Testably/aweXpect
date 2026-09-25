@@ -463,6 +463,97 @@ public class ExpectationBuilderTests
 			             """);
 	}
 
+	[Fact]
+	public async Task WithTimeout_WhenALongerTimeoutFollows_ShouldKeepTheShorterTimeout()
+	{
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(20.Seconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("the tighter limit wins, so a later timeout must not loosen an earlier one");
+	}
+
+	[Fact]
+	public async Task WithTimeout_WhenAShorterTimeoutFollows_ShouldUseTheShorterTimeout()
+	{
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(20.Seconds()).WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
+	}
+
+	[Fact]
+	public async Task WithTimeout_WhenInfinite_AndAShorterTimeoutWasSet_ShouldKeepTheShorterTimeout()
+	{
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("an infinite timeout imposes no limit, so the shorter one still applies");
+	}
+
+	[Fact]
+	public async Task WithTimeout_WhenInfinite_ShouldNotLimitTheEvaluation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("an infinite timeout imposes no limit, so only the cancellation ends the evaluation");
+	}
+
+	[Fact]
+	public async Task WithTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => ThatAwaiting(1).WithTimeout(-5.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix()
+			.Because("the timeout is validated when the expectation is built");
+	}
+
+	[Fact]
+	public async Task WithTimeout_WhenZero_ShouldFailWithTheTimeout()
+	{
+		async Task Act()
+			=> await ThatAwaiting(1).WithTimeout(TimeSpan.Zero);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00."));
+	}
+
 	private static ExpectationResult ThatAwaiting(int subject)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new AwaitingConstraint()));
 

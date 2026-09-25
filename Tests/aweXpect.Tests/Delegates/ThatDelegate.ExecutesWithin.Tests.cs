@@ -53,6 +53,35 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDurationIsInfinite_AndDelegateThrows_ShouldNotMentionTheDuration()
+			{
+				Action @delegate = () => throw new MyException();
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(Timeout.InfiniteTimeSpan);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes,
+					              but it did throw a MyException:
+					                {nameof(WhenDurationIsInfinite_AndDelegateThrows_ShouldNotMentionTheDuration)}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenDurationIsInfinite_ShouldNotLimitTheExecution()
+			{
+				Action @delegate = () => Task.Delay(20.Milliseconds()).Wait();
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(Timeout.InfiniteTimeSpan);
+
+				await That(Act).DoesNotThrow()
+					.Because("an infinite duration imposes no limit");
+			}
+
+			[Fact]
 			public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Action @delegate = () => { };
@@ -613,6 +642,22 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDurationIsInfinite_ShouldNotLimitTheExecution()
+			{
+				Func<int> @delegate = () =>
+				{
+					Task.Delay(20.Milliseconds()).Wait();
+					return 0;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(Timeout.InfiniteTimeSpan);
+
+				await That(Act).DoesNotThrow()
+					.Because("an infinite duration imposes no limit");
+			}
+
+			[Fact]
 			public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Func<int> @delegate = () => 1;
@@ -764,6 +809,23 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WithoutReturnValue_WhenTimeoutIsLongerThanTheDuration_ShouldKeepTheDuration()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(20.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it did not finish within 0:00.050
+					             """)
+					.Because("the tighter limit wins, so a longer timeout must not loosen the duration");
+			}
+
+			[Fact]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
@@ -782,6 +844,27 @@ public sealed partial class ThatDelegate
 					             but it did not finish within 0:00.050
 					             """)
 					.Because("the 50 ms timeout must cancel the delegate within seconds, long before the 30 s duration would");
+			}
+
+			[Fact]
+			public async Task WithReturnValue_WhenTimeoutIsLongerThanTheDuration_ShouldKeepTheDuration()
+			{
+				Func<CancellationToken, Task<int>> @delegate = async token =>
+				{
+					await Task.Delay(60.Seconds(), token);
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(20.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it did not finish within 0:00.050
+					             """)
+					.Because("the tighter limit wins, so a longer timeout must not loosen the duration");
 			}
 		}
 

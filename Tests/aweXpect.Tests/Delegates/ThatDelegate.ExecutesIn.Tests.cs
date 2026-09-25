@@ -797,7 +797,7 @@ public sealed partial class ThatDelegate
 		public sealed class WithTimeoutTests
 		{
 			[Fact]
-			public async Task WhenLaterTimeoutIsLonger_ShouldOverwriteTheUpperBound()
+			public async Task WhenLaterTimeoutIsLonger_ShouldKeepTheUpperBound()
 			{
 				Func<CancellationToken, Task> @delegate = token => Task.Delay(500.Milliseconds(), token);
 
@@ -808,9 +808,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.050,
-					             but it took 0:*
-					             """).AsWildcard()
-					.Because("a subsequent timeout replaces the one from the upper bound");
+					             but it did not finish within 0:00.050
+					             """)
+					.Because("the tighter limit wins, so a longer timeout must not loosen the upper bound");
 			}
 
 			[Fact]

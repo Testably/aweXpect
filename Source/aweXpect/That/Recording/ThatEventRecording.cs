@@ -49,7 +49,7 @@ public static partial class ThatEventRecording
 				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout,
 				context, cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
-			if (options.Timeout > TimeSpan.Zero)
+			if (options.IsRepeated)
 			{
 				_waitedTime = stopwatch.Elapsed;
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;

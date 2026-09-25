@@ -27,8 +27,13 @@ public class DidNotSignalResult(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public DidNotSignalResult Within(TimeSpan timeout)
 	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		options.Timeout = timeout;
 		return this;
 	}
@@ -55,8 +60,13 @@ public class DidNotSignalResult<TParameter>(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public DidNotSignalResult<TParameter> Within(TimeSpan timeout)
 	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		options.Timeout = timeout;
 		return this;
 	}

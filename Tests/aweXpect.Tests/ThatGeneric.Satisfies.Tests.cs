@@ -366,6 +366,40 @@ public sealed partial class ThatGeneric
 					.Because("an exception is only a failed attempt, so the predicate is retried until the time runs out");
 			}
 
+			[Fact]
+			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
+					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsInfinite_ShouldRetryUntilThePredicateIsSatisfied()
+			{
+				int count = 0;
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => ++count > 2).Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.CheckEvery(10.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+				await That(count).IsEqualTo(3);
+			}
+
 			[Theory]
 			[InlineData(1, false)]
 			[InlineData(0, false)]

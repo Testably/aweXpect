@@ -21,7 +21,7 @@ public abstract partial class ThatDelegate
 		///     A delegate that throws an exception fails the expectation, however fast it did so,
 		///     unless <c>AllowingExceptions()</c> is specified.
 		///     <para />
-		///     An upper bound is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
+		///     An upper bound is applied as timeout (a tighter timeout, e.g. from <c>WithTimeout(…)</c>, still applies),
 		///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
 		///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 		///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
@@ -46,8 +46,8 @@ public abstract partial class ThatDelegate
 		///     A delegate that throws an exception fails the expectation, however fast it did so,
 		///     unless <c>AllowingExceptions()</c> is specified.
 		///     <para />
-		///     The <paramref name="expected" /> time plus the tolerance is applied as timeout (a subsequent
-		///     <c>WithTimeout(…)</c> overwrites it), so that a delegate accepting a
+		///     The <paramref name="expected" /> time plus the tolerance is applied as timeout (a tighter timeout, e.g.
+		///     from <c>WithTimeout(…)</c>, still applies), so that a delegate accepting a
 		///     <see cref="System.Threading.CancellationToken" /> is canceled once it elapsed. The task of an
 		///     asynchronous delegate is abandoned at that point, even if it ignores the cancellation, while a synchronous
 		///     delegate cannot be interrupted and runs to completion.

@@ -78,4 +78,17 @@ internal static class ThrowHelper
 				$"The {description ?? paramName} must not be negative."));
 		}
 	}
+
+	/// <summary>
+	///     Rejects a negative timeout, except <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, which imposes no
+	///     limit.
+	/// </summary>
+	public static void ThrowIfTimeoutIsNegative(TimeSpan timeout,
+		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
+	{
+		if (timeout != System.Threading.Timeout.InfiniteTimeSpan)
+		{
+			ThrowIfDurationIsNegative(timeout, paramName: paramName);
+		}
+	}
 }

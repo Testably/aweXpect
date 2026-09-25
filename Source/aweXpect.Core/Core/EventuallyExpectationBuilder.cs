@@ -61,7 +61,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		}
 
 		TimeSpan retryTimeout = GetRetryTimeout();
-		TimeSpan? cancellationTimeout = Timeout is null ? timeout : null;
+		TimeSpan? cancellationTimeout = timeout < retryTimeout ? timeout : null;
 		if (cancellationTimeout is null)
 		{
 			return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationToken);

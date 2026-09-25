@@ -256,7 +256,7 @@ A delegate that throws an exception fails these expectations, however fast it di
 of execution time.
 
 The upper bound is the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance. It
-is applied as timeout (a subsequent `WithTimeout(…)` overwrites it), so that a delegate accepting a
+is applied as timeout (a tighter timeout, e.g. from `WithTimeout(…)`, still applies), so that a delegate accepting a
 `CancellationToken` is canceled once it elapsed and the expectation fails with "did not finish within …" instead of
 hanging. `AtLeast` has no upper bound and therefore applies no timeout. The task of an asynchronous delegate is
 abandoned once the timeout elapsed, even if the delegate ignores or does not accept a `CancellationToken`, and the
@@ -302,6 +302,8 @@ The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout,
 even if the delegate ignores or does not accept a `CancellationToken`, and the expectation fails with "did not finish
 within …". A synchronous delegate cannot be interrupted
 and runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that.
+A longer `WithTimeout` does not loosen the duration, as the tighter timeout always wins, and
+`Timeout.InfiniteTimeSpan` imposes no limit.
 
 ## Eventually
 
@@ -339,7 +341,8 @@ while the delegate is still throwing, the expectation fails and the last excepti
 of the failure. If the expectation is canceled before the timeout expires (via `WithCancellation` or via
 `TestCancellation.FromCancellationToken`), it is reported as inconclusive instead of failed, while a global
 `TestCancellation.FromTimeout` that elapses first fails it with "did not finish within …". As everywhere else,
-an explicit `WithTimeout` takes precedence over a global `TestCancellation` timeout.
+the tighter timeout wins: a global `TestCancellation` timeout that is shorter than `WithTimeout` still ends the
+retries, and calling `WithTimeout` more than once applies the shortest timeout.
 
 The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,
 even if the delegate ignores its `CancellationToken`, which is canceled at that point, and the expectation fails with

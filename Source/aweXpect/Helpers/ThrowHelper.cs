@@ -88,6 +88,19 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a negative timeout, except <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, which imposes no
+	///     limit.
+	/// </summary>
+	public static void ThrowIfTimeoutIsNegative(TimeSpan timeout,
+		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
+	{
+		if (timeout != System.Threading.Timeout.InfiniteTimeSpan)
+		{
+			ThrowIfDurationIsNegative(timeout, paramName);
+		}
+	}
+
+	/// <summary>
 	///     Rejects an inverted range, so that a tolerance cannot silently turn it into a satisfiable one.
 	/// </summary>
 	public static void ThrowIfMaximumIsBelowMinimum<T>(T? minimum, T? maximum)
