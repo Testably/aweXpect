@@ -28,11 +28,11 @@ public static partial class ThatTimeOnly
 		IEnumerable<TimeOnly?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TimeOnly?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -60,21 +60,14 @@ public static partial class ThatTimeOnly
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			foreach (TimeOnly? value in expected)
 			{
-				hasValues = true;
 				if (value != null &&
 				    actual.CircularDistanceTicks(value.Value) <= timeTolerance.Ticks)
 				{
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

@@ -26,9 +26,9 @@ public static partial class ThatEnum
 		bool negated)
 		where TEnum : struct, Enum
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expected).InvertIf(negated)),
+				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues).InvertIf(negated)),
 			subject);
 	}
 
@@ -51,23 +51,9 @@ public static partial class ThatEnum
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TEnum? value in expected)
-			{
-				hasValues = true;
-				if (actual.Equals(value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => actual.Equals(value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

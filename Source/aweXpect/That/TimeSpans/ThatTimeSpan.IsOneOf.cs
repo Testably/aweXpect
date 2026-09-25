@@ -26,11 +26,11 @@ public static partial class ThatTimeSpan
 		IEnumerable<TimeSpan?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TimeSpan?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -56,25 +56,10 @@ public static partial class ThatTimeSpan
 		public ConstraintResult IsMetBy(TimeSpan actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TimeSpan? value in expected)
-			{
-				hasValues = true;
-				if (value != null &&
-				    IsWithinTolerance(tolerance.Tolerance, actual, value.Value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
-
+			Outcome = expected.Any(value => value != null &&
+			                                IsWithinTolerance(tolerance.Tolerance, actual, value.Value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

@@ -16,11 +16,13 @@ public sealed partial class ThatGuid
 				Guid subject = FixedGuid();
 				Guid[] unexpected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(unexpected);
+				object Act()
+					=> That(subject).IsNotOneOf(unexpected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
@@ -55,11 +57,13 @@ public sealed partial class ThatGuid
 				Guid subject = FixedGuid();
 				Guid?[] unexpected = [];
 
-				async Task Act()
-					=> await That(subject).IsNotOneOf(unexpected);
+				object Act()
+					=> That(subject).IsNotOneOf(unexpected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]

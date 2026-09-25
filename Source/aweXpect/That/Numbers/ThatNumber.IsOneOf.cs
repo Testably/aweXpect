@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -22,11 +23,11 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -39,11 +40,11 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options)),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -56,11 +57,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, expected, options)),
+				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -73,11 +74,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, expected, options)),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -90,11 +91,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -107,11 +108,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		expected.ThrowIfNull();
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options)),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
 			subject,
 			options);
 	}
@@ -124,11 +125,11 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpected, options).Invert()),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -141,11 +142,11 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpected, options).Invert()),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -158,11 +159,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+				new IsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -175,11 +176,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -192,11 +193,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpected, options).Invert()),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -209,11 +210,11 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		unexpected.ThrowIfNull();
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpected, options).Invert()),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
 			subject,
 			options);
 	}
@@ -230,23 +231,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -286,23 +273,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -342,23 +315,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber? value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -398,23 +357,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber? value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -459,10 +404,10 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options).InvertIf(negated)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -476,10 +421,10 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
+				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -496,10 +441,10 @@ public static partial class ThatNumber
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expected, options)
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -514,10 +459,10 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -534,23 +479,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -590,23 +521,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -646,23 +563,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber? value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -702,23 +605,9 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			bool hasValues = false;
-			foreach (TNumber? value in expected)
-			{
-				hasValues = true;
-				if (options.IsWithinTolerance(actual, value))
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
-			Outcome = Outcome.Failure;
+			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

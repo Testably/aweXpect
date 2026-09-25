@@ -31,11 +31,11 @@ public static partial class ThatObject
 		string? expectedExpression,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<object?> expectedValues = expected.ToNonEmptyValues(negated);
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint<object?, object?>(it, grammars, expected, options).InvertIf(negated)),
+				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -51,20 +51,13 @@ public static partial class ThatObject
 		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			bool hasValues = false;
 			foreach (TExpected? value in expected)
 			{
-				hasValues = true;
 				if (await options.AreConsideredEqual(actual, value))
 				{
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

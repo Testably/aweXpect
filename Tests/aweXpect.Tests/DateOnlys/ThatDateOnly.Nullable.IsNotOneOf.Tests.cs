@@ -38,11 +38,13 @@ public sealed partial class ThatDateOnly
 					DateOnly? subject = CurrentTime();
 					DateOnly[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsNotOneOf(expected);
+					object Act()
+						=> That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!");
+						.WithParamName("unexpected").And
+						.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
 				[Fact]
@@ -77,11 +79,13 @@ public sealed partial class ThatDateOnly
 					DateOnly? subject = CurrentTime();
 					DateOnly?[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsNotOneOf(expected);
+					object Act()
+						=> That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!");
+						.WithParamName("unexpected").And
+						.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
+						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
 				[Fact]
@@ -144,11 +148,12 @@ public sealed partial class ThatDateOnly
 					DateOnly? subject = null;
 					DateOnly[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsNotOneOf(expected);
+					object Act()
+						=> That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!")
+						.WithParamName("unexpected").And
+						.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
@@ -173,11 +178,12 @@ public sealed partial class ThatDateOnly
 					DateOnly? subject = null;
 					DateOnly?[] expected = [];
 
-					async Task Act()
-						=> await That(subject).IsNotOneOf(expected);
+					object Act()
+						=> That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("You have to provide at least one expected value!")
+						.WithParamName("unexpected").And
+						.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix()
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 

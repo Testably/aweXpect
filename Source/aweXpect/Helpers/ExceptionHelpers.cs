@@ -44,10 +44,31 @@ internal static class ExceptionHelpers
 		ThrowIfNullNamed(parameter, paramName);
 		if (!parameter!.Any())
 		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException($"The '{paramName}' collection cannot be empty.", paramName));
+			throw Tracing.WriteException(EmptyCollection(paramName));
 		}
 	}
+
+	/// <summary>
+	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
+	///     expectation, and returns it wrapped, so that a sequence which can only be enumerated once survives both the
+	///     guard and the subsequent comparison, and an infinite sequence is only enumerated as far as needed.
+	/// </summary>
+	public static IEnumerable<T> ToNonEmptyValues<T>(this IEnumerable<T>? parameter, bool negated)
+	{
+		string paramName = negated ? "unexpected" : "expected";
+		ThrowIfNullNamed(parameter, paramName);
+		IEnumerable<T> values = MaterializingEnumerable<T>.Wrap(parameter!);
+		if (!values.Any())
+		{
+			throw Tracing.WriteException(EmptyCollection(paramName));
+		}
+
+		return values;
+	}
+
+	private static ArgumentException EmptyCollection(string? paramName)
+		// ReSharper disable once LocalizableElement
+		=> new($"The '{paramName}' collection cannot be empty.", paramName);
 
 	public static string FormatForMessage(this Exception exception, string? indentation, string relation = "")
 	{

@@ -27,11 +27,11 @@ public static partial class ThatDateTimeOffset
 		IEnumerable<DateTimeOffset?> expected,
 		bool negated)
 	{
-		expected.ThrowIfNull(negated);
+		IEnumerable<DateTimeOffset?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expected, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -59,10 +59,8 @@ public static partial class ThatDateTimeOffset
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			foreach (DateTimeOffset? value in expected)
 			{
-				hasValues = true;
 				if (value != null &&
 				    actual - value.Value <= timeTolerance &&
 				    actual - value.Value >= timeTolerance.Negate())
@@ -70,11 +68,6 @@ public static partial class ThatDateTimeOffset
 					Outcome = Outcome.Success;
 					return this;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

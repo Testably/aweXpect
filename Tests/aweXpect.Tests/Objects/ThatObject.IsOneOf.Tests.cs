@@ -97,16 +97,50 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				object subject = "foo";
+				object[] values = ["bar", "baz",];
+				IEnumerable<object?> expected = Factory.GetSingleUseEnumerable<object?>(values);
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(values)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				object subject = new MyClass();
 				object[] expected = [];
 
+				object Act()
+					=> That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsInfiniteAndContainsTheSubject_ShouldSucceed()
+			{
+				object subject = 8;
+				IEnumerable<object?> expected = Factory.GetFibonacciNumbers<object?>(i => i);
+
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+				await That(Act).DoesNotThrow()
+					.Because("the values are only enumerated until the subject is found");
 			}
 
 			[Fact]
@@ -148,11 +182,13 @@ public sealed partial class ThatObject
 				object subject = new MyClass();
 				object?[] expected = [];
 
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
+				object Act()
+					=> That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("You have to provide at least one expected value!");
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix()
+					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
 			[Fact]
