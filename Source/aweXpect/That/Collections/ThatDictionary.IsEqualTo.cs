@@ -110,19 +110,18 @@ public static partial class ThatDictionary
 				if (!tryGetValue(pair.Key, out TValue? value))
 				{
 					missingKeys.Add(pair.Key);
+					continue;
 				}
-				else
-				{
-					if (!matchedKeys.Add(pair.Key))
-					{
-						collapsedKeys.Add(pair.Key);
-					}
 
-					if (!await options.AreConsideredEqual(value!, pair.Value))
-					{
-						incorrectValues.Add(
-							$"contained key {Formatter.Format(pair.Key)} with value {Formatter.Format(value)} instead of {Formatter.Format(pair.Value)}");
-					}
+				if (!matchedKeys.Add(pair.Key))
+				{
+					collapsedKeys.Add(pair.Key);
+				}
+
+				if (!await options.AreConsideredEqual(value!, pair.Value))
+				{
+					incorrectValues.Add(
+						$"contained key {Formatter.Format(pair.Key)} with value {Formatter.Format(value)} instead of {Formatter.Format(pair.Value)}");
 				}
 			}
 

@@ -21,11 +21,20 @@ namespace aweXpect.Docs.Tests;
 ///     and its members, e.g. an extension method, the members of the surrounding class. A <c>#line</c> directive maps
 ///     every part back to the page, and an initializer that is only a <c>//...</c> comment becomes <c>default!</c>.
 /// </remarks>
-internal static class SnippetCompiler
+internal static partial class SnippetCompiler
 {
+	private const string OmittedInitializerPattern = @"=\s*//\s*\.\.\.";
 	private static readonly CSharpParseOptions ParseOptions = new(LanguageVersion.Latest);
-	private static readonly Regex OmittedInitializer = new(@"=\s*//\s*\.\.\.");
 	private static readonly Lazy<MetadataReference[]> References = new(GetReferences);
+
+#if NET8_0_OR_GREATER
+	[GeneratedRegex(OmittedInitializerPattern)]
+	private static partial Regex OmittedInitializer();
+#else
+	private static readonly Regex OmittedInitializerRegex = new(OmittedInitializerPattern);
+
+	private static Regex OmittedInitializer() => OmittedInitializerRegex;
+#endif
 
 	/// <summary>
 	///     Returns the compiler errors of the <paramref name="blocks" /> and <paramref name="scaffoldFiles" />, each
@@ -35,7 +44,7 @@ internal static class SnippetCompiler
 	{
 		List<(CodeBlock Block, CompilationUnitSyntax Root)> parsed = blocks
 			.Select(block => (block, CSharpSyntaxTree.ParseText(
-				OmittedInitializer.Replace(block.Code, "= default!; //..."), ParseOptions).GetCompilationUnitRoot()))
+				OmittedInitializer().Replace(block.Code, "= default!; //..."), ParseOptions).GetCompilationUnitRoot()))
 			.ToList();
 		HashSet<string> sharedTypes = parsed
 			.SelectMany(x => x.Root.Members.Select(GetTypeName).OfType<string>().Distinct())

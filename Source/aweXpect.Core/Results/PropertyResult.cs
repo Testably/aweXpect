@@ -139,13 +139,10 @@ public static class PropertyResult
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, int>(
 							it, constraintGrammars | grammars,
-							expected,
 							mapper,
 							propertyExpression,
-							condition,
-							expectation,
-							negatedExpectation,
-							isOrderedAgainstNull: isOrderedAgainstNull)),
+							new StructComparison<int>(expected, condition, expectation, negatedExpectation,
+								isOrderedAgainstNull))),
 				subject);
 	}
 
@@ -280,14 +277,11 @@ public static class PropertyResult
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, long>(
 							it, constraintGrammars | grammars,
-							expected,
 							mapper,
 							propertyExpression,
-							condition,
-							expectation,
-							negatedExpectation,
-							isExpectedPropertyException,
-							isOrderedAgainstNull)),
+							new StructComparison<long>(expected, condition, expectation, negatedExpectation,
+								isOrderedAgainstNull),
+							isExpectedPropertyException)),
 				subject);
 	}
 
@@ -341,12 +335,9 @@ public static class PropertyResult
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, DateTimeKind>(
 							it, constraintGrammars | grammars,
-							expected,
 							mapper,
 							propertyExpression,
-							condition,
-							expectation,
-							negatedExpectation)),
+							new StructComparison<DateTimeKind>(expected, condition, expectation, negatedExpectation))),
 				subject);
 	}
 
@@ -474,13 +465,10 @@ public static class PropertyResult
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, TimeSpan>(
 							it, constraintGrammars | grammars,
-							expected,
 							mapper,
 							propertyExpression,
-							condition,
-							expectation,
-							negatedExpectation,
-							isOrderedAgainstNull: isOrderedAgainstNull)),
+							new StructComparison<TimeSpan>(expected, condition, expectation, negatedExpectation,
+								isOrderedAgainstNull))),
 				subject);
 	}
 
@@ -668,17 +656,31 @@ public static class PropertyResult
 				});
 	}
 
-	private sealed class StructPropertyConstraint<TItem, TProperty>(
-		string it,
-		ExpectationGrammars grammars,
+	/// <summary>
+	///     The comparison of a struct property with the <see cref="Expected" /> value.
+	/// </summary>
+	private sealed class StructComparison<TProperty>(
 		TProperty? expected,
-		Func<TItem, TProperty?> mapper,
-		string propertyExpression,
 		Func<TProperty?, TProperty?, bool> condition,
 		string expectation,
 		string? negatedExpectation,
-		Func<Exception, bool>? isExpectedPropertyException = null,
 		bool isOrderedAgainstNull = false)
+		where TProperty : struct
+	{
+		public TProperty? Expected { get; } = expected;
+		public Func<TProperty?, TProperty?, bool> Condition { get; } = condition;
+		public string Expectation { get; } = expectation;
+		public string? NegatedExpectation { get; } = negatedExpectation;
+		public bool IsOrderedAgainstNull { get; } = isOrderedAgainstNull;
+	}
+
+	private sealed class StructPropertyConstraint<TItem, TProperty>(
+		string it,
+		ExpectationGrammars grammars,
+		Func<TItem, TProperty?> mapper,
+		string propertyExpression,
+		StructComparison<TProperty> comparison,
+		Func<Exception, bool>? isExpectedPropertyException = null)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
@@ -689,7 +691,7 @@ public static class PropertyResult
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => _exception is null && !isOrderedAgainstNull ? base.Outcome : Outcome.Failure;
+			get => _exception is null && !comparison.IsOrderedAgainstNull ? base.Outcome : Outcome.Failure;
 			protected set => base.Outcome = value;
 		}
 
@@ -709,12 +711,12 @@ public static class PropertyResult
 				return this;
 			}
 
-			Outcome = condition(_value, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = comparison.Condition(_value, comparison.Expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, false, expectation);
+			=> Append(stringBuilder, false, comparison.Expectation);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -733,7 +735,8 @@ public static class PropertyResult
 		// A comparison that is itself a negation (`not equal to`) is negated by its positive counterpart instead of by
 		// a second `not`.
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, negatedExpectation is null, negatedExpectation ?? expectation);
+			=> Append(stringBuilder, comparison.NegatedExpectation is null,
+				comparison.NegatedExpectation ?? comparison.Expectation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

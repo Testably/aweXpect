@@ -731,10 +731,11 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 			return result;
 		}
 
-		if (data is DelegateValue delegateValue && HasTimedOut(delegateValue.Exception))
+		if (data is DelegateValue delegateValue && timeout is { } exceededTimeout &&
+		    HasTimedOut(delegateValue.Exception))
 		{
-			data = (TValue)(object)delegateValue.WithExceededTimeout(timeout!.Value,
-				CreateTimeoutException(timeout.Value, delegateValue.Exception!));
+			data = (TValue)(object)delegateValue.WithExceededTimeout(exceededTimeout,
+				CreateTimeoutException(exceededTimeout, delegateValue.Exception!));
 		}
 
 		try
@@ -751,9 +752,9 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
 				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
-			return HasTimedOut(exception)
-				? new ConstraintResult.FromException(expectation, CreateTimeoutException(timeout!.Value, exception),
-					timeout)
+			return timeout is { } exceededTimeout && HasTimedOut(exception)
+				? new ConstraintResult.FromException(expectation, CreateTimeoutException(exceededTimeout, exception),
+					exceededTimeout)
 				: new ConstraintResult.FromException(expectation, exception);
 		}
 	}

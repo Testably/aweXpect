@@ -204,37 +204,6 @@ internal static class CollectionHelpers
 			}
 		});
 	}
-
-	/// <summary>
-	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
-	///     cancelled, also while it waits for the next item.
-	/// </summary>
-	/// <remarks>
-	///     For expectations that report a cancelled evaluation as undecided, which must not be aborted instead, when the
-	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
-	/// </remarks>
-	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
-		[EnumeratorCancellation] CancellationToken cancellationToken)
-	{
-		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
-		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
-		{
-			yield return enumerator.Current;
-		}
-	}
-
-	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
-		CancellationToken cancellationToken)
-	{
-		try
-		{
-			return await enumerator.MoveNextAsync();
-		}
-		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-		{
-			return false;
-		}
-	}
 #endif
 
 	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
@@ -280,6 +249,39 @@ internal static class CollectionHelpers
 			}
 		});
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
+	///     cancelled, also while it waits for the next item.
+	/// </summary>
+	/// <remarks>
+	///     For expectations that report a cancelled evaluation as undecided, which must not be aborted instead, when the
+	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
+	/// </remarks>
+	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken)
+	{
+		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
+		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
+		{
+			yield return enumerator.Current;
+		}
+	}
+
+	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
+		CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await enumerator.MoveNextAsync();
+		}
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+		{
+			return false;
+		}
+	}
+#endif
 
 	/// <summary>
 	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not

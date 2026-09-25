@@ -124,7 +124,8 @@ public static partial class ThatNumber
 	{
 		if (negated)
 		{
-			expected.ThrowIfNaN("unexpected value", "unexpected");
+			TNumber? unexpected = expected;
+			unexpected.ThrowIfNaN("unexpected value");
 		}
 		else
 		{
