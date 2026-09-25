@@ -25,9 +25,10 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	///     All enumerations continue the same source enumerator, so the source is governed by the
 	///     <see cref="CancellationToken" /> of the evaluation that wrapped it, not by the
 	///     <paramref name="cancellationToken" /> of a single enumeration.<br />
-	///     The source is not advanced once the evaluation is cancelled, and a pending <c>MoveNextAsync</c> is abandoned
-	///     with an <see cref="OperationCanceledException" />, so that a source which ignores the cancellation cannot
-	///     hang the evaluation.
+	///     The source is not advanced once the evaluation is cancelled, and a pending <c>MoveNextAsync</c> is abandoned,
+	///     so that a source which ignores the cancellation cannot hang the evaluation. Instead of the next item that
+	///     was not received, the enumeration throws an <see cref="OperationCanceledException" />, so that the
+	///     cancellation is not mistaken for the end of the source.
 	/// </remarks>
 	public async IAsyncEnumerator<T> GetAsyncEnumerator(
 		CancellationToken cancellationToken = default)
@@ -37,18 +38,18 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 			yield return materializedItem;
 		}
 
+		if (Count is not null)
+		{
+			yield break;
+		}
+
 		_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (!_cancellationToken.IsCancellationRequested && await MoveNextOrAbandon(_enumerator))
+		while (await MoveNextOrAbandon(_enumerator))
 		{
 			T item = _enumerator.Current;
 			_materializedItems.Add(item);
-
-			if (cancellationToken.IsCancellationRequested)
-			{
-				break;
-			}
-
+			cancellationToken.ThrowIfCancellationRequested();
 			yield return item;
 		}
 
@@ -64,15 +65,26 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	IReadOnlyList<T> IMaterializedEnumerable<T>.MaterializedItems => _materializedItems;
 
 	/// <inheritdoc cref="IMaterializedEnumerable{T}.MaterializeItems(int?)" />
+	/// <remarks>
+	///     A cancellation of the evaluation stops materializing and leaves the <see cref="Count" /> unknown, so that the
+	///     items received so far can still be listed.
+	/// </remarks>
 	public async Task<IMaterializedEnumerable<T>> MaterializeItems(int? numberOfItems)
 	{
 		int index = 0;
-		await foreach (T _ in this)
+		try
 		{
-			if (numberOfItems.HasValue && ++index > numberOfItems)
+			await foreach (T _ in this)
 			{
-				return this;
+				if (numberOfItems.HasValue && ++index > numberOfItems)
+				{
+					return this;
+				}
 			}
+		}
+		catch (OperationCanceledException) when (_cancellationToken.IsCancellationRequested)
+		{
+			return this;
 		}
 
 		Count = _materializedItems.Count;
@@ -91,6 +103,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 
 	private ValueTask<bool> MoveNextOrAbandon(IAsyncEnumerator<T> enumerator)
 	{
+		_cancellationToken.ThrowIfCancellationRequested();
 		ValueTask<bool> moveNext = enumerator.MoveNextAsync();
 		return (moveNext.IsCompleted && !_cancellationToken.IsCancellationRequested) ||
 		       !_cancellationToken.CanBeCanceled

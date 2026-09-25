@@ -9,7 +9,25 @@ namespace aweXpect.Internal.Tests.Helpers;
 public class MaterializingAsyncEnumerableTests
 {
 	[Fact]
-	public async Task WhenEnumeratedAfterCancellation_ShouldOnlyReplayTheMaterializedItems()
+	public async Task WhenCancelledBetweenItems_ShouldNotSetTheCount()
+	{
+		using CancellationTokenSource cts = new();
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
+		await using (IAsyncEnumerator<int> enumerator = materialized.GetAsyncEnumerator())
+		{
+			await enumerator.MoveNextAsync();
+		}
+
+		await cts.CancelAsync();
+		await materialized.MaterializeItems(null);
+
+		await That(materialized.Count).IsNull()
+			.Because("a cancelled enumeration does not know how many items the source has");
+	}
+
+	[Fact]
+	public async Task WhenEnumeratedAfterCancellation_ShouldReplayTheMaterializedItemsAndThrow()
 	{
 		using CancellationTokenSource cts = new();
 		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
@@ -20,13 +38,40 @@ public class MaterializingAsyncEnumerableTests
 
 		await cts.CancelAsync();
 		List<int> items = [];
+
+		async Task Act()
+		{
+			await foreach (int item in materialized)
+			{
+				items.Add(item);
+			}
+		}
+
+		await That(Act).Throws<OperationCanceledException>()
+			.WithMessage(new OperationCanceledException().Message)
+			.Because("a cancellation must not be mistaken for the end of the source");
+		await That(items).IsEqualTo([1])
+			.Because("the source must not be advanced once the evaluation is cancelled");
+	}
+
+	[Fact]
+	public async Task WhenEnumeratedAfterCancellationOfAnExhaustedSource_ShouldReplayAllItems()
+	{
+		using CancellationTokenSource cts = new();
+		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
+		await foreach (int _ in materialized)
+		{
+		}
+
+		await cts.CancelAsync();
+		List<int> items = [];
 		await foreach (int item in materialized)
 		{
 			items.Add(item);
 		}
 
-		await That(items).IsEqualTo([1])
-			.Because("the source must not be advanced once the evaluation is cancelled");
+		await That(items).IsEqualTo([1, 2, 3])
+			.Because("the end of the source was reached before the cancellation");
 	}
 
 	[Fact]
