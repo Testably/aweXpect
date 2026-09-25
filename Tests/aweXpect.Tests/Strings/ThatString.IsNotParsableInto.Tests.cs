@@ -85,7 +85,8 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int,
-					             but it was not, because the input string 'abc' was not in a correct format
+					             but Parse of int did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
 					             """);
 			}
 		}

@@ -191,7 +191,7 @@ public sealed class OrNodeTests
 		Exception exception = new("foo");
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "-")));
 		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "right"), exception)));
+			new DummyConstraintResult(Outcome.Failure, "right"), exception, "it")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
@@ -203,7 +203,7 @@ public sealed class OrNodeTests
 	{
 		Exception exception = new("foo");
 		OrNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "left"), exception)));
+			new DummyConstraintResult(Outcome.Failure, "left"), exception, "it")));
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "right", "-")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
@@ -281,7 +281,7 @@ public sealed class OrNodeTests
 	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldFail(Outcome other)
 	{
 		OrNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure), new Exception("foo"))));
+			new DummyConstraintResult(Outcome.Failure), new Exception("foo"), "it")));
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);

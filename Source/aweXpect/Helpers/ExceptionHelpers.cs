@@ -76,12 +76,18 @@ internal static class ExceptionHelpers
 		// ReSharper disable once LocalizableElement
 		=> new($"The '{paramName}' collection cannot be empty.", paramName);
 
-	public static string FormatForMessage(this Exception exception, string? indentation, string relation = "")
+	/// <summary>
+	///     Formats the type of the <paramref name="exception" /> and its message, or the <paramref name="exceptionMessage" />
+	///     when it is given.
+	/// </summary>
+	public static string FormatForMessage(this Exception exception, string? indentation, string relation = "",
+		string? exceptionMessage = null)
 	{
 		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
-		if (!string.IsNullOrEmpty(exception.Message))
+		exceptionMessage ??= exception.Message;
+		if (!string.IsNullOrEmpty(exceptionMessage))
 		{
-			message += ":" + Environment.NewLine + exception.Message.Indent(indentation + "  ");
+			message += ":" + Environment.NewLine + exceptionMessage.Indent(indentation + "  ");
 		}
 
 		return message;

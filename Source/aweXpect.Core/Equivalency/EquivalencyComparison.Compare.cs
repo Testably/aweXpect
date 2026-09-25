@@ -38,7 +38,8 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-		bool isEqual = UserCode.Invoke(() => isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected));
+		bool isEqual = UserCode.Invoke(() => isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected),
+			() => UserCode.EqualsOf(isDecidedByExpected ? expected : actual));
 		if (!isEqual)
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
@@ -339,8 +340,8 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualFieldValue = UserCode.Invoke(actualFieldAccessor, actual);
-				object? expectedFieldValue = UserCode.Invoke(field.GetValue, expected);
+				object? actualFieldValue = UserCode.Invoke(actualFieldAccessor, actual, fieldMemberPath);
+				object? expectedFieldValue = UserCode.Invoke(field.GetValue, expected, fieldMemberPath);
 
 				if (!await Compare(actualFieldValue, expectedFieldValue,
 					    options, typeOptions,
@@ -378,8 +379,8 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualPropertyValue = UserCode.Invoke(actualPropertyAccessor, actual);
-				object? expectedPropertyValue = UserCode.Invoke(property.GetValue, expected);
+				object? actualPropertyValue = UserCode.Invoke(actualPropertyAccessor, actual, propertyMemberPath);
+				object? expectedPropertyValue = UserCode.Invoke(property.GetValue, expected, propertyMemberPath);
 
 				if (!await Compare(actualPropertyValue, expectedPropertyValue,
 					    options, typeOptions,

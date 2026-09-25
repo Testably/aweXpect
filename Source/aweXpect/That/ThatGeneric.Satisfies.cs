@@ -149,7 +149,7 @@ public static partial class ThatGeneric
 		{
 			if (_exception is not null)
 			{
-				stringBuilder.Append(It).Append(" did throw ").Append(_exception.FormatForMessage(indentation));
+				stringBuilder.Append("the predicate did throw ").Append(_exception.FormatForMessage(indentation));
 				return;
 			}
 

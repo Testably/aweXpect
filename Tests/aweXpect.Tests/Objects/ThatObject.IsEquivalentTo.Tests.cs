@@ -1366,7 +1366,7 @@ public sealed partial class ThatObject
 					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass {
 					                 Value = 1
 					               },
-					             but it did throw a NotSupportedException:
+					             but Equals of ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass did throw a NotSupportedException:
 					               no equality here
 
 					             Equivalency options:

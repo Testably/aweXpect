@@ -19,7 +19,7 @@ namespace aweXpect.Core;
 /// </summary>
 public abstract class ExpectationBuilder
 {
-	private const string DefaultCurrentSubject = "it";
+	private protected const string DefaultCurrentSubject = "it";
 
 	private ResultContexts? _contexts;
 
@@ -778,7 +778,8 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		    cancellation.IsTimeoutElapsed())
 		{
 			return new ConstraintResult.FromException(result,
-				CreateTimeoutException(timeout, new OperationCanceledException(cancellation.Token)), timeout);
+				CreateTimeoutException(timeout, new OperationCanceledException(cancellation.Token)),
+				DefaultCurrentSubject, timeout);
 		}
 
 		return result;
@@ -805,12 +806,12 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(exception))
 		{
 			return new ConstraintResult.FromException(expectation,
-				CreateTimeoutException(timeout, exception), timeout);
+				CreateTimeoutException(timeout, exception), DefaultCurrentSubject, timeout);
 		}
 
 		return cancellation.IsCanceled(exception)
 			? new ConstraintResult.FromCancellation(expectation)
-			: new ConstraintResult.FromException(expectation, exception);
+			: new ConstraintResult.FromException(expectation, exception, DefaultCurrentSubject);
 	}
 
 	/// <summary>

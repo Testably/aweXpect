@@ -23,14 +23,16 @@ public sealed partial class ThatSpan
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into int,
-					             but it was not, because input string was not in a correct format
+					             but Parse of int did throw a FormatException:
+					               Input string was not in a correct format.
 					             """);
 #else
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is parsable into int,
-					              but it was not, because the input string '1{'�'}2' was not in a correct format
+					              but Parse of int did throw a FormatException:
+					                The input string '1{'�'}2' was not in a correct format.
 					              """).Because("invalid bytes are decoded to the replacement character");
 #endif
 			}
@@ -47,7 +49,8 @@ public sealed partial class ThatSpan
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into int,
-					             but it was not, because the input string 'abc' was not in a correct format
+					             but Parse of int did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
 					             """).And
 					.Whose(e => e.InnerException, i => i.Is<FormatException>())
 					.Because("the exception of the parser tells why the span is not parsable");
@@ -80,7 +83,8 @@ public sealed partial class ThatSpan
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is parsable into uint using {cultureName},
-					              but it was not, because the input string '{subjectString}' was not in a correct format
+					              but Parse of uint did throw a FormatException:
+					                The input string '{subjectString}' was not in a correct format.
 					              """);
 			}
 
@@ -114,7 +118,8 @@ public sealed partial class ThatSpan
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into double which is less than 10.0,
-					             but it was not, because the input string 'abc' was not in a correct format
+					             but Parse of double did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
 					             """);
 			}
 

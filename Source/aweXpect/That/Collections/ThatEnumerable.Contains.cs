@@ -604,7 +604,7 @@ public static partial class ThatEnumerable
 	/// </remarks>
 	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
 		=> expected is not null && CollectionComparerHelpers.IsSetWithCustomComparer(collection)
-			? UserCode.Invoke(() => ((ICollection<TItem>)collection).Contains(expected))
+			? UserCode.Invoke(() => ((ICollection<TItem>)collection).Contains(expected), "the comparer")
 			: null;
 
 	/// <summary>
@@ -651,7 +651,7 @@ public static partial class ThatEnumerable
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			_count = 0;
 			_isFinished = false;
-			foreach (TItem _ in _materializedEnumerable.Where(item => UserCode.Invoke(predicate, item)))
+			foreach (TItem _ in _materializedEnumerable.Where(item => UserCode.Invoke(predicate, item, "the predicate")))
 			{
 				_count++;
 				bool? check = quantifier.Check(_count, false);
@@ -945,7 +945,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
-				if (TryCastItem(item, out TItem typedItem) && UserCode.Invoke(predicate, typedItem))
+				if (TryCastItem(item, out TItem typedItem) && UserCode.Invoke(predicate, typedItem, "the predicate"))
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);

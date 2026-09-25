@@ -985,7 +985,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item matching x => x == 2 ? throw exception : false,
-					             but it did throw an InvalidOperationException:
+					             but the predicate did throw an InvalidOperationException:
 					               predicate failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))

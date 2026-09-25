@@ -235,8 +235,11 @@ call it through `UserCode.Invoke`. An exception it throws then fails the expecta
 exception as inner exception, instead of aborting the evaluation:
 
 ```csharp no-compile
-Outcome = UserCode.Invoke(predicate, actual) ? Outcome.Success : Outcome.Failure;
+Outcome = UserCode.Invoke(predicate, actual, "the predicate") ? Outcome.Success : Outcome.Failure;
 ```
+
+The optional last argument names the code in the failure message, e.g. "the predicate did throw an
+InvalidOperationException"; without it, the subject is named ("it did throw …").
 
 An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
 

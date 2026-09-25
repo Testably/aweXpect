@@ -34,7 +34,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
-					             but it could not read the length, because it did throw an IOException:
+					             but length did throw an IOException:
 					               The device is not ready.
 					             """)
 					.Because("a broken stream cannot answer what its length is");
@@ -53,7 +53,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
-					             but it could not read the length, because it did throw an InvalidOperationException:
+					             but length did throw an InvalidOperationException:
 					               The stream is broken.
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -103,7 +103,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
-					             but it could not read the length, because it did throw an ObjectDisposedException:
+					             but length did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("the disposed stream is the production bug the test should report");
@@ -121,7 +121,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
-					             but it could not read the length, because it did throw a NotSupportedException:
+					             but length did throw a NotSupportedException:
 					               Stream does not support seeking.
 					             """)
 					.Because("a non-seekable stream does not have a length of 3");
@@ -374,7 +374,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than 2,
-					             but it could not read the length, because it did throw an ObjectDisposedException:
+					             but length did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("the chained comparison must report the unreadable length, too");
@@ -581,7 +581,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
-					             but it could not read the length, because it did throw an ObjectDisposedException:
+					             but length did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("an unreadable length is no proof that the length differs");
@@ -660,7 +660,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
-					             but it could not read the length, because it did throw an InvalidOperationException:
+					             but length did throw an InvalidOperationException:
 					               The stream is broken.
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -680,7 +680,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
-					             but it could not read the length, because it did throw an ObjectDisposedException:
+					             but length did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("negating a question that cannot be answered does not make it true");

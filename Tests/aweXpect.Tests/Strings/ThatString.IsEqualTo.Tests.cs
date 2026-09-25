@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace aweXpect.Tests;
 
@@ -111,6 +112,25 @@ public sealed partial class ThatString
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("Using cannot be specified more than once.")
 					.Because("the second comparer would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				string subject = "ABC";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("abc").Using(new ThrowingComparer(exception));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "abc" using ThatString.IsEqualTo.Tests.ThrowingComparer,
+					             but the comparer did throw an InvalidOperationException:
+					               comparer failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
 			[Fact]
@@ -302,6 +322,15 @@ public sealed partial class ThatString
 					               "expected other text"
 					                ↑ (expected)
 					             """);
+			}
+
+			private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>
+			{
+				public bool Equals(string? x, string? y)
+					=> throw exception;
+
+				public int GetHashCode(string obj)
+					=> obj.GetHashCode();
 			}
 		}
 

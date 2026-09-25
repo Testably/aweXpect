@@ -112,7 +112,7 @@ public partial class StringEqualityOptions
 				}
 
 				string candidate = actualLine.Substring(prefix.Length);
-				if (!UserCode.Invoke(() => comparer.Equals(candidate, expectedLine)))
+				if (!UserCode.Invoke(() => comparer.Equals(candidate, expectedLine), "the comparer"))
 				{
 					return false;
 				}

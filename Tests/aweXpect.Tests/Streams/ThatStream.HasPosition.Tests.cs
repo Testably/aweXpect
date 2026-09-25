@@ -65,7 +65,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
-					             but it could not read the position, because it did throw an ObjectDisposedException:
+					             but position did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("the disposed stream is the production bug the test should report");
@@ -83,7 +83,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
-					             but it could not read the position, because it did throw a NotSupportedException:
+					             but position did throw a NotSupportedException:
 					               Stream does not support seeking.
 					             """)
 					.Because("a non-seekable stream does not have a position of 0");
@@ -336,7 +336,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             has position greater than 2,
-					             but it could not read the position, because it did throw an ObjectDisposedException:
+					             but position did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("the chained comparison must report the unreadable position, too");
@@ -543,7 +543,7 @@ public sealed partial class ThatStream
 					.WithMessage("""
 					             Expected that subject
 					             does not have position equal to 0,
-					             but it could not read the position, because it did throw an ObjectDisposedException:
+					             but position did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
 					.Because("an unreadable position is no proof that the position differs");

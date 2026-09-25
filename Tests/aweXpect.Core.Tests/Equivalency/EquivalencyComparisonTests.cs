@@ -2011,7 +2011,7 @@ public sealed class EquivalencyComparisonTests
 			             is equivalent to EquivalencyComparisonTests.WithThrowingEquals {
 			                 Value = 1
 			               },
-			             but it did throw a NotSupportedException:
+			             but Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException:
 			               equals
 
 			             Equivalency options:
@@ -2043,7 +2043,7 @@ public sealed class EquivalencyComparisonTests
 			             is not equivalent to EquivalencyComparisonTests.WithThrowingEquals {
 			                 Value = 1
 			               },
-			             but it did throw a NotSupportedException:
+			             but Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException:
 			               equals
 
 			             Equivalency options:
@@ -2122,7 +2122,7 @@ public sealed class EquivalencyComparisonTests
 			             is equivalent to EquivalencyComparisonTests.WithThrowingGetter {
 			                 Value = [Value did throw an InvalidOperationException: getter failed]
 			               },
-			             but it did throw an InvalidOperationException:
+			             but Value did throw an InvalidOperationException:
 			               getter failed
 
 			             Equivalency options:
@@ -2147,7 +2147,7 @@ public sealed class EquivalencyComparisonTests
 			             is not equivalent to EquivalencyComparisonTests.WithThrowingGetter {
 			                 Value = [Value did throw an InvalidOperationException: getter failed]
 			               },
-			             but it did throw an InvalidOperationException:
+			             but Value did throw an InvalidOperationException:
 			               getter failed
 
 			             Equivalency options:

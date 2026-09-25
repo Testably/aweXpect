@@ -78,7 +78,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			return AppendTimeout(new ConstraintResult.FromException(result,
 					ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout.Value,
 						new OperationCanceledException(cancellationCts.Token)),
-					cancellationTimeout.Value),
+					DefaultCurrentSubject, cancellationTimeout.Value),
 				retryTimeout);
 		}
 
@@ -292,7 +292,9 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 	private static ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure,
 		TimeSpan? exceededTimeout = null)
-		=> failure is null ? result : new ConstraintResult.FromException(result, failure, exceededTimeout);
+		=> failure is null
+			? result
+			: new ConstraintResult.FromException(result, failure, DefaultCurrentSubject, exceededTimeout);
 
 	private void RestoreContexts(List<ResultContext> initialContexts)
 		=> UpdateContexts(contexts =>

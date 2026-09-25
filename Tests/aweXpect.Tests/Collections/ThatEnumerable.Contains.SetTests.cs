@@ -331,6 +331,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSetComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				HashSet<string> subject = new(new ThrowingComparer(exception)) { "a", };
+
+				async Task Act()
+					=> await That(subject).Contains("b");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "b" at least once,
+					             but the comparer did throw an InvalidOperationException:
+					               comparer failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
 			public async Task WhenSetDoesNotContainItemAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.Ordinal) { "a", };
@@ -424,6 +443,13 @@ public sealed partial class ThatEnumerable
 					=> x is null || y is null ? throw new ArgumentNullException(x is null ? nameof(x) : nameof(y)) : x == y;
 
 				public int GetHashCode(string? obj) => 0;
+			}
+
+			private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>
+			{
+				public bool Equals(string? x, string? y) => throw exception;
+
+				public int GetHashCode(string obj) => 0;
 			}
 
 #if NET8_0_OR_GREATER

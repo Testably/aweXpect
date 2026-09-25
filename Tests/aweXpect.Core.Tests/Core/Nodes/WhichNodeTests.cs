@@ -241,7 +241,7 @@ public sealed class WhichNodeTests
 	{
 		Exception exception = new("foo");
 		DummyNode node1 = new("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "1"), exception));
+			new DummyConstraintResult(Outcome.Failure, "1"), exception, "it"));
 		DummyNode node2 = new("", () => new DummyConstraintResult(Outcome.Success, "2"));
 		WhichNode<string, int> whichNode = new(node1, s => s.Length);
 		whichNode.AddNode(node2);

@@ -170,7 +170,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order using ThatEnumerable.IsInAscendingOrder.ThrowingComparer,
-					             but it did throw an InvalidOperationException:
+					             but the comparer did throw an InvalidOperationException:
 					               comparer failed
 
 					             Collection:
@@ -309,7 +309,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value == 2 ? throw exception : x.Value,
-					             but it did throw an InvalidOperationException:
+					             but the member selector did throw an InvalidOperationException:
 					               selector failed
 
 					             Collection:
@@ -400,7 +400,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order by x => x.Value == 2 ? throw exception : x.Value,
-					             but it did throw an InvalidOperationException:
+					             but the member selector did throw an InvalidOperationException:
 					               selector failed
 
 					             Collection:

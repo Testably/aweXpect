@@ -148,7 +148,7 @@ internal class ExpectationNode : Node
 		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 		{
 			result = MemberExceptionResult.Create(await GetExpectationResult(_constraint!, context, cancellationToken),
-				e.Exception, "it", value);
+				e.Exception, e.Thrower ?? "it", value);
 		}
 		catch (UserCodeException e)
 		{

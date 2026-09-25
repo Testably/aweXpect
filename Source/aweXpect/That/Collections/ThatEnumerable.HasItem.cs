@@ -552,7 +552,7 @@ public static partial class ThatEnumerable
 
 				_hasIndex = true;
 				_actual = item;
-				bool isMatch = UserCode.Invoke(predicate, item);
+				bool isMatch = UserCode.Invoke(predicate, item, "the predicate");
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
 				if (isMatch)
 				{
@@ -662,7 +662,7 @@ public static partial class ThatEnumerable
 				}
 
 				_actual = item;
-				bool isMatch = UserCode.Invoke(predicate, item);
+				bool isMatch = UserCode.Invoke(predicate, item, "the predicate");
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
 				if (isMatch)
 				{

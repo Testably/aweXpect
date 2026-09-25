@@ -48,7 +48,6 @@ public static partial class ThatString
 	{
 		private readonly IFormatProvider? _formatProvider;
 		private Exception? _exception;
-		private string? _exceptionMessage;
 		private TType? _parsedValue;
 
 		public IsParsableIntoConstraint(string it,
@@ -79,15 +78,6 @@ public static partial class ThatString
 			catch (Exception ex)
 			{
 				_exception = ex;
-				if (string.IsNullOrEmpty(ex.Message) || ex.Message.Length < 2)
-				{
-					_exceptionMessage = "an unknown error occurred";
-				}
-				else
-				{
-					_exceptionMessage = char.ToLowerInvariant(ex.Message[0]) + ex.Message[1..^1];
-				}
-
 				Outcome = Outcome.Failure;
 			}
 
@@ -107,7 +97,9 @@ public static partial class ThatString
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was not, because ").Append(_exceptionMessage);
+			stringBuilder.Append("Parse of ");
+			Formatter.Format(stringBuilder, typeof(TType));
+			stringBuilder.Append(" did throw ").Append(_exception!.FormatForMessage(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -277,7 +277,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "bar",
-				             but it could not read the string value, because it did throw an InvalidOperationException:
+				             but string value did throw an InvalidOperationException:
 				               foo
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -567,7 +567,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to "bar",
-				             but it could not read the string value, because it did throw an InvalidOperationException:
+				             but string value did throw an InvalidOperationException:
 				               foo
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))

@@ -182,7 +182,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies i => values[i] > 0 for all items,
-						             but it did throw an ArgumentOutOfRangeException:
+						             but the predicate did throw an ArgumentOutOfRangeException:
 						               *
 						             """).AsWildcard().And
 						.Whose(e => e.InnerException, i => i.Is<ArgumentOutOfRangeException>())
@@ -202,7 +202,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x < 3 ? true : throw exception for all items,
-						             but it did throw an InvalidOperationException:
+						             but the predicate did throw an InvalidOperationException:
 						               predicate failed
 						             """).And
 						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -376,7 +376,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x < 3 ? true : throw exception not for all items,
-						             but it did throw an InvalidOperationException:
+						             but the predicate did throw an InvalidOperationException:
 						               predicate failed
 						             """).And
 						.Whose(e => e.InnerException, i => i.IsSameAs(exception))

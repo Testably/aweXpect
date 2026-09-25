@@ -349,14 +349,14 @@ public static partial class ThatSignaler
 					Stopwatch stopwatch = Stopwatch.StartNew();
 					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
-						: actual.Wait(o.Matches, timeout, cancellationToken));
+						: actual.Wait(o.Matches, timeout, cancellationToken), "the predicate");
 					_waitedTime = o.Timeout is null ? null : stopwatch.Elapsed;
 					return result;
 				},
 				CancellationToken.None);
 			ThrowIfTheWaitWasCanceled(Actual.IsSuccess, timeout, cancellationToken);
 
-			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p));
+			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p, "the predicate"));
 
 			Outcome = quantifier.Check(_actualCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;

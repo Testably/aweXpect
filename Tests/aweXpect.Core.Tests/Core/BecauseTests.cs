@@ -176,7 +176,7 @@ public class BecauseTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
-			             is False, because the reason could not be determined: TaskCanceledException*,
+			             is False, because the reason did throw a TaskCanceledException: *,
 			             but it was True
 			             """).AsWildcard();
 	}
@@ -232,7 +232,7 @@ public class BecauseTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
-			             is False, because the reason could not be determined: MyException: the reason provider is broken,
+			             is False, because the reason did throw a MyException: the reason provider is broken,
 			             but it was True
 			             """);
 	}
