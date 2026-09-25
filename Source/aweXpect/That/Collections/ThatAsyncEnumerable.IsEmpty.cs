@@ -102,7 +102,7 @@ public static partial class ThatAsyncEnumerable
 			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was empty", " were empty"));
 	}
 }
 #endif

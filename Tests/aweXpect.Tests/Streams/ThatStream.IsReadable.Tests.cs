@@ -9,6 +9,22 @@ public sealed partial class ThatStream
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: false));
+
+				async Task Act()
+					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsReadable());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Chunks are readable,
+					             but Chunks were not
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNotReadable_ShouldFail()
 			{
 				Stream subject = new MyStream(canRead: false);

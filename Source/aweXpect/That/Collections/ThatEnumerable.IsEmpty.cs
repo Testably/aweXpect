@@ -111,7 +111,7 @@ public static partial class ThatEnumerable
 			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was empty", " were empty"));
 	}
 
 	private sealed class IsEmptyForEnumerableConstraint<TEnumerable>(string it, ExpectationGrammars grammars)
@@ -167,6 +167,6 @@ public static partial class ThatEnumerable
 			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was empty", " were empty"));
 	}
 }

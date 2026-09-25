@@ -230,7 +230,7 @@ public static partial class ThatDictionary
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 	}

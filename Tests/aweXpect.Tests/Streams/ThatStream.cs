@@ -1,9 +1,32 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace aweXpect.Tests;
 
 public sealed partial class ThatStream
 {
+	/// <summary>
+	///     A <see cref="Stream" /> that is also a collection, so that a member of this type reads as plural.
+	/// </summary>
+	public sealed class ChunkedStream(bool canRead = false, bool canWrite = false, bool canSeek = false)
+		: MyStream(canRead: canRead, canWrite: canWrite, canSeek: canSeek), IEnumerable<byte[]>
+	{
+		/// <inheritdoc />
+		public IEnumerator<byte[]> GetEnumerator()
+			=> Enumerable.Empty<byte[]>().GetEnumerator();
+
+		/// <inheritdoc />
+		IEnumerator IEnumerable.GetEnumerator()
+			=> GetEnumerator();
+	}
+
+	public sealed class ChunkedStreamContainer(ChunkedStream chunks)
+	{
+		public ChunkedStream Chunks { get; } = chunks;
+	}
+
 	public class MyStream(
 		byte[]? buffer = null,
 		bool canRead = false,
