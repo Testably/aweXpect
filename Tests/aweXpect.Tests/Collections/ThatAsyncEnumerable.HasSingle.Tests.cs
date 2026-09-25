@@ -534,6 +534,28 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSingleItemSatisfiesExpectation_ShouldEnumerateTheSourceOnce()
+			{
+				int enumerations = 0;
+
+				async IAsyncEnumerable<int> Numbers()
+				{
+					enumerations++;
+					await Task.Yield();
+					yield return 3;
+				}
+
+				IAsyncEnumerable<int> subject = Numbers();
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.IsGreaterThan(2);
+
+				await That(Act).DoesNotThrow();
+				await That(enumerations).IsEqualTo(1)
+					.Because("the single item is taken from the materialized items instead of enumerating the source again");
+			}
+
+			[Fact]
 			public async Task WhenSingleItemSatisfiesExpectation_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(3);
