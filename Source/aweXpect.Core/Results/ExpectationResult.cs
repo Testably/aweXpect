@@ -87,7 +87,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
 	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
-	///     the expectation itself (e.g. <c>ExecutesWithin</c>) or the global timeout.
+	///     the expectation itself (e.g. <c>ExecutesIn().AtMost(…)</c>) or the global timeout.
 	///     <see cref="Timeout.InfiniteTimeSpan" /> imposes no limit.
 	///     <para />
 	///     Use
@@ -260,7 +260,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     and abandons the attempt that is still running when it is used up.
 	///     <para />
 	///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the limit of
-	///     the expectation itself (e.g. <c>ExecutesWithin</c>) or the global timeout.
+	///     the expectation itself (e.g. <c>ExecutesIn().AtMost(…)</c>) or the global timeout.
 	///     <see cref="Timeout.InfiniteTimeSpan" /> imposes no limit.
 	///     <para />
 	///     Use

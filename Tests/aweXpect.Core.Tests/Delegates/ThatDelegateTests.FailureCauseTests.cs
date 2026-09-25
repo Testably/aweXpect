@@ -104,39 +104,39 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task ExecutesWithin_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
+		public async Task ExecutesIn_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
 			Action @delegate = () => throw exception;
 
 			async Task Act()
-				=> await That(@delegate).ExecutesWithin(5.Seconds());
+				=> await That(@delegate).ExecutesIn().AtMost(5.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that @delegate
-				              executes within 0:05,
+				              executes in at most 0:05,
 				              but it did throw a MyException:
-				                {nameof(ExecutesWithin_WhenDelegateThrows_ShouldForwardExceptionAsInnerException)}
+				                {nameof(ExecutesIn_WhenDelegateThrows_ShouldForwardExceptionAsInnerException)}
 				              """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
 		[Fact]
-		public async Task ExecutesWithin_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
+		public async Task ExecutesIn_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
 			Func<int> @delegate = () => throw exception;
 
 			async Task Act()
-				=> await That(@delegate).ExecutesWithin(5.Seconds());
+				=> await That(@delegate).ExecutesIn().AtMost(5.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that @delegate
-				              executes within 0:05,
+				              executes in at most 0:05,
 				              but it did throw a MyException:
-				                {nameof(ExecutesWithin_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException)}
+				                {nameof(ExecutesIn_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException)}
 				              """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}

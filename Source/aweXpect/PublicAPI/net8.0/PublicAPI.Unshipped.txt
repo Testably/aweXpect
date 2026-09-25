@@ -25,3 +25,5 @@ aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.StringCo
 aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionContainmentResult<TType, TThat>!
 static aweXpect.ThatBool.DoesNotImply(this aweXpect.Core.IThat<bool>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 static aweXpect.ThatNullableBool.DoesNotImply(this aweXpect.Core.IThat<bool?>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
+*REMOVED*static aweXpect.ThatDelegate.ExecutesWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult!
+*REMOVED*static aweXpect.ThatDelegate.ExecutesWithin<TValue>(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<TValue>!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult<TValue>!
