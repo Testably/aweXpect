@@ -23,7 +23,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 within 0:00.050, because of reasons,
+				             eventually is equal to 1 within 0:00.050, because of reasons,
 				             but it was 0, which differs by -1
 				             """);
 		}
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
+				             eventually is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
 				             but it was 0, which differs by -1 and it was 0, which differs by -2
 				             """);
 		}
@@ -60,7 +60,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1 within 0:01,
+					             eventually is equal to 1 within 0:01,
 					             but it was 0, which differs by -1
 					             """);
 			}
@@ -116,7 +116,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1 within 0:01,
+					             eventually is equal to 1 within 0:01,
 					             but it was 0, which differs by -1
 					             """);
 			}
@@ -141,7 +141,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1 within 0:00.050,
+					             eventually is equal to 1 within 0:00.050,
 					             but it was 0, which differs by -1
 					             """);
 				stopwatch.Stop();
@@ -169,7 +169,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that Subject
-				             is equal to 1,
+				             eventually is equal to 1,
 				             but it could not be verified, because it was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
@@ -195,7 +195,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that Subject
-				             is equal to 1,
+				             eventually is equal to 1,
 				             but it could not be verified, because it was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
@@ -295,7 +295,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 or is equal to 2 within 0:00.050,
+				             eventually is equal to 1 or is equal to 2 within 0:00.050,
 				             but it was 0, which differs by -1 and it was 0, which differs by -2
 				             """);
 		}
@@ -325,7 +325,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is not equal to 1 within 0:00.050,
+				             eventually is not equal to 1 within 0:00.050,
 				             but it did not finish within 0:00.050
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -350,7 +350,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Subject
-				             is equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did not finish within 0:00.050
 				             """)
 				.WithTimeout(30.Seconds());
@@ -371,7 +371,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did not finish within 0:00.050
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -395,7 +395,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did not finish within 0:00.050
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -414,7 +414,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is greater than 1 and is less than 0 within 0:00.500,
+				             eventually is greater than 1 and is less than 0 within 0:00.500,
 				             but it was 0
 				             """);
 			await That(counter.EvaluationCount).IsGreaterThan(1);
@@ -458,7 +458,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1,
+					             eventually is equal to 1,
 					             but it could not be verified, because it was already canceled
 					             """);
 			}
@@ -480,7 +480,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to 1,
+				             eventually is equal to 1,
 				             but it could not be verified, because it was already canceled
 				             """);
 			stopwatch.Stop();
@@ -505,7 +505,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1,
+				             eventually is equal to 1,
 				             but it could not be verified, because it was already canceled
 				             """);
 			stopwatch.Stop();
@@ -529,7 +529,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1,
+					             eventually is equal to 1,
 					             but it could not be verified, because it was already canceled
 					             """)
 					.Because("an interval that `Task.Delay` cannot represent must not escape as an exception, " +
@@ -552,7 +552,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             is equal to 1 within 0:00.500,
+					             eventually is equal to 1 within 0:00.500,
 					             but it was 0, which differs by -1
 					             """);
 				stopwatch.Stop();
@@ -576,7 +576,7 @@ public sealed partial class ThatDelegateTests
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
-				             is equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
 				               always broken
 				             """);
@@ -595,7 +595,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
-				             satisfies x => 10 / x > 1 within 0:00.050,
+				             eventually satisfies x => 10 / x > 1 within 0:00.050,
 				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
 				               always broken
 				             """)
@@ -614,7 +614,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
-				             is not equal to 1 within 0:00.050,
+				             eventually is not equal to 1 within 0:00.050,
 				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
 				               always broken
 				             """)
@@ -674,7 +674,11 @@ public sealed partial class ThatDelegateTests
 			}
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*but it was <null>").AsWildcard();
+				.WithMessage("""
+				             Expected that *
+				             eventually is equal to 1,
+				             but it was <null>
+				             """).AsWildcard();
 		}
 
 		[Fact]
@@ -708,7 +712,7 @@ public sealed partial class ThatDelegateTests
 			await That(exception).IsExactly<XunitException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
-				            is equal to 1 within 0:00.050,
+				            eventually is equal to 1 within 0:00.050,
 				            but it was 0, which differs by -1
 				            """);
 		}
@@ -750,7 +754,7 @@ public sealed partial class ThatDelegateTests
 			await That(exception).IsExactly<XunitException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
-				            is equal to 1 within *,
+				            eventually is equal to 1 within *,
 				            but it did not finish within 0:00.050
 				            """).AsWildcard().And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
@@ -775,7 +779,7 @@ public sealed partial class ThatDelegateTests
 			await That(exception).IsExactly<XunitException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
-				            is equal to 1 within 0:05,
+				            eventually is equal to 1 within 0:05,
 				            but it did not finish within 0:00.050
 				            """).And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
@@ -800,7 +804,7 @@ public sealed partial class ThatDelegateTests
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Subject
-				             is equal to collection [3, 4,] in order within 0:00.500,
+				             eventually is equal to collection [3, 4,] in order within 0:00.500,
 				             but it*
 				             """).AsWildcard();
 			await That(counter.EvaluationCount).IsGreaterThan(1);
@@ -827,7 +831,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that Subject
-					             is equal to 1 within 0:00.500,
+					             eventually is equal to 1 within 0:00.500,
 					             but it was 0, which differs by -1
 					             """)
 					.Because("the last attempt, made when the timeout is used up, must not be abandoned at once");
@@ -883,7 +887,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => observed = Math.Min(observed + 1, 3)
-				             is equal to 0 within 0:00.500,
+				             eventually is equal to 0 within 0:00.500,
 				             but it was 3, which differs by 3
 				             """);
 		}
@@ -916,7 +920,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to 1,
+				             eventually is equal to 1,
 				             but it could not be verified, because it was already canceled
 				             """)
 				.WithTimeout(30.Seconds());
@@ -963,7 +967,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 within 0:00,
+				             eventually is equal to 1 within 0:00,
 				             but it was 0, which differs by -1
 				             """);
 			await That(counter.EvaluationCount).IsEqualTo(1);
@@ -985,7 +989,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 within 0:00.500,
+				             eventually is equal to 1 within 0:00.500,
 				             but it was 0, which differs by -1
 				             """);
 			await That(counter.EvaluationCount).IsEqualTo(2)
@@ -1005,7 +1009,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 within 0:30,
+				             eventually is equal to 1 within 0:30,
 				             but it did not finish within 0:00.050
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
@@ -1027,7 +1031,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it was 0, which differs by -1
 				             """)
 				.Because("the tighter limit wins");

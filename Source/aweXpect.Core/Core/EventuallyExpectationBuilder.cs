@@ -86,6 +86,15 @@ internal class EventuallyExpectationBuilder<TValue>(
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
+		ConstraintResult result = await IsMetEventually(rootNode, context, timeout, cancellationToken);
+		return result.PrependExpectationText(sb => sb.Append("eventually "));
+	}
+
+	private async Task<ConstraintResult> IsMetEventually(Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
 		if (subject is null)
 		{
 			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
