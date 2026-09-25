@@ -119,7 +119,11 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append(absoluteValue.Seconds);
+		AppendFractionOfSecond(stringBuilder, absoluteValue);
+	}
 
+	private static void AppendFractionOfSecond(StringBuilder stringBuilder, TimeSpan absoluteValue)
+	{
 		long fractionTicks = absoluteValue.Ticks % TimeSpan.TicksPerSecond;
 		if (fractionTicks % TimeSpan.TicksPerMillisecond != 0)
 		{
