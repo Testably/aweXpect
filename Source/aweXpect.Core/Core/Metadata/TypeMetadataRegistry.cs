@@ -59,6 +59,18 @@ public static class TypeMetadataRegistry
 		=> RegisterProperty(name, getValue);
 
 	/// <summary>
+	///     Registers the property <paramref name="name" /> that <typeparamref name="T" /> implements explicitly for an
+	///     interface.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="name" /> is the name of the implementation, which is qualified by its interface, such as
+	///     <c>Namespace.IHasValue.Value</c>. The comparison only falls back to it for an expected member of the short
+	///     name that <typeparamref name="T" /> does not have.
+	/// </remarks>
+	public static void RegisterExplicitProperty<T, TMember>(string name, Func<T, TMember> getValue)
+		=> Instance.AddExplicitProperty(typeof(T), name, typeof(TMember), Wrap(getValue));
+
+	/// <summary>
 	///     Registers the event <paramref name="name" /> of <typeparamref name="T" />.
 	/// </summary>
 	/// <remarks>
@@ -88,6 +100,9 @@ public static class TypeMetadataRegistry
 		public void AddProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
 			=> GetOrAdd(type).Properties[name] = new RegisteredMember(name, memberType, getValue, NextOrder());
 
+		public void AddExplicitProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
+			=> GetOrAdd(type).ExplicitProperties[name] = new RegisteredMember(name, memberType, getValue, NextOrder());
+
 		public void AddEvent(Type type, string name, Func<Action<object?[]>, Delegate> createHandler,
 			Action<object, Delegate> addHandler, Action<object, Delegate> removeHandler)
 			=> GetOrAdd(type).Events[name] =
@@ -113,6 +128,10 @@ public static class TypeMetadataRegistry
 	{
 		public ConcurrentDictionary<string, RegisteredMember> Fields { get; } = new(StringComparer.Ordinal);
 		public ConcurrentDictionary<string, RegisteredMember> Properties { get; } = new(StringComparer.Ordinal);
+
+		public ConcurrentDictionary<string, RegisteredMember> ExplicitProperties { get; } =
+			new(StringComparer.Ordinal);
+
 		public ConcurrentDictionary<string, RegisteredEvent> Events { get; } = new(StringComparer.Ordinal);
 	}
 

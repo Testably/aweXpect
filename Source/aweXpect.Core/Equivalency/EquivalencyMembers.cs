@@ -87,6 +87,39 @@ internal static class EquivalencyMembers
 	}
 
 	/// <summary>
+	///     Returns the accessor for the property that the <paramref name="type" /> implements explicitly for an
+	///     interface property <paramref name="name" />, or <see langword="null" /> when it has none or, which
+	///     <paramref name="isAmbiguous" /> then reports, more than one.
+	/// </summary>
+	/// <remarks>
+	///     The interface makes an explicit implementation public whatever the visibility of its getter, so it is found
+	///     for any visibility except <see cref="IncludeMembers.None" />.
+	/// </remarks>
+	public static Func<object, object?>? FindExplicitProperty(Type type, string name, IncludeMembers includeMembers,
+		out bool isAmbiguous)
+	{
+		isAmbiguous = false;
+		if (includeMembers == IncludeMembers.None)
+		{
+			return null;
+		}
+
+		string suffix = "." + name;
+		List<Func<object, object?>> accessors = TryGetRegistered(type, includeMembers,
+			out TypeMetadataRegistry.TypeMetadata? metadata)
+			? metadata.ExplicitProperties.Values
+				.Where(member => member.Name.EndsWith(suffix, StringComparison.Ordinal))
+				.Select(member => member.GetValue)
+				.ToList()
+			: type.GetExplicitProperties()
+				.Where(property => property.Name.EndsWith(suffix, StringComparison.Ordinal))
+				.Select(Accessor)
+				.ToList();
+		isAmbiguous = accessors.Count > 1;
+		return accessors.Count == 1 ? accessors[0] : null;
+	}
+
+	/// <summary>
 	///     Whether the public members of the <paramref name="type" /> are registered.
 	/// </summary>
 	public static bool IsRegistered(Type type)
@@ -106,7 +139,7 @@ internal static class EquivalencyMembers
 		}
 
 		return TypeMetadataRegistry.Instance.TryGet(type, out metadata) &&
-		       !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty);
+		       !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty && metadata.ExplicitProperties.IsEmpty);
 	}
 
 	private static IEnumerable<EquivalencyMember> Registered(

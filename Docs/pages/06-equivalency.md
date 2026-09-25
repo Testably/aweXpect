@@ -77,6 +77,11 @@ By default, equivalency:
   matching a field.
 - Fails when a member of the expected object does not exist on the actual object, reporting it as missing instead of
   comparing it against `null`.
+- Matches an expected member that the actual object does not have against a property the actual type implements
+  explicitly for an interface (`int IHasId.Id => 1;`), by its short name. A public field or property of that name
+  always takes precedence, and a name the actual type implements explicitly for more than one interface is reported
+  as ambiguous. Only the actual object is searched this way: the members compared are still those of the expected
+  object.
 - Recurses into nested objects.
 - Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan` and `Guid` as
   *value types* and compares them with `Equals`. The same applies to handles that describe something else instead of

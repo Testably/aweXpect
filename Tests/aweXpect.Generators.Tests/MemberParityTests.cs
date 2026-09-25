@@ -26,6 +26,10 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.WithStatics), "aweXpect.Generators.Tests.Corpus.WithStatics"),
 		(typeof(Corpus.Generic<int>), "aweXpect.Generators.Tests.Corpus.Generic<int>"),
 		(typeof(Corpus.WithExplicitInterface), "aweXpect.Generators.Tests.Corpus.WithExplicitInterface"),
+		(typeof(Corpus.WithTwoExplicitInterfaces), "aweXpect.Generators.Tests.Corpus.WithTwoExplicitInterfaces"),
+		(typeof(Corpus.InheritingExplicitInterface), "aweXpect.Generators.Tests.Corpus.InheritingExplicitInterface"),
+		(typeof(Corpus.ReimplementingExplicitInterface),
+			"aweXpect.Generators.Tests.Corpus.ReimplementingExplicitInterface"),
 		(typeof(Corpus.PositionalRecord), "aweXpect.Generators.Tests.Corpus.PositionalRecord"),
 		(typeof(Corpus.Point), "aweXpect.Generators.Tests.Corpus.Point"),
 		(typeof(Corpus.WithBigTuple), "aweXpect.Generators.Tests.Corpus.WithBigTuple"),
@@ -91,6 +95,28 @@ public sealed partial class MemberParityTests
 		await That(LibraryResult.Value.GeneratorDiagnostics).IsEmpty();
 	}
 
+#if DEBUG
+	[Theory]
+	[MemberData(nameof(Types))]
+	public async Task RegisteredExplicitProperties_ShouldMatchReflection(Type type, string key)
+	{
+		Dictionary<string, HashSet<string>> registrations = ParseExplicit(Result.Value.Generated);
+
+		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
+			.Because("the comparison falls back to the explicit implementations, so a registration that differs would match a different member under AOT");
+	}
+
+	[Theory]
+	[MemberData(nameof(Types))]
+	public async Task RegisteredExplicitProperties_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
+	{
+		Dictionary<string, HashSet<string>> registrations = ParseExplicit(LibraryResult.Value.Generated);
+
+		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
+			.Because("an explicit implementation is private, which the default import of a referenced assembly could leave out");
+	}
+#endif
+
 	[Theory]
 	[MemberData(nameof(Types))]
 	public async Task RegisteredMembers_ShouldMatchReflection(Type type, string key)
@@ -128,6 +154,54 @@ public sealed partial class MemberParityTests
 				.Select(property => "P:" + property.Name))
 			.Distinct();
 	}
+
+#if DEBUG
+	/// <remarks>
+	///     The oracle is what <c>IncludeMembersExtensions.GetExplicitProperties</c> reflects over: the readable private
+	///     properties with a qualified name, declared on the type or a base type, and one declaration per name.
+	/// </remarks>
+	private static IEnumerable<string> ReflectedExplicitProperties(Type type)
+	{
+		const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+		List<string> names = [];
+		for (Type? current = type; current is not null && current != typeof(object); current = current.BaseType)
+		{
+			names.AddRange(current.GetProperties(flags)
+				.Where(property => property.Name.Contains('.') && property.GetMethod?.IsPrivate == true &&
+				                   property.GetIndexParameters().Length == 0)
+				.Select(property => property.Name));
+		}
+
+		return names.Distinct();
+	}
+
+	private static Dictionary<string, HashSet<string>> ParseExplicit(string generated)
+	{
+		Dictionary<string, HashSet<string>> result = new(StringComparer.Ordinal);
+		HashSet<string>? current = null;
+		foreach (string rawLine in generated.Split('\n'))
+		{
+			string line = rawLine.TrimEnd('\r').TrimStart('\t');
+			if (line.StartsWith("// ", StringComparison.Ordinal))
+			{
+				current = [];
+				result[line.Substring(3)] = current;
+				continue;
+			}
+
+			Match match = ExplicitRegistration().Match(line);
+			if (match.Success && current is not null)
+			{
+				current.Add(match.Groups[1].Value);
+			}
+		}
+
+		return result;
+	}
+
+	[GeneratedRegex("\\.RegisterExplicitProperty<.*>\\(\"([^\"]+)\"")]
+	private static partial Regex ExplicitRegistration();
+#endif
 
 	private static Dictionary<string, HashSet<string>> Parse(string generated)
 	{

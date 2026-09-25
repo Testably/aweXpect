@@ -440,6 +440,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
 
+		private bool? _supportsExplicitRegistration;
+
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
 		public void Seed(ITypeSymbol? type)
@@ -516,14 +518,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private void SeedMembers(INamedTypeSymbol type)
 		{
 			List<Member> members = CollectMembers(type);
-			foreach (Member member in members)
+			List<IPropertySymbol> explicitProperties = CollectExplicitProperties(type);
+			foreach (ITypeSymbol memberType in members.Select(member => member.Type)
+				         .Concat(explicitProperties.Select(property => property.Type)))
 			{
-				Seed(member.Type);
+				Seed(memberType);
 			}
 
 			List<string> diagnosticIds = DiagnosticIds(type, members)
+				.Concat(explicitProperties.SelectMany(ExplicitDiagnosticIds))
 				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
-			if (members.Count == 0 || type.IsAbstract || type.IsStatic || !IsReferenceable(type) ||
+			if ((members.Count == 0 && explicitProperties.Count == 0) || type.IsAbstract || type.IsStatic ||
+			    !IsReferenceable(type) ||
 			    HasUnknownBase(type) ||
 			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
 			                          !SyntaxFacts.IsValidIdentifier(member.Name) ||
@@ -534,7 +540,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return;
 			}
 
-			string? source = EmitRegistration(type, members);
+			string? source = EmitRegistration(type, members, explicitProperties);
 			if (source is not null)
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
@@ -688,6 +694,67 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 
 			return members;
+		}
+
+		/// <remarks>
+		///     Mirrors <c>IncludeMembersExtensions.GetExplicitProperties</c>: the readable properties the type or a base
+		///     type implements explicitly for an interface, with a re-implementation hiding the one on its base by name.
+		///     An implementation the generated code cannot reach through its interface is left out, so the comparison
+		///     reports it as missing instead of failing to compile, and none is collected against an aweXpect.Core
+		///     that cannot register it, which also lacks the fallback that would read it.
+		/// </remarks>
+		private List<IPropertySymbol> CollectExplicitProperties(INamedTypeSymbol type)
+		{
+			_supportsExplicitRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterExplicitProperty").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+			HashSet<string> names = new(StringComparer.Ordinal);
+			List<IPropertySymbol> properties = [];
+			if (_supportsExplicitRegistration != true)
+			{
+				return properties;
+			}
+
+			for (INamedTypeSymbol? current = type;
+			     current is not null && current.SpecialType != SpecialType.System_Object;
+			     current = current.BaseType)
+			{
+				foreach (IPropertySymbol property in current.GetMembers().OfType<IPropertySymbol>())
+				{
+					if (property is { IsStatic: false, IsIndexer: false, GetMethod: not null, } &&
+					    property.ExplicitInterfaceImplementations.Length > 0 && names.Add(property.Name) &&
+					    IsRegisterable(property))
+					{
+						properties.Add(property);
+					}
+				}
+			}
+
+			return properties;
+		}
+
+		private bool IsRegisterable(IPropertySymbol property)
+		{
+			IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
+			return SyntaxFacts.IsValidIdentifier(implemented.Name) &&
+			       !IsUnreferenceable(implemented) &&
+			       (implemented.GetMethod is null || !IsUnreferenceable(implemented.GetMethod)) &&
+			       CanBeMemberType(property.Type) && IsReferenceable(property.Type) &&
+			       IsReferenceable(implemented.ContainingType) &&
+			       ExplicitDiagnosticIds(property).All(IsDiagnosticId);
+		}
+
+		/// <remarks>
+		///     The generated accessor reads the property through its interface, so the attributes of the interface
+		///     property decide which obsolete diagnostics it triggers.
+		/// </remarks>
+		private static IEnumerable<string> ExplicitDiagnosticIds(IPropertySymbol property)
+		{
+			IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
+			return DiagnosticIds(new ISymbol?[] { implemented, implemented.GetMethod, }
+				.Concat(TypeSymbols(property.Type))
+				.Concat(TypeSymbols(implemented.ContainingType)));
 		}
 
 		/// <remarks>
@@ -865,7 +932,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				IsStatic: false, IsIndexer: false, GetMethod.DeclaredAccessibility: Accessibility.Public,
 			};
 
-		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members)
+		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members,
+			List<IPropertySymbol> explicitProperties)
 		{
 			StringBuilder sb = new();
 			if (IsNameable(type))
@@ -877,6 +945,16 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 						.Append(typeName).Append(", ").Append(member.Type.ToDisplayString(TypeFormat)).Append(">(\"")
 						.Append(member.Name).Append("\", o => ").Append(Receiver(type, member)).Append('.')
 						.Append(Identifier(member.Name)).AppendLine(");");
+				}
+
+				foreach (IPropertySymbol property in explicitProperties)
+				{
+					IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
+					sb.Append("\t\t").Append(Registry).Append(".RegisterExplicitProperty<").Append(typeName)
+						.Append(", ").Append(property.Type.ToDisplayString(TypeFormat)).Append(">(")
+						.Append(SymbolDisplay.FormatLiteral(property.Name, true)).Append(", o => ((")
+						.Append(implemented.ContainingType.ToDisplayString(TypeFormat)).Append(")o).")
+						.Append(Identifier(implemented.Name)).AppendLine(");");
 				}
 
 				return sb.ToString();

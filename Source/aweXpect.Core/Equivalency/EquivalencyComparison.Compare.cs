@@ -121,10 +121,12 @@ public static partial class EquivalencyComparison
 	}
 
 	private static void AppendMissingMember(StringBuilder failureBuilder, MemberType memberType, string memberPath,
-		EquivalencyContext context)
+		bool isAmbiguous, EquivalencyContext context)
 	{
 		AppendEntry(failureBuilder, memberType, memberPath, context);
-		failureBuilder.Append(" is missing on the actual object");
+		failureBuilder.Append(isAmbiguous
+			? " is ambiguous on the actual object, which implements it explicitly for more than one interface"
+			: " is missing on the actual object");
 	}
 
 	private static void AppendSuperfluousElement(StringBuilder failureBuilder, string memberPath, object? actual,
@@ -302,7 +304,8 @@ public static partial class EquivalencyComparison
 	///     only have properties - so a member the actual type does not have as that kind falls back to the other kind
 	///     of the same name. The fallback uses the visibility requested for the kind it reaches, so a kind the caller
 	///     excluded is never reached through the other one, and the failure keeps the kind of the expected member,
-	///     which is also the kind a scoped ignore rule applies to.
+	///     which is also the kind a scoped ignore rule applies to. Only when neither kind exists does a property the
+	///     actual type implements explicitly for an interface match by its short name.
 	/// </remarks>
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
@@ -329,12 +332,15 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
+				bool isAmbiguous = false;
 				Func<object, object?>? actualFieldAccessor =
 					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields) ??
-					EquivalencyMembers.FindProperty(actual.GetType(), field.Name, typeOptions.Properties);
+					EquivalencyMembers.FindProperty(actual.GetType(), field.Name, typeOptions.Properties) ??
+					EquivalencyMembers.FindExplicitProperty(actual.GetType(), field.Name, typeOptions.Properties,
+						out isAmbiguous);
 				if (actualFieldAccessor is null)
 				{
-					AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath, context);
+					AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath, isAmbiguous, context);
 					result = false;
 					continue;
 				}
@@ -365,12 +371,15 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
+				bool isAmbiguous = false;
 				Func<object, object?>? actualPropertyAccessor =
 					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties) ??
-					EquivalencyMembers.FindField(actual.GetType(), property.Name, typeOptions.Fields);
+					EquivalencyMembers.FindField(actual.GetType(), property.Name, typeOptions.Fields) ??
+					EquivalencyMembers.FindExplicitProperty(actual.GetType(), property.Name, typeOptions.Properties,
+						out isAmbiguous);
 				if (actualPropertyAccessor is null)
 				{
-					AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath, context);
+					AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath, isAmbiguous, context);
 					result = false;
 					continue;
 				}

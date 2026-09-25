@@ -11,6 +11,304 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyComparisonTests
 {
 	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_AndHasAPublicPropertyOfTheSameName_ShouldCompareThePublicOne()
+	{
+		ExplicitAndPublicValue actual = new(5, 1);
+		var expected = new
+		{
+			Value = 5,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 5
+		                                                """).IgnoringNewlineStyle()
+			.Because("the explicit implementation is only a fallback for a property the actual type does not have");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_AndItDiffers_ShouldReportTheProperty()
+	{
+		ExplicitValue actual = new(5, 1);
+		var expected = new
+		{
+			Other = 1,
+			Value = 6,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 5
+		                                                    Expected: 6
+		                                                """).IgnoringNewlineStyle()
+			.Because("the explicit implementation is reported under the short name the expectation uses");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_AndTheTypeIsRegistered_ShouldCompareTheRegisteredOne()
+	{
+		RegisterExplicitPhantom();
+		RegisteredExplicitProbe actual = new(1);
+		var expected = new
+		{
+			Phantom = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Phantom differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the registered explicit implementation is not one reflection could find, and a type with only explicit implementations still counts as registered");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_ForAGenericInterface_ShouldCompareIt()
+	{
+		ExplicitGenericValue actual = new("foo");
+		var expected = new
+		{
+			Value = "foo",
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("the name of the implementation contains the type arguments of the interface, but still ends with the short name");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_ForTwoInterfaces_AndTheTypeIsRegistered_ShouldReportItAsAmbiguous()
+	{
+		RegisterAmbiguousExplicitPhantom();
+		RegisteredAmbiguousExplicitProbe actual = new(1);
+		var expected = new
+		{
+			Phantom = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Phantom is ambiguous on the actual object, which implements it explicitly for more than one interface
+		                                                """).IgnoringNewlineStyle()
+			.Because("the registry has to decide the ambiguity the same way reflection does");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_ForTwoInterfaces_ShouldReportItAsAmbiguous()
+	{
+		ExplicitValueForTwoInterfaces actual = new(1, 2);
+		var expected = new
+		{
+			Value = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value is ambiguous on the actual object, which implements it explicitly for more than one interface
+		                                                """).IgnoringNewlineStyle()
+			.Because("picking one of the implementations would make the result depend on the order reflection returns them in");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_InACollection_ShouldCompareIt()
+	{
+		ExplicitValue[] actual = [new(5, 1),];
+		object[] expected =
+		[
+			new
+			{
+				Other = 1,
+				Value = 6,
+			},
+		];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                       Found: 5
+		                                                    Expected: 6
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_OnABaseType_ShouldCompareIt()
+	{
+		DerivedFromExplicitValue actual = new(5, 1);
+		var expected = new
+		{
+			Other = 1,
+			Value = 5,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("reflection does not return the private members of a base type, so the hierarchy has to be walked");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_OnANestedMember_ShouldCompareIt()
+	{
+		var actual = new
+		{
+			Inner = new ExplicitValue(5, 1),
+		};
+		var expected = new
+		{
+			Inner = new
+			{
+				Other = 1,
+				Value = 6,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Value differed:
+		                                                       Found: 5
+		                                                    Expected: 6
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_ShouldCompareIt()
+	{
+		ExplicitValue actual = new(5, 1);
+		var expected = new
+		{
+			Other = 1,
+			Value = 5,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("an explicitly implemented property is matched by the short name of the interface property");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_WithAnExpectedField_ShouldCompareIt()
+	{
+		ExplicitValue actual = new(5, 1);
+		WithPublicValue expected = new(6);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Value differed:
+		                                                       Found: 5
+		                                                    Expected: 6
+		                                                """).IgnoringNewlineStyle()
+			.Because("an expected field falls back to a property of the same name, which includes an explicit implementation");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_WithIsNotEquivalentTo_ShouldFail()
+	{
+		ExplicitValue actual = new(5, 1);
+		var unexpected = new
+		{
+			Other = 1,
+			Value = 5,
+		};
+
+		async Task Act()
+			=> await That(actual).IsNotEquivalentTo(unexpected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is not equivalent to {
+			                 Other = 1,
+			                 Value = 5
+			               },
+			             but it was EquivalencyComparisonTests.ExplicitValue {
+			                 Other = 1
+			               }, which is considered equivalent
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """).Because("the explicit implementation makes the actual object equivalent, even though the formatter does not list it");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_WithNonPublicMembers_ShouldCompareIt()
+	{
+		ExplicitValue actual = new(5, 1);
+		var expected = new
+		{
+			Other = 1,
+			Value = 5,
+		};
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Private,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("including private members makes the implementation visible under its qualified name, which still does not match the short one");
+	}
+
+	[Fact]
+	public async Task WhenActualImplementsAPropertyExplicitly_WithoutProperties_ShouldTreatItAsMissing()
+	{
+		ExplicitValue actual = new(5, 1);
+		WithPublicValue expected = new(5);
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.None,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Value is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("an explicit implementation is a property, so excluding properties excludes it as well");
+	}
+
+	[Fact]
 	public async Task WhenActualIsComparedByMembers_AndExpectedIsAString_ShouldCompareByValue()
 	{
 		WithLength actual = new(2);
@@ -2685,6 +2983,18 @@ public sealed class EquivalencyComparisonTests
 	/// </remarks>
 	private static Func<int> Capture(int value) => () => value;
 
+	private static void RegisterAmbiguousExplicitPhantom()
+	{
+		TypeMetadataRegistry.RegisterExplicitProperty<RegisteredAmbiguousExplicitProbe, int>("Lib.IFirst.Phantom",
+			x => x.PhantomValue());
+		TypeMetadataRegistry.RegisterExplicitProperty<RegisteredAmbiguousExplicitProbe, int>("Lib.ISecond.Phantom",
+			x => x.PhantomValue());
+	}
+
+	private static void RegisterExplicitPhantom()
+		=> TypeMetadataRegistry.RegisterExplicitProperty<RegisteredExplicitProbe, int>("Lib.IPhantom.Phantom",
+			x => x.PhantomValue());
+
 	private static void RegisterPhantom()
 		=> TypeMetadataRegistry.RegisterProperty<RegisteredProbe, int>("Phantom", x => x.PhantomValue());
 
@@ -2702,6 +3012,8 @@ public sealed class EquivalencyComparisonTests
 	{
 		public ClassWithOnlyPrivateState Inner { get; } = inner;
 	}
+
+	private sealed class DerivedFromExplicitValue(int value, int other) : ExplicitValue(value, other);
 
 	private sealed class DerivedWithAdditionalProperty(int value, int additional) : WithProperty(value)
 	{
@@ -2722,9 +3034,47 @@ public sealed class EquivalencyComparisonTests
 		public override int GetHashCode() => 0;
 	}
 
+	private sealed class ExplicitAndPublicValue(int explicitValue, int publicValue) : IHasValue
+	{
+		public int Value => publicValue;
+		int IHasValue.Value => explicitValue;
+	}
+
+	private sealed class ExplicitGenericValue(string value) : IHasGenericValue<string>
+	{
+		string IHasGenericValue<string>.Value => value;
+	}
+
+	private class ExplicitValue(int value, int other) : IHasValue
+	{
+		public int Other => other;
+		int IHasValue.Value => value;
+	}
+
+	private sealed class ExplicitValueForTwoInterfaces(int value, int otherValue) : IHasValue, IHasOtherValue
+	{
+		int IHasOtherValue.Value => otherValue;
+		int IHasValue.Value => value;
+	}
+
 	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
 	{
 		public new int Value = field;
+	}
+
+	private interface IHasGenericValue<out T>
+	{
+		T Value { get; }
+	}
+
+	private interface IHasOtherValue
+	{
+		int Value { get; }
+	}
+
+	private interface IHasValue
+	{
+		int Value { get; }
 	}
 
 	/// <remarks>
@@ -2789,6 +3139,16 @@ public sealed class EquivalencyComparisonTests
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 #endif
+
+	private sealed class RegisteredAmbiguousExplicitProbe(int phantom)
+	{
+		public int PhantomValue() => phantom;
+	}
+
+	private sealed class RegisteredExplicitProbe(int phantom)
+	{
+		public int PhantomValue() => phantom;
+	}
 
 	private sealed class RegisteredFieldProbe(int phantom)
 	{
