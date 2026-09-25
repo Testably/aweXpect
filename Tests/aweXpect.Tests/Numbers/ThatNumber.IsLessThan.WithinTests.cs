@@ -160,7 +160,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThan(expected).Within(1.0);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 5.0 ± 1.0,
+					             but it was NaN
+					             """);
 			}
 
 			[Fact]

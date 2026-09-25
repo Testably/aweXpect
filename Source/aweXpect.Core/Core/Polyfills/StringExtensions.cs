@@ -1,7 +1,6 @@
 ﻿#if NETSTANDARD2_0
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Text;
 
 namespace aweXpect.Core.Polyfills;
