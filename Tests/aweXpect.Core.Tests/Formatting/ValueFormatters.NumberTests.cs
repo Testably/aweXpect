@@ -1,4 +1,7 @@
 ﻿using System.Text;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -177,6 +180,27 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Theory]
+		[InlineData(11.3, "11.3")]
+		[InlineData(double.NegativeInfinity, "-∞")]
+		[InlineData(double.PositiveInfinity, "+∞")]
+		public async Task Numbers_NFloat_ShouldReturnExpectedValue(double doubleValue, string expectedResult)
+		{
+			NFloat value = (NFloat)doubleValue;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("NFloat is rendered culture-invariant, like the other floating-point types");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
 
 		[Fact]
 		public async Task Numbers_Nint_ShouldReturnExpectedValue()
@@ -431,6 +455,41 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task Numbers_NullableNFloat_ShouldReturnExpectedValue()
+		{
+			NFloat? value = (NFloat)11.03;
+			string expectedResult = "11.03";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task Numbers_NullableNFloat_WhenNull_ShouldUseDefaultNullString()
+		{
+			NFloat? value = null;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(ValueFormatter.NullString);
+			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
+			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
+		}
+#endif
 
 		[Fact]
 		public async Task Numbers_NullableNint_ShouldReturnExpectedValue()
@@ -842,6 +901,27 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Theory]
+		[InlineData(11.3, "NFloat 11.3")]
+		[InlineData(double.NegativeInfinity, "NFloat -∞")]
+		[InlineData(double.PositiveInfinity, "NFloat +∞")]
+		public async Task Numbers_WithType_NFloat_ShouldReturnExpectedValue(double doubleValue,
+			string expectedResult)
+		{
+			NFloat value = (NFloat)doubleValue;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
 
 		[Fact]
 		public async Task Numbers_WithType_Nint_ShouldReturnExpectedValue()
