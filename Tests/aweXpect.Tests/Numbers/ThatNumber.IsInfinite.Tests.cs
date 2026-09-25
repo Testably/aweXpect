@@ -107,7 +107,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetInfinityHalfValues))]
+			[MemberData(nameof(GetInfinityHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForHalf_WhenSubjectIsInfinity_ShouldSucceed(Half subject)
 			{
 				async Task Act()
@@ -119,7 +119,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetNormalOrNaNHalfValues))]
+			[MemberData(nameof(GetNormalOrNaNHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForHalf_WhenSubjectIsNormalOrNaNValue_ShouldFail(Half subject)
 			{
 				async Task Act()
@@ -239,7 +239,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetInfinityHalfValues))]
+			[MemberData(nameof(GetInfinityHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForNullableHalf_WhenSubjectIsInfinity_ShouldSucceed(
 				Half subjectValue)
 			{
@@ -253,7 +253,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetNormalOrNaNHalfValues))]
+			[MemberData(nameof(GetNormalOrNaNHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForNullableHalf_WhenSubjectIsNormalOrNaNValue_ShouldFail(
 				Half subjectValue)
 			{

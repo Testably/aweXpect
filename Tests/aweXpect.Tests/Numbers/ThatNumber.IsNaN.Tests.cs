@@ -168,7 +168,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetNormalHalfValues))]
+			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForHalf_WhenSubjectIsNormalValue_ShouldFail(Half subject)
 			{
 				async Task Act()
@@ -367,7 +367,7 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[MemberData(nameof(GetNormalHalfValues))]
+			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
 			public async Task ForNullableHalf_WhenSubjectIsNormalValue_ShouldFail(
 				Half subjectValue)
 			{

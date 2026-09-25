@@ -135,7 +135,7 @@ public sealed partial class ThatObject
 			}
 
 			[Theory]
-			[MemberData(nameof(GetValues))]
+			[MemberData(nameof(GetValues), DisableDiscoveryEnumeration = true)]
 			public async Task WhenSubjectAndExpectedAreDifferentNumericsWithSameValues_ShouldSucceed(object subject,
 				object expected)
 			{
