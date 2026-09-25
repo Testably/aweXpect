@@ -16,6 +16,7 @@ internal static class IncludeMembersExtensions
 	private static readonly ConcurrentDictionary<(Type, BindingFlags), FieldInfo[]> AllFields = new();
 
 	private static readonly ConcurrentDictionary<(Type, BindingFlags), PropertyInfo[]> AllProperties = new();
+	private static readonly ConcurrentDictionary<Type, PropertyInfo[]> ExplicitProperties = new();
 	private static readonly ConcurrentDictionary<(Type, IncludeMembers), FieldInfo[]> Fields = new();
 	private static readonly ConcurrentDictionary<(Type, IncludeMembers), PropertyInfo[]> Properties = new();
 
@@ -85,6 +86,42 @@ internal static class IncludeMembersExtensions
 			: GetAllProperties(type, includeMembers).FirstOrDefault(property
 				=> property.Name == name &&
 				   (includeMembers != IncludeMembers.Public || property.GetGetMethod(true)!.IsPublic));
+
+	/// <summary>
+	///     Returns the readable properties that the <paramref name="type" /> implements explicitly for an interface.
+	/// </summary>
+	/// <remarks>
+	///     The compiler names an explicit implementation after its interface, such as <c>Namespace.IHasValue.Value</c>,
+	///     and makes its getter private, so a lookup by the short name never finds it. Reflection does not return the
+	///     private members of a base type either, so the hierarchy is walked, and a re-implementation on a derived type
+	///     hides the one on its base.
+	/// </remarks>
+	public static PropertyInfo[] GetExplicitProperties(this Type type)
+		=> ExplicitProperties.GetOrAdd(type, static key =>
+		{
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw Tracing.WriteException(ReflectionFallback.NotSupported(key, "properties"));
+			}
+
+			Dictionary<string, PropertyInfo> byName = new(StringComparer.Ordinal);
+			for (Type? current = key; current is not null && current != typeof(object); current = current.BaseType)
+			{
+#pragma warning disable S3011 // https://rules.sonarsource.com/csharp/RSPEC-3011
+				foreach (PropertyInfo property in current.GetProperties(
+					         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+#pragma warning restore S3011
+				{
+					if (property.Name.Contains('.', StringComparison.Ordinal) &&property.GetGetMethod(true) is { IsPrivate: true, } &&
+					    property.GetIndexParameters().Length == 0 && !byName.ContainsKey(property.Name))
+					{
+						byName.Add(property.Name, property);
+					}
+				}
+			}
+
+			return byName.Values.ToArray();
+		});
 
 	private static FieldInfo[] GetAllFields(Type type, IncludeMembers includeMembers)
 		=> AllFields.GetOrAdd((type, GetBindingFlags(includeMembers)), static key

@@ -1,1 +1,2 @@
 #nullable enable
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterExplicitProperty<T, TMember>(string! name, System.Func<T, TMember>! getValue) -> void

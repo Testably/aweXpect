@@ -122,6 +122,34 @@ public static class Corpus
 		int IHasValue.Value => Own;
 	}
 
+	public interface IHasOtherValue
+	{
+		int Value { get; }
+	}
+
+	public interface IHasGenericValue<out T>
+	{
+		T Value { get; }
+	}
+
+	public class WithTwoExplicitInterfaces : IHasValue, IHasOtherValue, IHasGenericValue<string>
+	{
+		public int Own { get; set; }
+		int IHasValue.Value => 1;
+		int IHasOtherValue.Value => 2;
+		string IHasGenericValue<string>.Value => "";
+	}
+
+	public class InheritingExplicitInterface : WithExplicitInterface
+	{
+		public int Additional { get; set; }
+	}
+
+	public class ReimplementingExplicitInterface : WithExplicitInterface, IHasValue
+	{
+		int IHasValue.Value => 3;
+	}
+
 	public record PositionalRecord(int Id, string Name);
 
 	public struct Point
