@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Tests;
+﻿#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -417,6 +421,42 @@ public sealed partial class ThatNumber
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenExpectedIsNaN_ShouldFailWithoutDifference()
+			{
+				NFloat subject = 0;
+				NFloat expected = NFloat.NaN;
+
+				async Task Act() => await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to NaN,
+					             but it was 0
+					             """)
+					.Because("a difference to NaN is meaningless");
+			}
+
+			[Fact]
+			public async Task ForNFloat_WhenSubjectIsNaN_ShouldFailWithoutDifference()
+			{
+				NFloat subject = NFloat.NaN;
+				NFloat expected = 0;
+
+				async Task Act() => await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 0,
+					             but it was NaN
+					             """)
+					.Because("a difference to NaN is meaningless");
+			}
+#endif
 
 			[Fact]
 			public async Task ForNullableByte_WhenValueAndExpectedAreNull_ShouldSucceed()

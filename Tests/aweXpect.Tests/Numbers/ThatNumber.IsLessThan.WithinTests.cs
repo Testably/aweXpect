@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Tests;
+﻿#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -299,6 +303,26 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenSubjectAndExpectedAreNegativeInfinity_ShouldFail()
+			{
+				NFloat subject = NFloat.NegativeInfinity;
+				NFloat expected = NFloat.NegativeInfinity;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than -∞ ± 1,
+					             but it was -∞
+					             """)
+					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");
+			}
+#endif
 
 			[Theory]
 			[InlineData(5, 5)]

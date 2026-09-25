@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -138,6 +141,17 @@ public sealed partial class ThatNumber
 #endif
 
 			[Fact]
+			public async Task ForNullableDouble_ShouldReturnTheNullableSubject()
+			{
+				double? subject = 1.0;
+
+				AndOrResult<double?, IThat<double?>> result = That(subject).IsFinite();
+
+				await That(await result).IsEqualTo(subject)
+					.Because("the nullable IsFinite has the same subject type on every target framework");
+			}
+
+			[Fact]
 			public async Task ForNullableDouble_ShouldSupportChaining()
 			{
 				double? subject = double.Epsilon;
@@ -180,6 +194,17 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsFinite();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForNullableFloat_ShouldReturnTheNullableSubject()
+			{
+				float? subject = 1.0f;
+
+				AndOrResult<float?, IThat<float?>> result = That(subject).IsFinite();
+
+				await That(await result).IsEqualTo(subject)
+					.Because("the nullable IsFinite has the same subject type on every target framework");
 			}
 
 			[Fact]

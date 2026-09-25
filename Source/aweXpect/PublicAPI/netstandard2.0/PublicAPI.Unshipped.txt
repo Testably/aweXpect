@@ -1,1 +1,5 @@
 #nullable enable
+*REMOVED*static aweXpect.ThatNumber.IsFinite(this aweXpect.Core.IThat<double?>! subject) -> aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double?>!>!
+*REMOVED*static aweXpect.ThatNumber.IsFinite(this aweXpect.Core.IThat<float?>! subject) -> aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float?>!>!
+static aweXpect.ThatNumber.IsFinite(this aweXpect.Core.IThat<double?>! subject) -> aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>!>!
+static aweXpect.ThatNumber.IsFinite(this aweXpect.Core.IThat<float?>! subject) -> aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>!>!
