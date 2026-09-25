@@ -1,5 +1,10 @@
 using System;
 using System.Collections;
+#if NET8_0_OR_GREATER
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using aweXpect.Core;
+#endif
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -140,7 +145,32 @@ public static partial class ValueFormatters
 				return;
 		}
 
+#if NET8_0_OR_GREATER
+		if (TryGetAsyncEnumerableType(value.GetType(), out Type? asyncEnumerableType))
+		{
+			Format(formatter, stringBuilder, asyncEnumerableType, options);
+			return;
+		}
+#endif
+
 		FormatObject(stringBuilder, value,
 			options ?? FormattingOptions.MultipleLines, context);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     The items of an <see cref="IAsyncEnumerable{T}" /> cannot be listed synchronously, and its members only show
+	///     the state of the enumeration, like the fields of a compiler-generated async iterator, so it is named by its
+	///     type instead.
+	/// </remarks>
+	private static bool TryGetAsyncEnumerableType(Type type, [NotNullWhen(true)] out Type? asyncEnumerableType)
+	{
+		asyncEnumerableType = ReflectionFallback.IsSupported
+			? type.GetInterfaces().FirstOrDefault(@interface => @interface.IsGenericType &&
+			                                                    @interface.GetGenericTypeDefinition() ==
+			                                                    typeof(IAsyncEnumerable<>))
+			: null;
+		return asyncEnumerableType is not null;
+	}
+#endif
 }
