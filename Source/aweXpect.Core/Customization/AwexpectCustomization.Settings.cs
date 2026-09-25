@@ -48,18 +48,18 @@ public partial class AwexpectCustomization
 				}));
 			DefaultTimeComparisonTolerance = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultTimeComparisonTolerance,
-				value =>
+				tolerance =>
 				{
-					if (value < TimeSpan.Zero)
+					if (tolerance < TimeSpan.Zero)
 					{
 						// ReSharper disable once LocalizableElement
 						throw Tracing.WriteException(
-							new ArgumentOutOfRangeException(nameof(value), "Tolerance must be non-negative"));
+							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
 
 					return Update(p => p with
 					{
-						DefaultTimeComparisonTolerance = value,
+						DefaultTimeComparisonTolerance = tolerance,
 					});
 				});
 			TestCancellation = new CustomizationValue<TestCancellation?>(

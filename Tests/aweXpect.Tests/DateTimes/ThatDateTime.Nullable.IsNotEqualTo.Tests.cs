@@ -114,7 +114,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotEqualTo(expected).Within(-1.Seconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
-						.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+						.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 						.WithParamName("tolerance");
 				}
 

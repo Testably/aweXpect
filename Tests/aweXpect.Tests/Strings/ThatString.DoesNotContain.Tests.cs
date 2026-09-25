@@ -99,7 +99,7 @@ public sealed partial class ThatString
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -189,7 +189,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).AtLeast(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'minimum'*").AsWildcard().And
+					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
 			}
 		}
@@ -256,7 +256,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).AtMost(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'maximum'*").AsWildcard().And
+					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
 			}
 		}
@@ -318,7 +318,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).Between(1).And(-3);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'maximum'*").AsWildcard().And
+					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
 			}
 
@@ -352,7 +352,7 @@ public sealed partial class ThatString
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
 					.WithParamName("maximum").And
-					.WithMessage("*'maximum'*greater*'minimum'*").AsWildcard();
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
 			[Fact]
@@ -366,7 +366,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).Between(-1).And(3);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'minimum'*").AsWildcard().And
+					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
 			}
 		}
@@ -385,7 +385,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).Exactly(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'expected'*").AsWildcard().And
+					.WithMessage("The expected count must not be negative.").AsPrefix().And
 					.WithParamName("expected");
 			}
 
@@ -509,7 +509,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).LessThan(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'maximum'*").AsWildcard().And
+					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
 			}
 		}
@@ -573,7 +573,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).MoreThan(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'minimum'*").AsWildcard().And
+					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
 			}
 		}

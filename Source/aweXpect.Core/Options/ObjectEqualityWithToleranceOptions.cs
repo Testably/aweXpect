@@ -72,7 +72,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must not be NaN"));
+				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be NaN."));
 		}
 
 		if (default(TTolerance) is { } zero && tolerance is IComparable<TTolerance> comparable &&
@@ -80,7 +80,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be non-negative"));
+				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 		}
 	}
 

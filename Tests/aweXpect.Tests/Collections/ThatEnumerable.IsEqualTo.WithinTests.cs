@@ -795,7 +795,7 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("tolerance").And
-						.WithMessage("Tolerance must be non-negative").AsPrefix();
+						.WithMessage("The tolerance must not be negative.").AsPrefix();
 				}
 			}
 

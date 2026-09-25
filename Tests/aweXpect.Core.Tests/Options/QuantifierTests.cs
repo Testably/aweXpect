@@ -16,7 +16,7 @@ public class QuantifierTests
 		void Act() => sut.AtLeast(minimum);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
-			.WithMessage("*The parameter 'minimum' must be non-negative*").AsWildcard();
+			.WithMessage("*The minimum must not be negative.*").AsWildcard();
 	}
 
 	[Theory]
@@ -31,7 +31,7 @@ public class QuantifierTests
 		void Act() => sut.AtMost(maximum);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
-			.WithMessage("*The parameter 'maximum' must be non-negative*").AsWildcard();
+			.WithMessage("*The maximum must not be negative.*").AsWildcard();
 	}
 
 	[Theory]
@@ -47,7 +47,7 @@ public class QuantifierTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
 			.WithParamName("maximum").And
-			.WithMessage("*The parameter 'maximum' must be greater than or equal to 'minimum'*").AsWildcard();
+			.WithMessage("*The maximum must be greater than or equal to the minimum.*").AsWildcard();
 	}
 
 	[Theory]
@@ -62,7 +62,7 @@ public class QuantifierTests
 		void Act() => sut.Between(0, maximum);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
-			.WithMessage("*The parameter 'maximum' must be non-negative*").AsWildcard();
+			.WithMessage("*The maximum must not be negative.*").AsWildcard();
 	}
 
 	[Theory]
@@ -77,7 +77,7 @@ public class QuantifierTests
 		void Act() => sut.Between(minimum, 1);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
-			.WithMessage("*The parameter 'minimum' must be non-negative*").AsWildcard();
+			.WithMessage("*The minimum must not be negative.*").AsWildcard();
 	}
 
 	[Theory]
@@ -209,7 +209,7 @@ public class QuantifierTests
 		void Act() => sut.Exactly(expected);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
-			.WithMessage("*The parameter 'expected' must be non-negative*").AsWildcard();
+			.WithMessage("*The expected count must not be negative.*").AsWildcard();
 	}
 
 	[Theory]

@@ -1,6 +1,4 @@
-﻿using System;
-using aweXpect.Core;
-using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
+﻿using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -62,12 +60,7 @@ public class Quantifier
 	/// </summary>
 	public void AtLeast(int minimum)
 	{
-		if (minimum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
 
 		_minimum = minimum;
 		_maximum = null;
@@ -79,12 +72,7 @@ public class Quantifier
 	/// </summary>
 	public void AtMost(int maximum)
 	{
-		if (maximum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
 
 		_minimum = null;
 		_maximum = maximum;
@@ -96,26 +84,9 @@ public class Quantifier
 	/// </summary>
 	public void Between(int minimum, int maximum)
 	{
-		if (minimum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative"));
-		}
-
-		if (maximum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative"));
-		}
-
-		if (minimum > maximum)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be greater than or equal to 'minimum'"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
+		ThrowHelper.ThrowIfMaximumIsBelowMinimum<int>(minimum, maximum);
 
 		_minimum = minimum;
 		_maximum = maximum;
@@ -127,12 +98,7 @@ public class Quantifier
 	/// </summary>
 	public void LessThan(int maximum)
 	{
-		if (maximum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
 
 		_minimum = null;
 		_maximum = maximum;
@@ -144,12 +110,7 @@ public class Quantifier
 	/// </summary>
 	public void MoreThan(int minimum)
 	{
-		if (minimum < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
 
 		_minimum = minimum;
 		_maximum = null;
@@ -186,12 +147,7 @@ public class Quantifier
 	/// </summary>
 	public void Exactly(int expected)
 	{
-		if (expected < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(expected),
-					"The parameter 'expected' must be non-negative"));
-		}
+		ThrowHelper.ThrowIfCountIsNegative(expected, "expected count");
 
 		_minimum = expected;
 		_maximum = expected;

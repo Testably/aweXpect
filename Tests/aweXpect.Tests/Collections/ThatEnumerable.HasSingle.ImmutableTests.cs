@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
-					.WithMessage("The predicate cannot be null.").AsPrefix();
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 		}
 
@@ -305,7 +305,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
-					.WithMessage("The predicate cannot be null.").AsPrefix();
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 		}
 

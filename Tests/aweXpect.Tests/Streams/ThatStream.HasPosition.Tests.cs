@@ -17,7 +17,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -117,7 +117,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().EqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -197,7 +197,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().GreaterThanOrEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -272,7 +272,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().GreaterThan(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -371,7 +371,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().LessThanOrEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -446,7 +446,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().LessThan(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected position must be greater than or equal to zero*")
+					.WithMessage("*The expected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -574,7 +574,7 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition().NotEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected position must be greater than or equal to zero*")
+					.WithMessage("*The unexpected position must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("unexpected");
 			}

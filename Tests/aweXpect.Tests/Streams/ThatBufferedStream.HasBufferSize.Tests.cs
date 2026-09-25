@@ -20,7 +20,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -83,7 +83,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().EqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -187,7 +187,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().GreaterThanOrEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -267,7 +267,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().GreaterThan(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -342,7 +342,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().LessThanOrEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -422,7 +422,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().LessThan(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The expected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -502,7 +502,7 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).HasBufferSize().NotEqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected buffer size must be greater than or equal to zero*")
+					.WithMessage("*The unexpected buffer size must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("unexpected");
 			}

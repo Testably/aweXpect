@@ -76,7 +76,7 @@ public sealed partial class ThatSignaler
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
-					.WithMessage("The predicate cannot be null.").AsPrefix();
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

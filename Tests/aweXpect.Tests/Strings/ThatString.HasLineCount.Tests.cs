@@ -31,7 +31,7 @@ public sealed partial class ThatString
 					=> await That(subject).HasLineCount(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected line count must be greater than or equal to zero*")
+					.WithMessage("*The expected line count must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}
@@ -100,7 +100,7 @@ public sealed partial class ThatString
 					=> await That(subject).HasLineCount().EqualTo(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected line count must be greater than or equal to zero*")
+					.WithMessage("*The expected line count must not be negative.*")
 					.AsWildcard().And
 					.WithParamName("expected");
 			}

@@ -19,7 +19,7 @@ public static partial class ThatStream
 				throw Tracing.WriteException(
 					new ArgumentOutOfRangeException(paramName, value,
 						// ReSharper disable once LocalizableElement
-						$"The {paramName} position must be greater than or equal to zero."));
+						$"The {paramName} position must not be negative."));
 			}
 		}, IsUnreadableStreamProperty);
 

@@ -277,7 +277,7 @@ public sealed partial class ThatAsyncEnumerable
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
-					.WithMessage("The index must be greater than or equal to 0.").AsPrefix();
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Fact]

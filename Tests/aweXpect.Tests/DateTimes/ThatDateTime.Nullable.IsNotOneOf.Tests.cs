@@ -57,7 +57,7 @@ public sealed partial class ThatDateTime
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("unexpected").And
-						.WithMessage("The unexpected cannot be null.").AsPrefix();
+						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
 				[Fact]
@@ -156,7 +156,7 @@ public sealed partial class ThatDateTime
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("unexpected").And
-						.WithMessage("The unexpected cannot be null.").AsPrefix();
+						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
 				[Fact]
@@ -225,7 +225,7 @@ public sealed partial class ThatDateTime
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("unexpected").And
-						.WithMessage("The unexpected cannot be null.").AsPrefix()
+						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix()
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
@@ -255,7 +255,7 @@ public sealed partial class ThatDateTime
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("unexpected").And
-						.WithMessage("The unexpected cannot be null.").AsPrefix()
+						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix()
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 

@@ -195,7 +195,7 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsEqualTo(expected).Within(-1.Seconds());
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
+					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 

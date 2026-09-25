@@ -79,7 +79,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).LessThan(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'maximum'*").AsWildcard().And
+					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
 			}
 		}

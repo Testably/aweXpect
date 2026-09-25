@@ -18,7 +18,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).Exactly(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'expected'*").AsWildcard().And
+					.WithMessage("The expected count must not be negative.").AsPrefix().And
 					.WithParamName("expected");
 			}
 

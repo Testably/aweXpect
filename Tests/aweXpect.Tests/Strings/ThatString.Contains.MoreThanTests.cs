@@ -68,7 +68,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).MoreThan(-1);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'minimum'*").AsWildcard().And
+					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
 			}
 		}

@@ -479,7 +479,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -508,7 +508,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Theory]
@@ -970,7 +970,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -999,7 +999,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
-					.WithMessage("The unexpected cannot be null.").AsPrefix();
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
 			[Theory]

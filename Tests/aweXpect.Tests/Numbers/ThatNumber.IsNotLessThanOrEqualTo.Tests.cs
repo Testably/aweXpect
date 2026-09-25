@@ -1385,7 +1385,7 @@ public sealed partial class ThatNumber
 					=> await That(12.5).IsNotLessThanOrEqualTo(12.0).Within(double.NaN);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
 

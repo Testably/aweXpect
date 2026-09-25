@@ -48,7 +48,7 @@ public class NumberToleranceTests
 		void Act() => sut.SetTolerance(double.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
 			.WithParamName("tolerance")
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
@@ -72,7 +72,7 @@ public class NumberToleranceTests
 		void Act() => sut.SetTolerance(float.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
 			.WithParamName("tolerance")
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
@@ -86,7 +86,7 @@ public class NumberToleranceTests
 		void Act() => sut.SetTolerance(Half.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
 			.WithParamName("tolerance")
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
@@ -100,7 +100,7 @@ public class NumberToleranceTests
 		void Act() => sut.SetTolerance(-1);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithMessage("*Tolerance must be non-negative*").AsWildcard();
+			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
 	}
 
 	[Fact]

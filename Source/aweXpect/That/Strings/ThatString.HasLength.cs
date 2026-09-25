@@ -18,7 +18,7 @@ public static partial class ThatString
 				throw Tracing.WriteException(
 					new ArgumentOutOfRangeException(paramName, value,
 						// ReSharper disable once LocalizableElement
-						$"The {paramName} length must be greater than or equal to zero."));
+						$"The {paramName} length must not be negative."));
 			}
 		});
 

@@ -66,7 +66,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).Between(1).And(-3);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'maximum'*").AsWildcard().And
+					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
 			}
 
@@ -95,7 +95,7 @@ public sealed partial class ThatString
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
 					.WithParamName("maximum").And
-					.WithMessage("*'maximum'*greater*'minimum'*").AsWildcard();
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
 			[Fact]
@@ -109,7 +109,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).Between(-1).And(3);
 
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
-					.WithMessage("*'minimum'*").AsWildcard().And
+					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
 			}
 		}

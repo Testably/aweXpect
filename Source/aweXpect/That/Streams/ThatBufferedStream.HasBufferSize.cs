@@ -20,7 +20,7 @@ public static partial class ThatBufferedStream
 				throw Tracing.WriteException(
 					new ArgumentOutOfRangeException(paramName, value,
 						// ReSharper disable once LocalizableElement
-						$"The {paramName} buffer size must be greater than or equal to zero."));
+						$"The {paramName} buffer size must not be negative."));
 			}
 		});
 
