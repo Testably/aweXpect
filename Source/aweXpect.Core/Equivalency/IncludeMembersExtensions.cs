@@ -112,7 +112,7 @@ internal static class IncludeMembersExtensions
 					         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
 #pragma warning restore S3011
 				{
-					if (property.Name.IndexOf('.') >= 0 && property.GetGetMethod(true) is { IsPrivate: true, } &&
+					if (property.Name.Contains('.', StringComparison.Ordinal) &&property.GetGetMethod(true) is { IsPrivate: true, } &&
 					    property.GetIndexParameters().Length == 0 && !byName.ContainsKey(property.Name))
 					{
 						byName.Add(property.Name, property);
