@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -20,8 +21,39 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
 	{
 		ThrowIfToleranceIsInvalid(tolerance);
-		MatchType = new WithinMatchType(tolerance, isWithinTolerance, toString ?? DefaultToleranceFormatter);
+		MatchType = new WithinMatchType(() => tolerance, false, isWithinTolerance,
+			toString ?? DefaultToleranceFormatter);
 		return this;
+	}
+
+	/// <summary>
+	///     Specifies the <paramref name="defaultTolerance" /> that applies until a tolerance is specified with
+	///     <see cref="Within(TTolerance)" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="defaultTolerance" /> is read when the comparison is made or described, or once per
+	///     evaluation through <see cref="ForEvaluation()" />, and it is only named in the expectation text when it
+	///     differs from the default value of <typeparamref name="TTolerance" />.
+	/// </remarks>
+	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithDefaultTolerance(
+		Func<TTolerance> defaultTolerance)
+	{
+		MatchType = new WithinMatchType(defaultTolerance, true, isWithinTolerance,
+			toString ?? DefaultToleranceFormatter);
+		return this;
+	}
+
+	/// <inheritdoc />
+	public override IOptionsEquality<TSubject> ForEvaluation()
+	{
+		if (MatchType is not WithinMatchType { IsDefault: true, } matchType)
+		{
+			return this;
+		}
+
+		ObjectEqualityOptions<TSubject> options = new();
+		options.SetMatchType(matchType.WithResolvedTolerance());
+		return options;
 	}
 
 	/// <summary>
@@ -56,11 +88,20 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		=> $" ± {Formatter.Format(tolerance)}";
 
 	private sealed class WithinMatchType(
-		TTolerance tolerance,
+		Func<TTolerance> tolerance,
+		bool isDefault,
 		Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
 		Func<TTolerance, string> toString)
 		: IObjectMatchType
 	{
+		public bool IsDefault => isDefault;
+
+		public WithinMatchType WithResolvedTolerance()
+		{
+			TTolerance value = tolerance();
+			return new WithinMatchType(() => value, isDefault, isWithinTolerance, toString);
+		}
+
 		#region IEquality Members
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
@@ -73,7 +114,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			}
 
 			return ValueTask.FromResult(actual is TSubject typedActual && expected is TSubject typedExpected &&
-			                            isWithinTolerance(typedActual, typedExpected, tolerance));
+			                            isWithinTolerance(typedActual, typedExpected, tolerance()));
 		}
 #else
 		public Task<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
@@ -84,7 +125,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			}
 
 			return Task.FromResult(actual is TSubject typedActual && expected is TSubject typedExpected &&
-			                       isWithinTolerance(typedActual, typedExpected, tolerance));
+			                       isWithinTolerance(typedActual, typedExpected, tolerance()));
 		}
 #endif
 
@@ -102,7 +143,12 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> toString.Invoke(tolerance);
+		{
+			TTolerance value = tolerance();
+			return isDefault && EqualityComparer<TTolerance>.Default.Equals(value, default!)
+				? ""
+				: toString.Invoke(value);
+		}
 
 		#endregion
 	}

@@ -161,14 +161,14 @@ public sealed partial class ThatDateOnly
 				{
 					DateOnly? subject = CurrentTime();
 
-					async Task Act()
-						=> await That(subject).IsBefore(EarlierTime())
+					object Act()
+						=> That(subject).IsBefore(EarlierTime())
 							.Within(23.Hours());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("tolerance").And
 						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
-						.Because("a date has no time of day, so the remainder would be dropped without notice");
+						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 				}
 
 				[Fact]

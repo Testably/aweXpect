@@ -269,8 +269,16 @@ using aweXpect.Customization;
 IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```
 
+It also applies to the items of a collection of `DateTime`, `DateTimeOffset` or `TimeSpan` values (or their nullable
+counterparts) compared with `IsEqualTo`, `IsNotEqualTo` or `All().AreEqualTo`. An explicit `Within` always replaces the
+default tolerance. The applied default tolerance is part of the failure message, for example
+`is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero.
+
+For a `DateOnly` only the whole days of the default tolerance apply, so a default below one day has no effect there. An
+explicit `Within` on a `DateOnly` still has to be a whole number of days.
+
 The default tolerance is not used for:
 - property verifications like `HasOffset()`
-- items of a collection (specify the tolerance with `Within` on the collection expectation instead)
+- other collection expectations, like `Contains`
 - members compared by `IsEquivalentTo`
 - values compared as `object`

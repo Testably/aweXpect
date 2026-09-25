@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -112,6 +113,28 @@ public sealed partial class ThatDateTimeOffset
 					              is one of {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)} which differs by -0:01 from the closest value
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				DateTimeOffset subject = EarlierTime(3);
+				DateTimeOffset[] expected = [CurrentTime(), LaterTime(),];
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(2.Seconds());
+					await That(subject).IsOneOf(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(expected)} ± 0:02,
+					              but it was {Formatter.Format(subject)} which differs by -0:03 from the closest value
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Theory]

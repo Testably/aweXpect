@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Customization;
 using aweXpect.Options;
 
 namespace aweXpect.Helpers;
@@ -30,26 +31,29 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 			t => $" ± {Formatter.Format(t)}");
 
 	public static ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> CreateDateTime() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<DateTime, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> CreateNullableDateTime() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTimeOffset, TimeSpan> CreateDateTimeOffset() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<DateTimeOffset, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTimeOffset?, TimeSpan> CreateNullableDateTimeOffset() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<DateTimeOffset?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<TimeSpan, TimeSpan> CreateTimeSpan() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<TimeSpan, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<TimeSpan?, TimeSpan> CreateNullableTimeSpan() =>
-		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ObjectEqualityWithToleranceOptions<TimeSpan?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}").WithDefaultTolerance(DefaultTimeTolerance);
+
+	private static TimeSpan DefaultTimeTolerance()
+		=> Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 }

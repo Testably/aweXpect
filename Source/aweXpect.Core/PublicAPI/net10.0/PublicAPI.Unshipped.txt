@@ -1,2 +1,7 @@
 #nullable enable
+*REMOVED*aweXpect.Options.TimeTolerance.SetTolerance(System.TimeSpan tolerance) -> void
+aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.WithDefaultTolerance(System.Func<TTolerance>! defaultTolerance) -> aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>!
+virtual aweXpect.Options.TimeTolerance.SetTolerance(System.TimeSpan tolerance) -> void
+override aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.ForEvaluation() -> aweXpect.Core.IOptionsEquality<TSubject>!
+virtual aweXpect.Options.ObjectEqualityOptions<TSubject>.ForEvaluation() -> aweXpect.Core.IOptionsEquality<TSubject>!
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterExplicitProperty<T, TMember>(string! name, System.Func<T, TMember>! getValue) -> void

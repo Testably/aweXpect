@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Customization;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTimeOffset
 {
@@ -120,6 +122,28 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsAfter(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				DateTimeOffset subject = EarlierTime(3);
+				DateTimeOffset expected = CurrentTime();
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(3.Seconds());
+					await That(subject).IsAfter(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is after {Formatter.Format(expected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:03
+					              """)
+					.Because("the applied default tolerance is part of the ordering expectation");
 			}
 
 			[Fact]

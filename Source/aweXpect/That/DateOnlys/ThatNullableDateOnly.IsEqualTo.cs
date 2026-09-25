@@ -17,7 +17,7 @@ public static partial class ThatNullableDateOnly
 	public static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsEqualTo(this IThat<DateOnly?> subject,
 		DateOnly? expected)
 	{
-		TimeTolerance tolerance = new();
+		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, expected, tolerance)),
@@ -32,7 +32,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsEqualToConstraint(it, grammars, unexpected, tolerance).Invert()),
@@ -50,7 +50,6 @@ public static partial class ThatNullableDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
-			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (actual is null && expected is null)
 			{

@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Customization;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatTimeSpan
 {
@@ -128,6 +130,28 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+			{
+				TimeSpan subject = CurrentTime();
+				TimeSpan? expected = LaterTime(4);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(3.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 0:03,
+					              but it was {Formatter.Format(subject)} which differs by -0:04
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Fact]

@@ -47,7 +47,7 @@ public class TimeToleranceResult<TType, TThat, TSelf>(
 	///     <c>IsNotBetween</c> or <c>IsNotEqualTo</c>, is the exact inverse of its positive form, so the tolerance
 	///     narrows it and it fails within the tolerance of the bound. On a <c>DateOnly</c>,
 	///     a <paramref name="tolerance" /> that is not a whole number of days throws an
-	///     <see cref="ArgumentOutOfRangeException" /> when the expectation is evaluated.
+	///     <see cref="ArgumentOutOfRangeException" />.
 	/// </remarks>
 	public TSelf Within(TimeSpan tolerance)
 	{

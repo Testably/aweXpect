@@ -131,9 +131,11 @@ public partial class AwexpectCustomization
 		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
 		///     <see cref="DateTimeOffset" />, <see cref="DateOnly" />, <see cref="TimeOnly" /> or <see cref="TimeSpan" />
 		///     subject is compared directly and no explicit tolerance is given. For <see cref="DateOnly" /> only the whole
-		///     days of the tolerance count.<br />
-		///     It is not used for property verifications, items of a collection, members compared by equivalency or values
-		///     compared as <see langword="object" />.
+		///     days of the tolerance count. It also applies to the items of a collection of <see cref="DateTime" />,
+		///     <see cref="DateTimeOffset" /> or <see cref="TimeSpan" /> values compared with <c>IsEqualTo</c> or
+		///     <c>All().AreEqualTo</c> without an explicit tolerance.<br />
+		///     It is not used for property verifications, other collection expectations, members compared by equivalency
+		///     or values compared as <see langword="object" />.
 		/// </remarks>
 #else
 		/// <summary>
@@ -145,9 +147,10 @@ public partial class AwexpectCustomization
 		///     comparing them as exact values might result in brittle tests.<br />
 		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
 		///     <see cref="DateTimeOffset" /> or <see cref="TimeSpan" /> subject is compared directly and no explicit
-		///     tolerance is given.<br />
-		///     It is not used for property verifications, items of a collection, members compared by equivalency or values
-		///     compared as <see langword="object" />.
+		///     tolerance is given. It also applies to the items of a collection of such values compared with
+		///     <c>IsEqualTo</c> or <c>All().AreEqualTo</c> without an explicit tolerance.<br />
+		///     It is not used for property verifications, other collection expectations, members compared by equivalency
+		///     or values compared as <see langword="object" />.
 		/// </remarks>
 #endif
 		public TimeSpan DefaultTimeComparisonTolerance { get; init; } = TimeSpan.Zero;

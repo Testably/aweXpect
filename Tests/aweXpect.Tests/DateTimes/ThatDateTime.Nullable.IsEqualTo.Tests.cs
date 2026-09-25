@@ -1,3 +1,5 @@
+using aweXpect.Customization;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTime
@@ -121,6 +123,28 @@ public sealed partial class ThatDateTime
 						              is equal to {Formatter.Format(expected)}, because we also test the kind property,
 						              but it had Kind Utc, which cannot be compared with Local
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					DateTime? subject = null;
+					DateTime? expected = LaterTime(4);
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(3.Seconds());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to {Formatter.Format(expected)} ± 0:03,
+						              but it was <null>
+						              """)
+						.Because("the applied default tolerance is part of the expectation, even for a null subject");
 				}
 
 				[Fact]

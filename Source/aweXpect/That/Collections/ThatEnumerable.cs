@@ -84,11 +84,14 @@ public static partial class ThatEnumerable
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			IOptionsEquality<TMatch> itemOptions =
-				usesDefaultEquality?.Invoke() == true &&
-				CollectionComparerHelpers.GetCustomSetEquality(actual) is { } setEquality
-					? new SetEqualityOptions(setEquality)
-					: options;
+			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
+				? objectOptions.ForEvaluation()
+				: options;
+			if (usesDefaultEquality?.Invoke() == true &&
+			    CollectionComparerHelpers.GetCustomSetEquality(actual) is { } setEquality)
+			{
+				itemOptions = new SetEqualityOptions(setEquality);
+			}
 
 			foreach (TItem item in materializedEnumerable)
 			{
@@ -486,7 +489,9 @@ public static partial class ThatEnumerable
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
 				matchOptions.GetCollectionMatcher<object?, object?>(expected.Cast<object?>());
-			UntypedOptions untypedOptions = new(options);
+			UntypedOptions untypedOptions = new(options is ObjectEqualityOptions<TMatch> objectOptions
+				? objectOptions.ForEvaluation()
+				: options);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
 			foreach (object? item in materializedEnumerable)

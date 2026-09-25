@@ -1,5 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -744,6 +745,44 @@ public sealed partial class ThatAsyncEnumerable
 						               3:00:00
 						             ]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyAndMentionIt()
+				{
+					IAsyncEnumerable<TimeSpan> subject = ToAsyncEnumerable<TimeSpan>(1.Hours(), 2.Hours(), 3.Hours());
+					IEnumerable<TimeSpan> expected = [61.Minutes(), 118.Minutes(), 3.Hours(),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected).InAnyOrder();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected ± 1:00 in any order,
+						             but it
+						               contained item 2:00:00 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 1:58:00
+
+						             Collection:
+						             [
+						               1:00:00,
+						               2:00:00,
+						               3:00:00
+						             ]
+
+						             Expected:
+						             [
+						               1:01:00,
+						               1:58:00,
+						               3:00:00
+						             ]
+						             """)
+						.Because("the first item matches only within the default tolerance, which is part of the expectation");
 				}
 			}
 

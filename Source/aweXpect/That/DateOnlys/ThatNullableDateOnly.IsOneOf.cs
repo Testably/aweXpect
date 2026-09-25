@@ -29,7 +29,7 @@ public static partial class ThatNullableDateOnly
 		bool negated)
 	{
 		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		TimeTolerance tolerance = new();
+		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
@@ -57,7 +57,6 @@ public static partial class ThatNullableDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
-			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (actual is null)
 			{
