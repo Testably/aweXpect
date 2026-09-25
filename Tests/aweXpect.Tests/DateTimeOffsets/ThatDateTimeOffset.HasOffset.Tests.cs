@@ -348,7 +348,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has offset not equal to {Formatter.Format(unexpected)},
+					              does not have offset equal to {Formatter.Format(unexpected)},
 					              but it had offset 2:00:00
 					              """);
 			}

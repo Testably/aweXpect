@@ -404,7 +404,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is in ascending order,
-					              but it had {Formatter.Format(Utc)} with Kind Utc and {Formatter.Format(Local)} with Kind Local, which cannot be compared
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -431,7 +431,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is in ascending order by x => x.Value,
-					              but it had {Formatter.Format(Utc)} with Kind Utc and {Formatter.Format(Local)} with Kind Local, which cannot be compared
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -447,7 +447,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is in ascending order,
-					              but it had {Formatter.Format(Utc)} with Kind Utc and {Formatter.Format(Local)} with Kind Local, which cannot be compared
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
 			}
 
@@ -463,7 +463,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is in ascending order by x => x.NullableValue,
-					              but it had {Formatter.Format(Utc)} with Kind Utc and {Formatter.Format(Local)} with Kind Local, which cannot be compared
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
 			}
 

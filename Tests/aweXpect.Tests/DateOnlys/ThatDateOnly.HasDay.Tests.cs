@@ -366,7 +366,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has day not equal to {Formatter.Format(unexpected)},
+					              does not have day equal to {Formatter.Format(unexpected)},
 					              but it had day 12
 					              """);
 			}

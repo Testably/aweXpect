@@ -365,7 +365,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has hour not equal to {Formatter.Format(unexpected)},
+					              does not have hour equal to {Formatter.Format(unexpected)},
 					              but it had hour 13
 					              """);
 			}

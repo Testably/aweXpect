@@ -44,8 +44,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an inner exception whose Message is equal to "some other message",
-					             but Message was "inner" which differs at index 0:
+					             has an inner exception whose message is equal to "some other message",
+					             but message was "inner" which differs at index 0:
 					                ↓ (actual)
 					               "inner"
 					               "some other message"
@@ -144,7 +144,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an inner exception whose Message is equal to "inner",
+					             does not have an inner exception whose message is equal to "inner",
 					             but it had an inner InvalidOperationException:
 					               inner
 

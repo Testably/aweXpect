@@ -406,7 +406,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has year not equal to <null>,
+						             does not have year equal to <null>,
 						             but it was <null>
 						             """);
 				}
@@ -423,7 +423,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has year not equal to {unexpected},
+						              does not have year equal to {unexpected},
 						              but it was <null>
 						              """);
 				}
@@ -464,7 +464,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has year not equal to {Formatter.Format(unexpected)},
+						              does not have year equal to {Formatter.Format(unexpected)},
 						              but it had year 2010
 						              """);
 				}

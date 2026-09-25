@@ -286,7 +286,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has line count not equal to 2,
+					             does not have line count equal to 2,
 					             but it had line count 2
 					             """);
 			}

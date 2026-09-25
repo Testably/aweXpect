@@ -30,8 +30,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName containing "somethingElse",
-					             but ParamName was "message" with a length of 7 which is shorter than the expected length of 13
+					             has param name containing "somethingElse",
+					             but it had param name "message" with a length of 7 which is shorter than the expected length of 13
 					             """);
 			}
 		}
@@ -50,8 +50,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to "somethingElse",
-					             but ParamName was "message" which differs at index 0:
+					             has param name equal to "somethingElse",
+					             but it had param name "message" which differs at index 0:
 					                ↓ (actual)
 					               "message"
 					               "somethingElse"
@@ -96,8 +96,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to "message",
-					             but ParamName was <null>
+					             has param name equal to "message",
+					             but it had param name <null>
 					             """);
 			}
 
@@ -112,7 +112,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to "message",
+					             has param name equal to "message",
 					             but it was <null>
 					             """);
 			}
@@ -133,8 +133,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName not equal to <null>,
-					             but ParamName was <null>
+					             does not have param name equal to <null>,
+					             but it had param name <null>
 					             """);
 			}
 
@@ -178,8 +178,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName not equal to "message",
-					             but ParamName was "message"
+					             does not have param name equal to "message",
+					             but it had param name "message"
 					             """);
 			}
 
@@ -195,7 +195,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName not equal to "message",
+					             does not have param name equal to "message",
 					             but it was <null>
 					             """);
 			}
@@ -215,8 +215,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName not containing "essag",
-					             but ParamName was "message"
+					             does not have param name containing "essag",
+					             but it had param name "message"
 					             """);
 			}
 
@@ -259,8 +259,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName not equal to "message",
-					             but ParamName was "message"
+					             does not have param name equal to "message",
+					             but it had param name "message"
 					             """);
 			}
 		}
@@ -292,8 +292,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to <null>,
-					             but ParamName was "message"
+					             has param name equal to <null>,
+					             but it had param name "message"
 					             """)
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
@@ -310,8 +310,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to "somethingElse",
-					             but ParamName was "message" which differs at index 0:
+					             has param name equal to "somethingElse",
+					             but it had param name "message" which differs at index 0:
 					                ↓ (actual)
 					               "message"
 					               "somethingElse"
@@ -343,7 +343,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ParamName equal to "message",
+					             has param name equal to "message",
 					             but it was <null>
 					             """);
 			}

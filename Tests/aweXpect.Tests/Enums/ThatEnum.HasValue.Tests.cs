@@ -291,6 +291,22 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
+			[Fact]
+			public async Task NotEqualTo_WhenNegated_ShouldExpectEquality()
+			{
+				MyNumbers subject = MyNumbers.One;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotEqualTo(2L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value equal to 2,
+					             but it had value 1
+					             """);
+			}
+
 			[Theory]
 			[InlineData(MyNumbers.One, 2L)]
 			[InlineData(MyNumbers.Two, -7L)]
@@ -317,7 +333,7 @@ public sealed partial class ThatEnum
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has value not equal to {Formatter.Format(unexpected)},
+					              does not have value equal to {Formatter.Format(unexpected)},
 					              but it had value {Formatter.Format((long)subject)}
 					              """);
 			}
@@ -333,7 +349,7 @@ public sealed partial class ThatEnum
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has value not equal to 9223372036854775808,
+					             does not have value equal to 9223372036854775808,
 					             but it had value 9223372036854775808
 					             """);
 			}

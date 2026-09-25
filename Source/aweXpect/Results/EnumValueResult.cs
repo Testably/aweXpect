@@ -117,8 +117,7 @@ public class EnumValueResult<TItem>
 		=> Add(actual => actual?.Equals(expected) == true, $"equal to {formattedExpected}");
 
 	private AndOrResult<TItem, IThat<TItem>> AddNotEqualTo(decimal? unexpected, string formattedUnexpected)
-		=> Add(actual => actual?.Equals(unexpected) != true, $"not equal to {formattedUnexpected}",
-			$"equal to {formattedUnexpected}");
+		=> Add(actual => actual?.Equals(unexpected) != true, $"equal to {formattedUnexpected}", isNegative: true);
 
 	private AndOrResult<TItem, IThat<TItem>> AddGreaterThan(decimal? expected, string formattedExpected)
 		=> Add(actual => actual > expected, $"greater than {formattedExpected}",
@@ -148,12 +147,12 @@ public class EnumValueResult<TItem>
 	private AndOrResult<TItem, IThat<TItem>> Add(
 		Func<decimal?, bool> condition,
 		string expectation,
-		string? negatedExpectation = null,
+		bool isNegative = false,
 		bool isOrderedAgainstNull = false)
 		=> new(_subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new ValueConstraint(it, grammars, _mapper, _propertyExpression, condition, expectation,
-						negatedExpectation, isOrderedAgainstNull)),
+						isNegative, isOrderedAgainstNull)),
 			_subject);
 
 	private sealed class ValueConstraint(
@@ -163,7 +162,7 @@ public class EnumValueResult<TItem>
 		string propertyExpression,
 		Func<decimal?, bool> condition,
 		string expectation,
-		string? negatedExpectation,
+		bool isNegative,
 		bool isOrderedAgainstNull)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 			IValueConstraint<TItem>
@@ -186,21 +185,19 @@ public class EnumValueResult<TItem>
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, false, expectation);
+			=> Append(stringBuilder, isNegative);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ')
 				.Append(_value?.ToString(CultureInfo.InvariantCulture) ?? ValueFormatter.NullString);
 
-		// A comparison that is itself a negation (`not equal to`) is negated by its positive counterpart instead of by
-		// a second `not`.
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, negatedExpectation is null, negatedExpectation ?? expectation);
+			=> Append(stringBuilder, !isNegative);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
 
-		private void Append(StringBuilder stringBuilder, bool isNegated, string comparison)
+		private void Append(StringBuilder stringBuilder, bool isNegated)
 		{
 			string negation = isNegated ? "not " : "";
 			if (Grammars.HasFlag(ExpectationGrammars.Active))
@@ -219,7 +216,7 @@ public class EnumValueResult<TItem>
 					.Append(propertyExpression).Append(' ');
 			}
 
-			stringBuilder.Append(comparison);
+			stringBuilder.Append(expectation);
 		}
 	}
 }

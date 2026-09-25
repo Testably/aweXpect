@@ -131,7 +131,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException whose Message is equal to "outer" and with an inner MyException whose Message is equal to "foo",
+				             throws a MyException whose Message is equal to "outer" and with an inner MyException whose message is equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -151,7 +151,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo" or with an inner MyException whose Message is equal to "bar",
+				             throws a MyException with an inner MyException whose message is equal to "foo" or with an inner MyException whose message is equal to "bar",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -170,7 +170,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             throws a MyException with an inner MyException whose message is equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -189,7 +189,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is not equal to "foo",
+				             throws a MyException with an inner MyException whose message is not equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -208,8 +208,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo",
-				             but Message was "inner" which differs at index 0:
+				             throws a MyException with an inner MyException whose message is equal to "foo",
+				             but message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -232,8 +232,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is not equal to "inner",
-				             but Message was "inner"
+				             throws a MyException with an inner MyException whose message is not equal to "inner",
+				             but message was "inner"
 
 				             Message:
 				             inner
@@ -253,8 +253,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo" and whose Message is equal to "foo",
-				             but it was MyException: inner and Message was "inner" which differs at index 0:
+				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo" and whose message is equal to "foo",
+				             but it was MyException: inner and message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -316,7 +316,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException whose Message is equal to "outer" and with an inner MyException whose Message is equal to "foo",
+				             throws a MyException whose Message is equal to "outer" and with an inner MyException whose message is equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -336,7 +336,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo" and with an inner MyException whose Message is equal to "bar",
+				             throws a MyException with an inner MyException whose message is equal to "foo" and with an inner MyException whose message is equal to "bar",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -356,7 +356,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo" or with an inner MyException whose Message is equal to "bar",
+				             throws a MyException with an inner MyException whose message is equal to "foo" or with an inner MyException whose message is equal to "bar",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -375,7 +375,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             throws a MyException with an inner MyException whose message is equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -394,7 +394,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is not equal to "foo",
+				             throws a MyException with an inner MyException whose message is not equal to "foo",
 				             but it had an inner ArgumentException:
 				               inner
 				             """)
@@ -413,8 +413,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner MyException whose Message is equal to "foo",
-				             but Message was "inner" which differs at index 0:
+				             throws a MyException with an inner MyException whose message is equal to "foo",
+				             but message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -454,8 +454,8 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner exception whose Message is equal to "foo",
-				             but Message was "inner" which differs at index 0:
+				             throws a MyException with an inner exception whose message is equal to "foo",
+				             but message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"

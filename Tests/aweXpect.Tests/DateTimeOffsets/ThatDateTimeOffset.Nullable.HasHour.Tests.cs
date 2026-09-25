@@ -418,7 +418,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has hour not equal to {Formatter.Format(unexpected)},
+						              does not have hour equal to {Formatter.Format(unexpected)},
 						              but it had hour 13
 						              """);
 				}
@@ -435,7 +435,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has hour not equal to <null>,
+						             does not have hour equal to <null>,
 						             but it was <null>
 						             """);
 				}
@@ -452,7 +452,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has hour not equal to {unexpected},
+						              does not have hour equal to {unexpected},
 						              but it was <null>
 						              """);
 				}

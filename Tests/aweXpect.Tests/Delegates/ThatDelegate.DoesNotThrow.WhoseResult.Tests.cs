@@ -36,7 +36,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw any exception and its result is less than {value},
-						              but the result was {value}
+						              but it was {value}
 						              """);
 				}
 
@@ -99,7 +99,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw a ThatDelegate.CustomException and its result is equal to {value + 1},
-						              but the result was {value} which differs by -1
+						              but it was {value} which differs by -1
 						              """);
 				}
 
@@ -162,7 +162,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw a ThatDelegate.CustomException and its result is equal to {value + 1},
-						              but the result was {value} which differs by -1
+						              but it was {value} which differs by -1
 						              """);
 				}
 

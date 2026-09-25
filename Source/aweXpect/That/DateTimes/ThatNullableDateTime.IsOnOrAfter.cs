@@ -96,7 +96,7 @@ public static partial class ThatNullableDateTime
 		{
 			if (_incompatibleKind is not null)
 			{
-				stringBuilder.Append(It).Append(" had Kind ").Append(Actual?.Kind)
+				stringBuilder.Append(It).Append(" had kind ").Append(Actual?.Kind)
 					.Append(", which cannot be compared with ").Append(_incompatibleKind);
 			}
 			else

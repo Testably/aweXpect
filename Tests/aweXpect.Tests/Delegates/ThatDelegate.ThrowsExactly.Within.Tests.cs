@@ -19,7 +19,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
-						             throws exactly an ArgumentException within 0:05 with Message equal to "foo",
+						             throws exactly an ArgumentException within 0:05 with message equal to "foo",
 						             but it did not throw any exception
 						             """);
 				}
@@ -209,7 +209,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
-						             throws exactly an ArgumentException within 0:05 with Message equal to "foo",
+						             throws exactly an ArgumentException within 0:05 with message equal to "foo",
 						             but it did not throw any exception
 						             """);
 				}

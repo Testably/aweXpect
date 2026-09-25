@@ -77,8 +77,8 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
-				             throws an exception with Message equal to "bar",
-				             but Message was "foo" which differs at index 0:
+				             throws an exception with message equal to "bar",
+				             but it had message "foo" which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "bar"

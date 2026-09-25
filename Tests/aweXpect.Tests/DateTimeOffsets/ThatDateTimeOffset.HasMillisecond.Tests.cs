@@ -365,7 +365,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has millisecond not equal to {Formatter.Format(unexpected)},
+					              does not have millisecond equal to {Formatter.Format(unexpected)},
 					              but it had millisecond 167
 					              """);
 			}

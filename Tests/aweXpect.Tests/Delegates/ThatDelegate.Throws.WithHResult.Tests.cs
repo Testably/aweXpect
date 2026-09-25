@@ -22,8 +22,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that Delegate
-						              throws an exception with HResult greater than {hResult - 1} and with Message equal to "bar",
-						              but Message was "foo" which differs at index 0:
+						              throws an exception with HResult greater than {hResult - 1} and with message equal to "bar",
+						              but it had message "foo" which differs at index 0:
 						                 ↓ (actual)
 						                "foo"
 						                "bar"
@@ -49,6 +49,32 @@ public sealed partial class ThatDelegate
 						              Expected that Delegate
 						              throws an HResultException with HResult less than {hResult},
 						              but it had HResult {hResult}
+						              """);
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task ShouldNameEachFailingMember(int hResult)
+				{
+					Exception exception = new HResultException(hResult, "foo");
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.WithHResult().GreaterThan(hResult).And.WithMessage("bar");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that Delegate
+						              throws an exception with HResult greater than {hResult} and with message equal to "bar",
+						              but it had HResult {hResult} and it had message "foo" which differs at index 0:
+						                 ↓ (actual)
+						                "foo"
+						                "bar"
+						                 ↑ (expected)
+
+						              Message:
+						              foo
 						              """);
 				}
 

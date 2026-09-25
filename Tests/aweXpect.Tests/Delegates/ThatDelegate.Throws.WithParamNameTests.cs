@@ -36,8 +36,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName containing "somethingElse",
-						             but ParamName was "message" with a length of 7 which is shorter than the expected length of 13
+						             throws an ArgumentException with param name containing "somethingElse",
+						             but it had param name "message" with a length of 7 which is shorter than the expected length of 13
 						             """);
 				}
 			}
@@ -72,8 +72,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName equal to "somethingElse",
-						             but ParamName was "message" which differs at index 0:
+						             throws an ArgumentException with param name equal to "somethingElse",
+						             but it had param name "message" which differs at index 0:
 						                ↓ (actual)
 						               "message"
 						               "somethingElse"
@@ -113,8 +113,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName not containing "essag",
-						             but ParamName was "message"
+						             throws an ArgumentException with param name not containing "essag",
+						             but it had param name "message"
 						             """);
 				}
 
@@ -163,8 +163,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName not equal to "message",
-						             but ParamName was "message"
+						             throws an ArgumentException with param name not equal to "message",
+						             but it had param name "message"
 						             """);
 				}
 			}
@@ -200,8 +200,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName equal to <null>,
-						             but ParamName was "message"
+						             throws an ArgumentException with param name equal to <null>,
+						             but it had param name "message"
 						             """)
 						.Because("the shorthand compares a null argument as null instead of skipping the check");
 				}
@@ -220,8 +220,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an ArgumentException with ParamName equal to "somethingElse",
-						             but ParamName was "message" which differs at index 0:
+						             throws an ArgumentException with param name equal to "somethingElse",
+						             but it had param name "message" which differs at index 0:
 						                ↓ (actual)
 						               "message"
 						               "somethingElse"

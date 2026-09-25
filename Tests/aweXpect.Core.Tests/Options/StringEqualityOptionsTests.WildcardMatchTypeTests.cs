@@ -303,8 +303,8 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
-				             throws an exception with Message matching "bar",
-				             but Message did not match:
+				             throws an exception with message matching "bar",
+				             but it had message "foo" which did not match:
 				               ↓ (actual)
 				               "foo"
 				               "bar"

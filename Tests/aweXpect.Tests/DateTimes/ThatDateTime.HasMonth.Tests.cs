@@ -365,7 +365,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has month not equal to {Formatter.Format(unexpected)},
+					              does not have month equal to {Formatter.Format(unexpected)},
 					              but it had month 11
 					              """);
 			}

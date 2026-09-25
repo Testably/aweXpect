@@ -143,7 +143,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)}, because we also test the kind property,
-					              but it had Kind Utc, which cannot be compared with Local
+					              but it had kind Utc, which cannot be compared with Local
 					              """);
 			}
 

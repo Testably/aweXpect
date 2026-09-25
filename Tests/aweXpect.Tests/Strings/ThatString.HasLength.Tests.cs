@@ -395,7 +395,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has length not equal to 1,
+					             does not have length equal to 1,
 					             but it was <null>
 					             """);
 			}
@@ -424,7 +424,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has length not equal to {length},
+					              does not have length equal to {length},
 					              but it had length {length}
 					              """);
 			}

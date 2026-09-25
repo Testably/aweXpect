@@ -18,7 +18,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw any exception and its result is equal to 5,
-				             but the result was 4 which differs by -1
+				             but it was 4 which differs by -1
 				             """);
 		}
 
@@ -34,7 +34,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw a MyException and its result is equal to 5,
-				             but the result was 4 which differs by -1
+				             but it was 4 which differs by -1
 				             """);
 		}
 	}

@@ -12,7 +12,7 @@ public static partial class ThatException
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Exception?, Exception?, IThat<Exception?>> HasMessage(
 		this IThat<Exception?> subject)
-		=> new(subject, e => e?.Message, "Message", includeValueInContext: true);
+		=> new(subject, e => e?.Message, "message", includeValueInContext: true);
 
 	/// <summary>
 	///     Verifies that the actual exception has a message equal to <paramref name="expected" />.

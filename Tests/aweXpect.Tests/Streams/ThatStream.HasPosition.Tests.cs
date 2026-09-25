@@ -525,7 +525,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has position not equal to {position},
+					              does not have position equal to {position},
 					              but it had position {position}
 					              """);
 			}
@@ -542,7 +542,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has position not equal to 0,
+					             does not have position equal to 0,
 					             but it could not read the position, because it did throw an ObjectDisposedException:
 					               *
 					             """).AsWildcard()
@@ -560,7 +560,7 @@ public sealed partial class ThatStream
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has position not equal to 1,
+					             does not have position equal to 1,
 					             but it was <null>
 					             """);
 			}

@@ -366,7 +366,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has second not equal to {Formatter.Format(unexpected)},
+					              does not have second equal to {Formatter.Format(unexpected)},
 					              but it had second 15
 					              """);
 			}

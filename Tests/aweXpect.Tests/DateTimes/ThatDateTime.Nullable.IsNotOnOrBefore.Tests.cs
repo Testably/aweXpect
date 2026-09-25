@@ -41,7 +41,7 @@ public sealed partial class ThatDateTime
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)},
-						              but it had Kind {subjectKind}, which cannot be compared with {unexpectedKind}
+						              but it had kind {subjectKind}, which cannot be compared with {unexpectedKind}
 						              """);
 				}
 

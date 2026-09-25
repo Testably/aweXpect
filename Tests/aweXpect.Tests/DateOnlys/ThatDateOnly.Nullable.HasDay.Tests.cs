@@ -419,7 +419,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has day not equal to {Formatter.Format(unexpected)},
+						              does not have day equal to {Formatter.Format(unexpected)},
 						              but it had day 12
 						              """);
 				}
@@ -436,7 +436,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has day not equal to <null>,
+						             does not have day equal to <null>,
 						             but it was <null>
 						             """);
 				}
@@ -453,7 +453,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has day not equal to {Formatter.Format(expected)},
+						              does not have day equal to {Formatter.Format(expected)},
 						              but it was <null>
 						              """);
 				}

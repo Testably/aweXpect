@@ -419,7 +419,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has month not equal to {Formatter.Format(unexpected)},
+						              does not have month equal to {Formatter.Format(unexpected)},
 						              but it had month 11
 						              """);
 				}
@@ -436,7 +436,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has month not equal to <null>,
+						             does not have month equal to <null>,
 						             but it was <null>
 						             """);
 				}
@@ -453,7 +453,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              has month not equal to {Formatter.Format(expected)},
+						              does not have month equal to {Formatter.Format(expected)},
 						              but it was <null>
 						              """);
 				}

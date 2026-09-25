@@ -30,8 +30,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message containing "foo",
-					             but Message was "FOO"
+					             has message containing "foo",
+					             but it had message "FOO"
 
 					             Message:
 					             FOO
@@ -99,7 +99,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message containing "foo",
+					             has message containing "foo",
 					             but it was <null>
 					             """);
 			}
@@ -118,8 +118,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message ending with "foo",
-					             but Message was "foo and some other text"*
+					             has message ending with "foo",
+					             but it had message "foo and some other text"*
 
 					             Message:
 					             foo and some other text
@@ -189,8 +189,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message equal to "expected other text",
-					             but Message was "actual text" which differs at index 0:
+					             has message equal to "expected other text",
+					             but it had message "actual text" which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"
@@ -216,8 +216,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not containing "foo",
-					             but Message was "foo and bar"
+					             does not have message containing "foo",
+					             but it had message "foo and bar"
 
 					             Message:
 					             foo and bar
@@ -236,8 +236,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message containing "foo",
-					             but Message was "actual text"
+					             has message containing "foo",
+					             but it had message "actual text"
 
 					             Message:
 					             actual text
@@ -257,8 +257,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not equal to "foo",
-					             but it could not read the Message, because it did throw an InvalidOperationException:
+					             does not have message equal to "foo",
+					             but it could not read the message, because it did throw an InvalidOperationException:
 					               message failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -277,8 +277,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not equal to "my text",
-					             but Message was "my text"
+					             does not have message equal to "my text",
+					             but it had message "my text"
 
 					             Message:
 					             my text
@@ -337,7 +337,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not containing "foo",
+					             does not have message containing "foo",
 					             but it was <null>
 					             """);
 			}
@@ -380,8 +380,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message not containing "foo",
-					             but Message was "foo and some other text"
+					             does not have message containing "foo",
+					             but it had message "foo and some other text"
 
 					             Message:
 					             foo and some other text
@@ -400,8 +400,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message not containing "foo",
-					             but Message was "some text before foo"
+					             does not have message containing "foo",
+					             but it had message "some text before foo"
 
 					             Message:
 					             some text before foo
@@ -433,8 +433,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message not ending with "foo",
-					             but Message was "some text before foo"
+					             does not have message ending with "foo",
+					             but it had message "some text before foo"
 
 					             Message:
 					             some text before foo
@@ -456,8 +456,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not equal to "my text",
-					             but Message was "my text"
+					             does not have message equal to "my text",
+					             but it had message "my text"
 
 					             Message:
 					             my text
@@ -488,7 +488,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message not equal to "expected text",
+					             does not have message equal to "expected text",
 					             but it was <null>
 					             """);
 			}
@@ -518,8 +518,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message not starting with "foo",
-					             but Message was "foo and some other text"
+					             does not have message starting with "foo",
+					             but it had message "foo and some other text"
 
 					             Message:
 					             foo and some other text
@@ -540,8 +540,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that exception
-					             has Message starting with "foo",
-					             but Message was "some text before foo"*
+					             has message starting with "foo",
+					             but it had message "some text before foo"*
 
 					             Message:
 					             some text before foo
@@ -574,8 +574,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message equal to "foo",
-					             but it could not read the Message, because it did throw an InvalidOperationException:
+					             has message equal to "foo",
+					             but it could not read the message, because it did throw an InvalidOperationException:
 					               message failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -607,8 +607,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message equal to "expected other text",
-					             but Message was "actual text" which differs at index 0:
+					             has message equal to "expected other text",
+					             but it had message "actual text" which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"
@@ -630,7 +630,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has Message equal to "expected text",
+					             has message equal to "expected text",
 					             but it was <null>
 					             """);
 			}
