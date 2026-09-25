@@ -13,6 +13,137 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class Contains
 	{
+		public sealed class SetCollectionTests
+		{
+			[Fact]
+			public async Task Equivalent_ShouldIgnoreTheComparerOfTheSet()
+			{
+				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+
+				async Task Act()
+					=> await That(subject).Contains([11,]).Equivalent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [11,] in order and contiguous using equivalency,
+					             but it lacked the one expected item
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [11]
+					             """);
+			}
+
+			[Fact]
+			public async Task ForASortedSet_InSameOrder_ShouldUseTheComparerOfTheSet()
+			{
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", "c", };
+
+				async Task Act()
+					=> await That(subject).Contains(["B", "C",]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task InAnyOrder_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+
+				async Task Act()
+					=> await That(subject).Contains(["B", "A",]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Using_ShouldOverrideTheComparerOfTheSet()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).Contains(["A",]).InAnyOrder().Using(new AllDifferentComparer());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection ["A",] in any order using AllDifferentComparer,
+					             but it lacked the one expected item
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "A"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsTwoItemsThatTheSetUnifies_ShouldFail()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).Contains(["a", "A",]).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection ["a", "A",] in any order,
+					             but it lacked 1 of 2 expected items: "A"
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "A"
+					             ]
+					             """)
+					.Because("a set holds an item at most once, so one item cannot stand in for two");
+			}
+
+			[Fact]
+			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldSucceed()
+			{
+				HashSet<int> subject = new(new ModuloComparer(10)) { 1, 2, };
+
+				async Task Act()
+					=> await That(subject).Contains([12, 11,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithDefaultComparer_ShouldCompareNumbersOfDifferentTypesByValue()
+			{
+				HashSet<object> subject = [1,];
+
+				async Task Act()
+					=> await That(subject).Contains([1L,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("a set with the default comparer keeps the default equality, which compares numbers by value");
+			}
+
+			private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
+			{
+				public bool Equals(int x, int y) => x % modulus == y % modulus;
+
+				public int GetHashCode(int obj) => obj % modulus;
+			}
+		}
+
 		public sealed class SetItemTests
 		{
 			[Fact]

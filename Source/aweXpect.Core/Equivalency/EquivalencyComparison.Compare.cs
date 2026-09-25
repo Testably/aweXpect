@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -102,6 +105,17 @@ public static partial class EquivalencyComparison
 		AppendEntry(failureBuilder, memberType, memberPath, context);
 		failureBuilder.AppendLine(" differed:");
 		failureBuilder.Append("       Found: ");
+	}
+
+	/// <remarks>
+	///     Mirrors the wording of dictionary <c>IsEqualTo</c> for an expected key that the key comparer of the actual
+	///     dictionary considers the same as another expected key, so that one entry cannot stand in for both.
+	/// </remarks>
+	private static void AppendLackedDistinctKey(StringBuilder failureBuilder, string memberPath,
+		EquivalencyContext context)
+	{
+		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
+		failureBuilder.Append(" lacked a distinct key");
 	}
 
 	private static void AppendMaxRecursionDepthExceeded(StringBuilder failureBuilder, MemberType memberType,
@@ -272,11 +286,11 @@ public static partial class EquivalencyComparison
 				return false;
 			}
 
-			if (TryGetDictionary(actual, out IDictionary? actualDictionary) &&
-			    TryGetDictionary(expected, out IDictionary? expectedDictionary))
+			if (TryGetDictionary(actual, out IDictionary? actualDictionary, out object? actualKeyComparer) &&
+			    TryGetDictionary(expected, out IDictionary? expectedDictionary, out _))
 			{
-				return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberType,
-					memberPath, equivalencyOptions, typeOptions, context);
+				return await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
+					failureBuilder, memberType, memberPath, equivalencyOptions, typeOptions, context);
 			}
 
 			if (actual is IEnumerable actualEnumerable && expected is IEnumerable expectedEnumerable)
@@ -410,16 +424,20 @@ public static partial class EquivalencyComparison
 	///     its entries in. The non-generic <see cref="IDictionary" /> offers that lookup directly, while a type that
 	///     only implements <see cref="IReadOnlyDictionary{TKey,TValue}" /> or <see cref="IDictionary{TKey,TValue}" />
 	///     cannot be asked for a key without its type arguments, so its entries are copied into one. The copy
-	///     compares its keys with their own <see cref="object.Equals(object)" />, because the comparer of the
-	///     original dictionary is out of reach as well. Anything the copy cannot represent - an entry that is not a
-	///     <see cref="KeyValuePair{TKey,TValue}" /> the members of which are readable, or a <see langword="null" />
-	///     key - keeps the comparison as a sequence instead of failing.
+	///     compares its keys like the equality comparer of the original dictionary, and with their own
+	///     <see cref="object.Equals(object)" /> when that comparer cannot be read or only orders the keys. The
+	///     <paramref name="keyComparer" /> is the one the returned <paramref name="dictionary" /> decides with. Anything
+	///     the copy cannot represent - an entry that is not a <see cref="KeyValuePair{TKey,TValue}" /> the members of
+	///     which are readable, or a <see langword="null" /> key - keeps the comparison as a sequence instead of failing.
 	/// </remarks>
-	private static bool TryGetDictionary(object value, [NotNullWhen(true)] out IDictionary? dictionary)
+	private static bool TryGetDictionary(object value, [NotNullWhen(true)] out IDictionary? dictionary,
+		out object? keyComparer)
 	{
+		keyComparer = null;
 		if (value is IDictionary nonGenericDictionary)
 		{
 			dictionary = nonGenericDictionary;
+			keyComparer = GetKeyComparer(value);
 			return true;
 		}
 
@@ -430,7 +448,9 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-		Dictionary<object, object?> entries = new();
+		IEqualityComparer<object>? equalityComparer = GetKeyComparer(value) as IEqualityComparer<object>;
+		keyComparer = equalityComparer;
+		Dictionary<object, object?> entries = new(equalityComparer);
 		Func<object, object?>? getKey = null;
 		Func<object, object?>? getValue = null;
 		foreach (object? entry in (IEnumerable)value)
@@ -454,6 +474,143 @@ public static partial class EquivalencyComparison
 
 		dictionary = entries;
 		return true;
+	}
+
+	/// <summary>
+	///     Returns a comparer for keys of type <see cref="object" /> that decides like the key comparer of the
+	///     <paramref name="dictionary" />, or <see langword="null" /> when that comparer cannot be read.
+	/// </summary>
+	/// <remarks>
+	///     The type arguments of the dictionary are out of reach here, so its comparer cannot be read through a type
+	///     check. It is read instead from the public <c>Comparer</c> or <c>KeyComparer</c> property that the dictionaries
+	///     of the framework expose, and a <see cref="ReadOnlyDictionary{TKey,TValue}" /> is asked for the dictionary it
+	///     wraps. This needs reflection, so it is only attempted while the <see cref="ReflectionFallback" /> is
+	///     supported, which it is not by default when publishing with Native AOT.
+	/// </remarks>
+	private static object? GetKeyComparer(object dictionary)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			return null;
+		}
+
+		Type type = dictionary.GetType();
+		if (IsReadOnlyDictionary(type))
+		{
+			return type.FindProperty("Dictionary", IncludeMembers.Private)?.GetValue(dictionary) is { } inner
+				? GetKeyComparer(inner)
+				: null;
+		}
+
+		PropertyInfo? property = type.FindProperty("Comparer", IncludeMembers.Public) ??
+		                         type.FindProperty("KeyComparer", IncludeMembers.Public);
+		if (property?.GetValue(dictionary) is not { } comparer || !property.PropertyType.IsGenericType)
+		{
+			return null;
+		}
+
+		Type definition = property.PropertyType.GetGenericTypeDefinition();
+		if (definition == typeof(IEqualityComparer<>))
+		{
+			return new KeyEqualityComparer(comparer, property.PropertyType);
+		}
+
+		return definition == typeof(IComparer<>)
+			? new KeyOrderComparer(comparer, property.PropertyType)
+			: null;
+	}
+
+	private static bool IsReadOnlyDictionary(Type type)
+	{
+		for (Type? current = type; current is not null; current = current.BaseType)
+		{
+			if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(ReadOnlyDictionary<,>))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	///     Creates an empty set of keys that treats keys as the same exactly when the <paramref name="keyComparer" />
+	///     does, or with their own <see cref="object.Equals(object)" /> when there is none.
+	/// </summary>
+	private static ISet<object> CreateKeySet(object? keyComparer)
+		=> keyComparer switch
+		{
+			IEqualityComparer<object> equalityComparer => new HashSet<object>(equalityComparer),
+			IComparer<object> comparer => new SortedSet<object>(comparer),
+			_ => new HashSet<object>(),
+		};
+
+	/// <summary>
+	///     Invokes the <paramref name="method" /> of a comparer, with the exception it throws instead of the wrapping
+	///     <see cref="TargetInvocationException" />.
+	/// </summary>
+	private static object? InvokeComparer(MethodInfo method, object comparer, params object[] arguments)
+	{
+		try
+		{
+			return method.Invoke(comparer, arguments);
+		}
+		catch (TargetInvocationException exception) when (exception.InnerException is not null)
+		{
+			ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+			throw;
+		}
+	}
+
+	/// <summary>
+	///     Compares keys with the <see cref="IEqualityComparer{T}" /> <paramref name="comparer" /> of a dictionary, whose
+	///     type argument is only known at runtime.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> key, or one that is not of the key type, is compared with its own
+	///     <see cref="object.Equals(object)" /> and never handed to the comparer, which would reject it.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	[UnconditionalSuppressMessage("Trimming", "IL2070",
+		Justification = "The methods of IEqualityComparer<T> are kept, because the dictionary calls them.")]
+#endif
+	private sealed class KeyEqualityComparer(object comparer, Type comparerType) : IEqualityComparer<object>
+	{
+		private readonly MethodInfo _equals = comparerType.GetMethod(nameof(IEqualityComparer<object>.Equals))!;
+
+		private readonly MethodInfo _getHashCode =
+			comparerType.GetMethod(nameof(IEqualityComparer<object>.GetHashCode))!;
+
+		private readonly Type _keyType = comparerType.GetGenericArguments()[0];
+
+		bool IEqualityComparer<object>.Equals(object? x, object? y)
+			=> _keyType.IsInstanceOfType(x) && _keyType.IsInstanceOfType(y)
+				? (bool)InvokeComparer(_equals, comparer, x!, y!)!
+				: Equals(x, y);
+
+		int IEqualityComparer<object>.GetHashCode(object obj)
+			=> _keyType.IsInstanceOfType(obj)
+				? (int)InvokeComparer(_getHashCode, comparer, obj)!
+				: obj.GetHashCode();
+	}
+
+	/// <summary>
+	///     Orders keys with the <see cref="IComparer{T}" /> <paramref name="comparer" /> of a sorted dictionary, whose
+	///     type argument is only known at runtime.
+	/// </summary>
+	/// <remarks>
+	///     Only orders the keys that the dictionary itself holds or found, which are of its key type and not
+	///     <see langword="null" />.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	[UnconditionalSuppressMessage("Trimming", "IL2070",
+		Justification = "The methods of IComparer<T> are kept, because the dictionary calls them.")]
+#endif
+	private sealed class KeyOrderComparer(object comparer, Type comparerType) : IComparer<object>
+	{
+		private readonly MethodInfo _compare = comparerType.GetMethod(nameof(IComparer<object>.Compare))!;
+
+		int IComparer<object>.Compare(object? x, object? y) => (int)InvokeComparer(_compare, comparer, x!, y!)!;
 	}
 
 	/// <remarks>
@@ -490,11 +647,13 @@ public static partial class EquivalencyComparison
 
 	/// <remarks>
 	///     Every expected key is looked up through the actual dictionary, so that its key comparer decides which keys
-	///     are the same, as it does for <c>IsEqualTo</c>. That comparer is out of reach, so an actual key only counts
-	///     as matched when it equals a matched expected key by its own <see cref="object.Equals(object)" />. The
-	///     remaining keys are therefore only named as superfluous when as many were found as the entry count asks for,
-	///     because a comparer that considers more keys equal than the default one lets that scan overshoot; otherwise
-	///     only the counts are reported.
+	///     are the same, as it does for <c>IsEqualTo</c>. The matched keys are collected with the
+	///     <paramref name="actualKeyComparer" />, so two expected keys that it considers the same count once, and the
+	///     second one is reported as lacking a distinct key. Without that comparer, an actual key only counts as matched
+	///     when it equals a matched expected key by its own <see cref="object.Equals(object)" />. The remaining keys are
+	///     therefore only named as superfluous when as many were found as the entry count asks for, because a comparer
+	///     that considers more keys equal than the default one lets that scan overshoot; otherwise only the counts are
+	///     reported.
 	/// </remarks>
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
@@ -503,6 +662,7 @@ public static partial class EquivalencyComparison
 #endif
 		CompareDictionaries(
 			IDictionary actual,
+			object? actualKeyComparer,
 			IDictionary expected,
 			StringBuilder failureBuilder,
 			MemberType memberType,
@@ -512,13 +672,17 @@ public static partial class EquivalencyComparison
 			EquivalencyContext context)
 	{
 		bool result = true;
-		HashSet<object> matchedKeys = [];
+		ISet<object> matchedKeys = CreateKeySet(actualKeyComparer);
+		HashSet<int> collapsedKeyIndices = [];
+		int index = 0;
 		foreach (object? key in expected.Keys)
 		{
-			if (actual.Contains(key))
+			if (actual.Contains(key) && !matchedKeys.Add(key))
 			{
-				matchedKeys.Add(key);
+				collapsedKeyIndices.Add(index);
 			}
+
+			index++;
 		}
 
 		if (actual.Count != matchedKeys.Count)
@@ -559,8 +723,10 @@ public static partial class EquivalencyComparison
 			}
 		}
 
+		index = 0;
 		foreach (object? key in expected.Keys)
 		{
+			bool isCollapsed = collapsedKeyIndices.Contains(index++);
 			string elementMemberPath = $"{memberPath}[{key}]";
 			if (!matchedKeys.Contains(key))
 			{
@@ -583,6 +749,12 @@ public static partial class EquivalencyComparison
 				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
 			{
 				continue;
+			}
+
+			if (isCollapsed)
+			{
+				AppendLackedDistinctKey(failureBuilder, elementMemberPath, context);
+				result = false;
 			}
 
 			if (!await Compare(actualObject, expected[key],

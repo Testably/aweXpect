@@ -31,6 +31,19 @@ await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().Ignor
 *Note: The items are compared in the order in which the collection enumerates them, also for a `HashSet<T>`, whose
 order is not defined, so use `InAnyOrder()` for it.*
 
+A set that was created with a custom comparer (the same sets as for [`Contains`](#contain)) compares its items with
+that comparer. The same applies to [`Contains` with a subset](#contain-subset) and to
+[`IsContainedIn`](#be-contained-in). Only the comparer of the subject is used, not the one of an expected set. A custom
+comparer, equivalency or a string option such as `IgnoringCase()` takes precedence over the comparer of the set:
+
+```csharp
+HashSet<string> values = new(StringComparer.OrdinalIgnoreCase) { "foo", "bar" };
+
+await Expect.That(values).IsEqualTo(["BAR", "FOO"]).InAnyOrder();
+await Expect.That(values).IsContainedIn(["BAR", "BAZ", "FOO"]).InAnyOrder();
+await Expect.That(values).IsNotEqualTo(["BAR", "FOO"]).InAnyOrder().Using(StringComparer.Ordinal);
+```
+
 For certain types you can also specify a tolerance:
 
 ```csharp
@@ -169,6 +182,10 @@ strings:
 await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
 await Expect.That(["a", "b"]).All().AreUnique().IgnoringCase();
 ```
+
+A set that was created with a custom comparer (the same sets as for [`Contains`](#contain)) never holds two items that
+its comparer considers equal, so its items are unique, unless a custom comparer or a string option such as
+`IgnoringCase()` changes the comparison.
 
 For dictionaries, verify the [values](#keys-and-values) instead, as the keys are unique by design.
 

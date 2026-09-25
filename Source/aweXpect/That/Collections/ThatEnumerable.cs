@@ -27,6 +27,10 @@ public static partial class ThatEnumerable
 	private const string SortOrder = " order";
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
+	/// <remarks>
+	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a set subject with a
+	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>.
+	/// </remarks>
 	private sealed class IsEqualToConstraint<TItem, TMatch>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -36,7 +40,8 @@ public static partial class ThatEnumerable
 		IOptionsEquality<TMatch> options,
 		CollectionMatchOptions matchOptions,
 		bool failsForNullSubject = false,
-		bool withTolerance = false)
+		bool withTolerance = false,
+		Func<bool>? usesDefaultEquality = null)
 		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
@@ -79,10 +84,15 @@ public static partial class ThatEnumerable
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+			IOptionsEquality<TMatch> itemOptions =
+				usesDefaultEquality?.Invoke() == true &&
+				CollectionComparerHelpers.GetCustomSetEquality(actual) is { } setEquality
+					? new SetEqualityOptions(setEquality)
+					: options;
 
 			foreach (TItem item in materializedEnumerable)
 			{
-				var (result, failure) = await matcher.Verify(It, item, options, maximumNumber);
+				var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
 				if (result)
 				{
 					_failure = failure ?? TooManyDeviationsError();
@@ -93,7 +103,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, options, maximumNumber);
+			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, itemOptions, maximumNumber);
 			if (completedResult)
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
@@ -144,6 +154,29 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
 			}
+		}
+
+		/// <summary>
+		///     Compares the items with the equality of a set subject.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> item only equals <see langword="null" /> and is never handed to the comparer,
+		///     because a comparer may reject it.
+		/// </remarks>
+		private sealed class SetEqualityOptions(Func<TItem, TItem, bool> areEqual) : IOptionsEquality<TMatch>
+		{
+#if NET8_0_OR_GREATER
+			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
+				=> ValueTask.FromResult(AreEqual(actual, expected));
+#else
+			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
+				=> Task.FromResult(AreEqual(actual, expected));
+#endif
+
+			private bool AreEqual<TExpected>(TMatch actual, TExpected expected)
+				=> actual is TItem typedActual && expected is TItem typedExpected
+					? areEqual(typedActual, typedExpected)
+					: actual is null && expected is null;
 		}
 	}
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 #if NET8_0_OR_GREATER
 using System.Collections.Concurrent;
@@ -57,6 +58,28 @@ internal static class CollectionComparerHelpers
 			FrozenSet<T> set => IsCustom(set.Comparer),
 #endif
 			_ => false,
+		};
+
+	/// <summary>
+	///     Returns the equality that the comparer of the <paramref name="collection" /> defines, when it is a set that
+	///     exposes a comparer other than the default one for <typeparamref name="T" />, or <see langword="null" />
+	///     otherwise.
+	/// </summary>
+	/// <remarks>
+	///     Covers the same sets as <see cref="IsSetWithCustomComparer{T}" />. A sorted set considers two items the same
+	///     when its comparer orders neither before the other.
+	/// </remarks>
+	public static Func<T, T, bool>? GetCustomSetEquality<T>(IEnumerable<T> collection)
+		=> collection switch
+		{
+			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Equals(x, y),
+			SortedSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Compare(x, y) == 0,
+#if NET8_0_OR_GREATER
+			ImmutableHashSet<T> set when IsCustom(set.KeyComparer) => (x, y) => set.KeyComparer.Equals(x, y),
+			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => (x, y) => set.KeyComparer.Compare(x, y) == 0,
+			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => set.Comparer.Equals(x, y),
+#endif
+			_ => null,
 		};
 
 	/// <summary>

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -844,6 +845,60 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionaryIsAReadOnlyDictionary_WithTwoKeysThatOnlyTheWrappedComparerUnifies_ShouldReportTheKeyWithoutADistinctKey()
+	{
+		ReadOnlyDictionary<string, int> actual = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 1,
+		});
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [b] had superfluous 1
+		                                                and
+		                                                  Element [A] lacked a distinct key
+		                                                """).IgnoringNewlineStyle()
+			.Because("a read-only dictionary looks its keys up through the dictionary it wraps");
+	}
+
+	[Fact]
+	public async Task WhenDictionaryIsASortedDictionary_WithTwoKeysThatOnlyItsComparerUnifies_ShouldReportTheKeyWithoutADistinctKey()
+	{
+		SortedDictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [b] had superfluous 1
+		                                                and
+		                                                  Element [A] lacked a distinct key
+		                                                """).IgnoringNewlineStyle()
+			.Because("a sorted dictionary considers two keys the same when its comparer orders neither before the other");
+	}
+
+	[Fact]
 	public async Task WhenDictionaryIsNestedInAMember_AndSubjectUsesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
 	{
 		var actual = new
@@ -945,6 +1000,52 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectExposesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
+	{
+		ReadOnlyDictionaryOnlyWithComparer<string, int> actual = new(
+			new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+			{
+				["a"] = 1,
+			});
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the entries are copied into a dictionary that uses the comparer the subject exposes");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectHidesItsComparer_ShouldCompareTheKeysByTheirEquality()
+	{
+		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		});
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a] had superfluous 1
+		                                                and
+		                                                  Element [A] was missing 1
+		                                                """).IgnoringNewlineStyle()
+			.Because("a comparer that cannot be read cannot be honoured by the copy of the entries");
+	}
+
+	[Fact]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndValueDiffers_ShouldReportTheKey()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
@@ -1015,7 +1116,7 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
-	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithAnAdditionalKey_ShouldReportTheKeyCounts()
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithAnAdditionalKey_ShouldReportItAsSuperfluous()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
 		{
@@ -1033,13 +1134,37 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  It contained 2 keys and matched 1 expected key
+		                                                  Element [b] had superfluous 2
 		                                                """).IgnoringNewlineStyle()
-			.Because("naming the additional keys would overshoot when the comparer is coarser than the default");
+			.Because("the matched keys are collected with the comparer of the subject, so the remaining keys are exact");
 	}
 
 	[Fact]
-	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_AndTheSecondIsIgnored_ShouldSucceed()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[A]"),],
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyWithoutADistinctKey()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
 		{
@@ -1057,9 +1182,36 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  It contained 1 key and matched 2 expected keys
+		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle()
 			.Because("one entry of the subject cannot stand in for two entries of the expected dictionary");
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifiesAndAnAdditionalKey_ShouldReportBoth()
+	{
+		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [b] had superfluous 1
+		                                                and
+		                                                  Element [A] lacked a distinct key
+		                                                """).IgnoringNewlineStyle()
+			.Because("the collapsed expected key counts only once, so the entry count does not hide the leftover key");
 	}
 
 	[Fact]
@@ -1108,6 +1260,56 @@ public sealed class EquivalencyComparisonTests
 
 		                                                  Element [A] had superfluous 1
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesACustomComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyWithoutADistinctKey()
+	{
+		Dictionary<string, int> actual = new(new CaseInsensitiveComparer())
+		{
+			["a"] = 1,
+			["b"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [b] had superfluous 1
+		                                                and
+		                                                  Element [A] lacked a distinct key
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
+	{
+		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It contained 1 key and matched 2 expected keys
+		                                                """).IgnoringNewlineStyle()
+			.Because("a hashtable does not expose its comparer, so naming the keys could overshoot");
 	}
 
 	[Fact]
@@ -2691,6 +2893,16 @@ public sealed class EquivalencyComparisonTests
 	private static void RegisterPhantomField()
 		=> TypeMetadataRegistry.RegisterField<RegisteredFieldProbe, int>("Phantom", x => x.PhantomValue());
 
+	/// <remarks>
+	///     Implements only the generic <see cref="IEqualityComparer{T}" />, unlike <see cref="StringComparer" />.
+	/// </remarks>
+	private sealed class CaseInsensitiveComparer : IEqualityComparer<string>
+	{
+		public bool Equals(string? x, string? y) => string.Equals(x, y, StringComparison.OrdinalIgnoreCase);
+
+		public int GetHashCode(string obj) => StringComparer.OrdinalIgnoreCase.GetHashCode(obj);
+	}
+
 	private sealed class ClassWithOnlyPrivateState(int value)
 	{
 		private readonly int _value = value;
@@ -2760,6 +2972,24 @@ public sealed class EquivalencyComparisonTests
 		: IReadOnlyDictionary<TKey, TValue>
 		where TKey : notnull
 	{
+		public int Count => entries.Count;
+		public IEnumerable<TKey> Keys => entries.Keys;
+		public IEnumerable<TValue> Values => entries.Values;
+		public TValue this[TKey key] => entries[key];
+		public bool ContainsKey(TKey key) => entries.ContainsKey(key);
+		public bool TryGetValue(TKey key, out TValue value) => entries.TryGetValue(key, out value!);
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => entries.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	/// <remarks>
+	///     Like <see cref="ReadOnlyDictionaryOnly{TKey,TValue}" />, but exposes the comparer of its entries.
+	/// </remarks>
+	private sealed class ReadOnlyDictionaryOnlyWithComparer<TKey, TValue>(Dictionary<TKey, TValue> entries)
+		: IReadOnlyDictionary<TKey, TValue>
+		where TKey : notnull
+	{
+		public IEqualityComparer<TKey> Comparer => entries.Comparer;
 		public int Count => entries.Count;
 		public IEnumerable<TKey> Keys => entries.Keys;
 		public IEnumerable<TValue> Values => entries.Values;
