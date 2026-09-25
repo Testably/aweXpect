@@ -329,7 +329,7 @@ public sealed partial class ThatDictionary
 			}
 
 			[Theory]
-			[MemberData(nameof(CaseInsensitiveDictionaries))]
+			[MemberData(nameof(CaseInsensitiveDictionaries), DisableDiscoveryEnumeration = true)]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoExpectedKeysForOneEntry_ShouldFail(
 				IDictionary<string, int> subject)
 			{
