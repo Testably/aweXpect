@@ -28,3 +28,5 @@ aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>
 aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.IgnoringInterspersedItems() -> TSelf!
 aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
 aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionContainmentResult<TType, TThat>!
+static aweXpect.ThatBool.DoesNotImply(this aweXpect.Core.IThat<bool>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
+static aweXpect.ThatNullableBool.DoesNotImply(this aweXpect.Core.IThat<bool?>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
