@@ -54,7 +54,6 @@ public partial class ThatDelegateThrows<TException>
 					grammars => grammars | ExpectationGrammars.Introduced),
 			this);
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
 	///     <paramref name="memberSelector" />.
@@ -73,5 +72,4 @@ public partial class ThatDelegateThrows<TException>
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
 		=> Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
-#endif
 }

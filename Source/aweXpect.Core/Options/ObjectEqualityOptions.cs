@@ -34,71 +34,37 @@ internal static class ObjectEqualityOptions
 		#region IEquality Members
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		{
 			if (actual is null && expected is null)
 			{
-				return ValueTask.FromResult(true);
+				return new ValueTask<bool>(true);
 			}
 
 			if (actual is null || expected is null)
 			{
-				return ValueTask.FromResult(false);
+				return new ValueTask<bool>(false);
 			}
 
 			if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 			{
-				return ValueTask.FromResult(false);
+				return new ValueTask<bool>(false);
 			}
 
 			if (expected is TActual castedExpected &&
 			    EqualityComparer<TActual>.Default.Equals(actual, castedExpected))
 			{
-				return ValueTask.FromResult(true);
+				return new ValueTask<bool>(true);
 			}
 
 			if (typeof(TActual) == typeof(object) &&
 			    AreNumericsEqual(actual, expected))
 			{
-				return ValueTask.FromResult(true);
+				return new ValueTask<bool>(true);
 			}
 
-			return ValueTask.FromResult(Equals(actual, expected));
+			return new ValueTask<bool>(Equals(actual, expected));
 		}
-#else
-		public Task<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		{
-			if (actual is null && expected is null)
-			{
-				return Task.FromResult(true);
-			}
-
-			if (actual is null || expected is null)
-			{
-				return Task.FromResult(false);
-			}
-
-			if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
-			{
-				return Task.FromResult(false);
-			}
-
-			if (expected is TActual castedExpected &&
-			    EqualityComparer<TActual>.Default.Equals(actual, castedExpected))
-			{
-				return Task.FromResult(true);
-			}
-
-			if (typeof(TActual) == typeof(object) &&
-			    AreNumericsEqual(actual, expected))
-			{
-				return Task.FromResult(true);
-			}
-
-			return Task.FromResult(Equals(actual, expected));
-		}
-#endif
 
 		private static bool AreNumericsEqual(object actual, object expected)
 		{
@@ -232,11 +198,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	protected IObjectMatchType MatchType = ObjectEqualityOptions.EqualsMatch;
 
 	/// <inheritdoc />
-#if NET8_0_OR_GREATER
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
-#else
-	public Task<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
-#endif
 		=> MatchType.AreConsideredEqual(actual, expected);
 
 	/// <summary>

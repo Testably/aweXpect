@@ -181,11 +181,7 @@ public static partial class ThatAsyncEnumerable
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Func<ExpectationGrammars, string> _expectationText;
 		private readonly ExpectationGrammars _grammars;
-#if NET8_0_OR_GREATER
 		private readonly Func<TItem, ValueTask<bool>> _predicate;
-#else
-		private readonly Func<TItem, Task<bool>> _predicate;
-#endif
 		private readonly EnumerableQuantifier _quantifier;
 		private readonly string _verb;
 		private int _matchingCount;
@@ -200,11 +196,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 			Func<TItem, ValueTask<bool>> predicate,
-#else
-			Func<TItem, Task<bool>> predicate,
-#endif
 			string verb) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
@@ -721,13 +713,8 @@ public static partial class ThatAsyncEnumerable
 
 		private sealed class NoOptions : IOptionsEquality<TMatch>
 		{
-#if NET8_0_OR_GREATER
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> ValueTask.FromResult(Equals(actual, expected));
-#else
-			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> Task.FromResult(Equals(actual, expected));
-#endif
+				=> new ValueTask<bool>(Equals(actual, expected));
 		}
 	}
 
@@ -863,13 +850,8 @@ public static partial class ThatAsyncEnumerable
 
 		private sealed class NoOptions : IOptionsEquality<TMatch>
 		{
-#if NET8_0_OR_GREATER
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> ValueTask.FromResult(Equals(actual, expected));
-#else
-			public Task<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> Task.FromResult(Equals(actual, expected));
-#endif
+				=> new ValueTask<bool>(Equals(actual, expected));
 		}
 	}
 

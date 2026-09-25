@@ -23,11 +23,7 @@ public partial class CollectionMatchOptions
 	{
 		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
 
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#else
-		protected override Task<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#endif
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -42,11 +38,7 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool>
-#else
-		protected override Task<bool>
-#endif
 			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
 			=> expected.IsMetBy(value);
 	}
@@ -62,15 +54,9 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> ValueTask.FromResult(expected.Compile().Invoke(value));
-#else
-		protected override Task<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
-			=> Task.FromResult(expected.Compile().Invoke(value));
-#endif
+			=> new ValueTask<bool>(expected.Compile().Invoke(value));
 	}
 
 	private abstract class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
@@ -123,11 +109,7 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
 
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
@@ -203,11 +185,7 @@ public partial class CollectionMatchOptions
 		///     Only the unique items of the subject have to appear in the expected collection, so an item that repeats
 		///     an earlier one is skipped; the expected items it never consumes are no deviations for this relation.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask<(bool, string?)>
-#else
-		private async Task<(bool, string?)>
-#endif
 			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
@@ -230,11 +208,7 @@ public partial class CollectionMatchOptions
 		}
 
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
@@ -361,11 +335,7 @@ public partial class CollectionMatchOptions
 		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
 		///     otherwise be a deviation.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
 		{
 			int alignment = _alignment;
@@ -416,11 +386,7 @@ public partial class CollectionMatchOptions
 		///     The offsets at which the run can still continue with the <paramref name="value" />, each with the cursor
 		///     behind the expected item it matched.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<List<(int Offset, int Cursor)>>
-#else
-		private async Task<List<(int Offset, int Cursor)>>
-#endif
 			FindTheRemainingCandidates(T value, IOptionsEquality<T2> options)
 		{
 			List<(int Offset, int Cursor)> candidates = new();
@@ -453,11 +419,7 @@ public partial class CollectionMatchOptions
 		///     Expected items that repeat an earlier one do not interrupt the run, because duplicates are ignored.
 		/// </summary>
 		/// <returns>The index of the matching expected item, or <c>-1</c> when the run ends before it.</returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<int>
-#else
-		private async Task<int>
-#endif
 			FindTheNextMatchingExpectedItem(int cursor, T value, IOptionsEquality<T2> options)
 		{
 			while (cursor < _expectedItems.Length)
@@ -486,11 +448,7 @@ public partial class CollectionMatchOptions
 		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
 		///     otherwise be a deviation.
 		/// </returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
 		{
 			for (int i = _matchIndex; i < _expectedItems.Length; i++)
@@ -525,11 +483,7 @@ public partial class CollectionMatchOptions
 			return false;
 		}
 
-#if NET8_0_OR_GREATER
 		private async ValueTask
-#else
-		private async Task
-#endif
 			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
 			if (_expectationIndex >= 0)
@@ -570,11 +524,7 @@ public partial class CollectionMatchOptions
 			}
 		}
 
-#if NET8_0_OR_GREATER
 		private async ValueTask
-#else
-		private async Task
-#endif
 			VerifyTheCurrentValueIsEqualToTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
 			RecordTheMatchedExpectedItem(_expectedDistinctItems[_matchIndex]);
@@ -597,11 +547,7 @@ public partial class CollectionMatchOptions
 		///     Only a <paramref name="value" /> that would be a deviation is compared with the matched expected items,
 		///     because an item outside the matched run of the containment relation needs no such comparison.
 		/// </remarks>
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			IsDuplicate(T value, IOptionsEquality<T2> options, bool wouldBeADeviation)
 		{
 			if (_uniqueItems.Contains(value) ||
@@ -618,11 +564,7 @@ public partial class CollectionMatchOptions
 		///     As this compares the <paramref name="value" /> with every matched expected item, it is only checked for an
 		///     item that would otherwise be a deviation.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			RepeatsAMatchedExpectedItem(T value, IOptionsEquality<T2> options)
 			=> RepeatingAMatchedExpectedItemIsADuplicate &&
 			   await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options));
@@ -641,11 +583,7 @@ public partial class CollectionMatchOptions
 		private Func<object?, string> CreateItemFormatter()
 			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
-#if NET8_0_OR_GREATER
 		protected abstract ValueTask<bool>
-#else
-		protected abstract Task<bool>
-#endif
 			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
 	}
 }

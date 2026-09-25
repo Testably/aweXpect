@@ -61,11 +61,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
 	///     instead of only when the returned task is awaited.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
-#else
-	public Task<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
-#endif
 	{
 		if (expected is not string expectedString)
 		{
@@ -82,11 +78,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
 	///     <paramref name="expected" /> pattern.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	private async ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected)
-#else
-	private async Task<bool> AreConsideredEqualToPattern(string? actual, string expected)
-#endif
 	{
 		try
 		{
@@ -110,11 +102,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
 	///     instead of only when the returned task is awaited.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	public ValueTask<int> CountOccurrences(string actual, string expected)
-#else
-	public Task<int> CountOccurrences(string actual, string expected)
-#endif
 	{
 		actual = Normalize(actual);
 		expected = Normalize(expected);
@@ -122,11 +110,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		int? count = expected.Length == 0 ? 0 : CountOccurrencesWithoutWindow(actual, expected);
 		if (count is not null)
 		{
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(count.Value);
-#else
-			return Task.FromResult(count.Value);
-#endif
+			return new ValueTask<int>(count.Value);
 		}
 
 		return CountOccurrencesWithWindow(actual, expected);
@@ -170,11 +154,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> string by
 	///     comparing it with a window of the same length.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	private async ValueTask<int> CountOccurrencesWithWindow(string actual, string expected)
-#else
-	private async Task<int> CountOccurrencesWithWindow(string actual, string expected)
-#endif
 	{
 		int count = 0;
 		int index = 0;

@@ -138,11 +138,7 @@ public partial class StringEqualityOptions
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool>
-#else
-		public Task<bool>
-#endif
 			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
@@ -159,11 +155,7 @@ public partial class StringEqualityOptions
 				         MatchesAt(actualLines, 0, expectedLines, comparer ?? UseDefaultComparer(ignoreCase));
 			}
 
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(result);
-#else
-			return Task.FromResult(result);
-#endif
+			return new ValueTask<bool>(result);
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

@@ -19,11 +19,7 @@ public static partial class EquivalencyComparison
 	/// <remarks>
 	///     In case of a difference, the <paramref name="failureBuilder" /> contains a human readable explanation.
 	/// </remarks>
-#if NET8_0_OR_GREATER
 	public static ValueTask<bool>
-#else
-	public static Task<bool>
-#endif
 		Compare<TActual, TExpected>(
 			[RequiresMemberMetadata] TActual actual,
 			[RequiresMemberMetadata] TExpected expected,

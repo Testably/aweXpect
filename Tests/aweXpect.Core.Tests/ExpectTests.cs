@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-#if NET8_0_OR_GREATER
 using System.Threading.Tasks.Sources;
-#endif
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -82,7 +80,23 @@ public class ExpectTests
 			             """);
 	}
 
-#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task ShouldAwaitValueTaskSubject()
+	{
+		ValueTask<string?> sut = new(Task.FromResult<string?>(null));
+
+		async Task Act()
+			=> await That(sut).IsNotNull();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is not null,
+			             but it was
+			             """)
+			.Because("the result of the ValueTask must become the subject, not the ValueTask itself");
+	}
+
 	[Fact]
 	public async Task ShouldConsumeValueTaskSubjectOnlyOnce()
 	{
@@ -100,7 +114,6 @@ public class ExpectTests
 		await That(Act).DoesNotThrow()
 			.Because("the ValueTask must be consumed when the expectation is created, not on every evaluation");
 	}
-#endif
 
 	[Fact]
 	public async Task ShouldFailForNullTaskSubject()
@@ -135,7 +148,6 @@ public class ExpectTests
 			             """);
 	}
 
-#if NET8_0_OR_GREATER
 	[Fact]
 	public async Task ShouldObserveExceptionOfValueTaskSubject()
 	{
@@ -152,7 +164,6 @@ public class ExpectTests
 			               my exception
 			             """);
 	}
-#endif
 
 	[Fact]
 	public async Task ShouldSupportCollectionExpressionsAsSubject()
@@ -174,20 +185,17 @@ public class ExpectTests
 		await That(Act).DoesNotThrow();
 	}
 
-#if NET8_0_OR_GREATER
 	[Fact]
 	public async Task ShouldSupportValueTaskAsSubject()
 	{
-		ValueTask<int> sut = ValueTask.FromResult(42);
+		ValueTask<int> sut = new(42);
 
 		async Task Act()
 			=> await That(sut).IsGreaterThan(41);
 
 		await That(Act).DoesNotThrow();
 	}
-#endif
 
-#if NET8_0_OR_GREATER
 	/// <remarks>
 	///     A <see cref="ValueTask" /> backed by this source detects a second consumption, which a
 	///     <see cref="Task" />-backed one would silently allow.
@@ -216,7 +224,6 @@ public class ExpectTests
 
 		#endregion
 	}
-#endif
 
 	private sealed class MyExpectation(Expectation.Result result, params ResultContext[] contexts) : Expectation
 	{

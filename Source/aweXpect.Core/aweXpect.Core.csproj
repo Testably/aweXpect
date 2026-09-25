@@ -14,6 +14,10 @@
 		<EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml"/>
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="System.Threading.Tasks.Extensions"/>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all"/>
 		<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt"/>

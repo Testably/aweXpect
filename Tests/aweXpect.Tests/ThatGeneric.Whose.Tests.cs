@@ -201,7 +201,6 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberConditionIsNotSatisfied_ShouldFail()
 			{
@@ -234,7 +233,6 @@ public sealed partial class ThatGeneric
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
 
 			[Fact]
 			public async Task WhenAsyncMemberIsChainedAfterDelegateResult_ShouldVerifyAwaitedValue()
@@ -437,7 +435,6 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberFaults_ShouldFail()
 			{
@@ -455,7 +452,6 @@ public sealed partial class ThatGeneric
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
-#endif
 
 			[Fact]
 			public async Task WhenMemberThrows_AndMemberExpectationThrowsOnDefault_ShouldFail()
@@ -601,7 +597,6 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
@@ -619,7 +614,6 @@ public sealed partial class ThatGeneric
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
-#endif
 
 			[Fact]
 			public async Task WhenSubjectIsNull_AndMemberExpectationThrowsOnDefault_ShouldFail()
@@ -732,7 +726,6 @@ public sealed partial class ThatGeneric
 						.WithCancellation(cts.Token);
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenValueTaskMemberNeverCompletes_ShouldAbortOnCancellation()
 			{
@@ -750,7 +743,6 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.HangValueTaskAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
 			}
-#endif
 
 			private sealed class CancelingClass(CancellationTokenSource cts)
 			{
@@ -776,10 +768,8 @@ public sealed partial class ThatGeneric
 				public Task<int> HangAsync()
 					=> new TaskCompletionSource<int>().Task;
 
-#if NET8_0_OR_GREATER
 				public ValueTask<int> HangValueTaskAsync()
 					=> new(new TaskCompletionSource<int>().Task);
-#endif
 
 				public async Task<int> FaultedAsync()
 				{
@@ -790,13 +780,11 @@ public sealed partial class ThatGeneric
 				public Task<int> ThrowsBeforeReturningTask()
 					=> throw new InvalidOperationException("thrown before returning the task");
 
-#if NET8_0_OR_GREATER
 				public async ValueTask<int> FaultedValueTaskAsync()
 				{
 					await Task.Yield();
 					throw new InvalidOperationException("async member failed");
 				}
-#endif
 #pragma warning restore CA1822
 			}
 
@@ -810,13 +798,11 @@ public sealed partial class ThatGeneric
 					return Value;
 				}
 
-#if NET8_0_OR_GREATER
 				public async ValueTask<int> GetValueAsValueTaskAsync()
 				{
 					await Task.Yield();
 					return Value;
 				}
-#endif
 			}
 
 			[Fact]

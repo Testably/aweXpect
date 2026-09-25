@@ -12,11 +12,7 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 	private readonly StringBuilder _failureBuilder = new();
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-#if NET8_0_OR_GREATER
 	public async ValueTask<bool>
-#else
-	public async Task<bool>
-#endif
 		AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 	{
 		_failureBuilder.Clear();

@@ -15,11 +15,7 @@ public partial class CollectionMatchOptions
 		: AnyOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#else
-		protected override Task<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#endif
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -29,11 +25,7 @@ public partial class CollectionMatchOptions
 		: AnyOrderCollectionMatcherBase<T, T2, ExpectationItem<T>>(equivalenceRelation, expected)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool>
-#else
-		protected override Task<bool>
-#endif
 			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
 			=> expected.IsMetBy(value);
 	}
@@ -44,15 +36,9 @@ public partial class CollectionMatchOptions
 		: AnyOrderCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(equivalenceRelation, expected)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> ValueTask.FromResult(expected.Compile().Invoke(value));
-#else
-		protected override Task<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
-			=> Task.FromResult(expected.Compile().Invoke(value));
-#endif
+			=> new ValueTask<bool>(expected.Compile().Invoke(value));
 	}
 
 	private abstract class AnyOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
@@ -71,11 +57,7 @@ public partial class CollectionMatchOptions
 			_totalExpectedCount = _missingItems.Count;
 		}
 
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (await All(_missingItems, e => AreConsideredEqual(value, e, options), true))
@@ -90,21 +72,13 @@ public partial class CollectionMatchOptions
 				: (false, null);
 		}
 
-#if NET8_0_OR_GREATER
 		public ValueTask<(bool, string?)>
-#else
-		public Task<(bool, string?)>
-#endif
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_additionalItems.Count + _missingItems.Count > 2 * maximumNumber)
 			{
 				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
-#if NET8_0_OR_GREATER
-				return ValueTask.FromResult<(bool, string?)>((true, tooManyDeviations));
-#else
-				return Task.FromResult<(bool, string?)>((true, tooManyDeviations));
-#endif
+				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
 			}
 
 			Func<object?, string> formatItem = CreateItemFormatter();
@@ -128,11 +102,7 @@ public partial class CollectionMatchOptions
 			}
 
 			string? error = ReturnErrorString(it, errors);
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult<(bool, string?)>((error != null, error));
-#else
-			return Task.FromResult<(bool, string?)>((error != null, error));
-#endif
+			return new ValueTask<(bool, string?)>((error != null, error));
 		}
 
 		/// <summary>
@@ -149,11 +119,7 @@ public partial class CollectionMatchOptions
 		private Func<object?, string> CreateItemFormatter()
 			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
-#if NET8_0_OR_GREATER
 		protected abstract ValueTask<bool>
-#else
-		protected abstract Task<bool>
-#endif
 			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
 	}
 }

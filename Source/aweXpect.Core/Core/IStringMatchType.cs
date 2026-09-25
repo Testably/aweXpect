@@ -13,11 +13,7 @@ public interface IStringMatchType
 	///     Returns <see langword="true" /> if the two strings <paramref name="actual" /> and <paramref name="expected" /> are
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	ValueTask<bool>
-#else
-	Task<bool>
-#endif
 	AreConsideredEqual(string? actual, string? expected,
 		bool ignoreCase,
 		IEqualityComparer<string>? comparer);

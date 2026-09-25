@@ -8,3 +8,28 @@ static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterExplicitProperty<T, T
 *REMOVED*aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
 aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
 *REMOVED*aweXpect.Options.StringEqualityOptions.StringEqualityOptions() -> void
+*REMOVED*aweXpect.Core.ICollectionMatcher<T, T2>.Verify(string! it, T value, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.Task<(bool, string?)>!
+aweXpect.Core.ICollectionMatcher<T, T2>.Verify(string! it, T value, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.ValueTask<(bool, string?)>
+*REMOVED*aweXpect.Core.ICollectionMatcher<T, T2>.VerifyComplete(string! it, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.Task<(bool, string?)>!
+aweXpect.Core.ICollectionMatcher<T, T2>.VerifyComplete(string! it, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.ValueTask<(bool, string?)>
+*REMOVED*aweXpect.Core.IObjectMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IObjectMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Core.IOptionsEquality<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IOptionsEquality<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Core.IStringMatchType.AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IStringMatchType.AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsMetBy(TItem value) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsMetBy(TItem value) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Options.StringEqualityOptions.AreConsideredEqual<TExpected>(string? actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.StringEqualityOptions.AreConsideredEqual<TExpected>(string? actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected) -> System.Threading.Tasks.Task<int>!
+aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected) -> System.Threading.Tasks.ValueTask<int>
+*REMOVED*static aweXpect.Equivalency.EquivalencyComparison.Compare<TActual, TExpected>(TActual actual, TExpected expected, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions, System.Text.StringBuilder! failureBuilder) -> System.Threading.Tasks.Task<bool>!
+static aweXpect.Equivalency.EquivalencyComparison.Compare<TActual, TExpected>(TActual actual, TExpected expected, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions, System.Text.StringBuilder! failureBuilder) -> System.Threading.Tasks.ValueTask<bool>
+~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.Whose<TMember>(System.Func<TType, System.Threading.Tasks.ValueTask<TMember>>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
+~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult.AndWhose<TMember>(System.Func<TType, System.Threading.Tasks.ValueTask<TMember>>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+static aweXpect.Expect.That<T>(System.Threading.Tasks.ValueTask<T> subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThatSubject<T>!
+static aweXpect.Expect.That(System.Threading.Tasks.ValueTask subject, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!

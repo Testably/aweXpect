@@ -26,11 +26,7 @@ internal struct AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		=> task.ContinueWith(static t => _ = t.Exception,
 			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
 
-#if NET8_0_OR_GREATER
 	public async ValueTask<ConstraintResult>
-#else
-	public async Task<ConstraintResult>
-#endif
 		ApplyTo(ConstraintResult result)
 	{
 		if (_message is null)

@@ -17,11 +17,7 @@ public partial class CollectionMatchOptions
 		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#else
-		protected override Task<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-#endif
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -33,11 +29,7 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool>
-#else
-		protected override Task<bool>
-#endif
 			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
 			=> expected.IsMetBy(value);
 	}
@@ -50,15 +42,9 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-#if NET8_0_OR_GREATER
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> ValueTask.FromResult(expected.Compile().Invoke(value));
-#else
-		protected override Task<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
-			=> Task.FromResult(expected.Compile().Invoke(value));
-#endif
+			=> new ValueTask<bool>(expected.Compile().Invoke(value));
 	}
 
 	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
@@ -98,11 +84,7 @@ public partial class CollectionMatchOptions
 			_totalExpectedItems = _expectedItems.Length;
 		}
 
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
@@ -171,11 +153,7 @@ public partial class CollectionMatchOptions
 
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
 
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
@@ -256,11 +234,7 @@ public partial class CollectionMatchOptions
 		///     end of the subject are missing; when fewer edits align the subject with the expected items, e.g. because
 		///     an item was inserted, these edits are reported instead.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask<(bool, string?)>
-#else
-		private async Task<(bool, string?)>
-#endif
 			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _index);
@@ -291,11 +265,7 @@ public partial class CollectionMatchOptions
 		///     An additional item that matches a missing item was moved, so both are reported as one item in the wrong
 		///     order.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask<(bool, string?)>
-#else
-		private async Task<(bool, string?)>
-#endif
 			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
 				IOptionsEquality<T2> options)
 		{
@@ -394,11 +364,7 @@ public partial class CollectionMatchOptions
 			return (error != null, error);
 		}
 
-#if NET8_0_OR_GREATER
 		private async ValueTask
-#else
-		private async Task
-#endif
 			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
 			if (_expectationIndex >= 0)
@@ -442,11 +408,7 @@ public partial class CollectionMatchOptions
 		///     when the last one is abandoned, the <paramref name="value" /> and all later items are reported against the
 		///     first abandoned offset, unless they still match the item at that offset.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask
-#else
-		private async Task
-#endif
 			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
 		{
 			if (!_runIsBroken)
@@ -478,11 +440,7 @@ public partial class CollectionMatchOptions
 		///     next expected item it matches.
 		/// </summary>
 		/// <returns>The offsets at which the run can still continue with the <paramref name="value" />.</returns>
-#if NET8_0_OR_GREATER
 		private async ValueTask<List<int>>
-#else
-		private async Task<List<int>>
-#endif
 			FindTheRemainingCandidateOffsets(T value, IOptionsEquality<T2> options)
 		{
 			List<int> candidateOffsets = new();
@@ -515,11 +473,7 @@ public partial class CollectionMatchOptions
 		///     Consumes the expected items until the <paramref name="value" /> matches, so that gaps in the expected
 		///     collection are allowed, but the subject items must keep their relative order.
 		/// </summary>
-#if NET8_0_OR_GREATER
 		private async ValueTask
-#else
-		private async Task
-#endif
 			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
 		{
 			for (int i = _matchIndex; i < _expectedItems.Length; i++)
@@ -555,11 +509,7 @@ public partial class CollectionMatchOptions
 		///     removed items instead of every shifted item; the positional deviations are only recorded as far as they
 		///     can be listed.
 		/// </remarks>
-#if NET8_0_OR_GREATER
 		private async ValueTask<(bool, string?)>
-#else
-		private async Task<(bool, string?)>
-#endif
 			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
@@ -606,11 +556,7 @@ public partial class CollectionMatchOptions
 		private Func<object?, string> CreateItemFormatter()
 			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
-#if NET8_0_OR_GREATER
 		protected abstract ValueTask<bool>
-#else
-		protected abstract Task<bool>
-#endif
 			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
 	}
 }

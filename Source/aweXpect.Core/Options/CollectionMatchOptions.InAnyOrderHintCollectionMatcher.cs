@@ -20,22 +20,14 @@ public partial class CollectionMatchOptions
 		private const string Hint = "(but the items match in a different order)";
 		private readonly List<T> _values = new();
 
-#if NET8_0_OR_GREATER
 		public ValueTask<(bool, string?)>
-#else
-		public Task<(bool, string?)>
-#endif
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			_values.Add(value);
 			return inOrderMatcher.Verify(it, value, options, maximumNumber);
 		}
 
-#if NET8_0_OR_GREATER
 		public async ValueTask<(bool, string?)>
-#else
-		public async Task<(bool, string?)>
-#endif
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			(bool isFailure, string? error) = await inOrderMatcher.VerifyComplete(it, options, maximumNumber);
@@ -47,11 +39,7 @@ public partial class CollectionMatchOptions
 			return (isFailure, error + Environment.NewLine + Hint);
 		}
 
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
 			MatchesInAnyOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			ICollectionMatcher<T, T2> matcher = anyOrderMatcher();

@@ -42,11 +42,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.AsRegex();
-#if NET8_0_OR_GREATER
 			ValueTask<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
-#else
-			Task<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
-#endif
 
 			async Task Act() => await task;
 

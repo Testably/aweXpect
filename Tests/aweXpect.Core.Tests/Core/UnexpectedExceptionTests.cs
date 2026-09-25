@@ -186,7 +186,6 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-#if NET8_0_OR_GREATER
 	[Fact]
 	public async Task ValueTask_WhenFailed_ShouldRenderTypeAndIndentedMessage()
 	{
@@ -203,5 +202,4 @@ public sealed class UnexpectedExceptionTests
 			               failure
 			             """);
 	}
-#endif
 }

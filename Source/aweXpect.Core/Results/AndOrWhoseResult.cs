@@ -85,7 +85,6 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 					grammars => grammars | ExpectationGrammars.Introduced),
 			_returnValue);
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
 	///     <paramref name="memberSelector" />.
@@ -105,7 +104,6 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			[CallerArgumentExpression("memberSelector")]
 			string doNotPopulateThisValue = "")
 		=> Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
-#endif
 
 	/// <summary>
 	///     The result of an additional expectation for the underlying type.
@@ -182,7 +180,6 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				_returnValue);
 		}
 
-#if NET8_0_OR_GREATER
 		/// <summary>
 		///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
 		///     <paramref name="memberSelector" />.
@@ -202,6 +199,5 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				[CallerArgumentExpression("memberSelector")]
 				string doNotPopulateThisValue = "")
 			=> AndWhose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
-#endif
 	}
 }
