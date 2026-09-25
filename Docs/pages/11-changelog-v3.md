@@ -261,7 +261,7 @@ name the subject that had them. A custom quantifier has to add the parameter.
   checked the delegate instead of what it does, and offers a code fix. Because it is an error, an expectation such as
   `Expect.That(() => sut.Count()).IsEqualTo(1)` that used to compile now has to be written as
   `Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`. See
-  [Delegates](/docs/expectations/delegates#not-throw).
+  [Delegates](/docs/expectations/delegates#no-exception).
 - `aweXpect0005` warns about an expectation inside an `async` lambda that is converted to a void-returning delegate,
   such as `list.ForEach(async x => await Expect.That(x).IsTrue())`, because the lambda returns before the expectation
   is evaluated and its failure is thrown after the test has completed.
