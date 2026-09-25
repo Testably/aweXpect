@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Tests;
+﻿#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -459,6 +463,23 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				NFloat subject = 1;
+				NFloat expected = NFloat.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+#endif
 
 			[Theory]
 			[InlineData((byte)2, (byte)1)]

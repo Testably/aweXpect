@@ -14,18 +14,11 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatNumber
 {
-	private static bool IsFinite<T>([NotNullWhen(true)] T? value) => value switch
-	{
-		null => false,
-		double d => !double.IsNaN(d) && !double.IsInfinity(d),
-		float f => !float.IsNaN(f) && !float.IsInfinity(f),
 #if NET8_0_OR_GREATER
-		Half h => !Half.IsNaN(h) && !Half.IsInfinity(h),
-#endif
-		_ => true,
-	};
+	private static bool IsFinite<TNumber>([NotNullWhen(true)] TNumber? value)
+		where TNumber : struct, INumberBase<TNumber>
+		=> value is not null && !TNumber.IsNaN(value.Value) && !TNumber.IsInfinity(value.Value);
 
-#if NET8_0_OR_GREATER
 	private static TNumber? CalculateDifference<TNumber>(TNumber actual, TNumber expected)
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -34,7 +27,7 @@ public static partial class ThatNumber
 			return default(TNumber);
 		}
 
-		if (!IsFinite(actual) || !IsFinite(expected))
+		if (!IsFinite<TNumber>(actual) || !IsFinite<TNumber>(expected))
 		{
 			return null;
 		}
@@ -116,6 +109,14 @@ public static partial class ThatNumber
 		}
 	}
 #else
+	private static bool IsFinite<T>([NotNullWhen(true)] T? value) => value switch
+	{
+		null => false,
+		double d => !double.IsNaN(d) && !double.IsInfinity(d),
+		float f => !float.IsNaN(f) && !float.IsInfinity(f),
+		_ => true,
+	};
+
 	/// <remarks>
 	///     The generated negated overloads name the parameter <c>unexpected</c>, so the exception names it as well.
 	/// </remarks>
@@ -222,7 +223,7 @@ public static partial class ThatNumber
 				stringBuilder.Append(" which differs by ")
 					.Append(integerDifference.ToString(CultureInfo.InvariantCulture));
 				break;
-			case double floatingPointDifference when IsFinite(floatingPointDifference):
+			case double floatingPointDifference when IsFinite<double>(floatingPointDifference):
 				stringBuilder.Append(" which differs by ");
 				Formatter.Format(stringBuilder, floatingPointDifference);
 				break;

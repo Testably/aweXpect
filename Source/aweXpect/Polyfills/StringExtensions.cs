@@ -1,7 +1,7 @@
 ﻿#if NETSTANDARD2_0
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Text;
 
 namespace aweXpect.Polyfills;
 
@@ -23,7 +23,7 @@ internal static class StringExtensionMethods
 		this string @this,
 		char value,
 		StringComparison comparisonType)
-		=> @this.Contains(value);
+		=> @this.IndexOf(value, comparisonType) >= 0;
 
 	/// <summary>
 	///     Returns a value indicating whether a specified character occurs within this string, using the specified comparison
@@ -37,7 +37,7 @@ internal static class StringExtensionMethods
 		this string @this,
 		string value,
 		StringComparison comparisonType)
-		=> @this.Contains(value);
+		=> @this.IndexOf(value, comparisonType) >= 0;
 
 	/// <summary>
 	///     Determines whether the end of this string instance matches the specified character.
@@ -45,7 +45,7 @@ internal static class StringExtensionMethods
 	internal static bool EndsWith(
 		this string @this,
 		char value)
-		=> @this.EndsWith($"{value}");
+		=> @this.EndsWith($"{value}", StringComparison.Ordinal);
 
 	/// <summary>
 	///     Reports the zero-based index of the first occurrence of the specified Unicode character in this string. A parameter
@@ -78,7 +78,7 @@ internal static class StringExtensionMethods
 	internal static bool StartsWith(
 		this string @this,
 		char value)
-		=> @this.StartsWith($"{value}");
+		=> @this.StartsWith($"{value}", StringComparison.Ordinal);
 
 	/// <summary>
 	///     Returns a new string in which all occurrences of a specified string in the current instance are replaced with
@@ -87,7 +87,24 @@ internal static class StringExtensionMethods
 	internal static string Replace(this string @this,
 		string oldValue,
 		string? newValue,
-		StringComparison comparisonType) =>
-		@this.Replace(oldValue, newValue);
+		StringComparison comparisonType)
+	{
+		if (string.IsNullOrEmpty(oldValue))
+		{
+			// Let the BCL throw the same exceptions as the overload with a comparison type on newer frameworks.
+			return @this.Replace(oldValue, newValue);
+		}
+
+		StringBuilder sb = new();
+		int start = 0;
+		int index;
+		while ((index = @this.IndexOf(oldValue, start, comparisonType)) >= 0)
+		{
+			sb.Append(@this, start, index - start).Append(newValue);
+			start = index + oldValue.Length;
+		}
+
+		return sb.Append(@this, start, @this.Length - start).ToString();
+	}
 }
 #endif

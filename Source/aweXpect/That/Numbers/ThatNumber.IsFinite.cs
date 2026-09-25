@@ -145,7 +145,7 @@ public static partial class ThatNumber
 	[CreateCollectionExpectation("IsFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
 		Summary = IsFiniteSummary,
 		Remarks = "Finite means neither infinity nor not a number (NaN) nor <see langword=\"null\" />.")]
-	internal static AndOrResult<TNumber, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits)
 		where TNumber : struct

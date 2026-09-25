@@ -3,6 +3,7 @@ using System.Collections;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using aweXpect.Core;
 #endif
 using System.Linq;
@@ -108,6 +109,9 @@ public static partial class ValueFormatters
 #if NET8_0_OR_GREATER
 			case Half halfValue:
 				Format(formatter, stringBuilder, halfValue, options);
+				return;
+			case NFloat nFloatValue:
+				Format(formatter, stringBuilder, nFloatValue, options);
 				return;
 #endif
 			case decimal decimalValue:

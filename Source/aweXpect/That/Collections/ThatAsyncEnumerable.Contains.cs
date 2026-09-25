@@ -406,11 +406,7 @@ public static partial class ThatAsyncEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
-#if NET8_0_OR_GREATER
 		Func<TItem, ValueTask<bool>> predicate,
-#else
-		Func<TItem, Task<bool>> predicate,
-#endif
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>

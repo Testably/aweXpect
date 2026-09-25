@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 #if NET8_0_OR_GREATER
 using System;
+using System.Runtime.InteropServices;
 #endif
 
 namespace aweXpect.Formatting;
@@ -738,6 +739,86 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		StringBuilder stringBuilder,
 		Half? value,
+		FormattingOptions? options = null)
+	{
+		if (value is null)
+		{
+			stringBuilder.Append(ValueFormatter.NullString);
+			return;
+		}
+
+		Format(formatter, stringBuilder, value.Value, options);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
+	/// </summary>
+	public static string Format(
+		this ValueFormatter formatter,
+		NFloat value,
+		FormattingOptions? options = null)
+	{
+		if (NFloat.IsNegativeInfinity(value))
+		{
+			return options?.IncludeType == true ? "NFloat -∞" : "-∞";
+		}
+
+		if (NFloat.IsPositiveInfinity(value))
+		{
+			return options?.IncludeType == true ? "NFloat +∞" : "+∞";
+		}
+
+		if (options?.IncludeType == true)
+		{
+			return $"NFloat {value.ToString(CultureInfo.InvariantCulture)}";
+		}
+
+		return value.ToString(CultureInfo.InvariantCulture);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
+	///     to the <paramref name="stringBuilder" />.
+	/// </summary>
+	public static void Format(
+		this ValueFormatter formatter,
+		StringBuilder stringBuilder,
+		NFloat value,
+		FormattingOptions? options = null)
+		=> stringBuilder.Append(Format(formatter, value, options));
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
+	/// </summary>
+	public static string Format(
+		this ValueFormatter formatter,
+		NFloat? value,
+		FormattingOptions? options = null)
+	{
+		if (value is null)
+		{
+			return ValueFormatter.NullString;
+		}
+
+		return Format(formatter, value.Value, options);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
+	///     to the <paramref name="stringBuilder" />.
+	/// </summary>
+	public static void Format(
+		this ValueFormatter formatter,
+		StringBuilder stringBuilder,
+		NFloat? value,
 		FormattingOptions? options = null)
 	{
 		if (value is null)

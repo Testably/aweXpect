@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Tests;
+﻿#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -447,6 +451,40 @@ public sealed partial class ThatNumber
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				NFloat subject = 2;
+				NFloat expected = NFloat.NaN;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+
+			[Fact]
+			public async Task ForNFloat_WhenSubjectIsNaN_ShouldFail()
+			{
+				NFloat subject = NFloat.NaN;
+				NFloat expected = 1;
+
+				async Task Act() => await That(subject).IsLessThan(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 1,
+					             but it was NaN
+					             """)
+					.Because("NaN sorts below every value, but is not less than any of them");
+			}
+#endif
 
 			[Theory]
 			[InlineData((byte)2, (byte)1)]
@@ -1379,6 +1417,38 @@ public sealed partial class ThatNumber
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				NFloat subject = 2;
+				NFloat expected = NFloat.NaN;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsLessThan(expected));
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("negating the expectation cannot make a NaN expected value meaningful");
+			}
+
+			[Fact]
+			public async Task ForNFloat_WhenSubjectIsNaN_ShouldSucceed()
+			{
+				NFloat subject = NFloat.NaN;
+				NFloat expected = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsLessThan(expected));
+
+				await That(Act).DoesNotThrow()
+					.Because("NaN is not less than any value");
+			}
+#endif
 
 			[Theory]
 			[AutoData]

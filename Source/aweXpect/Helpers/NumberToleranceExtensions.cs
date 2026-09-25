@@ -149,18 +149,16 @@ internal static class NumberToleranceExtensions
 	private static bool IsNaN<TNumber>(TNumber? value)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
+		=> value is not null && TNumber.IsNaN(value.Value);
 #else
 		where TNumber : struct, IComparable<TNumber>
-#endif
 		=> value switch
 		{
 			double d => double.IsNaN(d),
 			float f => float.IsNaN(f),
-#if NET8_0_OR_GREATER
-			Half h => Half.IsNaN(h),
-#endif
 			_ => false,
 		};
+#endif
 
 	/// <summary>
 	///     Infinite values compare correctly, but <c>NaN</c> sorts below everything in <see cref="IComparable{T}" />
@@ -177,18 +175,16 @@ internal static class NumberToleranceExtensions
 	private static bool IsInfinity<TNumber>(TNumber value)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
+		=> TNumber.IsInfinity(value);
 #else
 		where TNumber : struct, IComparable<TNumber>
-#endif
 		=> value switch
 		{
 			double d => double.IsInfinity(d),
 			float f => float.IsInfinity(f),
-#if NET8_0_OR_GREATER
-			Half h => Half.IsInfinity(h),
-#endif
 			_ => false,
 		};
+#endif
 
 	/// <remarks>
 	///     The distance has to be strictly smaller than the tolerance, so that a strict comparison shifts its bound
