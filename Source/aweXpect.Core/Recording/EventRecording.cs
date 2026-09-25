@@ -7,9 +7,6 @@ using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
-#if NET8_0_OR_GREATER
-using System.Threading.Channels;
-#endif
 
 namespace aweXpect.Recording;
 
@@ -37,6 +34,13 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	private readonly string _subjectExpression;
 
 	private bool _isStopped;
+
+	/// <remarks>
+	///     Completed and replaced on every recorded event, so that any number of concurrent waiters wake up. A waiter
+	///     reads it before it checks the recorded events, so that an event in between completes the task it awaits.
+	/// </remarks>
+	private TaskCompletionSource<bool> _recorded = CreateRecordedSignal();
+
 	private IEvaluationContext? _stoppedBy;
 	private bool _stopsAfterEvaluation = true;
 
@@ -71,7 +75,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 							$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}"));
 				}
 
-				EventRecorder recorder = new(eventName);
+				EventRecorder recorder = new(eventName, NotifyRecordedEvent);
 				string? unsupported = @event.TryAttach(recorder, subject);
 				if (unsupported is null)
 				{
@@ -140,39 +144,15 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		public string? TryAttach(EventRecorder recorder, object subject) => attach(recorder, subject);
 	}
 
-#if NET8_0_OR_GREATER
 	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		IEvaluationContext? context = null)
+		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
 	{
 		ThrowIfStopped(context);
 		try
 		{
-			if (timeout > TimeSpan.Zero && !areFound(this))
+			if (timeout > TimeSpan.Zero)
 			{
-				Channel<bool> channel = Channel.CreateUnbounded<bool>();
-				using CancellationTokenSource cts = new(timeout.ToTimerTimeout());
-				CancellationToken token = cts.Token;
-				foreach (EventRecorder recorder in _recorders.Values)
-				{
-					recorder.Register(channel.Writer);
-				}
-
-				try
-				{
-#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
-					await foreach (bool _ in channel.Reader.ReadAllAsync(token))
-					{
-						if (areFound(this))
-						{
-							break;
-						}
-					}
-#pragma warning restore S3267
-				}
-				catch (OperationCanceledException)
-				{
-					// Ignore cancellation
-				}
+				await WaitUntil(areFound, timeout, cancellationToken);
 			}
 		}
 		finally
@@ -186,54 +166,38 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 
 		return this;
 	}
-#else
-	public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		IEvaluationContext? context = null)
+
+	private async Task WaitUntil(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		CancellationToken cancellationToken)
 	{
-		ThrowIfStopped(context);
-		DateTime now = DateTime.Now;
-		DateTime endTime = timeout < DateTime.MaxValue - now ? now.Add(timeout) : DateTime.MaxValue;
+		using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+		Task timeoutOrCancellation = Task.Delay(timeout.ToTimerTimeout(), cts.Token);
 		try
 		{
-			if (timeout > TimeSpan.Zero && !areFound(this))
+			while (true)
 			{
-				using (ManualResetEventSlim ms = new())
+				Task recorded = Volatile.Read(ref _recorded).Task;
+				if (areFound(this) || await Task.WhenAny(recorded, timeoutOrCancellation) == timeoutOrCancellation)
 				{
-					foreach (EventRecorder recorder in _recorders.Values)
-					{
-						recorder.Register(ms);
-					}
-
-					while (true)
-					{
-						now = DateTime.Now;
-						if (now >= endTime)
-						{
-							break;
-						}
-
-						ms.Reset();
-						ms.Wait((endTime - now).ToTimerTimeout());
-						if (areFound(this))
-						{
-							break;
-						}
-					}
+					return;
 				}
 			}
 		}
 		finally
 		{
-			if (_stopsAfterEvaluation)
-			{
-				// A predicate that throws must not leave the handlers attached to the subject.
-				Stop(context);
-			}
+			// Releases the timer of the delay, which would otherwise run until the timeout.
+			cts.Cancel();
 		}
-
-		return Task.FromResult<IEventRecordingResult>(this);
 	}
-#endif
+
+	private static TaskCompletionSource<bool> CreateRecordedSignal()
+		=> new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+	/// <remarks>
+	///     The waiters continue asynchronously, so that they never run on the thread that raised the event.
+	/// </remarks>
+	private void NotifyRecordedEvent()
+		=> Interlocked.Exchange(ref _recorded, CreateRecordedSignal()).TrySetResult(true);
 
 	/// <inheritdoc cref="IDisposable.Dispose()" />
 	public void Dispose() => Stop(null);

@@ -1,9 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Threading.Channels;
-#else
-using System.Threading;
-#endif
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
@@ -13,25 +8,13 @@ using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
 
-internal sealed class EventRecorder(string eventName) : IDisposable
+internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisposable
 {
 	private readonly ConcurrentQueue<RecordedEvent> _eventQueue = new();
 	private Action? _onDispose;
-#if NET8_0_OR_GREATER
-	private ChannelWriter<bool>? _channelWriter;
-#else
-	private ManualResetEventSlim? _ms;
-#endif
 
 	public void Dispose()
-	{
-#if NET8_0_OR_GREATER
-		_channelWriter = null;
-#else
-		_ms = null;
-#endif
-		_onDispose?.Invoke();
-	}
+		=> _onDispose?.Invoke();
 
 	/// <summary>
 	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
@@ -140,17 +123,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		NotifyRecordedEvent();
 	}
 
-#if NET8_0_OR_GREATER
-	public void Register(ChannelWriter<bool> channel)
-		=> _channelWriter = channel;
-
-	private void NotifyRecordedEvent() => _channelWriter?.TryWrite(true);
-#else
-	public void Register(ManualResetEventSlim ms)
-		=> _ms = ms;
-
-	private void NotifyRecordedEvent() => _ms?.Set();
-#endif
+	private void NotifyRecordedEvent() => onRecorded();
 
 	/// <summary>
 	///     Returns a formatted string for all recorded events.
