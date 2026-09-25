@@ -56,7 +56,9 @@ public static partial class ValueFormatters
 	///     its public instance fields and non-indexed properties, or yields <see langword="null" /> where reflection is
 	///     unavailable, because a message must not throw for what it cannot show. Static members are left out, as they
 	///     do not describe the instance, and a static member of the type's own struct type (like
-	///     <c>CancellationToken.None</c>) boxes a new value on every read, so the recursion guard would never stop.
+	///     <c>CancellationToken.None</c>) boxes a new value on every read, so the recursion guard would never stop. A
+	///     property without a public getter is left out as well, as the registration does, because it cannot be read
+	///     from outside the type.
 	/// </remarks>
 	private static List<EquivalencyMember>? GetMembers(Type type)
 	{
@@ -76,7 +78,7 @@ public static partial class ValueFormatters
 		return type.GetFields(BindingFlags.Public | BindingFlags.Instance)
 			.Select(field => new EquivalencyMember(field.Name, field.FieldType, subject => field.GetValue(subject)))
 			.Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-				.Where(property => property.GetIndexParameters().Length == 0)
+				.Where(property => property.GetGetMethod() is not null && property.GetIndexParameters().Length == 0)
 				.Select(property => new EquivalencyMember(property.Name, property.PropertyType,
 					subject => property.GetValue(subject))))
 			.ToList();
