@@ -108,7 +108,7 @@ public sealed class CustomizeSettingsTests
 		void Act() => Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(-1.Milliseconds());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithParamName("value").And
+			.WithParamName("tolerance").And
 			.WithMessage("The tolerance must not be negative.").AsPrefix()
 			.Because("a negative default tolerance tightens every time comparison instead of widening it");
 	}

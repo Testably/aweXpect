@@ -54,7 +54,7 @@ public partial class AwexpectCustomization
 					{
 						// ReSharper disable once LocalizableElement
 						throw Tracing.WriteException(
-							new ArgumentOutOfRangeException(nameof(value), "The tolerance must not be negative."));
+							new ArgumentOutOfRangeException("tolerance", "The tolerance must not be negative."));
 					}
 
 					return Update(p => p with
