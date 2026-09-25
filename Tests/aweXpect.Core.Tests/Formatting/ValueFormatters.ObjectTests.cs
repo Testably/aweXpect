@@ -193,6 +193,25 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenClassHasPropertyWithNonPublicGetter_ShouldNotDisplayIt()
+		{
+			object value = new ClassWithNonPublicGetter
+			{
+				Hidden = 2,
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassWithNonPublicGetter { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("only publicly readable members are formatted, like for a registered type");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenClassHasStaticMembers_ShouldDisplayOnlyInstanceMembers()
 		{
 			object value = new ClassWithStaticMembers
@@ -207,6 +226,25 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult)
 				.Because("static members do not describe the formatted instance");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenClassHasWriteOnlyProperty_ShouldNotDisplayIt()
+		{
+			object value = new ClassWithWriteOnlyProperty
+			{
+				Hidden = 2,
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassWithWriteOnlyProperty { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a property without a getter cannot be read, like for a registered type");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
@@ -368,6 +406,15 @@ public partial class ValueFormatters
 			public int Value { get; set; }
 		}
 
+		private sealed class ClassWithNonPublicGetter
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Hidden { private get; set; }
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; }
+		}
+
 		private sealed class ClassWithStaticMembers
 		{
 			// ReSharper disable once UnusedMember.Local
@@ -385,6 +432,18 @@ public partial class ValueFormatters
 			/// <inheritdoc />
 			public override string ToString()
 				=> value;
+		}
+
+		private sealed class ClassWithWriteOnlyProperty
+		{
+			// ReSharper disable once ValueParameterNotUsed
+			public int Hidden
+			{
+				set { }
+			}
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; }
 		}
 
 		private sealed class Dummy

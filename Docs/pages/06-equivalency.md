@@ -369,8 +369,7 @@ naming the fix where reflection is switched off, as described below. A type with
 loudly instead of passing without verifying anything. The registration also feeds the failure message: a registered
 object is rendered from its registered members, so the message keeps listing them after trimming, while an
 unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Either way the message lists
-public instance members only, without static members or indexers; since a registration holds readable members only,
-a registered object also leaves out write-only properties.
+public instance members only, without static members, indexers or properties that lack a public getter.
 
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 
