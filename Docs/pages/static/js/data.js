@@ -4146,6 +4146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -4839,7 +4845,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -5536,7 +5543,8 @@ window.BENCHMARK_DATA = {
           380.4438170115153,
           309.2303461294908,
           162.10056506670438,
-          241.9545815785726
+          241.9545815785726,
+          354.9138753230755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6233,6 +6241,7 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
+          912,
           912,
           912,
           912,
@@ -6943,7 +6952,8 @@ window.BENCHMARK_DATA = {
           257.78558756510415,
           241.6386832169124,
           135.95577567418417,
-          230.99256037076313
+          230.99256037076313,
+          234.43503063065666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7136,6 +7146,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11343,6 +11354,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -11959,7 +11976,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -12579,7 +12597,8 @@ window.BENCHMARK_DATA = {
           433309.02034505206,
           422913.3953125,
           219935.76381835938,
-          302810.2771344866
+          302810.2771344866,
+          414575.8200683594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13199,6 +13218,7 @@ window.BENCHMARK_DATA = {
           628408,
           628408,
           628408,
+          628384,
           628384,
           628384,
           628384,
@@ -13832,7 +13852,8 @@ window.BENCHMARK_DATA = {
           2615403.064583333,
           2520124.980769231,
           1312694.349330357,
-          1765410.9028645833
+          1765410.9028645833,
+          2495256.078125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14457,7 +14478,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841611
+          4841611,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18617,6 +18639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -19310,7 +19338,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -20007,7 +20036,8 @@ window.BENCHMARK_DATA = {
           568.425791867574,
           532.5304430552891,
           294.2913992588337,
-          437.31962765180145
+          437.31962765180145,
+          561.2740639368693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20704,6 +20734,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1592,
           1592,
           1592,
           1592,
@@ -21414,7 +21445,8 @@ window.BENCHMARK_DATA = {
           562.0343593188694,
           468.6073079109192,
           265.5732650416238,
-          394.3921975135803
+          394.3921975135803,
+          464.85439586639404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21607,6 +21639,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26276,6 +26309,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -26969,7 +27008,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -27666,7 +27706,8 @@ window.BENCHMARK_DATA = {
           358.7025234018053,
           336.97117062977384,
           173.28220529556273,
-          265.1044013659159
+          265.1044013659159,
+          341.4331901868184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28363,6 +28404,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          1080,
           1080,
           1080,
           1080,
@@ -29073,7 +29115,8 @@ window.BENCHMARK_DATA = {
           260.19358180363974,
           234.91125158163217,
           133.63013918059212,
-          260.7137795130412
+          260.7137795130412,
+          249.27881676355997
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29266,6 +29309,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -33935,6 +33979,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -34628,7 +34678,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -35325,7 +35376,8 @@ window.BENCHMARK_DATA = {
           604.840633392334,
           588.1439423194298,
           339.47937596638997,
-          434.7333507537842
+          434.7333507537842,
+          584.3941752570016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36022,6 +36074,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -36732,7 +36785,8 @@ window.BENCHMARK_DATA = {
           1210.7062016805014,
           1271.4010334014893,
           638.9035935084025,
-          997.948850886027
+          997.948850886027,
+          1164.684745495136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37161,6 +37215,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41594,6 +41649,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -42287,7 +42348,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -42984,7 +43046,8 @@ window.BENCHMARK_DATA = {
           3030.016466522217,
           2923.1399696895055,
           1605.770192082723,
-          1613.3105629512243
+          1613.3105629512243,
+          2960.5992584228516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43686,6 +43749,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          4168,
           4168
         ],
         "borderColor": "#63A2AC",
@@ -44391,7 +44455,8 @@ window.BENCHMARK_DATA = {
           1362.9447317759195,
           1284.651495107015,
           689.0055833498637,
-          993.2851346333822
+          993.2851346333822,
+          1286.4451543367827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44584,6 +44649,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49253,6 +49319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
         "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
+      },
+      {
+        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
+        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
       }
     ],
     "labels": [
@@ -49946,7 +50018,8 @@ window.BENCHMARK_DATA = {
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
-      "e50f5061"
+      "e50f5061",
+      "1c1e3359"
     ],
     "datasets": [
       {
@@ -50643,7 +50716,8 @@ window.BENCHMARK_DATA = {
           2929.22376196725,
           2844.4870118361255,
           1633.9709972381593,
-          1699.4059089933123
+          1699.4059089933123,
+          2904.773911339896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51345,6 +51419,7 @@ window.BENCHMARK_DATA = {
           3792,
           3792,
           3792,
+          3928,
           3928
         ],
         "borderColor": "#63A2AC",
@@ -52050,7 +52125,8 @@ window.BENCHMARK_DATA = {
           26582.58759358724,
           26036.971883920523,
           10554.614458211263,
-          13557.310091291156
+          13557.310091291156,
+          26436.324474628156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52752,7 +52828,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
