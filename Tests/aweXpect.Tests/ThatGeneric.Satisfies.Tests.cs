@@ -42,7 +42,7 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenPredicateCancelsTheEvaluation_ShouldNotReportAFailedExpectation()
+			public async Task WhenPredicateCancelsTheEvaluation_ShouldBeInconclusive()
 			{
 				using CancellationTokenSource cts = new();
 				Other subject = new();
@@ -56,8 +56,12 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Satisfies(CancelingPredicate).WithCancellation(cts.Token);
 
-				await That(Act).Throws<OperationCanceledException>()
-					.WithMessage("evaluation canceled")
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies CancelingPredicate,
+					             but it could not be verified, because it was already canceled
+					             """)
 					.Because("a cancellation that was actually requested aborts the evaluation instead of answering the expectation");
 			}
 
@@ -205,6 +209,25 @@ public sealed partial class ThatGeneric
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false within 0:30,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds());
+			}
+
+			[Fact]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				int count = 0;
@@ -218,10 +241,9 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => ++count > 42 within 0:30,
-					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
-					             """);
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
 			[Theory]

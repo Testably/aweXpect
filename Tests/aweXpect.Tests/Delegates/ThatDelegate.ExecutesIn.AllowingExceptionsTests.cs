@@ -9,7 +9,7 @@ public sealed partial class ThatDelegate
 		public sealed class AllowingExceptionsTests
 		{
 			[Fact]
-			public async Task WhenDelegateIsCanceled_ShouldFail()
+			public async Task WhenDelegateIsCanceled_ShouldSucceed()
 			{
 				CancellationToken canceledToken = new(true);
 				Func<Task> @delegate = () => Task.FromCanceled(canceledToken);
@@ -17,13 +17,8 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(5000.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that @delegate
-					             executes in at most 0:05 allowing exceptions,
-					             but it was canceled after 0:*
-					             """).AsWildcard()
-					.Because("a cancellation aborts the execution instead of timing it");
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception, which is allowed");
 			}
 
 			[Fact]
@@ -67,17 +62,21 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsOperationCanceledException_ShouldForwardItAsInnerException()
+			public async Task WhenDelegateThrowsOperationCanceledExceptionBeforeReachingTheMinimum_ShouldFail()
 			{
-				Exception exception = new OperationCanceledException();
-				Action @delegate = () => throw exception;
+				Action @delegate = () => throw new OperationCanceledException("my own reason");
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(5000.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtLeast(5000.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
-					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
-					.Because("a cancellation is never allowed, so it remains the cause of the failure");
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at least 0:05 allowing exceptions,
+					             but it took only 0:* and did throw an OperationCanceledException:
+					               my own reason
+					             """).AsWildcard()
+					.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
 			}
 
 			[Fact]

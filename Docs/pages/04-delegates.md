@@ -257,7 +257,7 @@ of execution time.
 
 The upper bound is the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance. It
 is applied as timeout (a subsequent `WithTimeout(…)` overwrites it), so that a delegate accepting a
-`CancellationToken` is cancelled once it elapsed and the expectation fails with "did not finish within …" instead of
+`CancellationToken` is canceled once it elapsed and the expectation fails with "did not finish within …" instead of
 hanging. `AtLeast` has no upper bound and therefore applies no timeout. The task of an asynchronous delegate is
 abandoned once the timeout elapsed, even if the delegate ignores or does not accept a `CancellationToken`, and the
 expectation fails the same way. A synchronous delegate cannot be interrupted and runs to completion, however long
@@ -276,8 +276,9 @@ await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().Allowin
 ```
 
 The duration is measured up to the throw, and the exception is still shown in the failure message when the delegate
-misses the expected time. A cancellation is never allowed: it aborts the execution instead of timing it, so
-`WithTimeout`, `WithCancellation` and the timeout from the upper bound keep failing the expectation.
+misses the expected time. A timeout from `WithTimeout` or from the upper bound still fails the expectation with "did
+not finish within …", and a canceled `WithCancellation` token leaves it inconclusive. An `OperationCanceledException`
+that the delegate throws for its own reasons is allowed like any other exception.
 
 :::warning[`AllowingExceptions()` with `AtMost(…)` accepts an immediate crash]
 A delegate that throws in microseconds satisfies an upper bound, which is the point of the option, but it means the
@@ -297,7 +298,7 @@ await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300)
 ```
 
 The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
-`CancellationToken` is cancelled once it elapsed. The task of an asynchronous delegate is abandoned at that point,
+`CancellationToken` is canceled once it elapsed. The task of an asynchronous delegate is abandoned at that point,
 even if the delegate ignores or does not accept a `CancellationToken`, and the expectation fails with "did not finish
 within …". A synchronous delegate cannot be interrupted
 and runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that.
@@ -331,16 +332,17 @@ await Expect.That(() => sut.MyProp).Eventually().IsGreaterThan(5).WithTimeout(5.
 ```
 
 `WithTimeout(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is
-cancelled.
+canceled.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires
 while the delegate is still throwing, the expectation fails and the last exception is reported as the cause
-of the failure. If the expectation is cancelled before the timeout expires (via `WithCancellation` or via
-the global `TestCancellation` setting), it is reported as inconclusive instead of failed. As everywhere else,
+of the failure. If the expectation is canceled before the timeout expires (via `WithCancellation` or via
+`TestCancellation.FromCancellationToken`), it is reported as inconclusive instead of failed, while a global
+`TestCancellation.FromTimeout` that elapses first fails it with "did not finish within …". As everywhere else,
 an explicit `WithTimeout` takes precedence over a global `TestCancellation` timeout.
 
 The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,
-even if the delegate ignores its `CancellationToken`, which is cancelled at that point, and the expectation fails with
+even if the delegate ignores its `CancellationToken`, which is canceled at that point, and the expectation fails with
 "did not finish within …" and a `TimeoutException` as inner exception. The last evaluation, which is made when the
 timeout is used up, still gets one check interval (at most the timeout) to finish. A synchronous delegate cannot be
 interrupted, so for it the timeout is only checked between evaluations.

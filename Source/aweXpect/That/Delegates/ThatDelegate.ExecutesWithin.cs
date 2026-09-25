@@ -16,10 +16,10 @@ public static partial class ThatDelegate
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
-	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
 	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
-	///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
+	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> ExecutesWithin<TValue>(
@@ -39,10 +39,10 @@ public static partial class ThatDelegate
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
-	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
 	///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
-	///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
+	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult ExecutesWithin(
@@ -99,11 +99,6 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.Append(it).Append(" did not finish within ");
 				Formatter.Format(stringBuilder, exceededTimeout);
-			}
-			else if (_actual.Exception is OperationCanceledException)
-			{
-				stringBuilder.Append(it).Append(" was canceled after ");
-				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else if (_actual.Exception is { } exception)
 			{
@@ -177,11 +172,6 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.Append(it).Append(" did not finish within ");
 				Formatter.Format(stringBuilder, exceededTimeout);
-			}
-			else if (_actual.Exception is OperationCanceledException)
-			{
-				stringBuilder.Append(it).Append(" was canceled after ");
-				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else if (_actual.Exception is { } exception)
 			{

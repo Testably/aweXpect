@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading;
 using aweXpect.Core;
 using aweXpect.Signaling;
 
@@ -15,22 +14,20 @@ public sealed partial class ThatSignaler
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler<int> signaler = new();
-				using CancellationTokenSource cts = new(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				async Task Act() =>
-					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0)
-						.WhoseParameters.All().AreUnique().WithCancellation(token);
+					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0).Within(50.Milliseconds())
+						.WhoseParameters.All().AreUnique();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least twice with x => x > 0 with parameters that all are unique,
-					             but it was never recorded
-					             
+					             has recorded the callback at least twice with x => x > 0 within 0:00.050 with parameters that all are unique,
+					             but it was never recorded within 0:00.*
+
 					             Collection:
 					             []
-					             """);
+					             """).AsWildcard();
 			}
 
 			[Fact]

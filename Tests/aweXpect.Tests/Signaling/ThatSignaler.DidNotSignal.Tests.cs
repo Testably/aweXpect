@@ -10,7 +10,7 @@ public sealed partial class ThatSignaler
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNotTriggered_ShouldSucceed()
+			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler signaler = new();
 				using CancellationTokenSource cts = new();
@@ -19,6 +19,23 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithCancellation(token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback,
+					             but it could not be verified, because it was already canceled
+					             """)
+					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
+			}
+
+			[Fact]
+			public async Task WhenNotTriggered_ShouldSucceed()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -37,6 +54,24 @@ public sealed partial class ThatSignaler
 					             has never recorded the callback,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTimeoutElapses_ShouldFail()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.Because("the timeout of the expectation ends the wait before the signaler timeout, so it must not pass early");
 			}
 
 			[Fact]
@@ -62,7 +97,7 @@ public sealed partial class ThatSignaler
 		public sealed class WithParameterTests
 		{
 			[Fact]
-			public async Task WhenNotTriggered_ShouldSucceed()
+			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler<int> signaler = new();
 				using CancellationTokenSource cts = new();
@@ -71,6 +106,23 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithCancellation(token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback,
+					             but it could not be verified, because it was already canceled
+					             """)
+					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
+			}
+
+			[Fact]
+			public async Task WhenNotTriggered_ShouldSucceed()
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -89,6 +141,24 @@ public sealed partial class ThatSignaler
 					             has never recorded the callback,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTimeoutElapses_ShouldFail()
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.Because("the timeout of the expectation ends the wait before the signaler timeout, so it must not pass early");
 			}
 
 			[Fact]

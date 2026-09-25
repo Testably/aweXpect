@@ -13,7 +13,7 @@ public interface IEventRecording<TSubject>
 {
 	/// <summary>
 	///     Waits until the recorded events satisfy <paramref name="areFound" />, the <paramref name="timeout" />
-	///     elapsed or the <paramref name="cancellationToken" /> was cancelled, and then stops the recording of events,
+	///     elapsed or the <paramref name="cancellationToken" /> was canceled, and then stops the recording of events,
 	///     unless it was set to <see cref="RecordExtensions.UntilDisposed{TSubject}(IEventRecording{TSubject})" />.
 	/// </summary>
 	/// <remarks>

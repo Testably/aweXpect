@@ -6,13 +6,13 @@ namespace aweXpect.Core.Helpers;
 internal static class TaskHelpers
 {
 	/// <summary>
-	///     Awaits the <paramref name="task" />, unless the <paramref name="cancellationToken" /> is cancelled first: then
+	///     Awaits the <paramref name="task" />, unless the <paramref name="cancellationToken" /> is canceled first: then
 	///     the <paramref name="task" /> is abandoned and a <see cref="TaskCanceledException" /> is thrown, as if it had
-	///     been cancelled.
+	///     been canceled.
 	/// </summary>
 	/// <remarks>
 	///     A user-supplied task may ignore the cancellation or never complete, and awaiting it regardless would let the
-	///     evaluation exceed its timeout or hang forever. A completed task or a token that cannot be cancelled returns
+	///     evaluation exceed its timeout or hang forever. A completed task or a token that cannot be canceled returns
 	///     the <paramref name="task" /> itself, so that this costs nothing when no timeout or cancellation applies.
 	/// </remarks>
 	public static Task AbandonOnCancellation(this Task task, CancellationToken cancellationToken)

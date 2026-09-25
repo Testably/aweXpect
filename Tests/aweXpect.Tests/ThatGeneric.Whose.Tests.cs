@@ -435,7 +435,7 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenEvaluationIsCanceledWhileAccessingMember_ShouldPropagateCancellation()
+			public async Task WhenEvaluationIsCanceledWhileAccessingMember_ShouldBeInconclusive()
 			{
 				using CancellationTokenSource cts = new();
 				CancelingClass subject = new(cts);
@@ -444,7 +444,12 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.CancelAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<OperationCanceledException>();
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose CancelAsync() is equal to 1,
+					             but it could not be verified, because it was already canceled
+					             """);
 			}
 
 			[Fact]
@@ -762,16 +767,54 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(300));
 
-				Task evaluation = Evaluate();
-
-				await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
-				await That(evaluation.IsCompleted).IsTrue();
-				Func<Task> awaitEvaluation = async () => await evaluation;
-				await That(awaitEvaluation).Throws<OperationCanceledException>();
-
-				async Task Evaluate()
+				async Task Act()
 					=> await That(subject).Whose(o => o.HangAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose HangAsync() is equal to 1,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds());
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberNeverCompletes_ShouldFailAfterTheTimeout()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.HangAsync(), v => v.IsEqualTo(1))
+						.WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose HangAsync() is equal to 1,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.WithTimeout(10.Seconds());
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberNeverCompletes_WhenNegated_ShouldBeInconclusiveOnCancellation()
+			{
+				ThrowingClass subject = new();
+				using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(300));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Whose(o => o.HangAsync(), v => v.IsEqualTo(1)))
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose HangAsync() is not equal to 1,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
+					.Because("a cancellation must not be inverted into a success by the negation");
 			}
 
 			[Fact]
@@ -780,16 +823,16 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(300));
 
-				Task evaluation = Evaluate();
-
-				await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
-				await That(evaluation.IsCompleted).IsTrue();
-				Func<Task> awaitEvaluation = async () => await evaluation;
-				await That(awaitEvaluation).Throws<OperationCanceledException>();
-
-				async Task Evaluate()
+				async Task Act()
 					=> await That(subject).Whose(o => o.HangValueTaskAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose HangValueTaskAsync() is equal to 1,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds());
 			}
 
 			private sealed class CancelingClass(CancellationTokenSource cts)

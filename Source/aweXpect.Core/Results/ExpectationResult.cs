@@ -61,8 +61,8 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// </summary>
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
-	///     abandoned when the <paramref name="cancellationToken" /> is cancelled before it completes, and the expectation
-	///     is evaluated as if the task had been cancelled.
+	///     abandoned when the <paramref name="cancellationToken" /> is canceled before it completes. An expectation that
+	///     is interrupted by the cancellation is inconclusive: it could not be verified, because it was already canceled.
 	///     <para />
 	///     Use
 	///     <c>
@@ -229,8 +229,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </summary>
 	/// <remarks>
 	///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
-	///     abandoned when the <paramref name="cancellationToken" /> is cancelled before it completes, and the expectation
-	///     is evaluated as if the task had been cancelled.
+	///     abandoned when the <paramref name="cancellationToken" /> is canceled before it completes. An expectation that
+	///     is interrupted by the cancellation is inconclusive: it could not be verified, because it was already canceled.
 	///     <para />
 	///     Use
 	///     <c>

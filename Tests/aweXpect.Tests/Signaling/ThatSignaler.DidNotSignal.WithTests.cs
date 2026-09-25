@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -14,9 +13,6 @@ public sealed partial class ThatSignaler
 			public async Task WhenApplyingMultiplePredicates_ShouldVerifyAll()
 			{
 				Signaler<int> signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal(1);
 				signaler.Signal(2);
@@ -25,7 +21,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(2.Times())
 						.With(p => p > 1).With(p => p < 3)
-						.WithCancellation(token);
+						.Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -34,9 +30,6 @@ public sealed partial class ThatSignaler
 			public async Task WhenNotTriggeredOftenEnoughMatchingPredicate_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-				CancellationToken token = cts.Token;
 
 				signaler.Signal(1);
 				signaler.Signal(2);
@@ -44,7 +37,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(2.Times())
 						.With(p => p > 1)
-						.WithCancellation(token);
+						.Within(50.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}

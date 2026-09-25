@@ -47,7 +47,7 @@ public class Signaler
 	/// <summary>
 	///     Blocks the current thread until the callback was executed at least once
 	///     or the <paramref name="timeout" /> expired
-	///     or the <paramref name="cancellationToken" /> was cancelled.
+	///     or the <paramref name="cancellationToken" /> was canceled.
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
@@ -91,7 +91,7 @@ public class Signaler
 	/// <summary>
 	///     Blocks the current thread until the callback was executed at least the required <paramref name="amount" /> of times
 	///     or the <paramref name="timeout" /> expired
-	///     or the <paramref name="cancellationToken" /> was cancelled.
+	///     or the <paramref name="cancellationToken" /> was canceled.
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
@@ -200,7 +200,7 @@ public class Signaler<TParameter>
 	///     Blocks the current thread until<br />
 	///     - the callback was executed at least once matching the <paramref name="predicate" /><br />
 	///     - or the <paramref name="timeout" /> expired<br />
-	///     - or the <paramref name="cancellationToken" /> was cancelled.
+	///     - or the <paramref name="cancellationToken" /> was canceled.
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.
@@ -257,7 +257,7 @@ public class Signaler<TParameter>
 	///     - the callback was executed at least the required <paramref name="amount" /> of times
 	///     matching the <paramref name="predicate" /><br />
 	///     - or the <paramref name="timeout" /> expired<br />
-	///     - or the <paramref name="cancellationToken" /> was cancelled.
+	///     - or the <paramref name="cancellationToken" /> was canceled.
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.

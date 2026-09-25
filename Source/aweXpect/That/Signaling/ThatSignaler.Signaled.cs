@@ -93,7 +93,8 @@ public static partial class ThatSignaler
 	///     The expectation waits for the full timeout from <see cref="DidNotSignalResult.Within(TimeSpan)" /> before
 	///     it can succeed, and fails as soon as the callback is signaled. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" />, which
-	///     is 30 seconds unless customized. Cancelling the evaluation ends the wait early.
+	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
+	///     inconclusive.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult DidNotSignal(
@@ -115,7 +116,8 @@ public static partial class ThatSignaler
 	///     <see cref="DidNotSignalResult{TParameter}.Within(TimeSpan)" /> before it can succeed, and fails as soon as a
 	///     matching signal is received. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" />, which
-	///     is 30 seconds unless customized. Cancelling the evaluation ends the wait early.
+	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
+	///     inconclusive.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
@@ -137,7 +139,8 @@ public static partial class ThatSignaler
 	///     it can succeed, and fails as soon as the callback was signaled the given number of
 	///     <paramref name="times" />. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" />, which
-	///     is 30 seconds unless customized. Cancelling the evaluation ends the wait early.
+	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
+	///     inconclusive.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult DidNotSignal(
@@ -163,7 +166,8 @@ public static partial class ThatSignaler
 	///     the callback was signaled with a matching parameter the given number of <paramref name="times" />. Without a
 	///     timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" />, which
-	///     is 30 seconds unless customized. Cancelling the evaluation ends the wait early.
+	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
+	///     inconclusive.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
@@ -231,6 +235,19 @@ public static partial class ThatSignaler
 		}
 	}
 
+	/// <remarks>
+	///     <see cref="Signaler.Wait(TimeSpan?, CancellationToken)" /> ends at the cancellation like at its timeout, but
+	///     the signals received until then decide nothing.
+	/// </remarks>
+	private static void ThrowIfTheWaitWasCanceled(bool isSuccess, TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
+		if (!isSuccess && timeout != TimeSpan.Zero)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+		}
+	}
+
 	private static void AppendWaitedTime(StringBuilder stringBuilder, TimeSpan? waitedTime, bool? isSuccess)
 	{
 		if (waitedTime is null)
@@ -276,6 +293,7 @@ public static partial class ThatSignaler
 					return result;
 				},
 				CancellationToken.None);
+			ThrowIfTheWaitWasCanceled(Actual.IsSuccess, timeout, cancellationToken);
 
 			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -336,6 +354,7 @@ public static partial class ThatSignaler
 					return result;
 				},
 				CancellationToken.None);
+			ThrowIfTheWaitWasCanceled(Actual.IsSuccess, timeout, cancellationToken);
 
 			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p));
 

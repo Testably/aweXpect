@@ -392,7 +392,7 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
-	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldAbortTheEvaluation()
+	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
 		cts.CancelAfter(50.Milliseconds());
@@ -400,9 +400,13 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatAwaiting(1).WithCancellation(cts.Token);
 
-		await That(Act).Throws<TaskCanceledException>()
-			.WithMessage(new TaskCanceledException().Message)
-			.Because("only a timeout is reported as a failed expectation, a requested cancellation still aborts");
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it could not be verified, because it was already canceled
+			             """)
+			.Because("a requested cancellation leaves the expectation unverified instead of failing it");
 	}
 
 	[Fact]

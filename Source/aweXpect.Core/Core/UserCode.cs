@@ -50,7 +50,7 @@ public static class UserCode
 	///     Calls the asynchronous <paramref name="callback" /> of the caller.
 	/// </summary>
 	/// <remarks>
-	///     An <see cref="OperationCanceledException" /> while the <paramref name="cancellationToken" /> is cancelled is
+	///     An <see cref="OperationCanceledException" /> while the <paramref name="cancellationToken" /> is canceled is
 	///     thrown as it is, so that the caller can react to the cancellation before it aborts the evaluation.
 	/// </remarks>
 	public static async ValueTask<TResult> InvokeAsync<TResult>(Func<ValueTask<TResult>> callback,

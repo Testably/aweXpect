@@ -28,7 +28,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	///     All enumerations continue the same source enumerator, so the source is governed by the
 	///     <see cref="CancellationToken" /> of the evaluation that wrapped it, not by the
 	///     <paramref name="cancellationToken" /> of a single enumeration.<br />
-	///     The source is not advanced once the evaluation is cancelled, and a pending <c>MoveNextAsync</c> is abandoned,
+	///     The source is not advanced once the evaluation is canceled, and a pending <c>MoveNextAsync</c> is abandoned,
 	///     so that a source which ignores the cancellation cannot hang the evaluation. Instead of the next item that
 	///     was not received, the enumeration throws an <see cref="OperationCanceledException" />, so that the
 	///     cancellation is not mistaken for the end of the source.

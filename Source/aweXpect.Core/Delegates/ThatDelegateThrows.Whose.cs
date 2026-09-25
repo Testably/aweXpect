@@ -14,7 +14,7 @@ public partial class ThatDelegateThrows<TException>
 	/// <remarks>
 	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
 	///     exception, which a negation does not invert. An <see cref="OperationCanceledException" /> thrown while the
-	///     evaluation is cancelled aborts the evaluation instead.
+	///     evaluation is canceled aborts the evaluation instead.
 	/// </remarks>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(
 		Func<TException, TMember?> memberSelector,
@@ -36,9 +36,8 @@ public partial class ThatDelegateThrows<TException>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
-	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" /> and a timeout fails it with
-	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
+	///     negation does not invert. Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a
+	///     timeout fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[OverloadResolutionPriority(2)]
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(
@@ -61,9 +60,8 @@ public partial class ThatDelegateThrows<TException>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
 	///     member throws, the expectation fails with <c>… did throw …</c> and the exception as inner exception, which a
-	///     negation does not invert. Cancelling the evaluation while the member is awaited aborts it with an
-	///     <see cref="OperationCanceledException" /> and a timeout fails it with
-	///     <c>did not finish within …</c>, even if the member ignores the cancellation.
+	///     negation does not invert. Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a
+	///     timeout fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	[OverloadResolutionPriority(1)]
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(

@@ -37,7 +37,7 @@ public class AsyncValueSourceTests
 	}
 
 	[Fact]
-	public async Task WhenCancellationIsRequestedBeforeTheTaskCompletes_ShouldFail()
+	public async Task WhenCancellationIsRequestedBeforeTheTaskCompletes_ShouldBeInconclusive()
 	{
 		Task<int> subject = PendingTask.Of<int>();
 		using CancellationTokenSource cts = new();
@@ -46,14 +46,12 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).WithCancellation(cts.Token);
 
-		await That(Act).Throws<XunitException>()
-			.WithMessage($"""
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
-			             but it did throw a TaskCanceledException:
-			               {new TaskCanceledException().Message}
-			             """).And
-			.WithInner<TaskCanceledException>()
+			             but it could not be verified, because it was already canceled
+			             """)
 			.Because("the cancellation must stop waiting for a task that does not observe it");
 	}
 
@@ -103,6 +101,26 @@ public class AsyncValueSourceTests
 			             """).And
 			.WithInner<MyException>()
 			.Because("a faulted task fails the expectation, with or without a timeout");
+	}
+
+	[Fact]
+	public async Task WhenTaskIsCanceledWithoutACancellationRequest_ShouldFail()
+	{
+		TaskCanceledException exception = new("the task canceled itself");
+		Task<int> subject = Task.FromException<int>(exception);
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(1).WithTimeout(5.Seconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1,
+			             but it did throw a TaskCanceledException:
+			               the task canceled itself
+			             """).And
+			.WithInner<TaskCanceledException>(inner => inner.IsSameAs(exception))
+			.Because("a task that cancels itself for its own reasons throws an ordinary exception");
 	}
 
 	/// <remarks>

@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Threading;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatGeneric
 {
@@ -121,6 +123,25 @@ public sealed partial class ThatGeneric
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).DoesNotSatisfy(_ => true).Within(30.Seconds())
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy _ => true within 0:30,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds());
+			}
+
+			[Fact]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				int count = 0;
@@ -134,10 +155,9 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => ++count <= 42 within 0:30,
-					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
-					             """);
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
 			[Theory]

@@ -88,21 +88,13 @@ public static partial class ThatGeneric
 				sw.Start();
 				do
 				{
-					try
-					{
-						await Task.Delay(_options.Interval.NextCheckInterval(), cancellationToken);
-					}
-					catch (TaskCanceledException)
-					{
-						break;
-					}
-
+					await Task.Delay(_options.Interval.NextCheckInterval(), cancellationToken);
 					isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
 					if (isMatch.Outcome == Outcome.Success != _isNegated)
 					{
 						return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 					}
-				} while (sw.Elapsed <= _options.Timeout && !cancellationToken.IsCancellationRequested);
+				} while (sw.Elapsed <= _options.Timeout);
 			}
 
 			return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));

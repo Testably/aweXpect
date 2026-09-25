@@ -22,10 +22,10 @@ public abstract partial class ThatDelegate
 		///     unless <c>AllowingExceptions()</c> is specified.
 		///     <para />
 		///     An upper bound is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
-		///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+		///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled once it
 		///     elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 		///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
-		///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
+		///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithValue<T>>> ExecutesIn()
@@ -48,10 +48,10 @@ public abstract partial class ThatDelegate
 		///     <para />
 		///     The <paramref name="expected" /> time plus the tolerance is applied as timeout (a subsequent
 		///     <c>WithTimeout(…)</c> overwrites it), so that a delegate accepting a
-		///     <see cref="System.Threading.CancellationToken" /> is cancelled once it elapsed. The task of an
+		///     <see cref="System.Threading.CancellationToken" /> is canceled once it elapsed. The task of an
 		///     asynchronous delegate is abandoned at that point, even if it ignores the cancellation, while a synchronous
 		///     delegate cannot be interrupted and runs to completion.
-		///     A delegate that is cancelled or abandoned by the timeout fails with <c>did not finish within …</c>.
+		///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
@@ -118,11 +118,6 @@ public abstract partial class ThatDelegate
 				else if (_actual.ExceededTimeout is { } exceededTimeout)
 				{
 					stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
-				}
-				else if (_actual.Exception is OperationCanceledException)
-				{
-					stringBuilder.Append(it).Append(" was canceled after ");
-					Formatter.Format(stringBuilder, _actual.Duration);
 				}
 				else if (_actual.Exception is { } exception && !options.AreExceptionsAllowed)
 				{
