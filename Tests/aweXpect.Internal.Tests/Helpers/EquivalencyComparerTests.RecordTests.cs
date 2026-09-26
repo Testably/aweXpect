@@ -22,7 +22,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Property Value differed:
-			                                     Found: 1
+			                                    Actual: 1
 			                                  Expected: 2
 			                              """);
 		}
@@ -41,7 +41,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Property Value differed:
-			                                     Found: 1
+			                                    Actual: 1
 			                                  Expected: 2
 			                              """);
 		}
@@ -72,7 +72,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                It differed:
-			                                     Found: SomeRecord { }
+			                                    Actual: SomeRecord { }
 			                                  Expected: SomeOtherRecord { }
 			                              """);
 		}

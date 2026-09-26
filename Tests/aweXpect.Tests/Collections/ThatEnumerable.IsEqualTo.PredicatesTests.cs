@@ -1033,8 +1033,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of x => (x == "x") and
-					               contained item "e" at index 4 instead of x => (x == "y") and
+					               contained item "d" at index 3 instead of x => (x == "x")
+					             and
+					               contained item "e" at index 4 instead of x => (x == "y")
+					             and
 					               lacked 3 of 6 expected items:
 					                 x => (x == "x"),
 					                 x => (x == "y"),
@@ -1585,8 +1587,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 x => (x == "x"),
 					                 x => (x == "y"),
@@ -2233,8 +2237,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 x => (x == "x"),
 					                 x => (x == "y"),

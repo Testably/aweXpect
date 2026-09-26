@@ -341,7 +341,7 @@ is equivalent to Album {
   },
 but it was not:
   Property Artist.Name differed:
-       Found: "Wings"
+      Actual: "Wings"
     Expected: "The Beatles"
 
 Equivalency options:
@@ -358,7 +358,7 @@ is equivalent to {
   },
 but it was not:
   Property PlayCount differed:
-       Found: 1
+      Actual: 1
     Expected: is int that is greater than 2
 
 Equivalency options:

@@ -254,15 +254,10 @@ public partial class CollectionMatchOptions(
 		{
 			if (errors.Count > 1)
 			{
-				StringBuilder sb = new();
-				sb.Append(it);
-				foreach (string error in errors)
-				{
-					sb.AppendLine().Append(error.Indent()).Append(" and");
-				}
-
-				sb.Length -= 4;
-				return sb.ToString();
+				string separator = errors.Any(error => error.Contains("\n"))
+					? $"{Environment.NewLine}and{Environment.NewLine}"
+					: $" and{Environment.NewLine}";
+				return $"{it}{Environment.NewLine}{string.Join(separator, errors.Select(error => error.Indent()))}";
 			}
 
 			return $"{it} {errors[0]}";

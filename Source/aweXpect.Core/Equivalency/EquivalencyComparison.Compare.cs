@@ -93,7 +93,7 @@ public static partial class EquivalencyComparison
 	{
 		AppendEntry(failureBuilder, memberType, memberPath, context);
 		failureBuilder.AppendLine(" differed:");
-		failureBuilder.Append("       Found: ");
+		failureBuilder.Append("      Actual: ");
 	}
 
 	/// <remarks>
@@ -128,8 +128,8 @@ public static partial class EquivalencyComparison
 	{
 		AppendEntry(failureBuilder, memberType, memberPath, context);
 		failureBuilder.Append(isAmbiguous
-			? " is ambiguous on the actual object, which implements it explicitly for more than one interface"
-			: " is missing on the actual object");
+			? " was ambiguous on the actual object, which implements it explicitly for more than one interface"
+			: " was missing on the actual object");
 	}
 
 	private static void AppendSuperfluousElement(StringBuilder failureBuilder, string memberPath, object? actual,

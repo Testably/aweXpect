@@ -27,7 +27,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Property Timestamp differed:
-					                      Found: {{Formatter.Format(Utc)}}
+					                     Actual: {{Formatter.Format(Utc)}}
 					                   Expected: {{Formatter.Format(Local)}}
 
 					               Equivalency options:
