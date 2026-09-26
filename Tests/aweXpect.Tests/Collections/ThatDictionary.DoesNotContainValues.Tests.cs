@@ -44,7 +44,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [42, 2],
-					             but it did contain [
+					             but it contained [
 					               42
 					             ]
 
@@ -65,7 +65,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [2, <null>],
-					             but it did contain [
+					             but it contained [
 					               <null>
 					             ]
 
@@ -86,7 +86,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [2, 1],
-					             but it did contain [
+					             but it contained [
 					               1
 					             ]
 

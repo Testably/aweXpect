@@ -29,7 +29,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
-					              has recorded the CustomEvent event on sut less than {minimum.ToTimesString()},
+					              has recorded the CustomEvent event on sut fewer than {minimum.ToTimesString()},
 					              but it was recorded {count.ToTimesString()} in *
 					              """).AsWildcard();
 			}
@@ -281,7 +281,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "MyValue" less than twice,
+					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "MyValue" fewer than twice,
 					             but it was recorded twice in *
 					             """).AsWildcard();
 			}
@@ -372,7 +372,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the CustomEvent event on sut less than twice within 0:05,
+					             has recorded the CustomEvent event on sut fewer than twice within 0:05,
 					             but it was recorded twice in [
 					               CustomEvent(),
 					               CustomEvent()

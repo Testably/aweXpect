@@ -56,7 +56,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times within 0:30,
+					             has recorded the callback fewer than 3 times within 0:30,
 					             but it was recorded ? times after 0:*
 					             """).AsWildcard();
 			}
@@ -79,7 +79,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than twice within 0:30,
+					             has recorded the callback fewer than twice within 0:30,
 					             but it was recorded twice after 0:*
 					             """).AsWildcard();
 			}
@@ -104,7 +104,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times within 0:30,
+					             has recorded the callback fewer than 3 times within 0:30,
 					             but it was recorded ? times in [
 					               1,
 					               2,
@@ -132,7 +132,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times within 0:30,
+					             has recorded the callback fewer than 3 times within 0:30,
 					             but it was recorded 3 times in [
 					               1,
 					               2,

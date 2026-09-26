@@ -26,7 +26,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the PropertyChanged event on sut less than twice,
+					             has recorded the PropertyChanged event on sut fewer than twice,
 					             but it was recorded twice in *
 					             """).AsWildcard();
 			}
@@ -228,7 +228,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the PropertyChanged event on sut less than twice within 0:05,
+					             has recorded the PropertyChanged event on sut fewer than twice within 0:05,
 					             but it was recorded twice in * after 0:*
 					             """).AsWildcard();
 			}

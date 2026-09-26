@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" ignoring case,
-					             but it contained it at least once
+					             but it contained "A" at least once
 
 					             Collection:
 					             [
@@ -105,7 +105,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 11,
-					             but it contained it once
+					             but it contained 11 once
 
 					             Collection:
 					             [1]
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A",
-					             but it contained it once
+					             but it contained "A" once
 
 					             Collection:
 					             [

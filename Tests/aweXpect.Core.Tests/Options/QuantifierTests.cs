@@ -213,9 +213,20 @@ public class QuantifierTests
 	}
 
 	[Theory]
+	[InlineData(1, "fewer than once")]
+	[InlineData(2, "fewer than twice")]
+	[InlineData(3, "fewer than 3 times")]
+	public async Task ToString_LessThan_ShouldSayFewerThan(int maximum, string expected)
+	{
+		Quantifier sut = Configure(q => q.LessThan(maximum));
+
+		await That(sut.ToString()).IsEqualTo(expected);
+	}
+
+	[Theory]
 	[InlineData("AtLeast", 1, "never")]
-	[InlineData("AtLeast", 2, "less than twice")]
-	[InlineData("AtLeast", 3, "less than 3 times")]
+	[InlineData("AtLeast", 2, "fewer than twice")]
+	[InlineData("AtLeast", 3, "fewer than 3 times")]
 	[InlineData("AtMost", 0, "at least once")]
 	[InlineData("AtMost", 1, "more than once")]
 	[InlineData("AtMost", 3, "more than 3 times")]

@@ -147,7 +147,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" at least 3 times,
+					             contains "in" fewer than 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -222,7 +222,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "text that does not occur" at most once,
+					             contains "text that does not occur" more than once,
 					             but it did not contain "text that does not occur" in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -240,7 +240,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" at most 3 times,
+					             contains "in" more than 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -302,7 +302,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" between 1 and 4 times,
+					             contains "in" not between 1 and 4 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -335,7 +335,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" exactly 3 times,
+					             contains "in" not exactly 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -402,7 +402,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" exactly 3 times,
+					             contains "in" not exactly 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -449,7 +449,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "text that does not occur" less than once,
+					             contains "text that does not occur" at least once,
 					             but it did not contain "text that does not occur" in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -493,7 +493,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "in" less than 4 times,
+					             contains "in" at least 4 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -542,7 +542,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not contain "in" more than twice,
+					              contains "in" at most twice,
 					              but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					              """);
 			}
@@ -593,7 +593,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "investigator" exactly once,
+					             contains "investigator" not exactly once,
 					             but it contained "investigator" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}

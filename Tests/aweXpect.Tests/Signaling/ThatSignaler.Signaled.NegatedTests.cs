@@ -16,7 +16,7 @@ public sealed partial class ThatSignaler
 			[InlineData("Once", 1, "has recorded the callback not exactly once")]
 			[InlineData("Twice", 2, "has recorded the callback not exactly twice")]
 			[InlineData("Exactly3", 3, "has recorded the callback not exactly 3 times")]
-			[InlineData("AtLeast2", 2, "has recorded the callback less than twice")]
+			[InlineData("AtLeast2", 2, "has recorded the callback fewer than twice")]
 			[InlineData("AtMost1", 1, "has recorded the callback more than once")]
 			[InlineData("MoreThan1", 2, "has recorded the callback at most once")]
 			[InlineData("LessThan3", 2, "has recorded the callback at least 3 times")]
