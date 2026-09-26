@@ -50,7 +50,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 or is equal to 3, because of reasons,
-					             but it was 1, which differs by -1 and it was 1, which differs by -2
+					             but it was 1, which differs by -1 and was 1, which differs by -2
 					             """);
 			}
 

@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to 1 at index 0 and does not have an item equal to 2 at index 1,
-					             but it had item 1 at index 0 and it had item 2 at index 1
+					             but it had item 1 at index 0 and had item 2 at index 1
 
 					             Collection:
 					             [

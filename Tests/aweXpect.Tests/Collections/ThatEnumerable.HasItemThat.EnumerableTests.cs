@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is equal to 3 at index 3,
-					             but it did not contain any item at index 3
+					             but it had no item at index 3
 
 					             Collection:
 					             [0, 1, 2]
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not equal to 0,
-					             but it did not contain any item
+					             but it had no item
 
 					             Collection:
 					             []

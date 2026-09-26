@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
-					             but it contained 2 at index 3 instead of 1
+					             but it contained item 2 at index 3 instead of 1
 
 					             Collection:
 					             [0, 0, 1, 2, 3]
@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             ends with [0, 0, 1, 2, 3],
-					             but it contained only 3 items and misses 2 items: [
+					             but it contained only 3 items and lacked 2 items: [
 					               0,
 					               0
 					             ]
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["FOO", "BAZ"] ignoring case,
-					             but it contained "bar" at index 1 instead of "FOO"
+					             but it contained item "bar" at index 1 instead of "FOO"
 
 					             Collection:
 					             [

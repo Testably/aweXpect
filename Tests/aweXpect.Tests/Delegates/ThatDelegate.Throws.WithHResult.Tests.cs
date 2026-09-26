@@ -67,7 +67,7 @@ public sealed partial class ThatDelegate
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult greater than {hResult} and with message equal to "bar",
-						              but it had HResult {hResult} and it had message "foo", which differs at index 0:
+						              but it had HResult {hResult} and had message "foo", which differs at index 0:
 						                 ↓ (actual)
 						                "foo"
 						                "bar"

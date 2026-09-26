@@ -425,7 +425,29 @@ public sealed class AndNodeTests
 			.WithMessage("""
 			             Expected that true
 			             is False and is False and implies False,
-			             but it was True and it did not
+			             but it was True and did not
+			             """);
+	}
+
+	[Fact]
+	public async Task WithPartNotStartingWithSubjectInBetween_ShouldRepeatSubjectAfterIt()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).HasItem(9).AtIndex(0).And.All().AreEqualTo(9).And.HasItem(8).AtIndex(1);
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             has an item equal to 9 at index 0 and is equal to 9 for all items and has an item equal to 8 at index 1,
+			             but it had item 1 at index 0 and none of 3 were and it had item 2 at index 1
+
+			             Not matching items:
+			             [1, 2, 3]
+
+			             Collection:
+			             [1, 2, 3]
 			             """);
 	}
 

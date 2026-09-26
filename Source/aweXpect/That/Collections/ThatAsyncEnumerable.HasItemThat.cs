@@ -150,18 +150,12 @@ public static partial class ThatAsyncEnumerable
 				}
 				else
 				{
-					string optionDescription = _options.Match.GetDescription();
-					if (string.IsNullOrEmpty(optionDescription))
-					{
-						optionDescription = " at any index";
-					}
-
-					stringBuilder.Append(_it).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(_it).Append(" had no matching item").Append(_options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(_it).Append(" did not contain any item").Append(_options.Match.GetDescription());
+				stringBuilder.Append(_it).Append(" had no item").Append(_options.Match.GetDescription());
 			}
 		}
 

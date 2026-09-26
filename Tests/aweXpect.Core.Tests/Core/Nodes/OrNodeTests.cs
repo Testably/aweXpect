@@ -529,7 +529,7 @@ public sealed class OrNodeTests
 			.WithMessage("""
 			             Expected that true
 			             is False or is False or implies False,
-			             but it was True and it did not
+			             but it was True and did not
 			             """);
 	}
 

@@ -214,20 +214,58 @@ internal class AndNode : Node
 			}
 		}
 
+		private bool RendersLeft => _left.Outcome == Outcome.Failure;
+
+		private bool RendersRight => _right.Outcome == Outcome.Failure &&
+		                             (!RendersLeft ||
+		                              (_furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
+		                               !_left.HasSameResultTextAs(_right)));
+
+		internal override string? LeadingSubject
+		{
+			get
+			{
+				if (RendersLeft)
+				{
+					return _left.LeadingSubject;
+				}
+
+				return RendersRight ? _right.LeadingSubject : null;
+			}
+		}
+
+		internal override string? TrailingSubject
+		{
+			get
+			{
+				if (RendersRight)
+				{
+					return _right.TrailingSubject;
+				}
+
+				return RendersLeft ? _left.TrailingSubject : null;
+			}
+		}
+
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_left.Outcome == Outcome.Failure)
+			bool rendersLeft = RendersLeft;
+			if (rendersLeft)
 			{
 				_left.AppendResult(stringBuilder, indentation);
-				if (_right.Outcome == Outcome.Failure &&
-				    _furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
-				    !_left.HasSameResultTextAs(_right))
-				{
-					stringBuilder.Append(" and ");
-					_right.AppendResult(stringBuilder, indentation);
-				}
 			}
-			else if (_right.Outcome == Outcome.Failure)
+
+			if (!RendersRight)
+			{
+				return;
+			}
+
+			if (rendersLeft)
+			{
+				stringBuilder.Append(" and ");
+				stringBuilder.AppendResultAfter(_left, _right, indentation);
+			}
+			else
 			{
 				_right.AppendResult(stringBuilder, indentation);
 			}

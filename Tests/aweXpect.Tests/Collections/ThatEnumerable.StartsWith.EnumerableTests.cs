@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 3],
-					             but it contained 2 at index 1 instead of 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2, 3, 4],
-					             but it contained only 3 items and misses 1 item: [
+					             but it contained only 3 items and lacked 1 item: [
 					               4
 					             ]
 
@@ -112,7 +112,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 3],
-					             but it contained 2 at index 1 instead of 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 3],
-					             but it contained 2 at index 1 instead of 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -167,7 +167,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 3],
-					             but it contained 2 at index 1 instead of 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -199,7 +199,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["foo"],
-					             but it contained "bar" at index 0 instead of "foo"
+					             but it contained item "bar" at index 0 instead of "foo"
 
 					             Collection:
 					             [
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2],
-					             but it contained only 1 item and misses 1 item: [
+					             but it contained only 1 item and lacked 1 item: [
 					               2
 					             ]
 

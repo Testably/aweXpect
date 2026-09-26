@@ -97,7 +97,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item that is equal to 3 at index 3,
-					              but it did not contain any item at index 3
+					              but it had no item at index 3
 
 					              Collection:
 					              {Formatter.Format(subject)}
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not equal to 0,
-					             but it did not contain any item
+					             but it had no item
 
 					             Collection:
 					             []
@@ -289,7 +289,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is equal to 2 with invalid match,
-					             but it did not contain any item with invalid match
+					             but it had no item with invalid match
 
 					             Collection:
 					             [0, 1, 2, 3, 4]
@@ -309,7 +309,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that starts with "a" and ends with "b" at index 0 and has an item that contains "c" at least once ignoring case at index 1,
-					             but it had item "a" at index 0 and it had item "b" at index 1
+					             but it had item "a" at index 0 and had item "b" at index 1
 
 					             Collection:
 					             [
@@ -380,7 +380,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item that is equal to {expected} at index 3 from end,
-					              but it did not contain any item at index 3 from end
+					              but it had no item at index 3 from end
 
 					              Collection:
 					              [{expected}, 3, 4]
@@ -400,7 +400,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item that is equal to {expected} at index 0 from end,
-					              but it did not contain any item at index 0 from end
+					              but it had no item at index 0 from end
 
 					              Collection:
 					              []

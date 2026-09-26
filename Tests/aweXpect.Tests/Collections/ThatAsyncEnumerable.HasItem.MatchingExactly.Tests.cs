@@ -82,7 +82,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass matching _ => true at index 3,
-						             but it did not contain any item at index 3
+						             but it had no item at index 3
 
 						             Collection:
 						             [
@@ -114,7 +114,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass matching _ => true,
-						             but it did not contain any item
+						             but it had no item
 
 						             Collection:
 						             []
@@ -165,7 +165,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type uint matching _ => true,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [1, 2, 3]
@@ -185,7 +185,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyBaseClass matching _ => true,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [
@@ -218,7 +218,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass matching _ => true,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [
@@ -248,7 +248,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass matching _ => true with invalid match,
-						             but it did not contain any item with invalid match
+						             but it had no item with invalid match
 
 						             Collection:
 						             [
@@ -349,7 +349,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass at index 3,
-						             but it did not contain any item at index 3
+						             but it had no item at index 3
 
 						             Collection:
 						             [
@@ -381,7 +381,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass,
-						             but it did not contain any item
+						             but it had no item
 
 						             Collection:
 						             []
@@ -432,7 +432,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type uint,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [1, 2, 3]
@@ -452,7 +452,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyBaseClass,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [
@@ -485,7 +485,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass,
-						             but it did not match at any index
+						             but it had no matching item
 
 						             Collection:
 						             [
@@ -515,7 +515,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item exactly of type MyClass with invalid match,
-						             but it did not contain any item with invalid match
+						             but it had no item with invalid match
 
 						             Collection:
 						             [

@@ -228,7 +228,7 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_it).Append(" did not contain any item").Append(_options.Match.GetDescription());
+				stringBuilder.Append(_it).Append(" had no item").Append(_options.Match.GetDescription());
 			}
 		}
 
@@ -345,7 +345,7 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_it).Append(" did not contain any item").Append(_options.Match.GetDescription());
+				stringBuilder.Append(_it).Append(" had no item").Append(_options.Match.GetDescription());
 			}
 		}
 
