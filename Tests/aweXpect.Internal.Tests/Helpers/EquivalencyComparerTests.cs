@@ -45,11 +45,11 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Property MyValue differed:
-			                                     Found: "foo"
+			                                    Actual: "foo"
 			                                  Expected: "bar"
 			                              and
 			                                Property Nested.MyValue differed:
-			                                     Found: "bar"
+			                                    Actual: "bar"
 			                                  Expected: "foo"
 			                              """);
 		}

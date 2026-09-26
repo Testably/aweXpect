@@ -976,8 +976,10 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x"
+					             and
+					               contained item "e" at index 4 instead of an item that is equal to "y"
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -1528,8 +1530,10 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -2177,8 +2181,10 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",

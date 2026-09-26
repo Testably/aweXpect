@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,15 @@ public static partial class EquivalencyComparison
 	/// <remarks>
 	///     In case of a difference, the <paramref name="failureBuilder" /> contains a human readable explanation.
 	/// </remarks>
-	public static ValueTask<bool>
+	public static async ValueTask<bool>
 		Compare<TActual, TExpected>(
 			[RequiresMemberMetadata] TActual actual,
 			[RequiresMemberMetadata] TExpected expected,
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder)
-		=> Compare(
+	{
+		int start = failureBuilder.Length;
+		bool result = await Compare(
 			actual,
 			expected,
 			equivalencyOptions,
@@ -34,6 +37,25 @@ public static partial class EquivalencyComparison
 			"",
 			MemberType.Value,
 			new EquivalencyContext());
+		JoinSingleLineEntries(failureBuilder, start);
+		return result;
+	}
+
+	/// <remarks>
+	///     The entries are written with the "and" on its own line, because whether any of them spans several lines is
+	///     only known once all of them are written.
+	/// </remarks>
+	private static void JoinSingleLineEntries(StringBuilder failureBuilder, int start)
+	{
+		string separator = $"{Environment.NewLine}and{Environment.NewLine}";
+		string failures = failureBuilder.ToString(start, failureBuilder.Length - start);
+		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains("\n")))
+		{
+			return;
+		}
+
+		failureBuilder.Replace(separator, $" and{Environment.NewLine}", start, failureBuilder.Length - start);
+	}
 
 	private sealed class EquivalencyContext
 	{
