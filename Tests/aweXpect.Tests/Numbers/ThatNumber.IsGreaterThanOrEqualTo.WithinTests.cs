@@ -20,10 +20,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)3, (byte)5)]
-			[InlineData((byte)0, (byte)5)]
+			[InlineData((byte)3, (byte)5, "-2")]
+			[InlineData((byte)0, (byte)5, "-5")]
 			public async Task ForByte_WhenOutsideTolerance_ShouldFail(
-				byte subject, byte expected)
+				byte subject, byte expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected).Within(1);
@@ -32,7 +32,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -66,7 +66,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -0.5
 					              """);
 			}
 
@@ -123,7 +123,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -0.5
 					              """);
 			}
 
@@ -163,7 +163,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -0.5
 					              """);
 			}
 
@@ -194,9 +194,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(3, 5)]
-			[InlineData(0, 5)]
-			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected)
+			[InlineData(3, 5, -2)]
+			[InlineData(0, 5, -5)]
+			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected).Within(1);
@@ -205,7 +205,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -245,7 +245,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -2
 					              """);
 			}
 

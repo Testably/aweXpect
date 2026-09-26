@@ -26,7 +26,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains collection [11,] in order and contiguous using equivalency,
+					             contains collection [11,] using equivalency in order and contiguous,
 					             but it lacked the one expected item
 
 					             Collection:
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains collection ["A",] in any order using AllDifferentComparer,
+					             contains collection ["A",] using AllDifferentComparer in any order,
 					             but it lacked the one expected item
 
 					             Collection:

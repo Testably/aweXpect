@@ -443,7 +443,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{regex}" as regex at least once,
+					              contains an item matching regex "{regex}" at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -468,7 +468,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{wildcard}" as wildcard at least once,
+					              contains an item matching "{wildcard}" at least once,
 					              but it did not contain it
 
 					              Collection:

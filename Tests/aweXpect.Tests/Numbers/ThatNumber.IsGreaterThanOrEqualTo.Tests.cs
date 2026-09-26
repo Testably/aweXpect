@@ -49,7 +49,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -86,10 +86,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.0, 2.1)]
-			[InlineData(-3.03, 5.8)]
+			[InlineData(1.0, 2.1, "-1.1")]
+			[InlineData(-3.03, 5.8, "-8.83")]
 			public async Task ForDecimal_WhenValueIsLessThanExpected_ShouldFail(
-				double subjectValue, double expectedValue)
+				double subjectValue, double expectedValue, string expectedDifference)
 			{
 				decimal subject = new(subjectValue);
 				decimal expected = new(expectedValue);
@@ -101,7 +101,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -178,10 +178,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.0, 2.1)]
-			[InlineData(-3.03, 5.8)]
+			[InlineData(1.0, 2.1, "-1.1")]
+			[InlineData(-3.03, 5.8, "-8.83")]
 			public async Task ForDouble_WhenValueIsLessThanExpected_ShouldFail(
-				double subject, double? expected)
+				double subject, double? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected);
@@ -190,7 +190,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -256,10 +256,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)1.0, (float)2.1)]
-			[InlineData((float)-3.03, (float)5.8)]
+			[InlineData((float)1.0, (float)2.1, "-1.1")]
+			[InlineData((float)-3.03, (float)5.8, "-8.83")]
 			public async Task ForFloat_WhenValueIsLessThanExpected_ShouldFail(
-				float subject, float? expected)
+				float subject, float? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected);
@@ -268,7 +268,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -331,7 +331,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(subject - expected)}
 					              """);
 			}
 
@@ -388,7 +388,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 #endif
@@ -446,7 +446,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -474,7 +474,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -529,10 +529,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1)]
-			[InlineData(-3.03, 5.8)]
+			[InlineData(1.1, 2.1, "-1.0")]
+			[InlineData(-3.03, 5.8, "-8.83")]
 			public async Task ForNullableDecimal_WhenValueIsLessThanExpected_ShouldFail(
-				double? subjectValue, double? expectedValue)
+				double? subjectValue, double? expectedValue, string expectedDifference)
 			{
 				decimal? subject = subjectValue == null ? null : new decimal(subjectValue.Value);
 				decimal? expected = expectedValue == null ? null : new decimal(expectedValue.Value);
@@ -544,7 +544,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -608,10 +608,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1)]
-			[InlineData(-3.03, 5.8)]
+			[InlineData(1.1, 2.1, "-1.0")]
+			[InlineData(-3.03, 5.8, "-8.83")]
 			public async Task ForNullableDouble_WhenValueIsLessThanExpected_ShouldFail(
-				double? subject, double? expected)
+				double? subject, double? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected);
@@ -620,7 +620,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -669,10 +669,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)1.1, (float)2.1)]
-			[InlineData((float)-3.03, (float)5.8)]
+			[InlineData((float)1.1, (float)2.1, "-0.9999999")]
+			[InlineData((float)-3.03, (float)5.8, "-8.83")]
 			public async Task ForNullableFloat_WhenValueIsLessThanExpected_ShouldFail(
-				float? subject, float? expected)
+				float? subject, float? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThanOrEqualTo(expected);
@@ -681,7 +681,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -726,7 +726,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -801,7 +801,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 #endif
@@ -830,7 +830,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -876,7 +876,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -922,7 +922,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -968,7 +968,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1014,7 +1014,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1060,7 +1060,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1125,7 +1125,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1172,7 +1172,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1219,7 +1219,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1266,7 +1266,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 
@@ -1313,7 +1313,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -1
 					              """);
 			}
 		}
@@ -1358,10 +1358,10 @@ public sealed partial class ThatNumber
 
 
 			[Theory]
-			[InlineData(2, 1)]
-			[InlineData(0, 0)]
+			[InlineData(2, 1, ", which differs by 1")]
+			[InlineData(0, 0, "")]
 			public async Task ForInt_WhenValueIsGreaterThanOrEqualToExpected_ShouldFail(int subject,
-				int? expected)
+				int? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
@@ -1371,7 +1371,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -1409,10 +1409,10 @@ public sealed partial class ThatNumber
 
 
 			[Theory]
-			[InlineData(2, 1)]
-			[InlineData(0, 0)]
+			[InlineData(2, 1, ", which differs by 1")]
+			[InlineData(0, 0, "")]
 			public async Task ForNullableInt_WhenValueIsGreaterThanOrEqualToExpected_ShouldFail(int? subject,
-				int? expected)
+				int? expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
@@ -1422,7 +1422,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than or equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 

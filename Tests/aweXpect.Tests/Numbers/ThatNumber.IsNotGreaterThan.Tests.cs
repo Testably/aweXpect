@@ -25,9 +25,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)2, (byte)1)]
+			[InlineData((byte)2, (byte)1, 1)]
 			public async Task ForByte_WhenValueIsGreaterThanUnexpected_ShouldFail(byte subject,
-				byte? unexpected)
+				byte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -36,7 +36,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -70,9 +70,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2.1, 1.1)]
+			[InlineData(2.1, 1.1, "1.0")]
 			public async Task ForDecimal_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				double subjectValue, double unexpectedValue)
+				double subjectValue, double unexpectedValue, string expectedDifference)
 			{
 				decimal subject = new(subjectValue);
 				decimal? unexpected = new(unexpectedValue);
@@ -84,7 +84,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -166,9 +166,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2.0, 1.0F)]
+			[InlineData(2.0, 1.0F, "1.0")]
 			public async Task ForDouble_WhenUnexpectedIsSmallerFloat_ShouldFail(double subject,
-				float unexpected)
+				float unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -177,14 +177,14 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
 			[Theory]
-			[InlineData(2.1, 1.1)]
+			[InlineData(2.1, 1.1, "1.0")]
 			public async Task ForDouble_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				double subject, double? unexpected)
+				double subject, double? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -193,7 +193,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -255,9 +255,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)2.1, (float)1.1)]
+			[InlineData((float)2.1, (float)1.1, "0.9999999")]
 			public async Task ForFloat_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				float subject, float? unexpected)
+				float subject, float? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -266,7 +266,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -334,9 +334,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2, 1)]
+			[InlineData(2, 1, 1)]
 			public async Task ForInt_WhenValueIsGreaterThanUnexpected_ShouldFail(int subject,
-				int? unexpected)
+				int? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -345,7 +345,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -383,9 +383,9 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[InlineData(2, 1)]
+			[InlineData(2, 1, 1)]
 			public async Task ForInt128_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				int subjectValue, int unexpectedValue)
+				int subjectValue, int unexpectedValue, int expectedDifference)
 			{
 				Int128 subject = subjectValue;
 				Int128? unexpected = unexpectedValue;
@@ -397,7 +397,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 #endif
@@ -438,8 +438,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2L, 1)]
-			public async Task ForLong_WhenUnexpectedIsSmallerInt_ShouldFail(long subject, int unexpected)
+			[InlineData(2L, 1, 1)]
+			public async Task ForLong_WhenUnexpectedIsSmallerInt_ShouldFail(long subject, int unexpected,
+				int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -448,14 +449,14 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
 			[Theory]
-			[InlineData((long)2, (long)1)]
+			[InlineData((long)2, (long)1, 1)]
 			public async Task ForLong_WhenValueIsGreaterThanUnexpected_ShouldFail(long subject,
-				long? unexpected)
+				long? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -464,7 +465,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -481,9 +482,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)2, (byte)1)]
+			[InlineData((byte)2, (byte)1, 1)]
 			public async Task ForNullableByte_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				byte? subject, byte? unexpected)
+				byte? subject, byte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -492,7 +493,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -544,9 +545,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2.1, 1.1)]
+			[InlineData(2.1, 1.1, "1.0")]
 			public async Task ForNullableDecimal_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				double? subjectValue, double? unexpectedValue)
+				double? subjectValue, double? unexpectedValue, string expectedDifference)
 			{
 				decimal? subject = subjectValue == null ? null : new decimal(subjectValue.Value);
 				decimal? unexpected = unexpectedValue == null ? null : new decimal(unexpectedValue.Value);
@@ -558,7 +559,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -639,9 +640,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2.1, 1.1)]
+			[InlineData(2.1, 1.1, "1.0")]
 			public async Task ForNullableDouble_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				double? subject, double? unexpected)
+				double? subject, double? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -650,7 +651,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -700,9 +701,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)2.1, (float)1.1)]
+			[InlineData((float)2.1, (float)1.1, "0.9999999")]
 			public async Task ForNullableFloat_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				float? subject, float? unexpected)
+				float? subject, float? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -711,7 +712,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -746,9 +747,9 @@ public sealed partial class ThatNumber
 #endif
 
 			[Theory]
-			[InlineData(2, 1)]
+			[InlineData(2, 1, 1)]
 			public async Task ForNullableInt_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				int? subject, int? unexpected)
+				int? subject, int? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -757,7 +758,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -813,9 +814,9 @@ public sealed partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 			[Theory]
-			[InlineData(2, 1)]
+			[InlineData(2, 1, 1)]
 			public async Task ForNullableInt128_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				int subjectValue, int unexpectedValue)
+				int subjectValue, int unexpectedValue, int expectedDifference)
 			{
 				Int128 subject = subjectValue;
 				Int128? unexpected = unexpectedValue;
@@ -827,7 +828,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 #endif
@@ -850,9 +851,9 @@ public sealed partial class ThatNumber
 #endif
 
 			[Theory]
-			[InlineData((long)2, (long)1)]
+			[InlineData((long)2, (long)1, 1)]
 			public async Task ForNullableLong_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				long? subject, long? unexpected)
+				long? subject, long? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -861,7 +862,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -896,9 +897,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)2, (sbyte)1)]
+			[InlineData((sbyte)2, (sbyte)1, 1)]
 			public async Task ForNullableSbyte_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				sbyte? subject, sbyte? unexpected)
+				sbyte? subject, sbyte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -907,7 +908,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -942,9 +943,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((short)2, (short)1)]
+			[InlineData((short)2, (short)1, 1)]
 			public async Task ForNullableShort_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				short? subject, short? unexpected)
+				short? subject, short? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -953,7 +954,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -988,9 +989,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((uint)2, (uint)1)]
+			[InlineData((uint)2, (uint)1, 1)]
 			public async Task ForNullableUint_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				uint? subject, uint? unexpected)
+				uint? subject, uint? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -999,7 +1000,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1034,9 +1035,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ulong)2, (ulong)1)]
+			[InlineData((ulong)2, (ulong)1, 1)]
 			public async Task ForNullableUlong_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				ulong? subject, ulong? unexpected)
+				ulong? subject, ulong? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1045,7 +1046,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1080,9 +1081,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ushort)2, (ushort)1)]
+			[InlineData((ushort)2, (ushort)1, 1)]
 			public async Task ForNullableUshort_WhenValueIsGreaterThanUnexpected_ShouldFail(
-				ushort? subject, ushort? unexpected)
+				ushort? subject, ushort? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1091,7 +1092,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1144,9 +1145,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)2, (sbyte)1)]
+			[InlineData((sbyte)2, (sbyte)1, 1)]
 			public async Task ForSbyte_WhenValueIsGreaterThanUnexpected_ShouldFail(sbyte subject,
-				sbyte? unexpected)
+				sbyte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1155,7 +1156,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1190,9 +1191,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((short)2, (short)1)]
+			[InlineData((short)2, (short)1, 1)]
 			public async Task ForShort_WhenValueIsGreaterThanUnexpected_ShouldFail(short subject,
-				short? unexpected)
+				short? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1201,7 +1202,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1236,9 +1237,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((uint)2, (uint)1)]
+			[InlineData((uint)2, (uint)1, 1)]
 			public async Task ForUint_WhenValueIsGreaterThanUnexpected_ShouldFail(uint subject,
-				uint? unexpected)
+				uint? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1247,7 +1248,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1282,9 +1283,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ulong)2, (ulong)1)]
+			[InlineData((ulong)2, (ulong)1, 1)]
 			public async Task ForUlong_WhenValueIsGreaterThanUnexpected_ShouldFail(ulong subject,
-				ulong? unexpected)
+				ulong? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1293,7 +1294,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1328,9 +1329,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ushort)2, (ushort)1)]
+			[InlineData((ushort)2, (ushort)1, 1)]
 			public async Task ForUshort_WhenValueIsGreaterThanUnexpected_ShouldFail(ushort subject,
-				ushort? unexpected)
+				ushort? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(unexpected);
@@ -1339,7 +1340,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -1359,9 +1360,9 @@ public sealed partial class ThatNumber
 		public sealed class WithinTests
 		{
 			[Theory]
-			[InlineData(9.75)]
-			[InlineData(10.0)]
-			public async Task ForDouble_WhenInsideTolerance_ShouldFail(double subject)
+			[InlineData(9.75, ", which differs by -0.25")]
+			[InlineData(10.0, "")]
+			public async Task ForDouble_WhenInsideTolerance_ShouldFail(double subject, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(10.0).Within(0.5);
@@ -1370,7 +1371,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than 10.0 ± 0.5,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -1466,10 +1467,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(9)]
-			[InlineData(10)]
-			[InlineData(15)]
-			public async Task ForInt_WhenInsideTolerance_ShouldFail(int subject)
+			[InlineData(9, ", which differs by -1")]
+			[InlineData(10, "")]
+			[InlineData(15, ", which differs by 5")]
+			public async Task ForInt_WhenInsideTolerance_ShouldFail(int subject, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotGreaterThan(10).Within(2);
@@ -1478,7 +1479,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not greater than 10 ± 2,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -1494,7 +1495,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is not greater than 10 ± 2,
-					             but it was 9
+					             but it was 9, which differs by -1
 					             """)
 					.Because("9 is greater than the shifted bound 8, so IsGreaterThan(10).Within(2) holds");
 			}

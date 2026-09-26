@@ -47,16 +47,34 @@ public static partial class ThatNumber
 		}
 	}
 
+	/// <summary>
+	///     Appends the difference to the bound of the range that <paramref name="actual" /> lies outside of, if any.
+	/// </summary>
+	private static void AppendDifferenceToRange<TNumber>(StringBuilder stringBuilder, TNumber? actual,
+		TNumber? minimum, TNumber? maximum)
+		where TNumber : struct, INumber<TNumber>
+	{
+		if (actual < minimum)
+		{
+			AppendDifference(stringBuilder, actual, minimum, "the minimum");
+		}
+		else if (actual > maximum)
+		{
+			AppendDifference(stringBuilder, actual, maximum, "the maximum");
+		}
+	}
+
 	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
 	///     way round, so the magnitude with an explicit sign remains as fallback. When neither is representable, the
-	///     difference is calculated in a wider type.
+	///     difference is calculated in a wider type. A difference of zero is omitted, because it tells nothing.
 	/// </remarks>
-	private static void AppendDifference<TNumber>(StringBuilder stringBuilder, TNumber? actual, TNumber? expected)
+	private static void AppendDifference<TNumber>(StringBuilder stringBuilder, TNumber? actual, TNumber? expected,
+		string? reference = null)
 		where TNumber : struct, INumber<TNumber>
 	{
-		if (actual is null || expected is null)
+		if (actual is null || expected is null || actual == expected)
 		{
 			return;
 		}
@@ -70,6 +88,7 @@ public static partial class ThatNumber
 				{
 					stringBuilder.Append(", which differs by ");
 					Formatter.Format(stringBuilder, difference);
+					AppendReference(stringBuilder, reference);
 					return;
 				}
 			}
@@ -88,6 +107,7 @@ public static partial class ThatNumber
 				{
 					stringBuilder.Append(actual > expected ? ", which differs by " : ", which differs by -");
 					Formatter.Format(stringBuilder, magnitude);
+					AppendReference(stringBuilder, reference);
 					return;
 				}
 			}
@@ -101,7 +121,7 @@ public static partial class ThatNumber
 		{
 			AppendWideDifference(stringBuilder, typeof(TNumber) == typeof(float) || typeof(TNumber) == typeof(Half)
 				? double.CreateChecked(actual.Value) - double.CreateChecked(expected.Value)
-				: decimal.CreateChecked(actual.Value) - decimal.CreateChecked(expected.Value));
+				: decimal.CreateChecked(actual.Value) - decimal.CreateChecked(expected.Value), reference);
 		}
 		catch (Exception ex) when (ex is OverflowException or NotSupportedException)
 		{
@@ -134,17 +154,39 @@ public static partial class ThatNumber
 		}
 	}
 
+	/// <summary>
+	///     Appends the difference to the bound of the range that <paramref name="actual" /> lies outside of, if any.
+	/// </summary>
+	private static void AppendDifferenceToRange<TNumber>(StringBuilder stringBuilder, TNumber? actual,
+		TNumber? minimum, TNumber? maximum, NumberTolerance<TNumber> options)
+		where TNumber : struct, IComparable<TNumber>
+	{
+		if (actual is null)
+		{
+			return;
+		}
+
+		if (minimum is not null && actual.Value.CompareTo(minimum.Value) < 0)
+		{
+			AppendDifference(stringBuilder, actual, minimum, options, "the minimum");
+		}
+		else if (maximum is not null && actual.Value.CompareTo(maximum.Value) > 0)
+		{
+			AppendDifference(stringBuilder, actual, maximum, options, "the maximum");
+		}
+	}
+
 	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
 	///     way round, so the magnitude with an explicit sign remains as fallback. When neither is representable, the
-	///     difference is calculated in a wider type.
+	///     difference is calculated in a wider type. A difference of zero is omitted, because it tells nothing.
 	/// </remarks>
 	private static void AppendDifference<TNumber>(StringBuilder stringBuilder, TNumber? actual, TNumber? expected,
-		NumberTolerance<TNumber> options)
+		NumberTolerance<TNumber> options, string? reference = null)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		if (actual is null || expected is null)
+		if (actual is null || expected is null || actual.Value.CompareTo(expected.Value) == 0)
 		{
 			return;
 		}
@@ -154,6 +196,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(", which differs by ");
 			Formatter.Format(stringBuilder, difference);
+			AppendReference(stringBuilder, reference);
 			return;
 		}
 
@@ -166,6 +209,7 @@ public static partial class ThatNumber
 					? ", which differs by "
 					: ", which differs by -");
 				Formatter.Format(stringBuilder, magnitude);
+				AppendReference(stringBuilder, reference);
 				return;
 			}
 		}
@@ -174,7 +218,7 @@ public static partial class ThatNumber
 			// Fall back to the wider type below.
 		}
 
-		AppendWideDifference(stringBuilder, CalculateWideDifference(actual.Value, expected.Value));
+		AppendWideDifference(stringBuilder, CalculateWideDifference(actual.Value, expected.Value), reference);
 	}
 
 	/// <remarks>
@@ -214,7 +258,7 @@ public static partial class ThatNumber
 		};
 #endif
 
-	private static void AppendWideDifference(StringBuilder stringBuilder, object? difference)
+	private static void AppendWideDifference(StringBuilder stringBuilder, object? difference, string? reference)
 	{
 		switch (difference)
 		{
@@ -222,11 +266,21 @@ public static partial class ThatNumber
 			case decimal integerDifference:
 				stringBuilder.Append(", which differs by ")
 					.Append(integerDifference.ToString(CultureInfo.InvariantCulture));
+				AppendReference(stringBuilder, reference);
 				break;
 			case double floatingPointDifference when IsFinite<double>(floatingPointDifference):
 				stringBuilder.Append(", which differs by ");
 				Formatter.Format(stringBuilder, floatingPointDifference);
+				AppendReference(stringBuilder, reference);
 				break;
+		}
+	}
+
+	private static void AppendReference(StringBuilder stringBuilder, string? reference)
+	{
+		if (reference is not null)
+		{
+			stringBuilder.Append(" from ").Append(reference);
 		}
 	}
 }

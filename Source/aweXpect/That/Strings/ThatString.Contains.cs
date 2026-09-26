@@ -103,15 +103,14 @@ public static partial class ThatString
 			{
 				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
 				Formatter.Format(stringBuilder, expected);
+				stringBuilder.Append(options);
 			}
 			else
 			{
 				stringBuilder.Append(Grammars.Verb("contains ", "contain "));
 				Formatter.Format(stringBuilder, expected);
-				stringBuilder.Append(' ').Append(quantifier);
+				stringBuilder.Append(options).Append(' ').Append(quantifier);
 			}
-
-			stringBuilder.Append(options);
 		}
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />

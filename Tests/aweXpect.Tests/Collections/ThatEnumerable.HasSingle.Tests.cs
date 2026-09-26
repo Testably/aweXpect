@@ -571,7 +571,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that is greater than 4,
-					             but it was 3
+					             but it was 3, which differs by -1
 					             """);
 			}
 

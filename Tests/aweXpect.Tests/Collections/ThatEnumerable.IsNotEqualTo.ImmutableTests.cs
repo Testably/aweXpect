@@ -1216,7 +1216,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection unexpected in order as wildcard,
+					             is not equal to collection unexpected as wildcard in order,
 					             but it was
 
 					             Collection:
@@ -1248,7 +1248,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection unexpected in order ignoring leading whitespace,
+					             is not equal to collection unexpected ignoring leading whitespace in order,
 					             but it was
 
 					             Collection:
@@ -1280,7 +1280,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection unexpected in order ignoring trailing whitespace,
+					             is not equal to collection unexpected ignoring trailing whitespace in order,
 					             but it was
 					             
 					             Collection:
