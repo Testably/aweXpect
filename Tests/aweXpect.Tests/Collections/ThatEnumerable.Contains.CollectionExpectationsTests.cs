@@ -260,8 +260,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x"
+					             and
+					               contained item "e" at index 4 instead of an item that is equal to "y"
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -898,8 +900,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x"
+					             and
+					               contained item "e" at index 4 instead of an item that is equal to "y"
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -2526,9 +2530,12 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y" and
-					               did not contain any additional items and
+					               contained item "d" at index 3 instead of an item that is equal to "x"
+					             and
+					               contained item "e" at index 4 instead of an item that is equal to "y"
+					             and
+					               did not contain any additional items
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -2867,7 +2874,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 5 expected items:
 					                 an item that is equal to "d",
 					                 an item that is equal to "e"
@@ -3137,8 +3145,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x"
+					             and
+					               contained item "e" at index 4 instead of an item that is equal to "y"
+					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
@@ -3531,7 +3541,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 5 expected items:
 					                 an item that is equal to "d",
 					                 an item that is equal to "e"
@@ -3813,7 +3824,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 6 expected items:
 					                 an item that is equal to "a",
 					                 an item that is equal to "e"
@@ -4100,7 +4112,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 5 expected items:
 					                 an item that is equal to "d",
 					                 an item that is equal to "e"
@@ -4421,7 +4434,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 5 expected items:
 					                 an item that is equal to "a",
 					                 an item that is equal to "e"
@@ -4764,7 +4778,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it
-					               did not contain any additional items and
+					               did not contain any additional items
+					             and
 					               lacked 2 of 5 expected items:
 					                 an item that is equal to "d",
 					                 an item that is equal to "e"

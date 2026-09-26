@@ -65,7 +65,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo($"""
 			                               it was not:
 			                                 Property MyValue differed:
-			                                      Found: {Formatter.Format(actualValue)}
+			                                     Actual: {Formatter.Format(actualValue)}
 			                                   Expected: {Formatter.Format(expectedValue)}
 			                               """);
 		}
@@ -90,7 +90,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Property MyValue differed:
-			                                     Found: "foo"
+			                                    Actual: "foo"
 			                                  Expected: "bar"
 			                              """);
 		}
@@ -117,7 +117,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Property MyInternalProperty differed:
-					                   Found: {actualInternalValue}
+					                  Actual: {actualInternalValue}
 					                Expected: {expectedInternalValue}
 					            """);
 			}
@@ -145,7 +145,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Property MyPrivateProperty differed:
-					                   Found: {actualPrivateValue}
+					                  Actual: {actualPrivateValue}
 					                Expected: {expectedPrivateValue}
 					            """);
 			}
@@ -194,7 +194,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Property MyPublicProperty differed:
-					                   Found: {actualPublicValue}
+					                  Actual: {actualPublicValue}
 					                Expected: {expectedPublicValue}
 					            """);
 			}

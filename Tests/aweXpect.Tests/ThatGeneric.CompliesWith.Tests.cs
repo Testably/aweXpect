@@ -79,7 +79,7 @@ public sealed partial class ThatGeneric
 					               },
 					             but it was not:
 					               Property Value differed:
-					                    Found: 1
+					                   Actual: 1
 					                 Expected: 2
 
 					             Equivalency options:
@@ -240,7 +240,7 @@ public sealed partial class ThatGeneric
 					               } within 0:00.050,
 					             but it was not:
 					               Property HasWaitedEnough differed:
-					                    Found: False
+					                   Actual: False
 					                 Expected: True
 
 					             Equivalency options:

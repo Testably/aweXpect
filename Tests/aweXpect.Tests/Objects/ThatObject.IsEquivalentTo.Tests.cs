@@ -59,10 +59,10 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Value differed:
-					                    Found: <null>
+					                   Actual: <null>
 					                 Expected: "Foo" and it was not:
 					               Property Value differed:
-					                    Found: <null>
+					                   Actual: <null>
 					                 Expected: "Bar"
 
 					             Equivalency options:
@@ -227,7 +227,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Value differed:
-					                    Found: <null>
+					                   Actual: <null>
 					                 Expected: "Foo"
 
 					             Equivalency options:
@@ -259,7 +259,7 @@ public sealed partial class ThatObject
 					                 B = <null>
 					               },
 					             but it was not:
-					               Property B is missing on the actual object
+					               Property B was missing on the actual object
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -284,6 +284,41 @@ public sealed partial class ThatObject
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringMember("B"));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task MissingMembers_ShouldJoinThemWithATrailingAnd()
+			{
+				var subject = new
+				{
+					A = 1,
+				};
+				var expected = new
+				{
+					A = 1,
+					B = 2,
+					C = 3,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to {
+					                 A = 1,
+					                 B = 2,
+					                 C = 3
+					               },
+					             but it was not:
+					               Property B was missing on the actual object and
+					               Property C was missing on the actual object
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("single-line findings only put the \"and\" on its own line when another finding spans several lines");
 			}
 
 			[Fact]
@@ -486,7 +521,7 @@ public sealed partial class ThatObject
 					               Element Inner.Inner.Collection[3] was missing "4"
 					             and
 					               Property Inner.Inner.Value differed:
-					                    Found: "Baz"
+					                   Actual: "Baz"
 					                 Expected: "Bart"
 
 					             Equivalency options:
@@ -576,7 +611,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Inner.Inner.Value differed:
-					                    Found: <null>
+					                   Actual: <null>
 					                 Expected: "Baz"
 
 					             Equivalency options:
@@ -663,7 +698,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property V differed:
-					                    Found: 1 (int)
+					                   Actual: 1 (int)
 					                 Expected: 1 (long)
 
 					             Equivalency options:
@@ -695,7 +730,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property S differed:
-					                    Found: ab
+					                   Actual: ab
 					                 Expected: "ab"
 
 					             Equivalency options:
@@ -727,7 +762,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property T differed:
-					                    Found: int
+					                   Actual: int
 					                 Expected: long
 
 					             Equivalency options:
@@ -758,7 +793,7 @@ public sealed partial class ThatObject
 					             ],
 					             but it was not:
 					               Element [0] differed:
-					                    Found: 1
+					                   Actual: 1
 					                 Expected: 4
 
 					             Equivalency options:
@@ -787,11 +822,11 @@ public sealed partial class ThatObject
 					             ],
 					             but it was not:
 					               Element [1] differed:
-					                    Found: 2
+					                   Actual: 2
 					                 Expected: 3
 					             and
 					               Element [2] differed:
-					                    Found: 3
+					                   Actual: 3
 					                 Expected: 2
 
 					             Equivalency options:
@@ -869,7 +904,7 @@ public sealed partial class ThatObject
 					               Element [2] had superfluous 3
 					             and
 					               Element [3] differed:
-					                    Found: 4
+					                   Actual: 4
 					                 Expected: 3
 					             and
 					               Element [4] was missing 4
@@ -921,11 +956,11 @@ public sealed partial class ThatObject
 					             },
 					             but it was not:
 					               Element [2] differed:
-					                    Found: 3
+					                   Actual: 3
 					                 Expected: 4
 					             and
 					               Element [3] differed:
-					                    Found: 4
+					                   Actual: 4
 					                 Expected: 5
 
 					             Equivalency options:
@@ -1104,7 +1139,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Item.Name differed:
-					                    Found: "Foo"
+					                   Actual: "Foo"
 					                 Expected: "Bar"
 
 					             Equivalency options:
@@ -1139,7 +1174,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Name differed:
-					                    Found: "Foo"
+					                   Actual: "Foo"
 					                 Expected: "Bar"
 
 					             Equivalency options:
@@ -1174,7 +1209,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               It differed:
-					                    Found: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
+					                   Actual: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
 					                 Expected: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
 
 					             Equivalency options:
@@ -1240,7 +1275,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Value differed:
-					                    Found: 1
+					                   Actual: 1
 					                 Expected: 2
 
 					             Equivalency options:
@@ -1275,7 +1310,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Name differed:
-					                    Found: "Foo"
+					                   Actual: "Foo"
 					                 Expected: "Bar"
 
 					             Equivalency options:
@@ -1332,7 +1367,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Value differed:
-					                    Found: 1
+					                   Actual: 1
 					                 Expected: 2
 
 					             Equivalency options:
@@ -1464,7 +1499,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Field PublicValue differed:
-					                      Found: 1
+					                     Actual: 1
 					                   Expected: {{1 + publicDifference}}
 
 					               Equivalency options:
@@ -1526,7 +1561,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property PublicValue differed:
-					                    Found: 1
+					                   Actual: 1
 					                 Expected: 2
 
 					             Equivalency options:
@@ -1566,7 +1601,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Field InternalValue differed:
-					                      Found: 2
+					                     Actual: 2
 					                   Expected: {{2 + internalDifference}}
 
 					               Equivalency options:
@@ -1594,7 +1629,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property MyProperty differed:
-					                    Found: False
+					                   Actual: False
 					                 Expected: True
 
 					             Equivalency options:
@@ -1645,7 +1680,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Field PrivateValue differed:
-					                      Found: 3
+					                     Actual: 3
 					                   Expected: {{3 + privateDifference}}
 
 					               Equivalency options:
@@ -1694,7 +1729,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Property PublicValue differed:
-					                      Found: 1
+					                     Actual: 1
 					                   Expected: {{1 + publicDifference}}
 
 					               Equivalency options:
@@ -1734,7 +1769,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Property InternalValue differed:
-					                      Found: 2
+					                     Actual: 2
 					                   Expected: {{2 + internalDifference}}
 
 					               Equivalency options:
@@ -1762,7 +1797,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Field MyField differed:
-					                    Found: False
+					                   Actual: False
 					                 Expected: True
 
 					             Equivalency options:
@@ -1813,7 +1848,7 @@ public sealed partial class ThatObject
 					                 },
 					               but it was not:
 					                 Property PrivateValue differed:
-					                      Found: 3
+					                     Actual: 3
 					                   Expected: {{3 + privateDifference}}
 
 					               Equivalency options:
@@ -1874,7 +1909,7 @@ public sealed partial class ThatObject
 					             ],
 					             but it was not:
 					               Property [1].Value differed:
-					                    Found: "Foo"
+					                   Actual: "Foo"
 					                 Expected: "Bar"
 
 					             Equivalency options:
@@ -2048,7 +2083,7 @@ public sealed partial class ThatObject
 					               },
 					             but it was not:
 					               Property Second.Value differed:
-					                    Found: "Foo"
+					                   Actual: "Foo"
 					                 Expected: "Bar"
 
 					             Equivalency options:

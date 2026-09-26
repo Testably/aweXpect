@@ -31,11 +31,11 @@ public sealed class CustomizeEquivalencyTests
 			             ],
 			             but it was not:
 			               Element [0] differed:
-			                    Found: 1
+			                   Actual: 1
 			                 Expected: 2
 			             and
 			               Element [1] differed:
-			                    Found: 2
+			                   Actual: 2
 			                 Expected: 1
 			             
 			             Equivalency options:

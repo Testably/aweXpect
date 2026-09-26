@@ -1288,8 +1288,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of "x" and
-					               contained item "e" at index 4 instead of "y" and
+					               contained item "d" at index 3 instead of "x"
+					             and
+					               contained item "e" at index 4 instead of "y"
+					             and
 					               lacked 3 of 6 expected items:
 					                 "x",
 					                 "y",
@@ -1773,8 +1775,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 "x",
 					                 "y",
@@ -2321,8 +2325,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected and
+					               contained item "d" at index 3 that was not expected
+					             and
+					               contained item "e" at index 4 that was not expected
+					             and
 					               lacked 3 of 6 expected items:
 					                 "x",
 					                 "y",

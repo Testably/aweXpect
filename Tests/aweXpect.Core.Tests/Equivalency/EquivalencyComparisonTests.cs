@@ -27,7 +27,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 5
 		                                                """).IgnoringNewlineStyle()
 			.Because("the explicit implementation is only a fallback for a property the actual type does not have");
@@ -50,7 +50,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 5
+		                                                      Actual: 5
 		                                                    Expected: 6
 		                                                """).IgnoringNewlineStyle()
 			.Because("the explicit implementation is reported under the short name the expectation uses");
@@ -73,7 +73,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Phantom differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the registered explicit implementation is not one reflection could find, and a type with only explicit implementations still counts as registered");
@@ -110,7 +110,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Phantom is ambiguous on the actual object, which implements it explicitly for more than one interface
+		                                                  Property Phantom was ambiguous on the actual object, which implements it explicitly for more than one interface
 		                                                """).IgnoringNewlineStyle()
 			.Because("the registry has to decide the ambiguity the same way reflection does");
 	}
@@ -130,7 +130,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Value is ambiguous on the actual object, which implements it explicitly for more than one interface
+		                                                  Property Value was ambiguous on the actual object, which implements it explicitly for more than one interface
 		                                                """).IgnoringNewlineStyle()
 			.Because("picking one of the implementations would make the result depend on the order reflection returns them in");
 	}
@@ -155,7 +155,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property [0].Value differed:
-		                                                       Found: 5
+		                                                      Actual: 5
 		                                                    Expected: 6
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -199,7 +199,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Inner.Value differed:
-		                                                       Found: 5
+		                                                      Actual: 5
 		                                                    Expected: 6
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -233,7 +233,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Field Value differed:
-		                                                       Found: 5
+		                                                      Actual: 5
 		                                                    Expected: 6
 		                                                """).IgnoringNewlineStyle()
 			.Because("an expected field falls back to a property of the same name, which includes an explicit implementation");
@@ -304,7 +304,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Field Value is missing on the actual object
+		                                                  Field Value was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("an explicit implementation is a property, so excluding properties excludes it as well");
 	}
@@ -323,7 +323,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  It differed:
-		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                      Actual: EquivalencyComparisonTests.WithLength { Length = 2 }
 		                                                    Expected: "ab"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -359,7 +359,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: <null>
+		                                                      Actual: <null>
 		                                                    Expected: "Foo"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -393,7 +393,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Value is missing on the actual object
+		                                                  Property Value was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
 	}
@@ -411,7 +411,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Field Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the member of the same kind takes precedence, so the fallback to the property never applies");
@@ -430,7 +430,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the member of the same kind takes precedence, so the fallback to the field never applies");
@@ -490,7 +490,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo($"""
 
 		                                                   Property Value differed:
-		                                                        Found: {actual.Value}
+		                                                       Actual: {actual.Value}
 		                                                     Expected: {expected.Value}
 		                                                 """).IgnoringNewlineStyle()
 			.Because("an assembly only describes what it loaded, so walking it reaches getters that throw instead of state that could be compared");
@@ -533,7 +533,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: ['a']
+		                                                      Actual: ['a']
 		                                                    Expected: "a"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -563,7 +563,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element Values[1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 5
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -593,7 +593,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element Values[0] differed:
-		                                                       Found: 1 (int)
+		                                                      Actual: 1 (int)
 		                                                    Expected: 1 (long)
 		                                                """).IgnoringNewlineStyle()
 			.Because("two elements that format identically are only told apart by their type");
@@ -657,8 +657,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [0] was missing 1
-		                                                and
+		                                                  Element [0] was missing 1 and
 		                                                  Element [1] was missing 2
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -839,8 +838,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [0] had superfluous 1
-		                                                and
+		                                                  Element [0] had superfluous 1 and
 		                                                  Element [1] had superfluous 2
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -862,11 +860,11 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Field [0].Other differed:
-		                                                       Found: 10
+		                                                      Actual: 10
 		                                                    Expected: 88
 		                                                and
 		                                                  Field [1].Other differed:
-		                                                       Found: 20
+		                                                      Actual: 20
 		                                                    Expected: 99
 		                                                """).IgnoringNewlineStyle()
 			.Because("pairing each element with the one that shares its Value reports the one member that differs, while pairing them by position would report both members of both elements");
@@ -890,7 +888,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [1] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -930,11 +928,11 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [0] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 3
 		                                                and
 		                                                  Element [1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 4
 		                                                and
 		                                                  Element [2] was missing 5
@@ -960,7 +958,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [0] differed:
-		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                      Actual: EquivalencyComparisonTests.WithLength { Length = 2 }
 		                                                    Expected: "ab"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1045,11 +1043,11 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element Ordered[0] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                and
 		                                                  Element Ordered[1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 1
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1091,7 +1089,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: de-DE
+		                                                      Actual: de-DE
 		                                                    Expected: en-US
 		                                                """).IgnoringNewlineStyle()
 			.Because("the culture name is the identity, while its members expand into every format pattern the operating system knows");
@@ -1116,7 +1114,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: Func<string, bool> { Method = Boolean IsNullOrEmpty(System.String), Target = <null> }
+		                                                      Actual: Func<string, bool> { Method = Boolean IsNullOrEmpty(System.String), Target = <null> }
 		                                                    Expected: Func<string, bool> { Method = Boolean IsNullOrWhiteSpace(System.String), Target = <null> }
 		                                                """).IgnoringNewlineStyle()
 			.Because("a delegate is its target and method, so walking it would drag a captured closure into the comparison");
@@ -1162,8 +1160,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [b] had superfluous 1
-		                                                and
+		                                                  Element [b] had superfluous 1 and
 		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle()
 			.Because("a read-only dictionary looks its keys up through the dictionary it wraps");
@@ -1189,8 +1186,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [b] had superfluous 1
-		                                                and
+		                                                  Element [b] had superfluous 1 and
 		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle()
 			.Because("a sorted dictionary considers two keys the same when its comparer orders neither before the other");
@@ -1247,7 +1243,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [a[b] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 11
 		                                                """).IgnoringNewlineStyle()
 			.Because("the bracket inside the key does not open the path segment that the ignored name refers to");
@@ -1336,8 +1332,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [a] had superfluous 1
-		                                                and
+		                                                  Element [a] had superfluous 1 and
 		                                                  Element [A] was missing 1
 		                                                """).IgnoringNewlineStyle()
 			.Because("a comparer that cannot be read cannot be honoured by the copy of the entries");
@@ -1364,7 +1359,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [B] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1408,7 +1403,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [A] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1505,8 +1500,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [b] had superfluous 1
-		                                                and
+		                                                  Element [b] had superfluous 1 and
 		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle()
 			.Because("the collapsed expected key counts only once, so the entry count does not hide the leftover key");
@@ -1530,8 +1524,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [a] had superfluous 1
-		                                                and
+		                                                  Element [a] had superfluous 1 and
 		                                                  Element [A] was missing 1
 		                                                """).IgnoringNewlineStyle()
 			.Because("the key comparer of the expected dictionary does not decide which keys the subject has");
@@ -1580,8 +1573,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Element [b] had superfluous 1
-		                                                and
+		                                                  Element [b] had superfluous 1 and
 		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1631,7 +1623,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [B] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1655,7 +1647,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: Foo (EquivalencyComparisonTests.EnumWithFoo)
+		                                                      Actual: Foo (EquivalencyComparisonTests.EnumWithFoo)
 		                                                    Expected: Foo (EquivalencyComparisonTests.OtherEnumWithFoo)
 		                                                """).IgnoringNewlineStyle()
 			.Because("the rule is about values that cannot be told apart, not about numeric types");
@@ -1673,7 +1665,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Field Other is missing on the actual object
+		                                                  Field Other was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("a field is reported as missing just like a property");
 	}
@@ -1708,7 +1700,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Field Value is missing on the actual object
+		                                                  Field Value was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("the fallback may only reach a kind that the caller included");
 	}
@@ -1726,7 +1718,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Field Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
@@ -1752,7 +1744,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: EquivalencyComparisonTests.WithLength { Length = 2 }
+		                                                      Actual: EquivalencyComparisonTests.WithLength { Length = 2 }
 		                                                    Expected: "ab"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1801,7 +1793,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: <null>
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -1825,7 +1817,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property B is missing on the actual object
+		                                                  Property B was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("the actual object never had the member, so claiming that it was found as <null> would be wrong");
 	}
@@ -1850,7 +1842,7 @@ public sealed class EquivalencyComparisonTests
 			.Because("a member the actual object does not have has to fail whatever the expected value is");
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property B is missing on the actual object
+		                                                  Property B was missing on the actual object
 		                                                """).IgnoringNewlineStyle();
 	}
 
@@ -1873,7 +1865,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Inner.Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the fallback applies at every level of the graph, and the path stays the one of the expected member");
@@ -1909,7 +1901,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Value is missing on the actual object
+		                                                  Property Value was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("the fallback may only reach a kind that the caller included");
 	}
@@ -1945,7 +1937,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
@@ -1968,7 +1960,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Phantom differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("a registration keeps the kind of the member, so the fallback has to cross it in the registry as well");
@@ -2085,7 +2077,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Additional is missing on the actual object
+		                                                  Property Additional was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("the members are taken from the runtime type of the expected object, which the actual type does not have");
 	}
@@ -2228,7 +2220,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("a native integer is a primitive, so it needs no entry of its own among the by-value defaults");
@@ -2253,7 +2245,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: is int that is greater than 2
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2277,7 +2269,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: EquivalencyComparisonTests.WithPublicValue { Value = 1 }
+		                                                      Actual: EquivalencyComparisonTests.WithPublicValue { Value = 1 }
 		                                                    Expected: is EquivalencyComparisonTests.WithPublicValue that is equivalent to EquivalencyComparisonTests.WithPublicValue {
 		                                                        Value = 2
 		                                                      }
@@ -2303,7 +2295,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: "abc" (string)
+		                                                      Actual: "abc" (string)
 		                                                    Expected: is DateTime
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2327,7 +2319,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: <null>
+		                                                      Actual: <null>
 		                                                    Expected: is string that is empty
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2346,11 +2338,11 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [0] differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 3
 		                                                and
 		                                                  Element [2] differed:
-		                                                       Found: 3
+		                                                      Actual: 3
 		                                                    Expected: 1
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2390,7 +2382,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1 (int)
+		                                                      Actual: 1 (int)
 		                                                    Expected: 1 (long)
 		                                                """).IgnoringNewlineStyle()
 			.Because("an int member and a long member are a real difference that the formatted values do not show");
@@ -2413,7 +2405,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  It differed:
-		                                                       Found: ValueLikeWithConstantText
+		                                                      Actual: ValueLikeWithConstantText
 		                                                    Expected: ValueLikeWithConstantText
 		                                                """).IgnoringNewlineStyle()
 			.Because("one and the same type on both sides tells the two values apart just as little as the values do");
@@ -2438,7 +2430,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("the type would be noise where the values already differ");
@@ -2496,7 +2488,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: System.String Trim()
+		                                                      Actual: System.String Trim()
 		                                                    Expected: System.String ToUpperInvariant()
 		                                                """).IgnoringNewlineStyle()
 			.Because("walking a member descriptor reports metadata tokens and raw runtime handle addresses instead of the method it stands for");
@@ -2521,10 +2513,36 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: aweXpect.Core.Tests.dll
+		                                                      Actual: aweXpect.Core.Tests.dll
 		                                                    Expected: aweXpect.Core.dll
 		                                                """).IgnoringNewlineStyle()
 			.Because("a module describes an emitted file, so walking it reaches getters that throw instead of state that could be compared");
+	}
+
+	[Fact]
+	public async Task WhenMultipleMembersAreMissing_ShouldJoinThemWithATrailingAnd()
+	{
+		var actual = new
+		{
+			Bee = 1,
+		};
+		var expected = new
+		{
+			Ant = 3,
+			Bee = 1,
+			Cow = 4,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Ant was missing on the actual object and
+		                                                  Property Cow was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("single-line findings only put the \"and\" on its own line when another finding spans several lines");
 	}
 
 	[Fact]
@@ -2549,13 +2567,13 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Ant is missing on the actual object
+		                                                  Property Ant was missing on the actual object
 		                                                and
 		                                                  Property Bee differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 9
 		                                                and
-		                                                  Property Cow is missing on the actual object
+		                                                  Property Cow was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("a missing member has to be separated from the other findings, in either direction");
 	}
@@ -2581,11 +2599,11 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property First differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                and
 		                                                  Property Second differed:
-		                                                       Found: <null>
+		                                                      Actual: <null>
 		                                                    Expected: "Foo"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2615,7 +2633,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Inner.B is missing on the actual object
+		                                                  Property Inner.B was missing on the actual object
 		                                                """).IgnoringNewlineStyle();
 	}
 
@@ -2644,7 +2662,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Inner.Value differed:
-		                                                       Found: <null>
+		                                                      Actual: <null>
 		                                                    Expected: "Foo"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2688,7 +2706,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Inner.Value differed:
-		                                                       Found: 1 (int)
+		                                                      Actual: 1 (int)
 		                                                    Expected: 1 (long)
 		                                                """).IgnoringNewlineStyle()
 			.Because("the member path does not tell the values apart either");
@@ -2728,7 +2746,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: <null>
+		                                                      Actual: <null>
 		                                                    Expected: 1
 		                                                """).IgnoringNewlineStyle()
 			.Because("a missing value has no runtime type, and it is already distinguishable without one");
@@ -2860,7 +2878,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2879,7 +2897,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element [1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 1
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2923,7 +2941,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Element Values[1] differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -2963,7 +2981,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo($"""
 
 		                                                   Property Value differed:
-		                                                        Found: "{new string('a', 100)}…"
+		                                                       Actual: "{new string('a', 100)}…"
 		                                                     Expected: "{new string('b', 100)}…"
 		                                                 """).IgnoringNewlineStyle();
 	}
@@ -2987,7 +3005,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: "foo\nbar"
+		                                                      Actual: "foo\nbar"
 		                                                    Expected: "foo\nbaz"
 		                                                """).IgnoringNewlineStyle();
 	}
@@ -3030,7 +3048,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property [0].Value differed:
-		                                                       Found: "ab"
+		                                                      Actual: "ab"
 		                                                    Expected: "cd"
 		                                                """).IgnoringNewlineStyle()
 			.Because("the comparison type registered for the element type describes the element only, not its members");
@@ -3080,7 +3098,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: 1
+		                                                      Actual: 1
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("an int has no members, so comparing it by members only because its owner is would throw");
@@ -3104,7 +3122,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: "ab"
+		                                                      Actual: "ab"
 		                                                    Expected: "cd"
 		                                                """).IgnoringNewlineStyle()
 			.Because("comparing a string by members only compares its length, which would hide the difference");
@@ -3128,7 +3146,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Inner.Value differed:
-		                                                       Found: "ab"
+		                                                      Actual: "ab"
 		                                                    Expected: "cd"
 		                                                """).IgnoringNewlineStyle()
 			.Because("the comparison type must not reach the members of a member without a registration of its own either");
@@ -3186,7 +3204,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value differed:
-		                                                       Found: int
+		                                                      Actual: int
 		                                                    Expected: long
 		                                                """).IgnoringNewlineStyle()
 			.Because("GenericParameterPosition throws on a type that is not a generic parameter, so the walk cannot reach a difference at all");
@@ -3228,7 +3246,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo($"""
 
 		                                                   Property Value differed:
-		                                                        Found: {actualUri}
+		                                                       Actual: {actualUri}
 		                                                     Expected: {expectedUri}
 		                                                 """).IgnoringNewlineStyle()
 			.Because("every component of a relative URI throws, and the components of an absolute one repeat the same difference many times over");
@@ -3253,7 +3271,7 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
 		                                                  Property Value.Minor differed:
-		                                                       Found: 2
+		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle()
 			.Because("an ordinary class carries its state in its members, so naming the differing component stays the better message");

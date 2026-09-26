@@ -40,15 +40,15 @@ public sealed partial class ThatObject
 						               },
 						             but it was not:
 						               Property StringValue differed:
-						                    Found: "foo"
+						                   Actual: "foo"
 						                 Expected: is string that is equal to "folly"
 						             and
 						               Property IntValue differed:
-						                    Found: 42
+						                   Actual: 42
 						                 Expected: is int that is less than 2
 						             and
 						               Property BoolValue differed:
-						                    Found: False
+						                   Actual: False
 						                 Expected: True
 
 						             Equivalency options:
@@ -102,7 +102,7 @@ public sealed partial class ThatObject
 						               },
 						             but it was not:
 						               Property IntValue differed:
-						                    Found: 42
+						                   Actual: 42
 						                 Expected: is int that is less than 2
 
 						             Equivalency options:
@@ -142,11 +142,11 @@ public sealed partial class ThatObject
 						               },
 						             but it was not:
 						               Property StringValue differed:
-						                    Found: <null>
+						                   Actual: <null>
 						                 Expected: is string that is empty
 						             and
 						               Property NullableIntValue differed:
-						                    Found: <null>
+						                   Actual: <null>
 						                 Expected: is int? that is equal to 0
 
 						             Equivalency options:
@@ -180,11 +180,11 @@ public sealed partial class ThatObject
 						               },
 						             but it was not:
 						               Property StringValue differed:
-						                    Found: "foo" (string)
+						                   Actual: "foo" (string)
 						                 Expected: is DateTime
 						             and
 						               Property IntValue differed:
-						                    Found: 1
+						                   Actual: 1
 						                 Expected: is int that is greater than 2
 
 						             Equivalency options:
@@ -218,7 +218,7 @@ public sealed partial class ThatObject
 						               },
 						             but it was not:
 						               Property StringValue differed:
-						                    Found: ""
+						                   Actual: ""
 						                 Expected: is string that is null
 
 						             Equivalency options:
