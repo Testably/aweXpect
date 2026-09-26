@@ -144,7 +144,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the CustomEvent event on sut less than 3 times,
+					             has recorded the CustomEvent event on sut fewer than 3 times,
 					             but it was recorded 3 times in [
 					               CustomEvent(),
 					               CustomEvent(),

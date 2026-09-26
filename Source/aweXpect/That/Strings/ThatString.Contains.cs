@@ -104,12 +104,6 @@ public static partial class ThatString
 				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
 				Formatter.Format(stringBuilder, expected);
 			}
-			else if (_isNegated)
-			{
-				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
-				Formatter.Format(stringBuilder, expected);
-				stringBuilder.Append(' ').Append(quantifier.ToNegatedString());
-			}
 			else
 			{
 				stringBuilder.Append(Grammars.Verb("contains ", "contain "));

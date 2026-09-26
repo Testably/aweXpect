@@ -171,10 +171,10 @@ public class Quantifier
 			(true, _, 0) => "never",
 			(true, 1, 1) => "exactly once",
 			(true, null, 1) => "at most once",
-			(false, null, 1) => "less than once",
+			(false, null, 1) => "fewer than once",
 			(true, 2, 2) => "exactly twice",
 			(true, null, 2) => "at most twice",
-			(false, null, 2) => "less than twice",
+			(false, null, 2) => "fewer than twice",
 			(_, _, _) => null,
 		};
 		if (specialCases != null)
@@ -194,7 +194,7 @@ public class Quantifier
 
 		if (_minimum == null)
 		{
-			return _allowEqual ? $"at most {ToTimesString(_maximum)}" : $"less than {ToTimesString(_maximum)}";
+			return _allowEqual ? $"at most {ToTimesString(_maximum)}" : $"fewer than {ToTimesString(_maximum)}";
 		}
 
 		return $"between {_minimum} and {_maximum} times";
@@ -221,7 +221,7 @@ public class Quantifier
 
 		if (_maximum == null)
 		{
-			return _allowEqual ? $"less than {ToTimesString(_minimum)}" : $"at most {ToTimesString(_minimum)}";
+			return _allowEqual ? $"fewer than {ToTimesString(_minimum)}" : $"at most {ToTimesString(_minimum)}";
 		}
 
 		if (_minimum == null)

@@ -14,7 +14,10 @@ public static partial class ThatDictionary
 	[CreateCollectionExpectation("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Params = true,
 		Summary = "Verifies that the dictionary contains all <paramref name=\"expected\" /> values.",
-		NegatedSummary = "Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> values.")]
+		NegatedSummary = "Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> values.",
+		NegatedRemarks = "It fails when the dictionary contains any of the values. This is stricter than negating\n" +
+		                 "<c>ContainsValues</c> with <c>DoesNotComplyWith</c>, which only fails when the dictionary\n" +
+		                 "contains all of them.")]
 	internal static AndOrResult<TCollection, IThat<TCollection?>>
 		ContainsValuesCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
@@ -95,7 +98,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" did contain ");
+			stringBuilder.Append(It).Append(" contained ");
 			Formatter.Format(stringBuilder, _existingValues, FormattingOptions.MultipleLines);
 		}
 	}

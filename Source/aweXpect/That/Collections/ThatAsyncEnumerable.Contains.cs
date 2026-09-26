@@ -62,7 +62,8 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
 			subject,
@@ -84,7 +85,8 @@ public static partial class ThatAsyncEnumerable
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}", negated),
+					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}"),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
 			subject,
@@ -108,7 +110,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -406,6 +408,7 @@ public static partial class ThatAsyncEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
+		TItem expected,
 		Func<TItem, ValueTask<bool>> predicate,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
@@ -488,28 +491,15 @@ public static partial class ThatAsyncEnumerable
 			{
 				stringBuilder.ItWasNull(it, Grammars);
 			}
-			else if (_isFinished)
+			else if (_isFinished && _count == 0)
 			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
+				stringBuilder.Append(it).Append(" did not contain it");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" contained it at least ");
+				stringBuilder.Append(it).Append(" contained ");
+				Formatter.Format(stringBuilder, expected);
+				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{
 					stringBuilder.Append("once");

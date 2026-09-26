@@ -50,7 +50,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             has keys that do not contain an item equal to 2,
-					             but it contained it at least once
+					             but it contained 2 at least once
 					             """);
 			}
 

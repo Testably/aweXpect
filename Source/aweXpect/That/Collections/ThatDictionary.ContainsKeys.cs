@@ -38,7 +38,9 @@ public static partial class ThatDictionary
 	}
 
 	[CreateCollectionExpectation("DoesNotContainKeys", PerSubject = true, GuaranteesNotNull = true, Params = true,
-		Summary = "Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> keys.")]
+		Summary = "Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> keys.",
+		Remarks = "It fails when the dictionary contains any of the keys. This is stricter than negating <c>ContainsKeys</c>\n" +
+		          "with <c>DoesNotComplyWith</c>, which only fails when the dictionary contains all of them.")]
 	internal static AndOrResult<TCollection, IThat<TCollection?>>
 		DoesNotContainKeysCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
@@ -123,7 +125,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" did contain ");
+			stringBuilder.Append(It).Append(" contained ");
 			Formatter.Format(stringBuilder, _existingKeys, FormattingOptions.MultipleLines);
 		}
 	}

@@ -115,7 +115,8 @@ public static partial class ThatEnumerable
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					a => options.HasDefaultMatchType ? ContainsBySetLookup(a, expected) : null,
 					quantifier).InvertIf(negated)),
@@ -139,7 +140,8 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}", negated),
+					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}"),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					a => options.ComparesByOrdinalEquality ? ContainsBySetLookup(a, expected) : null,
 					quantifier).InvertIf(negated)),
@@ -164,7 +166,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -185,7 +187,8 @@ public static partial class ThatEnumerable
 		return new ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
 			subject,
@@ -219,7 +222,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -241,7 +244,8 @@ public static partial class ThatEnumerable
 		return new ObjectCountResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainForEnumerableConstraint<TCollection, TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected), negated),
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
 			subject,
@@ -264,7 +268,8 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeCountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainForEnumerableConstraint<TCollection, string?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}", negated),
+					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}"),
+					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
 			subject,
@@ -289,7 +294,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<TCollection, TItem>(expectationBuilder, it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
-						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", negated),
+						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).InvertIf(negated)),
 			subject,
@@ -764,6 +769,7 @@ public static partial class ThatEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
+		TItem expected,
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<IEnumerable<TItem>, bool?> lookup,
 		Quantifier quantifier)
@@ -843,28 +849,15 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.ItWasNull(it, Grammars);
 			}
-			else if (_isFinished)
+			else if (_isFinished && _count == 0)
 			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
+				stringBuilder.Append(it).Append(" did not contain it");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" contained it at least ");
+				stringBuilder.Append(it).Append(" contained ");
+				Formatter.Format(stringBuilder, expected);
+				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{
 					stringBuilder.Append("once");
@@ -1059,6 +1052,7 @@ public static partial class ThatEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
+		TItem expected,
 		Func<TItem, ValueTask<bool>> predicate,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
@@ -1124,28 +1118,15 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.ItWasNull(it, Grammars);
 			}
-			else if (_isFinished)
+			else if (_isFinished && _count == 0)
 			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
+				stringBuilder.Append(it).Append(" did not contain it");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" contained it at least ");
+				stringBuilder.Append(it).Append(" contained ");
+				Formatter.Format(stringBuilder, expected);
+				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{
 					stringBuilder.Append("once");

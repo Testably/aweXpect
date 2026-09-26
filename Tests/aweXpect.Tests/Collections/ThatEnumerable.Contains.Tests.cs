@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 at least {minimum} times,
-					              but it contained it twice
+					              but it contained 1 twice
 
 					              Collection:
 					              [
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to 1 at most once,
-					             but it contained it at least twice
+					             but it contained 1 at least twice
 
 					             Collection:
 					             [
@@ -158,7 +158,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 between {minimum} and {maximum} times,
-					              but it contained it twice
+					              but it contained 1 twice
 
 					              Collection:
 					              [
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 exactly {(times == 1 ? "once" : $"{times} times")},
-					              but it contained it {(times == 1 ? "at least " : "")}twice
+					              but it contained 1 {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
 					              [
@@ -237,7 +237,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 {expectedOccurrences},
-					              but it contained it*
+					              but it contained 1*
 					              """).AsWildcard();
 			}
 
@@ -254,8 +254,8 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains an item equal to 1 less than twice,
-					             but it contained it at least twice
+					             contains an item equal to 1 fewer than twice,
+					             but it contained 1 at least twice
 
 					             Collection:
 					             [
@@ -289,7 +289,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 more than {minimum.ToTimesString()},
-					              but it contained it twice
+					              but it contained 1 twice
 
 					              Collection:
 					              [
@@ -320,7 +320,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 1,
-					             but it contained it at least once
+					             but it contained 1 at least once
 
 					             Collection:
 					             [
@@ -674,7 +674,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" at least {minimum} times,
-					              but it contained it twice
+					              but it contained "blue" twice
 
 					              Collection:
 					              [
@@ -701,7 +701,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "blue" at most once,
-					             but it contained it at least twice
+					             but it contained "blue" at least twice
 
 					             Collection:
 					             [
@@ -728,7 +728,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" between {minimum} and {maximum} times,
-					              but it contained it twice
+					              but it contained "blue" twice
 
 					              Collection:
 					              [
@@ -755,7 +755,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "yellow" exactly {times.ToTimesString()},
-					              but it contained it once
+					              but it contained "yellow" once
 
 					              Collection:
 					              [
@@ -780,8 +780,8 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains "blue" less than twice,
-					             but it contained it at least twice
+					             contains "blue" fewer than twice,
+					             but it contained "blue" at least twice
 
 					             Collection:
 					             [
@@ -808,7 +808,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" more than {minimum.ToTimesString()},
-					              but it contained it twice
+					              but it contained "blue" twice
 
 					              Collection:
 					              [
@@ -832,7 +832,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "blue",
-					             but it contained it at least once
+					             but it contained "blue" at least once
 
 					             Collection:
 					             [
@@ -1207,7 +1207,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             contains an item matching x => x == 1 less than twice,
+					             contains an item matching x => x == 1 fewer than twice,
 					             but it contained it at least twice
 
 					             Collection:

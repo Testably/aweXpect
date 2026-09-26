@@ -245,7 +245,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "A" at least twice,
-					             but it contained it once
+					             but it contained "A" once
 
 					             Collection:
 					             [

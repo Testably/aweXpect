@@ -33,7 +33,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain keys [42, 2],
-					             but it did contain [
+					             but it contained [
 					               2
 					             ]
 

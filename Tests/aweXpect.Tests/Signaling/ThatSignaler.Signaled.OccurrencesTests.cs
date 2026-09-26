@@ -48,7 +48,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback less than 3 times within 0:00.040,
+					             has recorded the callback fewer than 3 times within 0:00.040,
 					             but it was recorded 3 times after 0:*
 					             """).AsWildcard();
 			}

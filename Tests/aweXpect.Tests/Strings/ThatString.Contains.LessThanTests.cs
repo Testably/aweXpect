@@ -32,7 +32,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "in" less than 3 times,
+					             contains "in" fewer than 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -50,7 +50,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "in" less than once,
+					             contains "in" fewer than once,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
