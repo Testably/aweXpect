@@ -60,7 +60,7 @@ public sealed partial class ThatObject
 					             but it was not:
 					               Property Value differed:
 					                    Found: <null>
-					                 Expected: "Foo" and it was not:
+					                 Expected: "Foo" and was not:
 					               Property Value differed:
 					                    Found: <null>
 					                 Expected: "Bar"

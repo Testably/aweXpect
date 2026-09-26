@@ -55,6 +55,26 @@ public abstract partial class ConstraintResult
 	public virtual Exception? FailureCause => null;
 
 	/// <summary>
+	///     The subject that the result text starts with, or <see langword="null" /> when it is unknown.
+	/// </summary>
+	internal virtual string? LeadingSubject => null;
+
+	/// <summary>
+	///     The subject that the last part of the result text starts with, or <see langword="null" /> when it is unknown.
+	/// </summary>
+	internal virtual string? TrailingSubject => null;
+
+	/// <summary>
+	///     Returns <paramref name="it" />, when the result text starts with it, otherwise <see langword="null" />.
+	/// </summary>
+	private protected string? GetSubjectOfResult(string it)
+	{
+		StringBuilder sb = new();
+		AppendResult(sb);
+		return sb.ToString().StartsWith(it + " ", StringComparison.Ordinal) ? it : null;
+	}
+
+	/// <summary>
 	///     Appends the expectation to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public abstract void AppendExpectation(StringBuilder stringBuilder, string? indentation = null);

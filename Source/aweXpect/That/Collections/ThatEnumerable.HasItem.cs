@@ -357,18 +357,12 @@ public static partial class ThatEnumerable
 				}
 				else
 				{
-					string optionDescription = options.Match.GetDescription();
-					if (string.IsNullOrEmpty(optionDescription))
-					{
-						optionDescription = " at any index";
-					}
-
-					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
 			}
 		}
 
@@ -468,18 +462,12 @@ public static partial class ThatEnumerable
 				}
 				else
 				{
-					string optionDescription = options.Match.GetDescription();
-					if (string.IsNullOrEmpty(optionDescription))
-					{
-						optionDescription = " at any index";
-					}
-
-					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
 			}
 		}
 
@@ -580,18 +568,12 @@ public static partial class ThatEnumerable
 				}
 				else
 				{
-					string optionDescription = options.Match.GetDescription();
-					if (string.IsNullOrEmpty(optionDescription))
-					{
-						optionDescription = " at any index";
-					}
-
-					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
 			}
 		}
 
@@ -690,18 +672,12 @@ public static partial class ThatEnumerable
 				}
 				else
 				{
-					string optionDescription = options.Match.GetDescription();
-					if (string.IsNullOrEmpty(optionDescription))
-					{
-						optionDescription = " at any index";
-					}
-
-					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
 			}
 		}
 

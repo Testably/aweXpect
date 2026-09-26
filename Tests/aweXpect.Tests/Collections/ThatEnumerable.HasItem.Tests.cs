@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item matching _ => true at index 3,
-					              but it did not contain any item at index 3
+					              but it had no item at index 3
 
 					              Collection:
 					              {Formatter.Format(subject)}
@@ -102,7 +102,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true,
-					             but it did not contain any item
+					             but it had no item
 
 					             Collection:
 					             []
@@ -256,7 +256,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true with invalid match,
-					             but it did not contain any item with invalid match
+					             but it had no item with invalid match
 
 					             Collection:
 					             [0, 1, 2, 3, 4]
@@ -277,7 +277,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => false at index 0 and has an item matching _ => false at index 1 and has an item matching _ => false,
-					             but it had item "a" at index 0 and it had item "b" at index 1 and it did not match at any index
+					             but it had item "a" at index 0 and had item "b" at index 1 and had no matching item
 
 					             Collection:
 					             [
@@ -370,7 +370,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected} at index 3,
-					              but it did not contain any item at index 3
+					              but it had no item at index 3
 
 					              Collection:
 					              {Formatter.Format(subject)}
@@ -390,7 +390,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected},
-					              but it did not contain any item
+					              but it had no item
 
 					              Collection:
 					              []
@@ -458,7 +458,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 2 with invalid match,
-					             but it did not contain any item with invalid match
+					             but it had no item with invalid match
 
 					             Collection:
 					             [0, 1, 2, 3, 4]
@@ -478,7 +478,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 4 at index 0 and has an item equal to 5 at index 1 and has an item equal to 6,
-					             but it had item 1 at index 0 and it had item 2 at index 1 and it did not match at any index
+					             but it had item 1 at index 0 and had item 2 at index 1 and had no matching item
 
 					             Collection:
 					             [1, 2, 3]
@@ -891,7 +891,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "c" at index 3,
-					             but it did not contain any item at index 3
+					             but it had no item at index 3
 
 					             Collection:
 					             [
@@ -914,7 +914,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo",
-					             but it did not contain any item
+					             but it had no item
 
 					             Collection:
 					             []
@@ -999,7 +999,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo" with invalid match,
-					             but it did not contain any item with invalid match
+					             but it had no item with invalid match
 
 					             Collection:
 					             [
@@ -1023,7 +1023,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "d" at index 0 and has an item equal to "e" at index 1 and has an item equal to "f",
-					             but it had item "a" at index 0 and it had item "b" at index 1 and it did not match at any index
+					             but it had item "a" at index 0 and had item "b" at index 1 and had no matching item
 
 					             Collection:
 					             [
@@ -1065,7 +1065,7 @@ public sealed partial class ThatEnumerable
 					               StringValue = "",
 					               Value = 4
 					             },
-					             but it did not match at any index
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -1129,7 +1129,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 1 using AllDifferentComparer,
-					             but it did not match at any index
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -1222,7 +1222,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected} at index 3 from end,
-					              but it did not contain any item at index 3 from end
+					              but it had no item at index 3 from end
 
 					              Collection:
 					              {Formatter.Format(subject)}
@@ -1242,7 +1242,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected} at index 0 from end,
-					              but it did not contain any item at index 0 from end
+					              but it had no item at index 0 from end
 
 					              Collection:
 					              []

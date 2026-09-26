@@ -172,14 +172,14 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_foundMismatch)
 			{
-				stringBuilder.Append(_it).Append(" contained ");
+				stringBuilder.Append(_it).Append(" contained item ");
 				Formatter.Format(stringBuilder, _firstMismatchItem);
 				stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
 				Formatter.Format(stringBuilder, _expected[_index - 1]);
 			}
 			else
 			{
-				stringBuilder.Append(_it).Append(" contained only ").AppendItemCount(_index).Append(" and misses ")
+				stringBuilder.Append(_it).Append(" contained only ").AppendItemCount(_index).Append(" and lacked ")
 					.AppendItemCount(_expected.Length - _index).Append(": ");
 				Formatter.Format(stringBuilder, _expected.Skip(_index), FormattingOptions.MultipleLines);
 			}

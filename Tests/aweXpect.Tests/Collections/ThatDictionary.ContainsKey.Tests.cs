@@ -213,7 +213,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 4 and contains key 5,
-					             but it did not contain 4 and it did not contain 5
+					             but it did not contain 4 and did not contain 5
 					             
 					             Dictionary:
 					             {

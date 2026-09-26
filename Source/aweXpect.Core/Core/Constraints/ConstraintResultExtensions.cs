@@ -56,10 +56,30 @@ public static class ConstraintResultExtensions
 	public static bool HasSameResultTextAs(this ConstraintResult left, ConstraintResult right)
 		=> left.GetResultText() == right.GetResultText();
 
-	private static string GetResultText(this ConstraintResult result)
+	/// <summary>
+	///     Appends the result of <paramref name="right" /> and omits its subject, when the last part of the result of
+	///     <paramref name="left" /> starts with the same subject.
+	/// </summary>
+	internal static void AppendResultAfter(this StringBuilder stringBuilder, ConstraintResult left,
+		ConstraintResult right, string? indentation)
+	{
+		string? subject = left.TrailingSubject;
+		if (subject is null || right.LeadingSubject != subject)
+		{
+			right.AppendResult(stringBuilder, indentation);
+			return;
+		}
+
+		string rightResult = GetResultText(right, indentation);
+		stringBuilder.Append(rightResult.StartsWith(subject + " ", StringComparison.Ordinal)
+			? rightResult.Substring(subject.Length + 1)
+			: rightResult);
+	}
+
+	private static string GetResultText(this ConstraintResult result, string? indentation = null)
 	{
 		StringBuilder sb = new();
-		result.AppendResult(sb);
+		result.AppendResult(sb, indentation);
 		return sb.ToString();
 	}
 
@@ -77,6 +97,10 @@ public static class ConstraintResultExtensions
 		}
 
 		public override Exception? FailureCause => _inner.FailureCause;
+
+		internal override string? LeadingSubject => _inner.LeadingSubject;
+
+		internal override string? TrailingSubject => _inner.TrailingSubject;
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);
@@ -162,6 +186,10 @@ public static class ConstraintResultExtensions
 		}
 
 		public override Exception? FailureCause => _inner.FailureCause;
+
+		internal override string? LeadingSubject => _inner.LeadingSubject;
+
+		internal override string? TrailingSubject => _inner.TrailingSubject;
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 			=> _inner.TryGetValue(out value);

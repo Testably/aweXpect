@@ -74,7 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
-					             but it contained 2 at index 1 instead of 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -93,7 +93,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2, 3, 4],
-					             but it contained only 3 items and misses 1 item: [
+					             but it contained only 3 items and lacked 1 item: [
 					               4
 					             ]
 
@@ -114,7 +114,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2],
-					             but it contained only 1 item and misses 1 item: [
+					             but it contained only 1 item and lacked 1 item: [
 					               2
 					             ]
 
@@ -193,7 +193,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["FOO", "BAZ"] ignoring case,
-					             but it contained "bar" at index 1 instead of "BAZ"
+					             but it contained item "bar" at index 1 instead of "BAZ"
 
 					             Collection:
 					             [

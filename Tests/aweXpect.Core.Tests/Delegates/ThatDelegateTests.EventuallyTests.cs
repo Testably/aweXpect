@@ -42,7 +42,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
-				             but it was 0, which differs by -1 and it was 0, which differs by -2
+				             but it was 0, which differs by -1 and was 0, which differs by -2
 				             """);
 		}
 
@@ -296,7 +296,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 or is equal to 2 within 0:00.050,
-				             but it was 0, which differs by -1 and it was 0, which differs by -2
+				             but it was 0, which differs by -1 and was 0, which differs by -2
 				             """);
 		}
 

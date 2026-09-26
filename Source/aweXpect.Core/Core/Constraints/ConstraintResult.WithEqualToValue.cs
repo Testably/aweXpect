@@ -51,6 +51,12 @@ public abstract partial class ConstraintResult
 		/// </summary>
 		protected string It { get; } = it;
 
+		/// <inheritdoc />
+		internal override string? LeadingSubject => GetSubjectOfResult(It);
+
+		/// <inheritdoc />
+		internal override string? TrailingSubject => GetSubjectOfResult(It);
+
 		/// <summary>
 		///     The actual value.
 		/// </summary>
