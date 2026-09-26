@@ -280,6 +280,23 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForInt_WhenValueIsInsideTheToleranceWidenedRange_ShouldOmitTheDifference()
+			{
+				int subject = 5;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(1).And(4).Within(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not between 1 and 4 ± 1,
+					             but it was 5
+					             """)
+					.Because("a difference to the range does not explain why the value was considered inside it");
+			}
+
 			[Theory]
 			[InlineData(2, 0, 1)]
 			[InlineData(0, 1, 2)]
@@ -1437,10 +1454,10 @@ public sealed partial class ThatNumber
 		public sealed class NegatedTests
 		{
 			[Theory]
-			[InlineData(null, 1)]
-			[InlineData(1, null)]
+			[InlineData(null, 1, ", which differs by 1 from the maximum")]
+			[InlineData(1, null, "")]
 			public async Task ForInt_WhenMinimumOrMaximumIsNull_ShouldFail(
-				int? minimum, int? maximum)
+				int? minimum, int? maximum, string differenceSuffix)
 			{
 				int subject = 2;
 
@@ -1452,7 +1469,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
 					              """);
 			}
 
@@ -1472,10 +1489,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2, 0, 1)]
-			[InlineData(0, 1, 2)]
+			[InlineData(2, 0, 1, "1 from the maximum")]
+			[InlineData(0, 1, 2, "-1 from the minimum")]
 			public async Task ForInt_WhenValueIsOutsideTheRange_ShouldFail(int subject,
-				int? minimum, int maximum)
+				int? minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
@@ -1485,15 +1502,15 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              but it was {ValueFormatters.Format(Formatter, subject)}, which differs by {difference}
 					              """);
 			}
 
 			[Theory]
-			[InlineData(null, 1)]
-			[InlineData(1, null)]
+			[InlineData(null, 1, ", which differs by 1 from the maximum")]
+			[InlineData(1, null, "")]
 			public async Task ForNullableInt_WhenMinimumIsNull_ShouldFail(
-				int? minimum, int? maximum)
+				int? minimum, int? maximum, string differenceSuffix)
 			{
 				int subject = 2;
 
@@ -1505,7 +1522,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
 					              """);
 			}
 
@@ -1525,10 +1542,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(2, 0, 1)]
-			[InlineData(0, 1, 2)]
+			[InlineData(2, 0, 1, "1 from the maximum")]
+			[InlineData(0, 1, 2, "-1 from the minimum")]
 			public async Task ForNullableInt_WhenValueIsOutsideTheRange_ShouldFail(int? subject,
-				int? minimum, int maximum)
+				int? minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
@@ -1538,7 +1555,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              but it was {ValueFormatters.Format(Formatter, subject)}, which differs by {difference}
 					              """);
 			}
 		}

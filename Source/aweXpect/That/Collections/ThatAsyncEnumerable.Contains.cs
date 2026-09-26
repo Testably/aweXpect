@@ -85,7 +85,7 @@ public static partial class ThatAsyncEnumerable
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, $"{Formatter.Format(expected)}{options}"),
+					(q, g) => q.ToContainsExpectation(g, ContainedStringExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
 					quantifier).InvertIf(negated)),
@@ -244,6 +244,17 @@ public static partial class ThatAsyncEnumerable
 	/// </remarks>
 	private static string ContainedItemExpectation<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
 		=> options.GetItemExpectation(Formatter.Format(expected), "an item", "equal to");
+
+	/// <summary>
+	///     The text for the <paramref name="expected" /> string of a <c>contain</c> expectation.
+	/// </summary>
+	/// <remarks>
+	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
+	/// </remarks>
+	private static string ContainedStringExpectation(StringEqualityOptions options, string? expected)
+		=> options.InspectsSubject
+			? "an item " + options.GetExpectation(expected, ExpectationGrammars.None)
+			: Formatter.Format(expected) + options;
 
 	private sealed class ContainConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,

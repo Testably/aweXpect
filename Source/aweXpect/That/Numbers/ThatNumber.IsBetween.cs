@@ -150,6 +150,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(_it).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -162,7 +163,10 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+		{
+			stringBuilder.Append(_it).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 
 	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -214,6 +218,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -226,7 +231,10 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+		{
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 #else
 	private const string IsBetweenSummary =
@@ -321,6 +329,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(_it).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, _options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -333,7 +342,10 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+		{
+			stringBuilder.Append(_it).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 
 	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -386,6 +398,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, _options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -398,7 +411,10 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+		{
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 #endif
 }

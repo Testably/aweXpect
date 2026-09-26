@@ -487,7 +487,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{block.Replace("\n", "\\n")}" as block at least once,
+					              contains an item matching "{block.Replace("\n", "\\n")}" as block at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -512,7 +512,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{prefix}" as prefix at least once,
+					              contains an item starting with "{prefix}" at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -535,7 +535,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "b" as prefix at least once,
+					             contains an item starting with "b" at least once,
 					             but it did not contain it
 
 					             Collection:
@@ -560,7 +560,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{regex}" as regex at least once,
+					              contains an item matching regex "{regex}" at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -585,7 +585,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{suffix}" as suffix at least once,
+					              contains an item ending with "{suffix}" at least once,
 					              but it did not contain it
 
 					              Collection:
@@ -624,7 +624,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains "{wildcard}" as wildcard at least once,
+					              contains an item matching "{wildcard}" at least once,
 					              but it did not contain it
 
 					              Collection:

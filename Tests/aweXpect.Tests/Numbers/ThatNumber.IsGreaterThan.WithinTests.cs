@@ -19,11 +19,11 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)5, (byte)6)]
-			[InlineData((byte)5, (byte)7)]
-			[InlineData((byte)0, (byte)5)]
+			[InlineData((byte)5, (byte)6, "-1")]
+			[InlineData((byte)5, (byte)7, "-2")]
+			[InlineData((byte)0, (byte)5, "-5")]
 			public async Task ForByte_WhenOutsideTolerance_ShouldFail(
-				byte subject, byte expected)
+				byte subject, byte expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1);
@@ -32,7 +32,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -52,10 +52,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.0, 12.5)]
-			[InlineData(12.5, 12.6)]
+			[InlineData(12.0, 12.5, "-0.5")]
+			[InlineData(12.5, 12.6, "-0.1")]
 			public async Task ForDecimal_WhenOutsideTolerance_ShouldFail(
-				double subjectValue, double expectedValue)
+				double subjectValue, double expectedValue, string expectedDifference)
 			{
 				decimal subject = new(subjectValue);
 				decimal expected = new(expectedValue);
@@ -67,7 +67,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -125,7 +125,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -0.5
 					              """);
 			}
 
@@ -196,7 +196,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by -0.5
 					              """);
 			}
 
@@ -243,10 +243,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(3, 5)]
-			[InlineData(0, 5)]
-			[InlineData(4, 5)]
-			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected)
+			[InlineData(3, 5, -2)]
+			[InlineData(0, 5, -5)]
+			[InlineData(4, 5, -1)]
+			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1);
@@ -255,7 +255,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
@@ -285,9 +285,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(3L, 5L)]
-			[InlineData(5L, 6L)]
-			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected)
+			[InlineData(3L, 5L, -2)]
+			[InlineData(5L, 6L, -1)]
+			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1L);
@@ -296,7 +296,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
