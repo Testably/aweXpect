@@ -96,7 +96,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "bar" at least once as block,
+					             contains "bar" as block at least once,
 					             but it did not contain "bar" in "foo"
 					             """);
 			}
@@ -174,7 +174,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "int Foo" at least once as block,
+					             contains "int Foo" as block at least once,
 					             but it did not contain "int Foo" in "public int Foo;"
 					             """);
 			}
@@ -191,7 +191,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              contains "a\nb" at least once as block,
+					              contains "a\nb" as block at least once,
 					              but it did not contain "a\nb" in "    a\nb"
 					              """);
 			}
@@ -258,7 +258,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "b.r" at least once as regex,
+					             contains "b.r" as regex at least once,
 					             but it did not contain "b.r" in "foo"
 					             """);
 			}
@@ -355,7 +355,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "a*" at least once as regex,
+					             contains "a*" as regex at least once,
 					             but it did not contain "a*" in "bbb"
 					             """)
 					.Because("an empty match does not cover any occurrence");
@@ -445,7 +445,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "a.*b" exactly twice as regex,
+					             contains "a.*b" as regex exactly twice,
 					             but it contained "a.*b" once in "axxxb"
 					             """);
 			}
@@ -465,7 +465,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "b?r" at least once as wildcard,
+					             contains "b?r" as wildcard at least once,
 					             but it did not contain "b?r" in "foo"
 					             """);
 			}
@@ -534,7 +534,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "*" at least once as wildcard,
+					             contains "*" as wildcard at least once,
 					             but it did not contain "*" in ""
 					             """)
 					.Because("an empty match does not cover any occurrence");
@@ -606,7 +606,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "in" at least 7 times ignoring case,
+					             contains "in" ignoring case at least 7 times,
 					             but it contained "in" 5 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
@@ -640,7 +640,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "bar" at least once ignoring indentation,
+					             contains "bar" ignoring indentation at least once,
 					             but it did not contain "bar" in "foo"
 					             """);
 			}
@@ -754,7 +754,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "in" exactly 5 times using IgnoreCaseForVocalsComparer,
+					             contains "in" using IgnoreCaseForVocalsComparer exactly 5 times,
 					             but it contained "in" 4 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}

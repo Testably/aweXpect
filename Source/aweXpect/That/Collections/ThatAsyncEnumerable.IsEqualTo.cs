@@ -83,8 +83,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					withTolerance: true);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

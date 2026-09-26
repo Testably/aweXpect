@@ -415,7 +415,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is greater than 1 and is less than 0 within 0:00.500,
-				             but it was 0
+				             but it was 0, which differs by -1 and it was 0
 				             """);
 			await That(counter.EvaluationCount).IsGreaterThan(1);
 		}

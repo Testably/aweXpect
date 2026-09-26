@@ -394,6 +394,28 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task AsRegex_WhenItemMatches_ShouldFail()
+			{
+				IEnumerable<string?> subject = ["foo", "bar",];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("b.r").AsRegex().IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item matching regex "b.r" ignoring case,
+					             but it contained it at least once
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task AsRegex_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable<string?> subject = ["foo", "bar",];

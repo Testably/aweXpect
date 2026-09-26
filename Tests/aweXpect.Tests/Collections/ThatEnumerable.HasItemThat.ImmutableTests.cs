@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an item that starts with "a" and ends with "b" at index 0 and has an item that contains "c" at least once ignoring case at index 1,
+					             has an item that starts with "a" and ends with "b" at index 0 and has an item that contains "c" ignoring case at least once at index 1,
 					             but it had item "a" at index 0 and it had item "b" at index 1
 
 					             Collection:

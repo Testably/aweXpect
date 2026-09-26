@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is contained in collection ["A", "B",] in any order using AllDifferentComparer,
+					             is contained in collection ["A", "B",] using AllDifferentComparer in any order,
 					             but it contained item "a" at index 0 that was not expected
 
 					             Collection:

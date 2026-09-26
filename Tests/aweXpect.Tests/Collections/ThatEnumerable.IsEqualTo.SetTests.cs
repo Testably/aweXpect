@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to collection [11,] in order using equivalency,
+					             is equal to collection [11,] using equivalency in order,
 					             but it contained item 1 at index 0 instead of 11
 
 					             Collection:
@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to collection ["A",] in order using AllDifferentComparer,
+					             is equal to collection ["A",] using AllDifferentComparer in order,
 					             but it contained item "a" at index 0 instead of "A"
 
 					             Collection:
