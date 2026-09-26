@@ -49,7 +49,7 @@ public static partial class EquivalencyComparison
 	{
 		string separator = $"{Environment.NewLine}and{Environment.NewLine}";
 		string failures = failureBuilder.ToString(start, failureBuilder.Length - start);
-		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains("\n")))
+		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains('\n', StringComparison.Ordinal)))
 		{
 			return;
 		}

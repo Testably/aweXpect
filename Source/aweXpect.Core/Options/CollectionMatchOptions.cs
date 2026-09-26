@@ -254,7 +254,7 @@ public partial class CollectionMatchOptions(
 		{
 			if (errors.Count > 1)
 			{
-				string separator = errors.Any(error => error.Contains("\n"))
+				string separator = errors.Any(error => error.Contains('\n', StringComparison.Ordinal))
 					? $"{Environment.NewLine}and{Environment.NewLine}"
 					: $" and{Environment.NewLine}";
 				return $"{it}{Environment.NewLine}{string.Join(separator, errors.Select(error => error.Indent()))}";
