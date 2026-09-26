@@ -222,10 +222,30 @@ internal class AndNode : Node
 		                               !_left.HasSameResultTextAs(_right)));
 
 		internal override string? LeadingSubject
-			=> RendersLeft ? _left.LeadingSubject : RendersRight ? _right.LeadingSubject : null;
+		{
+			get
+			{
+				if (RendersLeft)
+				{
+					return _left.LeadingSubject;
+				}
+
+				return RendersRight ? _right.LeadingSubject : null;
+			}
+		}
 
 		internal override string? TrailingSubject
-			=> RendersRight ? _right.TrailingSubject : RendersLeft ? _left.TrailingSubject : null;
+		{
+			get
+			{
+				if (RendersRight)
+				{
+					return _right.TrailingSubject;
+				}
+
+				return RendersLeft ? _left.TrailingSubject : null;
+			}
+		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
