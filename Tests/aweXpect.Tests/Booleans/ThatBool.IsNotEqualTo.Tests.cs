@@ -55,6 +55,19 @@ public sealed partial class ThatBool
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task WhenUnexpectedIsNull_ShouldSucceed(bool subject)
+			{
+				bool? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

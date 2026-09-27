@@ -17,6 +17,6 @@ public static partial class ThatDateTime
 	/// </summary>
 	public static AndOrResult<DateTime, IThat<DateTime>> HasDay(
 		this IThat<DateTime> subject,
-		int expected)
+		int? expected)
 		=> subject.HasDay().EqualTo(expected);
 }

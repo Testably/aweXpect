@@ -19,17 +19,17 @@ public static partial class ThatNullableDateTimeOffset
 	///     well as its negation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>
+	public static BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>
 		IsBetween(
 			this IThat<DateTimeOffset?> subject,
 			DateTimeOffset? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(
+		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>(
 			maximum =>
 			{
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
+				return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>(
 					subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 						new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
 					subject,
@@ -46,17 +46,17 @@ public static partial class ThatNullableDateTimeOffset
 	///     well as its negation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>
+	public static BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>
 		IsNotBetween(
 			this IThat<DateTimeOffset?> subject,
 			DateTimeOffset? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(
+		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>(
 			maximum =>
 			{
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
+				return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>(
 					subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 						new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
 					subject,

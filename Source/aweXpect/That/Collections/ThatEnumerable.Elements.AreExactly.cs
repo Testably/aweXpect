@@ -55,11 +55,11 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are exactly of type <typeparamref name="TType" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			AreExactly<TType>()
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -73,12 +73,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			AreExactly(Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,

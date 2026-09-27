@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> AtLeast(
+	public static ElementsForEnumerable<IEnumerable> AtLeast(
 		this IThat<IEnumerable?> subject,
 		int minimum)
 		=> new(subject, EnumerableQuantifier.AtLeast(minimum));

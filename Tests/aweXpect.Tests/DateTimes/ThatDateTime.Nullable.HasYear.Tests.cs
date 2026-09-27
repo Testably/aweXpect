@@ -9,6 +9,22 @@ public sealed partial class ThatDateTime
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					DateTime? subject = new(2010, 11, 12, 13, 14, 15, 167);
+
+					async Task Act()
+						=> await That(subject).HasYear(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has year equal to <null>,
+						             but it had year 2010
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTime? subject = null;
@@ -467,6 +483,20 @@ public sealed partial class ThatDateTime
 						              does not have year equal to {Formatter.Format(unexpected)},
 						              but it had year 2010
 						              """);
+				}
+			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldSucceed()
+				{
+					DateTime? subject = new(2010, 11, 12);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.HasYear(null));
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 		}

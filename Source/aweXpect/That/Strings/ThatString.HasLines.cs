@@ -17,7 +17,7 @@ public static partial class ThatString
 	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> HasLines(
+	public static AndOrResult<string, IThat<string?>> HasLines(
 		this IThat<string?> subject,
 		Action<IThatSubject<IEnumerable<string>>> expectations)
 		=> new(subject.Get().ExpectationBuilder

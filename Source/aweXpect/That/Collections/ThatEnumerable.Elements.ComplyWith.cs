@@ -312,7 +312,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			ComplyWith(Action<IThatSubject<object?>> expectations)
 		{
 			expectations.ThrowIfNull();

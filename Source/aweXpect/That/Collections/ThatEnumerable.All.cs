@@ -32,7 +32,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> All(
+	public static ElementsForEnumerable<IEnumerable> All(
 		this IThat<IEnumerable?> subject)
 		=> new(subject, EnumerableQuantifier.All());
 

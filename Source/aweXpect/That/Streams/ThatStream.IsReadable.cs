@@ -12,7 +12,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is readable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsReadable(
+	public static AndOrResult<Stream, IThat<Stream?>> IsReadable(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadableConstraint(it, grammars)),
@@ -22,7 +22,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is not readable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsNotReadable(
+	public static AndOrResult<Stream, IThat<Stream?>> IsNotReadable(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadableConstraint(it, grammars).Invert()),

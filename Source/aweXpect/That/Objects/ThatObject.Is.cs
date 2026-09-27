@@ -13,14 +13,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<T?, IThat<T?>> Is<T>(
+	public static AndOrResult<T, IThat<T?>> Is<T>(
 		this IThat<T?> subject,
 		Type type)
 		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(expectationBuilder, it, grammars, type)),
 			subject);
 	}
@@ -29,14 +29,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is not of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<T?, IThat<T?>> IsNot<T>(
+	public static AndOrResult<T, IThat<T?>> IsNot<T>(
 		this IThat<T?> subject,
 		Type type)
 		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(expectationBuilder, it, grammars, type).Invert()),
 			subject);
 	}

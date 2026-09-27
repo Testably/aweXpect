@@ -11,16 +11,16 @@ public static partial class ThatNullableTimeOnly
 	///     Verifies that the millisecond of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<TimeOnly?> HasMillisecond(this IThat<TimeOnly?> subject)
+	public static PropertyResult.Int<TimeOnly?, TimeOnly, IThat<TimeOnly?>> HasMillisecond(this IThat<TimeOnly?> subject)
 		=> new(subject, a => a?.Millisecond, "millisecond");
 
 	/// <summary>
 	///     Verifies that the millisecond of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TimeOnly?, IThat<TimeOnly?>> HasMillisecond(
+	public static AndOrResult<TimeOnly, IThat<TimeOnly?>> HasMillisecond(
 		this IThat<TimeOnly?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasMillisecond().EqualTo(expected);
 }
 #endif

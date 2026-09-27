@@ -31,7 +31,7 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is not treated as NaN.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNaN<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNaN<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNaNConstraint<TNumber>(it, grammars)),
@@ -53,7 +53,7 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is neither treated as NaN nor as not NaN, so it fails.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotNaN<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNotNaN<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNaNConstraint<TNumber>(it, grammars).Invert()),
@@ -135,7 +135,7 @@ public static partial class ThatNumber
 		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary,
 		Remarks = "<see langword=\"null\" /> is not treated as NaN.",
 		NegatedRemarks = "<see langword=\"null\" /> is neither treated as NaN nor as not NaN, so it fails.")]
-	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNaNForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsNaNForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits,
 		bool negated)

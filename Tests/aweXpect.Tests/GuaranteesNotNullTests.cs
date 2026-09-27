@@ -82,6 +82,18 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Fact]
+	public async Task EveryMarkedExpectation_ShouldNarrowTheSubjectToNotNull()
+	{
+		List<string> nullable = GetMarkedExpectations().Where(HandsOutANullableSubject)
+			.Select(GetIdentifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(nullable).IsEmpty()
+			.Because("an expectation that rules a null subject out must hand out the subject as not nullable when awaited");
+	}
+
+	[Fact]
 	public async Task ShouldFindTheMarkedExpectations()
 	{
 		List<MethodInfo> marked = GetMarkedExpectations().ToList();
@@ -445,6 +457,118 @@ public sealed class GuaranteesNotNullTests
 			: closedMethod.DeclaringType!;
 		Type subjectType = GetThatSubjectType(receiver) ?? receiver;
 		return !subjectType.IsValueType || Nullable.GetUnderlyingType(subjectType) is not null;
+	}
+
+	/// <summary>
+	///     Whether an extension on a nullable subject returns a result, or a builder for one, that still names the subject
+	///     type as nullable outside the <c>IThat&lt;…&gt;</c> it continues with.
+	/// </summary>
+	/// <remarks>
+	///     The nullable annotations of reference types are erased from runtime types, so they are read from the
+	///     compiler's <c>NullableAttribute</c>, which holds one flag per reference type in the flattened signature.
+	/// </remarks>
+	private static bool HandsOutANullableSubject(MethodInfo method)
+	{
+		if (!method.IsStatic || GetThatSubjectType(method.GetParameters()[0].ParameterType) is not { } subjectType)
+		{
+			return false;
+		}
+
+		byte[] parameterFlags = GetNullableFlags(method.GetParameters()[0], method);
+		bool isNullableSubject = Nullable.GetUnderlyingType(subjectType) is not null ||
+		                         GetFlag(parameterFlags, 1) == 2;
+		Type nonNullableSubjectType = Nullable.GetUnderlyingType(subjectType) ?? subjectType;
+		return isNullableSubject &&
+		       NamesNullable(method.ReturnType, GetNullableFlags(method.ReturnParameter, method), 0,
+			       nonNullableSubjectType);
+	}
+
+	private static bool NamesNullable(Type type, byte[] flags, int slot, Type subjectType)
+	{
+		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IThat<>))
+		{
+			return false;
+		}
+
+		if (Nullable.GetUnderlyingType(type) == subjectType ||
+		    (type == subjectType && TakesASlot(type) && GetFlag(flags, slot) == 2))
+		{
+			return true;
+		}
+
+		if (!type.IsGenericType)
+		{
+			return false;
+		}
+
+		int next = slot + (TakesASlot(type) ? 1 : 0);
+		Type[] parameters = type.GetGenericTypeDefinition().GetGenericArguments();
+		Type[] arguments = type.GetGenericArguments();
+		for (int index = 0; index < arguments.Length; index++)
+		{
+			if (!IsInputValue(type, parameters[index]) && NamesNullable(arguments[index], flags, next, subjectType))
+			{
+				return true;
+			}
+
+			next += CountSlots(arguments[index]);
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	///     A type argument that stands for a value the result reads rather than hands out: the <c>TValue</c> a property
+	///     builder maps from and the bounds of a <see cref="Results.BetweenResult{TTarget, TType}" />.
+	/// </summary>
+	private static bool IsInputValue(Type type, Type parameter)
+		=> parameter.Name == "TValue" ||
+		   (type.GetGenericTypeDefinition() == typeof(Results.BetweenResult<,>) && parameter.GenericParameterPosition == 1);
+
+	private static bool TakesASlot(Type type)
+		=> type.IsGenericParameter
+			? !type.GenericParameterAttributes.HasFlag(GenericParameterAttributes.NotNullableValueTypeConstraint)
+			: !type.IsValueType;
+
+	private static int CountSlots(Type type)
+	{
+		if (type.IsArray)
+		{
+			return 1 + CountSlots(type.GetElementType()!);
+		}
+
+		int slots = TakesASlot(type) ? 1 : 0;
+		return type.IsGenericType && !type.IsGenericParameter
+			? slots + type.GetGenericArguments().Sum(CountSlots)
+			: slots;
+	}
+
+	private static byte GetFlag(byte[] flags, int slot)
+		=> flags.Length == 1 ? flags[0] : slot < flags.Length ? flags[slot] : (byte)0;
+
+	private static byte[] GetNullableFlags(ParameterInfo parameter, MethodInfo method)
+	{
+		CustomAttributeData? nullable = parameter.GetCustomAttributesData().FirstOrDefault(attribute
+			=> attribute.AttributeType.FullName == "System.Runtime.CompilerServices.NullableAttribute");
+		if (nullable is not null)
+		{
+			object? value = nullable.ConstructorArguments[0].Value;
+			return value is byte flag
+				? [flag,]
+				: ((IEnumerable<CustomAttributeTypedArgument>)value!).Select(argument => (byte)argument.Value!).ToArray();
+		}
+
+		for (MemberInfo? member = method; member is not null; member = member.DeclaringType)
+		{
+			CustomAttributeData? context = member.GetCustomAttributesData().FirstOrDefault(attribute
+				=> attribute.AttributeType.FullName == "System.Runtime.CompilerServices.NullableContextAttribute");
+			if (context is not null)
+			{
+				return [(byte)context.ConstructorArguments[0].Value!,];
+			}
+		}
+
+		return [0,];
 	}
 
 	private static bool CanHaveNullSubject(MethodInfo method)

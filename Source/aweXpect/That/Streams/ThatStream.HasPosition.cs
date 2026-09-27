@@ -11,7 +11,7 @@ public static partial class ThatStream
 	///     Verifies that the position of the <see cref="Stream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<Stream?> HasPosition(this IThat<Stream?> subject)
+	public static PropertyResult.Long<Stream?, Stream, IThat<Stream?>> HasPosition(this IThat<Stream?> subject)
 		=> new(subject, a => a?.Position, "position", (value, paramName) =>
 		{
 			if (value < 0)
@@ -28,8 +28,8 @@ public static partial class ThatStream
 	///     value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> HasPosition(
+	public static AndOrResult<Stream, IThat<Stream?>> HasPosition(
 		this IThat<Stream?> subject,
-		long expected)
+		long? expected)
 		=> subject.HasPosition().EqualTo(expected);
 }

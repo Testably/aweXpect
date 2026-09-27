@@ -17,6 +17,6 @@ public static partial class ThatDateTimeOffset
 	/// </summary>
 	public static AndOrResult<DateTimeOffset, IThat<DateTimeOffset>> HasOffset(
 		this IThat<DateTimeOffset> subject,
-		TimeSpan expected)
+		TimeSpan? expected)
 		=> subject.HasOffset().EqualTo(expected);
 }

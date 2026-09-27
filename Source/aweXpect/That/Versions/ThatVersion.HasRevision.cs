@@ -11,7 +11,7 @@ public static partial class ThatVersion
 	///     The revision component is <c>-1</c> when it is unspecified.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasRevision(this IThat<Version?> subject)
+	public static PropertyResult.Int<Version?, Version, IThat<Version?>> HasRevision(this IThat<Version?> subject)
 		=> new(subject, a => a?.Revision, "revision");
 
 	/// <summary>
@@ -20,8 +20,8 @@ public static partial class ThatVersion
 	///     The revision component is <c>-1</c> when it is unspecified.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Version?, IThat<Version?>> HasRevision(
+	public static AndOrResult<Version, IThat<Version?>> HasRevision(
 		this IThat<Version?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasRevision().EqualTo(expected);
 }

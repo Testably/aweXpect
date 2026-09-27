@@ -66,7 +66,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			Satisfy(
 				Func<object?, bool> predicate,
 				[CallerArgumentExpression("predicate")]
@@ -74,7 +74,7 @@ public static partial class ThatEnumerable
 		{
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder,

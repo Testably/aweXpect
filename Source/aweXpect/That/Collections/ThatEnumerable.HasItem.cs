@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
-	internal static HasItemWithConditionResult<IEnumerable<TItem>?, TItem>
+	internal static HasItemWithConditionResult<IEnumerable<TItem>, TItem>
 		HasItemCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
 			bool negated)
@@ -42,7 +42,7 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<IEnumerable<TItem>?, TItem>(
+		return new HasItemWithConditionResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					x => options.Matches(x),
@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
-	internal static HasItemResult<IEnumerable<TItem>?>
+	internal static HasItemResult<IEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, bool> predicate,
@@ -65,7 +65,7 @@ public static partial class ThatEnumerable
 		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable<TItem>?>(
+		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
 					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
@@ -75,7 +75,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
-	internal static ObjectHasItemResult<IEnumerable<TItem>?, TItem>
+	internal static ObjectHasItemResult<IEnumerable<TItem>, TItem>
 		HasTheItemCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
 			TItem expected,
@@ -84,7 +84,7 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
-		return new ObjectHasItemResult<IEnumerable<TItem>?, TItem>(
+		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
@@ -97,7 +97,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
-	internal static StringHasItemResult<IEnumerable<string?>?>
+	internal static StringHasItemResult<IEnumerable<string?>>
 		HasTheItemForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
 			string? expected,
@@ -106,7 +106,7 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
-		return new StringHasItemResult<IEnumerable<string?>?>(
+		return new StringHasItemResult<IEnumerable<string?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
@@ -119,7 +119,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
-	internal static HasItemWithConditionResult<IEnumerable?, object?>
+	internal static HasItemWithConditionResult<IEnumerable, object?>
 		HasItemForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			bool negated)
@@ -127,7 +127,7 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<IEnumerable?, object?>(
+		return new HasItemWithConditionResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
 					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
@@ -138,7 +138,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true, Priority = -1,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
-	internal static HasItemResult<IEnumerable?>
+	internal static HasItemResult<IEnumerable>
 		HasMatchingItemForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			Func<object?, bool> predicate,
@@ -148,7 +148,7 @@ public static partial class ThatEnumerable
 		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable?>(
+		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
@@ -160,7 +160,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
-	internal static ObjectHasItemResult<IEnumerable?, object?>
+	internal static ObjectHasItemResult<IEnumerable, object?>
 		HasTheItemForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			object? expected,
@@ -169,7 +169,7 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<object?> options = new();
-		return new ObjectHasItemResult<IEnumerable?, object?>(
+		return new ObjectHasItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,

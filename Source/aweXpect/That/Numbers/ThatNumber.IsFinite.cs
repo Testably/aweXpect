@@ -34,7 +34,7 @@ public static partial class ThatNumber
 	///     Finite means neither infinity nor not a number (NaN) nor <see langword="null" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsFinite<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsFinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFiniteConstraint<TNumber>(it, grammars)),
@@ -59,7 +59,7 @@ public static partial class ThatNumber
 	///     Not finite means either infinity or not a number (NaN). A <see langword="null" /> subject fails.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFiniteConstraint<TNumber>(it, grammars).Invert()),
@@ -145,7 +145,7 @@ public static partial class ThatNumber
 	[CreateCollectionExpectation("IsFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
 		Summary = IsFiniteSummary,
 		Remarks = "Finite means neither infinity nor not a number (NaN) nor <see langword=\"null\" />.")]
-	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits)
 		where TNumber : struct
@@ -156,7 +156,7 @@ public static partial class ThatNumber
 	[CreateCollectionExpectation("IsNotFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
 		Summary = IsNotFiniteSummary,
 		Remarks = "Not finite means either infinity or not a number (NaN). A <see langword=\"null\" /> subject fails.")]
-	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFiniteForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsNotFiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits)
 		where TNumber : struct

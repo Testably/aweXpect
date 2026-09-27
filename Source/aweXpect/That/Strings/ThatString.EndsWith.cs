@@ -15,7 +15,7 @@ public static partial class ThatString
 	///     Verifies that the subject ends with the <paramref name="expected" /> <see langword="string" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityResult<string?, IThat<string?>> EndsWith(
+	public static StringEqualityResult<string, IThat<string?>> EndsWith(
 		this IThat<string?> subject,
 		string expected)
 	{
@@ -27,7 +27,7 @@ public static partial class ThatString
 		}
 
 		StringEqualityOptions options = new StringEqualityOptions(nameof(expected)).AsSuffix();
-		return new StringEqualityResult<string?, IThat<string?>>(
+		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new EndsWithConstraint(expectationBuilder, it, grammars, expected, options)),
 			subject,
@@ -38,7 +38,7 @@ public static partial class ThatString
 	///     Verifies that the subject does not end with the <paramref name="unexpected" /> <see langword="string" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityResult<string?, IThat<string?>> DoesNotEndWith(
+	public static StringEqualityResult<string, IThat<string?>> DoesNotEndWith(
 		this IThat<string?> subject,
 		string unexpected)
 	{
@@ -50,7 +50,7 @@ public static partial class ThatString
 		}
 
 		StringEqualityOptions options = new StringEqualityOptions(nameof(unexpected)).AsSuffix();
-		return new StringEqualityResult<string?, IThat<string?>>(
+		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new EndsWithConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
 			subject,

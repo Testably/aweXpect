@@ -53,11 +53,11 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			Are<TType>()
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -71,12 +71,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are of type <paramref name="type" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			Are(Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,

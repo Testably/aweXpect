@@ -101,12 +101,15 @@ internal static class SourceGenerationHelper
 	{
 		bool failsOnNull = expectationToGenerate.IsNullable && expectationToGenerate.FailOnNull;
 		string guaranteesNotNull = failsOnNull ? "\n\t[GuaranteesNotNull]" : "";
+		string resultType = failsOnNull ? expectationToGenerate.NotNullTargetType : expectationToGenerate.TargetType;
 		// When the subject is not checked for null, the outcome method decides: `Is{Not}NullOrEmpty` is
 		// fulfilled by a null subject, so only its negated counterpart guarantees a not-null subject.
-		string negatedGuaranteesNotNull =
-			failsOnNull || (expectationToGenerate.IsNullable && expectationToGenerate.NegatedFailsOnNull)
-				? "\n\t[GuaranteesNotNull]"
-				: "";
+		bool negatedFailsOnNull =
+			failsOnNull || (expectationToGenerate.IsNullable && expectationToGenerate.NegatedFailsOnNull);
+		string negatedGuaranteesNotNull = negatedFailsOnNull ? "\n\t[GuaranteesNotNull]" : "";
+		string negatedResultType = negatedFailsOnNull
+			? expectationToGenerate.NotNullTargetType
+			: expectationToGenerate.TargetType;
 		string result = $$"""
 		                  {{string.Join("\n", expectationToGenerate.Usings.Select(x => $"using {x};"))}}
 		                  using aweXpect.Core;
@@ -122,7 +125,7 @@ internal static class SourceGenerationHelper
 		                  	/// <summary>
 		                  	///     Verifies that the subject {{expectationToGenerate.ExpectationText}}.
 		                  	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{guaranteesNotNull}}
-		                  	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
+		                  	public static AndOrResult<{{resultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 		                  		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 		                  			new {{expectationToGenerate.Name}}Constraint(it, grammars)),
 		                  		subject);
@@ -137,7 +140,7 @@ internal static class SourceGenerationHelper
 			            	/// <summary>
 			            	///     {{negatedSummary}}
 			            	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{negatedGuaranteesNotNull}}
-			            	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
+			            	public static AndOrResult<{{negatedResultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 			            		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 			            			new {{expectationToGenerate.Name}}Constraint(it, grammars).Invert()),
 			            		subject);

@@ -12,7 +12,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsReadOnly(
+	public static AndOrResult<Stream, IThat<Stream?>> IsReadOnly(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadOnlyConstraint(it, grammars)),
@@ -22,7 +22,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is not read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsNotReadOnly(
+	public static AndOrResult<Stream, IThat<Stream?>> IsNotReadOnly(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadOnlyConstraint(it, grammars).Invert()),

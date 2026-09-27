@@ -17,6 +17,6 @@ public static partial class ThatDateTimeOffset
 	/// </summary>
 	public static AndOrResult<DateTimeOffset, IThat<DateTimeOffset>> HasYear(
 		this IThat<DateTimeOffset> subject,
-		int expected)
+		int? expected)
 		=> subject.HasYear().EqualTo(expected);
 }

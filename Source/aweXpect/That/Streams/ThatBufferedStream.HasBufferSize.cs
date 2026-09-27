@@ -12,7 +12,7 @@ public static partial class ThatBufferedStream
 	///     Verifies that the buffer size of the <see cref="BufferedStream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<BufferedStream?> HasBufferSize(this IThat<BufferedStream?> subject)
+	public static PropertyResult.Int<BufferedStream?, BufferedStream, IThat<BufferedStream?>> HasBufferSize(this IThat<BufferedStream?> subject)
 		=> new(subject, a => a?.BufferSize, "buffer size", (value, paramName) =>
 		{
 			if (value < 0)
@@ -29,9 +29,9 @@ public static partial class ThatBufferedStream
 	///     <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<BufferedStream?, IThat<BufferedStream?>> HasBufferSize(
+	public static AndOrResult<BufferedStream, IThat<BufferedStream?>> HasBufferSize(
 		this IThat<BufferedStream?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasBufferSize().EqualTo(expected);
 }
 #endif

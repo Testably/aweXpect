@@ -9,6 +9,22 @@ public sealed partial class ThatStream
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				Stream subject = new MyStream(length: 3);
+
+				async Task Act()
+					=> await That(subject).HasLength(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to <null>,
+					             but it had length 3
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -620,6 +636,17 @@ public sealed partial class ThatStream
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldSucceed()
+			{
+				Stream subject = new MyStream(length: 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasLength(null));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenLengthDiffers_ShouldSucceed()
 			{

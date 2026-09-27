@@ -33,7 +33,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> None(
+	public static ElementsForEnumerable<IEnumerable> None(
 		this IThat<IEnumerable?> subject)
 		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 

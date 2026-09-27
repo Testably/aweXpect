@@ -14,12 +14,12 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsGreaterThan(
+	public static TimeToleranceResult<TimeSpan, IThat<TimeSpan?>> IsGreaterThan(
 		this IThat<TimeSpan?> subject,
 		TimeSpan? expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
+		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsGreaterThanConstraint(it, grammars, expected, tolerance)),
 			subject,
@@ -30,12 +30,12 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is not greater than the <paramref name="unexpected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotGreaterThan(
+	public static TimeToleranceResult<TimeSpan, IThat<TimeSpan?>> IsNotGreaterThan(
 		this IThat<TimeSpan?> subject,
 		TimeSpan? unexpected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
+		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsGreaterThanConstraint(it, grammars, unexpected, tolerance).Invert()),
 			subject,

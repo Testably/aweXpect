@@ -19,8 +19,8 @@ public sealed partial class ThatBool
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not <null>, because we want to test the failure,
-						             but it was <null>
+						             is not null, because we want to test the failure,
+						             but it was
 						             """);
 				}
 

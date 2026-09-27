@@ -10,15 +10,15 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the hour of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTimeOffset?> HasHour(this IThat<DateTimeOffset?> subject)
+	public static PropertyResult.Int<DateTimeOffset?, DateTimeOffset, IThat<DateTimeOffset?>> HasHour(this IThat<DateTimeOffset?> subject)
 		=> new(subject, a => a?.Hour, "hour");
 
 	/// <summary>
 	///     Verifies that the hour of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<DateTimeOffset?, IThat<DateTimeOffset?>> HasHour(
+	public static AndOrResult<DateTimeOffset, IThat<DateTimeOffset?>> HasHour(
 		this IThat<DateTimeOffset?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasHour().EqualTo(expected);
 }

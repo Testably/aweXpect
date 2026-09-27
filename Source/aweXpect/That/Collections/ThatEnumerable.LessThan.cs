@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> LessThan(
+	public static ElementsForEnumerable<IEnumerable> LessThan(
 		this IThat<IEnumerable?> subject,
 		int maximum)
 		=> new(subject, EnumerableQuantifier.LessThan(maximum));

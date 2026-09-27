@@ -21,7 +21,7 @@ public static partial class ThatException
 	[GuaranteesNotNull]
 	public static AndOrResult<TException, IThat<TException>> HasHResult<TException>(
 		this IThat<TException> subject,
-		int expected)
+		int? expected)
 		where TException : Exception?
 		=> subject.HasHResult().EqualTo(expected);
 }

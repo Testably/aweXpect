@@ -58,7 +58,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     The subject of the expectation.
 		/// </summary>
-		public IThat<TEnumerable> Subject { get; }
+		public IThat<TEnumerable?> Subject { get; }
 	}
 
 	/// <summary>
@@ -182,15 +182,15 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable?
 	{
 		private readonly EnumerableQuantifier _quantifier;
-		private readonly IThat<TEnumerable> _subject;
+		private readonly IThat<TEnumerable?> _subject;
 
-		internal ElementsForEnumerable(IThat<TEnumerable> subject, EnumerableQuantifier quantifier)
+		internal ElementsForEnumerable(IThat<TEnumerable?> subject, EnumerableQuantifier quantifier)
 		{
 			_subject = subject;
 			_quantifier = quantifier;
 		}
 
 		EnumerableQuantifier IElementsForEnumerable<TEnumerable>.Quantifier => _quantifier;
-		IThat<TEnumerable> IElementsForEnumerable<TEnumerable>.Subject => _subject;
+		IThat<TEnumerable?> IElementsForEnumerable<TEnumerable>.Subject => _subject;
 	}
 }

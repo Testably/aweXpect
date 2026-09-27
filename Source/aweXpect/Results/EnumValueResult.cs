@@ -9,20 +9,35 @@ namespace aweXpect.Results;
 /// <summary>
 ///     Result for the underlying value of an enum that continues on the <see cref="IThat{TItem}" /> subject.
 /// </summary>
+public class EnumValueResult<TItem> : EnumValueResult<TItem, TItem>
+{
+	internal EnumValueResult(IThat<TItem> subject, Func<TItem, decimal?> mapper, string propertyExpression)
+		: base(subject, mapper, propertyExpression)
+	{
+	}
+}
+
+/// <summary>
+///     Result for the underlying value of an enum of a <typeparamref name="TValue" /> which continues on the
+///     <see cref="IThat{TValue}" /> subject with an underlying value of type <typeparamref name="TType" />.
+/// </summary>
 /// <remarks>
+///     <typeparamref name="TType" /> differs from <typeparamref name="TValue" /> for a nullable subject, whose value is
+///     no longer <see langword="null" /> once a comparison succeeded.
+///     <para />
 ///     Every comparison comes in a <see langword="long" /> and a <see langword="ulong" /> flavour, because neither
 ///     type alone names every enum value: only a <see langword="ulong" /> reaches a member above
 ///     <see cref="long.MaxValue" />, and only a <see langword="long" /> a negative one. Both are legal attribute
 ///     arguments, so a comparison can be driven from an <c>[InlineData]</c>; a bare <see langword="null" /> binds to
 ///     the <see langword="long" /> flavour.
 /// </remarks>
-public class EnumValueResult<TItem>
+public class EnumValueResult<TValue, TType>
 {
-	private readonly Func<TItem, decimal?> _mapper;
+	private readonly Func<TValue, decimal?> _mapper;
 	private readonly string _propertyExpression;
-	private readonly IThat<TItem> _subject;
+	private readonly IThat<TValue> _subject;
 
-	internal EnumValueResult(IThat<TItem> subject, Func<TItem, decimal?> mapper, string propertyExpression)
+	internal EnumValueResult(IThat<TValue> subject, Func<TValue, decimal?> mapper, string propertyExpression)
 	{
 		_subject = subject;
 		_mapper = mapper;
@@ -32,110 +47,110 @@ public class EnumValueResult<TItem>
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> EqualTo(long? expected)
+	public AndOrResult<TType, IThat<TValue>> EqualTo(long? expected)
 		=> AddEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> EqualTo(ulong? expected)
+	public AndOrResult<TType, IThat<TValue>> EqualTo(ulong? expected)
 		=> AddEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> NotEqualTo(long? unexpected)
+	public AndOrResult<TType, IThat<TValue>> NotEqualTo(long? unexpected)
 		=> AddNotEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> NotEqualTo(ulong? unexpected)
+	public AndOrResult<TType, IThat<TValue>> NotEqualTo(ulong? unexpected)
 		=> AddNotEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is greater than the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> GreaterThan(long? expected)
+	public AndOrResult<TType, IThat<TValue>> GreaterThan(long? expected)
 		=> AddGreaterThan(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is greater than the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> GreaterThan(ulong? expected)
+	public AndOrResult<TType, IThat<TValue>> GreaterThan(ulong? expected)
 		=> AddGreaterThan(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is greater than or equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> GreaterThanOrEqualTo(long? expected)
+	public AndOrResult<TType, IThat<TValue>> GreaterThanOrEqualTo(long? expected)
 		=> AddGreaterThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is greater than or equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> GreaterThanOrEqualTo(ulong? expected)
+	public AndOrResult<TType, IThat<TValue>> GreaterThanOrEqualTo(ulong? expected)
 		=> AddGreaterThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is less than the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> LessThan(long? expected)
+	public AndOrResult<TType, IThat<TValue>> LessThan(long? expected)
 		=> AddLessThan(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is less than the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> LessThan(ulong? expected)
+	public AndOrResult<TType, IThat<TValue>> LessThan(ulong? expected)
 		=> AddLessThan(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> LessThanOrEqualTo(long? expected)
+	public AndOrResult<TType, IThat<TValue>> LessThanOrEqualTo(long? expected)
 		=> AddLessThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<TItem, IThat<TItem>> LessThanOrEqualTo(ulong? expected)
+	public AndOrResult<TType, IThat<TValue>> LessThanOrEqualTo(ulong? expected)
 		=> AddLessThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is between the <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<AndOrResult<TItem, IThat<TItem>>, long?> Between(long? minimum)
+	public BetweenResult<AndOrResult<TType, IThat<TValue>>, long?> Between(long? minimum)
 		=> new(maximum => AddBetween(minimum, maximum, Formatter.Format(minimum), Formatter.Format(maximum)));
 
 	/// <summary>
 	///     …is between the <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<AndOrResult<TItem, IThat<TItem>>, ulong?> Between(ulong? minimum)
+	public BetweenResult<AndOrResult<TType, IThat<TValue>>, ulong?> Between(ulong? minimum)
 		=> new(maximum => AddBetween(minimum, maximum, Formatter.Format(minimum), Formatter.Format(maximum)));
 
-	private AndOrResult<TItem, IThat<TItem>> AddEqualTo(decimal? expected, string formattedExpected)
+	private AndOrResult<TType, IThat<TValue>> AddEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual?.Equals(expected) == true, $"equal to {formattedExpected}");
 
-	private AndOrResult<TItem, IThat<TItem>> AddNotEqualTo(decimal? unexpected, string formattedUnexpected)
+	private AndOrResult<TType, IThat<TValue>> AddNotEqualTo(decimal? unexpected, string formattedUnexpected)
 		=> Add(actual => actual?.Equals(unexpected) != true, $"equal to {formattedUnexpected}", isNegative: true);
 
-	private AndOrResult<TItem, IThat<TItem>> AddGreaterThan(decimal? expected, string formattedExpected)
+	private AndOrResult<TType, IThat<TValue>> AddGreaterThan(decimal? expected, string formattedExpected)
 		=> Add(actual => actual > expected, $"greater than {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
-	private AndOrResult<TItem, IThat<TItem>> AddGreaterThanOrEqualTo(decimal? expected, string formattedExpected)
+	private AndOrResult<TType, IThat<TValue>> AddGreaterThanOrEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual >= expected, $"greater than or equal to {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
-	private AndOrResult<TItem, IThat<TItem>> AddLessThan(decimal? expected, string formattedExpected)
+	private AndOrResult<TType, IThat<TValue>> AddLessThan(decimal? expected, string formattedExpected)
 		=> Add(actual => actual < expected, $"less than {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
-	private AndOrResult<TItem, IThat<TItem>> AddLessThanOrEqualTo(decimal? expected, string formattedExpected)
+	private AndOrResult<TType, IThat<TValue>> AddLessThanOrEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual <= expected, $"less than or equal to {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
-	private AndOrResult<TItem, IThat<TItem>> AddBetween(decimal? minimum, decimal? maximum,
+	private AndOrResult<TType, IThat<TValue>> AddBetween(decimal? minimum, decimal? maximum,
 		string formattedMinimum, string formattedMaximum)
 	{
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -144,7 +159,7 @@ public class EnumValueResult<TItem>
 			isOrderedAgainstNull: minimum is null || maximum is null);
 	}
 
-	private AndOrResult<TItem, IThat<TItem>> Add(
+	private AndOrResult<TType, IThat<TValue>> Add(
 		Func<decimal?, bool> condition,
 		string expectation,
 		bool isNegative = false,
@@ -158,14 +173,14 @@ public class EnumValueResult<TItem>
 	private sealed class ValueConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Func<TItem, decimal?> mapper,
+		Func<TValue, decimal?> mapper,
 		string propertyExpression,
 		Func<decimal?, bool> condition,
 		string expectation,
 		bool isNegative,
 		bool isOrderedAgainstNull)
-		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
-			IValueConstraint<TItem>
+		: ConstraintResult.WithNotNullValue<TValue>(it, grammars),
+			IValueConstraint<TValue>
 	{
 		private decimal? _value;
 
@@ -176,7 +191,7 @@ public class EnumValueResult<TItem>
 			protected set => base.Outcome = value;
 		}
 
-		public ConstraintResult IsMetBy(TItem actual)
+		public ConstraintResult IsMetBy(TValue actual)
 		{
 			Actual = actual;
 			_value = mapper(actual);
