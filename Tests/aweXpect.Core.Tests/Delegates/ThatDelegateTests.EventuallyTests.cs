@@ -49,25 +49,20 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task CheckEvery_ShouldOverrideTheDefaultCheckInterval()
 		{
-			Counter counter = new();
+			Counter counter = new(2);
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
 				async Task Act()
-					=> await That(() => counter.Value).Eventually().Within(1.Seconds()).CheckEvery(200.Milliseconds())
-						.IsEqualTo(1);
+					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout)
+						.CheckEvery(10.Milliseconds())
+						.IsGreaterThan(3);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that () => counter.Value
-					             eventually is equal to 1 within 0:01,
-					             but it was 0, which differs by -1
-					             """);
+				await That(Act).DoesNotThrow()
+					.Because("the default interval of 30 seconds would only allow two evaluations within the timeout");
 			}
 
-			await That(counter.EvaluationCount).IsGreaterThan(2).And.IsLessThanOrEqualTo(6)
-				.Because("the check interval allows evaluations at 0ms, 200ms, 400ms, 600ms, 800ms and 1000ms, while " +
-				         "the default interval of 30 seconds would only allow two");
+			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
 		[Theory]

@@ -167,22 +167,11 @@ internal class EventuallyExpectationBuilder<TValue>(
 			(TValue? data, Exception? failure, bool hasTimedOut) = await EvaluateSubject(subject, retryTimeout,
 				retryTimeout - Elapsed(), interval, cancellationToken);
 
-			ConstraintResult? result = null;
-			if (failure is null)
+			(ConstraintResult? result, failure) =
+				await CheckAttempt(rootNode, data, failure, currentContext, cancellationToken);
+			if (result?.Outcome == Outcome.Success)
 			{
-				try
-				{
-					result = await rootNode.IsMetBy(data, currentContext, cancellationToken);
-				}
-				catch (OperationCanceledException exception) when (cancellationToken.IsCancellationRequested)
-				{
-					failure = exception;
-				}
-
-				if (result?.Outcome == Outcome.Success)
-				{
-					return result;
-				}
+				return result;
 			}
 
 			TimeSpan remaining = retryTimeout - Elapsed();
@@ -247,6 +236,31 @@ internal class EventuallyExpectationBuilder<TValue>(
 			return (default, hasTimedOut
 				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
 				: exception, hasTimedOut);
+		}
+	}
+
+	/// <summary>
+	///     Checks the <paramref name="data" /> of an attempt without a <paramref name="failure" /> against the
+	///     <paramref name="rootNode" />, and turns a cancellation during the check into the failure of the attempt.
+	/// </summary>
+	private static async Task<(ConstraintResult? Result, Exception? Failure)> CheckAttempt(Node rootNode,
+		TValue? data,
+		Exception? failure,
+		EvaluationContext.EvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		if (failure is not null)
+		{
+			return (null, failure);
+		}
+
+		try
+		{
+			return (await rootNode.IsMetBy(data, context, cancellationToken), null);
+		}
+		catch (OperationCanceledException exception) when (cancellationToken.IsCancellationRequested)
+		{
+			return (null, exception);
 		}
 	}
 
