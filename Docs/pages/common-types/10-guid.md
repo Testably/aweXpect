@@ -2,6 +2,8 @@
 
 Describes the possible expectations for `Guid` values.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the `Guid` is equal to another one or not:

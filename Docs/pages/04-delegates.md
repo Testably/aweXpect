@@ -2,23 +2,16 @@
 
 Describes the possible expectations for delegates and exceptions.
 
-A delegate can be any of the following:
+A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.
+`Func<CancellationToken, Task>`), which is canceled when the expectation times out or is canceled:
 
-- `Action` or `Action<CancellationToken>`  
-  a synchronous method without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<Task>` or `Func<CancellationToken, Task>`  
-  an asynchronous method without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<ValueTask>` or `Func<CancellationToken, ValueTask>`  
-  an asynchronous method using `ValueTask` without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<T>` or `Func<CancellationToken, T>`  
-  a synchronous method with return value `T` (optionally accepting a `CancellationToken` for timeout)
-- `Func<Task<T>>` or `Func<CancellationToken, Task<T>>`  
-  an asynchronous method with return value `T` (optionally accepting a `CancellationToken` for timeout)
-- `Func<ValueTask<T>>` or `Func<CancellationToken, ValueTask<T>>`  
-  an asynchronous method using `ValueTask` with return value `T` (optionally accepting a `CancellationToken` for
-  timeout)
-- `Task` or `ValueTask`  
-  an asynchronous operation without return value that is already running
+|              | Without return value            | With return value `T`                 |
+|--------------|---------------------------------|---------------------------------------|
+| Synchronous  | `Action`                        | `Func<T>`                             |
+| Asynchronous | `Func<Task>`, `Func<ValueTask>` | `Func<Task<T>>`, `Func<ValueTask<T>>` |
+
+A `Task` or `ValueTask` is treated like a delegate as well: an asynchronous operation without return value that is
+already running.
 
 ```csharp
 await Expect.That(DoAsync()).DoesNotThrow();
@@ -37,6 +30,15 @@ await Expect.That<Task>(task).IsNotNull();
 ```
 
 Note that `Task<T>` and `ValueTask<T>` behave differently: they are awaited and their **result** becomes the subject.
+To check the exception or the execution time of such a task, wrap it in a lambda (`() => task`), which turns it into
+a delegate:
+
+```csharp
+Task<int> task = Task.FromResult(42);
+
+await Expect.That(task).IsEqualTo(42);
+await Expect.That(() => task).DoesNotThrow();
+```
 
 :::info[C# 13 or later]
 An `async` lambda and a lambda that only throws, as in `Expect.That(async () => await x.RunAsync())` or
@@ -155,7 +157,7 @@ await Expect.That(Act).Throws().WithMessage().NotEndingWith("something else");
 Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
 neither is a substring anything could meaningfully be checked against.
 
-You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
+You can use the same configuration options as when [comparing strings](./common-types/02-string.md#equality).
 
 ## Inner exceptions
 
@@ -231,6 +233,15 @@ await Expect.That(Act).Throws<CustomException>().Which.HasMessage("my exception"
 await Expect.That(exception).HasMessage("my exception");
 ```
 
+The following `Has…` expectations are available for an exception subject. The section of the matching `With…`
+expectation describes their options:
+
+- `HasMessage`, see [exception message](#exception-message)
+- `HasParamName`, see [other members](#other-members)
+- `HasHResult`, see [other members](#other-members)
+- `HasInner<T>` and `DoesNotHaveInner<T>`, see [inner exceptions](#inner-exceptions)
+- `HasRecursiveInnerExceptions`, see [recursive inner exceptions](#recursive-inner-exceptions)
+
 All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
 message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer
 rule `aweXpect0003` flags it and offers to switch to the `With…` twin or to insert `.Which`.
@@ -305,8 +316,8 @@ await Expect.That(() => sut.Name).Eventually().IsNotNull().And.StartsWith("foo")
 ```
 
 The delegate is re-evaluated every
-[`DefaultCheckInterval`](/docs/expectations/advanced/customization) (defaults to `100ms`) until the timeout
-configured in [`DefaultEventuallyTimeout`](/docs/expectations/advanced/customization) (defaults to `30s`)
+[`DefaultCheckInterval`](./advanced/02-customization.md) (defaults to `100ms`) until the timeout
+configured in [`DefaultEventuallyTimeout`](./advanced/02-customization.md) (defaults to `30s`)
 expires. The last wait is shortened so that it never exceeds the timeout, which means that an interval
 that is longer than the timeout results in exactly two evaluations. You can overwrite the timeout per
 expectation with `Within` and the interval with `CheckEvery`, in either order:
@@ -339,7 +350,7 @@ interrupted, so for it the timeout is only checked between evaluations.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
 `Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Returning the task directly also works with a
-language version [older than C# 13](#delegates):
+language version older than C# 13 (see the note at the top of this page):
 
 ```csharp
 await Expect.That(() => sut.GetCountAsync()).Eventually().IsGreaterThan(5);

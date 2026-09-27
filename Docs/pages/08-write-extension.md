@@ -2,10 +2,10 @@
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Core?label=aweXpect.Core)](https://www.nuget.org/packages/aweXpect.Core)
 
-This library will never be able to cope with all ideas and use cases. Therefore, it is possible to use the [
-`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core/) package and write your own extensions.
-Goal of this package is to be more stable than the main aweXpect package, so reduce the risk of version conflicts
-between different extensions.
+This library will never be able to cope with all ideas and use cases. Therefore, it is possible to use the
+[`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core/) package and write your own extensions.
+This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
+different extensions.
 
 The samples on this page use the following namespaces:
 
@@ -148,7 +148,8 @@ in most cases with one of the following helper classes:
 All three take the name of the subject (`it`) and the `grammars` in their constructor and expose the name as the
 inherited `It` property, which the default result texts use.
 
-Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
+Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows the rule that
+all built-in expectations follow (see [concepts](./02-concepts.md#null-subjects)):
 
 > A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
 > identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
@@ -201,7 +202,7 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is no absolute path");
+        => stringBuilder.Append("is not an absolute path");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
     {
@@ -219,9 +220,9 @@ method:
 
 ```csharp
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is no absolute path.
+///     Verifies that the <paramref name="subject"/> is not an absolute path.
 /// </summary>
-public static AndOrResult<string, IThat<string>> IsNoAbsolutePath(
+public static AndOrResult<string, IThat<string>> IsNotAbsolutePath(
     this IThat<string> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars).Invert()),
@@ -245,7 +246,7 @@ An exception that your constraint throws itself, e.g. to reject an invalid argum
 
 ## Customization
 
-You can add you own [customizations](/docs/expectations/advanced/customization) on top of the `AwexpectCustomization`
+You can add your own [customizations](./advanced/02-customization.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
 
 ### Add a simple customization value
@@ -289,8 +290,8 @@ using (Customize.aweXpect.MyCustomization().Set(43))
 _ = Customize.aweXpect.MyCustomization().Get();
 ```
 
-*Note: you can also use this mechanism for complex objects like classes, but they can only be changed as a whole (and
-not individual properties)*
+You can also use this mechanism for complex objects like classes, but then they can only be changed as a whole and not
+property by property.
 
 ### Add a customization group
 
@@ -366,14 +367,14 @@ JsonSerializerOptions mySerializerOptions = new();
 using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(mySerializerOptions))
 {
     // will use `mySerializerOptions` for the `JsonSerializerOptions`
-	// but keep any configured `JsonDocumentOptions`
+    // but keep any configured `JsonDocumentOptions`
 }
 
 // ...or update the whole group
 JsonAwexpectCustomizationExtensions.JsonCustomizationValue myCustomization = new();
 using (Customize.aweXpect.Json().Update(_ => myCustomization))
 {
-    // will use the all set properties from the `myCustomization`
+    // will use all properties from `myCustomization`
 }
 ```
 

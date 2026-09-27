@@ -7,13 +7,11 @@
    dotnet add package aweXpect
    ```
 
-
 2. Add the following `using` statement:
    ```csharp
    using aweXpect;
    ```
    This brings the static `Expect` class and lots of extension methods into scope.
-
 
 3. Simplify expectations (optional)  
    If you want to simplify the assertions, you can add a `global using static aweXpect.Expect;` statement anywhere in
@@ -28,7 +26,7 @@
 
 ## Write your first expectation
 
-Write your first expectation:
+Every expectation starts with `Expect.That(subject)`, continues with what you expect and is awaited:
 
 ```csharp
 [Fact]
@@ -42,11 +40,11 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 
 If it fails, it will throw a framework-specific exception with the following message:
 
-> ```
-> Expected that result
-> is False,
-> but it was True
-> ```
+```text title="Failure message"
+Expected that result
+is False,
+but it was True
+```
 
 ## Add a reason
 
@@ -62,9 +60,17 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 }
 ```
 
-This will result in
-> ```
-> Expected that result
-> is False, because the album is not in the library,
-> but it was True
-> ```
+The reason then appears in the failure message:
+
+```text title="Failure message"
+Expected that result
+is False, because the album is not in the library,
+but it was True
+```
+
+## Next steps
+
+- [Concepts](./02-concepts.md) explains how expectations are combined and negated, and how they treat `null`.
+- The pages for [common types](./common-types/01-boolean.md), [collections](./03-collections/index.md),
+  [delegates](./04-delegates.md), [events](./05-events.md) and [equivalency](./06-equivalency.md) list the available
+  expectations.

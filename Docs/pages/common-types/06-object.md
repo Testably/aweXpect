@@ -2,6 +2,8 @@
 
 Describes the possible expectations for objects.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the `object` is equal to another one or not:
@@ -14,11 +16,13 @@ await Expect.That(subject).IsEqualTo(new Album("Abbey Road"));
 await Expect.That(subject).IsNotEqualTo(new Album("Revolver"));
 ```
 
-*Note: this uses the underlying `object.Equals(object?, object?)` method*
+This uses the `object.Equals(object?, object?)` method.
 
-*Note: a number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
+:::note
+A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
-[equivalency](/docs/expectations/equivalency).*
+[equivalency](../06-equivalency.md).
+:::
 
 ### Reference equality
 
@@ -32,7 +36,7 @@ await Expect.That(subject).IsSameAs(subject);
 await Expect.That(subject).IsNotSameAs(new Album("Abbey Road"));
 ```
 
-*Note: this uses the underlying `object.ReferenceEquals(object?, object?)` method*
+This uses the `object.ReferenceEquals(object?, object?)` method.
 
 ### Custom comparer
 
@@ -67,14 +71,15 @@ await Expect.That(subject).IsEquatableTo(42L);
 await Expect.That(subject).IsNotEquatableTo(7L);
 ```
 
-*Note: this inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore,
-`IsEquatableTo` and `IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)`
-succeeds.*
+:::note
+This inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore, `IsEquatableTo` and
+`IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)` succeeds.
+:::
 
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
-[equivalency](/docs/expectations/equivalency) page for details and configuration options:
+[equivalency](../06-equivalency.md) page for details and configuration options:
 
 ```csharp
 class Album(string title)
@@ -144,6 +149,7 @@ You can verify that any object satisfies a given predicate:
 object? subject = null;
 
 await Expect.That(subject).Satisfies(x => x == null);
+await Expect.That(subject).DoesNotSatisfy(x => x != null);
 ```
 
 When the object changes in the background, you can also verify that it satisfies a condition within a given time
@@ -152,9 +158,7 @@ period:
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
 
-Track subject = new() {
-	IsPlayed = false
-};
+Track subject = new() { IsPlayed = false };
 // Start a background task that sets `IsPlayed` to true
 
 await Expect.That(subject).Satisfies(x => x.IsPlayed == true).Within(2.Seconds());
@@ -168,7 +172,10 @@ You can verify that any object complies with an expectation:
 List<Track> tracks = new();
 
 await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
+await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
+
+`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails.
 
 When the object changes in the background, you can also verify that it complies with an expectation within a given time
 period:

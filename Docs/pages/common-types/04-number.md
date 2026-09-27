@@ -2,6 +2,8 @@
 
 Describes the possible expectations for numbers.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the number is equal to another one or not:
@@ -95,7 +97,10 @@ You can verify that the number is between two numbers:
 int subject = 42;
 
 await Expect.That(subject).IsBetween(41).And(43);
+await Expect.That(subject).IsNotBetween(43).And(50);
 ```
+
+Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`.
 
 ## Positive / negative
 
@@ -110,7 +115,10 @@ await Expect.That(0).IsNotNegative();
 
 Zero and `NaN` are neither positive nor negative, so both `IsNotPositive` and `IsNotNegative` succeed for them.
 
-*Note: below .NET 8 these expectations are only available for signed numbers; on .NET 8 or later they are available for every `INumber<T>`, including unsigned types.*
+:::note
+Below .NET 8 these expectations are only available for signed numbers. On .NET 8 or later they are available for every
+`INumber<T>`, including unsigned types.
+:::
 
 ## NaN
 

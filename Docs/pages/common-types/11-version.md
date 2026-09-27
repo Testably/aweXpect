@@ -1,9 +1,15 @@
+import PropertyComparisons from '../_property-comparisons.md';
+
 # Version
 
 Describes the possible expectations for `Version`.
 
-A `null` subject fails every expectation on this page except equality and one of. Reference equality and `null`
-checks come from the [object expectations](/docs/expectations/common-types/object).
+A `null` subject fails every expectation on this page except equality and one of, as the
+[rule for `null` subjects](../02-concepts.md#null-subjects) says. Reference equality and `null`
+checks come from the [object expectations](./06-object.md).
+
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` components, which take a negated
+comparison instead (e.g. `HasRevision().NotEqualTo(5)`).
 
 ## Equality
 
@@ -46,8 +52,7 @@ await Expect.That(subject).HasBuild().LessThanOrEqualTo(3);
 await Expect.That(subject).HasRevision().NotEqualTo(5);
 ```
 
-Each of `HasMajor()`, `HasMinor()`, `HasBuild()` and `HasRevision()` supports `EqualTo`, `NotEqualTo`,
-`GreaterThan`, `GreaterThanOrEqualTo`, `LessThan` and `LessThanOrEqualTo`.
+<PropertyComparisons />
 
 An unspecified build or revision is `-1`, not `0`:
 

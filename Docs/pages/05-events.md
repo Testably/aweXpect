@@ -192,7 +192,7 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .Between(1).And(2.Times());
 ```
 
-You can use the same occurrence constraints as in the [contain](/docs/expectations/collections#contained-items) method:
+You can use the same occurrence constraints as in the [contain](./03-collections/01-equality.md#contained-items) method:
 
 - `AtLeast(2.Times())`
 - `AtMost(3.Times())`
@@ -207,8 +207,8 @@ You can use the same occurrence constraints as in the [contain](/docs/expectatio
 ## Special events
 
 For common events, you can create specific overloads.  
-Included are some overloads for the [
-`INotifyPropertyChanged.PropertyChanged`](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged)
+Included are some overloads for the
+[`INotifyPropertyChanged.PropertyChanged`](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged)
 event:
 
 ```csharp
@@ -252,8 +252,11 @@ looks the events up nor binds a handler reflectively. The registration runs when
 configuration. A subject whose runtime type has a registration is recorded through it, every other subject is
 reflected over as before, and a registered handler takes any number of parameters.
 
+<details>
+<summary>Types the generator cannot see, and how reflection is switched off</summary>
+
 The generator works from the declared type, so the same limits apply as for
-[equivalency](/docs/expectations/equivalency#trimming-and-native-aot):
+[equivalency](./06-equivalency.md#trimming-and-native-aot):
 
 - a subject declared as an interface, an abstract class or a base type only reveals the declared type; the recording
   looks up the runtime type of the instance, which stays on reflection,
@@ -271,5 +274,7 @@ Reflection over a subject without a registration is switched off when you publis
 enabled, because the trimmer removes events that only reflection reaches and the reflective recorder needs runtime
 code generation. Recording such a subject fails with an error that names the type and asks you to register it. The
 `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
-[equivalency](/docs/expectations/equivalency#trimming-and-native-aot); with the fallback forced on, the error for an
+[equivalency](./06-equivalency.md#trimming-and-native-aot); with the fallback forced on, the error for an
 unknown event name, and for an event that a recording of all events did not find, asks you to root the type instead.
+
+</details>

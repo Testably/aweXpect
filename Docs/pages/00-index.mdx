@@ -16,15 +16,15 @@ import BenchmarkResult from '@site/src/components/BenchmarkResult';
 await Expect.That(message).IsEqualTo("It's a compliment");
 ```
 
-> ```
-> Expected that message
-> is equal to "It's a compliment",
-> but it was "It's a complement", which differs at index 12:
->            ↓ (actual)
->   "…a complement"
->   "…a compliment"
->            ↑ (expected)
-> ```
+```text title="Failure message"
+Expected that message
+is equal to "It's a compliment",
+but it was "It's a complement", which differs at index 12:
+           ↓ (actual)
+  "…a complement"
+  "…a compliment"
+           ↑ (expected)
+```
 
 ## Why aweXpect?
 
@@ -61,7 +61,7 @@ The happy path (passing assertions, the common case in a healthy test suite) is 
 **Comparing strings, ignoring case**     
 <BenchmarkResult name="String" />
 
-See the [benchmarks](https://docs.testably.org/aweXpect/benchmarks) for the full set.
+See the [benchmarks](./09-benchmarks.mdx) for the full set.
 
 </TabItem>
 <TabItem value="extensible" label="Extensible">
@@ -79,7 +79,7 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(
 await Expect.That("/var/log").IsAbsolutePath();
 ```
 
-The full walkthrough is at [Write your own extension](./write-extension).
+The full walkthrough is at [Write your own extension](./08-write-extension.md).
 
 </TabItem>
 <TabItem value="frameworks" label="Any runner">
@@ -113,7 +113,7 @@ The [aweXpect.Migration](https://github.com/aweXpect/aweXpect.Migration) analyze
 
 ## Where to go next
 
-- **[Getting Started](./getting-started)**: install the package and write your first expectation.
+- **[Getting Started](./01-getting-started.md)**: install the package and write your first expectation.
 - **[Migration](./migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
-- **[Advanced](./advanced)**: multiple expectations, cancellation, customization, and more.
-- **[Write your own extension](./write-extension)**: add expectations for your own types using `aweXpect.Core`.
+- **[Advanced](./advanced/01-multiple-expectations.md)**: multiple expectations, cancellation, customization, and more.
+- **[Write your own extension](./08-write-extension.md)**: add expectations for your own types using `aweXpect.Core`.

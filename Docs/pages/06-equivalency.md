@@ -101,7 +101,7 @@ By default, equivalency:
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
   instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
   looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](/docs/expectations/collections#dictionaries). Two expected keys that this comparer considers the same
+  [`IsEqualTo`](./03-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
   cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
   from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
   `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
@@ -254,7 +254,7 @@ Equivalency walks nested objects recursively, so a graph that is deep enough wou
 whole test process with it. The comparison therefore stops after 100 nested objects on a single path and reports the
 member path at which the limit was hit (shown here with the limit lowered to 3):
 
-```
+```text title="Failure message"
 Expected that subject
 is equivalent to expected,
 but it was not:
@@ -283,7 +283,7 @@ A limit other than the default is listed in the failure message under `Equivalen
 ### Customizing the global defaults
 
 You can change the default `EquivalencyOptions` that are used when no callback is provided, via the
-[customization API](/docs/expectations/advanced/customization):
+[customization API](./advanced/02-customization.md):
 
 ```csharp
 using aweXpect.Customization;
@@ -322,8 +322,10 @@ await Expect.That(midnight).IsEquivalentTo(new
 
 `It.Is<T>()` (without `.That`) only asserts that the property has the given type.
 
-*Note: because the type cannot be inferred from `null`, an `It.Is<T>().That.IsNull()` check still works, but
-`It.Is<T>().That.IsNotNull()` requires the property to be non-null.*
+:::note
+Because the type cannot be inferred from `null`, an `It.Is<T>().That.IsNull()` check still works, but
+`It.Is<T>().That.IsNotNull()` requires the property to be non-null.
+:::
 
 ## Failure messages
 
@@ -331,7 +333,7 @@ Failure messages list each differing member with its full path and the configure
 
 For a structural mismatch:
 
-```
+```text title="Failure message"
 Expected that album
 is equivalent to expected,
 but it was not:
@@ -345,7 +347,7 @@ Equivalency options:
 
 When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectation is rendered as `Expected`:
 
-```
+```text title="Failure message"
 Expected that midnight
 is equivalent to new
 {
@@ -377,6 +379,9 @@ loudly instead of passing without verifying anything. The registration also feed
 object is rendered from its registered members, so the message keeps listing them after trimming, while an
 unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Either way the message lists
 public instance members only, without static members, indexers or properties that lack a public getter.
+
+<details>
+<summary>Types the generator cannot see, and how reflection is switched off</summary>
 
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 
@@ -426,3 +431,5 @@ and the `AweXpectReflectionFallback` property of your project sets that switch:
 With the fallback forced on, a trimmed application reflects over whatever the trimmer left, which is best effort: a
 type whose members were all removed still fails with an error that asks you to root it, but a type that lost only
 some of them is compared through the rest.
+
+</details>

@@ -2,6 +2,9 @@
 
 Describes the possible expectations for boolean values.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `IsTrue` and `IsFalse` on a non-nullable
+`bool` (see below).
+
 ## Equality
 
 You can verify that the `bool` is equal to another one or not:
@@ -41,9 +44,11 @@ await Expect.That(subject).IsNotTrue()
   .Because("it could be false or null");
 ```
 
-*Note: on a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
+:::note
+On a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
 Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` and
-`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.*
+`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.
+:::
 
 ## Implication
 
