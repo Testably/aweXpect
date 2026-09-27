@@ -30,11 +30,11 @@ when you publish with trimming or Native AOT, a type without a registration fail
 
 - **Test projects** that use the built-in expectations need no changes.
 - **Extension authors** replace `IAweXpectInitializer` with a `[ModuleInitializer]` and register a hand-written
-  `ITestFrameworkAdapter` explicitly. See [Write your own extension](/docs/expectations/write-extension#initialization).
+  `ITestFrameworkAdapter` explicitly. See [Write your own extension](./08-write-extension.md#initialization).
 - **Equivalency options** that inspected a `MemberInfo` move to `IgnoringFields` and `IgnoringProperties`.
 
-More details are on the [Equivalency](/docs/expectations/equivalency#trimming-and-native-aot) and
-[Events](/docs/expectations/events#trimming-and-native-aot) pages.
+More details are on the [Equivalency](./06-equivalency.md#trimming-and-native-aot) and
+[Events](./05-events.md#trimming-and-native-aot) pages.
 
 ## Null subjects
 
@@ -115,7 +115,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 throwing, so neither was the complement of the other. `ExecutesIn().AtLeast(d)` says the same thing without that trap;
 it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required strictly more. If you measured a
 delegate that is expected to throw, add
-[`AllowingExceptions()`](/docs/expectations/delegates#allowing-exceptions) to let the duration decide alone.
+[`AllowingExceptions()`](./04-delegates.md#allowing-exceptions) to let the duration decide alone.
 
 The element type checks `Are<T>()`, `Are(type)`, `AreExactly<T>()` and `AreExactly(type)` no longer offer `Using(…)`
 and `Equivalent(…)`. A type check does not compare values, so neither option ever had an effect; remove such a call.
@@ -164,7 +164,7 @@ so a delegate accepting a `CancellationToken` is cancelled once it elapsed and t
 delegate is abandoned at that point even if it ignores the token, and so is a `Task<T>` subject under `WithTimeout`
 or `WithCancellation`; only a synchronous delegate still runs to completion. A cancellation fails the
 expectation even with `AllowingExceptions()`, because it aborts the execution instead of timing it. See
-[Delegates](/docs/expectations/delegates#execution-time).
+[Delegates](./04-delegates.md#execution-time).
 
 ## `Task` and `ValueTask` subjects
 
@@ -173,7 +173,7 @@ the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed without ever 
 now bind to a delegate subject that awaits the task, which makes `DoesNotThrow()`, `Throws<TException>()` and the
 execution time expectations available. Every expectation on the task object is a compile error afterwards; where you
 really mean the object, name the type explicitly with `Expect.That<Task>(subject)`. See
-[Delegates](/docs/expectations/delegates).
+[Delegates](./04-delegates.md).
 
 ## `DateTime` kinds
 
@@ -184,7 +184,7 @@ value with the other kind, and `IsInAscendingOrder` / `IsInDescendingOrder` fail
 mixes both kinds unless you specify a comparer. Comparing a `DateTime` as a value honours the kind as well, so a
 collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` for a `DateTime` member, no longer
 match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
-[DateTime / DateTimeOffset](/docs/expectations/common-types/datetime-offset#kind).
+[DateTime / DateTimeOffset](./common-types/09-datetime-offset.md#kind).
 
 ## Dictionary subjects
 
@@ -215,7 +215,7 @@ recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only 
 collection still compares by position.
 `IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
 the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
-[Limiting the recursion depth](/docs/expectations/equivalency#limiting-the-recursion-depth).
+[Limiting the recursion depth](./06-equivalency.md#limiting-the-recursion-depth).
 
 A default set with `Customize.aweXpect.Equivalency()` also applies to an expectation that passes an options callback
 of its own. The options handed to such a callback dropped the included fields and properties, the comparison type and
@@ -231,7 +231,7 @@ It used to require the runtime type to match exactly, which no instance of an ab
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what
 they do, names the receiver parameter of every expectation `subject`, and moves a few types into more fitting
 namespaces. The new `[GuaranteesNotNull]` attribute marks an expectation that a `null` subject can never satisfy, and
-the [null rule](/docs/expectations/write-extension#constraints) that an extension has to follow is documented.
+the [null rule](./08-write-extension.md#constraints) that an extension has to follow is documented.
 
 `DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in
 the v3 pre-releases, read like a timeout failure although it is the result of an absent signal.
@@ -246,7 +246,7 @@ name the subject that had them. A custom quantifier has to add the parameter.
   `AtLeast(1).AreNotUnique()`.
 - **Events** gain a positional `DidNotTrigger(eventName)`.
 - **Delegates** gain `DoesNotSatisfy(…).Within(…)` and more message and `HResult` continuations.
-- **Version** gains comparisons and its components. See [Version](/docs/expectations/common-types/version).
+- **Version** gains comparisons and its components. See [Version](./common-types/11-version.md).
 - **Guid** gains `IsOneOf`, and **Char** gains character class checks such as `IsADigit` and `IsUpperCased`.
 
 ## Analyzer
@@ -256,12 +256,12 @@ name the subject that had them. A custom quantifier has to add the parameter.
   `GetAwaiter().GetResult()`. It now also covers `Expect.ThatAll` and `Expect.ThatAny`, and no longer accepts an
   expectation because another branch of the same statement verifies one.
 - `aweXpect0003` flags a `Has…` exception expectation directly after `Throws`, and offers a code fix. See
-  [Delegates](/docs/expectations/delegates#with-after-throws-has-on-the-exception).
+  [Delegates](./04-delegates.md#with-after-throws-has-on-the-exception).
 - `aweXpect0004` reports an expectation for an ordinary subject that is applied to a delegate subject, where it
   checked the delegate instead of what it does, and offers a code fix. Because it is an error, an expectation such as
   `Expect.That(() => sut.Count()).IsEqualTo(1)` that used to compile now has to be written as
   `Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`. See
-  [Delegates](/docs/expectations/delegates#no-exception).
+  [Delegates](./04-delegates.md#no-exception).
 - `aweXpect0005` warns about an expectation inside an `async` lambda that is converted to a void-returning delegate,
   such as `list.ForEach(async x => await Expect.That(x).IsTrue())`, because the lambda returns before the expectation
   is evaluated and its failure is thrown after the test has completed.
