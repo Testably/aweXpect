@@ -8,11 +8,56 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
 public static partial class ThatAsyncEnumerable
 {
+	private const string ContainedIn =
+		"Verifies that the collection is contained in the provided <paramref name=\"expected\" /> collection.";
+
+	private const string NotContainedIn =
+		"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection.";
+
+	private const string ContainedInRemarks =
+		"The subject items must appear in the expected collection in the same order and contiguous, i.e. without\n" +
+		"other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or\n" +
+		"<c>InAnyOrder()</c> to also ignore the order.";
+
+	private const string NotContainedInRemarks =
+		"The subject is only considered contained when its items appear in the unexpected collection in the same order\n" +
+		"and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it\n" +
+		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
+
+	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainedIn, NegatedSummary = NotContainedIn,
+		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+	internal static ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
+			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
+		IsContainedInWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNull(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
+			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
+			subject,
+			options,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+	}
+
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>

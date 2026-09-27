@@ -30,6 +30,32 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForADateOnlySet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<DateOnly> subject = new(new SameMonthComparer()) { new DateOnly(2024, 1, 1), };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([new DateOnly(2024, 1, 31),]);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
+			}
+#endif
+
+			[Fact]
+			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([1.2, 1.8,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
+			}
+
 			[Fact]
 			public async Task ForASortedSet_InSameOrder_ShouldUseTheComparerOfTheSet()
 			{
@@ -182,12 +208,53 @@ public sealed partial class ThatEnumerable
 					.Because("a set with the default comparer keeps the default equality, which compares numbers by value");
 			}
 
+			[Fact]
+			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([1.25, 1.75,]).Within(0.125);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection [1.25, 1.75,] ± 0.125 in order,
+					             but it
+					               contained item 1.0 at index 0 instead of 1.25 and
+					               contained item 2.0 at index 1 instead of 1.75
+
+					             Collection:
+					             [1.0, 2.0]
+
+					             Expected:
+					             [1.25, 1.75]
+					             """)
+					.Because("the tolerance replaces the comparer of the set");
+			}
+
 			private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
 			{
 				public bool Equals(int x, int y) => x % modulus == y % modulus;
 
 				public int GetHashCode(int obj) => obj % modulus;
 			}
+
+			private sealed class RoundingComparer : IEqualityComparer<double>
+			{
+				public bool Equals(double x, double y) => Math.Round(x) == Math.Round(y);
+
+				public int GetHashCode(double obj) => Math.Round(obj).GetHashCode();
+			}
+
+#if NET8_0_OR_GREATER
+			private sealed class SameMonthComparer : IEqualityComparer<DateOnly>
+			{
+				public bool Equals(DateOnly x, DateOnly y) => x.Year == y.Year && x.Month == y.Month;
+
+				public int GetHashCode(DateOnly obj) => (obj.Year * 12) + obj.Month;
+			}
+#endif
 
 			private sealed class NullRejectingComparer : IEqualityComparer<string?>
 			{

@@ -183,6 +183,38 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WithFactory_WhenExpectedIsANullableParamsArray_ShouldNotCastUp()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static class Factory
+			{
+				public static ObjectEqualityWithToleranceOptions<double?, double> CreateNullableDouble() => new();
+			}
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("StartsWith", Factory = typeof(Factory), Params = true,
+					Summary = "Starts with.")]
+				internal static IThat<TItem?> StartsWithCore<TItem, TTolerance>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected,
+					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+					string? expectedExpression)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("params double?[] expected").Once()
+			.Because("a params array of the nullable element already accepts the non-nullable one");
+		await That(result.Generated).DoesNotContain("Enumerable.Cast");
+	}
+
+	[Fact]
 	public async Task WithFactory_WhenExpectedIsASingleNullableValue_ShouldNotCastUp()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

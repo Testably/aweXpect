@@ -77,6 +77,34 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
+		EndsWithWithToleranceCore<TItem, TTolerance>(
+			IThat<IEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
+			{
+				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, Priority = -2, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
@@ -190,6 +218,36 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
+		EndsWithWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
 					expectationBuilder, it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
 					expected.ToArray(), options);

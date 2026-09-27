@@ -38,6 +38,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).Contains([1.2, 1.8,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
+			}
+
+			[Fact]
 			public async Task ForASortedSet_InSameOrder_ShouldUseTheComparerOfTheSet()
 			{
 				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", "c", };
@@ -136,11 +148,41 @@ public sealed partial class ThatEnumerable
 					.Because("a set with the default comparer keeps the default equality, which compares numbers by value");
 			}
 
+			[Fact]
+			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).Contains([1.25, 1.75,]).Within(0.125);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [1.25, 1.75,] ± 0.125 in order and contiguous,
+					             but it lacked all 2 expected items
+
+					             Collection:
+					             [1.0, 2.0]
+
+					             Expected:
+					             [1.25, 1.75]
+					             """)
+					.Because("the tolerance replaces the comparer of the set");
+			}
+
 			private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
 			{
 				public bool Equals(int x, int y) => x % modulus == y % modulus;
 
 				public int GetHashCode(int obj) => obj % modulus;
+			}
+
+			private sealed class RoundingComparer : IEqualityComparer<double>
+			{
+				public bool Equals(double x, double y) => Math.Round(x) == Math.Round(y);
+
+				public int GetHashCode(double obj) => Math.Round(obj).GetHashCode();
 			}
 		}
 
@@ -163,6 +205,18 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [1]
 					             """);
+			}
+
+			[Fact]
+			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
+
+				async Task Act()
+					=> await That(subject).Contains(1.2);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
 			}
 
 #if NET8_0_OR_GREATER
@@ -430,11 +484,38 @@ public sealed partial class ThatEnumerable
 					.Because("the set would match any kind, but the default equality never matches a local and a UTC value");
 			}
 
+			[Fact]
+			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
+
+				async Task Act()
+					=> await That(subject).Contains(1.25).Within(0.125);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to 1.25 ± 0.125 at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1.0]
+					             """)
+					.Because("the tolerance replaces the comparer of the set");
+			}
+
 			private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
 			{
 				public bool Equals(int x, int y) => x % modulus == y % modulus;
 
 				public int GetHashCode(int obj) => obj % modulus;
+			}
+
+			private sealed class RoundingComparer : IEqualityComparer<double>
+			{
+				public bool Equals(double x, double y) => Math.Round(x) == Math.Round(y);
+
+				public int GetHashCode(double obj) => Math.Round(obj).GetHashCode();
 			}
 
 			private sealed class ThrowingForNullComparer : IEqualityComparer<string?>

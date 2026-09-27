@@ -151,6 +151,33 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SetLookupRemarks)]
+	internal static ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
+		ContainsItemWithToleranceCore<TItem, TTolerance>(
+			IThat<IEnumerable<TItem>?> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+	{
+		Quantifier quantifier = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
+					a => options.AreConsideredEqual(a, expected),
+					a => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options)
+						? ContainsBySetLookup(a, expected)
+						: null,
+					quantifier).InvertIf(negated)),
+			subject,
+			quantifier,
+			options);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		ContainsMatchingItemCore<TItem>(
@@ -278,6 +305,31 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+	internal static ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
+		ContainsItemWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+		where TCollection : IEnumerable
+	{
+		Quantifier quantifier = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new AsyncContainForEnumerableConstraint<TCollection, TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
+					a => options.AreConsideredEqual(a, expected),
+					quantifier).InvertIf(negated)),
+			subject,
+			quantifier,
+			options);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<TCollection, IThat<TCollection>>
 		ContainsMatchingItemForCollectionCore<TCollection, TItem>(
@@ -380,6 +432,37 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + SetComparerRemarks)]
+	internal static ObjectProperCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
+			TItem, TTolerance>
+		ContainsWithToleranceCore<TItem, TTolerance>(
+			IThat<IEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectProperCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
+			TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true,
+					usesDefaultEquality: () => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options))
+					.InvertIf(negated)),
+			subject,
+			options,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+	}
+
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
@@ -461,6 +544,33 @@ public static partial class ThatEnumerable
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<TCollection, string?, string?>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
+			subject,
+			options,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+	internal static ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
+		ContainsWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToForEnumerableConstraint<TCollection, TItem, TItem>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,

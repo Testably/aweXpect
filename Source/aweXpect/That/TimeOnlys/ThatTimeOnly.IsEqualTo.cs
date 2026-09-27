@@ -69,7 +69,7 @@ public static partial class ThatTimeOnly
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				Outcome = actual.CircularDistanceTicks(expected.Value) <= timeTolerance.Ticks
+				Outcome = actual.IsConsideredEqualTo(expected, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;
 			}

@@ -1,6 +1,7 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -696,6 +697,320 @@ public sealed partial class ThatEnumerable
 						               3:00:00
 						             ]
 						             """);
+				}
+			}
+
+			public sealed class DateOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly> subject = [.. values,];
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly> subject = [.. values,];
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1 day in order,
+						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 1 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly> subject = [.. values,];
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Days());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items fall back to the default tolerance, as a single value does");
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly> subject = [.. values,];
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Days());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1 day in order,
+						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 1 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("the applied default tolerance is part of the expectation");
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly> subject = [.. values,];
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					object Act()
+						=> That(subject).IsEqualTo(expected).Within(1.Days() + 1.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+				}
+			}
+
+			public sealed class NullableDateOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly?> subject = [.. values,];
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly?> subject = [.. values,];
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1 day in order,
+						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 2 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					ImmutableArray<DateOnly?> subject = [.. values,];
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					object Act()
+						=> That(subject).IsEqualTo(expected).Within(1.Days() + 1.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+				}
+			}
+
+			public sealed class TimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+				{
+					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					ImmutableArray<TimeOnly> subject = [.. values,];
+					IEnumerable<TimeOnly> expected = [new TimeOnly(22, 0), new TimeOnly(0, 0, 30), new TimeOnly(2, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+				}
+
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly> subject = [.. values,];
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly> subject = [.. values,];
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1:00 in order,
+						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 1 instead of {Formatter.Format(new TimeOnly(14, 2))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly> subject = [.. values,];
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items fall back to the default tolerance, as a single value does");
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly> subject = [.. values,];
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsEqualTo(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1:00 in order,
+						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 1 instead of {Formatter.Format(new TimeOnly(14, 2))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("the applied default tolerance is part of the expectation");
+				}
+			}
+
+			public sealed class NullableTimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+				{
+					TimeOnly?[] values = [new TimeOnly(22, 0), null, new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					ImmutableArray<TimeOnly?> subject = [.. values,];
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(22, 0), null, new TimeOnly(0, 0, 30), new TimeOnly(2, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+				}
+
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly?> subject = [.. values,];
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(13, 0), null, new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					ImmutableArray<TimeOnly?> subject = [.. values,];
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(13, 0), null, new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection expected ± 1:00 in order,
+						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 2 instead of {Formatter.Format(new TimeOnly(14, 2))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
 				}
 			}
 		}

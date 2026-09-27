@@ -130,6 +130,26 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Fact]
+	public async Task Within_WhenToleranceIsRejectedByTheValidation_ShouldThrowItsException()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithToleranceValidation(t =>
+				{
+					if (t % 2 != 0)
+					{
+						throw new ArgumentOutOfRangeException(nameof(t), "The tolerance must be even.");
+					}
+				});
+
+		void Act() => sut.Within(3);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("t").And
+			.WithMessage("The tolerance must be even.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task Within_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -154,6 +174,40 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(Act).DoesNotThrow()
 			.Because("a default tolerance is not an explicit option");
+	}
+
+	[Fact]
+	public async Task Within_WithToleranceValidation_WhenToleranceIsAccepted_ShouldApplyIt()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithToleranceValidation(_ => { });
+		sut.Within(2);
+
+		bool result = await sut.AreConsideredEqual(1, 3);
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task Within_WithToleranceValidation_WhenToleranceIsSpecifiedTwice_ShouldReportTheRepetition()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithToleranceValidation(t =>
+				{
+					if (t % 2 != 0)
+					{
+						throw new ArgumentOutOfRangeException(nameof(t), "The tolerance must be even.");
+					}
+				});
+		sut.Within(2);
+
+		void Act() => sut.Within(3);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Within cannot be specified more than once.")
+			.Because("the repetition is the misuse, whatever the second tolerance is");
 	}
 
 	private sealed class AllEqualComparer : IEqualityComparer<object>
