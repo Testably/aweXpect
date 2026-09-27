@@ -15,7 +15,7 @@ namespace aweXpect;
 public static partial class ThatGeneric
 {
 	/// <summary>
-	///     Verifies that the actual value complies with the <paramref name="expectations" />.
+	///     Verifies that the subject complies with the <paramref name="expectations" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectations" /> decide about a <see langword="null" /> subject as well, so
@@ -34,7 +34,7 @@ public static partial class ThatGeneric
 	}
 
 	/// <summary>
-	///     Verifies that the actual value does not comply with the <paramref name="expectations" />.
+	///     Verifies that the subject does not comply with the <paramref name="expectations" />.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectations" /> decide about a <see langword="null" /> subject as well, so

@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatException
 {
 	/// <summary>
-	///     Verifies that the message of the actual exception…
+	///     Verifies that the message of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Exception?, TException, IThat<TException?>> HasMessage<TException>(
@@ -16,7 +16,7 @@ public static partial class ThatException
 		=> new(subject, e => e?.Message, "message", includeValueInContext: true);
 
 	/// <summary>
-	///     Verifies that the actual exception has a message equal to <paramref name="expected" />.
+	///     Verifies that the subject has a message equal to <paramref name="expected" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TException, IThat<TException?>> HasMessage<TException>(

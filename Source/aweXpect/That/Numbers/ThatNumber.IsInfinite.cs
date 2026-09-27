@@ -16,7 +16,7 @@ public static partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that the subject is seen as infinite.
+	///     Verifies that the subject is infinite.
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsInfinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -25,7 +25,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is seen as infinite.
+	///     Verifies that the subject is infinite.
 	/// </summary>
 	/// <remarks>
 	///     <see langword="null" /> is not treated as infinite.
@@ -38,7 +38,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as infinite.
+	///     Verifies that the subject is not infinite.
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNotInfinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
@@ -47,7 +47,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as infinite.
+	///     Verifies that the subject is not infinite.
 	/// </summary>
 	/// <remarks>
 	///     <see langword="null" /> is neither treated as infinite nor as not infinite, so it fails.
@@ -117,8 +117,8 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	private const string IsInfiniteSummary = "Verifies that the subject is seen as infinite.";
-	private const string IsNotInfiniteSummary = "Verifies that the subject is not seen as infinite.";
+	private const string IsInfiniteSummary = "Verifies that the subject is infinite.";
+	private const string IsNotInfiniteSummary = "Verifies that the subject is not infinite.";
 
 	[CreateCollectionExpectation("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
 		Summary = IsInfiniteSummary, NegatedSummary = IsNotInfiniteSummary)]

@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatException
 {
 	/// <summary>
-	///     Verifies that the param name of the actual <see cref="ArgumentException" />…
+	///     Verifies that the param name of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Exception?, TException, IThat<TException?>> HasParamName<TException>(
@@ -16,7 +16,7 @@ public static partial class ThatException
 		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name");
 
 	/// <summary>
-	///     Verifies that the actual <see cref="ArgumentException" /> has an <paramref name="expected" /> param name.
+	///     Verifies that the subject has an <paramref name="expected" /> param name.
 	/// </summary>
 	/// <remarks>
 	///     Shorthand for <c>HasParamName().EqualTo(expected)</c>, so a <see langword="null" />
