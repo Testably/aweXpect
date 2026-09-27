@@ -5,7 +5,7 @@ import PropertyComparisons from './_property-comparisons.md';
 Describes the possible expectations for collections.
 
 Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `HasCount`, `HasSingle` and the
-[quantifiers](#number-of-matching-items) like `All()`, which take a negated comparison or `None()` instead.
+[quantifiers](#elements) like `All()`, which take a negated comparison or `None()` instead.
 
 :::tip[`IAsyncEnumerable<T>`]
 Every expectation on this page, except the ones for [dictionaries](#dictionaries), works the same way for an
@@ -91,6 +91,13 @@ await Expect.That(values).HasCount().NotBetween(1).And(5);
 
 <PropertyComparisons />
 
+You can also verify that the collection is empty or not:
+
+```csharp
+await Expect.That(Array.Empty<int>()).IsEmpty();
+await Expect.That(Enumerable.Range(1, 10)).IsNotEmpty();
+```
+
 ## Equality of all items
 
 You can verify that all items in the collection are equal to the `expected` value:
@@ -129,7 +136,24 @@ This tolerance can be applied to the same types as for [equality](#equality).
 
 ## Elements
 
-You can add expectations that a certain number of elements must meet.
+You can add expectations that a certain number of elements must meet. A quantifier selects how many:
+
+| Quantifier              | Succeeds when the expectation is met by               |
+|-------------------------|-------------------------------------------------------|
+| `All()`                 | every item                                            |
+| `Any()`                 | at least one item (a shorthand for `AtLeast(1)`)      |
+| `AtLeast(minimum)`      | at least `minimum` items                              |
+| `AtMost(maximum)`       | at most `maximum` items                               |
+| `Between(min).And(max)` | between `min` and `max` items, both bounds included   |
+| `Exactly(expected)`     | exactly `expected` items                              |
+| `LessThan(maximum)`     | fewer than `maximum` items                            |
+| `MoreThan(minimum)`     | more than `minimum` items                             |
+| `None()`                | no item                                               |
+
+An empty collection satisfies `All()`, like it does `Enumerable.All`, so
+`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds. In contrast,
+[`WithRecursiveInnerExceptions`](./04-delegates.md#recursive-inner-exceptions) and
+`HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
 
 ### Nested expectation
 
@@ -418,114 +442,6 @@ await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
 :::note
 `EndsWith` and `DoesNotEndWith` always enumerate the complete collection.
 :::
-
-## Number of matching items
-
-Specifications that count the elements in a collection that satisfy specific conditions.
-
-### All
-
-You can verify that all items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).All().Satisfy(i => i <= 20);
-```
-
-An empty collection satisfies `All()`, like it does `Enumerable.All`, so
-`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds. In contrast,
-[`WithRecursiveInnerExceptions`](./04-delegates.md#recursive-inner-exceptions) and
-`HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
-
-### More than
-
-You can verify that more than `minimum` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).MoreThan(8).Satisfy(i => i < 10);
-```
-
-### At least
-
-You can verify that at least `minimum` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).AtLeast(9).Satisfy(i => i < 10);
-```
-
-### Any
-
-You can verify that any (at least one) item in the collection satisfies an expectation. This is a shorthand for
-`AtLeast(1)`:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).Any().Satisfy(i => i == 13);
-```
-
-### At most
-
-You can verify that at most `maximum` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).AtMost(1).Satisfy(i => i < 2);
-```
-
-### Less than
-
-You can verify that fewer than `maximum` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).LessThan(2).Satisfy(i => i < 2);
-```
-
-### Between
-
-You can verify that between `minimum` and `maximum` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).Between(1).And(2).Satisfy(i => i < 2);
-```
-
-### Exactly
-
-You can verify that exactly `expected` items in the collection satisfy an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).Exactly(9).Satisfy(i => i < 10);
-```
-
-### None
-
-You can verify that no item in the collection satisfies an expectation:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).None().Satisfy(i => i > 20);
-```
-
-You can also verify that the collection is empty:
-
-```csharp
-IEnumerable<int> values = Array.Empty<int>();
-
-await Expect.That(values).IsEmpty();
-```
 
 ## Single item
 
