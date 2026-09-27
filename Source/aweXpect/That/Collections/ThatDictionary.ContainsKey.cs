@@ -9,40 +9,26 @@ namespace aweXpect;
 
 public static partial class ThatDictionary
 {
-	[CreateCollectionExpectation("ContainsKey", PerSubject = true, GuaranteesNotNull = true,
-		Summary = "Verifies that the dictionary contains the <paramref name=\"expected\" /> key.")]
+	[CreateCollectionExpectation("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
+		GuaranteesNotNull = true, NegatedReturnType = NegatedKeyReturnType,
+		Summary = "Verifies that the dictionary contains the <paramref name=\"expected\" /> key.",
+		NegatedSummary = "Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> key.")]
 	internal static ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>
 		ContainsKeyCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
-			TKey expected)
+			TKey expected,
+			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		expected.ThrowIfNull();
+		expected.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainsKeyConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars, expected)),
+				new ContainsKeyConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars, expected)
+					.InvertIf(negated)),
 			subject,
 			expected,
 			f => GetLookup(f)(expected, out TValue? value) ? value : default
-		);
-	}
-
-	[CreateCollectionExpectation("DoesNotContainKey", PerSubject = true, GuaranteesNotNull = true,
-		Summary = "Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> key.")]
-	internal static AndOrResult<TCollection, IThat<TCollection?>>
-		DoesNotContainKeyCore<TCollection, TKey, TValue>(
-			IThat<TCollection?> subject,
-			TKey unexpected)
-		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
-	{
-		unexpected.ThrowIfNull();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<TCollection, IThat<TCollection?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainsKeyConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
-					unexpected).Invert()),
-			subject
 		);
 	}
 

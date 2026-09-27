@@ -79,7 +79,7 @@ public sealed partial class ThatReadOnlyDictionary
 				ReadOnlyDictionary<int, string>? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotContainValues("foo", "bar");
+					=> await That(subject)!.DoesNotContainValues("foo", "bar");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

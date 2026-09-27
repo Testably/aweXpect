@@ -33,6 +33,18 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenAllValuesOfAnEnumerableExist_ShouldSucceed()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+				IEnumerable<int> expected = new List<int> { 42, 41, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
@@ -102,12 +114,45 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenOneValueOfAnEnumerableIsMissing_ShouldFail()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+				IEnumerable<int> expected = new List<int> { 42, 2, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains values expected,
+					             but it did not contain [
+					               2
+					             ]
+
+					             Dictionary:
+					             {[1] = 41, [2] = 42, [3] = 43}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenStringValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+
+				async Task Act()
+					=> await That(subject).ContainsValues("BAR", "FOO").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;
 
 				async Task Act()
-					=> await That(subject).ContainsValues("foo", "bar");
+					=> await That(subject)!.ContainsValues("foo", "bar");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -115,6 +160,17 @@ public sealed partial class ThatDictionary
 					             contains values ["foo", "bar"],
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenValuesAreEquivalent_WithEquivalent_ShouldSucceed()
+			{
+				Dictionary<int, MyClass> subject = new() { [1] = new MyClass(1), [2] = new MyClass(2), };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(new MyClass(2), new MyClass(1)).Equivalent();
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -170,12 +226,22 @@ public sealed partial class ThatDictionary
 		public sealed class OverloadTests
 		{
 			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).ContainsValues(new List<int> { 1, });
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
-					=> await (AndOrResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>>)
+					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
 						That(subject).ContainsValues(1);
 
 				await That(Act).DoesNotThrow()
