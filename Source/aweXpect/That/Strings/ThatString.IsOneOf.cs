@@ -24,13 +24,14 @@ public static partial class ThatString
 	internal static StringEqualityTypeResult<string?, IThat<string?>> IsOneOfCore(
 		IThat<string?> subject,
 		IEnumerable<string?> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expectedValues, options).InvertIf(negated)),
+				=> new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -39,6 +40,7 @@ public static partial class ThatString
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
+		string? expectedExpression,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
@@ -78,7 +80,7 @@ public static partial class ThatString
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expectedValues);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues));
 			stringBuilder.Append(options);
 		}
 
@@ -91,7 +93,7 @@ public static partial class ThatString
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expectedValues);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues));
 			stringBuilder.Append(options);
 		}
 

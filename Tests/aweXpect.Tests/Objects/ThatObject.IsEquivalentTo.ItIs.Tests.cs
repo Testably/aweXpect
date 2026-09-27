@@ -33,11 +33,7 @@ public sealed partial class ThatObject
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to {
-						                 BoolValue = True,
-						                 IntValue = is int that is less than 2,
-						                 StringValue = is string that is equal to "folly"
-						               },
+						             is equivalent to expected,
 						             but it was not:
 						               Property StringValue differed:
 						                   Actual: "foo"
@@ -96,10 +92,7 @@ public sealed partial class ThatObject
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to {
-						                 IntValue = is int that is less than 2,
-						                 StringValue = is string that is not empty
-						               },
+						             is equivalent to expected,
 						             but it was not:
 						               Property IntValue differed:
 						                   Actual: 42
@@ -135,11 +128,7 @@ public sealed partial class ThatObject
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to {
-						                 IntValue = is int that is greater than 2,
-						                 NullableIntValue = is int? that is equal to 0,
-						                 StringValue = is string that is empty
-						               },
+						             is equivalent to expected,
 						             but it was not:
 						               Property StringValue differed:
 						                   Actual: <null>
@@ -174,10 +163,7 @@ public sealed partial class ThatObject
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to {
-						                 IntValue = is int that is greater than 2,
-						                 StringValue = is DateTime
-						               },
+						             is equivalent to expected,
 						             but it was not:
 						               Property StringValue differed:
 						                   Actual: "foo" (string)
@@ -212,10 +198,7 @@ public sealed partial class ThatObject
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to {
-						                 IntValue = is int that is greater than 2,
-						                 StringValue = is string that is null
-						               },
+						             is equivalent to expected,
 						             but it was not:
 						               Property StringValue differed:
 						                   Actual: ""

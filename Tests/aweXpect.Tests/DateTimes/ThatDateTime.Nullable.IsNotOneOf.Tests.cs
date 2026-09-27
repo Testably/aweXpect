@@ -25,7 +25,7 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not one of {Formatter.Format(values)},
+						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
 						              """)
 						.Because("the empty check must not consume the values needed for the comparison and the message");
@@ -171,7 +171,7 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is not one of {Formatter.Format(expected)},
+						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
 						              """);
 				}
@@ -270,11 +270,11 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is not one of {Formatter.Format(values)},
-						              but it was <null>
-						              """)
+						.WithMessage("""
+						             Expected that subject
+						             is not one of expected,
+						             but it was <null>
+						             """)
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
@@ -288,11 +288,11 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is not one of {Formatter.Format(expected)},
-						              but it was <null>
-						              """);
+						.WithMessage("""
+						             Expected that subject
+						             is not one of expected,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

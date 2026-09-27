@@ -25,7 +25,7 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of {Formatter.Format(values)},
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
 						              """)
 						.Because("the empty check must not consume the values needed for the comparison and the message");
@@ -86,7 +86,7 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of [<null>],
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
 						              """);
 				}
@@ -218,7 +218,7 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of {Formatter.Format(expected)},
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
 						              """);
 				}
@@ -233,11 +233,11 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is one of {Formatter.Format(expected)},
-						              but it was <null>
-						              """);
+						.WithMessage("""
+						             Expected that subject
+						             is one of expected,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

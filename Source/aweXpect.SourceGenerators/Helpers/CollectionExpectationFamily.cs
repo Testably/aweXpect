@@ -78,7 +78,7 @@ internal sealed record CollectionExpectationFamily(
 		bool castsUp = expected != null &&
 		               !SymbolEqualityComparer.Default.Equals(ElementOf(expected.Type), expected.Type);
 		List<Instantiation> instantiations = Instantiate(helper, expected, declaration, castsUp).ToList();
-		problems.AddRange(Check(helper, declaration, location, hasPolarity, instantiations.Count));
+		problems.AddRange(Check(helper, expected, declaration, location, hasPolarity, instantiations.Count));
 		return Subjects(helper, declaration, compilation)
 			.SelectMany(subject => instantiations.Select(x => x.For(subject)))
 			.SelectMany(bound => variants.Select(variant => Render(helper, expected, declaration, bound, variant)))
@@ -135,9 +135,15 @@ internal sealed record CollectionExpectationFamily(
 		return variants;
 	}
 
-	private static IEnumerable<Problem> Check(IMethodSymbol helper, Declaration declaration, Location location,
-		bool hasPolarity, int instantiations)
+	private static IEnumerable<Problem> Check(IMethodSymbol helper, IParameterSymbol? expected,
+		Declaration declaration, Location location, bool hasPolarity, int instantiations)
 	{
+		if (expected != null && !declaration.Params && IsCollection(expected.Type) && !TakesExpression(helper))
+		{
+			yield return new Problem(CollectionExpectationDiagnostics.MissingExpression, location,
+				declaration.PositiveName);
+		}
+
 		if (declaration.Summary.Length == 0)
 		{
 			yield return new Problem(CollectionExpectationDiagnostics.MissingSummary, location,
@@ -336,8 +342,7 @@ internal sealed record CollectionExpectationFamily(
 		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
 		List<string> arguments = [subjectName,];
 		// Only a helper that takes the expression can echo one, and a params array has none to echo.
-		bool echoesExpression = expected != null && !declaration.Params &&
-		                        helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
+		bool echoesExpression = expected != null && !declaration.Params && TakesExpression(helper);
 		if (expected != null)
 		{
 			string expectedType = RenderExpectedType(helper, expected, declaration, instantiation, item, substitutions);
@@ -374,6 +379,17 @@ internal sealed record CollectionExpectationFamily(
 		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
 		         """;
 	}
+
+	private static bool TakesExpression(IMethodSymbol helper)
+		=> helper.Parameters.Skip(2).Any(x => x.Type.SpecialType == SpecialType.System_String);
+
+	/// <remarks>
+	///     A <see cref="string" /> is expected as one value, even though it enumerates its characters.
+	/// </remarks>
+	private static bool IsCollection(ITypeSymbol type)
+		=> type.SpecialType != SpecialType.System_String &&
+		   (type.SpecialType == SpecialType.System_Collections_IEnumerable ||
+		    type.AllInterfaces.Any(x => x.SpecialType == SpecialType.System_Collections_IEnumerable));
 
 	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation)
 		=> instantiation.TypeBindings.ToDictionary(x => x.Name, x => Bind(helper, x.Name, x.Type, x.IsValueType));
@@ -499,7 +515,7 @@ internal sealed record CollectionExpectationFamily(
 	private static int Rank(string constraint)
 		=> constraint switch
 		{
-			"class" or "struct" or "unmanaged" or "notnull" => 0,
+			"class" or "class?" or "struct" or "unmanaged" or "notnull" => 0,
 			"new()" => 2,
 			_ => 1,
 		};
@@ -510,7 +526,9 @@ internal sealed record CollectionExpectationFamily(
 		List<string> constraints = [];
 		if (typeParameter.HasReferenceTypeConstraint)
 		{
-			constraints.Add("class");
+			constraints.Add(typeParameter.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated
+				? "class?"
+				: "class");
 		}
 		else if (typeParameter.HasUnmanagedTypeConstraint)
 		{

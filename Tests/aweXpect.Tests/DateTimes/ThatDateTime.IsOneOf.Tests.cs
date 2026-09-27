@@ -51,7 +51,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of [<null>],
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -107,7 +107,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it had kind {subjectKind}, which cannot be compared with {expectedKind}
 					              """);
 			}
@@ -182,7 +182,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
 					              """);
 			}
@@ -198,11 +198,11 @@ public sealed partial class ThatDateTime
 						.Because("no alternative can be compared to the subject");
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is one of {Formatter.Format(expected)}, because no alternative can be compared to the subject,
-					              but it had kind Utc, which cannot be compared with Local
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected, because no alternative can be compared to the subject,
+					             but it had kind Utc, which cannot be compared with Local
+					             """);
 			}
 
 			[Fact]
@@ -231,7 +231,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)}, because at least one alternative was comparable,
+					              is one of expected, because at least one alternative was comparable,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
 					              """);
 			}
@@ -248,11 +248,11 @@ public sealed partial class ThatDateTime
 						.Because("a tolerance cannot bridge incompatible Kinds");
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
-					              but it had kind Utc, which cannot be compared with Local
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected ± 0:03, because a tolerance cannot bridge incompatible Kinds,
+					             but it had kind Utc, which cannot be compared with Local
+					             """);
 			}
 
 			[Theory]
@@ -275,7 +275,7 @@ public sealed partial class ThatDateTime
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
+					              is one of expected ± 0:0{tolerance}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference} from the closest value
 					              """);
 			}

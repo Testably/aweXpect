@@ -22,9 +22,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.DateTimeKindTests.Reading {
-					                   Timestamp = {{Formatter.Format(Local)}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Property Timestamp differed:
 					                     Actual: {{Formatter.Format(Utc)}}

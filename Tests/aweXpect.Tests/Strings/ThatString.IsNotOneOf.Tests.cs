@@ -20,11 +20,11 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)} as prefix,
-					              but it was <null>
-					              """)
+					.WithMessage("""
+					             Expected that subject
+					             is not one of unexpected as prefix,
+					             but it was <null>
+					             """)
 					.Because("a null has no content to inspect, just as for DoesNotStartWith");
 			}
 
@@ -68,11 +68,11 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotOneOf(unexpected).AsWildcard();
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)} as wildcard,
-					              but it was <null>
-					              """)
+					.WithMessage("""
+					             Expected that subject
+					             is not one of unexpected as wildcard,
+					             but it was <null>
+					             """)
 					.Because("a null has no content to match the pattern against");
 			}
 
@@ -156,11 +156,11 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not one of {Formatter.Format(expected)},
-					              but it was <null>
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is not one of expected,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -176,7 +176,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(values)},
+					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
 					              """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
@@ -209,7 +209,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)},
+					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
 					              """)
 					.Because("the values are only enumerated until the subject is found");

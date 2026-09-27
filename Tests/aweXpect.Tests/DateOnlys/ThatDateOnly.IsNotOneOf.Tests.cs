@@ -93,7 +93,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(expected)},
+					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -150,7 +150,7 @@ public sealed partial class ThatDateOnly
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(expected)} ± {tolerance} days, because we want to test the failure,
+					              is not one of expected ± 2 days, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}{difference}
 					              """);
 			}

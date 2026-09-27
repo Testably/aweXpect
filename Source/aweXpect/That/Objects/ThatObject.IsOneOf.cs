@@ -19,9 +19,6 @@ public static partial class ThatObject
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	/// <remarks>
-	///     The expression parameter only keeps the public signature; the message formats the values themselves.
-	/// </remarks>
 	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
@@ -35,7 +32,28 @@ public static partial class ThatObject
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, options).InvertIf(negated)),
+				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, expectedExpression, options)
+					.InvertIf(negated)),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	internal static ObjectEqualityResult<T, IThat<T>, T> IsOneOfForReferenceCore<T>(
+		IThat<T> subject,
+		IEnumerable<T?> expected,
+		string? expectedExpression,
+		bool negated)
+		where T : class?
+	{
+		IEnumerable<T?> expectedValues = expected.ToNonEmptyValues(negated);
+		ObjectEqualityOptions<T> options = new();
+		return new ObjectEqualityResult<T, IThat<T>, T>(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsOneOfConstraint<T, T>(it, grammars, expectedValues, expectedExpression, options)
+					.InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -44,6 +62,7 @@ public static partial class ThatObject
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TExpected?> expected,
+		string? expectedExpression,
 		ObjectEqualityOptions<TSubject> options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncConstraint<TSubject>
@@ -70,14 +89,14 @@ public static partial class ThatObject
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.GetItemExpectation(
-				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
+				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.GetItemExpectation(
-				"one of " + Formatter.Format(expected).TrimCommonWhiteSpace()));
+				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

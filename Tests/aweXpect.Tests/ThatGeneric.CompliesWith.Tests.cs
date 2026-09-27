@@ -65,18 +65,13 @@ public sealed partial class ThatGeneric
 				};
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-					{
-						Value = expectedValue,
-					}));
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { Value = expectedValue, }));
 
 				await That(Act).Throws<XunitException>()
 					.OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 Value = 2
-					               },
+					             is equivalent to new { Value = expectedValue, },
 					             but it was not:
 					               Property Value differed:
 					                   Actual: 1
@@ -115,17 +110,13 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-					{
-						HasWaitedEnough = true,
-					})).Within(30.Seconds()).WithTimeout(50.Milliseconds());
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
+						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 HasWaitedEnough = True
-					               } within 0:30,
+					             is equivalent to new { HasWaitedEnough = true, } within 0:30,
 					             but it did not finish within 0:00.050
 
 					             Equivalency options:
@@ -227,17 +218,13 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-					{
-						HasWaitedEnough = true,
-					})).Within(50.Milliseconds());
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
+						.Within(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 HasWaitedEnough = True
-					               } within 0:00.050,
+					             is equivalent to new { HasWaitedEnough = true, } within 0:00.050,
 					             but it was not:
 					               Property HasWaitedEnough differed:
 					                   Actual: False

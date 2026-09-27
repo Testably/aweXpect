@@ -24,7 +24,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not one of [ThatObject.MyClass { Value = 0 }, ThatObject.MyClass { Value = 0 }], because we want to test the failure,
+					             is not one of unexpected, because we want to test the failure,
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
@@ -133,6 +133,27 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsAReferenceType_ShouldReturnTheTypedSubject()
+			{
+				MyClass subject = new();
+
+				MyClass result = await That(subject).IsNotOneOf(new MyClass(), new MyClass());
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReferenceType_WithEnumerable_ShouldReturnTheTypedSubject()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> unexpected = [new MyClass(), new MyClass(),];
+
+				MyClass result = await That(subject).IsNotOneOf(unexpected);
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				MyClass? subject = null;
@@ -153,11 +174,49 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotOneOf(expected);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not one of {Formatter.Format(expected)},
-					              but it was <null>
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is not one of expected,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAnEnumerable_ShouldNameItsExpression()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> unexpected = [new MyClass { Value = 1, }, subject,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of unexpected,
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsPassedAsParams_ShouldFormatTheValues()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(new MyClass { Value = 1, }, subject);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 0 }],
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """)
+					.Because("the separate arguments have no single expression to name");
 			}
 		}
 	}

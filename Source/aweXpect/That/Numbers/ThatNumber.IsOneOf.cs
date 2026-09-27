@@ -5,7 +5,9 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
-#if !NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
+#else
 using System;
 using aweXpect.SourceGenerators;
 #endif
@@ -27,7 +29,7 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, null, options)),
 			subject,
 			options);
 	}
@@ -44,7 +46,7 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, null, options)),
 			subject,
 			options);
 	}
@@ -54,14 +56,15 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOf<TNumber>(
 		this IThat<TNumber> subject,
-		IEnumerable<TNumber> expected)
+		IEnumerable<TNumber> expected,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, options)),
+				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)),
 			subject,
 			options);
 	}
@@ -71,14 +74,15 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsOneOf<TNumber>(
 		this IThat<TNumber?> subject,
-		IEnumerable<TNumber> expected)
+		IEnumerable<TNumber> expected,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, options)),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)),
 			subject,
 			options);
 	}
@@ -88,14 +92,16 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOf<TNumber>(
 		this IThat<TNumber> subject,
-		IEnumerable<TNumber?> expected)
+		IEnumerable<TNumber?> expected,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
+					doNotPopulateThisValue, options)),
 			subject,
 			options);
 	}
@@ -105,14 +111,16 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsOneOf<TNumber>(
 		this IThat<TNumber?> subject,
-		IEnumerable<TNumber?> expected)
+		IEnumerable<TNumber?> expected,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
+					doNotPopulateThisValue, options)),
 			subject,
 			options);
 	}
@@ -129,7 +137,7 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, null, options).Invert()),
 			subject,
 			options);
 	}
@@ -146,7 +154,8 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, null, options)
+					.Invert()),
 			subject,
 			options);
 	}
@@ -156,14 +165,17 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsNotOneOf<TNumber>(
 		this IThat<TNumber> subject,
-		IEnumerable<TNumber> unexpected)
+		IEnumerable<TNumber> unexpected,
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new IsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, doNotPopulateThisValue, options)
+					.Invert()),
 			subject,
 			options);
 	}
@@ -173,14 +185,17 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsNotOneOf<TNumber>(
 		this IThat<TNumber?> subject,
-		IEnumerable<TNumber> unexpected)
+		IEnumerable<TNumber> unexpected,
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, doNotPopulateThisValue, options)
+					.Invert()),
 			subject,
 			options);
 	}
@@ -190,14 +205,17 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsNotOneOf<TNumber>(
 		this IThat<TNumber> subject,
-		IEnumerable<TNumber?> unexpected)
+		IEnumerable<TNumber?> unexpected,
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues,
+					doNotPopulateThisValue, options).Invert()),
 			subject,
 			options);
 	}
@@ -207,14 +225,17 @@ public static partial class ThatNumber
 	/// </summary>
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsNotOneOf<TNumber>(
 		this IThat<TNumber?> subject,
-		IEnumerable<TNumber?> unexpected)
+		IEnumerable<TNumber?> unexpected,
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues, options).Invert()),
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues,
+					doNotPopulateThisValue, options).Invert()),
 			subject,
 			options);
 	}
@@ -223,6 +244,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
@@ -240,7 +262,7 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -253,7 +275,7 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -265,6 +287,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
@@ -282,7 +305,7 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -295,7 +318,7 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -307,6 +330,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
@@ -324,7 +348,7 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -337,7 +361,7 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -349,6 +373,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
@@ -366,7 +391,7 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -379,7 +404,7 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
 
@@ -401,13 +426,15 @@ public static partial class ThatNumber
 		IThat<TNumber> subject,
 		IEnumerable<TNumber?> expected,
 		NumberTolerance<TNumber> options,
+		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
+				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
+					expectedExpression, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -418,13 +445,15 @@ public static partial class ThatNumber
 		IThat<TNumber> subject,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options,
+		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
+				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues,
+					expectedExpression, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -438,13 +467,15 @@ public static partial class ThatNumber
 			IThat<TNumber?> subject,
 			IEnumerable<TNumber?> expected,
 			NumberTolerance<TNumber> options,
+			string? expectedExpression,
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues, options)
+				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
+					expectedExpression, options)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -456,13 +487,15 @@ public static partial class ThatNumber
 		IThat<TNumber?> subject,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options,
+		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, options).InvertIf(negated)),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues,
+					expectedExpression, options).InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -471,6 +504,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
@@ -488,7 +522,8 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -501,7 +536,8 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -513,6 +549,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
@@ -530,7 +567,8 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -543,7 +581,8 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -555,6 +594,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
@@ -572,7 +612,8 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -585,7 +626,8 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -597,6 +639,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
+		string? expectedExpression,
 		NumberTolerance<TNumber> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
@@ -614,7 +657,8 @@ public static partial class ThatNumber
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 
@@ -627,7 +671,8 @@ public static partial class ThatNumber
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			ValueFormatters.Format(Formatter, stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace()
+			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
 

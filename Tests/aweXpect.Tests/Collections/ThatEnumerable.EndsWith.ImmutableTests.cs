@@ -158,6 +158,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsAnEnumerable_ShouldNameItsExpression()
+			{
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
+				IEnumerable<string> expected = ["foo", "baz",];
+
+				async Task Act()
+					=> await That(subject).EndsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with expected,
+					             but it contained item "bar" at index 1 instead of "foo"
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar",
+					               "baz"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectEndsWithExpectedValues_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];

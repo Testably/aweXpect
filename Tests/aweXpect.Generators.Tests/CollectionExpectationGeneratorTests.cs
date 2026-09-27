@@ -126,7 +126,8 @@ public sealed class CollectionExpectationGeneratorTests
 				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
 					IThat<TNumber?> subject,
 					IEnumerable<TNumber?> expected,
-					Tolerance<TNumber> tolerance)
+					Tolerance<TNumber> tolerance,
+					string? expectedExpression)
 					where TNumber : struct
 					=> null!;
 			}
@@ -164,7 +165,8 @@ public sealed class CollectionExpectationGeneratorTests
 				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
 					IThat<TNumber?> subject,
 					IEnumerable<TNumber?> expected,
-					Tolerance<TNumber> tolerance)
+					Tolerance<TNumber> tolerance,
+					string? expectedExpression)
 					where TNumber : struct
 					=> null!;
 			}
@@ -488,6 +490,54 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenTheConstraintIsANullableClass_ShouldKeepTheAnnotation()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatObject
+			{
+				[CreateCollectionExpectation("IsOneOf", Summary = "Is one of.")]
+				internal static IThat<T> IsOneOfCore<T>(
+					IThat<T> subject,
+					IEnumerable<T?> expected,
+					string? expectedExpression)
+					where T : class?
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("where T : class?").Once();
+	}
+
+	[Fact]
+	public async Task WhenTheExpectedCollectionHasNoExpressionParameter_ShouldReport()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateCollectionExpectation("StartsWith", Summary = "Starts with.")]
+				[CreateCollectionExpectation("StartsWith", Params = true, Summary = "Starts with.")]
+				internal static IThat<TItem> StartsWithCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected)
+					=> null!;
+			}
+			""");
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3004" && x.Severity == DiagnosticSeverity.Error &&
+			                x.GetMessage().Contains("'StartsWith'"))
+			.Because("only the declaration without params takes the expected collection as one argument");
+	}
+
+	[Fact]
 	public async Task WhenTheFactoryHasNoCreateMethod_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -505,7 +555,8 @@ public sealed class CollectionExpectationGeneratorTests
 				internal static IThat<TItem> IsEqualToCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
-					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+					string expectedExpression)
 					=> null!;
 			}
 			""");
@@ -551,6 +602,7 @@ public sealed class CollectionExpectationGeneratorTests
 				internal static IThat<TItem> IsEqualToCore<TItem>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
+					string expectedExpression,
 					bool negated)
 					=> null!;
 			}

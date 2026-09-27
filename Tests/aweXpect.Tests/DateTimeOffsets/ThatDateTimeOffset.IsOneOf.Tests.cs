@@ -52,7 +52,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of [<null>],
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -110,7 +110,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
 					              """);
 			}
@@ -131,7 +131,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:02,
+					              is one of expected ± 0:02,
 					              but it was {Formatter.Format(subject)}, which differs by -0:03 from the closest value
 					              """)
 					.Because("the applied default tolerance is part of the expectation");
@@ -157,7 +157,7 @@ public sealed partial class ThatDateTimeOffset
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
+					              is one of expected ± 0:0{tolerance}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference} from the closest value
 					              """);
 			}

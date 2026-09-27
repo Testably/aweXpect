@@ -67,7 +67,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)},
+					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -104,7 +104,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)},
+					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -150,7 +150,7 @@ public sealed partial class ThatDateTime
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(expected)},
+					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -217,7 +217,7 @@ public sealed partial class ThatDateTime
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
+					              is not one of expected ± 0:02, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}{difference}
 					              """);
 			}

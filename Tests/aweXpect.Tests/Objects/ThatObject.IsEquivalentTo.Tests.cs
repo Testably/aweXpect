@@ -50,13 +50,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = <null>,
-					                 Value = "Foo"
-					               } and is equivalent to ThatObject.OuterClass {
-					                 Inner = <null>,
-					                 Value = "Bar"
-					               },
+					             is equivalent to expected1 and is equivalent to expected2,
 					             but it was not:
 					               Property Value differed:
 					                   Actual: <null>
@@ -221,10 +215,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = <null>,
-					                 Value = "Foo"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Value differed:
 					                   Actual: <null>
@@ -254,10 +245,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 A = 1,
-					                 B = <null>
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property B was missing on the actual object
 
@@ -306,11 +294,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 A = 1,
-					                 B = 2,
-					                 C = 3
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property B was missing on the actual object and
 					               Property C was missing on the actual object
@@ -394,25 +378,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = ThatObject.InnerClass {
-					                     Collection = [
-					                     "1",
-					                     "2",
-					                     "3",
-					                     "4"
-					                   ],
-					                     Inner = <null>,
-					                     IntValue = 0,
-					                     Value = "Baz"
-					                   },
-					                   IntValue = 0,
-					                   Value = "Bar"
-					                 },
-					                 Value = "Foo"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Element Inner.Inner.Collection[3] was missing "4"
 
@@ -498,25 +464,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = ThatObject.InnerClass {
-					                     Collection = [
-					                     "1",
-					                     "2",
-					                     "3",
-					                     "4"
-					                   ],
-					                     Inner = <null>,
-					                     IntValue = 0,
-					                     Value = "Bart"
-					                   },
-					                   IntValue = 0,
-					                   Value = "Bar"
-					                 },
-					                 Value = "Foo"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Element Inner.Inner.Collection[3] was missing "4"
 					             and
@@ -595,20 +543,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = ThatObject.InnerClass {
-					                     Collection = <null>,
-					                     Inner = <null>,
-					                     IntValue = 0,
-					                     Value = "Baz"
-					                   },
-					                   IntValue = 0,
-					                   Value = "Bar"
-					                 },
-					                 Value = "Foo"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Inner.Inner.Value differed:
 					                   Actual: <null>
@@ -636,10 +571,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!shouldBeEqual)
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.OuterClass {
-					                 Inner = <null>,
-					                 Value = "Foo"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               ThatObject.IsEquivalentTo.WithEqualityComparerToOuterClass { } did not equal ThatObject.OuterClass { Inner = <null>, Value = "Foo" }
 
@@ -666,7 +598,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!shouldBeEqual)
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.WithEqualityComparerToOuterClass { },
+					             is equivalent to expected,
 					             but it was not:
 					               ThatObject.OuterClass { Inner = <null>, Value = "Foo" } did not equal ThatObject.IsEquivalentTo.WithEqualityComparerToOuterClass { }
 
@@ -693,9 +625,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 V = 1
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property V differed:
 					                   Actual: 1 (int)
@@ -725,9 +655,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 S = "ab"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property S differed:
 					                   Actual: ab
@@ -757,9 +685,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 T = long
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property T differed:
 					                   Actual: int
@@ -786,11 +712,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to [
-					               4,
-					               3,
-					               2
-					             ],
+					             is equivalent to expected,
 					             but it was not:
 					               Element [0] differed:
 					                   Actual: 1
@@ -815,11 +737,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to [
-					               1,
-					               3,
-					               2
-					             ],
+					             is equivalent to expected,
 					             but it was not:
 					               Element [1] differed:
 					                   Actual: 2
@@ -895,11 +813,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					               [1] = 2,
-					               [3] = 3,
-					               [4] = 4
-					             },
+					             is equivalent to expected,
 					             but it was not:
 					               Element [2] had superfluous 3
 					             and
@@ -949,11 +863,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					               [1] = 2,
-					               [2] = 4,
-					               [3] = 5
-					             },
+					             is equivalent to expected,
 					             but it was not:
 					               Element [2] differed:
 					                   Actual: 3
@@ -995,10 +905,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					               ["A"] = "A",
-					               ["B"] = <null>
-					             },
+					             is equivalent to expected,
 					             but it was not:
 					               Element [B] was missing <null>
 
@@ -1091,9 +998,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					               ["A"] = "A"
-					             },
+					             is equivalent to expected,
 					             but it was not:
 					               Element [B] had superfluous <null>
 
@@ -1131,12 +1036,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ContainerClass {
-					                 Item = ThatObject.IsEquivalentTo.EqualsOverrideTests.IdOnlyEqualClass {
-					                   Id = 1,
-					                   Name = "Bar"
-					                 }
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Item.Name differed:
 					                   Actual: "Foo"
@@ -1168,10 +1068,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.SelfReferencingClass {
-					                 Name = "Bar",
-					                 Self = ThatObject.IsEquivalentTo.EqualsOverrideTests.SelfReferencingClass { *recursive* }
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Name differed:
 					                   Actual: "Foo"
@@ -1204,9 +1101,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass {
-					                 Value = 1
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               It differed:
 					                   Actual: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
@@ -1270,9 +1165,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.AlwaysEqualClass {
-					                 Value = 2
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Value differed:
 					                   Actual: 1
@@ -1304,10 +1197,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.IdOnlyEqualClass {
-					                 Id = 1,
-					                 Name = "Bar"
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Name differed:
 					                   Actual: "Foo"
@@ -1362,9 +1252,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass {
-					                 Value = 2
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Value differed:
 					                   Actual: 1
@@ -1398,9 +1286,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass {
-					                 Value = 1
-					               },
+					             is equivalent to expected,
 					             but Equals of ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass did throw a NotSupportedException:
 					               no equality here
 
@@ -1493,10 +1379,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.FieldTests.MyClass {
-					                   MyProperty = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Field PublicValue differed:
 					                     Actual: 1
@@ -1546,19 +1429,12 @@ public sealed partial class ThatObject
 				MyClass subject = new(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).IsEquivalentTo(new
-					{
-						MyProperty = false,
-						PublicValue = 2,
-					});
+					=> await That(subject).IsEquivalentTo(new { MyProperty = false, PublicValue = 2, });
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to {
-					                 MyProperty = False,
-					                 PublicValue = 2
-					               },
+					             is equivalent to new { MyProperty = false, PublicValue = 2, },
 					             but it was not:
 					               Property PublicValue differed:
 					                   Actual: 1
@@ -1595,10 +1471,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.FieldTests.MyClass {
-					                   MyProperty = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Field InternalValue differed:
 					                     Actual: 2
@@ -1623,10 +1496,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.FieldTests.MyClass {
-					                 MyProperty = True,
-					                 PublicValue = 4
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property MyProperty differed:
 					                   Actual: False
@@ -1674,10 +1544,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.FieldTests.MyClass {
-					                   MyProperty = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Field PrivateValue differed:
 					                     Actual: 3
@@ -1723,10 +1590,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.PropertyTests.MyClass {
-					                   MyField = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Property PublicValue differed:
 					                     Actual: 1
@@ -1763,10 +1627,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.PropertyTests.MyClass {
-					                   MyField = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Property InternalValue differed:
 					                     Actual: 2
@@ -1791,10 +1652,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.PropertyTests.MyClass {
-					                 MyField = True,
-					                 PublicValue = 4
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Field MyField differed:
 					                   Actual: False
@@ -1842,10 +1700,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               is equivalent to ThatObject.IsEquivalentTo.PropertyTests.MyClass {
-					                   MyField = False,
-					                   PublicValue = {{1 + publicDifference}}
-					                 },
+					               is equivalent to expected,
 					               but it was not:
 					                 Property PrivateValue differed:
 					                     Actual: 3
@@ -1893,20 +1748,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to [
-					               ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = <null>,
-					                   IntValue = 0,
-					                   Value = "Foo"
-					                 },
-					               ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = <null>,
-					                   IntValue = 0,
-					                   Value = "Bar"
-					                 }
-					             ],
+					             is equivalent to expected,
 					             but it was not:
 					               Property [1].Value differed:
 					                   Actual: "Foo"
@@ -2067,20 +1909,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equivalent to ThatObject.IsEquivalentTo.RecursionTests.PairClass {
-					                 First = ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = <null>,
-					                   IntValue = 0,
-					                   Value = "Foo"
-					                 },
-					                 Second = ThatObject.InnerClass {
-					                   Collection = <null>,
-					                   Inner = <null>,
-					                   IntValue = 0,
-					                   Value = "Bar"
-					                 }
-					               },
+					             is equivalent to expected,
 					             but it was not:
 					               Property Second.Value differed:
 					                   Actual: "Foo"
@@ -2173,10 +2002,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equivalent to ThatObject.OuterClass {
-					                 Inner = <null>,
-					                 Value = "Foo"
-					               },
+					             is not equivalent to expected,
 					             but it was ThatObject.OuterClass {
 					                 Inner = ThatObject.InnerClass {
 					                   Collection = <null>,

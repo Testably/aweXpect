@@ -256,7 +256,7 @@ member path at which the limit was hit (shown here with the limit lowered to 3):
 
 ```
 Expected that subject
-is equivalent to Node { … },
+is equivalent to expected,
 but it was not:
   Property Next.Next.Next exceeded the maximum recursion depth of 3
 
@@ -333,12 +333,7 @@ For a structural mismatch:
 
 ```
 Expected that album
-is equivalent to Album {
-    Artist = Artist {
-      Name = "The Beatles"
-    },
-    Title = "Abbey Road"
-  },
+is equivalent to expected,
 but it was not:
   Property Artist.Name differed:
       Actual: "Wings"
@@ -352,10 +347,11 @@ When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectati
 
 ```
 Expected that midnight
-is equivalent to {
-    PlayCount = is int that is greater than 2,
-    Title = is string that is not empty
-  },
+is equivalent to new
+{
+  Title = It.Is<string>().That.IsNotEmpty(),
+  PlayCount = It.Is<int>().That.IsGreaterThan(2),
+},
 but it was not:
   Property PlayCount differed:
       Actual: 1

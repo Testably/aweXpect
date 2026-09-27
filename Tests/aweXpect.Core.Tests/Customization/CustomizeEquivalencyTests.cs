@@ -25,10 +25,7 @@ public sealed class CustomizeEquivalencyTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that actual
-			             is equivalent to [
-			               2,
-			               1
-			             ],
+			             is equivalent to expected,
 			             but it was not:
 			               Element [0] differed:
 			                   Actual: 1
@@ -37,7 +34,7 @@ public sealed class CustomizeEquivalencyTests
 			               Element [1] differed:
 			                   Actual: 2
 			                 Expected: 1
-			             
+
 			             Equivalency options:
 			              - include public fields and properties
 			             """);
@@ -81,13 +78,7 @@ public sealed class CustomizeEquivalencyTests
 			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that actual
-				             is equivalent to CustomizeEquivalencyTests.NestedNode {
-				                 Inner = CustomizeEquivalencyTests.NestedNode {
-				                   Inner = CustomizeEquivalencyTests.NestedNode {
-				                     Inner = <null>
-				                   }
-				                 }
-				               },
+				             is equivalent to expected,
 				             but it was not:
 				               Property Inner.Inner exceeded the maximum recursion depth of 2
 

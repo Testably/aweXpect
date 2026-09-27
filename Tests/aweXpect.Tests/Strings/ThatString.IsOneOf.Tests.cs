@@ -20,11 +20,11 @@ public sealed partial class ThatString
 					=> await That(subject).IsOneOf(expected).AsPrefix();
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is one of {Formatter.Format(expected)} as prefix,
-					              but it was <null>
-					              """)
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected as prefix,
+					             but it was <null>
+					             """)
 					.Because("a null has no content to inspect, just as for StartsWith");
 			}
 
@@ -41,7 +41,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(values)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
@@ -145,7 +145,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of ["foo", "bar"],
+					             is one of expected,
 					             but it was <null>
 					             """);
 			}

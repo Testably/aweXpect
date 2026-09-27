@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with [MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 1 }, MyClass { StringValue = "", Value = 2 }] using equivalency,
+					             does not start with unexpected using equivalency,
 					             but it did start with [
 					               MyClass {
 					                 StringValue = "",
@@ -125,7 +125,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with [<null>],
+					             does not start with unexpected,
 					             but it did start with [
 					               <null>
 					             ]
@@ -144,7 +144,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with ["foo", "bar"],
+					             does not start with unexpected,
 					             but it did start with [
 					               "foo",
 					               "bar"
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with [1, 2],
+					             does not start with unexpected,
 					             but it did start with [
 					               1,
 					               2
@@ -196,7 +196,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with [1, 2],
+					             does not start with unexpected,
 					             but it did start with [
 					               1,
 					               2

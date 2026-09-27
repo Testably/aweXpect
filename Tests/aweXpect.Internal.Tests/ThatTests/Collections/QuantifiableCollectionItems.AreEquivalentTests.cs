@@ -38,12 +38,9 @@ public sealed partial class QuantifiableCollectionItems
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equivalent to QuantifiableCollectionItems.MyClass {
-				                 Inner = <null>,
-				                 Value = "Foo"
-				               } for all items,
+				             is equivalent to expected for all items,
 				             but only 3 of 4 were
-				             
+
 				             Not matching items:
 				             [
 				               QuantifiableCollectionItems.MyClass {
@@ -51,7 +48,7 @@ public sealed partial class QuantifiableCollectionItems
 				                 Value = "Bar"
 				               }
 				             ]
-				             
+
 				             Collection:
 				             [
 				               QuantifiableCollectionItems.MyClass {

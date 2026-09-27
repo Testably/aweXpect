@@ -23,11 +23,12 @@ public static partial class ThatNullableGuid
 	internal static AndOrResult<Guid?, IThat<Guid?>> IsOneOfCore(
 		IThat<Guid?> subject,
 		IEnumerable<Guid?> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		IEnumerable<Guid?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression).InvertIf(negated)),
 			subject);
 	}
 
@@ -35,13 +36,18 @@ public static partial class ThatNullableGuid
 	internal static AndOrResult<Guid?, IThat<Guid?>> IsOneOfForValuesCore(
 		IThat<Guid?> subject,
 		IEnumerable<Guid> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		return IsOneOfCore(subject, expected.Cast<Guid?>(), negated);
+		return IsOneOfCore(subject, expected.Cast<Guid?>(), expectedExpression, negated);
 	}
 
-	private sealed class IsOneOfConstraint(string it, ExpectationGrammars grammars, IEnumerable<Guid?> expected)
+	private sealed class IsOneOfConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		IEnumerable<Guid?> expected,
+		string? expectedExpression)
 		: ConstraintResult.WithValue<Guid?>(it, grammars),
 			IValueConstraint<Guid?>
 	{
@@ -57,7 +63,7 @@ public static partial class ThatNullableGuid
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -69,7 +75,7 @@ public static partial class ThatNullableGuid
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

@@ -23,7 +23,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -68,7 +68,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -97,7 +97,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.0, 3.0],
+					             is one of expected,
 					             but it was 1.0
 					             """);
 			}
@@ -119,7 +119,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -152,7 +152,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.0, <null>, 3.0],
+					             is one of expected,
 					             but it was 1.0
 					             """);
 			}
@@ -181,7 +181,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.1, 3.1],
+					             is one of expected,
 					             but it was 1.1
 					             """);
 			}
@@ -219,7 +219,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -236,7 +236,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -264,7 +264,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.1, <null>, 3.1],
+					             is one of expected,
 					             but it was 1.1
 					             """);
 			}
@@ -293,7 +293,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.1, 3.1],
+					             is one of expected,
 					             but it was 1.1
 					             """);
 			}
@@ -320,7 +320,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -337,7 +337,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
@@ -365,7 +365,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.1, <null>, 3.1],
+					             is one of expected,
 					             but it was 1.1
 					             """);
 			}
@@ -394,7 +394,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -411,7 +411,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
@@ -528,7 +528,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -557,7 +557,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -612,7 +612,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -641,7 +641,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -704,7 +704,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.0, 3.0],
+					             is one of expected,
 					             but it was 1.0
 					             """);
 			}
@@ -763,7 +763,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.0, 3.0],
+					             is one of expected,
 					             but it was 1.0
 					             """);
 			}
@@ -808,7 +808,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2.0, 3.0],
+					             is one of expected,
 					             but it was 1.0
 					             """);
 			}
@@ -853,7 +853,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -974,7 +974,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1037,7 +1037,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1100,7 +1100,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1163,7 +1163,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1226,7 +1226,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1289,7 +1289,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1352,7 +1352,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1414,7 +1414,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1443,7 +1443,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1505,7 +1505,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1534,7 +1534,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1579,7 +1579,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1608,7 +1608,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1653,7 +1653,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1682,7 +1682,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}
@@ -1727,7 +1727,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [2, <null>, 3],
+					             is one of expected,
 					             but it was 1
 					             """);
 			}

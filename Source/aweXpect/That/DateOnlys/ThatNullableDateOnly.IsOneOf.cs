@@ -26,13 +26,14 @@ public static partial class ThatNullableDateOnly
 	internal static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsOneOfCore(
 		IThat<DateOnly?> subject,
 		IEnumerable<DateOnly?> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance).InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -41,16 +42,18 @@ public static partial class ThatNullableDateOnly
 	internal static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsOneOfForValuesCore(
 		IThat<DateOnly?> subject,
 		IEnumerable<DateOnly> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		return IsOneOfCore(subject, expected.Cast<DateOnly?>(), negated);
+		return IsOneOfCore(subject, expected.Cast<DateOnly?>(), expectedExpression, negated);
 	}
 
 	private sealed class IsOneOfConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<DateOnly?> expected,
+		string? expectedExpression,
 		TimeTolerance tolerance)
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
@@ -79,7 +82,7 @@ public static partial class ThatNullableDateOnly
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance.ToDayString());
 		}
 
@@ -93,7 +96,7 @@ public static partial class ThatNullableDateOnly
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance.ToDayString());
 		}
 
