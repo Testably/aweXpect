@@ -42,11 +42,11 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 
 If it fails, it will throw a framework-specific exception with the following message:
 
-> ```
-> Expected that result
-> is False,
-> but it was True
-> ```
+```text title="Failure message"
+Expected that result
+is False,
+but it was True
+```
 
 ## Add a reason
 
@@ -62,9 +62,10 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 }
 ```
 
-This will result in
-> ```
-> Expected that result
-> is False, because the album is not in the library,
-> but it was True
-> ```
+The reason then appears in the failure message:
+
+```text title="Failure message"
+Expected that result
+is False, because the album is not in the library,
+but it was True
+```

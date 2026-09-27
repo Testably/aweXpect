@@ -254,7 +254,7 @@ Equivalency walks nested objects recursively, so a graph that is deep enough wou
 whole test process with it. The comparison therefore stops after 100 nested objects on a single path and reports the
 member path at which the limit was hit (shown here with the limit lowered to 3):
 
-```
+```text title="Failure message"
 Expected that subject
 is equivalent to expected,
 but it was not:
@@ -333,7 +333,7 @@ Failure messages list each differing member with its full path and the configure
 
 For a structural mismatch:
 
-```
+```text title="Failure message"
 Expected that album
 is equivalent to expected,
 but it was not:
@@ -347,7 +347,7 @@ Equivalency options:
 
 When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectation is rendered as `Expected`:
 
-```
+```text title="Failure message"
 Expected that midnight
 is equivalent to new
 {

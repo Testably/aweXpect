@@ -11,15 +11,15 @@ string subject = "something different";
 await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 ```
 
-> ```
-> Expected that subject
-> starts with "some" and ends with "text",
-> but it was "something different", which differs before index 17:
->                     ↓ (actual)
->   "something different"
->                  "text"
->                     ↑ (expected suffix)
-> ```
+```text title="Failure message"
+Expected that subject
+starts with "some" and ends with "text",
+but it was "something different", which differs before index 17:
+                    ↓ (actual)
+  "something different"
+                 "text"
+                    ↑ (expected suffix)
+```
 
 `.And` binds tighter than `.Or`, so `A.And.B.Or.C` is evaluated as `(A && B) || C`.
 
@@ -46,15 +46,15 @@ Use the `Whose`-syntax to access different properties of a common subject and co
     .Whose(x => x.Title, x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
-> ```
-> Expected that subject
-> whose TrackCount is greater than 1 and whose Title is equal to "Dark Side of the Moon",
-> but TrackCount was 1 and Title was "Dark Side of the Sun", which differs at index 17:
->                 ↓ (actual)
->   "…Side of the Sun"
->   "…Side of the Moon"
->                 ↑ (expected)
-> ```
+```text title="Failure message"
+Expected that subject
+whose TrackCount is greater than 1 and whose Title is equal to "Dark Side of the Moon",
+but TrackCount was 1 and Title was "Dark Side of the Sun", which differs at index 17:
+                ↓ (actual)
+  "…Side of the Sun"
+  "…Side of the Moon"
+                ↑ (expected)
+```
 
 When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result:
 
@@ -76,14 +76,14 @@ Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expecta
     Expect.That(subjectB).IsEqualTo("DEF"));
 ```
 
-> ```
-> Expected all of the following to succeed:
->  [01] Expected that subjectA is equal to "ABC"
->  [02] Expected that subjectB is equal to "DEF"
-> but
->  [02] it was "XYZ", which differs at index 0:
->          ↓ (actual)
->         "XYZ"
->         "DEF"
->          ↑ (expected)
-> ```
+```text title="Failure message"
+Expected all of the following to succeed:
+ [01] Expected that subjectA is equal to "ABC"
+ [02] Expected that subjectB is equal to "DEF"
+but
+ [02] it was "XYZ", which differs at index 0:
+         ↓ (actual)
+        "XYZ"
+        "DEF"
+         ↑ (expected)
+```
