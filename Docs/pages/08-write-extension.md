@@ -148,7 +148,8 @@ in most cases with one of the following helper classes:
 All three take the name of the subject (`it`) and the `grammars` in their constructor and expose the name as the
 inherited `It` property, which the default result texts use.
 
-Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
+Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows the rule that
+all built-in expectations follow (see [concepts](./02-concepts.md#null-subjects)):
 
 > A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
 > identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
