@@ -20,10 +20,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)7, (byte)5)]
-			[InlineData((byte)10, (byte)5)]
+			[InlineData((byte)7, (byte)5, ", which differs by 2")]
+			[InlineData((byte)10, (byte)5, ", which differs by 5")]
 			public async Task ForByte_WhenOutsideTolerance_ShouldFail(
-				byte subject, byte expected)
+				byte subject, byte expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1);
@@ -32,7 +32,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -52,9 +52,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(13.0, 12.5)]
+			[InlineData(13.0, 12.5, ", which differs by 0.5")]
 			public async Task ForDecimal_WhenOutsideTolerance_ShouldFail(
-				double subjectValue, double expectedValue)
+				double subjectValue, double expectedValue, string expectedDifference)
 			{
 				decimal subject = new(subjectValue);
 				decimal expected = new(expectedValue);
@@ -66,7 +66,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -112,9 +112,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(13.0, 12.5)]
+			[InlineData(13.0, 12.5, ", which differs by 0.5")]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldFail(
-				double subject, double expected)
+				double subject, double expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(0.1);
@@ -123,7 +123,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -152,9 +152,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(13.0f, 12.5f)]
+			[InlineData(13.0f, 12.5f, ", which differs by 0.5")]
 			public async Task ForFloat_WhenOutsideTolerance_ShouldFail(
-				float subject, float expected)
+				float subject, float expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(0.1f);
@@ -163,7 +163,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 0.1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -194,9 +194,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(7, 5)]
-			[InlineData(10, 5)]
-			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected)
+			[InlineData(7, 5, ", which differs by 2")]
+			[InlineData(10, 5, ", which differs by 5")]
+			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected,
+				string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1);
@@ -205,7 +206,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 
@@ -235,8 +236,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(7L, 5L)]
-			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected)
+			[InlineData(7L, 5L, ", which differs by 2")]
+			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected,
+				string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1L);
@@ -245,7 +247,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is less than or equal to {Formatter.Format(expected)} ± 1,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
 			}
 

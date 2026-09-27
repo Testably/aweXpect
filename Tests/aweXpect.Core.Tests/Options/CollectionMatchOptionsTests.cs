@@ -119,7 +119,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to collection expected in order using equivalency,
+				             is equal to collection expected using equivalency in order,
 				             but it contained item 1 (int) at index 1 instead of 1 (long)
 
 				             Collection:
@@ -531,7 +531,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to collection ["a", "b",] in order ignoring duplicates ignoring case,
+				             is equal to collection ["a", "b",] ignoring case in order ignoring duplicates,
 				             but it contained item "x" at index 0 that was not expected
 
 				             Collection:

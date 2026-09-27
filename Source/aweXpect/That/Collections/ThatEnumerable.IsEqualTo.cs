@@ -180,8 +180,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					withTolerance: true);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -310,8 +309,7 @@ public static partial class ThatEnumerable
 			{
 				IsEqualToForEnumerableConstraint<TCollection, TItem, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					withTolerance: true);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

@@ -21,10 +21,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)0, (byte)2, (byte)8)]
-			[InlineData((byte)10, (byte)2, (byte)8)]
+			[InlineData((byte)0, (byte)2, (byte)8, "-2 from the minimum")]
+			[InlineData((byte)10, (byte)2, (byte)8, "2 from the maximum")]
 			public async Task ForByte_WhenOutsideToleranceWidenedRange_ShouldFail(
-				byte subject, byte minimum, byte maximum)
+				byte subject, byte minimum, byte maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
@@ -34,7 +34,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by {difference}
 						 """);
 			}
 
@@ -73,7 +73,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by -1.0 from the minimum
 						 """);
 			}
 
@@ -134,7 +134,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.05,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by 0.0999999999999996 from the maximum
 						 """);
 			}
 
@@ -151,7 +151,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by -1.0 from the minimum
 						 """);
 			}
 
@@ -180,10 +180,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(11.0f, 12.0f, 14.0f)]
-			[InlineData(15.0f, 12.0f, 14.0f)]
+			[InlineData(11.0f, 12.0f, 14.0f, "-1.0 from the minimum")]
+			[InlineData(15.0f, 12.0f, 14.0f, "1.0 from the maximum")]
 			public async Task ForFloat_WhenOutsideToleranceWidenedRange_ShouldFail(
-				float subject, float minimum, float maximum)
+				float subject, float minimum, float maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.1f);
@@ -193,7 +193,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by {difference}
 						 """);
 			}
 
@@ -212,10 +212,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(0, 2, 8)]
-			[InlineData(10, 2, 8)]
+			[InlineData(0, 2, 8, "-2 from the minimum")]
+			[InlineData(10, 2, 8, "2 from the maximum")]
 			public async Task ForInt_WhenOutsideToleranceWidenedRange_ShouldFail(
-				int subject, int minimum, int maximum)
+				int subject, int minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
@@ -225,7 +225,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by {difference}
 						 """);
 			}
 
@@ -256,10 +256,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(0L, 2L, 8L)]
-			[InlineData(10L, 2L, 8L)]
+			[InlineData(0L, 2L, 8L, "-2 from the minimum")]
+			[InlineData(10L, 2L, 8L, "2 from the maximum")]
 			public async Task ForLong_WhenOutsideToleranceWidenedRange_ShouldFail(
-				long subject, long minimum, long maximum)
+				long subject, long minimum, long maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1L);
@@ -269,7 +269,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by {difference}
 						 """);
 			}
 

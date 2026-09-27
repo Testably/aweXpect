@@ -3814,7 +3814,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
-					               contains collection [regex,] in order and contiguous as regex,
+					               contains collection [regex,] as regex in order and contiguous,
 					               but it lacked the one expected item
 					               
 					               Collection:
@@ -3844,7 +3844,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains collection [wildcard,] in order and contiguous as wildcard,
+					              contains collection [wildcard,] as wildcard in order and contiguous,
 					              but it lacked the one expected item
 					              
 					              Collection:
@@ -3874,7 +3874,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains collection [match,] in order and contiguous ignoring case,
+					              contains collection [match,] ignoring case in order and contiguous,
 					              but it lacked the one expected item
 					              
 					              Collection:

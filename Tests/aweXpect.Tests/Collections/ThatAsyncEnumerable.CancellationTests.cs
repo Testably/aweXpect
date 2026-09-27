@@ -90,7 +90,7 @@ public sealed partial class ThatAsyncEnumerable
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that subject
-				             is equal to collection [1, 2, 3] in order using ThatAsyncEnumerable.CancellationTests.CancellingComparer,
+				             is equal to collection [1, 2, 3] using ThatAsyncEnumerable.CancellationTests.CancellingComparer in order,
 				             but it could not be verified, because it was already canceled
 
 				             Expected:
