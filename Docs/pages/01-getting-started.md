@@ -71,6 +71,6 @@ but it was True
 ## Next steps
 
 - [Concepts](./02-concepts.md) explains how expectations are combined and negated, and how they treat `null`.
-- The pages for [common types](./common-types/01-boolean.md), [collections](./03-collections.md),
+- The pages for [common types](./common-types/01-boolean.md), [collections](./03-collections/index.md),
   [delegates](./04-delegates.md), [events](./05-events.md) and [equivalency](./06-equivalency.md) list the available
   expectations.

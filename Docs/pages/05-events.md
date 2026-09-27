@@ -192,7 +192,7 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .Between(1).And(2.Times());
 ```
 
-You can use the same occurrence constraints as in the [contain](./03-collections.md#contained-items) method:
+You can use the same occurrence constraints as in the [contain](./03-collections/01-equality.md#contained-items) method:
 
 - `AtLeast(2.Times())`
 - `AtMost(3.Times())`

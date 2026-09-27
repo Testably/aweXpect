@@ -48,7 +48,7 @@ await Expect.That(subject).DoesNotComplyWith(it => it.StartsWith("Let").And.Ends
 ```
 
 `DoesNotComplyWith` is the exact inverse: it succeeds as soon as the nested expectation fails. A named negation can be
-stricter, e.g. [`DoesNotContainKeys`](./03-collections.md#values) fails as soon as any of the keys is contained.
+stricter, e.g. [`DoesNotContainKeys`](./03-collections/04-dictionaries.md#values) fails as soon as any of the keys is contained.
 
 ## Combining expectations
 

@@ -101,7 +101,7 @@ By default, equivalency:
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
   instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
   looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](./03-collections.md#dictionaries). Two expected keys that this comparer considers the same
+  [`IsEqualTo`](./03-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
   cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
   from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
   `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
