@@ -574,6 +574,17 @@ public sealed partial class ThatException
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
+			{
+				ArgumentException subject = new("outer", "paramName");
+
+				async Task Act()
+					=> await That(subject).HasMessage().StartingWith("outer").And.HasParamName("paramName");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Exception subject = new("foo");
@@ -590,6 +601,30 @@ public sealed partial class ThatException
 					             Message:
 					             foo
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenParamNameDiffersInAChainWithHasParamName_ShouldFail()
+			{
+				ArgumentException subject = new("outer", "paramName");
+
+				async Task Act()
+					=> await That(subject).HasMessage().StartingWith("outer").And.HasParamName("other");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has message starting with "outer" and has param name equal to "other",
+					              but it had param name "paramName", which differs at index 0:
+					                 ↓ (actual)
+					                "paramName"
+					                "other"
+					                 ↑ (expected)
+
+					              Message:
+					              {subject.Message}
+					              """)
+					.Because("the framework appends the param name to the message in its own format");
 			}
 
 			[Fact]
