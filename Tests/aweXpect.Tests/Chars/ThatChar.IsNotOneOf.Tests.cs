@@ -97,8 +97,11 @@ public sealed partial class ThatChar
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(expected)},
+					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 

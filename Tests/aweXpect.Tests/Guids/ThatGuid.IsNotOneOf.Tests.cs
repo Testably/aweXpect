@@ -92,8 +92,11 @@ public sealed partial class ThatGuid
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not one of {Formatter.Format(unexpected)},
+					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """);
 			}
 

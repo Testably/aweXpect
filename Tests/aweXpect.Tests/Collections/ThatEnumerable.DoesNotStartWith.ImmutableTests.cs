@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not start with ["foo", "bar"],
+					             does not start with unexpected,
 					             but it did start with [
 					               "foo",
 					               "bar"

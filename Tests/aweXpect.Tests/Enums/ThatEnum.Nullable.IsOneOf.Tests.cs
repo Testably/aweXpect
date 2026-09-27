@@ -54,8 +54,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of [<null>],
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -113,8 +116,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of {Formatter.Format(expected)},
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [Green, Red]
 						              """);
 				}
 
@@ -128,11 +134,14 @@ public sealed partial class ThatEnum
 						=> await That(subject).IsOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is one of {Formatter.Format(expected)},
-						              but it was <null>
-						              """);
+						.WithMessage("""
+						             Expected that subject
+						             is one of expected,
+						             but it was <null>
+
+						             Expected values:
+						             [Green, Blue]
+						             """);
 				}
 
 				[Fact]
@@ -163,8 +172,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of [<null>],
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -193,8 +205,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of {Formatter.Format(expected)},
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [Int64LessOne, Int64LessTwo]
 						              """);
 				}
 			}
@@ -214,8 +229,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of [<null>],
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -244,8 +262,11 @@ public sealed partial class ThatEnum
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              is one of {Formatter.Format(expected)},
+						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [UInt64LessOne, Int64Max]
 						              """);
 				}
 			}

@@ -109,10 +109,35 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(values)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              ["bar", "baz"]
 					              """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAnEnumerable_ShouldNameItsExpression()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> expected = [new MyClass { Value = 1, }, new MyClass { Value = 2, },];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected,
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+
+					             Expected values:
+					             [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 2 }]
+					             """);
 			}
 
 			[Fact]
@@ -158,6 +183,25 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsPassedAsParams_ShouldFormatTheValues()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).IsOneOf(new MyClass { Value = 1, }, new MyClass { Value = 2, });
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 2 }],
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """)
+					.Because("the separate arguments have no single expression to name");
+			}
+
+			[Fact]
 			public async Task WhenExpectedOnlyContainsNullValues_ShouldFail()
 			{
 				MyClass subject = new();
@@ -169,10 +213,13 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is one of [<null>],
+					             is one of expected,
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
+
+					             Expected values:
+					             [<null>]
 					             """);
 			}
 
@@ -203,6 +250,47 @@ public sealed partial class ThatObject
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenOnlyACombinedExpectationFails_ShouldNotListTheExpectedValues()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> expected = [subject,];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).And.IsNull();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected and is null,
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """)
+					.Because("the values explain only a failure of the expectation that names them");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReferenceType_ShouldReturnTheTypedSubject()
+			{
+				MyClass subject = new();
+
+				MyClass result = await That(subject).IsOneOf(new MyClass(), subject);
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReferenceType_WithEnumerable_ShouldReturnTheTypedSubject()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> expected = [new MyClass(), subject,];
+
+				MyClass result = await That(subject).IsOneOf(expected);
+
+				await That(result).IsSameAs(subject);
 			}
 
 			[Fact]

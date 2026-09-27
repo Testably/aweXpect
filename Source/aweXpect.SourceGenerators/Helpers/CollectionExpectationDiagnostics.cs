@@ -41,6 +41,17 @@ internal static class CollectionExpectationDiagnostics
 		Category,
 		DiagnosticSeverity.Warning,
 		true);
+
+	/// <summary>
+	///     Reported for a declaration whose expected collection could not echo the caller's expression.
+	/// </summary>
+	public static readonly DiagnosticDescriptor MissingExpression = new(
+		"aweXpect3004",
+		"The expected collection of the collection expectation needs its caller argument expression",
+		"'{0}' takes an expected collection, so the helper needs a string parameter for its caller argument expression",
+		Category,
+		DiagnosticSeverity.Error,
+		true);
 }
 
 /// <summary>

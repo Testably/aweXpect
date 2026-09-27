@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Metadata;
@@ -18,7 +19,8 @@ public static partial class ThatObject
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject, TExpected>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected expected,
-		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
+		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		EquivalencyOptions equivalencyOptions = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get();
@@ -33,7 +35,9 @@ public static partial class ThatObject
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, expected, equalityOptions)),
+				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, expected,
+					expected is null ? null : doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					equalityOptions)),
 			subject);
 	}
 
@@ -46,8 +50,9 @@ public static partial class ThatObject
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] object? expected,
-		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
-		=> subject.IsEquivalentTo<TSubject, object?>(expected, options);
+		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+		=> subject.IsEquivalentTo<TSubject, object?>(expected, options, doNotPopulateThisValue);
 
 	/// <summary>
 	///     Verifies that the subject is not equivalent to the <paramref name="unexpected" /> value.
@@ -55,7 +60,8 @@ public static partial class ThatObject
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject, TExpected>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected unexpected,
-		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
+		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
+		[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		EquivalencyOptions equivalencyOptions = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get();
@@ -70,7 +76,9 @@ public static partial class ThatObject
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, unexpected, equalityOptions).Invert()),
+				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, unexpected,
+					unexpected is null ? null : doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					equalityOptions).Invert()),
 			subject);
 	}
 
@@ -83,6 +91,7 @@ public static partial class ThatObject
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] object? unexpected,
-		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
-		=> subject.IsNotEquivalentTo<TSubject, object?>(unexpected, options);
+		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+		[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+		=> subject.IsNotEquivalentTo<TSubject, object?>(unexpected, options, doNotPopulateThisValue);
 }

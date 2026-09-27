@@ -97,6 +97,7 @@ public static partial class ThatEnumerable
 		StartsWithForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
 			IEnumerable<TItem> expected,
+			string? expectedExpression,
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
@@ -107,7 +108,8 @@ public static partial class ThatEnumerable
 			{
 				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					Formatter.Format(expected), expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -121,8 +123,9 @@ public static partial class ThatEnumerable
 		StartsWithForObjectsCore(
 			IThat<IEnumerable?> subject,
 			IEnumerable expected,
+			string? expectedExpression,
 			bool negated)
-		=> StartsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, negated);
+		=> StartsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
@@ -188,6 +191,7 @@ public static partial class ThatEnumerable
 		StartsWithForCollectionStringsCore<TCollection>(
 			IThat<TCollection> subject,
 			IEnumerable<string?> expected,
+			string? expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable
 	{
@@ -199,7 +203,8 @@ public static partial class ThatEnumerable
 			{
 				StartsWithForEnumerableConstraint<TCollection, string?> constraint = new(
 					expectationBuilder, it, grammars,
-					Formatter.Format(expected), expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

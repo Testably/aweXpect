@@ -85,6 +85,7 @@ public static partial class ThatEnumerable
 		EndsWithForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
 			IEnumerable<TItem> expected,
+			string? expectedExpression,
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
@@ -95,7 +96,8 @@ public static partial class ThatEnumerable
 			{
 				EndsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					Formatter.Format(expected), expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -109,8 +111,9 @@ public static partial class ThatEnumerable
 		EndsWithForObjectsCore(
 			IThat<IEnumerable?> subject,
 			IEnumerable expected,
+			string? expectedExpression,
 			bool negated)
-		=> EndsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, negated);
+		=> EndsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
@@ -176,6 +179,7 @@ public static partial class ThatEnumerable
 		EndsWithForCollectionStringsCore<TCollection>(
 			IThat<TCollection> subject,
 			IEnumerable<string?> expected,
+			string? expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable
 	{
@@ -187,7 +191,8 @@ public static partial class ThatEnumerable
 			{
 				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
 					expectationBuilder, it, grammars,
-					Formatter.Format(expected), expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

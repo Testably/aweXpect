@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not end with ["bar", "baz"],
+					             does not end with unexpected,
 					             but it did end with [
 					               "bar",
 					               "baz"

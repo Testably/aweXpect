@@ -137,17 +137,13 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new
-					{
-						HasWaitedEnough = false,
-					})).Within(30.Seconds()).WithTimeout(50.Milliseconds());
+					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
+						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equivalent to {
-					                 HasWaitedEnough = False
-					               } within 0:30,
+					             is not equivalent to new { HasWaitedEnough = false, } within 0:30,
 					             but it did not finish within 0:00.050
 
 					             Equivalency options:
@@ -249,17 +245,13 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new
-					{
-						HasWaitedEnough = false,
-					})).Within(50.Milliseconds());
+					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
+						.Within(50.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equivalent to {
-					                 HasWaitedEnough = False
-					               } within 0:00.050,
+					             is not equivalent to new { HasWaitedEnough = false, } within 0:00.050,
 					             but it was ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
 					               }, which is considered equivalent

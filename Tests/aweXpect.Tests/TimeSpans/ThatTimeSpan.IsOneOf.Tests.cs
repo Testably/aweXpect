@@ -49,11 +49,14 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsOneOf(expected);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is one of {Formatter.Format(expected)},
-					              but it was TimeSpan.MinValue
-					              """)
+					.WithMessage("""
+					             Expected that subject
+					             is one of expected,
+					             but it was TimeSpan.MinValue
+
+					             Expected values:
+					             [TimeSpan.MaxValue]
+					             """)
 					.Because("a difference that exceeds the range of a time span must fail instead of overflow");
 			}
 
@@ -69,8 +72,11 @@ public sealed partial class ThatTimeSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of [<null>],
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              [<null>]
 					              """);
 			}
 
@@ -153,8 +159,11 @@ public sealed partial class ThatTimeSpan
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -191,8 +200,11 @@ public sealed partial class ThatTimeSpan
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
+					              is one of expected ± 0:0{tolerance}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference} from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 		}

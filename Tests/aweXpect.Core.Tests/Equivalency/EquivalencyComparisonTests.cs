@@ -255,10 +255,7 @@ public sealed class EquivalencyComparisonTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that actual
-			             is not equivalent to {
-			                 Other = 1,
-			                 Value = 5
-			               },
+			             is not equivalent to unexpected,
 			             but it was EquivalencyComparisonTests.ExplicitValue {
 			                 Other = 1
 			               }, which is considered equivalent
@@ -2000,9 +1997,7 @@ public sealed class EquivalencyComparisonTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that actual
-			             is equivalent to EquivalencyComparisonTests.WithThrowingEquals {
-			                 Value = 1
-			               },
+			             is equivalent to expected,
 			             but Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException:
 			               equals
 
@@ -2032,9 +2027,7 @@ public sealed class EquivalencyComparisonTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that actual
-			             is not equivalent to EquivalencyComparisonTests.WithThrowingEquals {
-			                 Value = 1
-			               },
+			             is not equivalent to unexpected,
 			             but Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException:
 			               equals
 
@@ -2111,9 +2104,7 @@ public sealed class EquivalencyComparisonTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that actual
-			             is equivalent to EquivalencyComparisonTests.WithThrowingGetter {
-			                 Value = [Value did throw an InvalidOperationException: getter failed]
-			               },
+			             is equivalent to expected,
 			             but Value did throw an InvalidOperationException:
 			               getter failed
 
@@ -2136,9 +2127,7 @@ public sealed class EquivalencyComparisonTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that actual
-			             is not equivalent to EquivalencyComparisonTests.WithThrowingGetter {
-			                 Value = [Value did throw an InvalidOperationException: getter failed]
-			               },
+			             is not equivalent to unexpected,
 			             but Value did throw an InvalidOperationException:
 			               getter failed
 
@@ -2259,7 +2248,7 @@ public sealed class EquivalencyComparisonTests
 		};
 		var expected = new
 		{
-			Value = It.Is<WithPublicValue>().That.IsEquivalentTo(new WithPublicValue(2)),
+			Value = It.Is<WithPublicValue>().That.IsEqualTo(new WithPublicValue(2)),
 		};
 		StringBuilder failureBuilder = new();
 
@@ -2270,7 +2259,7 @@ public sealed class EquivalencyComparisonTests
 
 		                                                  Property Value differed:
 		                                                      Actual: EquivalencyComparisonTests.WithPublicValue { Value = 1 }
-		                                                    Expected: is EquivalencyComparisonTests.WithPublicValue that is equivalent to EquivalencyComparisonTests.WithPublicValue {
+		                                                    Expected: is EquivalencyComparisonTests.WithPublicValue that is equal to EquivalencyComparisonTests.WithPublicValue {
 		                                                        Value = 2
 		                                                      }
 		                                                """).IgnoringNewlineStyle();

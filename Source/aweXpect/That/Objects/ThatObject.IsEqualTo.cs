@@ -21,7 +21,7 @@ public static partial class ThatObject
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<object?, object?>(it, grammars, expected, options)),
+				=> new IsEqualToConstraint<object?, object?>(it, grammars, expected, null, options)),
 			subject,
 			options);
 	}
@@ -70,7 +70,7 @@ public static partial class ThatObject
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<object?, object?>(it, grammars, unexpected, options).Invert()),
+				=> new IsEqualToConstraint<object?, object?>(it, grammars, unexpected, null, options).Invert()),
 			subject,
 			options);
 	}
@@ -115,6 +115,7 @@ public static partial class ThatObject
 		string it,
 		ExpectationGrammars grammars,
 		TExpected expected,
+		string? expectedExpression,
 		ObjectEqualityOptions<TSubject> options)
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncConstraint<TSubject>
@@ -128,14 +129,14 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));

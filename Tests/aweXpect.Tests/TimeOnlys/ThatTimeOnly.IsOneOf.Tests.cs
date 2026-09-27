@@ -52,8 +52,11 @@ public sealed partial class ThatTimeOnly
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of [<null>],
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              [<null>]
 					              """);
 			}
 
@@ -110,8 +113,11 @@ public sealed partial class ThatTimeOnly
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)},
+					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -135,8 +141,11 @@ public sealed partial class ThatTimeOnly
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
-					              is one of {Formatter.Format(expected)} ± 0:0{tolerance}, because we want to test the failure,
+					              is one of expected ± 0:0{tolerance}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference} from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 

@@ -149,17 +149,12 @@ public sealed partial class ThatException
 
 					async Task Act()
 						=> await That(subject)
-							.HasInner<CustomException>(e => e.IsEquivalentTo(new
-							{
-								Message = "other",
-							}));
+							.HasInner<CustomException>(e => e.IsEquivalentTo(new { Message = "other", }));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException that is equivalent to {
-						                 Message = "other"
-						               },
+						             has an inner ThatException.CustomException that is equivalent to new { Message = "other", },
 						             but it was not:
 						               Property Message differed:
 						                   Actual: "inner"

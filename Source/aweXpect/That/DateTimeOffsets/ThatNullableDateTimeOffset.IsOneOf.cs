@@ -25,13 +25,16 @@ public static partial class ThatNullableDateTimeOffset
 	internal static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOneOfCore(
 		IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset?> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		IEnumerable<DateTimeOffset?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			tolerance);
 	}
@@ -40,16 +43,18 @@ public static partial class ThatNullableDateTimeOffset
 	internal static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOneOfForValuesCore(
 		IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset> expected,
+		string? expectedExpression,
 		bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		return IsOneOfCore(subject, expected.Cast<DateTimeOffset?>(), negated);
+		return IsOneOfCore(subject, expected.Cast<DateTimeOffset?>(), expectedExpression, negated);
 	}
 
 	private sealed class IsOneOfConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<DateTimeOffset?> expected,
+		string? expectedExpression,
 		TimeTolerance tolerance)
 		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
@@ -78,7 +83,7 @@ public static partial class ThatNullableDateTimeOffset
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance);
 		}
 
@@ -92,7 +97,7 @@ public static partial class ThatNullableDateTimeOffset
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance);
 		}
 

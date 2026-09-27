@@ -23,12 +23,15 @@ public static partial class ThatNullableEnum
 	internal static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOfCore<TEnum>(
 		IThat<TEnum?> subject,
 		IEnumerable<TEnum?> expected,
+		string? expectedExpression,
 		bool negated)
 		where TEnum : struct, Enum
 	{
 		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues).InvertIf(negated)),
+				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues, expectedExpression)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject);
 	}
 
@@ -36,14 +39,19 @@ public static partial class ThatNullableEnum
 	internal static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOfForValuesCore<TEnum>(
 		IThat<TEnum?> subject,
 		IEnumerable<TEnum> expected,
+		string? expectedExpression,
 		bool negated)
 		where TEnum : struct, Enum
 	{
 		expected.ThrowIfNull(negated);
-		return IsOneOfCore(subject, expected.Cast<TEnum?>(), negated);
+		return IsOneOfCore(subject, expected.Cast<TEnum?>(), expectedExpression, negated);
 	}
 
-	private sealed class IsOneOfConstraint<TEnum>(string it, ExpectationGrammars grammars, IEnumerable<TEnum?> expected)
+	private sealed class IsOneOfConstraint<TEnum>(
+		string it,
+		ExpectationGrammars grammars,
+		IEnumerable<TEnum?> expected,
+		string? expectedExpression)
 		: ConstraintResult.WithValue<TEnum?>(it, grammars),
 			IValueConstraint<TEnum?>
 		where TEnum : struct, Enum
@@ -60,7 +68,7 @@ public static partial class ThatNullableEnum
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -72,7 +80,7 @@ public static partial class ThatNullableEnum
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
