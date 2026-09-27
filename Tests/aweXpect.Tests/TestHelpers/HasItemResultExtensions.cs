@@ -6,7 +6,7 @@ namespace aweXpect.Tests;
 
 public static class HasItemResultExtensions
 {
-	public static AndOrResult<TCollection, IThat<TCollection>> WithInvalidMatch<TCollection>(
+	public static AndOrResult<TCollection, IThat<TCollection?>> WithInvalidMatch<TCollection>(
 		this HasItemResult<TCollection> hasItemResult)
 	{
 		(hasItemResult as IOptionsProvider<CollectionIndexOptions>).Options.SetMatch(new InvalidMatch());
