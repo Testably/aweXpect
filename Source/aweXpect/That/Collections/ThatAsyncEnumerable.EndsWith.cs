@@ -51,6 +51,36 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
+	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
+			TTolerance>
+		EndsWithWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
+			TTolerance>(
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",

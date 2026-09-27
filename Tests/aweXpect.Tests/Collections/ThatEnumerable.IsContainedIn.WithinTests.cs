@@ -1,0 +1,1450 @@
+﻿using System.Collections.Generic;
+using aweXpect.Customization;
+
+// ReSharper disable PossibleMultipleEnumeration
+
+namespace aweXpect.Tests;
+
+public sealed partial class ThatEnumerable
+{
+	public sealed partial class IsContainedIn
+	{
+		public sealed class Within
+		{
+#if NET8_0_OR_GREATER
+			public sealed class DateOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1 day in order and contiguous,
+						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 1 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					object Act()
+						=> That(subject).IsContainedIn(expected).Within(1.Days() + 1.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+				}
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			public sealed class NullableDateOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1 day in order and contiguous,
+						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 2 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> expected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					object Act()
+						=> That(subject).IsContainedIn(expected).Within(1.Days() + 1.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+				}
+			}
+#endif
+
+			public sealed class DateTimeTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> expected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 2, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 1 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> expected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 1, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> expected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 1, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsContainedIn(expected);
+					}
+
+					await That(Act).DoesNotThrow()
+						.Because("the items fall back to the default tolerance, as a single value does");
+				}
+
+				[Fact]
+				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> expected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 2, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+					{
+						using IDisposable __ =
+							Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Minutes());
+						await That(subject).IsContainedIn(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 1 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """)
+						.Because("the applied default tolerance is part of the expectation");
+				}
+			}
+
+			public sealed class NullableDateTimeTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime?> subject = values;
+					IEnumerable<DateTime?> expected = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 2, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 2 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime?> subject = values;
+					IEnumerable<DateTime?> expected = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 1, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class DateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset> subject = values;
+					IEnumerable<DateTimeOffset> expected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))} at index 1 instead of {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset> subject = values;
+					IEnumerable<DateTimeOffset> expected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 1, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableDateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset?> subject = values;
+					IEnumerable<DateTimeOffset?> expected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))} at index 2 instead of {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset?> subject = values;
+					IEnumerable<DateTimeOffset?> expected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 1, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class DecimalTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					decimal[] values = [1.0m, 2.0m, 3.0m,];
+					IEnumerable<decimal> subject = values;
+					IEnumerable<decimal> expected = [1.0m, 2.5m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0m)} at index 1 instead of {Formatter.Format(2.5m)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					decimal[] values = [1.0m, 2.0m, 3.0m,];
+					IEnumerable<decimal> subject = values;
+					IEnumerable<decimal> expected = [1.0m, 2.25m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25m);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableDecimalTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
+					IEnumerable<decimal?> subject = values;
+					IEnumerable<decimal?> expected = [1.0m, null, 2.5m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0m)} at index 2 instead of {Formatter.Format(2.5m)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
+					IEnumerable<decimal?> subject = values;
+					IEnumerable<decimal?> expected = [1.0m, null, 2.25m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25m);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class DoubleTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					double[] values = [1.0, 2.0, 3.0,];
+					IEnumerable<double> subject = values;
+					IEnumerable<double> expected = [1.0, 2.5, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0)} at index 1 instead of {Formatter.Format(2.5)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException(bool negated)
+				{
+					double[] values = [1.0, 2.0, 3.0,];
+					IEnumerable<double> subject = values;
+					IEnumerable<double> expected = [1.0, 2.25, 3.0,];
+
+					async Task Act()
+					{
+						if (negated)
+						{
+							await That(subject).IsNotContainedIn(expected).Within(0.25).Using(new AllEqualComparer());
+						}
+						else
+						{
+							await That(subject).IsContainedIn(expected).Within(0.25).Using(new AllEqualComparer());
+						}
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Using cannot be combined with Within.")
+						.Because("the comparer would silently replace the tolerance");
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					double[] values = [1.0, 2.0, 3.0,];
+					IEnumerable<double> subject = values;
+					IEnumerable<double> expected = [1.0, 2.25, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableDoubleTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					double?[] values = [1.0, null, 2.0, 3.0,];
+					IEnumerable<double?> subject = values;
+					IEnumerable<double?> expected = [1.0, null, 2.5, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0)} at index 2 instead of {Formatter.Format(2.5)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					double?[] values = [1.0, null, 2.0, 3.0,];
+					IEnumerable<double?> subject = values;
+					IEnumerable<double?> expected = [1.0, null, 2.25, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class FloatTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					float[] values = [1.0F, 2.0F, 3.0F,];
+					IEnumerable<float> subject = values;
+					IEnumerable<float> expected = [1.0F, 2.5F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25F);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0F)} at index 1 instead of {Formatter.Format(2.5F)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					float[] values = [1.0F, 2.0F, 3.0F,];
+					IEnumerable<float> subject = values;
+					IEnumerable<float> expected = [1.0F, 2.25F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25F);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableFloatTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					float?[] values = [1.0F, null, 2.0F, 3.0F,];
+					IEnumerable<float?> subject = values;
+					IEnumerable<float?> expected = [1.0F, null, 2.5F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25F);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 0.25 in order and contiguous,
+						              but it contained item {Formatter.Format(2.0F)} at index 2 instead of {Formatter.Format(2.5F)}
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(expected)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					float?[] values = [1.0F, null, 2.0F, 3.0F,];
+					IEnumerable<float?> subject = values;
+					IEnumerable<float?> expected = [1.0F, null, 2.25F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(0.25F);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+#if NET8_0_OR_GREATER
+			public sealed class TimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+				{
+					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> expected = [new TimeOnly(22, 0), new TimeOnly(0, 0, 30), new TimeOnly(2, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+				}
+
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 1 instead of {Formatter.Format(new TimeOnly(14, 2))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			public sealed class NullableTimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+				{
+					TimeOnly?[] values = [new TimeOnly(22, 0), null, new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(22, 0), null, new TimeOnly(0, 0, 30), new TimeOnly(2, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+				}
+
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(13, 0), null, new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 2 instead of {Formatter.Format(new TimeOnly(14, 2))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> expected = [new TimeOnly(13, 0), null, new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+#endif
+
+			public sealed class TimeSpanTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan> subject = values;
+					IEnumerable<TimeSpan> expected = [new TimeSpan(1, 0, 0), new TimeSpan(2, 2, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new TimeSpan(2, 0, 0))} at index 1 instead of {Formatter.Format(new TimeSpan(2, 2, 0))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan> subject = values;
+					IEnumerable<TimeSpan> expected = [new TimeSpan(1, 0, 0), new TimeSpan(2, 1, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableTimeSpanTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
+				{
+					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan?> subject = values;
+					IEnumerable<TimeSpan?> expected = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 2, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is contained in collection expected ± 1:00 in order and contiguous,
+						              but it contained item {Formatter.Format(new TimeSpan(2, 0, 0))} at index 2 instead of {Formatter.Format(new TimeSpan(2, 2, 0))}
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan?> subject = values;
+					IEnumerable<TimeSpan?> expected = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 1, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+		}
+	}
+
+	public sealed partial class IsNotContainedIn
+	{
+		public sealed class Within
+		{
+#if NET8_0_OR_GREATER
+			public sealed class DateOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1 day in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			public sealed class NullableDateOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> unexpected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> unexpected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1 day in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+#endif
+
+			public sealed class DateTimeTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> unexpected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 2, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime> subject = values;
+					IEnumerable<DateTime> unexpected = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 1, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class NullableDateTimeTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime?> subject = values;
+					IEnumerable<DateTime?> unexpected = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 2, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					IEnumerable<DateTime?> subject = values;
+					IEnumerable<DateTime?> unexpected = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 1, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class DateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset> subject = values;
+					IEnumerable<DateTimeOffset> unexpected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset> subject = values;
+					IEnumerable<DateTimeOffset> unexpected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 1, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class NullableDateTimeOffsetTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset?> subject = values;
+					IEnumerable<DateTimeOffset?> unexpected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					IEnumerable<DateTimeOffset?> subject = values;
+					IEnumerable<DateTimeOffset?> unexpected = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 1, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class DecimalTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					decimal[] values = [1.0m, 2.0m, 3.0m,];
+					IEnumerable<decimal> subject = values;
+					IEnumerable<decimal> unexpected = [1.0m, 2.5m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					decimal[] values = [1.0m, 2.0m, 3.0m,];
+					IEnumerable<decimal> subject = values;
+					IEnumerable<decimal> unexpected = [1.0m, 2.25m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+			public sealed class NullableDecimalTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
+					IEnumerable<decimal?> subject = values;
+					IEnumerable<decimal?> unexpected = [1.0m, null, 2.5m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
+					IEnumerable<decimal?> subject = values;
+					IEnumerable<decimal?> unexpected = [1.0m, null, 2.25m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+			public sealed class DoubleTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					double[] values = [1.0, 2.0, 3.0,];
+					IEnumerable<double> subject = values;
+					IEnumerable<double> unexpected = [1.0, 2.5, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					double[] values = [1.0, 2.0, 3.0,];
+					IEnumerable<double> subject = values;
+					IEnumerable<double> unexpected = [1.0, 2.25, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+			public sealed class NullableDoubleTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					double?[] values = [1.0, null, 2.0, 3.0,];
+					IEnumerable<double?> subject = values;
+					IEnumerable<double?> unexpected = [1.0, null, 2.5, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					double?[] values = [1.0, null, 2.0, 3.0,];
+					IEnumerable<double?> subject = values;
+					IEnumerable<double?> unexpected = [1.0, null, 2.25, 3.0,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+			public sealed class FloatTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					float[] values = [1.0F, 2.0F, 3.0F,];
+					IEnumerable<float> subject = values;
+					IEnumerable<float> unexpected = [1.0F, 2.5F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					float[] values = [1.0F, 2.0F, 3.0F,];
+					IEnumerable<float> subject = values;
+					IEnumerable<float> unexpected = [1.0F, 2.25F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+			public sealed class NullableFloatTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					float?[] values = [1.0F, null, 2.0F, 3.0F,];
+					IEnumerable<float?> subject = values;
+					IEnumerable<float?> unexpected = [1.0F, null, 2.5F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					float?[] values = [1.0F, null, 2.0F, 3.0F,];
+					IEnumerable<float?> subject = values;
+					IEnumerable<float?> unexpected = [1.0F, null, 2.25F, 3.0F,];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 0.25 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values)}
+
+						              Expected:
+						              {Formatter.Format(unexpected)}
+						              """);
+				}
+			}
+
+#if NET8_0_OR_GREATER
+			public sealed class TimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			public sealed class NullableTimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> unexpected = [new TimeOnly(13, 0), null, new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> unexpected = [new TimeOnly(13, 0), null, new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+#endif
+
+			public sealed class TimeSpanTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan> subject = values;
+					IEnumerable<TimeSpan> unexpected = [new TimeSpan(1, 0, 0), new TimeSpan(2, 2, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan> subject = values;
+					IEnumerable<TimeSpan> unexpected = [new TimeSpan(1, 0, 0), new TimeSpan(2, 1, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+
+			public sealed class NullableTimeSpanTests
+			{
+				[Fact]
+				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan?> subject = values;
+					IEnumerable<TimeSpan?> unexpected = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 2, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					IEnumerable<TimeSpan?> subject = values;
+					IEnumerable<TimeSpan?> unexpected = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 1, 0), new TimeSpan(3, 0, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not contained in collection unexpected ± 1:00 in order and contiguous,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+			}
+		}
+	}
+}

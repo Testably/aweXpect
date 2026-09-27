@@ -8,7 +8,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatAsyncEnumerable
 {
-	public sealed class StartsWith
+	public sealed partial class StartsWith
 	{
 		public sealed class Tests
 		{

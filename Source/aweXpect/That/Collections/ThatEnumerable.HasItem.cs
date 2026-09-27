@@ -96,6 +96,29 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>
+		HasTheItemWithToleranceCore<TItem, TTolerance>(
+			IThat<IEnumerable<TItem>?> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
+					a => options.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
+					indexOptions).InvertIf(negated)),
+			subject,
+			indexOptions,
+			options);
+	}
+
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static StringHasItemResult<IEnumerable<string?>>
 		HasTheItemForStringsCore(
@@ -237,6 +260,31 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<TCollection, TItem>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
+					expectationBuilder, it, grammars,
+					a => options.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
+					indexOptions).InvertIf(negated)),
+			subject,
+			indexOptions,
+			options);
+	}
+
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
+		HasTheItemWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+		where TCollection : IEnumerable
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
 					expectationBuilder, it, grammars,

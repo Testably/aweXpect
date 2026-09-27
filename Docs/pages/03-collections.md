@@ -52,7 +52,10 @@ IEnumerable<double> expected = [1.0, 2.0, 3.0];
 await Expect.That(values).IsEqualTo(expected).Within(0.1).InAnyOrder();
 ```
 
-This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `DateTimeOffset` and `TimeSpan`.
+This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `DateTimeOffset` and `TimeSpan`, and on
+.NET 8 or later also to `DateOnly`, whose tolerance must be a whole number of days, and `TimeOnly`, whose items are
+compared on the clock face, so that `23:59` and `00:01` are two minutes apart. A tolerance takes precedence over the
+comparer of a set.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
@@ -115,7 +118,7 @@ IEnumerable<double> values = [2.04, 2.02, 2.01];
 await Expect.That(values).All().AreEqualTo(2.0).Within(0.1);
 ```
 
-This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `DateTimeOffset` and `TimeSpan`.
+This tolerance can be applied to the same types as for [equality](#equality).
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
@@ -271,6 +274,21 @@ HashSet<string> values = new(StringComparer.OrdinalIgnoreCase) { "foo" };
 
 await Expect.That(values).Contains("FOO");
 await Expect.That(values).DoesNotContain("FOO").Using(StringComparer.Ordinal);
+```
+
+For the same types as for [equality](#equality) you can also specify a tolerance, which takes precedence over the
+comparer of a set as well. It is also available for a [subset](#subset), a [superset](#superset), the
+[collection start](#collection-start) and [end](#collection-end) and an [item at an index](#item-at-index):
+
+```csharp
+IEnumerable<double> values = [1.01, 2.02, 3.04];
+
+await Expect.That(values).Contains(2.0).Within(0.1);
+await Expect.That(values).Contains([2.0, 3.0]).Within(0.1);
+await Expect.That(values).IsContainedIn([1.0, 2.0, 3.0, 4.0]).Within(0.1);
+await Expect.That(values).StartsWith(1.0, 2.0).Within(0.1);
+await Expect.That(values).EndsWith(2.0, 3.0).Within(0.1);
+await Expect.That(values).HasItem(2.0).Within(0.1).AtIndex(1);
 ```
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*

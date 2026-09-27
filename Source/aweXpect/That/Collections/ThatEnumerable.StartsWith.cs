@@ -89,6 +89,34 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
+		StartsWithWithToleranceCore<TItem, TTolerance>(
+			IThat<IEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
+			{
+				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, Priority = -2, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
@@ -211,6 +239,36 @@ public static partial class ThatEnumerable
 			options);
 	}
 
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
+		StartsWithWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
 
 	private sealed class StartsWithConstraint<TItem, TMatch>
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,

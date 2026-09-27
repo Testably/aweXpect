@@ -818,6 +818,168 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class DateOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection unexpected ± 1 day in order,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableDateOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> unexpected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection unexpected ± 1 day in order,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly?> subject = values;
+					IEnumerable<DateOnly?> unexpected = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class TimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection unexpected ± 1:00 in order,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> subject = values;
+					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NullableTimeOnlyTests
+			{
+				[Fact]
+				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> unexpected = [new TimeOnly(13, 0), null, new TimeOnly(14, 1), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not equal to collection unexpected ± 1:00 in order,
+						              but it was
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+
+						              Expected:
+						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly?> subject = values;
+					IEnumerable<TimeOnly?> unexpected = [new TimeOnly(13, 0), null, new TimeOnly(14, 2), new TimeOnly(15, 0),];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+#endif
 		}
 	}
 }

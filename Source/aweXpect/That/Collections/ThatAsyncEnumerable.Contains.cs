@@ -72,6 +72,32 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+	internal static ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
+			TTolerance>
+		ContainsItemWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+	{
+		Quantifier quantifier = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
+			TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+					expected,
+					a => options.AreConsideredEqual(a, expected),
+					quantifier).InvertIf(negated)),
+			subject,
+			quantifier,
+			options);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		ContainsItemForStringsCore(
@@ -132,6 +158,34 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					failsForNullSubject: true).InvertIf(negated)),
+			subject,
+			options,
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+	}
+
+	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
+		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+	internal static ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
+			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
+		ContainsWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
+			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,

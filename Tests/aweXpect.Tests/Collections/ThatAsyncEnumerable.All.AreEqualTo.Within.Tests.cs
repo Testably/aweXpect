@@ -668,6 +668,218 @@ public sealed partial class ThatAsyncEnumerable
 						await That(Act).DoesNotThrow();
 					}
 				}
+
+				public sealed class DateOnlyTests
+				{
+					[Fact]
+					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+					{
+						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
+
+						object Act()
+							=> That(subject).All().AreEqualTo(new DateOnly(2024, 1, 11)).Within(1.Days() + 1.Hours());
+
+						await That(Act).Throws<ArgumentOutOfRangeException>()
+							.WithParamName("tolerance").And
+							.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+					}
+
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
+						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
+						DateOnly expected = new DateOnly(2024, 1, 11);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
+							              but only 1 of 2 were
+
+							              Not matching items:
+							              {Formatter.Format(new DateOnly[] { new DateOnly(2024, 1, 13), }, FormattingOptions.MultipleLines)}
+
+							              Collection:
+							              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new DateOnly(2024, 1, 11)).Within(1.Days());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class NullableDateOnlyTests
+				{
+					[Fact]
+					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
+					{
+						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						IAsyncEnumerable<DateOnly?> subject = ToAsyncEnumerable(values);
+
+						object Act()
+							=> That(subject).All().AreEqualTo(new DateOnly(2024, 1, 11)).Within(1.Days() + 1.Hours());
+
+						await That(Act).Throws<ArgumentOutOfRangeException>()
+							.WithParamName("tolerance").And
+							.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
+					}
+
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
+						IAsyncEnumerable<DateOnly?> subject = ToAsyncEnumerable(values);
+						DateOnly? expected = new DateOnly(2024, 1, 11);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
+							              but only 1 of 2 were
+
+							              Not matching items:
+							              {Formatter.Format(new DateOnly?[] { new DateOnly(2024, 1, 13), }, FormattingOptions.MultipleLines)}
+
+							              Collection:
+							              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						IAsyncEnumerable<DateOnly?> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new DateOnly(2024, 1, 11)).Within(1.Days());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class TimeOnlyTests
+				{
+					[Fact]
+					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+					{
+						TimeOnly[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
+						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new TimeOnly(23, 59, 30)).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow()
+							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+					}
+
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
+						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
+						TimeOnly expected = new TimeOnly(14, 0);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
+							              but only 1 of 2 were
+
+							              Not matching items:
+							              {Formatter.Format(new TimeOnly[] { new TimeOnly(14, 2), }, FormattingOptions.MultipleLines)}
+
+							              Collection:
+							              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];
+						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new TimeOnly(14, 0)).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class NullableTimeOnlyTests
+				{
+					[Fact]
+					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
+					{
+						TimeOnly?[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
+						IAsyncEnumerable<TimeOnly?> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new TimeOnly(23, 59, 30)).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow()
+							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
+					}
+
+					[Fact]
+					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
+					{
+						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
+						IAsyncEnumerable<TimeOnly?> subject = ToAsyncEnumerable(values);
+						TimeOnly? expected = new TimeOnly(14, 0);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
+
+						await That(Act).Throws<XunitException>()
+							.WithMessage($"""
+							              Expected that subject
+							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
+							              but only 1 of 2 were
+
+							              Not matching items:
+							              {Formatter.Format(new TimeOnly?[] { new TimeOnly(14, 2), }, FormattingOptions.MultipleLines)}
+
+							              Collection:
+							              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+							              """);
+					}
+
+					[Fact]
+					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
+					{
+						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];
+						IAsyncEnumerable<TimeOnly?> subject = ToAsyncEnumerable(values);
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(new TimeOnly(14, 0)).Within(1.Minutes());
+
+						await That(Act).DoesNotThrow();
+					}
+				}
 			}
 		}
 	}

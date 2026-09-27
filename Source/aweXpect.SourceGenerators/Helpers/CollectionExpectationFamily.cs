@@ -74,8 +74,8 @@ internal sealed record CollectionExpectationFamily(
 		}
 
 		List<Variant> variants = Variants(declaration, expected?.Name ?? "", hasPolarity);
-		// A single expected value of a nullable element already accepts the non-nullable one.
-		bool castsUp = expected != null &&
+		// A single expected value or a params array of a nullable element already accepts the non-nullable one.
+		bool castsUp = expected != null && !declaration.Params &&
 		               !SymbolEqualityComparer.Default.Equals(ElementOf(expected.Type), expected.Type);
 		List<Instantiation> instantiations = Instantiate(helper, expected, declaration, castsUp).ToList();
 		problems.AddRange(Check(helper, expected, declaration, location, hasPolarity, instantiations.Count));

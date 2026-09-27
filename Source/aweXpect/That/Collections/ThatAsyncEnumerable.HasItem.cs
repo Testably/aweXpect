@@ -95,6 +95,29 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+	internal static ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>
+		HasTheItemWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			TItem expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			bool negated)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
+					a => options.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
+					indexOptions).InvertIf(negated)),
+			subject,
+			indexOptions,
+			options);
+	}
+
+	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static StringHasItemResult<IAsyncEnumerable<string?>>
 		HasTheItemForStringsCore(

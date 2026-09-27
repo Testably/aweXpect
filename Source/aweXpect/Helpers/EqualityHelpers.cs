@@ -209,6 +209,43 @@ internal static class EqualityHelpers
 		return actual.Value.IsConsideredEqualTo(expected, tolerance);
 	}
 
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     A date has no time of day, so only the whole days of the <paramref name="tolerance" /> count.
+	/// </remarks>
+	public static bool IsConsideredEqualTo(this DateOnly actual, DateOnly? expected, TimeSpan tolerance)
+		=> expected is not null &&
+		   Math.Abs(actual.DayNumber - expected.Value.DayNumber) <= (int)tolerance.TotalDays;
+
+	/// <inheritdoc cref="IsConsideredEqualTo(DateOnly, DateOnly?, TimeSpan)" />
+	public static bool IsConsideredEqualTo(this DateOnly? actual, DateOnly? expected, TimeSpan tolerance)
+	{
+		if (actual is null || expected is null)
+		{
+			return actual is null && expected is null;
+		}
+
+		return actual.Value.IsConsideredEqualTo(expected, tolerance);
+	}
+
+	/// <remarks>
+	///     The times are compared on the clock face, so the difference runs the shorter way around midnight.
+	/// </remarks>
+	public static bool IsConsideredEqualTo(this TimeOnly actual, TimeOnly? expected, TimeSpan tolerance)
+		=> expected is not null && actual.CircularDistanceTicks(expected.Value) <= tolerance.Ticks;
+
+	/// <inheritdoc cref="IsConsideredEqualTo(TimeOnly, TimeOnly?, TimeSpan)" />
+	public static bool IsConsideredEqualTo(this TimeOnly? actual, TimeOnly? expected, TimeSpan tolerance)
+	{
+		if (actual is null || expected is null)
+		{
+			return actual is null && expected is null;
+		}
+
+		return actual.Value.IsConsideredEqualTo(expected, tolerance);
+	}
+#endif
+
 	/// <summary>
 	///     Checks whether <paramref name="actual" /> and <paramref name="other" /> can be compared at all: a
 	///     <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> value denote different instants for

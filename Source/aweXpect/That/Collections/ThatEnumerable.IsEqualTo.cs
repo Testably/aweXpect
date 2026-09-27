@@ -163,7 +163,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
-		Summary = Matches, NegatedSummary = DoesNotMatch)]
+		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SetComparerRemarks)]
 	internal static ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>
 		IsEqualToWithToleranceCore<TItem, TTolerance>(
@@ -180,7 +180,8 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					usesDefaultEquality: () => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

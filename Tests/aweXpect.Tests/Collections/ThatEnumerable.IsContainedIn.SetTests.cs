@@ -9,6 +9,18 @@ public sealed partial class ThatEnumerable
 		public sealed class SetTests
 		{
 			[Fact]
+			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn([1.2, 1.8, 3.0,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
+			}
+
+			[Fact]
 			public async Task InAnyOrder_ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -73,6 +85,38 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """)
 					.Because("only the comparer of the subject decides which items are the same");
+			}
+
+			[Fact]
+			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
+			{
+				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+
+				async Task Act()
+					=> await That(subject).IsContainedIn([1.25, 1.75, 3.0,]).Within(0.125);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection [1.25, 1.75, 3.0,] ± 0.125 in order and contiguous,
+					             but it
+					               contained item 1.0 at index 0 instead of 1.25 and
+					               contained item 2.0 at index 1 instead of 1.75
+
+					             Collection:
+					             [1.0, 2.0]
+
+					             Expected:
+					             [1.25, 1.75, 3.0]
+					             """)
+					.Because("the tolerance replaces the comparer of the set");
+			}
+
+			private sealed class RoundingComparer : IEqualityComparer<double>
+			{
+				public bool Equals(double x, double y) => Math.Round(x) == Math.Round(y);
+
+				public int GetHashCode(double obj) => Math.Round(obj).GetHashCode();
 			}
 		}
 	}

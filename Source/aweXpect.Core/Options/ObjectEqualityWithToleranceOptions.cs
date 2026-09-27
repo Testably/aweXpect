@@ -14,6 +14,8 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	Func<TTolerance, string>? toString = null)
 	: ObjectEqualityOptions<TSubject>
 {
+	private Action<TTolerance>? _validateTolerance;
+
 	/// <summary>
 	///     Specifies the <paramref name="tolerance" /> within which the actual value is considered equal to the expected
 	///     value.
@@ -26,6 +28,18 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		ThrowIfToleranceIsInvalid(tolerance);
 		SetMatchType(new WithinMatchType(() => tolerance, false, isWithinTolerance,
 			toString ?? DefaultToleranceFormatter), nameof(Within));
+		_validateTolerance?.Invoke(tolerance);
+		return this;
+	}
+
+	/// <summary>
+	///     Specifies the <paramref name="validation" /> that rejects a tolerance passed to
+	///     <see cref="Within(TTolerance)" /> which the comparison of <typeparamref name="TSubject" /> cannot honour.
+	/// </summary>
+	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithToleranceValidation(
+		Action<TTolerance> validation)
+	{
+		_validateTolerance = validation;
 		return this;
 	}
 
