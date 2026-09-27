@@ -3,6 +3,7 @@ using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
+using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;
 
@@ -19,22 +20,25 @@ public static partial class ThatNullableChar
 	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	internal static AndOrResult<char?, IThat<char?>> IsOneOfCore(
+	internal static CharEqualityResult<char?, IThat<char?>> IsOneOfCore(
 		IThat<char?> subject,
 		IEnumerable<char?> expected,
 		string? expectedExpression,
 		bool negated)
 	{
 		IEnumerable<char?> expectedValues = expected.ToNonEmptyValues(negated);
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
-					.InvertIf(negated)),
-			subject);
+		CharEqualityOptions options = new();
+		return new CharEqualityResult<char?, IThat<char?>>(subject.Get().ExpectationBuilder.AddConstraint(
+				(it, grammars) =>
+					new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
+						.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+						.InvertIf(negated)),
+			subject,
+			options);
 	}
 
 	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	internal static AndOrResult<char?, IThat<char?>> IsOneOfForValuesCore(
+	internal static CharEqualityResult<char?, IThat<char?>> IsOneOfForValuesCore(
 		IThat<char?> subject,
 		IEnumerable<char> expected,
 		string? expectedExpression,
@@ -48,14 +52,15 @@ public static partial class ThatNullableChar
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<char?> expected,
-		string? expectedExpression)
+		string? expectedExpression,
+		CharEqualityOptions options)
 		: ConstraintResult.WithValue<char?>(it, grammars),
 			IValueConstraint<char?>
 	{
 		public ConstraintResult IsMetBy(char? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => actual.Equals(value))
+			Outcome = expected.Any(value => options.AreConsideredEqual(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -65,6 +70,7 @@ public static partial class ThatNullableChar
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
+			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -77,6 +83,7 @@ public static partial class ThatNullableChar
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
+			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

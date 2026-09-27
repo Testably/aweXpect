@@ -83,6 +83,110 @@ public sealed partial class ThatAsyncEnumerable
 			}
 		}
 
+		public sealed class MatchingExactlyTypeTests
+		{
+			[Fact]
+			public async Task ShouldReturnSingleItem()
+			{
+				IAsyncEnumerable<MyBaseClass> subject =
+					ToAsyncEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+
+				MyBaseClass result = await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
+			{
+				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable(
+					new MyBaseClass(1), new MyClass(2), new MyBaseClass(3));
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type MyBaseClass,
+					             but it contained more than one item
+
+					             Collection:
+					             [
+					               MyBaseClass {
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               },
+					               MyBaseClass {
+					                 Value = 3
+					               }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsOnlySubtypes_ShouldFail()
+			{
+				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable<MyBaseClass>(new MyClass(1), new MyOtherClass(2));
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type MyBaseClass,
+					             but it did not contain any matching item
+					             """);
+			}
+		}
+
+		public sealed class MatchingExactlyTypePredicateTests
+		{
+			[Fact]
+			public async Task ShouldReturnSingleItem()
+			{
+				IAsyncEnumerable<MyBaseClass> subject =
+					ToAsyncEnumerable(new MyBaseClass(1), new MyClass(2), new MyBaseClass(3));
+
+				MyBaseClass result = await That(subject).HasSingle().MatchingExactly<MyBaseClass>(x => x.Value > 1);
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
+			{
+				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable<MyBaseClass>(new MyClass(1), new MyClass(2));
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>(x => x.Value > 1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type MyBaseClass matching x => x.Value > 1,
+					             but it did not contain any matching item
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable(new MyBaseClass(1));
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+		}
+
 		public sealed class MatchingPredicateTests
 		{
 			[Fact]
@@ -433,6 +537,35 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenOnlyOneElementMatchesTheExactType_ShouldFail()
+			{
+				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable(new MyClass(1), new MyBaseClass(2));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().MatchingExactly<MyBaseClass>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item exactly of type MyBaseClass,
+					             but it had the single matching item MyBaseClass {
+					               Value = 2
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyBaseClass {
+					                 Value = 2
+					               }
+					             ]
 					             """);
 			}
 

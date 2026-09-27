@@ -11,7 +11,11 @@ char subject = 'a';
 
 await Expect.That(subject).IsEqualTo('a');
 await Expect.That(subject).IsNotEqualTo('b');
+await Expect.That(subject).IsEqualTo('A').IgnoringCase();
 ```
+
+`IgnoringCase()` compares the characters the same way as `string`s with `IgnoringCase()`, i.e. with
+`StringComparison.OrdinalIgnoreCase`.
 
 ## One of
 
@@ -22,6 +26,7 @@ char subject = 'a';
 
 await Expect.That(subject).IsOneOf('a', 'b', 'c');
 await Expect.That(subject).IsNotOneOf('x', 'y', 'z');
+await Expect.That(subject).IsOneOf('A', 'B', 'C').IgnoringCase();
 ```
 
 ## Is
@@ -106,6 +111,8 @@ await Expect.That('a').IsLowerCased();
 This verifies that the subject is categorized as an uppercase or lowercase letter
 (see [`char.IsUpper(char)`](https://learn.microsoft.com/en-us/dotnet/api/system.char.isupper) and
 [`char.IsLower(char)`](https://learn.microsoft.com/en-us/dotnet/api/system.char.islower)).
+This differs from the [`string` casing expectations](/docs/expectations/common-types/string#character-casing), which only look at
+cased letters: `'1'` is neither upper-cased nor lower-cased, while `"1"` is both.
 
 ### A control character
 

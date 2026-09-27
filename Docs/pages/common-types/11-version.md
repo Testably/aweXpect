@@ -2,8 +2,33 @@
 
 Describes the possible expectations for `Version`.
 
-A `null` subject fails every expectation on this page. Equality, reference equality and `null` checks come from
-the [object expectations](/docs/expectations/common-types/object).
+A `null` subject fails every expectation on this page except equality and one of. Reference equality and `null`
+checks come from the [object expectations](/docs/expectations/common-types/object).
+
+## Equality
+
+You can verify that the `Version` is equal to another one or not:
+
+```csharp
+Version subject = new(1, 2);
+
+await Expect.That(subject).IsEqualTo(new Version(1, 2));
+await Expect.That(subject).IsNotEqualTo(new Version(1, 2, 0));
+```
+
+This uses the equality of `Version`, where an unspecified component is not treated as zero, so `1.2` is not equal
+to `1.2.0`.
+
+## One of
+
+You can verify that the `Version` is one of many alternatives:
+
+```csharp
+Version subject = new(1, 2);
+
+await Expect.That(subject).IsOneOf(new Version(1, 2), new Version(1, 3));
+await Expect.That(subject).IsNotOneOf(new Version(2, 0), new Version(3, 0));
+```
 
 ## Components
 

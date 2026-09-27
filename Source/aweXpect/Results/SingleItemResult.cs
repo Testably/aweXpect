@@ -76,6 +76,29 @@ public class SingleItemResult<TCollection, TItem>
 		return Cast<T>(x => (T)(object)x!);
 	}
 
+	/// <summary>
+	///     …exactly of type <typeparamref name="T" />.
+	/// </summary>
+	public SingleItemResult<TCollection, T> MatchingExactly<T>()
+	{
+		_options.SetPredicate(item => item is T && item.GetType() == typeof(T),
+			$" exactly of type {Formatter.Format(typeof(T))}");
+		return Cast<T>(x => (T)(object)x!);
+	}
+
+	/// <summary>
+	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
+	/// </summary>
+	public SingleItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+	{
+		predicate.ThrowIfNull();
+		_options.SetPredicate(item => item is T typed && item.GetType() == typeof(T) && predicate(typed),
+			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
+		return Cast<T>(x => (T)(object)x!);
+	}
+
 	private SingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
 		=> new(_expectationBuilder, new PredicateOptions<T>(), x => memberAccessor(_memberAccessor(x)));
 }
