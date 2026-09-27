@@ -1,3 +1,5 @@
+import PropertyComparisons from '../_property-comparisons.md';
+
 # Version
 
 Describes the possible expectations for `Version`.
@@ -50,8 +52,7 @@ await Expect.That(subject).HasBuild().LessThanOrEqualTo(3);
 await Expect.That(subject).HasRevision().NotEqualTo(5);
 ```
 
-Each of `HasMajor()`, `HasMinor()`, `HasBuild()` and `HasRevision()` supports `EqualTo`, `NotEqualTo`,
-`GreaterThan`, `GreaterThanOrEqualTo`, `LessThan` and `LessThanOrEqualTo`.
+<PropertyComparisons />
 
 An unspecified build or revision is `-1`, not `0`:
 

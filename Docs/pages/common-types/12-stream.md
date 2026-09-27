@@ -1,3 +1,5 @@
+import PropertyComparisons from '../_property-comparisons.md';
+
 # Stream
 
 Describes the possible expectations for `Stream` and `BufferedStream`.
@@ -32,12 +34,6 @@ await Expect.That(subject).HasLength(3);
 // or more explicit
 await Expect.That(subject).HasLength().EqualTo(3);
 
-await Expect.That(subject).HasLength().NotEqualTo(4);
-
-await Expect.That(subject).HasLength().GreaterThan(2);
-await Expect.That(subject).HasLength().GreaterThanOrEqualTo(3);
-await Expect.That(subject).HasLength().LessThanOrEqualTo(3);
-await Expect.That(subject).HasLength().LessThan(4);
 await Expect.That(subject).HasLength().Between(2).And(4);
 ```
 
@@ -53,13 +49,7 @@ await Expect.That(subject).HasPosition(2);
 // or more explicit
 await Expect.That(subject).HasPosition().EqualTo(2);
 
-await Expect.That(subject).HasPosition().NotEqualTo(0);
-
 await Expect.That(subject).HasPosition().GreaterThan(1);
-await Expect.That(subject).HasPosition().GreaterThanOrEqualTo(2);
-await Expect.That(subject).HasPosition().LessThanOrEqualTo(2);
-await Expect.That(subject).HasPosition().LessThan(3);
-await Expect.That(subject).HasPosition().Between(1).And(3);
 ```
 
 ## Buffer size
@@ -74,10 +64,8 @@ await Expect.That(subject).HasBufferSize(2);
 await Expect.That(subject).HasBufferSize().EqualTo(2);
 
 await Expect.That(subject).HasBufferSize().NotEqualTo(3);
-
-await Expect.That(subject).HasBufferSize().GreaterThan(1);
-await Expect.That(subject).HasBufferSize().GreaterThanOrEqualTo(2);
-await Expect.That(subject).HasBufferSize().LessThanOrEqualTo(2);
-await Expect.That(subject).HasBufferSize().LessThan(3);
-await Expect.That(subject).HasBufferSize().Between(1).And(3);
 ```
+
+## Comparisons
+
+<PropertyComparisons />

@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import PropertyComparisons from '../_property-comparisons.md';
 
 # DateTime / DateTimeOffset
 
@@ -298,19 +299,9 @@ await Expect.That(subject).HasOffset(TimeSpan.FromMinutes(90));
 await Expect.That(subject).HasOffset().EqualTo(TimeSpan.FromMinutes(90));
 ```
 
-All property verifications support the following comparisons:
+<PropertyComparisons />
 
-```csharp
-DateTime subject = new DateTime(2024, 12, 31, 15, 16, 17);
-
-await Expect.That(subject).HasYear().EqualTo(2024);
-await Expect.That(subject).HasYear().NotEqualTo(2020);
-await Expect.That(subject).HasYear().GreaterThan(2023);
-await Expect.That(subject).HasYear().GreaterThanOrEqualTo(2024);
-await Expect.That(subject).HasYear().LessThanOrEqualTo(2024);
-await Expect.That(subject).HasYear().LessThan(2025);
-await Expect.That(subject).HasYear().Between(2000).And(2024);
-```
+`HasKind()` only supports `EqualTo` and `NotEqualTo`.
 
 ## Default tolerance
 

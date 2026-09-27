@@ -2,23 +2,16 @@
 
 Describes the possible expectations for delegates and exceptions.
 
-A delegate can be any of the following:
+A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.
+`Func<CancellationToken, Task>`), which is canceled when the expectation times out or is canceled:
 
-- `Action` or `Action<CancellationToken>`  
-  a synchronous method without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<Task>` or `Func<CancellationToken, Task>`  
-  an asynchronous method without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<ValueTask>` or `Func<CancellationToken, ValueTask>`  
-  an asynchronous method using `ValueTask` without return value (optionally accepting a `CancellationToken` for timeout)
-- `Func<T>` or `Func<CancellationToken, T>`  
-  a synchronous method with return value `T` (optionally accepting a `CancellationToken` for timeout)
-- `Func<Task<T>>` or `Func<CancellationToken, Task<T>>`  
-  an asynchronous method with return value `T` (optionally accepting a `CancellationToken` for timeout)
-- `Func<ValueTask<T>>` or `Func<CancellationToken, ValueTask<T>>`  
-  an asynchronous method using `ValueTask` with return value `T` (optionally accepting a `CancellationToken` for
-  timeout)
-- `Task` or `ValueTask`  
-  an asynchronous operation without return value that is already running
+|              | Without return value            | With return value `T`                 |
+|--------------|---------------------------------|---------------------------------------|
+| Synchronous  | `Action`                        | `Func<T>`                             |
+| Asynchronous | `Func<Task>`, `Func<ValueTask>` | `Func<Task<T>>`, `Func<ValueTask<T>>` |
+
+A `Task` or `ValueTask` is treated like a delegate as well: an asynchronous operation without return value that is
+already running.
 
 ```csharp
 await Expect.That(DoAsync()).DoesNotThrow();

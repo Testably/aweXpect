@@ -1,3 +1,5 @@
+import PropertyComparisons from '../_property-comparisons.md';
+
 # String
 
 Describes the possible expectations for strings.
@@ -173,15 +175,12 @@ await Expect.That(subject).HasLength(10);
 // or more explicit
 await Expect.That(subject).HasLength().EqualTo(10);
 
-await Expect.That(subject).HasLength().NotEqualTo(9);
-
 await Expect.That(subject).HasLength().GreaterThan(8);
-await Expect.That(subject).HasLength().GreaterThanOrEqualTo(9);
-await Expect.That(subject).HasLength().LessThanOrEqualTo(11);
-await Expect.That(subject).HasLength().LessThan(12);
 await Expect.That(subject).HasLength().Between(8).And(12);
 await Expect.That(subject).HasLength().NotGreaterThan(12);
 ```
+
+<PropertyComparisons />
 
 ## Lines
 

@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import PropertyComparisons from '../_property-comparisons.md';
 
 # DateOnly / TimeOnly
 
@@ -312,16 +313,4 @@ await Expect.That(subject).HasMillisecond().EqualTo(189);
 </TabItem>
 </Tabs>
 
-All property verifications support the following comparisons:
-
-```csharp
-DateOnly subject = new DateOnly(2024, 12, 31);
-
-await Expect.That(subject).HasYear().EqualTo(2024);
-await Expect.That(subject).HasYear().NotEqualTo(2020);
-await Expect.That(subject).HasYear().GreaterThan(2023);
-await Expect.That(subject).HasYear().GreaterThanOrEqualTo(2024);
-await Expect.That(subject).HasYear().LessThanOrEqualTo(2024);
-await Expect.That(subject).HasYear().LessThan(2025);
-await Expect.That(subject).HasYear().Between(2000).And(2024);
-```
+<PropertyComparisons />
