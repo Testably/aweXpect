@@ -33,7 +33,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenActualIsNull_ShouldSucceed()
+			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
 

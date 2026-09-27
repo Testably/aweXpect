@@ -25,7 +25,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
 
@@ -291,7 +291,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject =
 						ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));

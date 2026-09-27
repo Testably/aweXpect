@@ -60,7 +60,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenActualIsWhitespace_ShouldFail()
+			public async Task WhenActualIsWhitespace_ShouldSucceed()
 			{
 				string subject = " \t ";
 

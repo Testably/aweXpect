@@ -325,7 +325,7 @@ public sealed partial class ThatEnumerable
 		{
 			[Theory]
 			[AutoData]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed(
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail(
 				List<int> values, int expected)
 			{
 				values.Add(0);

@@ -52,7 +52,7 @@ public sealed partial class ThatDelegate
 
 			[Theory]
 			[AutoData]
-			public async Task WhenDelegateThrowsOtherException_ShouldFail(string message)
+			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
 				Action @delegate = () => throw exception;
@@ -151,7 +151,7 @@ public sealed partial class ThatDelegate
 
 			[Theory]
 			[AutoData]
-			public async Task WhenDelegateThrowsOtherException_ShouldFail(string message)
+			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
 				Func<int> @delegate = () => throw exception;

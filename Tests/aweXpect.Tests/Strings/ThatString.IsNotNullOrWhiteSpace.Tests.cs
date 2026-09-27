@@ -33,7 +33,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenActualIsNull_ShouldSucceed()
+			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
 
@@ -45,6 +45,22 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is not null or whitespace,
 					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenActualIsWhitespace_ShouldFail()
+			{
+				string subject = " \t ";
+
+				async Task Act()
+					=> await That(subject).IsNotNullOrWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not null or whitespace,
+					             but it was " \t "
 					             """);
 			}
 
@@ -62,22 +78,6 @@ public sealed partial class ThatString
 					              is not null or whitespace,
 					              but it was "{new string(' ', 100)}…"
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenActualIsWhitespace_ShouldSucceed()
-			{
-				string subject = " \t ";
-
-				async Task Act()
-					=> await That(subject).IsNotNullOrWhiteSpace();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not null or whitespace,
-					             but it was " \t "
-					             """);
 			}
 		}
 	}

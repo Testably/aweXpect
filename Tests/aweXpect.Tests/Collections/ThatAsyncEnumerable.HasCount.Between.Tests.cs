@@ -67,7 +67,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
+				public async Task WhenEnumerableContainsTooManyItems_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5, 6, 7);
 

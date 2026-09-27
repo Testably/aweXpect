@@ -1858,7 +1858,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WithSameCollection_ShouldSucceed()
+			public async Task WithSameCollection_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
 				IEnumerable<Expression<Func<string, bool>>> expected =
