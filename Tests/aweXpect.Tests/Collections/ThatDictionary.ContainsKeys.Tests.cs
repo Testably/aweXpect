@@ -22,6 +22,18 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenAllKeysOfAnEnumerableExist_ShouldSucceed()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
+				IEnumerable<int> expected = new List<int> { 2, 1, };
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				Dictionary<string, int> subject = new()
@@ -76,6 +88,28 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [0, 2],
+					             but it did not contain [
+					               0
+					             ]
+
+					             Dictionary:
+					             {[1] = 0, [2] = 0, [3] = 0}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenOneKeyOfAnEnumerableIsMissing_ShouldFail()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
+				IEnumerable<int> expected = new List<int> { 0, 2, };
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys expected,
 					             but it did not contain [
 					               0
 					             ]

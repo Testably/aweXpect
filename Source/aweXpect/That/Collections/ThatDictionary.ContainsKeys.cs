@@ -10,55 +10,49 @@ namespace aweXpect;
 
 public static partial class ThatDictionary
 {
-	[CreateCollectionExpectation("ContainsKeys", PerSubject = true, GuaranteesNotNull = true, Params = true,
-		Summary = "Verifies that the dictionary contains all <paramref name=\"expected\" /> keys.")]
+	private const string ContainsKeysSummary =
+		"Verifies that the dictionary contains all <paramref name=\"expected\" /> keys.";
+
+	private const string DoesNotContainKeysSummary =
+		"Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> keys.";
+
+	private const string DoesNotContainKeysRemarks =
+		"It fails when the dictionary contains any of the keys. This is stricter than negating <c>ContainsKeys</c>\n" +
+		"with <c>DoesNotComplyWith</c>, which only fails when the dictionary contains all of them.";
+
+	[CreateCollectionExpectation("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
+		GuaranteesNotNull = true, NegatedReturnType = NegatedKeyReturnType,
+		Summary = ContainsKeysSummary, NegatedSummary = DoesNotContainKeysSummary,
+		NegatedRemarks = DoesNotContainKeysRemarks)]
+	[CreateCollectionExpectation("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
+		GuaranteesNotNull = true, Params = true, NegatedReturnType = NegatedKeyReturnType,
+		Summary = ContainsKeysSummary, NegatedSummary = DoesNotContainKeysSummary,
+		NegatedRemarks = DoesNotContainKeysRemarks)]
 	internal static ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>
 		ContainsKeysCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
-			TKey[] expected)
+			IEnumerable<TKey> expected,
+			string? expectedExpression,
+			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		expected.ThrowIfNullOrEmpty();
-		foreach (TKey key in expected)
+		TKey[] keys = expected.ToNonEmptyValues(negated).ToArray();
+		foreach (TKey key in keys)
 		{
-			key.ThrowIfNull(false);
+			key.ThrowIfNull(negated);
 		}
 
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainKeysConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars, expected)),
+				new ContainKeysConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(keys), keys).InvertIf(negated)),
 			subject,
-			expected,
-			dictionary => new KeyedValues<TKey, TValue?>(expected
+			keys,
+			dictionary => new KeyedValues<TKey, TValue?>(keys
 				.Where(key => ContainsKey(dictionary, key))
 				.Select(key => new KeyValuePair<TKey, TValue?>(key,
 					GetLookup(dictionary)(key, out TValue? value) ? value : default)))
-		);
-	}
-
-	[CreateCollectionExpectation("DoesNotContainKeys", PerSubject = true, GuaranteesNotNull = true, Params = true,
-		Summary = "Verifies that the dictionary contains none of the <paramref name=\"unexpected\" /> keys.",
-		Remarks = "It fails when the dictionary contains any of the keys. This is stricter than negating <c>ContainsKeys</c>\n" +
-		          "with <c>DoesNotComplyWith</c>, which only fails when the dictionary contains all of them.")]
-	internal static AndOrResult<TCollection, IThat<TCollection?>>
-		DoesNotContainKeysCore<TCollection, TKey, TValue>(
-			IThat<TCollection?> subject,
-			TKey[] unexpected)
-		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		foreach (TKey key in unexpected)
-		{
-			key.ThrowIfNull(true);
-		}
-
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<TCollection, IThat<TCollection?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainKeysConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
-					unexpected).Invert()),
-			subject
 		);
 	}
 
@@ -66,6 +60,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
+		string expectedExpression,
 		TKey[] expected)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IValueConstraint<TDictionary?>
@@ -107,8 +102,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("contains keys ", "contain keys "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Grammars.Verb("contains keys ", "contain keys ")).Append(expectedExpression);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -119,8 +113,8 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("does not contain keys ", "do not contain keys "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Grammars.Verb("does not contain keys ", "do not contain keys "))
+				.Append(expectedExpression);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

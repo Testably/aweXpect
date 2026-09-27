@@ -150,6 +150,26 @@ public sealed partial class ThatDictionary
 		public sealed class OverloadTests
 		{
 			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).Contains(new KeyValuePair<string, int>("a", 1));
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task ForADictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).Contains("a", 1);
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
 			public async Task ForAListOfPairs_ShouldStillBindToTheCollectionOverload()
 			{
 				List<KeyValuePair<string, int>> subject = [new("a", 1),];

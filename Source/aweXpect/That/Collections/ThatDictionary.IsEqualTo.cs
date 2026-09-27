@@ -26,30 +26,10 @@ public static partial class ThatDictionary
 		"<see cref=\"System.Collections.Generic.SortedDictionary{TKey,TValue}\" />, not from a wrapper such as\n" +
 		"<see cref=\"System.Collections.ObjectModel.ReadOnlyDictionary{TKey,TValue}\" /> or a custom dictionary.";
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Remarks = KeyComparerRemarks,
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
-	internal static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
-		IsEqualToCore<TKey, TValue>(
-			IThat<IDictionary<TKey, TValue>?> subject,
-			IEnumerable<KeyValuePair<TKey, TValue>> expected,
-			string expectedExpression,
-			bool negated)
-		=> IsEqualToDictionary(subject, expected, expectedExpression, negated);
-
-	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1,
-		Remarks = KeyComparerRemarks + "\n" + SharedDeclaringTypeRemarks,
-		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
-	internal static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		IsEqualToForReadOnlyCore<TKey, TValue>(
-			IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			IEnumerable<KeyValuePair<TKey, TValue>> expected,
-			string expectedExpression,
-			bool negated)
-		=> IsEqualToDictionary(subject, expected, expectedExpression, negated);
-
-	private static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
-		IsEqualToDictionary<TCollection, TKey, TValue>(
+	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
+		IsEqualToCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
 			IEnumerable<KeyValuePair<TKey, TValue>> expected,
 			string expectedExpression,

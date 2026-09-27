@@ -124,5 +124,29 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result =
+					await That(subject).DoesNotContain(new KeyValuePair<string, int>("a", 2));
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task ForADictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).DoesNotContain("a", 2);
+
+				await That(result).IsSameAs(subject);
+			}
+		}
 	}
 }

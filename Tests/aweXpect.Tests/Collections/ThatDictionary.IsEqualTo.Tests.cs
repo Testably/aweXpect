@@ -439,11 +439,22 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> expected = new() { { "b", 2 }, { "a", 1 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
+					=> await (ObjectEqualityResult<Dictionary<string, int>, IThat<Dictionary<string, int>?>, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
 					.Because("the compile-time result type pins the expectation to the dictionary overload");
+			}
+
+			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+				Dictionary<string, int> expected = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).IsEqualTo(expected);
+
+				await That(result).IsSameAs(subject);
 			}
 
 			[Fact]

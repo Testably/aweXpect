@@ -22,6 +22,18 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenAllKeysOfAnEnumerableDoNotExist_ShouldSucceed()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
+				IEnumerable<int> unexpected = new List<int> { 42, 43, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainKeys(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenAtLeastOneKeyExists_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -33,6 +45,28 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain keys [42, 2],
+					             but it contained [
+					               2
+					             ]
+
+					             Dictionary:
+					             {[1] = 0, [2] = 0, [3] = 0}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAtLeastOneKeyOfAnEnumerableExists_ShouldFail()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
+				IEnumerable<int> unexpected = new List<int> { 42, 2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainKeys(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain keys unexpected,
 					             but it contained [
 					               2
 					             ]
