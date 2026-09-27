@@ -2,6 +2,9 @@
 
 Describes the possible expectations for `enum` values.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `HasValue`, which takes a negated comparison
+instead (e.g. `HasValue().NotEqualTo(2)`).
+
 ## Equality
 
 You can verify that the `enum` is equal to another one or not:

@@ -29,6 +29,37 @@ applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a
 expectation is built.
 :::
 
+## Default waits
+
+Some expectations wait for something to happen. Without `Within(…)` they behave as follows:
+
+| Expectation                                                        | Without `Within(…)`                                                               |
+|--------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| [`Signaled()`](/docs/expectations/advanced/callbacks)              | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
+| [`DidNotSignal()`](/docs/expectations/advanced/callbacks)          | always waits the full `DefaultSignalerTimeout` (30 s)                             |
+| [`Triggered("X")`](/docs/expectations/events#timeout)              | does not wait, only the events recorded so far count                              |
+| [`Satisfies(…)`](/docs/expectations/common-types/object#condition) | does not wait                                                                     |
+| [`Eventually()`](/docs/expectations/delegates#eventually)          | retries until the expectations are met, at most `DefaultEventuallyTimeout` (30 s) |
+
+Both defaults can be changed in the [settings](/docs/expectations/advanced/customization#settings). When a default
+applied, the failure message names the wait, e.g. `has never recorded the callback within 0:30` or
+`eventually is equal to 2 within 0:30`.
+
+`Eventually()` is configured with `Within(…)` for the timeout of the retries and `CheckEvery(…)` for the interval
+between them. `WithTimeout` does not change the timeout of the retries, but cancels the evaluation like everywhere
+else, so the tightest timeout wins:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+int attempts = 0;
+
+await Expect.That(() => ++attempts).Eventually().Within(5.Seconds()).CheckEvery(50.Milliseconds())
+  .IsGreaterThan(3)
+  .WithTimeout(2.Seconds())
+  .Because("the retries end after 2 seconds, as the timeout is shorter than `Within`");
+```
+
 
 ## `CancellationToken`
 

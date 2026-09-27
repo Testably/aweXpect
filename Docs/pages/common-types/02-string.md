@@ -2,6 +2,9 @@
 
 Describes the possible expectations for strings.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` expectations, which take a
+negated comparison instead (e.g. `HasLength().NotEqualTo(9)`).
+
 ## Equality
 
 You can verify that the `string` is equal to another one.  
@@ -243,6 +246,17 @@ await Expect.That(subject).EndsWith("ROAD").Using(StringComparer.OrdinalIgnoreCa
   .Because("the comparer ignored the casing");
 ```
 
+You can also verify that the `string` does not start or end with a given string. The negations take the same options,
+so an option can make them fail:
+
+```csharp
+string subject = "Abbey Road";
+
+await Expect.That(subject).DoesNotStartWith("Road");
+await Expect.That(subject).DoesNotEndWith("ROAD")
+  .Because("the casing differs, which would not count with `IgnoringCase()`");
+```
+
 ## Contains
 
 You can verify that the `string` contains a given substring.  
@@ -333,3 +347,32 @@ Letters without an upper-case (lower-case) form, like `ß`, count as upper-cased
 await Expect.That("STRAßE").IsNotUpperCased().IncludingUncasedLetters()
   .Because("ß is a lowercase letter without an uppercase form");
 ```
+
+## Parsing
+
+You can verify that the `string` can be parsed into a type that implements `IParsable<T>`, and continue with
+expectations on the parsed value with `Which`:
+
+```csharp
+using System.Globalization;
+
+await Expect.That("42").IsParsableInto<int>();
+await Expect.That("42").IsParsableInto<int>().Which.IsGreaterThan(40);
+await Expect.That("1,5").IsParsableInto<double>(new CultureInfo("de-DE"))
+  .Because("the format provider is passed to `Parse`");
+
+await Expect.That("abc").IsNotParsableInto<int>();
+```
+
+A failure shows the exception thrown by `Parse` and keeps it as inner exception. A `null` subject fails both
+expectations.
+
+The same expectations are available for a `ReadOnlySpan<char>` of a type that implements `ISpanParsable<T>` and for a
+UTF-8 `ReadOnlySpan<byte>` of a type that implements `IUtf8SpanParsable<T>`:
+
+```csharp
+await Expect.That("42".AsSpan()).IsParsableInto<int>();
+await Expect.That("42"u8).IsParsableInto<int>();
+```
+
+*Note: these expectations are only available on .NET 8 or later.*

@@ -2,6 +2,8 @@
 
 Describes the possible expectations for `char` values.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the `char` is equal to another one:

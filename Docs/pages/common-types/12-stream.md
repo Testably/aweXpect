@@ -2,6 +2,9 @@
 
 Describes the possible expectations for `Stream` and `BufferedStream`.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` properties, which take a negated
+comparison instead (e.g. `HasLength().NotEqualTo(4)`).
+
 ## Properties
 
 You can verify the properties of the `Stream`:

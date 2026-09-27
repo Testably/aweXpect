@@ -5,6 +5,9 @@ Describes the possible expectations for `Version`.
 A `null` subject fails every expectation on this page except equality and one of. Reference equality and `null`
 checks come from the [object expectations](/docs/expectations/common-types/object).
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` components, which take a negated
+comparison instead (e.g. `HasRevision().NotEqualTo(5)`).
+
 ## Equality
 
 You can verify that the `Version` is equal to another one or not:

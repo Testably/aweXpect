@@ -2,6 +2,8 @@
 
 Describes the possible expectations for objects.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the `object` is equal to another one or not:
@@ -144,6 +146,7 @@ You can verify that any object satisfies a given predicate:
 object? subject = null;
 
 await Expect.That(subject).Satisfies(x => x == null);
+await Expect.That(subject).DoesNotSatisfy(x => x != null);
 ```
 
 When the object changes in the background, you can also verify that it satisfies a condition within a given time
@@ -168,7 +171,10 @@ You can verify that any object complies with an expectation:
 List<Track> tracks = new();
 
 await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
+await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
+
+`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails.
 
 When the object changes in the background, you can also verify that it complies with an expectation within a given time
 period:

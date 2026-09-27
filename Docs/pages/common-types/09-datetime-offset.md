@@ -2,6 +2,9 @@
 
 Describes the possible expectations for `DateTime` and `DateTimeOffset`.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` properties, which take a negated
+comparison instead (e.g. `HasYear().NotEqualTo(2020)`).
+
 ## Equality
 
 You can verify that the `DateTime` or `DateTimeOffset` is equal to another one or not:

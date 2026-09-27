@@ -2,6 +2,9 @@
 
 Describes the possible expectations for boolean values.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `IsTrue` and `IsFalse` on a non-nullable
+`bool` (see below).
+
 ## Equality
 
 You can verify that the `bool` is equal to another one or not:

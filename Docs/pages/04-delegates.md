@@ -37,6 +37,15 @@ await Expect.That<Task>(task).IsNotNull();
 ```
 
 Note that `Task<T>` and `ValueTask<T>` behave differently: they are awaited and their **result** becomes the subject.
+To check the exception or the execution time of such a task, wrap it in a lambda (`() => task`), which turns it into
+a delegate:
+
+```csharp
+Task<int> task = Task.FromResult(42);
+
+await Expect.That(task).IsEqualTo(42);
+await Expect.That(() => task).DoesNotThrow();
+```
 
 :::info[C# 13 or later]
 An `async` lambda and a lambda that only throws, as in `Expect.That(async () => await x.RunAsync())` or
@@ -230,6 +239,15 @@ await Expect.That(Act).Throws<CustomException>().WithMessage("my exception");
 await Expect.That(Act).Throws<CustomException>().Which.HasMessage("my exception");
 await Expect.That(exception).HasMessage("my exception");
 ```
+
+The following `Has…` expectations are available for an exception subject. The section of the matching `With…`
+expectation describes their options:
+
+- `HasMessage`, see [exception message](#exception-message)
+- `HasParamName`, see [other members](#other-members)
+- `HasHResult`, see [other members](#other-members)
+- `HasInner<T>` and `DoesNotHaveInner<T>`, see [inner exceptions](#inner-exceptions)
+- `HasRecursiveInnerExceptions`, see [recursive inner exceptions](#recursive-inner-exceptions)
 
 All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
 message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer

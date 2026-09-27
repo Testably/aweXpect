@@ -2,6 +2,9 @@
 
 Describes the possible expectations for `DateOnly` and `TimeOnly`.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` properties, which take a negated
+comparison instead (e.g. `HasYear().NotEqualTo(2020)`).
+
 :::note[`DateOnly` tolerances are counted in days]
 A `DateOnly` has no time of day, so a tolerance must be a whole number of days. Anything else, for example
 `Within(TimeSpan.FromHours(23))`, throws an `ArgumentOutOfRangeException` as soon as it is specified instead of silently

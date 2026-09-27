@@ -2,6 +2,8 @@
 
 Describes the possible expectations for `TimeSpan`.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+
 ## Equality
 
 You can verify that the `TimeSpan` is equal to another one or not:
@@ -90,6 +92,7 @@ You can verify that the `TimeSpan` is between two values:
 TimeSpan subject = TimeSpan.FromSeconds(42);
 
 await Expect.That(subject).IsBetween(TimeSpan.FromSeconds(40)).And(TimeSpan.FromSeconds(50));
+await Expect.That(subject).IsNotBetween(TimeSpan.FromSeconds(43)).And(TimeSpan.FromSeconds(50));
 ```
 
 You can also specify a tolerance:

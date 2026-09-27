@@ -2,6 +2,9 @@
 
 Describes the possible expectations for collections.
 
+Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `HasCount`, `HasSingle` and the
+[quantifiers](#number-of-matching-items) like `All()`, which take a negated comparison or `None()` instead.
+
 :::info[C# 13 or later]
 Some overloads rely on `[OverloadResolutionPriority]` to bind as described here, e.g. so that a `string` is expected
 as a single item and not as a sequence of characters, or that a `params` list or a collection expression `[…]` is the
@@ -763,6 +766,19 @@ string[] expected = ["FOO", "BAR"];
 await Expect.That(values).ContainsValue("FOO").IgnoringCase();
 await Expect.That(values).ContainsValues(expected).IgnoringCase();
 await Expect.That(values).ContainsKeys(new List<int> { 42, 43 });
+```
+
+`DoesNotContainKeys` and `DoesNotContainValues` mean "none of": they fail as soon as the dictionary contains one of
+them. This is stricter than negating `ContainsKeys` or `ContainsValues` with `DoesNotComplyWith`, which is the exact
+inverse ("not all") and only fails when the dictionary contains all of them:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values).DoesNotComplyWith(d => d.ContainsKeys(42, 44))
+  .Because("the key 44 is missing, although 42 is contained");
+await Expect.That(values).DoesNotContainKeys(44, 45)
+  .Because("none of the keys is contained, whereas `DoesNotContainKeys(42, 44)` would fail");
 ```
 
 ### Keys and values
