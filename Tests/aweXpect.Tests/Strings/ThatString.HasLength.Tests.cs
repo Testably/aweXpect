@@ -460,6 +460,77 @@ public sealed partial class ThatString
 			}
 		}
 
+		public sealed class NotGreaterThanTests
+		{
+			[Fact]
+			public async Task WhenCombinedWithAnd_ShouldNameBothComparisons()
+			{
+				string subject = "abcde";
+
+				async Task Act()
+					=> await That(subject).HasLength().NotGreaterThan(3).And.HasLength().NotLessThan(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have length greater than 3 and does not have length less than 1,
+					             but it had length 5
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyTheSecondHolds_ShouldSucceed()
+			{
+				string subject = "abcde";
+
+				async Task Act()
+					=> await That(subject).HasLength().NotGreaterThan(3).Or.HasLength().NotLessThan(4);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject).HasLength().NotGreaterThan(-1);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("*The expected length must not be negative.*")
+					.AsWildcard().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
+			public async Task WhenLengthIsGreater_ShouldFail()
+			{
+				string subject = "abcde";
+
+				async Task Act()
+					=> await That(subject).HasLength().NotGreaterThan(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have length greater than 3,
+					             but it had length 5
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenLengthIsNotGreater_ShouldSucceed()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).HasLength().NotGreaterThan(3);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class NegatedTests
 		{
 			[Fact]

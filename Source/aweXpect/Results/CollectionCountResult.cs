@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -31,10 +31,22 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(EnumerableQuantifier.MoreThan(expected), false);
 
 	/// <summary>
+	///     Verifies that the collection does not have more than <paramref name="expected" /> items.
+	/// </summary>
+	public TReturn NotGreaterThan(int expected)
+		=> factory(EnumerableQuantifier.MoreThan(expected), true);
+
+	/// <summary>
 	///     Verifies that the collection has at least <paramref name="expected" /> items.
 	/// </summary>
 	public TReturn GreaterThanOrEqualTo(int expected)
 		=> factory(EnumerableQuantifier.AtLeast(expected), false);
+
+	/// <summary>
+	///     Verifies that the collection does not have at least <paramref name="expected" /> items.
+	/// </summary>
+	public TReturn NotGreaterThanOrEqualTo(int expected)
+		=> factory(EnumerableQuantifier.AtLeast(expected), true);
 
 	/// <summary>
 	///     Verifies that the collection has fewer than <paramref name="expected" /> items.
@@ -43,14 +55,32 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(EnumerableQuantifier.LessThan(expected), false);
 
 	/// <summary>
+	///     Verifies that the collection does not have fewer than <paramref name="expected" /> items.
+	/// </summary>
+	public TReturn NotLessThan(int expected)
+		=> factory(EnumerableQuantifier.LessThan(expected), true);
+
+	/// <summary>
 	///     Verifies that the collection has at most <paramref name="expected" /> items.
 	/// </summary>
 	public TReturn LessThanOrEqualTo(int expected)
 		=> factory(EnumerableQuantifier.AtMost(expected), false);
 
 	/// <summary>
+	///     Verifies that the collection does not have at most <paramref name="expected" /> items.
+	/// </summary>
+	public TReturn NotLessThanOrEqualTo(int expected)
+		=> factory(EnumerableQuantifier.AtMost(expected), true);
+
+	/// <summary>
 	///     Verifies that the collection has between <paramref name="minimum" />…
 	/// </summary>
 	public BetweenResult<TReturn> Between(int minimum)
 		=> new(maximum => factory(EnumerableQuantifier.Between(minimum, maximum), false));
+
+	/// <summary>
+	///     Verifies that the collection does not have between <paramref name="minimum" />…
+	/// </summary>
+	public BetweenResult<TReturn> NotBetween(int minimum)
+		=> new(maximum => factory(EnumerableQuantifier.Between(minimum, maximum), true));
 }

@@ -307,6 +307,145 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task NotBetween_ShouldTriggerValidationForMaximum()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotBetween(42).And(43);
+
+			await That(signal).Signaled().With(e => e == 43);
+		}
+
+		[Fact]
+		public async Task NotBetween_ShouldTriggerValidationForMinimum()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotBetween(42).And(43);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task NotBetween_ShouldVerifyThatActualIsNotBetweenMinimumAndMaximum()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			MyClass? result = await sut.NotBetween(43).And(44);
+
+			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenActualIsInsideTheRange_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotBetween(42).And(43);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value between 42 and 43,
+				             but it had long value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotBetween(44).And(43);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+		}
+
+		[Theory]
+		[InlineData(null, 1L)]
+		[InlineData(1L, null)]
+		public async Task NotBetween_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(long? minimum, long? maximum)
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotBetween(minimum).And(maximum));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has long value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had long value 0
+				              """)
+				.Because("nothing can be ordered against a null bound, so the negation fails as well");
+		}
+
+		[Theory]
+		[InlineData(null, 1L)]
+		[InlineData(1L, null)]
+		public async Task NotBetween_WhenMinimumOrMaximumIsNull_ShouldFail(long? minimum, long? maximum)
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotBetween(minimum).And(maximum);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              does not have long value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had long value 42
+				              """)
+				.Because("nothing can be ordered against a null bound");
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenNegated_ShouldExpectTheRange()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotBetween(1).And(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value between 1 and 2,
+				             but it had long value 0
+				             """);
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotBetween(41).And(43);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value between 41 and 43,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
 		public async Task NotEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<long?> signal = new();
@@ -348,6 +487,438 @@ public sealed partial class PropertyResultTests
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 				.Because("a property that was never read cannot prove inequality either");
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_ShouldTriggerValidation()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotGreaterThan(42);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_ShouldVerifyThatActualIsNotGreaterThanExpected()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			MyClass? result = await sut.NotGreaterThan(42);
+
+			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenActualIsGreaterThanExpected_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotGreaterThan(41);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than 41,
+				             but it had long value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThan(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value greater than <null>,
+				             but it had long value 0
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotGreaterThan(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than <null>,
+				             but it had long value 42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThan(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value greater than 1,
+				             but it had long value 0
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotGreaterThan(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than 42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_ShouldTriggerValidation()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotGreaterThanOrEqualTo(42);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_ShouldVerifyThatActualIsNotGreaterThanOrEqualToExpected()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			MyClass? result = await sut.NotGreaterThanOrEqualTo(43);
+
+			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than or equal to 42,
+				             but it had long value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThanOrEqualTo(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value greater than or equal to <null>,
+				             but it had long value 0
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than or equal to <null>,
+				             but it had long value 42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThanOrEqualTo(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value greater than or equal to 1,
+				             but it had long value 0
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value greater than or equal to 42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_ShouldTriggerValidation()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotLessThan(42);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task NotLessThan_ShouldVerifyThatActualIsNotLessThanExpected()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			MyClass? result = await sut.NotLessThan(42);
+
+			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenActualIsLessThanExpected_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotLessThan(43);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than 43,
+				             but it had long value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotLessThan(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value less than <null>,
+				             but it had long value 0
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotLessThan(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than <null>,
+				             but it had long value 42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotLessThan(-1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value less than -1,
+				             but it had long value 0
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotLessThan(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than 42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_ShouldTriggerValidation()
+		{
+			Signaler<long?> signal = new();
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotLessThanOrEqualTo(42);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_ShouldVerifyThatActualIsNotLessThanOrEqualToExpected()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			MyClass? result = await sut.NotLessThanOrEqualTo(41);
+
+			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than or equal to 42,
+				             but it had long value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotLessThanOrEqualTo(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value less than or equal to <null>,
+				             but it had long value 0
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than or equal to <null>,
+				             but it had long value 42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.LongValueOf(s, ExpectationGrammars.None)
+					.NotLessThanOrEqualTo(-1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value less than or equal to -1,
+				             but it had long value 0
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value less than or equal to 42,
+				             but it was <null>
+				             """);
 		}
 
 		public sealed class GrammarTests

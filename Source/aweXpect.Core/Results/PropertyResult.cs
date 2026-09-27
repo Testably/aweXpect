@@ -76,6 +76,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not greater than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThan(
+			int? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a > e),
+				$"greater than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
@@ -84,6 +96,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
 				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
+			int? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a >= e),
+				$"greater than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -100,6 +124,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not less than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThan(
+			int? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a < e),
+				$"less than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> LessThanOrEqualTo(
@@ -108,6 +144,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
 				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not less than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
+			int? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a <= e),
+				$"less than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -124,6 +172,23 @@ public static class PropertyResult
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
+			});
+		}
+
+		/// <summary>
+		///     …is not between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TType, TThat>, int?> NotBetween(
+			int? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TType, TThat>, int?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}", isNegative: true,
 					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}
@@ -206,6 +271,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not greater than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThan(
+			long? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a > e),
+				$"greater than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
@@ -214,6 +291,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
 				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
+			long? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a >= e),
+				$"greater than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -230,6 +319,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not less than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThan(
+			long? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a < e),
+				$"less than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> LessThanOrEqualTo(
@@ -238,6 +339,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
 				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not less than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
+			long? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a <= e),
+				$"less than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -254,6 +367,23 @@ public static class PropertyResult
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
+			});
+		}
+
+		/// <summary>
+		///     …is not between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TType, TThat>, long?> NotBetween(
+			long? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TType, TThat>, long?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}", isNegative: true,
 					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}
@@ -391,6 +521,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not greater than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThan(
+			TimeSpan? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a > e),
+				$"greater than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
@@ -399,6 +541,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a >= e,
 				$"greater than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
+			TimeSpan? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a >= e),
+				$"greater than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -415,6 +569,18 @@ public static class PropertyResult
 		}
 
 		/// <summary>
+		///     …is not less than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThan(
+			TimeSpan? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a < e),
+				$"less than {Formatter.Format(expected)}", isNegative: true,
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> LessThanOrEqualTo(
@@ -423,6 +589,18 @@ public static class PropertyResult
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => a <= e,
 				$"less than or equal to {Formatter.Format(expected)}",
+				isOrderedAgainstNull: expected is null);
+		}
+
+		/// <summary>
+		///     …is not less than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
+			TimeSpan? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => !(a <= e),
+				$"less than or equal to {Formatter.Format(expected)}", isNegative: true,
 				isOrderedAgainstNull: expected is null);
 		}
 
@@ -439,6 +617,23 @@ public static class PropertyResult
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}",
+					isOrderedAgainstNull: minimum is null || maximum is null);
+			});
+		}
+
+		/// <summary>
+		///     …is not between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TType, TThat>, TimeSpan?> NotBetween(
+			TimeSpan? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TType, TThat>, TimeSpan?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}", isNegative: true,
 					isOrderedAgainstNull: minimum is null || maximum is null);
 			});
 		}

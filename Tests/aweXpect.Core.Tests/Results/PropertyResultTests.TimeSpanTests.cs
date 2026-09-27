@@ -291,6 +291,150 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task NotBetween_ShouldTriggerValidationForMaximum()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotBetween(42.Seconds()).And(43.Seconds());
+
+			await That(signal).Signaled().With(e => e == 43.Seconds());
+		}
+
+		[Fact]
+		public async Task NotBetween_ShouldTriggerValidationForMinimum()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotBetween(42.Seconds()).And(43.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotBetween_ShouldVerifyThatActualIsNotBetweenMinimumAndMaximum()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotBetween(43.Seconds()).And(44.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenActualIsInsideTheRange_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotBetween(42.Seconds()).And(43.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value between 0:42 and 0:43,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotBetween(44.Seconds()).And(43.Seconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+		}
+
+		[Theory]
+		[InlineData(null, 1)]
+		[InlineData(1, null)]
+		public async Task NotBetween_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(int? minimumSeconds,
+			int? maximumSeconds)
+		{
+			MyClass subject = new();
+			TimeSpan? minimum = minimumSeconds?.Seconds();
+			TimeSpan? maximum = maximumSeconds?.Seconds();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotBetween(minimum).And(maximum));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has TimeSpan value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had TimeSpan value 0:00
+				              """)
+				.Because("nothing can be ordered against a null bound, so the negation fails as well");
+		}
+
+		[Theory]
+		[InlineData(null, 1)]
+		[InlineData(1, null)]
+		public async Task NotBetween_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimumSeconds, int? maximumSeconds)
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+			TimeSpan? minimum = minimumSeconds?.Seconds();
+			TimeSpan? maximum = maximumSeconds?.Seconds();
+
+			async Task Act()
+				=> await sut.NotBetween(minimum).And(maximum);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              does not have TimeSpan value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had TimeSpan value 0:42
+				              """)
+				.Because("nothing can be ordered against a null bound");
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenNegated_ShouldExpectTheRange()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotBetween(1.Seconds()).And(2.Seconds()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value between 0:01 and 0:02,
+				             but it had TimeSpan value 0:00
+				             """);
+		}
+
+		[Fact]
+		public async Task NotBetween_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotBetween(41.Seconds()).And(43.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value between 0:41 and 0:43,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
 		public async Task NotEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<TimeSpan?> signal = new();
@@ -312,6 +456,438 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(41.Seconds());
 
 			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_ShouldTriggerValidation()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotGreaterThan(42.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_ShouldVerifyThatActualIsNotGreaterThanExpected()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotGreaterThan(42.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenActualIsGreaterThanExpected_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotGreaterThan(41.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than 0:41,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThan(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value greater than <null>,
+				             but it had TimeSpan value 0:00
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotGreaterThan(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than <null>,
+				             but it had TimeSpan value 0:42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThan(1.Seconds()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value greater than 0:01,
+				             but it had TimeSpan value 0:00
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThan_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotGreaterThan(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than 0:42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_ShouldTriggerValidation()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotGreaterThanOrEqualTo(42.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_ShouldVerifyThatActualIsNotGreaterThanOrEqualToExpected()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotGreaterThanOrEqualTo(43.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than or equal to 0:42,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThanOrEqualTo(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value greater than or equal to <null>,
+				             but it had TimeSpan value 0:00
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than or equal to <null>,
+				             but it had TimeSpan value 0:42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotGreaterThanOrEqualTo(1.Seconds()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value greater than or equal to 0:01,
+				             but it had TimeSpan value 0:00
+				             """);
+		}
+
+		[Fact]
+		public async Task NotGreaterThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotGreaterThanOrEqualTo(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value greater than or equal to 0:42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_ShouldTriggerValidation()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotLessThan(42.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotLessThan_ShouldVerifyThatActualIsNotLessThanExpected()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotLessThan(42.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenActualIsLessThanExpected_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotLessThan(43.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than 0:43,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotLessThan(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value less than <null>,
+				             but it had TimeSpan value 0:00
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotLessThan(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than <null>,
+				             but it had TimeSpan value 0:42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotLessThan(-1.Seconds()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value less than -0:01,
+				             but it had TimeSpan value 0:00
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThan_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotLessThan(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than 0:42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_ShouldTriggerValidation()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotLessThanOrEqualTo(42.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_ShouldVerifyThatActualIsNotLessThanOrEqualToExpected()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotLessThanOrEqualTo(41.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than or equal to 0:42,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotLessThanOrEqualTo(null));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value less than or equal to <null>,
+				             but it had TimeSpan value 0:00
+				             """)
+				.Because("nothing can be ordered against null, so the negation fails as well");
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than or equal to <null>,
+				             but it had TimeSpan value 0:42
+				             """)
+				.Because("nothing can be ordered against null");
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+		{
+			MyClass subject = new();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+					.NotLessThanOrEqualTo(-1.Seconds()));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value less than or equal to -0:01,
+				             but it had TimeSpan value 0:00
+				             """);
+		}
+
+		[Fact]
+		public async Task NotLessThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotLessThanOrEqualTo(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value less than or equal to 0:42,
+				             but it was <null>
+				             """);
 		}
 
 		public sealed class GrammarTests
