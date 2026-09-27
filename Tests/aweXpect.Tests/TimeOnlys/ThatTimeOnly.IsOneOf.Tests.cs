@@ -54,6 +54,9 @@ public sealed partial class ThatTimeOnly
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              [<null>]
 					              """);
 			}
 
@@ -112,6 +115,9 @@ public sealed partial class ThatTimeOnly
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -137,6 +143,9 @@ public sealed partial class ThatTimeOnly
 					              Expected that subject
 					              is one of expected ± 0:0{tolerance}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -0:0{actualDifference} from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 

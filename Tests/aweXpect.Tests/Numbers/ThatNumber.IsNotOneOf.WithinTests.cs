@@ -18,11 +18,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -81,11 +84,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(new decimal(0.1));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.1,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.1,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -188,11 +194,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(0.11);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.11,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.11,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -263,6 +272,9 @@ public sealed partial class ThatNumber
 					              Expected that value
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(value)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """)
 					.Because("it is the exact complement of the succeeding containment expectation");
 				await That(ActNullable).Throws<XunitException>()
@@ -270,6 +282,9 @@ public sealed partial class ThatNumber
 					              Expected that nullableSubject
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(value)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """);
 			}
 
@@ -352,11 +367,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(0.11F);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.11,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.11,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -427,6 +445,9 @@ public sealed partial class ThatNumber
 					              Expected that value
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(value)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """)
 					.Because("it is the exact complement of the succeeding containment expectation");
 				await That(ActNullable).Throws<XunitException>()
@@ -434,6 +455,9 @@ public sealed partial class ThatNumber
 					              Expected that nullableSubject
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(value)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """);
 			}
 
@@ -557,6 +581,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """)
 					.Because("it is the exact complement of the succeeding containment expectation");
 				await That(ActNullable).Throws<XunitException>()
@@ -564,6 +591,9 @@ public sealed partial class ThatNumber
 					              Expected that nullableSubject
 					              is not one of unexpected ± {Formatter.Format(tolerance)},
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """);
 			}
 #endif
@@ -578,11 +608,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -664,11 +697,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -750,11 +786,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -814,11 +853,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(new decimal(0.1));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.1,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.1,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -923,11 +965,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(0.11);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.11,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.11,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1010,11 +1055,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(0.11F);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 0.11,
-					             but it was 12.5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 0.11,
+					              but it was 12.5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1097,11 +1145,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1184,11 +1235,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1271,11 +1325,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1358,11 +1415,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1445,11 +1505,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1504,11 +1567,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1563,11 +1629,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1622,11 +1691,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1708,11 +1780,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1794,11 +1869,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1852,11 +1930,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]
@@ -1910,11 +1991,14 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsNotOneOf(unexpected).Within(1);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not one of unexpected ± 1,
-					             but it was 5
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of unexpected ± 1,
+					              but it was 5
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
+					              """);
 			}
 
 			[Theory]

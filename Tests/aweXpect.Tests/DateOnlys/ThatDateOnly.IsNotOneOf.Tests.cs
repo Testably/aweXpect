@@ -95,6 +95,9 @@ public sealed partial class ThatDateOnly
 					              Expected that subject
 					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -152,6 +155,9 @@ public sealed partial class ThatDateOnly
 					              Expected that subject
 					              is not one of expected ± 2 days, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}{difference}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 		}

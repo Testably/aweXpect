@@ -31,7 +31,9 @@ public static partial class ThatString
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options).InvertIf(negated)),
+				=> new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			options);
 	}

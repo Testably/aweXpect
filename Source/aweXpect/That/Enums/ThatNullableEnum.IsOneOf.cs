@@ -29,7 +29,9 @@ public static partial class ThatNullableEnum
 	{
 		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues, expectedExpression).InvertIf(negated)),
+				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues, expectedExpression)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject);
 	}
 

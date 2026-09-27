@@ -25,6 +25,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -70,6 +73,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -99,6 +105,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.0
+
+					             Expected values:
+					             [2.0, 3.0]
 					             """);
 			}
 
@@ -121,6 +130,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -154,6 +166,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.0
+
+					             Expected values:
+					             [2.0, <null>, 3.0]
 					             """);
 			}
 
@@ -183,6 +198,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.1
+
+					             Expected values:
+					             [2.1, 3.1]
 					             """);
 			}
 
@@ -221,6 +239,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -238,6 +259,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -266,6 +290,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.1
+
+					             Expected values:
+					             [2.1, <null>, 3.1]
 					             """);
 			}
 
@@ -295,6 +322,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.1
+
+					             Expected values:
+					             [2.1, 3.1]
 					             """);
 			}
 
@@ -322,6 +352,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -339,6 +372,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -367,6 +403,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.1
+
+					             Expected values:
+					             [2.1, <null>, 3.1]
 					             """);
 			}
 
@@ -396,6 +435,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -413,6 +455,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
@@ -530,6 +575,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -559,6 +607,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -614,6 +665,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -643,6 +697,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -706,6 +763,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.0
+
+					             Expected values:
+					             [2.0, 3.0]
 					             """);
 			}
 
@@ -765,6 +825,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.0
+
+					             Expected values:
+					             [2.0, 3.0]
 					             """);
 			}
 
@@ -810,6 +873,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1.0
+
+					             Expected values:
+					             [2.0, 3.0]
 					             """);
 			}
 
@@ -855,6 +921,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -976,6 +1045,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1039,6 +1111,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1102,6 +1177,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1165,6 +1243,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1228,6 +1309,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1291,6 +1375,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1354,6 +1441,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1416,6 +1506,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -1445,6 +1538,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1507,6 +1603,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -1536,6 +1635,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1581,6 +1683,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -1610,6 +1715,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1655,6 +1763,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 
@@ -1684,6 +1795,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, 3]
 					             """);
 			}
 
@@ -1729,6 +1843,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is one of expected,
 					             but it was 1
+
+					             Expected values:
+					             [2, <null>, 3]
 					             """);
 			}
 

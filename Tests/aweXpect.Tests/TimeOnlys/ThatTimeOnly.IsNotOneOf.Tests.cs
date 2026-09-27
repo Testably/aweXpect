@@ -95,6 +95,9 @@ public sealed partial class ThatTimeOnly
 					              Expected that subject
 					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -136,6 +139,9 @@ public sealed partial class ThatTimeOnly
 					              Expected that subject
 					              is not one of expected ± 0:02, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}{difference}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -154,6 +160,9 @@ public sealed partial class ThatTimeOnly
 					             Expected that subject
 					             is not one of unexpected ± 1:00,
 					             but it was 00:00:00.0000000, which differs by 1:00 from the closest value
+
+					             Unexpected values:
+					             [12:00:00.0000000, 23:59:00.0000000]
 					             """)
 					.Because("equality uses the shortest distance around the clock face");
 			}

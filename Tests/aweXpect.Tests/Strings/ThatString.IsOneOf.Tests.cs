@@ -24,6 +24,9 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is one of expected as prefix,
 					             but it was <null>
+
+					             Expected values:
+					             ["foo", "bar"]
 					             """)
 					.Because("a null has no content to inspect, just as for StartsWith");
 			}
@@ -43,6 +46,9 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              ["bar", "baz"]
 					              """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
@@ -147,6 +153,9 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is one of expected,
 					             but it was <null>
+
+					             Expected values:
+					             ["foo", "bar"]
 					             """);
 			}
 

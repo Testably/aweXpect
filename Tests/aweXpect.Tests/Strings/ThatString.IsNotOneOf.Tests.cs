@@ -24,6 +24,9 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is not one of unexpected as prefix,
 					             but it was <null>
+
+					             Unexpected values:
+					             ["foo", "bar"]
 					             """)
 					.Because("a null has no content to inspect, just as for DoesNotStartWith");
 			}
@@ -72,6 +75,9 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is not one of unexpected as wildcard,
 					             but it was <null>
+
+					             Unexpected values:
+					             ["fo*", "ba*"]
 					             """)
 					.Because("a null has no content to match the pattern against");
 			}
@@ -160,6 +166,9 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is not one of expected,
 					             but it was <null>
+
+					             Unexpected values:
+					             ["foo", <null>]
 					             """);
 			}
 
@@ -178,6 +187,9 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              ["bar", "foo"]
 					              """)
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
@@ -211,6 +223,9 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              ["item-1", "item-1", "item-2", "item-3", "item-5", "item-8", "item-13", "item-21", "item-34", "item-55", (… and maybe more)]
 					              """)
 					.Because("the values are only enumerated until the subject is found");
 			}

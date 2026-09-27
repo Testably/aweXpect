@@ -64,7 +64,8 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)),
+				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, false, expectedValues)),
 			subject,
 			options);
 	}
@@ -82,7 +83,8 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)),
+				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues, doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, false, expectedValues)),
 			subject,
 			options);
 	}
@@ -101,7 +103,8 @@ public static partial class ThatNumber
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
-					doNotPopulateThisValue, options)),
+					doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, false, expectedValues)),
 			subject,
 			options);
 	}
@@ -120,7 +123,8 @@ public static partial class ThatNumber
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
-					doNotPopulateThisValue, options)),
+					doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, false, expectedValues)),
 			subject,
 			options);
 	}
@@ -175,6 +179,7 @@ public static partial class ThatNumber
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, true, unexpectedValues)
 					.Invert()),
 			subject,
 			options);
@@ -195,6 +200,7 @@ public static partial class ThatNumber
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsOneOfConstraint<TNumber>(it, grammars, unexpectedValues, doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, true, unexpectedValues)
 					.Invert()),
 			subject,
 			options);
@@ -215,7 +221,9 @@ public static partial class ThatNumber
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues,
-					doNotPopulateThisValue, options).Invert()),
+					doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, true, unexpectedValues)
+					.Invert()),
 			subject,
 			options);
 	}
@@ -235,7 +243,9 @@ public static partial class ThatNumber
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, unexpectedValues,
-					doNotPopulateThisValue, options).Invert()),
+					doNotPopulateThisValue, options)
+					.WithExpectedValuesContext(subject, doNotPopulateThisValue, true, unexpectedValues)
+					.Invert()),
 			subject,
 			options);
 	}
@@ -434,7 +444,9 @@ public static partial class ThatNumber
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
-					expectedExpression, options).InvertIf(negated)),
+					expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -453,7 +465,9 @@ public static partial class ThatNumber
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TNumber>(it, grammars, expectedValues,
-					expectedExpression, options).InvertIf(negated)),
+					expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			options);
 	}
@@ -476,6 +490,7 @@ public static partial class ThatNumber
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, expectedValues,
 					expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -495,7 +510,9 @@ public static partial class ThatNumber
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsOneOfConstraint<TNumber>(it, grammars, expectedValues,
-					expectedExpression, options).InvertIf(negated)),
+					expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			options);
 	}

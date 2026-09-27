@@ -107,6 +107,9 @@ public sealed partial class ThatTimeSpan
 					              Expected that subject
 					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -124,6 +127,9 @@ public sealed partial class ThatTimeSpan
 					             Expected that subject
 					             is not one of expected,
 					             but it was TimeSpan.MinValue
+
+					             Unexpected values:
+					             [TimeSpan.MaxValue, TimeSpan.MinValue]
 					             """)
 					.Because("an earlier candidate that is far away must not hide a matching later candidate");
 			}
@@ -166,6 +172,9 @@ public sealed partial class ThatTimeSpan
 					              Expected that subject
 					              is not one of expected ± 0:02, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}{difference}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 		}

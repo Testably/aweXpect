@@ -33,7 +33,9 @@ public static partial class ThatTimeOnly
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			tolerance);
 	}

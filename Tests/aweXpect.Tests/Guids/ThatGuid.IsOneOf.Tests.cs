@@ -53,6 +53,9 @@ public sealed partial class ThatGuid
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              [<null>]
 					              """);
 			}
 
@@ -111,6 +114,9 @@ public sealed partial class ThatGuid
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 		}

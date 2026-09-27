@@ -96,6 +96,9 @@ public sealed partial class ThatGuid
 						              Expected that subject
 						              is not one of unexpected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(unexpected)}
 						              """);
 				}
 
@@ -121,11 +124,14 @@ public sealed partial class ThatGuid
 						=> await That(subject).IsNotOneOf(unexpected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not one of unexpected,
-						             but it was <null>
-						             """);
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of unexpected,
+						              but it was <null>
+
+						              Unexpected values:
+						              {Formatter.Format(unexpected)}
+						              """);
 				}
 
 				[Fact]

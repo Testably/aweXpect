@@ -99,6 +99,9 @@ public sealed partial class ThatChar
 					              Expected that subject
 					              is not one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 

@@ -28,6 +28,9 @@ public sealed partial class ThatDateOnly
 						              Expected that subject
 						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(values)}
 						              """)
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
@@ -116,6 +119,9 @@ public sealed partial class ThatDateOnly
 						              Expected that subject
 						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(expected)}
 						              """);
 				}
 
@@ -213,11 +219,14 @@ public sealed partial class ThatDateOnly
 						=> await That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not one of expected,
-						             but it was <null>
-						             """)
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of expected,
+						              but it was <null>
+
+						              Unexpected values:
+						              {Formatter.Format(values)}
+						              """)
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
@@ -231,11 +240,14 @@ public sealed partial class ThatDateOnly
 						=> await That(subject).IsNotOneOf(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not one of expected,
-						             but it was <null>
-						             """);
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of expected,
+						              but it was <null>
+
+						              Unexpected values:
+						              {Formatter.Format(expected)}
+						              """);
 				}
 
 				[Fact]

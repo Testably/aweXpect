@@ -54,6 +54,9 @@ public sealed partial class ThatDateOnly
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}
+
+					              Expected values:
+					              [<null>]
 					              """);
 			}
 
@@ -112,6 +115,9 @@ public sealed partial class ThatDateOnly
 					              Expected that subject
 					              is one of expected,
 					              but it was {Formatter.Format(subject)}, which differs by -1 day from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 
@@ -153,6 +159,9 @@ public sealed partial class ThatDateOnly
 					              Expected that subject
 					              is one of expected ± {tolerance} days, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}, which differs by -{actualDifference} days from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
 					              """);
 			}
 		}

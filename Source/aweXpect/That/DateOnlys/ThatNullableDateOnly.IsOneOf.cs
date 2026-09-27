@@ -33,7 +33,9 @@ public static partial class ThatNullableDateOnly
 		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			tolerance);
 	}

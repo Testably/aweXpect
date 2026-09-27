@@ -28,7 +28,9 @@ public static partial class ThatNullableGuid
 	{
 		IEnumerable<Guid?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject);
 	}
 

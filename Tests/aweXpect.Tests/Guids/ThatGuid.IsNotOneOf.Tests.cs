@@ -94,6 +94,9 @@ public sealed partial class ThatGuid
 					              Expected that subject
 					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              {Formatter.Format(unexpected)}
 					              """);
 			}
 

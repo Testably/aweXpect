@@ -99,6 +99,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(expected)}
 						              """);
 				}
 
@@ -138,6 +141,9 @@ public sealed partial class ThatEnum
 						             Expected that subject
 						             is not one of expected,
 						             but it was <null>
+
+						             Unexpected values:
+						             [Green, <null>]
 						             """);
 				}
 			}
@@ -173,6 +179,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(expected)}
 						              """);
 				}
 
@@ -219,6 +228,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is not one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Unexpected values:
+						              {Formatter.Format(expected)}
 						              """);
 				}
 

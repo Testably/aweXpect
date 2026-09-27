@@ -28,6 +28,9 @@ public sealed partial class ThatObject
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
+
+					             Unexpected values:
+					             [ThatObject.MyClass { Value = 0 }, ThatObject.MyClass { Value = 0 }]
 					             """);
 			}
 
@@ -133,6 +136,26 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenOnlyACombinedExpectationFails_ShouldNotListTheUnexpectedValues()
+			{
+				MyClass subject = new();
+				IEnumerable<MyClass> unexpected = [new MyClass(),];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).And.IsNull();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of unexpected and is null,
+					             but it was ThatObject.MyClass {
+					                 Value = 0
+					               }
+					             """)
+					.Because("the values explain only a failure of the expectation that names them");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsAReferenceType_ShouldReturnTheTypedSubject()
 			{
 				MyClass subject = new();
@@ -178,6 +201,9 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not one of expected,
 					             but it was <null>
+
+					             Unexpected values:
+					             [ThatObject.MyClass { Value = 0 }, <null>]
 					             """);
 			}
 
@@ -197,6 +223,9 @@ public sealed partial class ThatObject
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }
+
+					             Unexpected values:
+					             [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 0 }]
 					             """);
 			}
 

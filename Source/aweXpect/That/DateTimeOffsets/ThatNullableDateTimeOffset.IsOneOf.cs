@@ -32,7 +32,9 @@ public static partial class ThatNullableDateTimeOffset
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			tolerance);
 	}

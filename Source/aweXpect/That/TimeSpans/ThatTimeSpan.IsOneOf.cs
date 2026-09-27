@@ -31,7 +31,9 @@ public static partial class ThatTimeSpan
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance).InvertIf(negated)),
+				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
+					.InvertIf(negated)),
 			subject,
 			tolerance);
 	}

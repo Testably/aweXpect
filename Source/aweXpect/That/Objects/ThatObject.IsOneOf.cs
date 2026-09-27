@@ -33,6 +33,7 @@ public static partial class ThatObject
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -53,6 +54,7 @@ public static partial class ThatObject
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<T, T>(it, grammars, expectedValues, expectedExpression, options)
+					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);

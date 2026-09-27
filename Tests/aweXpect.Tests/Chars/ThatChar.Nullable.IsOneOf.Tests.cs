@@ -58,6 +58,9 @@ public sealed partial class ThatChar
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -117,6 +120,9 @@ public sealed partial class ThatChar
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              ['b', 'A']
 						              """);
 				}
 

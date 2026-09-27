@@ -25,6 +25,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -95,6 +98,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -112,6 +118,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -162,6 +171,9 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is not one of unexpected,
 					              but it was {Formatter.Format(subject)}
+
+					              Unexpected values:
+					              [0.1, 1.1, 3.1]
 					              """);
 			}
 
@@ -191,6 +203,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, <null>, 2.0]
 					             """);
 			}
 
@@ -208,6 +223,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -224,6 +242,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of expected,
 					             but it was NaN
+
+					             Unexpected values:
+					             [NaN]
 					             """);
 			}
 
@@ -320,6 +341,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, <null>, 2.0]
 					             """);
 			}
 
@@ -337,6 +361,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -353,6 +380,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of expected,
 					             but it was NaN
+
+					             Unexpected values:
+					             [NaN]
 					             """);
 			}
 
@@ -433,6 +463,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, <null>, 2.0]
 					             """);
 			}
 
@@ -450,6 +483,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -578,6 +614,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -595,6 +634,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -681,6 +723,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -698,6 +743,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -756,6 +804,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -827,6 +878,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -884,6 +938,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2.0
+
+					             Unexpected values:
+					             [1.0, 2.0, 3.0]
 					             """);
 			}
 
@@ -941,6 +998,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1057,6 +1117,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1115,6 +1178,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1173,6 +1239,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1231,6 +1300,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1289,6 +1361,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1347,6 +1422,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1405,6 +1483,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1475,6 +1556,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -1492,6 +1576,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1562,6 +1649,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -1579,6 +1669,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1649,6 +1742,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -1666,6 +1762,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1736,6 +1835,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -1753,6 +1855,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -1824,6 +1929,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of unexpected,
 					             but it was 2
+
+					             Unexpected values:
+					             [1, <null>, 2]
 					             """);
 			}
 
@@ -1841,6 +1949,9 @@ public sealed partial class ThatNumber
 					             Expected that subject
 					             is not one of expected,
 					             but it was <null>
+
+					             Unexpected values:
+					             [1, <null>]
 					             """);
 			}
 		}

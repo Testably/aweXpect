@@ -56,6 +56,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -115,6 +118,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [Green, Red]
 						              """);
 				}
 
@@ -132,6 +138,9 @@ public sealed partial class ThatEnum
 						             Expected that subject
 						             is one of expected,
 						             but it was <null>
+
+						             Expected values:
+						             [Green, Blue]
 						             """);
 				}
 
@@ -165,6 +174,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -195,6 +207,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [Int64LessOne, Int64LessTwo]
 						              """);
 				}
 			}
@@ -216,6 +231,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [<null>]
 						              """);
 				}
 
@@ -246,6 +264,9 @@ public sealed partial class ThatEnum
 						              Expected that subject
 						              is one of expected,
 						              but it was {Formatter.Format(subject)}
+
+						              Expected values:
+						              [UInt64LessOne, Int64Max]
 						              """);
 				}
 			}
