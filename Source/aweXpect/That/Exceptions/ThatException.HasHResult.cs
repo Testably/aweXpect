@@ -10,8 +10,9 @@ public static partial class ThatException
 	///     Verifies that the HResult of the actual <see cref="Exception" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<TException> HasHResult<TException>(this IThat<TException> subject)
-		where TException : Exception?
+	public static PropertyResult.Int<Exception?, TException, IThat<TException?>> HasHResult<TException>(
+		this IThat<TException?> subject)
+		where TException : Exception
 		=> new(subject, e => e?.HResult, "HResult");
 
 	/// <summary>
@@ -19,9 +20,9 @@ public static partial class ThatException
 	///     <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TException, IThat<TException>> HasHResult<TException>(
-		this IThat<TException> subject,
+	public static AndOrResult<TException, IThat<TException?>> HasHResult<TException>(
+		this IThat<TException?> subject,
 		int? expected)
-		where TException : Exception?
+		where TException : Exception
 		=> subject.HasHResult().EqualTo(expected);
 }
