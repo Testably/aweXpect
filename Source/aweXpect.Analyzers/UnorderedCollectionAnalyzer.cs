@@ -101,7 +101,7 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 		INamespaceSymbol? current = type?.ContainingNamespace;
 		for (int i = namespaces.Length - 1; i >= 0; i--)
 		{
-			if (current?.Name != namespaces[i])
+			if (current is null || current.Name != namespaces[i])
 			{
 				return false;
 			}

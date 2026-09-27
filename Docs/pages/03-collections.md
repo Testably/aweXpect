@@ -31,6 +31,14 @@ await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().Ignor
 *Note: The items are compared in the order in which the collection enumerates them, also for a `HashSet<T>`, whose
 order is not defined, so use `InAnyOrder()` for it.*
 
+:::warning[A set or a dictionary has no defined order]
+`IsEqualTo`, `Contains` with a collection and `IsContainedIn` compare by position unless `InAnyOrder()` is used, so for
+a `HashSet<T>` or a `Dictionary<TKey, TValue>` the result depends on an implementation detail. The analyzer rule
+`aweXpect0006` warns about it and offers to append `.InAnyOrder()`. It also warns about `StartsWith`, `EndsWith` and
+`IgnoringInterspersedItems()`, which have no meaning for such a collection. Sorted sets and dictionaries are not
+reported.
+:::
+
 A set that was created with a custom comparer (the same sets as for [`Contains`](#contained-items)) compares its items
 with that comparer. The same applies to [`Contains` with a subset](#subset) and to [`IsContainedIn`](#superset). Only the comparer of the subject is used, not the one of an expected set. A custom
 comparer, equivalency or a string option such as `IgnoringCase()` takes precedence over the comparer of the set:
