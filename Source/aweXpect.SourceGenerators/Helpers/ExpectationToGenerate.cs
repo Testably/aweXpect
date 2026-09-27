@@ -15,6 +15,7 @@ internal readonly record struct ExpectationToGenerate
 		Namespace = @namespace;
 		ClassName = className;
 		TargetType = targetType.ToDisplayString();
+		NotNullTargetType = TargetType;
 		Name = positiveName;
 		NegatedName = negativeName;
 		IncludeNegated = negativeName is not null;
@@ -77,6 +78,7 @@ internal readonly record struct ExpectationToGenerate
 	public string? NegatedName { get; }
 	public string Namespace { get; }
 	public string ClassName { get; }
+	public string NotNullTargetType { get; }
 	public string TargetType { get; }
 	public string Name { get; }
 	public string OutcomeMethod { get; }

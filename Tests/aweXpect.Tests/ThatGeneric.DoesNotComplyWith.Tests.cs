@@ -104,7 +104,7 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not False or is <null> or is True,
+					             is not False or is null or is True,
 					             but it was False
 					             """);
 			}

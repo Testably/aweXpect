@@ -19,7 +19,7 @@ public static partial class ThatNullableEnum
 	///     <see langword="null" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TEnum?, IThat<TEnum?>> HasFlag<TEnum>(
+	public static AndOrResult<TEnum, IThat<TEnum?>> HasFlag<TEnum>(
 		this IThat<TEnum?> subject,
 		TEnum? expected)
 		where TEnum : struct, Enum
@@ -38,7 +38,7 @@ public static partial class ThatNullableEnum
 	///     A zero flag is always set (as in <see cref="Enum.HasFlag(Enum)" />), so it fails for every subject.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TEnum?, IThat<TEnum?>> DoesNotHaveFlag<TEnum>(
+	public static AndOrResult<TEnum, IThat<TEnum?>> DoesNotHaveFlag<TEnum>(
 		this IThat<TEnum?> subject,
 		TEnum? unexpected)
 		where TEnum : struct, Enum

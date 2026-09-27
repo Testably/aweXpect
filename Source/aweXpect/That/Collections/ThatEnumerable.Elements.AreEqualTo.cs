@@ -60,10 +60,10 @@ public static partial class ThatEnumerable
 	[CreateCollectionExpectation("AreEqualTo", Priority = -1, Summary = ElementsAreEqualTo)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
 		AreEqualToForEnumerableCore(
-			ElementsForEnumerable<IEnumerable?> elements,
+			ElementsForEnumerable<IEnumerable> elements,
 			object? expected)
 	{
-		IElementsForEnumerable<IEnumerable?> iElements = elements;
+		IElementsForEnumerable<IEnumerable> iElements = elements;
 		ObjectEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(

@@ -10,7 +10,7 @@ public static partial class ThatVersion
 	///     Verifies that the major component of the <see cref="Version" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasMajor(this IThat<Version?> subject)
+	public static PropertyResult.Int<Version?, Version, IThat<Version?>> HasMajor(this IThat<Version?> subject)
 		=> new(subject, a => a?.Major, "major");
 
 	/// <summary>
@@ -18,8 +18,8 @@ public static partial class ThatVersion
 	///     <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Version?, IThat<Version?>> HasMajor(
+	public static AndOrResult<Version, IThat<Version?>> HasMajor(
 		this IThat<Version?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasMajor().EqualTo(expected);
 }

@@ -17,7 +17,7 @@ public static partial class ThatNullableTimeSpan
 	///     <see cref="IsNotPositive(IThat{TimeSpan?})" /> and <see cref="IsNotNegative(IThat{TimeSpan?})" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsNegative(this IThat<TimeSpan?> subject)
+	public static AndOrResult<TimeSpan, IThat<TimeSpan?>> IsNegative(this IThat<TimeSpan?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint(it, grammars)),
@@ -32,7 +32,7 @@ public static partial class ThatNullableTimeSpan
 	///     <see cref="IsNotPositive(IThat{TimeSpan?})" /> and <see cref="IsNotNegative(IThat{TimeSpan?})" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsNotNegative(
+	public static AndOrResult<TimeSpan, IThat<TimeSpan?>> IsNotNegative(
 		this IThat<TimeSpan?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

@@ -39,7 +39,7 @@ public static partial class ThatNumber
 	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNegative<TNumber>(
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNegative<TNumber>(
 		this IThat<TNumber?> subject)
 		where TNumber : struct, INumber<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -68,7 +68,7 @@ public static partial class ThatNumber
 	///     and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotNegative<TNumber>(
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNotNegative<TNumber>(
 		this IThat<TNumber?> subject)
 		where TNumber : struct, INumber<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -157,7 +157,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("Is{Not}Negative", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
 		Summary = IsNegativeSummary, NegatedSummary = IsNotNegativeSummary, Remarks = IsNegativeRemarks)]
-	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsNegativeForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsNegativeForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		NumberSign<TNumber> sign,
 		bool negated)

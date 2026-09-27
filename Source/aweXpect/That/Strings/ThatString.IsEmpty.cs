@@ -11,7 +11,7 @@ public static partial class ThatString
 	///     Verifies that the subject is empty.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsEmpty(
+	public static AndOrResult<string, IThat<string?>> IsEmpty(
 		this IThat<string?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEmptyConstraint(it, grammars)),

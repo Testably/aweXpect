@@ -17,6 +17,6 @@ public static partial class ThatDateTimeOffset
 	/// </summary>
 	public static AndOrResult<DateTimeOffset, IThat<DateTimeOffset>> HasMinute(
 		this IThat<DateTimeOffset> subject,
-		int expected)
+		int? expected)
 		=> subject.HasMinute().EqualTo(expected);
 }

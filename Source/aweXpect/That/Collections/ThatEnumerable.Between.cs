@@ -37,10 +37,10 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static BetweenResult<ElementsForEnumerable<IEnumerable?>> Between(
+	public static BetweenResult<ElementsForEnumerable<IEnumerable>> Between(
 		this IThat<IEnumerable?> subject,
 		int minimum)
-		=> new(maximum => new ElementsForEnumerable<IEnumerable?>(subject,
+		=> new(maximum => new ElementsForEnumerable<IEnumerable>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
 
 #if NET8_0_OR_GREATER

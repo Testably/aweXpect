@@ -15,12 +15,12 @@ public static partial class ThatNullableDateOnly
 	///     Verifies that the subject is after the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsAfter(
+	public static TimeToleranceResult<DateOnly, IThat<DateOnly?>> IsAfter(
 		this IThat<DateOnly?> subject,
 		DateOnly? expected)
 	{
 		TimeTolerance tolerance = new DayTolerance();
-		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
+		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, expected, tolerance)),
 			subject,
@@ -31,12 +31,12 @@ public static partial class ThatNullableDateOnly
 	///     Verifies that the subject is not after the <paramref name="unexpected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsNotAfter(
+	public static TimeToleranceResult<DateOnly, IThat<DateOnly?>> IsNotAfter(
 		this IThat<DateOnly?> subject,
 		DateOnly? unexpected)
 	{
 		TimeTolerance tolerance = new DayTolerance();
-		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
+		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
 			subject,

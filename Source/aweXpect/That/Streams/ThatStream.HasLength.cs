@@ -11,7 +11,7 @@ public static partial class ThatStream
 	///     Verifies that the length of the <see cref="Stream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<Stream?> HasLength(this IThat<Stream?> subject)
+	public static PropertyResult.Long<Stream?, Stream, IThat<Stream?>> HasLength(this IThat<Stream?> subject)
 		=> new(subject, a => a?.Length, "length", (value, paramName) =>
 		{
 			if (value < 0)
@@ -28,8 +28,8 @@ public static partial class ThatStream
 	///     value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> HasLength(
+	public static AndOrResult<Stream, IThat<Stream?>> HasLength(
 		this IThat<Stream?> subject,
-		long expected)
+		long? expected)
 		=> subject.HasLength().EqualTo(expected);
 }

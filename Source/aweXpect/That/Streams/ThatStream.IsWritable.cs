@@ -12,7 +12,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is writable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsWritable(
+	public static AndOrResult<Stream, IThat<Stream?>> IsWritable(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWritableConstraint(it, grammars)),
@@ -22,7 +22,7 @@ public static partial class ThatStream
 	///     Verifies that the subject <see cref="Stream" /> is not writable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Stream?, IThat<Stream?>> IsNotWritable(
+	public static AndOrResult<Stream, IThat<Stream?>> IsNotWritable(
 		this IThat<Stream?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWritableConstraint(it, grammars).Invert()),

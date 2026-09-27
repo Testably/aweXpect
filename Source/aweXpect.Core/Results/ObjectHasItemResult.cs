@@ -13,7 +13,7 @@ namespace aweXpect.Results;
 /// </remarks>
 public class ObjectHasItemResult<TCollection, TItem>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection> collection,
+	IThat<TCollection?> collection,
 	CollectionIndexOptions collectionIndexOptions,
 	ObjectEqualityOptions<TItem> options)
 	: ObjectHasItemResult<TCollection, TItem,
@@ -31,7 +31,7 @@ public class ObjectHasItemResult<TCollection, TItem>(
 /// </remarks>
 public class ObjectHasItemResult<TCollection, TItem, TSelf>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection> collection,
+	IThat<TCollection?> collection,
 	CollectionIndexOptions collectionIndexOptions,
 	ObjectEqualityOptions<TItem> options)
 	: HasItemResult<TCollection>(expectationBuilder, collection, collectionIndexOptions),

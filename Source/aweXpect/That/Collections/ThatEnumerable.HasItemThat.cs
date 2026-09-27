@@ -25,13 +25,13 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable<TItem>?> HasItemThat<TItem>(
+	public static HasItemResult<IEnumerable<TItem>> HasItemThat<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable<TItem>?>(
+		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
 			subject,
@@ -43,13 +43,13 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable?> HasItemThat(
+	public static HasItemResult<IEnumerable> HasItemThat(
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable?>(
+		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars, expectations, indexOptions)),
@@ -80,13 +80,13 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
+	public static HasItemResult<IEnumerable<TItem>> DoesNotHaveItemThat<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable<TItem>?>(
+		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
 					.Invert()),
@@ -99,13 +99,13 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable?> DoesNotHaveItemThat(
+	public static HasItemResult<IEnumerable> DoesNotHaveItemThat(
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable?>(
+		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars, expectations, indexOptions).Invert()),

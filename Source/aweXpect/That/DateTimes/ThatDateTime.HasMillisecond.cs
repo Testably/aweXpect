@@ -17,6 +17,6 @@ public static partial class ThatDateTime
 	/// </summary>
 	public static AndOrResult<DateTime, IThat<DateTime>> HasMillisecond(
 		this IThat<DateTime> subject,
-		int expected)
+		int? expected)
 		=> subject.HasMillisecond().EqualTo(expected);
 }

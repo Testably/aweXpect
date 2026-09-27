@@ -10,7 +10,7 @@ public static partial class ThatException
 	///     Verifies that the message of the actual exception…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Exception?, Exception?, IThat<Exception?>> HasMessage(
+	public static PropertyResult.String<Exception?, Exception, IThat<Exception?>> HasMessage(
 		this IThat<Exception?> subject)
 		=> new(subject, e => e?.Message, "message", includeValueInContext: true);
 
@@ -18,8 +18,8 @@ public static partial class ThatException
 	///     Verifies that the actual exception has a message equal to <paramref name="expected" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<Exception?, IThat<Exception?>> HasMessage(
+	public static StringEqualityTypeResult<Exception, IThat<Exception?>> HasMessage(
 		this IThat<Exception?> subject,
-		string expected)
+		string? expected)
 		=> subject.HasMessage().EqualTo(expected);
 }

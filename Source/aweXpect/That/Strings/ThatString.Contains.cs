@@ -16,7 +16,7 @@ public static partial class ThatString
 	///     Verifies that the subject contains the <paramref name="expected" /> <see langword="string" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeCountResult<string?, IThat<string?>> Contains(
+	public static StringEqualityTypeCountResult<string, IThat<string?>> Contains(
 		this IThat<string?> subject,
 		string expected)
 	{
@@ -29,7 +29,7 @@ public static partial class ThatString
 
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
+		return new StringEqualityTypeCountResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, expected, quantifier, options)),
 			subject,
@@ -41,7 +41,7 @@ public static partial class ThatString
 	///     Verifies that the subject does not contain the <paramref name="unexpected" /> <see langword="string" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeCountResult<string?, IThat<string?>> DoesNotContain(
+	public static StringEqualityTypeCountResult<string, IThat<string?>> DoesNotContain(
 		this IThat<string?> subject,
 		string unexpected)
 	{
@@ -54,7 +54,7 @@ public static partial class ThatString
 
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
+		return new StringEqualityTypeCountResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, unexpected, quantifier, options).Invert()),
 			subject,

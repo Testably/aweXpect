@@ -20,7 +20,7 @@ public static partial class ThatGeneric
 	///     evaluation is canceled aborts the evaluation instead.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
+	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
 		Func<T, TMember?> memberSelector,
 		Action<IThatSubject<TMember?>> expectations,
@@ -36,7 +36,7 @@ public static partial class ThatGeneric
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
-		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
 	/// <summary>
@@ -51,7 +51,7 @@ public static partial class ThatGeneric
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(2)]
-	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
+	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
 		Func<T, Task<TMember>> memberSelector,
 		Action<IThatSubject<TMember?>> expectations,
@@ -67,7 +67,7 @@ public static partial class ThatGeneric
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
-		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
 	/// <summary>
@@ -82,7 +82,7 @@ public static partial class ThatGeneric
 	/// </remarks>
 	[GuaranteesNotNull]
 	[OverloadResolutionPriority(1)]
-	public static AndOrResult<T?, IThat<T?>> Whose<T, TMember>(
+	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
 		Func<T, ValueTask<TMember>> memberSelector,
 		Action<IThatSubject<TMember?>> expectations,

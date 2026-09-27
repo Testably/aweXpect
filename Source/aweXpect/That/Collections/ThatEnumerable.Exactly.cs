@@ -36,7 +36,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> Exactly(
+	public static ElementsForEnumerable<IEnumerable> Exactly(
 		this IThat<IEnumerable?> subject,
 		int expected)
 		=> new(subject, EnumerableQuantifier.Exactly(expected));

@@ -18,10 +18,10 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	private readonly CollectionIndexOptions _collectionIndexOptions;
 	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly PredicateOptions<TItem> _options;
-	private readonly IThat<TCollection> _subject;
+	private readonly IThat<TCollection?> _subject;
 
 	internal HasItemWithConditionResult(ExpectationBuilder expectationBuilder,
-		IThat<TCollection> subject,
+		IThat<TCollection?> subject,
 		CollectionIndexOptions collectionIndexOptions,
 		PredicateOptions<TItem> options)
 	{

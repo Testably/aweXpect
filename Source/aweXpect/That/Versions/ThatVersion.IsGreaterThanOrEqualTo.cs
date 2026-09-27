@@ -12,7 +12,7 @@ public static partial class ThatVersion
 	///     Verifies that the subject is greater than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Version?, IThat<Version?>> IsGreaterThanOrEqualTo(
+	public static AndOrResult<Version, IThat<Version?>> IsGreaterThanOrEqualTo(
 		this IThat<Version?> subject,
 		Version? expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -23,7 +23,7 @@ public static partial class ThatVersion
 	///     Verifies that the subject is not greater than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Version?, IThat<Version?>> IsNotGreaterThanOrEqualTo(
+	public static AndOrResult<Version, IThat<Version?>> IsNotGreaterThanOrEqualTo(
 		this IThat<Version?> subject,
 		Version? unexpected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

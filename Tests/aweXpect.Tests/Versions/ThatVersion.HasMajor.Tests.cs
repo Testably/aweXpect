@@ -7,6 +7,22 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+
+				async Task Act()
+					=> await That(subject).HasMajor(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has major equal to <null>,
+					             but it had major 2010
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -470,6 +486,17 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldSucceed()
+			{
+				Version subject = new(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasMajor(null));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenMajorDiffers_ShouldSucceed()
 			{

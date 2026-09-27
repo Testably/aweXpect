@@ -18,7 +18,7 @@ public static partial class ThatDateOnly
 	/// </summary>
 	public static AndOrResult<DateOnly, IThat<DateOnly>> HasYear(
 		this IThat<DateOnly> subject,
-		int expected)
+		int? expected)
 		=> subject.HasYear().EqualTo(expected);
 }
 #endif

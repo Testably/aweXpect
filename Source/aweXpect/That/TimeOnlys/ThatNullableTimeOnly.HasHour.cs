@@ -11,16 +11,16 @@ public static partial class ThatNullableTimeOnly
 	///     Verifies that the hour of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<TimeOnly?> HasHour(this IThat<TimeOnly?> subject)
+	public static PropertyResult.Int<TimeOnly?, TimeOnly, IThat<TimeOnly?>> HasHour(this IThat<TimeOnly?> subject)
 		=> new(subject, a => a?.Hour, "hour");
 
 	/// <summary>
 	///     Verifies that the hour of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TimeOnly?, IThat<TimeOnly?>> HasHour(
+	public static AndOrResult<TimeOnly, IThat<TimeOnly?>> HasHour(
 		this IThat<TimeOnly?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasHour().EqualTo(expected);
 }
 #endif

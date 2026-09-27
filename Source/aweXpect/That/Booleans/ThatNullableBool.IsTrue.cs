@@ -11,7 +11,7 @@ public static partial class ThatNullableBool
 	///     Verifies that the subject is <see langword="true" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<bool?, IThat<bool?>> IsTrue(this IThat<bool?> subject)
+	public static AndOrResult<bool, IThat<bool?>> IsTrue(this IThat<bool?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, true)),
 			subject);

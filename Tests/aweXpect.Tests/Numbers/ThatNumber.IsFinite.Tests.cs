@@ -141,14 +141,14 @@ public sealed partial class ThatNumber
 #endif
 
 			[Fact]
-			public async Task ForNullableDouble_ShouldReturnTheNullableSubject()
+			public async Task ForNullableDouble_ShouldReturnTheNotNullSubject()
 			{
 				double? subject = 1.0;
 
-				AndOrResult<double?, IThat<double?>> result = That(subject).IsFinite();
+				AndOrResult<double, IThat<double?>> result = That(subject).IsFinite();
 
 				await That(await result).IsEqualTo(subject)
-					.Because("the nullable IsFinite has the same subject type on every target framework");
+					.Because("the nullable IsFinite narrows the subject on every target framework");
 			}
 
 			[Fact]
@@ -197,14 +197,14 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableFloat_ShouldReturnTheNullableSubject()
+			public async Task ForNullableFloat_ShouldReturnTheNotNullSubject()
 			{
 				float? subject = 1.0f;
 
-				AndOrResult<float?, IThat<float?>> result = That(subject).IsFinite();
+				AndOrResult<float, IThat<float?>> result = That(subject).IsFinite();
 
 				await That(await result).IsEqualTo(subject)
-					.Because("the nullable IsFinite has the same subject type on every target framework");
+					.Because("the nullable IsFinite narrows the subject on every target framework");
 			}
 
 			[Fact]

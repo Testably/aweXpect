@@ -20,13 +20,13 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItemThat<TItem>(
+	public static HasItemResult<IAsyncEnumerable<TItem>> HasItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IAsyncEnumerable<TItem>?>(
+		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
 			subject,
@@ -37,13 +37,13 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IAsyncEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
+	public static HasItemResult<IAsyncEnumerable<TItem>> DoesNotHaveItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IAsyncEnumerable<TItem>?>(
+		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
 					.Invert()),

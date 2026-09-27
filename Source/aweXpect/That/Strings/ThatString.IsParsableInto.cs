@@ -34,7 +34,7 @@ public static partial class ThatString
 	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsNotParsableInto<TType>(
+	public static AndOrResult<string, IThat<string?>> IsNotParsableInto<TType>(
 		this IThat<string?> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IParsable<TType>

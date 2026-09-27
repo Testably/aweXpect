@@ -33,7 +33,7 @@ public static partial class ThatAsyncEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
-	internal static HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem>
+	internal static HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>
 		HasItemCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			bool negated)
@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem>(
+		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					x => options.Matches(x),
@@ -54,7 +54,7 @@ public static partial class ThatAsyncEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
-	internal static HasItemResult<IAsyncEnumerable<TItem>?>
+	internal static HasItemResult<IAsyncEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, bool> predicate,
@@ -64,7 +64,7 @@ public static partial class ThatAsyncEnumerable
 		predicate.ThrowIfNull();
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IAsyncEnumerable<TItem>?>(
+		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
 					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
@@ -74,7 +74,7 @@ public static partial class ThatAsyncEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
-	internal static ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem>
+	internal static ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>
 		HasTheItemCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			TItem expected,
@@ -83,7 +83,7 @@ public static partial class ThatAsyncEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
-		return new ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem>(
+		return new ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),
@@ -96,7 +96,7 @@ public static partial class ThatAsyncEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
-	internal static StringHasItemResult<IAsyncEnumerable<string?>?>
+	internal static StringHasItemResult<IAsyncEnumerable<string?>>
 		HasTheItemForStringsCore(
 			IThat<IAsyncEnumerable<string?>?> subject,
 			string? expected,
@@ -105,7 +105,7 @@ public static partial class ThatAsyncEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
-		return new StringHasItemResult<IAsyncEnumerable<string?>?>(
+		return new StringHasItemResult<IAsyncEnumerable<string?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncHasItemConstraint<string?>(expectationBuilder, it, grammars,
 					a => options.AreConsideredEqual(a, expected),

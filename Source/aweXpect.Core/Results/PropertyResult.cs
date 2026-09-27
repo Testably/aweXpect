@@ -39,7 +39,7 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<int?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		where TThat : IThat<TType>
+		where TThat : IThat<TValue>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
@@ -169,7 +169,7 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<long?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		where TThat : IThat<TType>
+		where TThat : IThat<TValue>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
@@ -297,7 +297,7 @@ public static class PropertyResult
 		Func<TValue, DateTimeKind?> mapper,
 		string propertyExpression,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		where TThat : IThat<TType>
+		where TThat : IThat<TValue>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
@@ -354,7 +354,7 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<TimeSpan?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		where TThat : IThat<TType>
+		where TThat : IThat<TValue>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
@@ -472,7 +472,8 @@ public static class PropertyResult
 	///     <typeparamref name="TValue" /> differs from <typeparamref name="TType" /> when the expectation is narrowed
 	///     to a subtype after the value was already provided, e.g. a delegate that supplies an
 	///     <see cref="Exception" /> to <c>Throws&lt;TException&gt;()</c>: the constraint has to accept the value the
-	///     source provides, while the result carries the narrowed type.
+	///     source provides, while the result carries the narrowed type. It also differs for a nullable subject, whose
+	///     value is no longer <see langword="null" /> once the property could be compared.
 	/// </remarks>
 	public class String<TValue, TType, TThat>(
 		TThat subject,
@@ -481,7 +482,7 @@ public static class PropertyResult
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
 		bool includeValueInContext = false)
-		where TThat : IThat<TType>
+		where TThat : IThat<TValue>
 	{
 		/// <summary>
 		///     …contains the <paramref name="expected" /> value.

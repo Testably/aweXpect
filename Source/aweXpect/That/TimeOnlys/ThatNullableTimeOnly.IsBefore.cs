@@ -20,12 +20,12 @@ public static partial class ThatNullableTimeOnly
 	///     treat the times as a clock face that wraps around midnight.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsBefore(
+	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly?>> IsBefore(
 		this IThat<TimeOnly?> subject,
 		TimeOnly? expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
+		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsBeforeConstraint(it, grammars, expected, tolerance)),
 			subject,
@@ -41,12 +41,12 @@ public static partial class ThatNullableTimeOnly
 	///     treat the times as a clock face that wraps around midnight.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsNotBefore(
+	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly?>> IsNotBefore(
 		this IThat<TimeOnly?> subject,
 		TimeOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
+		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsBeforeConstraint(it, grammars, unexpected, tolerance).Invert()),
 			subject,

@@ -31,7 +31,7 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is not treated as infinite.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsInfinite<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsInfinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars)),
@@ -53,7 +53,7 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is neither treated as infinite nor as not infinite, so it fails.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> subject)
+	public static AndOrResult<TNumber, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars).Invert()),
@@ -135,7 +135,7 @@ public static partial class ThatNumber
 		GuaranteesNotNull = true, Summary = IsInfiniteSummary, NegatedSummary = IsNotInfiniteSummary,
 		Remarks = "<see langword=\"null\" /> is not treated as infinite.",
 		NegatedRemarks = "<see langword=\"null\" /> is neither treated as infinite nor as not infinite, so it fails.")]
-	internal static AndOrResult<TNumber?, IThat<TNumber?>> IsInfiniteForNullableCore<TNumber>(
+	internal static AndOrResult<TNumber, IThat<TNumber?>> IsInfiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		FloatingPointTraits<TNumber> traits,
 		bool negated)

@@ -19,11 +19,11 @@ public static partial class ThatString
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static CasingResult<string?, IThat<string?>> IsUpperCased(
+	public static CasingResult<string, IThat<string?>> IsUpperCased(
 		this IThat<string?> subject)
 	{
 		CasingOptions options = new();
-		return new CasingResult<string?, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
+		return new CasingResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(it, grammars) => new IsUpperCasedConstraint(it, grammars, options)),
 			subject,
 			options);

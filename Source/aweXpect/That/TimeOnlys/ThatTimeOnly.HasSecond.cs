@@ -18,7 +18,7 @@ public static partial class ThatTimeOnly
 	/// </summary>
 	public static AndOrResult<TimeOnly, IThat<TimeOnly>> HasSecond(
 		this IThat<TimeOnly> subject,
-		int expected)
+		int? expected)
 		=> subject.HasSecond().EqualTo(expected);
 }
 #endif

@@ -10,15 +10,15 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the year of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTime?> HasYear(this IThat<DateTime?> subject)
+	public static PropertyResult.Int<DateTime?, DateTime, IThat<DateTime?>> HasYear(this IThat<DateTime?> subject)
 		=> new(subject, a => a?.Year, "year");
 
 	/// <summary>
 	///     Verifies that the year of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<DateTime?, IThat<DateTime?>> HasYear(
+	public static AndOrResult<DateTime, IThat<DateTime?>> HasYear(
 		this IThat<DateTime?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasYear().EqualTo(expected);
 }

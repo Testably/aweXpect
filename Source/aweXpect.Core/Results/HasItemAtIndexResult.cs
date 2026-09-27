@@ -11,9 +11,9 @@ namespace aweXpect.Results;
 /// </remarks>
 public class HasItemAtIndexResult<TCollection>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection> collection,
+	IThat<TCollection?> collection,
 	CollectionIndexOptions collectionIndexOptions)
-	: AndOrResult<TCollection, IThat<TCollection>>(expectationBuilder, collection),
+	: AndOrResult<TCollection, IThat<TCollection?>>(expectationBuilder, collection),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -22,7 +22,7 @@ public class HasItemAtIndexResult<TCollection>(
 	/// <summary>
 	///     …from end.
 	/// </summary>
-	public AndOrResult<TCollection, IThat<TCollection>> FromEnd()
+	public AndOrResult<TCollection, IThat<TCollection?>> FromEnd()
 	{
 		if (collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 		{

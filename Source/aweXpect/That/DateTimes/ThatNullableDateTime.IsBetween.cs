@@ -20,15 +20,15 @@ public static partial class ThatNullableDateTime
 	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?> IsBetween(
+	public static BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?> IsBetween(
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?>(maximum =>
+		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-			return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
+			return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
 				subject,
@@ -46,15 +46,15 @@ public static partial class ThatNullableDateTime
 	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?> IsNotBetween(
+	public static BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?> IsNotBetween(
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?>(maximum =>
+		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-			return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
+			return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
 				subject,

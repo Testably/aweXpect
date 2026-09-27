@@ -226,6 +226,17 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldSucceed()
+			{
+				Exception subject = new("foo");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage(null));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenNotContainingIsNegated_ShouldReadAsContaining()
 			{
 				Exception subject = new("actual text");
@@ -562,6 +573,25 @@ public sealed partial class ThatException
 
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				Exception subject = new("foo");
+
+				async Task Act()
+					=> await That(subject).HasMessage(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has message equal to <null>,
+					             but it had message "foo"
+
+					             Message:
+					             foo
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenReadingTheMessageThrows_ShouldFailWithTheExceptionAsInnerException()
 			{

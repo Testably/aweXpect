@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable?> AtMost(
+	public static ElementsForEnumerable<IEnumerable> AtMost(
 		this IThat<IEnumerable?> subject,
 		int maximum)
 		=> new(subject, EnumerableQuantifier.AtMost(maximum));

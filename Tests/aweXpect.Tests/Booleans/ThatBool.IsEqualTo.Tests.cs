@@ -9,6 +9,24 @@ public sealed partial class ThatBool
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
+			public async Task WhenExpectedIsNull_ShouldFail(bool subject)
+			{
+				bool? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is <null>,
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
 			public async Task WhenSubjectIsDifferent_ShouldFail(bool subject)
 			{
 				bool expected = !subject;

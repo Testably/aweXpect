@@ -21,7 +21,7 @@ public static partial class ThatException
 	///     The exception must have at least one inner exception.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Exception?, IThat<Exception?>> HasRecursiveInnerExceptions(
+	public static AndOrResult<Exception, IThat<Exception?>> HasRecursiveInnerExceptions(
 		this IThat<Exception?> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		=> new(subject.Get().ExpectationBuilder

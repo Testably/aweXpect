@@ -15,7 +15,7 @@ public static partial class ThatNullableBool
 	///     <seealso href="https://mathworld.wolfram.com/Implies.html" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<bool?, IThat<bool?>> Implies(this IThat<bool?> subject,
+	public static AndOrResult<bool, IThat<bool?>> Implies(this IThat<bool?> subject,
 		bool consequent)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImpliesConstraint(it, grammars, consequent)),
@@ -29,7 +29,7 @@ public static partial class ThatNullableBool
 	///     <seealso href="https://mathworld.wolfram.com/Implies.html" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<bool?, IThat<bool?>> DoesNotImply(this IThat<bool?> subject,
+	public static AndOrResult<bool, IThat<bool?>> DoesNotImply(this IThat<bool?> subject,
 		bool consequent)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImpliesConstraint(it, grammars, consequent).Invert()),

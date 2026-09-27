@@ -10,7 +10,7 @@ public static partial class ThatString
 	///     Verifies that the length of the <see langword="string" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<string?> HasLength(this IThat<string?> subject)
+	public static PropertyResult.Int<string?, string, IThat<string?>> HasLength(this IThat<string?> subject)
 		=> new(subject, a => a?.Length, "length", (value, paramName) =>
 		{
 			if (value < 0)
@@ -27,8 +27,8 @@ public static partial class ThatString
 	///     <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> HasLength(
+	public static AndOrResult<string, IThat<string?>> HasLength(
 		this IThat<string?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasLength().EqualTo(expected);
 }

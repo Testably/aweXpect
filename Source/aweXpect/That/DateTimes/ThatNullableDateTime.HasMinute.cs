@@ -10,15 +10,15 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the minute of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTime?> HasMinute(this IThat<DateTime?> subject)
+	public static PropertyResult.Int<DateTime?, DateTime, IThat<DateTime?>> HasMinute(this IThat<DateTime?> subject)
 		=> new(subject, a => a?.Minute, "minute");
 
 	/// <summary>
 	///     Verifies that the minute of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<DateTime?, IThat<DateTime?>> HasMinute(
+	public static AndOrResult<DateTime, IThat<DateTime?>> HasMinute(
 		this IThat<DateTime?> subject,
-		int expected)
+		int? expected)
 		=> subject.HasMinute().EqualTo(expected);
 }
