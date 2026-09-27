@@ -56,7 +56,7 @@ await Expect.That(signaler).Signaled().Within(TimeSpan.FromSeconds(5))
 ```
 
 A `CancellationToken` (`WithCancellation`) also ends the wait, but the signals received until then decide nothing, so
-the expectation is then [inconclusive](/docs/expectations/advanced/cancellation#outcome) instead of failed or
+the expectation is then [inconclusive](./03-cancellation.md#outcome) instead of failed or
 successful. Use `Within(…)` to limit how long to wait.
 
 ### Amount

@@ -33,15 +33,15 @@ expectation is built.
 
 Some expectations wait for something to happen. Without `Within(…)` they behave as follows:
 
-| Expectation                                                        | Without `Within(…)`                                                               |
-|--------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| [`Signaled()`](/docs/expectations/advanced/callbacks)              | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
-| [`DidNotSignal()`](/docs/expectations/advanced/callbacks)          | always waits the full `DefaultSignalerTimeout` (30 s)                             |
-| [`Triggered("X")`](/docs/expectations/events#timeout)              | does not wait, only the events recorded so far count                              |
-| [`Satisfies(…)`](/docs/expectations/common-types/object#condition) | does not wait                                                                     |
-| [`Eventually()`](/docs/expectations/delegates#eventually)          | retries until the expectations are met, at most `DefaultEventuallyTimeout` (30 s) |
+| Expectation                                              | Without `Within(…)`                                                               |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------|
+| [`Signaled()`](./04-callbacks.md)                        | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
+| [`DidNotSignal()`](./04-callbacks.md)                    | always waits the full `DefaultSignalerTimeout` (30 s)                             |
+| [`Triggered("X")`](../05-events.md#timeout)              | does not wait, only the events recorded so far count                              |
+| [`Satisfies(…)`](../common-types/06-object.md#condition) | does not wait                                                                     |
+| [`Eventually()`](../04-delegates.md#eventually)          | retries until the expectations are met, at most `DefaultEventuallyTimeout` (30 s) |
 
-Both defaults can be changed in the [settings](/docs/expectations/advanced/customization#settings). When a default
+Both defaults can be changed in the [settings](./02-customization.md#settings). When a default
 applied, the failure message names the wait, e.g. `has never recorded the callback within 0:30` or
 `eventually is equal to 2 within 0:30`.
 
@@ -87,7 +87,7 @@ If necessary, provide a [linked cancellation token](https://learn.microsoft.com/
 
 A timeout and a cancellation are reported the same way by every expectation, whether it awaits a `Task<T>` subject, an
 asynchronous `Whose` member or delegate, enumerates an `IAsyncEnumerable<T>`, waits for a `Signaler` or for recorded
-events, or retries with `Within(…)` or [`Eventually()`](/docs/expectations/delegates#eventually):
+events, or retries with `Within(…)` or [`Eventually()`](../04-delegates.md#eventually):
 
 - When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
   finish within …" and a `TimeoutException` as inner exception.
@@ -103,7 +103,7 @@ events, or retries with `Within(…)` or [`Eventually()`](/docs/expectations/del
 A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
 the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
 cannot be abandoned and runs to completion. The outcome is the same whether the task was abandoned or reacted to the
-cancellation itself. With [`Eventually()`](/docs/expectations/delegates#eventually), the timeout bounds each evaluation
+cancellation itself. With [`Eventually()`](../04-delegates.md#eventually), the timeout bounds each evaluation
 in the same way.
 
 ## Async enumerables

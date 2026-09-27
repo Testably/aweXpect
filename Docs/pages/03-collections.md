@@ -105,8 +105,8 @@ You can verify that all items in the collection are equal to the `expected` valu
 await Expect.That([1, 1, 1]).All().AreEqualTo(1);
 ```
 
-You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer) or
-configure [equivalency](/docs/expectations/equivalency):
+You can also use a [custom comparer](./common-types/06-object.md#custom-comparer) or
+configure [equivalency](./06-equivalency.md):
 
 ```csharp
 IEnumerable<Album> albums = //...
@@ -190,7 +190,7 @@ Album[] albums = //...
 await Expect.That(albums).All().AreUnique(x => x.Title);
 ```
 
-You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer), or ignore the case of
+You can also use a [custom comparer](./common-types/06-object.md#custom-comparer), or ignore the case of
 strings:
 
 ```csharp
@@ -268,8 +268,8 @@ await Expect.That(values).Contains(1).LessThan(5.Times());
 await Expect.That(values).Contains(1).Between(1).And(5.Times());
 ```
 
-You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer) or
-configure [equivalency](/docs/expectations/equivalency):
+You can also use a [custom comparer](./common-types/06-object.md#custom-comparer) or
+configure [equivalency](./06-equivalency.md):
 
 ```csharp
 IEnumerable<Album> albums = //...
@@ -395,8 +395,8 @@ await Expect.That(values).StartsWith(1, 2);
 await Expect.That(values).DoesNotStartWith(2, 3);
 ```
 
-You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer) or
-configure [equivalency](/docs/expectations/equivalency):
+You can also use a [custom comparer](./common-types/06-object.md#custom-comparer) or
+configure [equivalency](./06-equivalency.md):
 
 ```csharp
 IEnumerable<Album> albums = //...
@@ -426,8 +426,8 @@ await Expect.That(values).EndsWith(4, 5);
 await Expect.That(values).DoesNotEndWith(3, 5);
 ```
 
-You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer) or
-configure [equivalency](/docs/expectations/equivalency):
+You can also use a [custom comparer](./common-types/06-object.md#custom-comparer) or
+configure [equivalency](./06-equivalency.md):
 
 ```csharp
 IEnumerable<Album> albums = //...
@@ -465,7 +465,7 @@ await Expect.That(values).All().Satisfy(i => i <= 20);
 
 An empty collection satisfies `All()`, like it does `Enumerable.All`, so
 `Expect.That(new int[0]).All().Satisfy(x => false)` succeeds. In contrast,
-[`WithRecursiveInnerExceptions`](/docs/expectations/delegates#recursive-inner-exceptions) and
+[`WithRecursiveInnerExceptions`](./04-delegates.md#recursive-inner-exceptions) and
 `HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*

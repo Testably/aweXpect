@@ -21,7 +21,7 @@ using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
 
 Under `Customize.aweXpect.Equivalency()` you have:
 - **DefaultEquivalencyOptions**  
-  The [equivalency options](/docs/expectations/equivalency#customizing-the-global-defaults) that are used when an
+  The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) that are used when an
   expectation does not configure them.
 
 
@@ -64,21 +64,21 @@ Under `Customize.aweXpect.Settings()` you have:
 - **TestCancellation**  
   A cancellation logic that is applied for all tests. This can be one of the following:
   - `FromTimeout(TimeSpan timeout)`  
-    This will cancel the `CancellationToken` that is used internally and forwarded to the [delegates](/docs/expectations/delegates) after the given timeout.
+    This will cancel the `CancellationToken` that is used internally and forwarded to the [delegates](../04-delegates.md) after the given timeout.
   - `FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`  
-    This will use the returned `CancellationToken` internally and also forward it to the [delegates](/docs/expectations/delegates).
+    This will use the returned `CancellationToken` internally and also forward it to the [delegates](../04-delegates.md).
 
 - **DefaultCheckInterval**  
   The default interval for repeatedly checking the condition on an object. It must be positive.
 
 - **DefaultEventuallyTimeout**  
-  The default timeout until the expectations of [`Eventually()`](/docs/expectations/delegates) on a delegate must be met.
+  The default timeout until the expectations of [`Eventually()`](../04-delegates.md) on a delegate must be met.
   It must not be negative; `Timeout.InfiniteTimeSpan` retries until the expectations are met.
 
 - **DefaultSignalerTimeout**  
-  The default timeout for the [`Signaler`](/docs/expectations/advanced/callbacks). It must not be negative;
+  The default timeout for the [`Signaler`](./04-callbacks.md). It must not be negative;
   `Timeout.InfiniteTimeSpan` waits without a limit.
 
 - **DefaultTimeComparisonTolerance**  
-  The default tolerance when date or time values are compared without an explicit tolerance, see [Default Tolerance](/docs/expectations/common-types/datetime-offset#default-tolerance).
+  The default tolerance when date or time values are compared without an explicit tolerance, see [Default Tolerance](../common-types/09-datetime-offset.md#default-tolerance).
   *Note: In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370)*

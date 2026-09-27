@@ -164,7 +164,7 @@ await Expect.That(Act).Throws().WithMessage().NotEndingWith("something else");
 Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
 neither is a substring anything could meaningfully be checked against.
 
-You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
+You can use the same configuration options as when [comparing strings](./common-types/02-string.md#equality).
 
 ## Inner exceptions
 
@@ -323,8 +323,8 @@ await Expect.That(() => sut.Name).Eventually().IsNotNull().And.StartsWith("foo")
 ```
 
 The delegate is re-evaluated every
-[`DefaultCheckInterval`](/docs/expectations/advanced/customization) (defaults to `100ms`) until the timeout
-configured in [`DefaultEventuallyTimeout`](/docs/expectations/advanced/customization) (defaults to `30s`)
+[`DefaultCheckInterval`](./advanced/02-customization.md) (defaults to `100ms`) until the timeout
+configured in [`DefaultEventuallyTimeout`](./advanced/02-customization.md) (defaults to `30s`)
 expires. The last wait is shortened so that it never exceeds the timeout, which means that an interval
 that is longer than the timeout results in exactly two evaluations. You can overwrite the timeout per
 expectation with `Within` and the interval with `CheckEvery`, in either order:
@@ -357,7 +357,7 @@ interrupted, so for it the timeout is only checked between evaluations.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
 `Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. Returning the task directly also works with a
-language version [older than C# 13](#delegates):
+language version older than C# 13 (see the note at the top of this page):
 
 ```csharp
 await Expect.That(() => sut.GetCountAsync()).Eventually().IsGreaterThan(5);

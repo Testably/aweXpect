@@ -101,7 +101,7 @@ By default, equivalency:
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
   instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
   looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](/docs/expectations/collections#dictionaries). Two expected keys that this comparer considers the same
+  [`IsEqualTo`](./03-collections.md#dictionaries). Two expected keys that this comparer considers the same
   cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
   from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
   `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
@@ -283,7 +283,7 @@ A limit other than the default is listed in the failure message under `Equivalen
 ### Customizing the global defaults
 
 You can change the default `EquivalencyOptions` that are used when no callback is provided, via the
-[customization API](/docs/expectations/advanced/customization):
+[customization API](./advanced/02-customization.md):
 
 ```csharp
 using aweXpect.Customization;

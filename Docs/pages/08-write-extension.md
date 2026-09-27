@@ -245,7 +245,7 @@ An exception that your constraint throws itself, e.g. to reject an invalid argum
 
 ## Customization
 
-You can add you own [customizations](/docs/expectations/advanced/customization) on top of the `AwexpectCustomization`
+You can add you own [customizations](./advanced/02-customization.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
 
 ### Add a simple customization value

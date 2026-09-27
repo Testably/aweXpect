@@ -20,7 +20,7 @@ await Expect.That(subject).IsNotEqualTo(new Album("Revolver"));
 
 *Note: a number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
-[equivalency](/docs/expectations/equivalency).*
+[equivalency](../06-equivalency.md).*
 
 ### Reference equality
 
@@ -76,7 +76,7 @@ succeeds.*
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
-[equivalency](/docs/expectations/equivalency) page for details and configuration options:
+[equivalency](../06-equivalency.md) page for details and configuration options:
 
 ```csharp
 class Album(string title)
