@@ -380,6 +380,9 @@ object is rendered from its registered members, so the message keeps listing the
 unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Either way the message lists
 public instance members only, without static members, indexers or properties that lack a public getter.
 
+<details>
+<summary>Types the generator cannot see, and how reflection is switched off</summary>
+
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 
 - a member declared as `object`, an interface or a base type only reveals the declared type; the instance it holds at
@@ -428,3 +431,5 @@ and the `AweXpectReflectionFallback` property of your project sets that switch:
 With the fallback forced on, a trimmed application reflects over whatever the trimmer left, which is best effort: a
 type whose members were all removed still fails with an error that asks you to root it, but a type that lost only
 some of them is compared through the rest.
+
+</details>

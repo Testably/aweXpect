@@ -252,6 +252,9 @@ looks the events up nor binds a handler reflectively. The registration runs when
 configuration. A subject whose runtime type has a registration is recorded through it, every other subject is
 reflected over as before, and a registered handler takes any number of parameters.
 
+<details>
+<summary>Types the generator cannot see, and how reflection is switched off</summary>
+
 The generator works from the declared type, so the same limits apply as for
 [equivalency](./06-equivalency.md#trimming-and-native-aot):
 
@@ -273,3 +276,5 @@ code generation. Recording such a subject fails with an error that names the typ
 `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
 [equivalency](./06-equivalency.md#trimming-and-native-aot); with the fallback forced on, the error for an
 unknown event name, and for an event that a recording of all events did not find, asks you to root the type instead.
+
+</details>
