@@ -95,6 +95,65 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Fact]
+	public async Task Using_WithATypedComparer_ShouldCompareWithIt()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		bool result = await sut.AreConsideredEqual(1, 11);
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task Using_WithATypedComparer_ShouldNameItsType()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		string? result = sut.ToString();
+
+		await That(result).IsEqualTo(" using ObjectEqualityOptionsTests.ModuloComparer");
+	}
+
+	[Fact]
+	public async Task Using_WithATypedComparer_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		void Act() => sut.Using(new ModuloComparer(10));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be specified more than once.")
+			.Because("the second comparer would silently replace the first one");
+	}
+
+	[Fact]
+	public async Task Using_WithATypedComparer_WhenTheExpectedValueHasAnotherType_ShouldReturnFalse()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		bool result = await sut.AreConsideredEqual(1, 11L);
+
+		await That(result).IsFalse()
+			.Because("the comparer can only compare values of its own type");
+	}
+
+	[Fact]
+	public async Task Using_WithATypedComparer_WithNull_ShouldThrowArgumentNullException()
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		void Act() => sut.Using((IEqualityComparer<int>)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("comparer").And
+			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task Using_WithNull_ShouldThrowArgumentNullException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -186,6 +245,13 @@ public class ObjectEqualityOptionsTests
 		public new bool Equals(object? x, object? y) => true;
 
 		public int GetHashCode(object obj) => 0;
+	}
+
+	private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
+	{
+		public bool Equals(int x, int y) => x % modulus == y % modulus;
+
+		public int GetHashCode(int obj) => obj % modulus;
 	}
 
 	private sealed class DummyMatchType : IObjectMatchType

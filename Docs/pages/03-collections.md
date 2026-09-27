@@ -229,6 +229,9 @@ Album[] albums = //...
 await Expect.That(albums).IsInAscendingOrder(x => x.Title);
 ```
 
+A `SortedSet<T>` (or on .NET 8 or later an `ImmutableSortedSet<T>`) with a custom comparer is ordered by that comparer,
+unless a comparer or a member is specified.
+
 A collection of `DateTime` values (or a `DateTime` member) that contains both `DateTimeKind.Utc` and
 `DateTimeKind.Local` values fails the check, in its negated form as well, as the order of such values depends on the
 time zone. Values with `DateTimeKind.Unspecified` are compatible with both kinds. With a custom comparer, the comparer
@@ -277,7 +280,7 @@ A set that was created with a custom comparer (a `HashSet<T>` or `SortedSet<T>`,
 `ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`) is asked for the item itself, so its comparer decides
 and the item is counted at most once. Any other collection, including a set with the default comparer, is compared with
 the default equality. A custom comparer, equivalency or a string option such as `IgnoringCase()` takes precedence over
-the comparer of the set:
+the comparer of the set, and `Using(EqualityComparer<T>.Default)` forces the default equality:
 
 ```csharp
 HashSet<string> values = new(StringComparer.OrdinalIgnoreCase) { "foo" };
@@ -285,6 +288,11 @@ HashSet<string> values = new(StringComparer.OrdinalIgnoreCase) { "foo" };
 await Expect.That(values).Contains("FOO");
 await Expect.That(values).DoesNotContain("FOO").Using(StringComparer.Ordinal);
 ```
+
+The comparer of such a set decides in every expectation that compares its items, also in `HasItem`, `StartsWith`,
+`EndsWith` and `All().AreEqualTo`, and whenever it decides, the expectation names it, e.g.
+`contains "BAR" using the subject's StringComparer.OrdinalIgnoreCase at least once`. For an untyped `IEnumerable`, only a
+set of the expected item type is recognised, e.g. a `HashSet<string>` for an expected string.
 
 For the same types as for [equality](#equality) you can also specify a tolerance, which takes precedence over the
 comparer of a set as well. It is also available for a [subset](#subset), a [superset](#superset), the
@@ -767,5 +775,8 @@ Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
 await Expect.That(values).Keys.Contains(42);
 await Expect.That(values).Values.All().AreUnique();
 ```
+
+The keys keep the key comparer of the dictionary, so e.g. `Keys.Contains("FOO")` succeeds for a key `"foo"` in a
+dictionary created with `StringComparer.OrdinalIgnoreCase`.
 
 The keys of a dictionary are unique by design, so its uniqueness is decided by the values alone.

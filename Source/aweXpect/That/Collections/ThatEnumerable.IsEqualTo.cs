@@ -92,7 +92,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1,
-		Summary = Matches, NegatedSummary = DoesNotMatch)]
+		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsEqualToForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
@@ -100,7 +100,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -108,7 +108,8 @@ public static partial class ThatEnumerable
 			{
 				IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					usesDefaultEquality: () => options.HasDefaultMatchType);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -122,7 +123,8 @@ public static partial class ThatEnumerable
 		NegatedSummary =
 			"Verifies that the collection does not match a collection of only the provided <paramref name=\"unexpected\" /> value.",
 		Remarks = SingleValueRemarks + "\nA <see langword=\"null\" /> argument is still an expected collection that is\n" +
-		          "<see langword=\"null\" />, so that <c>IsEqualTo(null)</c> keeps its meaning.")]
+		          "<see langword=\"null\" />, so that <c>IsEqualTo(null)</c> keeps its meaning.\n" +
+		          UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, string?>
 		IsEqualToSingleStringCore(
 			IThat<IEnumerable?> subject,
@@ -138,7 +140,7 @@ public static partial class ThatEnumerable
 			"Without this overload an untyped <see cref=\"System.Collections.IEnumerable\" /> would bind to the\n" +
 			"equality expectation for objects, which compares the instances by reference. A multi-dimensional array\n" +
 			"has no shape as an <see cref=\"System.Collections.IEnumerable\" />, so it is compared by its flattened\n" +
-			"content.")]
+			"content.\n" + UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
 		IsEqualToForObjectsCore(
 			IThat<IEnumerable?> subject,
@@ -146,7 +148,7 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		ObjectEqualityOptions<object?> options = new();
+		ItemEqualityOptions<object?> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>(
@@ -154,7 +156,8 @@ public static partial class ThatEnumerable
 			{
 				IsEqualToForEnumerableConstraint<IEnumerable, object?, object?> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected?.Cast<object?>(), options, matchOptions);
+					expectedExpression.TrimCommonWhiteSpace(), expected?.Cast<object?>(), options, matchOptions,
+					usesDefaultEquality: () => options.HasDefaultMatchType);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

@@ -12,6 +12,11 @@ public record CollectionOrderOptions<TItem>
 	private IComparer<TItem>? _comparer;
 
 	/// <summary>
+	///     Indicates whether a comparer was specified.
+	/// </summary>
+	public bool HasComparer => _comparer is not null;
+
+	/// <summary>
 	///     Returns the specified comparer or a default comparer.
 	/// </summary>
 	public IComparer<TItem> GetComparer() => _comparer ?? GetDefaultComparer();

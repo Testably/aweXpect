@@ -51,4 +51,13 @@ public class ObjectCountResult<TType, TThat, TElement, TSelf>(
 		options.Using(comparer);
 		return (TSelf)this;
 	}
+
+	/// <summary>
+	///     Uses the provided <paramref name="comparer" /> for comparing <typeparamref name="TElement" /> values.
+	/// </summary>
+	public TSelf Using(IEqualityComparer<TElement> comparer)
+	{
+		options.Using(comparer);
+		return (TSelf)this;
+	}
 }

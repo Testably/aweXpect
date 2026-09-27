@@ -37,53 +37,94 @@ internal static class CollectionComparerHelpers
 #endif
 			_ => new HashSet<TKey>(),
 		};
+
+	/// <summary>
+	///     Returns the <paramref name="keys" /> of the <paramref name="dictionary" /> as a set with its key comparer,
+	///     when that comparer is not the default one, so that expectations on the keys use it as well.
+	/// </summary>
+	/// <remarks>
+	///     The keys of a dictionary are unique for its comparer, so the set holds all of them, in the same order.
+	/// </remarks>
+	public static IEnumerable<TKey>? GetKeys<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary,
+		IEnumerable<TKey>? keys)
+		=> dictionary switch
+		{
+			Dictionary<TKey, TValue> d when IsCustom(d.Comparer) => new HashSet<TKey>(d.Keys, d.Comparer),
+			SortedDictionary<TKey, TValue> d when IsCustom(d.Comparer) => new SortedSet<TKey>(d.Keys, d.Comparer),
+			SortedList<TKey, TValue> d when IsCustom(d.Comparer) => new SortedSet<TKey>(d.Keys, d.Comparer),
+#if NET8_0_OR_GREATER
+			ConcurrentDictionary<TKey, TValue> d when IsCustom(d.Comparer) => new HashSet<TKey>(d.Keys, d.Comparer),
+			ImmutableDictionary<TKey, TValue> d when IsCustom(d.KeyComparer)
+				=> new HashSet<TKey>(d.Keys, d.KeyComparer),
+			ImmutableSortedDictionary<TKey, TValue> d when IsCustom(d.KeyComparer)
+				=> new SortedSet<TKey>(d.Keys, d.KeyComparer),
+			FrozenDictionary<TKey, TValue> d when IsCustom(d.Comparer) => new HashSet<TKey>(d.Keys, d.Comparer),
+#endif
+			_ => keys,
+		};
 #pragma warning restore CS8714
 
 	/// <summary>
-	///     Indicates whether the <paramref name="collection" /> is a set that exposes a comparer other than the default
-	///     one for <typeparamref name="T" />.
+	///     Returns the comparer of the <paramref name="collection" />, when it is a set that exposes a comparer other
+	///     than the default one for <typeparamref name="T" />, or <see langword="null" /> otherwise.
 	/// </summary>
 	/// <remarks>
 	///     Only such a set is known to decide differently than the default equality, and a set that does not expose its
 	///     comparer cannot be told apart from one that uses the default. The known types are checked one by one, so
-	///     that no reflection is needed, which would not survive trimming.
+	///     that no reflection is needed, which would not survive trimming. A sorted set considers two items the same
+	///     when its comparer orders neither before the other.
 	/// </remarks>
-	public static bool IsSetWithCustomComparer<T>(IEnumerable<T> collection)
+	public static SubjectComparer<T>? GetSubjectComparer<T>(object? collection)
 		=> collection switch
 		{
-			HashSet<T> set => IsCustom(set.Comparer),
-			SortedSet<T> set => IsCustom(set.Comparer),
+			HashSet<T> set when IsCustom(set.Comparer) => new SubjectComparer<T>(set.Comparer.Equals, set.Comparer),
+			SortedSet<T> set when IsCustom(set.Comparer)
+				=> new SubjectComparer<T>((x, y) => set.Comparer.Compare(x, y) == 0, set.Comparer),
 #if NET8_0_OR_GREATER
-			ImmutableHashSet<T> set => IsCustom(set.KeyComparer),
-			ImmutableSortedSet<T> set => IsCustom(set.KeyComparer),
-			FrozenSet<T> set => IsCustom(set.Comparer),
+			ImmutableHashSet<T> set when IsCustom(set.KeyComparer)
+				=> new SubjectComparer<T>(set.KeyComparer.Equals, set.KeyComparer),
+			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
+				=> new SubjectComparer<T>((x, y) => set.KeyComparer.Compare(x, y) == 0, set.KeyComparer),
+			FrozenSet<T> set when IsCustom(set.Comparer) => new SubjectComparer<T>(set.Comparer.Equals, set.Comparer),
 #endif
-			_ => false,
+			_ => null,
 		};
 
 	/// <summary>
-	///     Returns the equality that the comparer of the <paramref name="collection" /> defines, when it is a set that
-	///     exposes a comparer other than the default one for <typeparamref name="T" />, or <see langword="null" />
+	///     Returns the comparer that orders the items of the <paramref name="collection" />, when it is a sorted set
+	///     with a comparer other than the default one for <typeparamref name="T" />, or <see langword="null" />
 	///     otherwise.
 	/// </summary>
-	/// <remarks>
-	///     Covers the same sets as <see cref="IsSetWithCustomComparer{T}" />. A sorted set considers two items the same
-	///     when its comparer orders neither before the other.
-	/// </remarks>
-	public static Func<T, T, bool>? GetCustomSetEquality<T>(IEnumerable<T> collection)
+	public static IComparer<T>? GetSubjectOrder<T>(object? collection)
 		=> collection switch
 		{
-			HashSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y), "the comparer"),
-			SortedSet<T> set when IsCustom(set.Comparer)
-				=> (x, y) => UserCode.Invoke(() => set.Comparer.Compare(x, y), "the comparer") == 0,
+			SortedSet<T> set when IsCustom(set.Comparer) => set.Comparer,
 #if NET8_0_OR_GREATER
-			ImmutableHashSet<T> set when IsCustom(set.KeyComparer)
-				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Equals(x, y), "the comparer"),
-			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
-				=> (x, y) => UserCode.Invoke(() => set.KeyComparer.Compare(x, y), "the comparer") == 0,
-			FrozenSet<T> set when IsCustom(set.Comparer) => (x, y) => UserCode.Invoke(() => set.Comparer.Equals(x, y), "the comparer"),
+			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => set.KeyComparer,
 #endif
 			_ => null,
+		};
+
+	/// <summary>
+	///     Describes that the <paramref name="comparer" /> of the subject decides, e.g.
+	///     <c>using the subject's StringComparer.OrdinalIgnoreCase</c>.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="StringComparer" /> is named by the property that returns it, because its type is internal to the
+	///     framework and differs between target frameworks.
+	/// </remarks>
+	public static string DescribeSubjectComparer(object comparer)
+		=> " using the subject's " + comparer switch
+		{
+			StringComparer c when c.Equals(StringComparer.Ordinal) => "StringComparer.Ordinal",
+			StringComparer c when c.Equals(StringComparer.OrdinalIgnoreCase) => "StringComparer.OrdinalIgnoreCase",
+			StringComparer c when c.Equals(StringComparer.InvariantCulture) => "StringComparer.InvariantCulture",
+			StringComparer c when c.Equals(StringComparer.InvariantCultureIgnoreCase)
+				=> "StringComparer.InvariantCultureIgnoreCase",
+			StringComparer c when c.Equals(StringComparer.CurrentCulture) => "StringComparer.CurrentCulture",
+			StringComparer c when c.Equals(StringComparer.CurrentCultureIgnoreCase)
+				=> "StringComparer.CurrentCultureIgnoreCase",
+			_ => Formatter.Format(comparer.GetType()),
 		};
 
 	/// <summary>

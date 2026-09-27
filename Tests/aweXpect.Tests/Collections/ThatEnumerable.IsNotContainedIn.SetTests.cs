@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not contained in collection ["C", "B", "A",] in any order,
+					             is not contained in collection ["C", "B", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it was
 
 					             Collection:

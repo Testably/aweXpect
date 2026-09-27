@@ -110,7 +110,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains collection ["a", "A",] in any order,
+					             contains collection ["a", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it lacked 1 of 2 expected items: "A"
 
 					             Collection:
@@ -256,7 +256,40 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+#endif
 
+			[Fact]
+			public async Task ForAnUntypedSetOfIntegers_ShouldUseTheDefaultEquality()
+			{
+				System.Collections.IEnumerable subject = new HashSet<int>(new ModuloComparer(10)) { 1, };
+
+				async Task Act()
+					=> await That(subject).Contains(11);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to 11 at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1]
+					             """)
+					.Because("the comparer of a set of another item type than the expected one cannot be read");
+			}
+
+			[Fact]
+			public async Task ForAnUntypedStringSet_ShouldUseTheComparerOfTheSet()
+			{
+				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).Contains("A");
+
+				await That(Act).DoesNotThrow();
+			}
+
+#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task ForASetWithoutAnExposedComparer_ShouldUseTheDefaultEquality()
 			{
@@ -302,7 +335,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "A" at least twice,
+					             contains "A" using the subject's StringComparer.OrdinalIgnoreCase at least twice,
 					             but it contained "A" once
 
 					             Collection:
@@ -337,6 +370,37 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to 11 using AllDifferentComparer at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1]
+					             """);
+			}
+
+			[Fact]
+			public async Task UsingTheComparerOfTheSet_ShouldUseIt()
+			{
+				List<int> subject = [1, 21,];
+				HashSet<int> set = new(new ModuloComparer(10));
+
+				async Task Act()
+					=> await That(subject).Contains(11).Exactly(2.Times()).Using(set.Comparer);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task UsingTheDefaultComparer_ShouldForceTheDefaultEquality()
+			{
+				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+
+				async Task Act()
+					=> await That(subject).Contains(11).Using(EqualityComparer<int>.Default);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to 11 using GenericEqualityComparer<int> at least once,
 					             but it did not contain it
 
 					             Collection:
@@ -400,7 +464,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "b" at least once,
+					             contains "b" using the subject's ThatEnumerable.Contains.SetItemTests.ThrowingComparer at least once,
 					             but the comparer did throw an InvalidOperationException:
 					               comparer failed
 					             """).And
@@ -418,7 +482,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "A" at least once,
+					             contains "A" using the subject's StringComparer.Ordinal at least once,
 					             but it did not contain it
 
 					             Collection:

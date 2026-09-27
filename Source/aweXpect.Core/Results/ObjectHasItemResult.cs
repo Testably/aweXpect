@@ -49,4 +49,13 @@ public class ObjectHasItemResult<TCollection, TItem, TSelf>(
 		options.Using(comparer);
 		return (TSelf)this;
 	}
+
+	/// <summary>
+	///     Uses the provided <paramref name="comparer" /> for comparing <typeparamref name="TItem" /> values.
+	/// </summary>
+	public TSelf Using(IEqualityComparer<TItem> comparer)
+	{
+		options.Using(comparer);
+		return (TSelf)this;
+	}
 }
