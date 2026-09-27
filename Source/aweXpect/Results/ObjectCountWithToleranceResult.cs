@@ -3,6 +3,7 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
+#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
 ///     The result for verifying how often an item occurs in a collection, allowing a
 ///     <typeparamref name="TTolerance" /> on the comparison.
