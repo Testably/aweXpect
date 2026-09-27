@@ -59,7 +59,7 @@ Under `Customize.aweXpect.Settings()`:
 | `DefaultCheckInterval`           | `TimeSpan`         | 100 ms  | The interval for re-checking a condition, e.g. for [`Eventually()`](../04-delegates.md#eventually).           |
 | `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s    | How long [`Eventually()`](../04-delegates.md#eventually) retries until the expectations must be met.          |
 | `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s    | How long a [`Signaler`](./04-callbacks.md) expectation waits without `Within(…)`.                             |
-| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../common-types/09-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
+| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../common-types/08-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
 
 `TestCancellation` is created with one of:
 

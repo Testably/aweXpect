@@ -184,7 +184,7 @@ value with the other kind, and `IsInAscendingOrder` / `IsInDescendingOrder` fail
 mixes both kinds unless you specify a comparer. Comparing a `DateTime` as a value honours the kind as well, so a
 collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` for a `DateTime` member, no longer
 match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
-[DateTime / DateTimeOffset](./common-types/09-datetime-offset.md#kind).
+[DateTime / DateTimeOffset](./common-types/08-datetime-offset.md#kind).
 
 ## Dictionary subjects
 

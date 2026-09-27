@@ -14,7 +14,7 @@ A `DateOnly` has no time of day, so a tolerance must be a whole number of days. 
 `Within(TimeSpan.FromHours(23))`, throws an `ArgumentOutOfRangeException` as soon as it is specified instead of silently
 rounding down to a tolerance you did not ask for.
 
-The [default tolerance](./09-datetime-offset.md#default-tolerance) is shared with the other time
+The [default tolerance](./08-datetime-offset.md#default-tolerance) is shared with the other time
 types, so it is not rejected: only its whole days apply to a `DateOnly`, and a default below one day has no effect.
 :::
 
