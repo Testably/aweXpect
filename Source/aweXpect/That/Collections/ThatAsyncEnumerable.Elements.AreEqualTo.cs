@@ -59,7 +59,7 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
-	internal static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		AreEqualToForStringsCore(
 			Elements elements,
 			string? expected)
@@ -67,13 +67,13 @@ public static partial class ThatAsyncEnumerable
 		IElements iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
+		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionConstraint<string?>(
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					g => ElementExpectations.IsEqualToString(g, expected, options),
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,

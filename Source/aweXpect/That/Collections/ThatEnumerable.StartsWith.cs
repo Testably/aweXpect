@@ -69,7 +69,7 @@ public static partial class ThatEnumerable
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
-	internal static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWithForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
@@ -79,7 +79,7 @@ public static partial class ThatEnumerable
 		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
+		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
@@ -226,7 +226,7 @@ public static partial class ThatEnumerable
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
 		ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	internal static StringEqualityResult<TCollection, IThat<TCollection>>
+	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
 		StartsWithForCollectionStringsCore<TCollection>(
 			IThat<TCollection> subject,
 			IEnumerable<string?> expected,
@@ -237,7 +237,7 @@ public static partial class ThatEnumerable
 		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<TCollection, IThat<TCollection>>(
+		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				StartsWithForEnumerableConstraint<TCollection, string?> constraint = new(
@@ -371,7 +371,7 @@ public static partial class ThatEnumerable
 				stringBuilder.Append(_it).Append(" contained item ");
 				Formatter.Format(stringBuilder, _firstMismatchItem);
 				stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
-				Formatter.Format(stringBuilder, _expected[_index - 1]);
+				stringBuilder.AppendExpectedItem(_expected[_index - 1], _options);
 			}
 			else
 			{
@@ -493,7 +493,7 @@ public static partial class ThatEnumerable
 				stringBuilder.Append(_it).Append(" contained item ");
 				Formatter.Format(stringBuilder, _firstMismatchItem);
 				stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
-				Formatter.Format(stringBuilder, _expected[_index - 1]);
+				stringBuilder.AppendExpectedItem(_expected[_index - 1], _options);
 			}
 			else
 			{

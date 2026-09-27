@@ -105,3 +105,4 @@ aweXpect.Options.CollectionOrderOptions<TItem>.HasComparer.get -> bool
 aweXpect.Options.ObjectEqualityOptions<TSubject>.Using(System.Collections.Generic.IEqualityComparer<TSubject>! comparer) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
 aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf!
 aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> TSelf!
+aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> string!

@@ -158,6 +158,66 @@ public sealed partial class ThatEnumerable
 		public sealed class StringTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).EndsWith("### ", "te").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with ["### ", "te"] as prefix,
+					             but it contained item "## Intro" at index 1 instead of prefix "### "
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsPrefix_WhenExpectedContainsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<string> subject = ToEnumerable(["foo",]);
+				string?[] expected = [null,];
+
+				async Task Act()
+					=> await That(subject).EndsWith(expected).AsPrefix();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expected' prefix cannot be null.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Fact]
+			public async Task AsRegex_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).EndsWith("^### ", "^te").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with ["^### ", "^te"] as regex,
+					             but it contained item "## Intro" at index 1 instead of regex "^### "
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo",]);
@@ -168,6 +228,52 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
 					.WithParamName("expected");
+			}
+
+			[Fact]
+			public async Task AsSuffix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).EndsWith("Outro", "xt").AsSuffix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with ["Outro", "xt"] as suffix,
+					             but it contained item "## Intro" at index 1 instead of suffix "Outro"
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsWildcard_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).EndsWith("### *", "t*t").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with ["### *", "t*t"] as wildcard,
+					             but it contained item "## Intro" at index 1 instead of wildcard "### *"
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
 			}
 
 			[Fact]

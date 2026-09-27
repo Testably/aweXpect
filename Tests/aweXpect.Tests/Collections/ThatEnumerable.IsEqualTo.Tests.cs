@@ -2588,6 +2588,158 @@ public sealed partial class ThatEnumerable
 		public sealed class StringsTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenAnExpectedItemIsMissing_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title",];
+				string[] expected = ["# ", "### ",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as prefix in order,
+					             but it lacked 1 of 2 expected items: prefix "### "
+
+					             Collection:
+					             [
+					               "# Title"
+					             ]
+
+					             Expected:
+					             [
+					               "# ",
+					               "### "
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title", "## Intro", "text",];
+				string[] expected = ["# ", "### ", "t",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as prefix in order,
+					             but it contained item "## Intro" at index 1 instead of prefix "### "
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+
+					             Expected:
+					             [
+					               "# ",
+					               "### ",
+					               "t"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsRegex_WhenAnItemDoesNotMatchItsPattern_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title", "## Intro", "text",];
+				string[] expected = ["^# ", "^### ", "^t",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as regex in order,
+					             but it contained item "## Intro" at index 1 instead of regex "^### "
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+
+					             Expected:
+					             [
+					               "^# ",
+					               "^### ",
+					               "^t"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsSuffix_WhenAnItemDoesNotMatchItsPattern_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title", "## Intro", "text",];
+				string[] expected = ["Title", "Outro", "xt",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsSuffix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as suffix in order,
+					             but it contained item "## Intro" at index 1 instead of suffix "Outro"
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+
+					             Expected:
+					             [
+					               "Title",
+					               "Outro",
+					               "xt"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsWildcard_InAnyOrder_WhenExpectedItemsAreMissing_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title",];
+				string[] expected = ["# *", "## *", "### *",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsWildcard().InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as wildcard in any order,
+					             but it lacked 2 of 3 expected items:
+					               wildcard "## *",
+					               wildcard "### *"
+
+					             Collection:
+					             [
+					               "# Title"
+					             ]
+
+					             Expected:
+					             [
+					               "# *",
+					               "## *",
+					               "### *"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task AsWildcard_ShouldNotThrowWhenMatchingWildcard()
 			{
 				IEnumerable<string> subject = ["foo", "bar", "baz",];
@@ -2597,6 +2749,37 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected).AsWildcard();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsWildcard_WhenAnItemDoesNotMatchItsPattern_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title", "## Intro", "text",];
+				string[] expected = ["# *", "### *", "t*",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as wildcard in order,
+					             but it contained item "## Intro" at index 1 instead of wildcard "### *"
+
+					             Collection:
+					             [
+					               "# Title",
+					               "## Intro",
+					               "text"
+					             ]
+
+					             Expected:
+					             [
+					               "# *",
+					               "### *",
+					               "t*"
+					             ]
+					             """);
 			}
 
 			[Fact]

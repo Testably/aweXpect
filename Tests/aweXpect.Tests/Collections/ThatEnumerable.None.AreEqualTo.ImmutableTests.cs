@@ -61,6 +61,121 @@ public sealed partial class ThatEnumerable
 			public sealed class ImmutableStringTests
 			{
 				[Fact]
+				public async Task AsPrefix_WhenAnItemMatchesThePattern_ShouldFail()
+				{
+					ImmutableArray<string?> subject = ["text", "# Title", "## Intro",];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo("#").AsPrefix();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             starts with "#" for no items,
+						             but 2 of 3 were
+
+						             Matching items:
+						             [
+						               "# Title",
+						               "## Intro"
+						             ]
+
+						             Collection:
+						             [
+						               "text",
+						               "# Title",
+						               "## Intro"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task AsRegex_WhenAnItemMatchesThePattern_ShouldFail()
+				{
+					ImmutableArray<string?> subject = ["text", "# Title", "## Intro",];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo("^#").AsRegex();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches regex "^#" for no items,
+						             but 2 of 3 were
+
+						             Matching items:
+						             [
+						               "# Title",
+						               "## Intro"
+						             ]
+
+						             Collection:
+						             [
+						               "text",
+						               "# Title",
+						               "## Intro"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task AsSuffix_WhenAnItemMatchesThePattern_ShouldFail()
+				{
+					ImmutableArray<string?> subject = ["text", "# Title", "## Intro",];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo("le").AsSuffix();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             ends with "le" for no items,
+						             but 1 of 3 were
+
+						             Matching items:
+						             [
+						               "# Title"
+						             ]
+
+						             Collection:
+						             [
+						               "text",
+						               "# Title",
+						               "## Intro"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task AsWildcard_WhenAnItemMatchesThePattern_ShouldFail()
+				{
+					ImmutableArray<string?> subject = ["text", "# Title", "## Intro",];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo("#*").AsWildcard();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches "#*" for no items,
+						             but 2 of 3 were
+
+						             Matching items:
+						             [
+						               "# Title",
+						               "## Intro"
+						             ]
+
+						             Collection:
+						             [
+						               "text",
+						               "# Title",
+						               "## Intro"
+						             ]
+						             """);
+				}
+
+				[Fact]
 				public async Task ShouldSupportIgnoringCase()
 				{
 					ImmutableArray<string?> subject = ["FOO", "BAR", "BAZ",];

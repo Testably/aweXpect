@@ -193,6 +193,29 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		=> _matchType.GetExpectation(expected, grammars) + GetOptionString();
 
 	/// <summary>
+	///     Formats the <paramref name="expected" /> item of an expected collection.
+	/// </summary>
+	/// <remarks>
+	///     A pattern is preceded by its kind, e.g. <c>prefix "foo"</c>, so that it is not mistaken for the value the item
+	///     had to be equal to.
+	/// </remarks>
+	public string FormatExpectedItem(string? expected)
+		=> WithPatternKind(Formatter.Format(expected));
+
+	/// <summary>
+	///     Precedes the already <paramref name="formattedExpected" /> item with the kind of the pattern.
+	/// </summary>
+	internal string WithPatternKind(string formattedExpected)
+		=> _matchType switch
+		{
+			PrefixMatchType => "prefix ",
+			SuffixMatchType => "suffix ",
+			RegexMatchType => "regex ",
+			WildcardMatchType => "wildcard ",
+			_ => "",
+		} + formattedExpected;
+
+	/// <summary>
 	///     Get an extended failure text.
 	/// </summary>
 	public string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual, string? expected)
