@@ -74,7 +74,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemResult<IEnumerable<TItem>, TItem>
 		HasTheItemCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -83,13 +83,19 @@ public static partial class ThatEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions =
+					new(options, () => expected is not null && options.HasDefaultMatchType);
+				return new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
+					a => itemOptions.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
+					      itemOptions.Comparer,
+					indexOptions,
+					itemOptions.UseComparerOf).InvertIf(negated);
+			}),
 			subject,
 			indexOptions,
 			options);
@@ -97,7 +103,7 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
-		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>
 		HasTheItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -108,18 +114,24 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
+					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
+				return new HasAsyncItemConstraint<TItem>(expectationBuilder, it, grammars,
+					a => itemOptions.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
+					      itemOptions.Comparer,
+					indexOptions,
+					itemOptions.UseComparerOf).InvertIf(negated);
+			}),
 			subject,
 			indexOptions,
 			options);
 	}
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static StringHasItemResult<IEnumerable<string?>>
 		HasTheItemForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -130,11 +142,16 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<IEnumerable<string?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetExpectation(expected, grammars),
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				SubjectEqualityOptions<string?, string?> itemOptions =
+					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
+				return new HasAsyncItemConstraint<string?>(expectationBuilder, it, grammars,
+					a => itemOptions.AreConsideredEqual(a, expected),
+					() => options.GetExpectation(expected, grammars) + itemOptions.Comparer,
+					indexOptions,
+					itemOptions.UseComparerOf).InvertIf(negated);
+			}),
 			subject,
 			indexOptions,
 			options);
@@ -182,7 +199,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
+		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectHasItemResult<IEnumerable, object?>
 		HasTheItemForEnumerableCore(
 			IThat<IEnumerable?> subject,
@@ -191,14 +208,20 @@ public static partial class ThatEnumerable
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<object?> options = new();
+		ItemEqualityOptions<object?> options = new();
 		return new ObjectHasItemResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				SubjectEqualityOptions<object?, object?> itemOptions =
+					new(options, () => expected is not null && options.HasDefaultMatchType);
+				return new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+					a => itemOptions.AreConsideredEqual(a, expected),
+					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
+					      itemOptions.Comparer,
+					indexOptions,
+					itemOptions.UseComparerOf).InvertIf(negated);
+			}),
 			subject,
 			indexOptions,
 			options);
@@ -326,7 +349,8 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<string> predicateDescription,
-		CollectionIndexOptions options)
+		CollectionIndexOptions options,
+		Func<object?, bool>? useComparerOf = null)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -344,6 +368,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			useComparerOf?.Invoke(actual);
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 			_hasIndex = false;
@@ -433,7 +458,8 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<string> predicateDescription,
-		CollectionIndexOptions options)
+		CollectionIndexOptions options,
+		Func<object?, bool>? useComparerOf = null)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
@@ -451,6 +477,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			useComparerOf?.Invoke(actual);
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 			Outcome = Outcome.Failure;

@@ -11,6 +11,18 @@ public sealed partial class ThatEnumerable
 			public sealed class SetTests
 			{
 				[Fact]
+				public async Task ForAnUntypedSetOfObjects_ShouldUseTheComparerOfTheSet()
+				{
+					System.Collections.IEnumerable subject = new HashSet<object>(new AllDifferentComparer()) { 1, 1, };
+
+					async Task Act()
+						=> await That(subject).All().AreUnique();
+
+					await That(Act).DoesNotThrow()
+						.Because("a set never holds two items that its comparer considers equal");
+				}
+
+				[Fact]
 				public async Task ForAStringSet_ShouldUseTheComparerOfTheSet()
 				{
 					HashSet<string> subject = new(new AllDifferentComparer()) { "a", "a", };

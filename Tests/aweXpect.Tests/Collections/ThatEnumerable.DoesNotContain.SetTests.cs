@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection ["B", "A",] in any order,
+					             does not contain collection ["B", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it did
 
 					             Collection:
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain an item equal to 11,
+					             does not contain an item equal to 11 using the subject's ThatEnumerable.DoesNotContain.SetItemTests.ModuloComparer,
 					             but it contained 11 once
 
 					             Collection:
@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "A",
+					             does not contain "A" using the subject's StringComparer.OrdinalIgnoreCase,
 					             but it contained "A" once
 
 					             Collection:

@@ -137,7 +137,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
-		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+		Remarks = ContainedInRemarks + "\n" + UntypedSetComparerRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsContainedInForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
@@ -146,7 +147,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -155,7 +156,8 @@ public static partial class ThatEnumerable
 				IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem> constraint = new(
 					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true);
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.HasDefaultMatchType);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -166,7 +168,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
-		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
+		Remarks = ContainedInRemarks + "\n" + UntypedSetComparerRemarks,
+		NegatedRemarks = NotContainedInRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
 		IsContainedInForObjectsCore(
 			IThat<IEnumerable?> subject,
@@ -182,7 +185,7 @@ public static partial class ThatEnumerable
 		NegatedSummary =
 			"Verifies that the collection is not contained in a collection of only the provided <paramref name=\"unexpected\" /> value.",
 		Remarks = SingleValueRemarks + "\nA <see langword=\"null\" /> argument is still an expected collection that is\n" +
-		          "<see langword=\"null\" /> and throws.")]
+		          "<see langword=\"null\" /> and throws.\n" + UntypedSetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, string?>
 		IsContainedInSingleStringCore(
 			IThat<IEnumerable?> subject,

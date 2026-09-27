@@ -101,3 +101,7 @@ aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThan(Sy
 aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Options.CollectionOrderOptions<TItem>.HasComparer.get -> bool
+aweXpect.Options.ObjectEqualityOptions<TSubject>.Using(System.Collections.Generic.IEqualityComparer<TSubject>! comparer) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf!
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> TSelf!

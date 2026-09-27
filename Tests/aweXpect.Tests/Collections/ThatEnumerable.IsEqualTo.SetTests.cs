@@ -59,6 +59,43 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task ForAnUntypedStringSet_WithAString_ShouldUseTheComparerOfTheSet()
+			{
+				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("A");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForAnUntypedStringSet_WithStrings_ShouldNameTheComparerOfTheSet()
+			{
+				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(new[] { "B", });
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection new[] { "B", } using the subject's StringComparer.OrdinalIgnoreCase in order,
+					             but it contained item "a" at index 0 instead of "B"
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "B"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task ForASortedSet_InSameOrder_ShouldUseTheComparerOfTheSet()
 			{
 				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -122,6 +159,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task UsingTheDefaultComparer_ShouldForceTheDefaultEquality()
+			{
+				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([11,]).InAnyOrder().Using(EqualityComparer<int>.Default);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection [11,] using GenericEqualityComparer<int> in any order,
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               lacked the one expected item
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [11]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenExpectedContainsTwoItemsThatTheSetUnifies_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -132,7 +193,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to collection ["a", "A",] in any order,
+					             is equal to collection ["a", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it lacked 1 of 2 expected items: "A"
 
 					             Collection:
@@ -172,7 +233,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to collection ["A", "C",] in any order,
+					             is equal to collection ["A", "C",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it
 					               contained item "b" at index 1 that was not expected and
 					               lacked 1 of 2 expected items: "C"

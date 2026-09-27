@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection ["B", "A",] in any order,
+					             is not equal to collection ["B", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
 					             but it was
 
 					             Collection:

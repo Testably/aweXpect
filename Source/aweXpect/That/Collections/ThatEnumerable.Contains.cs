@@ -48,10 +48,17 @@ public static partial class ThatEnumerable
 		"that its comparer decides and the item is counted at most once. Its items are enumerated instead when the\n" +
 		"comparison is changed, e.g. with <c>Using(…)</c>, or when the item is <see langword=\"null\" />.";
 
-	private const string SetComparerRemarks =
+	private const string SetItemComparerRemarks =
 		"A subject that is a set with a custom comparer, e.g. a <c>HashSet&lt;T&gt;</c> created with one, compares its items\n" +
-		"with that comparer, unless the comparison is changed, e.g. with <c>Using(…)</c>. The comparer of an expected set\n" +
-		"is not used.";
+		"with that comparer, unless the comparison is changed, e.g. with <c>Using(…)</c>.";
+
+	private const string SetComparerRemarks = SetItemComparerRemarks + " The comparer of an expected set is not used.";
+
+	private const string UntypedSetComparerRemarks =
+		"A subject that is a set of the expected item type with a custom comparer, e.g. a <c>HashSet&lt;string&gt;</c>\n" +
+		"created with one for expected strings, compares its items with that comparer, unless the comparison is changed,\n" +
+		"e.g. with <c>Using(…)</c>. The comparer of a set of another item type cannot be read without reflection and is\n" +
+		"not used.";
 
 	private const string ContainsCollection =
 		"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection.";
@@ -114,12 +121,17 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions =
+					new(options, () => expected is not null && options.HasDefaultMatchType);
+				return new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g,
+						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
 					expected,
-					a => options.AreConsideredEqual(a, expected),
-					a => options.HasDefaultMatchType ? ContainsBySetLookup(a, expected) : null,
-					quantifier).InvertIf(negated)),
+					a => itemOptions.AreConsideredEqual(a, expected),
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
+					quantifier).InvertIf(negated);
+			}),
 			subject,
 			quantifier,
 			options);
@@ -139,12 +151,17 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedStringExpectation(options, expected)),
+			{
+				SubjectEqualityOptions<string?, string?> itemOptions =
+					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
+				return new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g,
+						ContainedStringExpectation(options, expected) + itemOptions.Comparer),
 					expected,
-					a => options.AreConsideredEqual(a, expected),
-					a => options.ComparesByOrdinalEquality ? ContainsBySetLookup(a, expected) : null,
-					quantifier).InvertIf(negated)),
+					a => itemOptions.AreConsideredEqual(a, expected),
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
+					quantifier).InvertIf(negated);
+			}),
 			subject,
 			quantifier,
 			options);
@@ -164,14 +181,17 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
+			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
+					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
+				return new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g,
+						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
 					expected,
-					a => options.AreConsideredEqual(a, expected),
-					a => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options)
-						? ContainsBySetLookup(a, expected)
-						: null,
-					quantifier).InvertIf(negated)),
+					a => itemOptions.AreConsideredEqual(a, expected),
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
+					quantifier).InvertIf(negated);
+			}),
 			subject,
 			quantifier,
 			options);
@@ -201,36 +221,54 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
-		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
 		ContainsItemForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			object? expected,
 			bool negated)
-	{
-		Quantifier quantifier = new();
-		ObjectEqualityOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
-					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
-					expected,
-					a => options.AreConsideredEqual(a, expected),
-					quantifier).InvertIf(negated)),
-			subject,
-			quantifier,
-			options);
-	}
+		=> ContainsItemForEnumerable<object?>(subject, expected, negated);
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
-		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SingleValueRemarks)]
+		Summary = ContainsValue, NegatedSummary = DoesNotContainValue,
+		Remarks = SingleValueRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
 		ContainsSingleStringForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			string? expected,
 			bool negated)
-		=> ContainsItemForEnumerableCore(subject, expected, negated);
+		=> ContainsItemForEnumerable<string?>(subject, expected, negated);
+
+	/// <remarks>
+	///     A subject that is a set of <typeparamref name="TSetItem" /> with a custom comparer compares its items with that
+	///     comparer, unless the comparison is changed.
+	/// </remarks>
+	private static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
+		ContainsItemForEnumerable<TSetItem>(
+			IThat<IEnumerable?> subject,
+			object? expected,
+			bool negated)
+	{
+		Quantifier quantifier = new();
+		ItemEqualityOptions<object?> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				SubjectEqualityOptions<TSetItem, object?> itemOptions =
+					new(options, () => expected is not null && options.HasDefaultMatchType);
+				return new AsyncContainForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
+					(q, g) => q.ToContainsExpectation(g,
+						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
+					expected,
+					a => itemOptions.AreConsideredEqual(a, expected),
+					quantifier,
+					itemOptions.UseComparerOf).InvertIf(negated);
+			}),
+			subject,
+			quantifier,
+			options);
+	}
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -2,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem,
@@ -465,7 +503,8 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
-		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
+		Remarks = ContainsRemarks + "\n" + UntypedSetComparerRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		ContainsForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
@@ -474,14 +513,15 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true).InvertIf(negated)),
+					failsForNullSubject: true,
+					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
 			subject,
 			options,
 			matchOptions,
@@ -490,8 +530,9 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
-		Remarks = ContainsRemarks + "\n" + UntypedCollectionItemRemarks,
-		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedCollectionItemRemarks)]
+		Remarks = ContainsRemarks + "\n" + UntypedCollectionItemRemarks + "\n" + UntypedSetComparerRemarks,
+		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedCollectionItemRemarks + "\n" +
+		                 UntypedSetComparerRemarks)]
 	internal static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
 		ContainsForObjectsCore(
 			IThat<IEnumerable?> subject,
@@ -719,17 +760,16 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Asks a set <paramref name="collection" /> with a custom comparer itself whether it contains the
-	///     <paramref name="expected" /> item, so that its comparer decides, or returns <see langword="null" /> when the
-	///     items have to be enumerated instead.
+	///     Asks a set <paramref name="collection" /> whose comparer decides itself whether it contains the
+	///     <paramref name="expected" /> item, or returns <see langword="null" /> when the items have to be enumerated
+	///     instead.
 	/// </summary>
 	/// <remarks>
-	///     A set with the default comparer is enumerated, so that the rules of the default equality, e.g. for the
-	///     <see cref="DateTimeKind" /> or for numbers of different types, still apply. A <see langword="null" /> item is
-	///     enumerated, because a set whose comparer rejects <see langword="null" /> throws when asked for it.
+	///     A <see langword="null" /> item is enumerated, because a set whose comparer rejects <see langword="null" />
+	///     throws when asked for it.
 	/// </remarks>
 	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
-		=> expected is not null && CollectionComparerHelpers.IsSetWithCustomComparer(collection)
+		=> expected is not null
 			? UserCode.Invoke(() => ((ICollection<TItem>)collection).Contains(expected), "the comparer")
 			: null;
 
@@ -1168,6 +1208,9 @@ public static partial class ThatEnumerable
 		}
 	}
 
+	/// <remarks>
+	///     The <paramref name="useComparerOf" /> callback receives the subject before its items are compared.
+	/// </remarks>
 	private sealed class AsyncContainForEnumerableConstraint<TEnumerable, TItem>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -1175,7 +1218,8 @@ public static partial class ThatEnumerable
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
 		TItem expected,
 		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier)
+		Quantifier quantifier,
+		Func<object?, bool>? useComparerOf = null)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable
@@ -1196,6 +1240,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			useComparerOf?.Invoke(actual);
 			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			_count = 0;
 			_isFinished = false;

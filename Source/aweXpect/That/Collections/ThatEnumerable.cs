@@ -29,7 +29,8 @@ public static partial class ThatEnumerable
 
 	/// <remarks>
 	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a set subject with a
-	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>.
+	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>, and the
+	///     expectation names it.
 	/// </remarks>
 	private sealed class IsEqualToConstraint<TItem, TMatch>(
 		ExpectationBuilder expectationBuilder,
@@ -46,6 +47,7 @@ public static partial class ThatEnumerable
 		where TItem : TMatch
 	{
 		private string? _failure;
+		private SubjectComparer<TItem>? _subjectComparer;
 
 		public override Outcome Outcome
 		{
@@ -86,11 +88,9 @@ public static partial class ThatEnumerable
 			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
 				? objectOptions.ForEvaluation()
 				: options;
-			if (usesDefaultEquality?.Invoke() == true &&
-			    CollectionComparerHelpers.GetCustomSetEquality(actual) is { } setEquality)
-			{
-				itemOptions = new SetEqualityOptions(setEquality);
-			}
+			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(itemOptions, usesDefaultEquality ?? (() => false));
+			_subjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
+			itemOptions = subjectOptions;
 
 			foreach (TItem item in materializedEnumerable)
 			{
@@ -126,7 +126,7 @@ public static partial class ThatEnumerable
 		{
 			string expectedText = expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine);
 			// The options qualify the expected items, not their order.
-			stringBuilder.Append(matchOptions.GetExpectation(expectedText + options, Grammars));
+			stringBuilder.Append(matchOptions.GetExpectation(expectedText + options + _subjectComparer, Grammars));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -154,24 +154,6 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
 			}
-		}
-
-		/// <summary>
-		///     Compares the items with the equality of a set subject.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> item only equals <see langword="null" /> and is never handed to the comparer,
-		///     because a comparer may reject it.
-		/// </remarks>
-		private sealed class SetEqualityOptions(Func<TItem, TItem, bool> areEqual) : IOptionsEquality<TMatch>
-		{
-			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
-				=> new ValueTask<bool>(AreEqual(actual, expected));
-
-			private bool AreEqual<TExpected>(TMatch actual, TExpected expected)
-				=> actual is TItem typedActual && expected is TItem typedExpected
-					? areEqual(typedActual, typedExpected)
-					: actual is null && expected is null;
 		}
 	}
 
@@ -420,6 +402,11 @@ public static partial class ThatEnumerable
 		}
 	}
 
+	/// <remarks>
+	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a subject that is a set
+	///     of <typeparamref name="TItem" /> with a custom comparer compares its items with that comparer, and the
+	///     expectation names it.
+	/// </remarks>
 	private sealed class IsEqualToForEnumerableConstraint<TEnumerable, TItem, TMatch>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -428,13 +415,15 @@ public static partial class ThatEnumerable
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
 		CollectionMatchOptions matchOptions,
-		bool failsForNullSubject = false)
+		bool failsForNullSubject = false,
+		Func<bool>? usesDefaultEquality = null)
 		: ConstraintResult.WithEqualToValue<TEnumerable?>(it, grammars, expected is null),
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable?
 		where TItem : TMatch
 	{
 		private string? _failure;
+		private SubjectComparer<TItem>? _subjectComparer;
 
 		public override Outcome Outcome
 		{
@@ -470,9 +459,11 @@ public static partial class ThatEnumerable
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
 				matchOptions.GetCollectionMatcher<object?, object?>(expected.Cast<object?>());
-			UntypedOptions untypedOptions = new(options is ObjectEqualityOptions<TMatch> objectOptions
-				? objectOptions.ForEvaluation()
-				: options);
+			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(
+				options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options,
+				usesDefaultEquality ?? (() => false));
+			_subjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
+			UntypedOptions untypedOptions = new(subjectOptions);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
 			foreach (object? item in materializedEnumerable)
@@ -520,7 +511,7 @@ public static partial class ThatEnumerable
 		{
 			string expectedText = expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine);
 			// The options qualify the expected items, not their order.
-			stringBuilder.Append(matchOptions.GetExpectation(expectedText + options, Grammars));
+			stringBuilder.Append(matchOptions.GetExpectation(expectedText + options + _subjectComparer, Grammars));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -708,6 +699,7 @@ public static partial class ThatEnumerable
 		private readonly Func<ExpectationGrammars, string> _expectationText;
 		private readonly Func<TItem, ValueTask<bool>> _predicate;
 		private readonly EnumerableQuantifier _quantifier;
+		private readonly Func<object?, bool>? _useComparerOf;
 		private readonly string _verb;
 		private int _matchingCount;
 		private LimitedCollection<TItem>? _matchingItems;
@@ -722,13 +714,15 @@ public static partial class ThatEnumerable
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
 			Func<TItem, ValueTask<bool>> predicate,
-			string verb) : base(it, grammars)
+			string verb,
+			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_quantifier = quantifier;
 			_expectationText = expectationText;
 			_predicate = predicate;
 			_verb = verb;
+			_useComparerOf = useComparerOf;
 		}
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -743,6 +737,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			_useComparerOf?.Invoke(actual);
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			bool cancelEarly = actual is not ICollection<TItem>;
 			_matchingCount = 0;
@@ -1017,6 +1012,7 @@ public static partial class ThatEnumerable
 		private readonly Func<ExpectationGrammars, string> _expectationText;
 		private readonly Func<object?, ValueTask<bool>> _predicate;
 		private readonly EnumerableQuantifier _quantifier;
+		private readonly Func<object?, bool>? _useComparerOf;
 		private readonly string _verb;
 		private Type? _itemType;
 		private int _matchingCount;
@@ -1032,13 +1028,15 @@ public static partial class ThatEnumerable
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
 			Func<object?, ValueTask<bool>> predicate,
-			string verb) : base(it, grammars)
+			string verb,
+			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_quantifier = quantifier;
 			_expectationText = expectationText;
 			_predicate = predicate;
 			_verb = verb;
+			_useComparerOf = useComparerOf;
 		}
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -1053,6 +1051,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			_useComparerOf?.Invoke(actual);
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			bool cancelEarly = actual is not ICollection;
 			_matchingCount = 0;
@@ -1362,10 +1361,25 @@ public static partial class ThatEnumerable
 				_totalCount);
 	}
 
+	/// <summary>
+	///     Returns the comparer of a sorted set <paramref name="subject" /> that orders its items, when neither a member
+	///     nor a comparer in the <paramref name="options" /> is specified, or <see langword="null" /> otherwise.
+	/// </summary>
+	private static IComparer<TMember>? GetSubjectOrder<TMember>(object subject, string memberExpression,
+		CollectionOrderOptions<TMember> options)
+		=> memberExpression.Length == 0 && !options.HasComparer
+			? CollectionComparerHelpers.GetSubjectOrder<TMember>(subject)
+			: null;
+
 	private static bool IsOutOfOrder(aweXpect.SortOrder sortOrder, int comparisonResult)
 		=> (comparisonResult > 0 && sortOrder == aweXpect.SortOrder.Ascending) ||
 		   (comparisonResult < 0 && sortOrder == aweXpect.SortOrder.Descending);
 
+	/// <remarks>
+	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set with a
+	///     custom comparer is ordered by that comparer, unless a comparer is specified in the <paramref name="options" />,
+	///     and the expectation names it.
+	/// </remarks>
 	private sealed class IsInOrderConstraint<TItem, TMember>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -1380,6 +1394,7 @@ public static partial class ThatEnumerable
 	{
 		private string? _failureText;
 		private bool _hasIncompatibleItems;
+		private IComparer<TMember>? _subjectOrder;
 
 		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
 		{
@@ -1396,8 +1411,10 @@ public static partial class ThatEnumerable
 
 			TMember previous = default!;
 			int index = 0;
-			IComparer<TMember> comparer = options.GetComparer();
-			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
+			_subjectOrder = GetSubjectOrder(actual, memberExpression, options);
+			IComparer<TMember> comparer = _subjectOrder ?? options.GetComparer();
+			Func<TMember, string?>? incompatibilityCheck =
+				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (TItem item in materialized)
 			{
 				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
@@ -1436,16 +1453,26 @@ public static partial class ThatEnumerable
 			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
 			stringBuilder.Append(memberExpression).Append(options);
+			AppendSubjectOrder(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_failureText);
+
+		private void AppendSubjectOrder(StringBuilder stringBuilder)
+		{
+			if (_subjectOrder is not null)
+			{
+				stringBuilder.Append(CollectionComparerHelpers.DescribeSubjectComparer(_subjectOrder));
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
 			stringBuilder.Append(memberExpression).Append(options);
+			AppendSubjectOrder(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -1461,6 +1488,11 @@ public static partial class ThatEnumerable
 		}
 	}
 
+	/// <remarks>
+	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set of
+	///     <typeparamref name="TMember" /> with a custom comparer is ordered by that comparer, unless a comparer is specified
+	///     in the <paramref name="options" />, and the expectation names it.
+	/// </remarks>
 	private sealed class IsInOrderForEnumerableConstraint<TEnumerable, TItem, TMember>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -1476,6 +1508,7 @@ public static partial class ThatEnumerable
 	{
 		private string? _failureText;
 		private bool _hasIncompatibleItems;
+		private IComparer<TMember>? _subjectOrder;
 
 		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
 		{
@@ -1491,8 +1524,10 @@ public static partial class ThatEnumerable
 
 			TMember previous = default!;
 			int index = 0;
-			IComparer<TMember> comparer = options.GetComparer();
-			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
+			_subjectOrder = GetSubjectOrder(actual, memberExpression, options);
+			IComparer<TMember> comparer = _subjectOrder ?? options.GetComparer();
+			Func<TMember, string?>? incompatibilityCheck =
+				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (object? item in materialized)
 			{
 				if (item is not TItem typedItem)
@@ -1536,16 +1571,26 @@ public static partial class ThatEnumerable
 			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
 			stringBuilder.Append(memberExpression).Append(options);
+			AppendSubjectOrder(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_failureText);
+
+		private void AppendSubjectOrder(StringBuilder stringBuilder)
+		{
+			if (_subjectOrder is not null)
+			{
+				stringBuilder.Append(CollectionComparerHelpers.DescribeSubjectComparer(_subjectOrder));
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
 			stringBuilder.Append(memberExpression).Append(options);
+			AppendSubjectOrder(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

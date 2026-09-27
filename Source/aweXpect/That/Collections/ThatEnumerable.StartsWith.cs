@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -36,9 +37,10 @@ public static partial class ThatEnumerable
 		"and be expected as a single item. The priority only takes effect with C# 13 or later.";
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
+		Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		StartsWithCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -47,14 +49,15 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNullOrEmpty(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -62,10 +65,10 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
-		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	internal static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWithForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
@@ -79,9 +82,11 @@ public static partial class ThatEnumerable
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
 			{
+				SubjectEqualityOptions<string?, string?> itemOptions =
+					new(options, () => options.ComparesByOrdinalEquality);
 				StartsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -90,10 +95,10 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
-		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
-		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		StartsWithWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
@@ -107,37 +112,11 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
+					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
 				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
-				return negated ? constraint.Invert() : constraint;
-			}),
-			subject,
-			options);
-	}
-
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Params = true, Priority = -2, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
-		Remarks = LowerPriorityRemarks)]
-	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		StartsWithForEnumerableCore<TItem>(
-			IThat<IEnumerable?> subject,
-			IEnumerable<TItem> expected,
-			string? expectedExpression,
-			bool negated)
-	{
-		expected.ThrowIfNullOrEmpty(negated);
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
-			{
-				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
-					expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -146,7 +125,37 @@ public static partial class ThatEnumerable
 
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
-		Remarks = UntypedCollectionRemarks)]
+		Remarks = UntypedSetComparerRemarks)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, Priority = -2, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
+		Remarks = LowerPriorityRemarks + "\n" + UntypedSetComparerRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
+		StartsWithForEnumerableCore<TItem>(
+			IThat<IEnumerable?> subject,
+			IEnumerable<TItem> expected,
+			string? expectedExpression,
+			bool negated)
+	{
+		expected.ThrowIfNullOrEmpty(negated);
+		ItemEqualityOptions<TItem> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
+			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
+			{
+				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
+				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
+		Remarks = UntypedCollectionRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
 		StartsWithForObjectsCore(
 			IThat<IEnumerable?> subject,
@@ -160,7 +169,7 @@ public static partial class ThatEnumerable
 		Summary = "Verifies that the collection starts with the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =
 			"Verifies that the collection does not start with the provided <paramref name=\"unexpected\" /> value.",
-		Remarks = SingleValueRemarks)]
+		Remarks = SingleValueRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
 		StartsWithSingleStringCore(
 			IThat<IEnumerable?> subject,
@@ -168,14 +177,16 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		string?[] expectedItems = [expected,];
-		ObjectEqualityOptions<string?> options = new();
+		ItemEqualityOptions<string?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
+				SubjectEqualityOptions<string?, string?> itemOptions =
+					new(options, () => options.HasDefaultMatchType);
 				StartsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
 					expectationBuilder, it, grammars,
-					Formatter.Format(expectedItems), expectedItems, options);
+					Formatter.Format(expectedItems), expectedItems, itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -280,6 +291,7 @@ public static partial class ThatEnumerable
 		private readonly string _expectedExpression;
 		private readonly string _it;
 		private readonly IOptionsEquality<TMatch> _options;
+		private readonly Func<object?, bool>? _useComparerOf;
 		private TItem? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
@@ -290,13 +302,15 @@ public static partial class ThatEnumerable
 			ExpectationGrammars grammars,
 			string expectedExpression,
 			TItem[] expected,
-			IOptionsEquality<TMatch> options) : base(it, grammars)
+			IOptionsEquality<TMatch> options,
+			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
 			_options = options;
+			_useComparerOf = useComparerOf;
 		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
@@ -309,6 +323,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			_useComparerOf?.Invoke(actual);
 			if (_expected.Length == 0)
 			{
 				Outcome = Outcome.Success;
@@ -398,6 +413,7 @@ public static partial class ThatEnumerable
 		private readonly string _expectedExpression;
 		private readonly string _it;
 		private readonly IOptionsEquality<TMatch> _options;
+		private readonly Func<object?, bool>? _useComparerOf;
 		private object? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
@@ -408,13 +424,15 @@ public static partial class ThatEnumerable
 			ExpectationGrammars grammars,
 			string expectedExpression,
 			TMatch[] expected,
-			IOptionsEquality<TMatch> options) : base(it, grammars)
+			IOptionsEquality<TMatch> options,
+			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
 			_options = options;
+			_useComparerOf = useComparerOf;
 		}
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
@@ -427,6 +445,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			_useComparerOf?.Invoke(actual);
 			if (_expected.Length == 0)
 			{
 				Outcome = Outcome.Success;
