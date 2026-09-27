@@ -35,7 +35,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
@@ -44,14 +44,14 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	/// </remarks>
 	public AdditionalAndOrWhoseResult
 		Whose<TMember>(
-			Func<TType, TMember?> memberSelector,
+			Func<TType, TMember?> memberAccessor,
 			Action<IThatSubject<TMember?>> expectations,
-			[CallerArgumentExpression("memberSelector")]
+			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 		=> new(
 			_expectationBuilder
 				.ForMember(
-					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
+					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars | ExpectationGrammars.Introduced),
@@ -59,7 +59,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -70,14 +70,14 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	[OverloadResolutionPriority(2)]
 	public AdditionalAndOrWhoseResult
 		Whose<TMember>(
-			Func<TType, Task<TMember>> memberSelector,
+			Func<TType, Task<TMember>> memberAccessor,
 			Action<IThatSubject<TMember?>> expectations,
-			[CallerArgumentExpression("memberSelector")]
+			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 		=> new(
 			_expectationBuilder
 				.ForAsyncMember(
-					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
+					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
@@ -86,7 +86,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -97,11 +97,11 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	[OverloadResolutionPriority(1)]
 	public AdditionalAndOrWhoseResult
 		Whose<TMember>(
-			Func<TType, ValueTask<TMember>> memberSelector,
+			Func<TType, ValueTask<TMember>> memberAccessor,
 			Action<IThatSubject<TMember?>> expectations,
-			[CallerArgumentExpression("memberSelector")]
+			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+		=> Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
 
 	/// <summary>
 	///     The result of an additional expectation for the underlying type.
@@ -119,7 +119,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 		/// <summary>
 		///     Allows specifying <paramref name="expectations" /> on the member selected by the
-		///     <paramref name="memberSelector" />.
+		///     <paramref name="memberAccessor" />.
 		/// </summary>
 		/// <remarks>
 		///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
@@ -128,16 +128,16 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		/// </remarks>
 		public AdditionalAndOrWhoseResult
 			AndWhose<TMember>(
-				Func<TType, TMember?> memberSelector,
+				Func<TType, TMember?> memberAccessor,
 				Action<IThatSubject<TMember?>> expectations,
-				[CallerArgumentExpression("memberSelector")]
+				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
 		{
 			_expectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
 				_expectationBuilder
 					.ForMember(
-						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberSelector,
+						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(
@@ -148,7 +148,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 		/// <summary>
 		///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
-		///     <paramref name="memberSelector" />.
+		///     <paramref name="memberAccessor" />.
 		/// </summary>
 		/// <remarks>
 		///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting
@@ -159,16 +159,16 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		[OverloadResolutionPriority(2)]
 		public AdditionalAndOrWhoseResult
 			AndWhose<TMember>(
-				Func<TType, Task<TMember>> memberSelector,
+				Func<TType, Task<TMember>> memberAccessor,
 				Action<IThatSubject<TMember?>> expectations,
-				[CallerArgumentExpression("memberSelector")]
+				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
 		{
 			_expectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
 				_expectationBuilder
 					.ForAsyncMember(
-						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
+						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(
@@ -179,7 +179,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 
 		/// <summary>
 		///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
-		///     <paramref name="memberSelector" />.
+		///     <paramref name="memberAccessor" />.
 		/// </summary>
 		/// <remarks>
 		///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting
@@ -190,10 +190,10 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		[OverloadResolutionPriority(1)]
 		public AdditionalAndOrWhoseResult
 			AndWhose<TMember>(
-				Func<TType, ValueTask<TMember>> memberSelector,
+				Func<TType, ValueTask<TMember>> memberAccessor,
 				Action<IThatSubject<TMember?>> expectations,
-				[CallerArgumentExpression("memberSelector")]
+				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
-			=> AndWhose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+			=> AndWhose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
 	}
 }

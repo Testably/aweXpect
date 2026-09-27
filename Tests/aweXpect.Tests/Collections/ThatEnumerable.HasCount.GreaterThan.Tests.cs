@@ -160,6 +160,17 @@ public sealed partial class ThatEnumerable
 						             but it was <null>
 						             """);
 				}
+
+				[Fact]
+				public async Task WithNamedArgument_ShouldSucceed()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).HasCount().GreaterThan(expected: 2);
+
+					await That(Act).DoesNotThrow();
+				}
 			}
 
 			public sealed class NegatedTests

@@ -12,7 +12,7 @@ namespace aweXpect;
 public static partial class ThatGeneric
 {
 	/// <summary>
-	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberSelector" />.
+	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
@@ -22,17 +22,17 @@ public static partial class ThatGeneric
 	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
-		Func<T, TMember?> memberSelector,
+		Func<T, TMember?> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
-		memberSelector.ThrowIfNull();
+		memberAccessor.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForMember(
-				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
+				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
@@ -41,7 +41,7 @@ public static partial class ThatGeneric
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -53,17 +53,17 @@ public static partial class ThatGeneric
 	[OverloadResolutionPriority(2)]
 	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
-		Func<T, Task<TMember>> memberSelector,
+		Func<T, Task<TMember>> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
-		memberSelector.ThrowIfNull();
+		memberAccessor.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForAsyncMember(
-				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
+				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
@@ -72,7 +72,7 @@ public static partial class ThatGeneric
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -84,13 +84,13 @@ public static partial class ThatGeneric
 	[OverloadResolutionPriority(1)]
 	public static AndOrResult<T, IThat<T?>> Whose<T, TMember>(
 		this IThat<T?> subject,
-		Func<T, ValueTask<TMember>> memberSelector,
+		Func<T, ValueTask<TMember>> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
-		memberSelector.ThrowIfNull();
-		return subject.Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+		memberAccessor.ThrowIfNull();
+		return subject.Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
 	}
 
 	/// <summary>
