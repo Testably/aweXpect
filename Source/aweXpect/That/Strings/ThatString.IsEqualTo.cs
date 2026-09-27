@@ -11,7 +11,7 @@ namespace aweXpect;
 public static partial class ThatString
 {
 	/// <summary>
-	///     Verifies that the subject is equal to <paramref name="expected" />.
+	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsEqualTo(
 		this IThat<string?> subject,
@@ -26,7 +26,7 @@ public static partial class ThatString
 	}
 
 	/// <summary>
-	///     Verifies that the subject is not equal to <paramref name="unexpected" />.
+	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotEqualTo(
 		this IThat<string?> subject,

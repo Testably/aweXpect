@@ -16,7 +16,7 @@ public static partial class ThatNumber
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that the subject is seen as finite.
+	///     Verifies that the subject is finite.
 	/// </summary>
 	/// <remarks>
 	///     Finite means neither infinity nor not a number (NaN).
@@ -28,7 +28,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is seen as finite.
+	///     Verifies that the subject is finite.
 	/// </summary>
 	/// <remarks>
 	///     Finite means neither infinity nor not a number (NaN) nor <see langword="null" />.
@@ -41,7 +41,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as finite.
+	///     Verifies that the subject is not finite.
 	/// </summary>
 	/// <remarks>
 	///     Not finite means either infinity or not a number (NaN).
@@ -53,7 +53,7 @@ public static partial class ThatNumber
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject is not seen as finite.
+	///     Verifies that the subject is not finite.
 	/// </summary>
 	/// <remarks>
 	///     Not finite means either infinity or not a number (NaN). A <see langword="null" /> subject fails.
@@ -125,8 +125,8 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
-	private const string IsFiniteSummary = "Verifies that the subject is seen as finite.";
-	private const string IsNotFiniteSummary = "Verifies that the subject is not seen as finite.";
+	private const string IsFiniteSummary = "Verifies that the subject is finite.";
+	private const string IsNotFiniteSummary = "Verifies that the subject is not finite.";
 	private const string FiniteRemarks = "Finite means neither infinity nor not a number (NaN).";
 	private const string NotFiniteRemarks = "Not finite means either infinity or not a number (NaN).";
 

@@ -10,7 +10,7 @@ namespace aweXpect;
 public static partial class ThatException
 {
 	/// <summary>
-	///     Verifies that the actual exception has no inner exception.
+	///     Verifies that the subject has no inner exception.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> DoesNotHaveInner(
@@ -20,7 +20,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has no inner exception of type <typeparamref name="TInnerException" />.
+	///     Verifies that the subject has no inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> DoesNotHaveInner<TInnerException>(
@@ -31,7 +31,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has no inner exception of type <paramref name="type" />.
+	///     Verifies that the subject has no inner exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> DoesNotHaveInner(

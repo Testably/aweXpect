@@ -16,6 +16,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> <paramref name="expected" /> value throws an <see cref="System.ArgumentOutOfRangeException" />.
+	/// </remarks>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsLessThanOrEqualTo<TNumber>(
 		this IThat<TNumber> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
@@ -32,6 +35,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> <paramref name="expected" /> value throws an <see cref="System.ArgumentOutOfRangeException" />.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsLessThanOrEqualTo<TNumber>(
 		this IThat<TNumber?> subject, TNumber? expected)
@@ -176,6 +182,9 @@ public static partial class ThatNumber
 	private const string IsLessThanOrEqualToSummary =
 		"Verifies that the subject is less than or equal to the <paramref name=\"expected\" /> value.";
 
+	private const string IsLessThanOrEqualToRemarks =
+		"A <c>NaN</c> <paramref name=\"expected\" /> value throws an <see cref=\"System.ArgumentOutOfRangeException\" />.";
+
 	private const string IsNotLessThanOrEqualToSummary =
 		"Verifies that the subject is not less than or equal to the <paramref name=\"unexpected\" /> value.";
 
@@ -187,7 +196,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("Is{Not}LessThanOrEqualTo", Factory = typeof(NumberToleranceFactory),
 		Summary = IsLessThanOrEqualToSummary, NegatedSummary = IsNotLessThanOrEqualToSummary,
-		NegatedRemarks = IsNotLessThanOrEqualToRemarks)]
+		Remarks = IsLessThanOrEqualToRemarks, NegatedRemarks = IsNotLessThanOrEqualToRemarks)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsLessThanOrEqualToCore<TNumber>(
 		IThat<TNumber> subject,
 		TNumber? expected,
@@ -205,7 +214,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("Is{Not}LessThanOrEqualTo", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
 		Summary = IsLessThanOrEqualToSummary, NegatedSummary = IsNotLessThanOrEqualToSummary,
-		NegatedRemarks = IsNotLessThanOrEqualToRemarks)]
+		Remarks = IsLessThanOrEqualToRemarks, NegatedRemarks = IsNotLessThanOrEqualToRemarks)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsLessThanOrEqualToForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		TNumber? expected,

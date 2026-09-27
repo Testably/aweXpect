@@ -8,7 +8,7 @@ namespace aweXpect;
 public static partial class ThatException
 {
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception which satisfies the <paramref name="expectations" />.
+	///     Verifies that the subject has an inner exception which satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
@@ -25,7 +25,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception.
+	///     Verifies that the subject has an inner exception.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
@@ -35,7 +35,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" /> which
+	///     Verifies that the subject has an inner exception of type <typeparamref name="TInnerException" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
@@ -54,7 +54,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" />.
+	///     Verifies that the subject has an inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner<TInnerException>(
@@ -65,7 +65,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="type" /> which
+	///     Verifies that the subject has an inner exception of type <paramref name="type" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
@@ -86,7 +86,7 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="type" />.
+	///     Verifies that the subject has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(

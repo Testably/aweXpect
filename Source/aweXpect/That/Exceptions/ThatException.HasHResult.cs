@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatException
 {
 	/// <summary>
-	///     Verifies that the HResult of the actual <see cref="Exception" />…
+	///     Verifies that the HResult of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static PropertyResult.Int<Exception?, TException, IThat<TException?>> HasHResult<TException>(
@@ -16,8 +16,7 @@ public static partial class ThatException
 		=> new(subject, e => e?.HResult, "HResult");
 
 	/// <summary>
-	///     Verifies that the HResult of the actual <see cref="Exception" /> is equal to the
-	///     <paramref name="expected" /> value.
+	///     Verifies that the HResult of the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TException, IThat<TException?>> HasHResult<TException>(

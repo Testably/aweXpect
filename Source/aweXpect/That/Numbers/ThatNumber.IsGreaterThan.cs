@@ -16,6 +16,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> <paramref name="expected" /> value throws an <see cref="System.ArgumentOutOfRangeException" />.
+	/// </remarks>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsGreaterThan<TNumber>(
 		this IThat<TNumber> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
@@ -32,6 +35,9 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     A <c>NaN</c> <paramref name="expected" /> value throws an <see cref="System.ArgumentOutOfRangeException" />.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsGreaterThan<TNumber>(
 		this IThat<TNumber?> subject, TNumber? expected)
@@ -176,6 +182,9 @@ public static partial class ThatNumber
 	private const string IsGreaterThanSummary =
 		"Verifies that the subject is greater than the <paramref name=\"expected\" /> value.";
 
+	private const string IsGreaterThanRemarks =
+		"A <c>NaN</c> <paramref name=\"expected\" /> value throws an <see cref=\"System.ArgumentOutOfRangeException\" />.";
+
 	private const string IsNotGreaterThanSummary =
 		"Verifies that the subject is not greater than the <paramref name=\"unexpected\" /> value.";
 
@@ -187,7 +196,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("Is{Not}GreaterThan", Factory = typeof(NumberToleranceFactory),
 		Summary = IsGreaterThanSummary, NegatedSummary = IsNotGreaterThanSummary,
-		NegatedRemarks = IsNotGreaterThanRemarks)]
+		Remarks = IsGreaterThanRemarks, NegatedRemarks = IsNotGreaterThanRemarks)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsGreaterThanCore<TNumber>(
 		IThat<TNumber> subject,
 		TNumber? expected,
@@ -205,7 +214,7 @@ public static partial class ThatNumber
 
 	[CreateCollectionExpectation("Is{Not}GreaterThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
 		Summary = IsGreaterThanSummary, NegatedSummary = IsNotGreaterThanSummary,
-		NegatedRemarks = IsNotGreaterThanRemarks)]
+		Remarks = IsGreaterThanRemarks, NegatedRemarks = IsNotGreaterThanRemarks)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsGreaterThanForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		TNumber? expected,
