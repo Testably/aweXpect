@@ -162,7 +162,7 @@ public sealed partial class ThatException
 						               },
 						             but it was not:
 						               Property Message differed:
-						                    Found: "inner"
+						                   Actual: "inner"
 						                 Expected: "other"
 
 						             Equivalency options:

@@ -60,7 +60,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo($"""
 			                               it was not:
 			                                 Field MyValue differed:
-			                                      Found: {Formatter.Format(actualValue)}
+			                                     Actual: {Formatter.Format(actualValue)}
 			                                   Expected: {Formatter.Format(expectedValue)}
 			                               """);
 		}
@@ -85,7 +85,7 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Field MyValue differed:
-			                                     Found: "foo"
+			                                    Actual: "foo"
 			                                  Expected: "bar"
 			                              """);
 		}
@@ -112,7 +112,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Field MyInternalField differed:
-					                   Found: {actualInternalValue}
+					                  Actual: {actualInternalValue}
 					                Expected: {expectedInternalValue}
 					            """);
 			}
@@ -140,7 +140,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Field MyPrivateField differed:
-					                   Found: {actualPrivateValue}
+					                  Actual: {actualPrivateValue}
 					                Expected: {expectedPrivateValue}
 					            """);
 			}
@@ -189,7 +189,7 @@ public sealed partial class EquivalencyComparerTests
 					.IsEqualTo($"""
 					            it was not:
 					              Field MyPublicField differed:
-					                   Found: {actualPublicValue}
+					                  Actual: {actualPublicValue}
 					                Expected: {expectedPublicValue}
 					            """);
 			}

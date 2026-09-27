@@ -80,19 +80,19 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Element [1] differed:
-			                                     Found: 2
+			                                    Actual: 2
 			                                  Expected: 5
 			                              and
 			                                Element [2] differed:
-			                                     Found: 3
+			                                    Actual: 3
 			                                  Expected: 2
 			                              and
 			                                Element [3] differed:
-			                                     Found: 4
+			                                    Actual: 4
 			                                  Expected: 3
 			                              and
 			                                Element [4] differed:
-			                                     Found: 5
+			                                    Actual: 5
 			                                  Expected: 4
 			                              """);
 		}

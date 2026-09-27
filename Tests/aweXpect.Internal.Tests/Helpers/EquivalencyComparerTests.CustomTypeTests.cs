@@ -58,11 +58,11 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Element CustomRecord.Values[0] differed:
-			                                     Found: 1
+			                                    Actual: 1
 			                                  Expected: 2
 			                              and
 			                                Element CustomRecord.Values[1] differed:
-			                                     Found: 2
+			                                    Actual: 2
 			                                  Expected: 1
 			                              """);
 		}
@@ -81,19 +81,19 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Element CustomRecord.Values[0] differed:
-			                                     Found: 1
+			                                    Actual: 1
 			                                  Expected: 2
 			                              and
 			                                Element CustomRecord.Values[1] differed:
-			                                     Found: 2
+			                                    Actual: 2
 			                                  Expected: 1
 			                              and
 			                                Element OtherRecord.Values[0] differed:
-			                                     Found: 1
+			                                    Actual: 1
 			                                  Expected: 2
 			                              and
 			                                Element OtherRecord.Values[1] differed:
-			                                     Found: 2
+			                                    Actual: 2
 			                                  Expected: 1
 			                              """);
 		}
