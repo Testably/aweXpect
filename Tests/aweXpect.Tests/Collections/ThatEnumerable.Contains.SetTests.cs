@@ -44,8 +44,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).Contains([1.2, 1.8,]);
+#pragma warning restore aweXpect0006
 
 				await That(Act).DoesNotThrow()
 					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
@@ -157,8 +159,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).Contains([1.25, 1.75,]).Within(0.125);
+#pragma warning restore aweXpect0006
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

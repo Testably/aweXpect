@@ -191,7 +191,7 @@ public sealed partial class ThatEnumerable
 			public async Task AsPrefix_WhenExpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo",]);
-				string?[] expected = [null,];
+				string[] expected = [null!,];
 
 				async Task Act()
 					=> await That(subject).StartsWith(expected).AsPrefix();
