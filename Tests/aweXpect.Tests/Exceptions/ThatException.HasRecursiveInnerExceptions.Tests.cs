@@ -23,6 +23,18 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
+			{
+				ArgumentException subject = new("outer", "paramName", new InvalidOperationException("inner"));
+
+				async Task Act()
+					=> await That(subject).HasRecursiveInnerExceptions(c => c.HasCount(1))
+						.And.HasParamName("paramName");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExceptionHasNoInnerException_ForAll_ShouldFail()
 			{
 				Exception subject = new("outer");

@@ -21,9 +21,10 @@ public static partial class ThatException
 	///     The exception must have at least one inner exception.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Exception, IThat<Exception?>> HasRecursiveInnerExceptions(
-		this IThat<Exception?> subject,
+	public static AndOrResult<TException, IThat<TException?>> HasRecursiveInnerExceptions<TException>(
+		this IThat<TException?> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
+		where TException : Exception
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, IEnumerable<Exception?>>(
 					e => e.GetInnerExceptions(),

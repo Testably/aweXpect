@@ -10,9 +10,9 @@ public static partial class ThatException
 	///     Verifies that the param name of the actual <see cref="ArgumentException" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Exception?, TException, IThat<TException>> HasParamName<TException>(
-		this IThat<TException> subject)
-		where TException : ArgumentException?
+	public static PropertyResult.String<Exception?, TException, IThat<TException?>> HasParamName<TException>(
+		this IThat<TException?> subject)
+		where TException : ArgumentException
 		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name");
 
 	/// <summary>
@@ -23,9 +23,9 @@ public static partial class ThatException
 	///     <paramref name="expected" /> requires the param name to be <see langword="null" /> as well.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<TException, IThat<TException>> HasParamName<TException>(
-		this IThat<TException> subject,
+	public static StringEqualityTypeResult<TException, IThat<TException?>> HasParamName<TException>(
+		this IThat<TException?> subject,
 		string? expected)
-		where TException : ArgumentException?
+		where TException : ArgumentException
 		=> subject.HasParamName().EqualTo(expected);
 }
