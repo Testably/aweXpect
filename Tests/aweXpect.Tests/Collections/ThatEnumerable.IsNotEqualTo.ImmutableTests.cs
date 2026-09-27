@@ -75,34 +75,6 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
-			{
-				IEnumerable<int>? subject = null;
-				IEnumerable<int>? unexpected = null;
-
-				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not equal to collection unexpected in order,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
-			{
-				IEnumerable<string>? subject = null;
-
-				async Task Act()
-					=> await That(subject).IsNotEqualTo(Array.Empty<string>());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];

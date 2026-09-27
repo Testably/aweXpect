@@ -144,7 +144,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = null;
 
 					async Task Act()
@@ -161,7 +161,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 12;
 
 					async Task Act()
@@ -173,7 +173,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsLessThanExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 14;
 
 					async Task Act()
@@ -190,7 +190,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int expected = 13;
 
 					async Task Act()
@@ -205,7 +205,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = null;
 
 					async Task Act()
@@ -222,7 +222,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 12;
 
 					async Task Act()
@@ -234,7 +234,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsLessThanExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 14;
 
 					async Task Act()
@@ -251,7 +251,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int expected = 13;
 
 					async Task Act()
@@ -271,7 +271,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = null;
 
 					async Task Act()
@@ -288,7 +288,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 12;
 
 					async Task Act()
@@ -305,7 +305,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 14;
 
 					async Task Act()
@@ -317,7 +317,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int expected = 13;
 
 					async Task Act()
@@ -332,7 +332,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = null;
 
 					async Task Act()
@@ -349,7 +349,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 12;
 
 					async Task Act()
@@ -366,7 +366,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int? expected = 14;
 
 					async Task Act()
@@ -378,7 +378,7 @@ public sealed partial class ThatTimeOnly
 				[Fact]
 				public async Task WhenHourOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
-					TimeOnly subject = new(13, 14, 15);
+					TimeOnly? subject = new(13, 14, 15);
 					int expected = 13;
 
 					async Task Act()

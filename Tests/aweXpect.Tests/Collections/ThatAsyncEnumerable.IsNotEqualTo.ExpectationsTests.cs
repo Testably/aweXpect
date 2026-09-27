@@ -103,7 +103,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
-				IEnumerable<int>? subject = null;
+				IAsyncEnumerable<int>? subject = null;
 				IEnumerable<Action<IThat<int>>>? unexpected = null;
 
 				async Task Act()
@@ -120,7 +120,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
-				IEnumerable<string>? subject = null;
+				IAsyncEnumerable<string>? subject = null;
 				IEnumerable<Action<IThat<string?>>> unexpected = [];
 
 				async Task Act()
