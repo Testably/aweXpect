@@ -231,7 +231,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
-				IEnumerable<string>? subject = null;
+				IAsyncEnumerable<string>? subject = null;
 				IEnumerable<Expression<Func<string, bool>>> expected = [a => a == "foo",];
 
 				async Task Act()

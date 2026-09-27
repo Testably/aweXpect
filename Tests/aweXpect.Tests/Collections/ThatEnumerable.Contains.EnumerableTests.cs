@@ -440,7 +440,7 @@ public sealed partial class ThatEnumerable
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
-				IEnumerable<int>? subject = null;
+				IEnumerable? subject = null;
 
 				async Task Act()
 					=> await That(subject).Contains(expected);
@@ -780,7 +780,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
-				IEnumerable<int>? subject = null;
+				IEnumerable? subject = null;
 
 				async Task Act()
 					=> await That(subject).Contains(_ => true);

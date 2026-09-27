@@ -264,7 +264,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldSucceed()
 			{
-				IEnumerable<int>? subject = null;
+				IAsyncEnumerable<int>? subject = null;
 				IEnumerable<Expression<Func<int, bool>>>? expected = null;
 
 				async Task Act()
@@ -276,7 +276,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
-				IEnumerable<string>? subject = null;
+				IAsyncEnumerable<string>? subject = null;
 				IEnumerable<Expression<Func<string, bool>>> expected = [];
 
 				async Task Act()

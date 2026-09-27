@@ -27,26 +27,26 @@ public sealed partial class ThatAsyncEnumerable
 				[Fact]
 				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
 				{
-					int[] subject = [0, 1, 2,];
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => false).AtIndex(2);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              has an item matching _ => false at index 2,
-						              but it had item 2 at index 2
+						.WithMessage("""
+						             Expected that subject
+						             has an item matching _ => false at index 2,
+						             but it had item 2 at index 2
 
-						              Collection:
-						              {Formatter.Format(subject)}
-						              """);
+						             Collection:
+						             [0, 1, 2]
+						             """);
 				}
 
 				[Fact]
 				public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 				{
-					int[] subject = [0, 1, 2,];
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true).AtIndex(2);
@@ -57,31 +57,26 @@ public sealed partial class ThatAsyncEnumerable
 				[Fact]
 				public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 				{
-					List<int> subject =
-					[
-						0,
-						1,
-						2,
-					];
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true).AtIndex(3);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              has an item matching _ => true at index 3,
-						              but it had no item at index 3
+						.WithMessage("""
+						             Expected that subject
+						             has an item matching _ => true at index 3,
+						             but it had no item at index 3
 
-						              Collection:
-						              {Formatter.Format(subject)}
-						              """);
+						             Collection:
+						             [0, 1, 2]
+						             """);
 				}
 
 				[Fact]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
-					List<int> subject = [];
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
 
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true);

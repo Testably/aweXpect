@@ -81,22 +81,6 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				IEnumerable<string>? subject = null;
-
-				async Task Act()
-					=> await That(subject).IsNotContainedIn(Array.Empty<string?>());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not contained in collection Array.Empty<string?>() in order and contiguous,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
