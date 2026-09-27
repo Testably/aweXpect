@@ -246,7 +246,7 @@ await Expect.That(subject).HasYear().LessThan(2025);
 await Expect.That(subject).HasYear().Between(2000).And(2024);
 ```
 
-## Default Tolerance
+## Default tolerance
 
 In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
 comparing them as exact values might result in brittle tests.

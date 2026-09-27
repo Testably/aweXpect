@@ -7,13 +7,11 @@
    dotnet add package aweXpect
    ```
 
-
 2. Add the following `using` statement:
    ```csharp
    using aweXpect;
    ```
    This brings the static `Expect` class and lots of extension methods into scope.
-
 
 3. Simplify expectations (optional)  
    If you want to simplify the assertions, you can add a `global using static aweXpect.Expect;` statement anywhere in
@@ -28,7 +26,7 @@
 
 ## Write your first expectation
 
-Write your first expectation:
+Every expectation starts with `Expect.That(subject)`, continues with what you expect and is awaited:
 
 ```csharp
 [Fact]

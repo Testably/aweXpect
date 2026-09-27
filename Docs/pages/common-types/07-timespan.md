@@ -103,9 +103,7 @@ using aweXpect.Chronology; // from the aweXpect.Chronology package
 TimeSpan subject = TimeSpan.FromSeconds(42);
 
 await Expect.That(subject)
-	.IsBetween(43.Seconds())
-    .And(45.Seconds())
-	.Within(1.Seconds())
+  .IsBetween(43.Seconds()).And(45.Seconds()).Within(1.Seconds())
   .Because("it should expand the interval by 1 second");
 ```
 

@@ -158,9 +158,7 @@ period:
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
 
-Track subject = new() {
-	IsPlayed = false
-};
+Track subject = new() { IsPlayed = false };
 // Start a background task that sets `IsPlayed` to true
 
 await Expect.That(subject).Satisfies(x => x.IsPlayed == true).Within(2.Seconds());

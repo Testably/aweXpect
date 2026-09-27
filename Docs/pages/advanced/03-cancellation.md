@@ -1,10 +1,11 @@
 # Cancellation
 
-You can add cancellation support on the expectations, so that they don't run indefinitely:
-
+You can add cancellation support on the expectations, so that they don't run indefinitely.
 
 ## Timeout
+
 You can set a global timeout that is applied for all expectations:
+
 ```csharp
 using aweXpect.Customization;
 
@@ -16,6 +17,7 @@ Customize.aweXpect.Settings().TestCancellation
 Like all customization options, the setter returns an `IDisposable` that removes the timeout again on `Dispose()`.
 
 You can also apply a timeout on individual expectations, using the `WithTimeout(TimeSpan)` method:
+
 ```csharp
 IAsyncEnumerable<int> myEnumerable = // ...
 await Expect.That(myEnumerable).All().AreEqualTo(1)
@@ -60,10 +62,10 @@ await Expect.That(() => ++attempts).Eventually().Within(5.Seconds()).CheckEvery(
   .Because("the retries end after 2 seconds, as the timeout is shorter than `Within`");
 ```
 
-
 ## `CancellationToken`
 
 You can set a global provider for getting a `CancellationToken` that is applied for all expectations:
+
 ```csharp
 // Uses the CancellationToken from the test context
 Customize.aweXpect.Settings().TestCancellation
@@ -72,7 +74,9 @@ Customize.aweXpect.Settings().TestCancellation
 
 The setter again returns an `IDisposable` that removes the provider on `Dispose()`.
 
-You can overwrite or apply the `CancellationToken` also on individual expectations, using the `WithCancellation(CancellationToken)` method:
+You can also apply a `CancellationToken` on individual expectations, using the `WithCancellation(CancellationToken)`
+method:
+
 ```csharp
 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
 IAsyncEnumerable<int> myEnumerable = // ...

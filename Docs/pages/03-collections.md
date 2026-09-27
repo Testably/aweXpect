@@ -83,19 +83,19 @@ await Expect.That(values).HasCount(10);
 await Expect.That(values).HasCount().EqualTo(10);
 
 await Expect.That(values).HasCount().NotEqualTo(9)
-	.Because("item count should be '!= 9'");
+  .Because("item count should be '!= 9'");
 await Expect.That(values).HasCount().GreaterThan(8)
-	.Because("item count should be '> 8'");
+  .Because("item count should be '> 8'");
 await Expect.That(values).HasCount().GreaterThanOrEqualTo(9)
-	.Because("item count should be '>= 9'");
+  .Because("item count should be '>= 9'");
 await Expect.That(values).HasCount().LessThanOrEqualTo(11)
-	.Because("item count should be '<= 11'");
+  .Because("item count should be '<= 11'");
 await Expect.That(values).HasCount().LessThan(12)
-	.Because("item count should be '< 12'");
+  .Because("item count should be '< 12'");
 await Expect.That(values).HasCount().Between(8).And(12)
-	.Because("item count should be '>= 8 AND <= 12'");
+  .Because("item count should be '>= 8 AND <= 12'");
 await Expect.That(values).HasCount().NotBetween(1).And(5)
-	.Because("item count should be '< 1 OR > 5'");
+  .Because("item count should be '< 1 OR > 5'");
 ```
 
 ## Equality of all items
@@ -198,7 +198,6 @@ items that its comparer considers equal, so its items are unique, unless a custo
 `IgnoringCase()` changes the comparison.
 
 For dictionaries, verify the [values](#keys-and-values) instead, as the keys are unique by design.
-
 
 ## Sort order
 
@@ -427,7 +426,6 @@ await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
 `EndsWith` and `DoesNotEndWith` always enumerate the complete collection.
 :::
 
-
 ## Number of matching items
 
 Specifications that count the elements in a collection that satisfy specific conditions.
@@ -574,7 +572,6 @@ int result = await Expect.That(values).HasSingle();
 await Expect.That(result).IsGreaterThan(41);
 ```
 
-
 ## Item at index
 
 You can verify that the collection contains an item that satisfies the expectation on a given index (or any index):
@@ -622,7 +619,6 @@ await Expect.That(values).DoesNotHaveItem("0th item").AtIndex(4); // no item at 
 await Expect.That(values).DoesNotHaveItem().Matching(it => it.StartsWith("2nd")).AtIndex(1);
 await Expect.That(values).DoesNotHaveItemThat(it => it.StartsWith("2nd")).AtIndex(1);
 ```
-
 
 ## Dictionaries
 

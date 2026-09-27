@@ -2,10 +2,10 @@
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Core?label=aweXpect.Core)](https://www.nuget.org/packages/aweXpect.Core)
 
-This library will never be able to cope with all ideas and use cases. Therefore, it is possible to use the [
-`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core/) package and write your own extensions.
-Goal of this package is to be more stable than the main aweXpect package, so reduce the risk of version conflicts
-between different extensions.
+This library will never be able to cope with all ideas and use cases. Therefore, it is possible to use the
+[`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core/) package and write your own extensions.
+This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
+different extensions.
 
 The samples on this page use the following namespaces:
 
@@ -201,7 +201,7 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is no absolute path");
+        => stringBuilder.Append("is not an absolute path");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
     {
@@ -219,9 +219,9 @@ method:
 
 ```csharp
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is no absolute path.
+///     Verifies that the <paramref name="subject"/> is not an absolute path.
 /// </summary>
-public static AndOrResult<string, IThat<string>> IsNoAbsolutePath(
+public static AndOrResult<string, IThat<string>> IsNotAbsolutePath(
     this IThat<string> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars).Invert()),
@@ -245,7 +245,7 @@ An exception that your constraint throws itself, e.g. to reject an invalid argum
 
 ## Customization
 
-You can add you own [customizations](./advanced/02-customization.md) on top of the `AwexpectCustomization`
+You can add your own [customizations](./advanced/02-customization.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
 
 ### Add a simple customization value
@@ -366,14 +366,14 @@ JsonSerializerOptions mySerializerOptions = new();
 using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(mySerializerOptions))
 {
     // will use `mySerializerOptions` for the `JsonSerializerOptions`
-	// but keep any configured `JsonDocumentOptions`
+    // but keep any configured `JsonDocumentOptions`
 }
 
 // ...or update the whole group
 JsonAwexpectCustomizationExtensions.JsonCustomizationValue myCustomization = new();
 using (Customize.aweXpect.Json().Update(_ => myCustomization))
 {
-    // will use the all set properties from the `myCustomization`
+    // will use all properties from `myCustomization`
 }
 ```
 

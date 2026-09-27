@@ -180,12 +180,12 @@ await Expect.That(subject)
 You can also specify a tolerance:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 TimeOnly subject = TimeOnly.FromDateTime(DateTime.Now);
 
 await Expect.That(subject)
-	.IsBetween(TimeOnly.FromDateTime(DateTime.Now))
-    .And(TimeOnly.FromDateTime(DateTime.Now))
-	.Within(2.Seconds())
+  .IsBetween(TimeOnly.FromDateTime(DateTime.Now)).And(TimeOnly.FromDateTime(DateTime.Now)).Within(2.Seconds())
   .Because("it should have taken less than two seconds");
 ```
 

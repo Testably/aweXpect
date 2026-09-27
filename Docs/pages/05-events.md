@@ -207,8 +207,8 @@ You can use the same occurrence constraints as in the [contain](./03-collections
 ## Special events
 
 For common events, you can create specific overloads.  
-Included are some overloads for the [
-`INotifyPropertyChanged.PropertyChanged`](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged)
+Included are some overloads for the
+[`INotifyPropertyChanged.PropertyChanged`](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged)
 event:
 
 ```csharp

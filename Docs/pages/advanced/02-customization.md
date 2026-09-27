@@ -16,14 +16,12 @@ using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
 }
 ```
 
-
 ## Equivalency
 
 Under `Customize.aweXpect.Equivalency()` you have:
 - **DefaultEquivalencyOptions**  
   The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) that are used when an
   expectation does not configure them.
-
 
 ## Formatting
 
@@ -39,7 +37,6 @@ Under `Customize.aweXpect.Formatting()` you have:
 - **MinimumNumberOfCharactersAfterStringDifference**  
   The minimum number of characters included after the first mismatch in the string difference.
 
-
 ## Json
 
 Under `Customize.aweXpect.Json()`, which comes with the separate
@@ -50,13 +47,11 @@ Under `Customize.aweXpect.Json()`, which comes with the separate
 - **DefaultJsonSerializerOptions**  
   The default [options](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) used for the `JsonSerializer`.
 
-
 ## Reflection
 
 Under `Customize.aweXpect.Reflection()` you have:
 - **ExcludedAssemblyPrefixes**  
   The assembly namespace prefixes that are excluded during reflection.
-
 
 ## Settings
 
@@ -80,5 +75,5 @@ Under `Customize.aweXpect.Settings()` you have:
   `Timeout.InfiniteTimeSpan` waits without a limit.
 
 - **DefaultTimeComparisonTolerance**  
-  The default tolerance when date or time values are compared without an explicit tolerance, see [Default Tolerance](../common-types/09-datetime-offset.md#default-tolerance).
+  The default tolerance when date or time values are compared without an explicit tolerance, see [default tolerance](../common-types/09-datetime-offset.md#default-tolerance).
   *Note: In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370)*

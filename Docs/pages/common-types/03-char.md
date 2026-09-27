@@ -127,7 +127,7 @@ await Expect.That('\n').IsAControlCharacter();
 This verifies that the subject is categorized as a control character
 (see [`char.IsControl(char)`](https://learn.microsoft.com/en-us/dotnet/api/system.char.iscontrol)).
 
-### White-Space
+### White-space
 
 You can verify that the `char` is white-space:
 
