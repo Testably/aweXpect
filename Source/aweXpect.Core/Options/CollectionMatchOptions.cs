@@ -338,7 +338,7 @@ public partial class CollectionMatchOptions(
 	}
 
 	private static IEnumerable<string> IncorrectItemsError<T, TExpected>(
-		Dictionary<int, (T Item, TExpected Expected)> incorrectItems)
+		Dictionary<int, (T Item, TExpected Expected)> incorrectItems, object options)
 	{
 		bool hasIncorrectItems = incorrectItems.Any();
 		if (hasIncorrectItems)
@@ -347,9 +347,24 @@ public partial class CollectionMatchOptions(
 			{
 				(string item, string expected) =
 					ValuePairFormatter.Format(incorrectItem.Value.Item, incorrectItem.Value.Expected);
-				yield return $"contained item {item} at index {incorrectItem.Key} instead of {expected}";
+				yield return
+					$"contained item {item} at index {incorrectItem.Key} instead of {DescribeExpected(expected, options)}";
 			}
 		}
+	}
+
+	/// <summary>
+	///     A string pattern names its kind, so that it is not mistaken for the value an item had to be equal to.
+	/// </summary>
+	/// <remarks>
+	///     Options that wrap other options, e.g. to let the comparer of the subject decide, provide the wrapped ones.
+	/// </remarks>
+	private static string DescribeExpected(string formattedExpected, object options)
+	{
+		object itemOptions = options is IOptionsProvider<object> provider ? provider.Options : options;
+		return itemOptions is StringEqualityOptions stringEqualityOptions
+			? stringEqualityOptions.WithPatternKind(formattedExpected)
+			: formattedExpected;
 	}
 
 	private static IEnumerable<string> OutOfOrderItemsError<T>(Dictionary<int, T> outOfOrderItems)
@@ -362,7 +377,8 @@ public partial class CollectionMatchOptions(
 	}
 
 	private static IEnumerable<string> MissingItemsError<T>(int total, List<T> missingItems,
-		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates, Func<object?, string> formatItem)
+		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates, Func<object?, string> formatItem,
+		object options)
 	{
 		if (total == 0)
 		{
@@ -387,7 +403,7 @@ public partial class CollectionMatchOptions(
 			if (missingItems.Count == 1)
 			{
 				yield return
-					$"lacked {missingItems.Count} of {total} expected items: {formatItem(missingItems[0])}";
+					$"lacked {missingItems.Count} of {total} expected items: {DescribeExpected(formatItem(missingItems[0]), options)}";
 				yield break;
 			}
 
@@ -397,7 +413,7 @@ public partial class CollectionMatchOptions(
 			foreach (T missingItem in missingItems)
 			{
 				sb.AppendLine().Append("  ");
-				sb.Append(formatItem(missingItem));
+				sb.Append(DescribeExpected(formatItem(missingItem), options));
 				sb.Append(',');
 			}
 

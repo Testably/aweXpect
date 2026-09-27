@@ -12,6 +12,35 @@ public sealed partial class ThatEnumerable
 		public sealed class InSameOrderTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldNameTheMatchType()
+			{
+				IEnumerable<string> subject = ["# Title", "text",];
+				IEnumerable<string> expected = ["# ", "## ",];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected as prefix in order and contiguous,
+					             but it contained item "text" at index 1 instead of prefix "## "
+
+					             Collection:
+					             [
+					               "# Title",
+					               "text"
+					             ]
+
+					             Expected:
+					             [
+					               "# ",
+					               "## "
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();

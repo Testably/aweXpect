@@ -158,7 +158,7 @@ public partial class CollectionMatchOptions
 
 			_index++;
 			return CountDeviations() > 2 * maximumNumber
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
 				: (false, null);
 		}
 
@@ -172,9 +172,9 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
-		private IEnumerable<string> GetDeviations()
+		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
 		{
-			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems)
+			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems, options)
 				.Concat(OutOfOrderItemsError(_outOfOrderItems));
 			return _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
 				? deviations
@@ -203,7 +203,7 @@ public partial class CollectionMatchOptions
 
 			_index++;
 			return _additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2 * maximumNumber
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
 				: (false, null);
 		}
 
@@ -215,7 +215,7 @@ public partial class CollectionMatchOptions
 			{
 				return _ignoreInterspersedItems
 					? VerifyCompleteForSubsequenceMatch(it)
-					: VerifyCompleteForContiguousMatch(it);
+					: VerifyCompleteForContiguousMatch(it, options);
 			}
 
 			int maximumNumberOfCollectionItems =
@@ -243,7 +243,7 @@ public partial class CollectionMatchOptions
 
 				if (CountDeviations() > 2 * maximumNumberOfCollectionItems)
 				{
-					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 				}
 			}
 
@@ -261,7 +261,7 @@ public partial class CollectionMatchOptions
 
 			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
 				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
@@ -274,7 +274,8 @@ public partial class CollectionMatchOptions
 				errors.Add("did not contain any additional items");
 			}
 
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, true, formatItem));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, true, formatItem,
+				options));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -285,10 +286,10 @@ public partial class CollectionMatchOptions
 		///     The subject is contained in the expected collection, when its unique items appear there as an uninterrupted
 		///     run; once no run is left, the remaining items are compared against the abandoned run.
 		/// </summary>
-		private (bool, string?) VerifyCompleteForContiguousMatch(string it)
+		private (bool, string?) VerifyCompleteForContiguousMatch(string it, IOptionsEquality<T2> options)
 		{
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
 			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 			if (errors.Count == 0 &&
 			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&

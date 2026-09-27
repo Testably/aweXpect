@@ -85,7 +85,7 @@ public static partial class ThatAsyncEnumerable
 	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	internal static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		StartsWithForStringsCore(
 			IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
@@ -95,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 		expected.ThrowIfNullOrEmpty(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
+		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
 			{
 				StartsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
@@ -205,7 +205,7 @@ public static partial class ThatAsyncEnumerable
 				stringBuilder.Append(_it).Append(" contained item ");
 				Formatter.Format(stringBuilder, _firstMismatchItem);
 				stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
-				Formatter.Format(stringBuilder, _expected[_index - 1]);
+				stringBuilder.AppendExpectedItem(_expected[_index - 1], _options);
 			}
 			else
 			{

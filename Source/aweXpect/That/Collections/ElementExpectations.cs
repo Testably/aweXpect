@@ -1,4 +1,5 @@
 ﻿using aweXpect.Core;
+using aweXpect.Options;
 
 namespace aweXpect;
 
@@ -22,6 +23,20 @@ internal static class ElementExpectations
 			(true, true) => $"are not equal to {expected}{options}",
 			(false, true) => $"is not equal to {expected}{options}",
 		};
+
+	/// <summary>
+	///     …is equal to the <paramref name="expected" /> string, or matches it as the pattern of the
+	///     <paramref name="options" />.
+	/// </summary>
+	/// <remarks>
+	///     A pattern describes the item, so it is named before the value like on a single string. An exact match is
+	///     described by the <paramref name="displayedOptions" />, which can also name the comparer of the subject.
+	/// </remarks>
+	public static string IsEqualToString(ExpectationGrammars grammars, string? expected,
+		StringEqualityOptions options, object? displayedOptions = null)
+		=> options.InspectsSubject
+			? options.GetExpectation(expected, grammars | ExpectationGrammars.Active)
+			: IsEqualTo(grammars, Formatter.Format(expected), displayedOptions ?? options);
 
 	/// <summary>
 	///     …is equivalent to <paramref name="expected" />.

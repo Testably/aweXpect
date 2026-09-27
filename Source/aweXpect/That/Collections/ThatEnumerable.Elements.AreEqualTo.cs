@@ -143,7 +143,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
-	internal static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		AreEqualToForStringsCore(
 			Elements elements,
 			string? expected)
@@ -151,7 +151,7 @@ public static partial class ThatEnumerable
 		IElements iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
+		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
@@ -160,7 +160,7 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
+					g => ElementExpectations.IsEqualToString(g, expected, options, itemOptions),
 					a => itemOptions.AreConsideredEqual(a, expected),
 					"were",
 					itemOptions.UseComparerOf);
@@ -170,7 +170,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
-	internal static StringEqualityResult<TEnumerable, IThat<TEnumerable>>
+	internal static StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>
 		AreEqualToForStructStringsCore<TEnumerable>(
 			ElementsForStructEnumerable<TEnumerable> elements,
 			string? expected)
@@ -179,13 +179,13 @@ public static partial class ThatEnumerable
 		IElementsForStructEnumerable<TEnumerable> iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
+		return new StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					g => ElementExpectations.IsEqualToString(g, expected, options),
 					a => options.AreConsideredEqual((string?)a, expected),
 					"were")),
 			iElements.Subject,

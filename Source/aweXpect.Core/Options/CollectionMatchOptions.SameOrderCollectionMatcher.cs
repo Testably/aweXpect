@@ -135,16 +135,16 @@ public partial class CollectionMatchOptions
 			}
 
 			return errorCount > errorThreshold
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
 				: (false, null);
 		}
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
-		private IEnumerable<string> GetDeviations()
+		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
 		{
-			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems)
+			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems, options)
 				.Concat(OutOfOrderItemsError(_outOfOrderItems));
 			return _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
 				? deviations
@@ -160,7 +160,7 @@ public partial class CollectionMatchOptions
 			{
 				return _ignoreInterspersedItems
 					? VerifyCompleteForSubsequenceMatch(it)
-					: VerifyCompleteForContiguousMatch(it);
+					: VerifyCompleteForContiguousMatch(it, options);
 			}
 
 			if (_comparesByPosition)
@@ -193,7 +193,7 @@ public partial class CollectionMatchOptions
 						: _additionalItems.Count;
 					if (additionalItems + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
 					{
-						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 					}
 				}
 			}
@@ -212,7 +212,7 @@ public partial class CollectionMatchOptions
 
 			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
 				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
@@ -222,7 +222,8 @@ public partial class CollectionMatchOptions
 				errors.Add("did not contain any additional items");
 			}
 
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem,
+				options));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -250,7 +251,7 @@ public partial class CollectionMatchOptions
 
 			if (positionalDeviations > 2 * maximumNumber)
 			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 			}
 
 			for (int i = _index; i < _expectedItems.Length; i++)
@@ -258,7 +259,7 @@ public partial class CollectionMatchOptions
 				_missingItems.Add(_expectedItems[i]);
 			}
 
-			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems);
+			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems, options);
 		}
 
 		/// <summary>
@@ -303,19 +304,21 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems);
+			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems, options);
 		}
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
-			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems)
+			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems,
+			IOptionsEquality<T2> options)
 		{
 			Func<object?, string> formatItem =
 				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(incorrectItems));
+			errors.AddRange(IncorrectItemsError(incorrectItems, options));
 			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
 			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
-			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem,
+				options));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -325,10 +328,10 @@ public partial class CollectionMatchOptions
 		///     The subject is contained in the expected collection, when its items appear there as an uninterrupted run;
 		///     once no run is left, the remaining items are compared against the abandoned run.
 		/// </summary>
-		private (bool, string?) VerifyCompleteForContiguousMatch(string it)
+		private (bool, string?) VerifyCompleteForContiguousMatch(string it, IOptionsEquality<T2> options)
 		{
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
 			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 			if (errors.Count == 0 &&
 			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
@@ -536,7 +539,7 @@ public partial class CollectionMatchOptions
 			if (_editDistance is not null &&
 			    !await _editDistance.Add(value, (item, expected) => AreConsideredEqual(item, expected, options)))
 			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 			}
 
 			return (false, null);

@@ -211,6 +211,75 @@ public sealed partial class ThatEnumerable
 			public sealed class StringItemTests
 			{
 				[Fact]
+				public async Task AsPrefix_WhenAnItemDoesNotMatchThePattern_ShouldFail()
+				{
+					string[] subject = ["# Title", "## Intro", "text",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("#").AsPrefix();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             starts with "#" for all items,
+						             but only 2 of 3 were
+
+						             Not matching items:
+						             [
+						               "text"
+						             ]
+
+						             Collection:
+						             [
+						               "# Title",
+						               "## Intro",
+						               "text"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task AsPrefix_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					IEnumerable<string> subject = ToEnumerable(["foo",]);
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo(null).AsPrefix();
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithMessage("The 'expected' prefix cannot be null.").AsPrefix().And
+						.WithParamName("expected");
+				}
+
+				[Fact]
+				public async Task AsRegex_WhenAnItemDoesNotMatchThePattern_ShouldFail()
+				{
+					string[] subject = ["# Title", "## Intro", "text",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("^#").AsRegex();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches regex "^#" for all items,
+						             but only 2 of 3 were
+
+						             Not matching items:
+						             [
+						               "text"
+						             ]
+
+						             Collection:
+						             [
+						               "# Title",
+						               "## Intro",
+						               "text"
+						             ]
+						             """);
+				}
+
+				[Fact]
 				public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
 				{
 					IEnumerable<string> subject = ToEnumerable(["foo",]);
@@ -221,6 +290,63 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<ArgumentException>()
 						.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
 						.WithParamName("expected");
+				}
+
+				[Fact]
+				public async Task AsSuffix_WhenAnItemDoesNotMatchThePattern_ShouldFail()
+				{
+					string[] subject = ["# Title", "## Intro", "text",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("o").AsSuffix();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             ends with "o" for all items,
+						             but only 1 of 3 were
+
+						             Not matching items:
+						             [
+						               "# Title",
+						               "text"
+						             ]
+
+						             Collection:
+						             [
+						               "# Title",
+						               "## Intro",
+						               "text"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task AsWildcard_WhenAnItemDoesNotMatchThePattern_ShouldFail()
+				{
+					string[] subject = ["# Title", "## Intro", "text",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("#*").AsWildcard();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches "#*" for all items,
+						             but only 2 of 3 were
+
+						             Not matching items:
+						             [
+						               "text"
+						             ]
+
+						             Collection:
+						             [
+						               "# Title",
+						               "## Intro",
+						               "text"
+						             ]
+						             """);
 				}
 
 				[Fact]
@@ -615,6 +741,28 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedItemTests
 			{
+				[Fact]
+				public async Task AsWildcard_WhenAllItemsMatchThePattern_ShouldFail()
+				{
+					string[] subject = ["# Title", "## Intro",];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEqualTo("#*").AsWildcard());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches "#*" not for all items,
+						             but all 2 were
+
+						             Collection:
+						             [
+						               "# Title",
+						               "## Intro"
+						             ]
+						             """);
+				}
+
 				[Fact]
 				public async Task WhenAllItemsMatch_ShouldFail()
 				{

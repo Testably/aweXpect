@@ -15,8 +15,15 @@ namespace aweXpect.Helpers;
 internal sealed class SubjectEqualityOptions<TItem, TMatch>(
 	IOptionsEquality<TMatch> options,
 	Func<bool> usesDefaultEquality)
-	: IOptionsEquality<TMatch>
+	: IOptionsEquality<TMatch>, IOptionsProvider<IOptionsEquality<TMatch>>
 {
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	/// <remarks>
+	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the
+	///     subject does not.
+	/// </remarks>
+	public IOptionsEquality<TMatch> Options => options;
+
 	/// <summary>
 	///     The comparer of the subject that decides, or <see langword="null" /> when the options decide.
 	/// </summary>

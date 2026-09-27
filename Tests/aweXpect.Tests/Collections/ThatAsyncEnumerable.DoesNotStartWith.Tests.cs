@@ -13,6 +13,44 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("# ", "## ").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with ["# ", "## "] as prefix,
+					             but it did start with [
+					               "# Title",
+					               "## Intro"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsRegex_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("^# ", "^## ").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with ["^# ", "^## "] as regex,
+					             but it did start with [
+					               "# Title",
+					               "## Intro"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo",]);
@@ -24,6 +62,44 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
 					.WithParamName("unexpected")
 					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
+			public async Task AsSuffix_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("Title", "Intro").AsSuffix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with ["Title", "Intro"] as suffix,
+					             but it did start with [
+					               "# Title",
+					               "## Intro"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsWildcard_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("# *", "## *").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with ["# *", "## *"] as wildcard,
+					             but it did start with [
+					               "# Title",
+					               "## Intro"
+					             ]
+					             """);
 			}
 
 			[Fact]

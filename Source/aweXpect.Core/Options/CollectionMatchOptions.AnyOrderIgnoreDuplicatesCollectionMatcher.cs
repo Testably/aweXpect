@@ -154,7 +154,8 @@ public partial class CollectionMatchOptions
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true, formatItem));
+				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true, formatItem,
+					options));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{

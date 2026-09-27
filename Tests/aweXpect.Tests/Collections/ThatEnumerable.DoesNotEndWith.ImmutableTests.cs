@@ -14,6 +14,44 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith("## ", "te").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with ["## ", "te"] as prefix,
+					             but it did end with [
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsRegex_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith("^## ", "^te").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with ["^## ", "^te"] as regex,
+					             but it did end with [
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task AsRegex_WhenUnexpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				ImmutableArray<string?> subject = ["foo",];
@@ -25,6 +63,44 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
 					.WithParamName("unexpected")
 					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Fact]
+			public async Task AsSuffix_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith("Intro", "xt").AsSuffix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with ["Intro", "xt"] as suffix,
+					             but it did end with [
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task AsWildcard_WhenTheItemsMatchTheirPatterns_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith("## *", "t*t").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with ["## *", "t*t"] as wildcard,
+					             but it did end with [
+					               "## Intro",
+					               "text"
+					             ]
+					             """);
 			}
 
 			[Fact]

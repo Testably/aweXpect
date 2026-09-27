@@ -18,6 +18,16 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
+		public async Task AreEqualToAsPrefix_ShouldUsePluralVerb()
+		{
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.All().AreEqualTo("a").AsPrefix());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""*has lines of which all start with "a",*""").AsWildcard();
+		}
+
+		[Fact]
 		public async Task AreUnique_ShouldUsePluralVerb()
 		{
 			async Task Act()
