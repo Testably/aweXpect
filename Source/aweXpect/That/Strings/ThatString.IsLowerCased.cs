@@ -17,6 +17,7 @@ public static partial class ThatString
 	///     This means that the string could be the result of a call to <see cref="string.ToLowerInvariant()" />.
 	///     Letters without a lower-case form count as lower-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
+	///     Unlike for a <see langword="char" />, a string without letters (e.g. <c>"1"</c>) is lower-cased.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static CasingResult<string, IThat<string?>> IsLowerCased(
@@ -36,6 +37,7 @@ public static partial class ThatString
 	///     This means that the string could not be the result of a call to <see cref="string.ToLowerInvariant()" />.
 	///     Letters without a lower-case form count as lower-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
+	///     Unlike for a <see langword="char" />, a string without letters (e.g. <c>"1"</c>) is lower-cased.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static CasingResult<string, IThat<string?>> IsNotLowerCased(

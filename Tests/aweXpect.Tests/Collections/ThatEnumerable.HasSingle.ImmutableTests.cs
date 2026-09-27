@@ -67,6 +67,65 @@ public sealed partial class ThatEnumerable
 			}
 		}
 
+		public sealed class ImmutableMatchingExactlyTypeTests
+		{
+			[Fact]
+			public async Task ShouldReturnSingleItem()
+			{
+				ImmutableArray<MyBaseClass> subject =
+					[new MyClass(1), new MyOtherClass(2), new(3),];
+
+				MyBaseClass result = await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsOnlySubtypes_ShouldFail()
+			{
+				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyOtherClass(2),];
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type MyBaseClass,
+					             but it did not contain any matching item
+					             """);
+			}
+		}
+
+		public sealed class ImmutableMatchingExactlyTypePredicateTests
+		{
+			[Fact]
+			public async Task ShouldReturnSingleItem()
+			{
+				ImmutableArray<MyBaseClass> subject = [new(1), new MyClass(2), new(3),];
+
+				MyBaseClass result = await That(subject).HasSingle().MatchingExactly<MyBaseClass>(x => x.Value > 1);
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
+			{
+				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyClass(2),];
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>(x => x.Value > 1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type MyBaseClass matching x => x.Value > 1,
+					             but it did not contain any matching item
+					             """);
+			}
+		}
+
 		public sealed class ImmutableMatchingPredicateTests
 		{
 			[Fact]
@@ -350,6 +409,35 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOnlyOneElementMatchesTheExactType_ShouldFail()
+			{
+				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new(2),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().MatchingExactly<MyBaseClass>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item exactly of type MyBaseClass,
+					             but it had the single matching item MyBaseClass {
+					               Value = 2
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyBaseClass {
+					                 Value = 2
+					               }
+					             ]
+					             """);
 			}
 		}
 

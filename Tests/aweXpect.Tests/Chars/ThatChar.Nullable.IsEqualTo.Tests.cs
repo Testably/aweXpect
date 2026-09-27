@@ -25,6 +25,17 @@ public sealed partial class ThatChar
 				}
 
 				[Fact]
+				public async Task WhenSubjectAndExpectedAreNull_AndIgnoringCase_ShouldSucceed()
+				{
+					char? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(null).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					char? subject = null;
@@ -33,6 +44,33 @@ public sealed partial class ThatChar
 						=> await That(subject).IsEqualTo(null);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldSucceed()
+				{
+					char? subject = 'a';
+
+					async Task Act()
+						=> await That(subject).IsEqualTo('A').IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsDifferent_AndIgnoringCase_ShouldFail()
+				{
+					char? subject = 'a';
+
+					async Task Act()
+						=> await That(subject).IsEqualTo('B').IgnoringCase();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 'B' ignoring case,
+						             but it was 'a'
+						             """);
 				}
 
 				[Theory]
@@ -53,6 +91,22 @@ public sealed partial class ThatChar
 						              is equal to {Formatter.Format(expected)},
 						              but it was {Formatter.Format(subject)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_AndIgnoringCase_ShouldFail()
+				{
+					char? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo('a').IgnoringCase();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 'a' ignoring case,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

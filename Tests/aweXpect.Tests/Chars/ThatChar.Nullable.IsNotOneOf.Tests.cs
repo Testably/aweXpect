@@ -85,6 +85,22 @@ public sealed partial class ThatChar
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
+				[Fact]
+				public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldFail()
+				{
+					char? subject = 'a';
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf('X', 'A').IgnoringCase();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not one of ['X', 'A'] ignoring case,
+						             but it was 'a'
+						             """);
+				}
+
 				[Theory]
 				[InlineData('a')]
 				[InlineData('B', 'b', 'A')]
@@ -114,6 +130,17 @@ public sealed partial class ThatChar
 				{
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndIgnoringCase_ShouldSucceed()
+				{
+					char? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf('X', 'A').IgnoringCase();
 
 					await That(Act).DoesNotThrow();
 				}

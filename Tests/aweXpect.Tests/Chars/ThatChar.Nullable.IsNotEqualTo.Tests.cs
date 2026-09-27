@@ -25,6 +25,22 @@ public sealed partial class ThatChar
 						             """);
 				}
 
+				[Fact]
+				public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldFail()
+				{
+					char? subject = 'a';
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo('A').IgnoringCase();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 'A' ignoring case,
+						             but it was 'a'
+						             """);
+				}
+
 				[Theory]
 				[InlineData('a', 'b')]
 				[InlineData('a', null)]
@@ -37,6 +53,17 @@ public sealed partial class ThatChar
 				{
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_AndIgnoringCase_ShouldSucceed()
+				{
+					char? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo('a').IgnoringCase();
 
 					await That(Act).DoesNotThrow();
 				}

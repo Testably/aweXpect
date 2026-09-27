@@ -587,6 +587,10 @@ IEnumerable<Person> persons = //...
 
 await Expect.That(persons).HasSingle().Matching<Student>();
 await Expect.That(persons).HasSingle().Matching<Student>(student => student.Courses.Count == 0);
+
+// Similar to the expectations above, but verify the type exactly:
+await Expect.That(persons).HasSingle().MatchingExactly<Student>();
+await Expect.That(persons).HasSingle().MatchingExactly<Student>(student => student.Courses.Count == 0);
 ```
 
 The awaited result is the single element:

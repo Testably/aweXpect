@@ -17,6 +17,7 @@ public static partial class ThatString
 	///     This means that the string could be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	///     Letters without an upper-case form count as upper-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
+	///     Unlike for a <see langword="char" />, a string without letters (e.g. <c>"1"</c>) is upper-cased.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static CasingResult<string, IThat<string?>> IsUpperCased(
@@ -36,6 +37,7 @@ public static partial class ThatString
 	///     This means that the string could not be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	///     Letters without an upper-case form count as upper-cased, see
 	///     <see cref="CasingResult{TType, TThat}.IncludingUncasedLetters" />.
+	///     Unlike for a <see langword="char" />, a string without letters (e.g. <c>"1"</c>) is upper-cased.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static CasingResult<string, IThat<string?>> IsNotUpperCased(
