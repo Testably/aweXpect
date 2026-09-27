@@ -63,6 +63,20 @@ public sealed partial class ThatDelegate
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Theory]
+				[AutoData]
+				public async Task WithNamedMemberAccessor_ShouldSucceed(int hResult)
+				{
+					Exception exception = new HResultException(hResult);
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.Whose(memberAccessor: e => e.HResult, expectations: h => h.IsEqualTo(hResult));
+
+					await That(Act).DoesNotThrow();
+				}
 			}
 
 			public sealed class GenericTests

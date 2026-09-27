@@ -25,28 +25,28 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(EnumerableQuantifier.Exactly(unexpected), true);
 
 	/// <summary>
-	///     Verifies that the collection has more than <paramref name="minimum" /> items.
+	///     Verifies that the collection has more than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThan(int minimum)
-		=> factory(EnumerableQuantifier.MoreThan(minimum), false);
+	public TReturn GreaterThan(int expected)
+		=> factory(EnumerableQuantifier.MoreThan(expected), false);
 
 	/// <summary>
-	///     Verifies that the collection has at least <paramref name="minimum" /> items.
+	///     Verifies that the collection has at least <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThanOrEqualTo(int minimum)
-		=> factory(EnumerableQuantifier.AtLeast(minimum), false);
+	public TReturn GreaterThanOrEqualTo(int expected)
+		=> factory(EnumerableQuantifier.AtLeast(expected), false);
 
 	/// <summary>
-	///     Verifies that the collection has fewer than <paramref name="maximum" /> items.
+	///     Verifies that the collection has fewer than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThan(int maximum)
-		=> factory(EnumerableQuantifier.LessThan(maximum), false);
+	public TReturn LessThan(int expected)
+		=> factory(EnumerableQuantifier.LessThan(expected), false);
 
 	/// <summary>
-	///     Verifies that the collection has at most <paramref name="maximum" /> items.
+	///     Verifies that the collection has at most <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThanOrEqualTo(int maximum)
-		=> factory(EnumerableQuantifier.AtMost(maximum), false);
+	public TReturn LessThanOrEqualTo(int expected)
+		=> factory(EnumerableQuantifier.AtMost(expected), false);
 
 	/// <summary>
 	///     Verifies that the collection has between <paramref name="minimum" />…
