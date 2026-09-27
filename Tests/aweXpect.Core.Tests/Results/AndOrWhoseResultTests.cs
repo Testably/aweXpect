@@ -25,6 +25,19 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task MultipleWhose_WithNamedMemberAccessor_ShouldSucceed()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(memberAccessor: f => f.Value1, expectations: f => f.IsFalse())
+				.AndWhose(memberAccessor: f => f.Value2, expectations: f => f.IsFalse());
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
 	public async Task Whose_WithNestedMemberPath_ShouldOmitLeadingDot()
 	{
 		MyClass sut = new();

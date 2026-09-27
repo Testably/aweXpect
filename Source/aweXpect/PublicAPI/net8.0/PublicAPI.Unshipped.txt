@@ -120,9 +120,9 @@ static aweXpect.ThatException.HasInner<TInnerException>(this aweXpect.Core.IThat
 static aweXpect.ThatException.HasMessage(this aweXpect.Core.IThat<System.Exception?>! subject) -> aweXpect.Results.PropertyResult.String<System.Exception?, System.Exception!, aweXpect.Core.IThat<System.Exception?>!>!
 static aweXpect.ThatException.HasMessage(this aweXpect.Core.IThat<System.Exception?>! subject, string? expected) -> aweXpect.Results.StringEqualityTypeResult<System.Exception!, aweXpect.Core.IThat<System.Exception?>!>!
 static aweXpect.ThatException.HasRecursiveInnerExceptions(this aweXpect.Core.IThat<System.Exception?>! subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception!>!>!>! expectations) -> aweXpect.Results.AndOrResult<System.Exception!, aweXpect.Core.IThat<System.Exception?>!>!
-static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, System.Threading.Tasks.Task<TMember>!>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, System.Threading.Tasks.ValueTask<TMember>>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, System.Threading.Tasks.Task<TMember>!>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, System.Threading.Tasks.ValueTask<TMember>>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatGeneric.Whose<T, TMember>(this aweXpect.Core.IThat<T?>! subject, System.Func<T, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
 static aweXpect.ThatNullableBool.DoesNotImply(this aweXpect.Core.IThat<bool?>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.Implies(this aweXpect.Core.IThat<bool?>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.IsFalse(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool?>!>!
@@ -618,3 +618,11 @@ static aweXpect.ThatNullableGuid.IsNotNullOrEmpty(this aweXpect.Core.IThat<Syste
 *REMOVED*static aweXpect.ThatNullableGuid.IsEmpty(this aweXpect.Core.IThat<System.Guid?>! subject) -> aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>!>!
 *REMOVED*static aweXpect.ThatNullableGuid.IsNotEmpty(this aweXpect.Core.IThat<System.Guid?>! subject) -> aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>!>!
 *REMOVED*static aweXpect.ThatNullableGuid.IsNotNullOrEmpty(this aweXpect.Core.IThat<System.Guid?>! subject) -> aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>!>!
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int minimum) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int expected) -> TReturn
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int minimum) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int expected) -> TReturn
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int maximum) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int expected) -> TReturn
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int maximum) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int expected) -> TReturn

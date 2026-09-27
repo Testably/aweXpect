@@ -435,14 +435,14 @@ public partial class CollectionMatchOptions(
 	}
 
 	private static async ValueTask<List<TMember>> Filter<T, TMember>(IEnumerable<T> items,
-		Func<T, ValueTask<bool>> predicate, Func<T, TMember> memberSelector)
+		Func<T, ValueTask<bool>> predicate, Func<T, TMember> memberAccessor)
 	{
 		List<TMember> list = new();
 		foreach (T item in items)
 		{
 			if (await predicate(item))
 			{
-				list.Add(memberSelector(item));
+				list.Add(memberAccessor(item));
 			}
 		}
 

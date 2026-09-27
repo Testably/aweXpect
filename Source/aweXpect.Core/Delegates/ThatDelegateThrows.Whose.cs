@@ -9,7 +9,7 @@ namespace aweXpect.Delegates;
 public partial class ThatDelegateThrows<TException>
 {
 	/// <summary>
-	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberSelector" />.
+	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     If accessing the member throws, the expectation fails with <c>… did throw …</c> and the exception as inner
@@ -17,12 +17,12 @@ public partial class ThatDelegateThrows<TException>
 	///     evaluation is canceled aborts the evaluation instead.
 	/// </remarks>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(
-		Func<TException, TMember?> memberSelector,
+		Func<TException, TMember?> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> new(ExpectationBuilder.ForMember(
-					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberSelector,
+					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
@@ -31,7 +31,7 @@ public partial class ThatDelegateThrows<TException>
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -41,12 +41,12 @@ public partial class ThatDelegateThrows<TException>
 	/// </remarks>
 	[OverloadResolutionPriority(2)]
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(
-		Func<TException, Task<TMember>> memberSelector,
+		Func<TException, Task<TMember>> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> new(ExpectationBuilder.ForAsyncMember(
-					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
+					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
@@ -55,7 +55,7 @@ public partial class ThatDelegateThrows<TException>
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
-	///     <paramref name="memberSelector" />.
+	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
 	///     The member is awaited before the <paramref name="expectations" /> are applied. If accessing or awaiting the
@@ -65,9 +65,9 @@ public partial class ThatDelegateThrows<TException>
 	/// </remarks>
 	[OverloadResolutionPriority(1)]
 	public AndOrResult<TException, ThatDelegateThrows<TException>> Whose<TMember>(
-		Func<TException, ValueTask<TMember>> memberSelector,
+		Func<TException, ValueTask<TMember>> memberAccessor,
 		Action<IThatSubject<TMember?>> expectations,
-		[CallerArgumentExpression("memberSelector")]
+		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
-		=> Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+		=> Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
 }

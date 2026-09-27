@@ -97,7 +97,7 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenAsyncMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
 				{
@@ -108,12 +108,12 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose((Func<MyClass, Task<int>>)null!, v => v.IsEqualTo(1));
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("memberSelector").And
-					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
 				{
@@ -124,12 +124,12 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose((Func<MyClass, int>)null!, v => v.IsEqualTo(1));
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("memberSelector").And
-					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenValueTaskMemberSelectorIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
 				{
@@ -140,8 +140,8 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose((Func<MyClass, ValueTask<int>>)null!, v => v.IsEqualTo(1));
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("memberSelector").And
-					.WithMessage("The 'memberSelector' cannot be null.").AsPrefix();
+					.WithParamName("memberAccessor").And
+					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
 			[Theory]
