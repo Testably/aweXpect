@@ -74,6 +74,12 @@ internal static class CollectionExpectationSources
 			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
 			public string? NegatedRemarks { get; set; }
+
+			/// <summary>
+			/// The return type of the negated overload, in terms of the helper's type parameters, when it hands out only a
+			/// base type of the helper's return type.
+			/// </summary>
+			public string? NegatedReturnType { get; set; }
 		}
 
 		/// <summary>

@@ -194,9 +194,60 @@ internal sealed record CollectionExpectationFamily(
 				if (value.Value?.ToString() is { } template &&
 				    Resolve(template, compilation) is { } definition)
 				{
-					yield return new SubjectKind(Qualify(template), definition.IsValueType, priority, remarks,
-						KindConstraints(template, definition));
+					yield return new SubjectKind(Qualify(BindFixedArguments(helper, template, definition)),
+						definition.IsValueType, priority, remarks, KindConstraints(template, definition));
 				}
+			}
+		}
+	}
+
+	/// <remarks>
+	///     A type argument of the kind that names no type parameter of the helper is fixed by the element of the helper's
+	///     <c>TCollection</c>, as <c>IEnumerable&lt;KeyValuePair&lt;TKey, string?&gt;&gt;</c> fixes the value of a
+	///     dictionary to <see cref="string" />.
+	/// </remarks>
+	private static string BindFixedArguments(IMethodSymbol helper, string template, INamedTypeSymbol definition)
+	{
+		INamedTypeSymbol? enumerable = definition.AllInterfaces.FirstOrDefault(x =>
+			x.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T);
+		if (SubjectElementOf(helper) is not { } element || enumerable == null)
+		{
+			return template;
+		}
+
+		Dictionary<ITypeParameterSymbol, ITypeSymbol> fixedTypes = new(SymbolEqualityComparer.Default);
+		Unify(enumerable.TypeArguments[0], element, fixedTypes);
+		string[] arguments = TypeArguments(template);
+		bool isChanged = false;
+		for (int i = 0; i < arguments.Length && i < definition.TypeParameters.Length; i++)
+		{
+			if (!arguments[i].Contains(ItemPlaceholder) &&
+			    helper.TypeParameters.All(x => x.Name != arguments[i]) &&
+			    fixedTypes.TryGetValue(definition.TypeParameters[i], out ITypeSymbol? type))
+			{
+				arguments[i] = type.ToDisplayString(TypeFormat);
+				isChanged = true;
+			}
+		}
+
+		return isChanged
+			? $"{template.Substring(0, template.IndexOf('<'))}<{string.Join(", ", arguments)}>"
+			: template;
+	}
+
+	private static void Unify(ITypeSymbol pattern, ITypeSymbol type,
+		Dictionary<ITypeParameterSymbol, ITypeSymbol> fixedTypes)
+	{
+		if (pattern is ITypeParameterSymbol typeParameter)
+		{
+			fixedTypes[typeParameter] = type;
+		}
+		else if (pattern is INamedTypeSymbol named && type is INamedTypeSymbol other &&
+		         SymbolEqualityComparer.Default.Equals(named.OriginalDefinition, other.OriginalDefinition))
+		{
+			for (int i = 0; i < named.TypeArguments.Length; i++)
+			{
+				Unify(named.TypeArguments[i], other.TypeArguments[i], fixedTypes);
 			}
 		}
 	}
@@ -369,10 +420,13 @@ internal sealed record CollectionExpectationFamily(
 			.Select(x => $"\n\t\t{x}"));
 		string typeArguments = TypeParameterList(helper.TypeParameters
 			.Select(x => substitutions.TryGetValue(x.Name, out Bound? v) ? v.Type : x.Name));
+		string returnType = variant.Negated && declaration.NegatedReturnType != null
+			? Substitute(Qualify(declaration.NegatedReturnType), substitutions)
+			: Substitute(helper.ReturnType, substitutions);
 
 		return $$"""
 		         {{Header(declaration, instantiation, variant)}}
-		         	public static {{Substitute(helper.ReturnType, substitutions)}}
+		         	public static {{returnType}}
 		         		{{variant.MethodName}}{{TypeParameterList(ownTypeParameters.Select(x => x.Name))}}(
 		         			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
 		         		=> {{helper.Name}}{{typeArguments}}(
@@ -557,8 +611,11 @@ internal sealed record CollectionExpectationFamily(
 	///     instantiation cannot construct a method that still carries the overload's own type parameters.
 	/// </remarks>
 	private static string Substitute(ITypeSymbol type, Dictionary<string, Bound> substitutions)
+		=> Substitute(type.ToDisplayString(TypeFormat), substitutions);
+
+	private static string Substitute(string type, Dictionary<string, Bound> substitutions)
 	{
-		string result = type.ToDisplayString(TypeFormat);
+		string result = type;
 		foreach (KeyValuePair<string, Bound> substitution in substitutions)
 		{
 			result = Regex.Replace(result, $@"\b{substitution.Key}\?", Escape(substitution.Value.NullableType),
@@ -639,6 +696,7 @@ internal sealed record CollectionExpectationFamily(
 		public string NegatedSummary { get; private set; } = "";
 		public string? Remarks { get; private set; }
 		public string? NegatedRemarks { get; private set; }
+		public string? NegatedReturnType { get; private set; }
 
 		private void Apply(string key, TypedConstant value)
 		{
@@ -676,6 +734,9 @@ internal sealed record CollectionExpectationFamily(
 					break;
 				case "NegatedRemarks":
 					NegatedRemarks = value.Value?.ToString();
+					break;
+				case "NegatedReturnType":
+					NegatedReturnType = value.Value?.ToString();
 					break;
 			}
 		}

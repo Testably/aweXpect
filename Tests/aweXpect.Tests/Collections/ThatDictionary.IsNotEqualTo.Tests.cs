@@ -128,5 +128,19 @@ public sealed partial class ThatDictionary
 					.Because("repeating an entry says nothing that the first one did not already say");
 			}
 		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+				Dictionary<string, int> unexpected = new() { { "a", 2 }, };
+
+				Dictionary<string, int> result = await That(subject).IsNotEqualTo(unexpected);
+
+				await That(result).IsSameAs(subject);
+			}
+		}
 	}
 }

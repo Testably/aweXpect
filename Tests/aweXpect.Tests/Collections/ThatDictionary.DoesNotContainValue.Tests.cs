@@ -41,12 +41,45 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenStringValueDiffersInMoreThanCase_WithIgnoringCase_ShouldSucceed()
+			{
+				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue("BAZ").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenStringValueDiffersOnlyInCase_WithIgnoringCase_ShouldFail()
+			{
+				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue("BAR").IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain value "BAR" ignoring case,
+					             but it did
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotContainValue("foo");
+					=> await That(subject)!.DoesNotContainValue("foo");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -106,17 +139,46 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenValueMatchesTheComparer_ShouldFail()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue(2).Using(new AllEqualComparer());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain value 2 using AllEqualComparer,
+					             but it did
+
+					             Dictionary:
+					             {[1] = 41, [2] = 42, [3] = 43}
+					             """);
+			}
 		}
 
 		public sealed class OverloadTests
 		{
+			[Fact]
+			public async Task ForADictionary_ShouldKeepTheSubjectType()
+			{
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+				Dictionary<string, int> result = await That(subject).DoesNotContainValue(2);
+
+				await That(result).IsSameAs(subject);
+			}
+
 			[Fact]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
-					=> await (AndOrResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>>)
+					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
 						That(subject).DoesNotContainValue(2);
 
 				await That(Act).DoesNotThrow()

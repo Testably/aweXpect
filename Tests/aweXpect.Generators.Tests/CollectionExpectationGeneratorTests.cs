@@ -412,6 +412,71 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task PerSubject_WhenTheHelperFixesATypeArgumentOfTheKind_ShouldBindIt()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateCollectionExpectation("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
+				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey>(
+					IThat<TCollection?> subject,
+					string? expected)
+					where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("ContainsValue<TKey>(").Once();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, string?>?> subject")
+			.Once()
+			.Because("the helper's constraint fixes the value type that the kind leaves to a type parameter");
+		await That(result.Generated).Contains("where TKey : notnull").Once();
+	}
+
+	[Fact]
+	public async Task WithNegatedReturnType_ShouldDeclareItOnlyOnTheNegatedOverload()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public class Result<T> { }
+			public sealed class KeyResult<T> : Result<T> { }
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateCollectionExpectation("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
+					NegatedReturnType = "Lib.Result<aweXpect.Core.IThat<TCollection?>>",
+					Summary = "Contains the key.", NegatedSummary = "Does not contain the key.")]
+				internal static KeyResult<IThat<TCollection?>> ContainsKeyCore<TCollection, TKey, TValue>(
+					IThat<TCollection?> subject,
+					TKey expected,
+					bool negated)
+					where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated)
+			.Contains("public static global::Lib.KeyResult<global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, TValue>?>>")
+			.Once();
+		await That(result.Generated)
+			.Contains("public static Lib.Result<aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, TValue>?>>")
+			.Once()
+			.Because("the negated overload hands out the base type and the nullable subject keeps its annotation");
+	}
+
+	[Fact]
 	public async Task WithParams_ShouldTakeAnArrayAndPassNoExpression()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

@@ -44,7 +44,7 @@ public sealed partial class ThatReadOnlyDictionary
 				ReadOnlyDictionary<int, string>? subject = null;
 
 				async Task Act()
-					=> await That(subject).ContainsValue("foo");
+					=> await That(subject)!.ContainsValue("foo");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -82,6 +82,20 @@ public sealed partial class ThatReadOnlyDictionary
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
 					             """);
+			}
+		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForAReadOnlyDictionaryOfStrings_ShouldKeepTheSubjectType()
+			{
+				ReadOnlyDictionary<string, string?> subject =
+					new(new Dictionary<string, string?> { { "a", "foo" }, });
+
+				ReadOnlyDictionary<string, string?> result = await That(subject).ContainsValue("FOO").IgnoringCase();
+
+				await That(result).IsSameAs(subject);
 			}
 		}
 	}

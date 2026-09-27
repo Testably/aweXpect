@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Options;
 using aweXpect.SourceGenerators;
 
 namespace aweXpect;
@@ -23,14 +22,16 @@ public static partial class ThatDictionary
 		"Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the\n" +
 		"priority to decide between them.";
 
+	private const string NegatedKeyReturnType =
+		"global::aweXpect.Results.AndOrResult<TCollection, global::aweXpect.Core.IThat<TCollection?>>";
+
 	/// <summary>
-	///     Compares the values with the same object equality as the items of a collection, as values, unlike keys, have
-	///     no comparer of the dictionary to honour.
+	///     Compares the values with the equality <paramref name="options" /> of the expectation, as values, unlike keys,
+	///     have no comparer of the dictionary to honour.
 	/// </summary>
 	private static async Task<bool> ContainsValue<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
-		TValue value)
+		TValue value, IOptionsEquality<TValue> options)
 	{
-		ObjectEqualityOptions<TValue> options = new();
 		foreach (KeyValuePair<TKey, TValue> entry in dictionary)
 		{
 			if (await options.AreConsideredEqual(entry.Value, value))

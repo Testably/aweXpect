@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace aweXpect.Tests;
 
@@ -122,6 +123,19 @@ public sealed partial class ThatReadOnlyDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("a type that implements no IDictionary is looked up through its own TryGetValue");
+			}
+		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForAReadOnlyDictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
+			{
+				ReadOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
+
+				ReadOnlyDictionary<string, int> result = await That(subject).Contains("a", 1);
+
+				await That(result).IsSameAs(subject);
 			}
 		}
 	}

@@ -745,6 +745,18 @@ await Expect.That(values).DoesNotContainValue("something");
 await Expect.That(values).DoesNotContainValues("something", "else");
 ```
 
+The values are compared with the same equality options as the items of a collection, and the expected keys or
+values can also be given as a collection:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+string[] expected = ["FOO", "BAR"];
+
+await Expect.That(values).ContainsValue("FOO").IgnoringCase();
+await Expect.That(values).ContainsValues(expected).IgnoringCase();
+await Expect.That(values).ContainsKeys(new List<int> { 42, 43 });
+```
+
 ### Keys and values
 
 You can continue with expectations on the keys or on the values of a dictionary:
