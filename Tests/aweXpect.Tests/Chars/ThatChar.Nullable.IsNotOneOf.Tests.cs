@@ -46,7 +46,7 @@ public sealed partial class ThatChar
 				[InlineData('X')]
 				[InlineData('5')]
 				[InlineData('\t')]
-				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(char subject)
+				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(char? subject)
 				{
 					IEnumerable<char?> expected = [null,];
 
@@ -104,10 +104,10 @@ public sealed partial class ThatChar
 				[Theory]
 				[InlineData('a')]
 				[InlineData('B', 'b', 'A')]
-				public async Task WhenSubjectIsContained_ShouldFail(char subject,
+				public async Task WhenSubjectIsContained_ShouldFail(char? subject,
 					params char[] otherValues)
 				{
-					IEnumerable<char> expected = [..otherValues, subject,];
+					IEnumerable<char> expected = [..otherValues, subject!.Value,];
 
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
@@ -125,7 +125,7 @@ public sealed partial class ThatChar
 
 				[Theory]
 				[InlineData('B', 'b', 'A')]
-				public async Task WhenSubjectIsDifferent_ShouldSucceed(char subject,
+				public async Task WhenSubjectIsDifferent_ShouldSucceed(char? subject,
 					params char[] expected)
 				{
 					async Task Act()
