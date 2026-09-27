@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # DateTime / DateTimeOffset
 
 Describes the possible expectations for `DateTime` and `DateTimeOffset`.
@@ -9,11 +12,17 @@ comparison instead (e.g. `HasYear().NotEqualTo(2020)`).
 
 You can verify that the `DateTime` or `DateTimeOffset` is equal to another one or not:
 
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
+
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24);
 
 await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 24));
 ```
+
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
 DateTimeOffset subject = new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.FromHours(2));
@@ -21,7 +30,13 @@ DateTimeOffset subject = new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.Fr
 await Expect.That(subject).IsEqualTo(new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.FromHours(2)));
 ```
 
+</TabItem>
+</Tabs>
+
 You can also specify a tolerance:
+
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24);
@@ -30,6 +45,9 @@ await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 23)).Within(TimeSpan
   .Because("we accept values between 2024-12-22 and 2024-12-24");
 ```
 
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
+
 ```csharp
 DateTimeOffset subject = new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.FromHours(2));
 
@@ -37,9 +55,15 @@ await Expect.That(subject).IsEqualTo(new DateTimeOffset(2024, 12, 24, 13, 5, 0, 
   .Because("we accept values between 2024-12-24T12:55:00+2:00 and 2024-12-24T13:15:00+2:00");
 ```
 
+</TabItem>
+</Tabs>
+
 ## One of
 
 You can verify that the `DateTime` or `DateTimeOffset` is one of many alternatives:
+
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24);
@@ -48,6 +72,9 @@ await Expect.That(subject).IsOneOf([new DateTime(2024, 12, 23), new DateTime(202
 await Expect.That(subject).IsNotOneOf([new DateTime(2022, 12, 24), new DateTime(2023, 12, 24)]);
 ```
 
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
+
 ```csharp
 DateTimeOffset subject = new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.FromHours(2));
 
@@ -55,7 +82,13 @@ await Expect.That(subject).IsOneOf([new DateTimeOffset(2024, 12, 24, 13, 5, 0, T
 await Expect.That(subject).IsNotOneOf([new DateTimeOffset(2024, 12, 24, 13, 5, 0, TimeSpan.FromHours(2)), new DateTimeOffset(2025, 12, 24, 13, 15, 0, TimeSpan.FromHours(3))]);
 ```
 
+</TabItem>
+</Tabs>
+
 You can also specify a tolerance:
+
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
 
 ```csharp
 DateTime subject = new DateTime(2024, 12, 24);
@@ -64,6 +97,9 @@ await Expect.That(subject).IsOneOf([new DateTime(2024, 12, 23)]).Within(TimeSpan
   .Because("we accept values between 2024-12-22 and 2024-12-24");
 ```
 
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
+
 ```csharp
 DateTimeOffset subject = new DateTimeOffset(2024, 12, 24, 13, 15, 0, TimeSpan.FromHours(2));
 
@@ -71,9 +107,15 @@ await Expect.That(subject).IsOneOf([new DateTimeOffset(2024, 12, 24, 13, 5, 0, T
   .Because("we accept values between 2024-12-24T12:55:00+2:00 and 2024-12-24T13:15:00+2:00");
 ```
 
+</TabItem>
+</Tabs>
+
 ## After
 
 You can verify that the `DateTime` or `DateTimeOffset` is (on or) after another value:
+
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
 
 ```csharp
 DateTime subject = DateTime.Now;
@@ -82,12 +124,18 @@ await Expect.That(subject).IsAfter(new DateTime(2024, 1, 1));
 await Expect.That(subject).IsOnOrAfter(new DateTime(2024, 1, 1));
 ```
 
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
+
 ```csharp
 DateTimeOffset subject = DateTimeOffset.Now;
 
 await Expect.That(subject).IsAfter(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.FromHours(2)));
 await Expect.That(subject).IsOnOrAfter(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.FromHours(2)));
 ```
+
+</TabItem>
+</Tabs>
 
 You can also specify a tolerance:
 
@@ -102,6 +150,9 @@ await Expect.That(subject).IsAfter(DateTime.Now).Within(TimeSpan.FromSeconds(1))
 
 You can verify that the `DateTime` or `DateTimeOffset` is (on or) before another value:
 
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
+
 ```csharp
 DateTime subject = DateTime.Now;
 
@@ -109,12 +160,18 @@ await Expect.That(subject).IsBefore(new DateTime(2124, 12, 31));
 await Expect.That(subject).IsOnOrBefore(new DateTime(2124, 12, 31));
 ```
 
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
+
 ```csharp
 DateTimeOffset subject = DateTimeOffset.Now;
 
 await Expect.That(subject).IsBefore(new DateTimeOffset(2124, 12, 31, 23, 59, 59, TimeSpan.FromHours(2)));
 await Expect.That(subject).IsOnOrBefore(new DateTimeOffset(2124, 12, 31, 23, 59, 59, TimeSpan.FromHours(2)));
 ```
+
+</TabItem>
+</Tabs>
 
 You can also specify a tolerance:
 
@@ -129,11 +186,17 @@ await Expect.That(subject).IsOnOrBefore(DateTime.Now).Within(TimeSpan.FromSecond
 
 You can verify that the `DateTime` or `DateTimeOffset` is between two values:
 
+<Tabs groupId="datetime-offset">
+<TabItem value="DateTime" label="DateTime" default>
+
 ```csharp
 DateTime subject = DateTime.Now;
 
 await Expect.That(subject).IsBetween(new DateTime(2024, 1, 1)).And(new DateTime(2123, 12, 31));
 ```
+
+</TabItem>
+<TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
 DateTimeOffset subject = DateTimeOffset.Now;
@@ -142,6 +205,9 @@ await Expect.That(subject)
     .IsBetween(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.FromHours(2)))
     .And(new DateTimeOffset(2124, 12, 31, 23, 59, 59, TimeSpan.FromHours(2)));
 ```
+
+</TabItem>
+</Tabs>
 
 You can also specify a tolerance:
 
