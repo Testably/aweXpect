@@ -18,62 +18,68 @@ using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
 
 ## Equivalency
 
-Under `Customize.aweXpect.Equivalency()` you have:
-- **DefaultEquivalencyOptions**  
-  The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) that are used when an
-  expectation does not configure them.
+Under `Customize.aweXpect.Equivalency()`:
+
+| Option                      | Type                 | Default                     | Description                                                                                                                 |
+|-----------------------------|----------------------|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `DefaultEquivalencyOptions` | `EquivalencyOptions` | `new EquivalencyOptions()`  | The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) used when an expectation configures none. |
 
 ## Formatting
 
-Under `Customize.aweXpect.Formatting()` you have:
-- **MaximumNumberOfCollectionItems**  
-  The maximum number of displayed items in a collection.
-  The remaining items are summarized at the end of the list: `(… and 7 more)` when the total number of items is known,
-  and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation stopped enumerating early.
+Under `Customize.aweXpect.Formatting()`:
 
-- **MaximumStringLength**  
-  The maximum length of a displayed `string` before it gets truncated.
+| Option                                           | Type  | Default | Description                                                                   |
+|--------------------------------------------------|-------|---------|-------------------------------------------------------------------------------|
+| `MaximumNumberOfCollectionItems`                 | `int` | `10`    | The maximum number of items shown for a collection.                           |
+| `MaximumStringLength`                            | `int` | `100`   | The maximum length of a shown `string` before it is truncated.                |
+| `MinimumNumberOfCharactersAfterStringDifference` | `int` | `45`    | The minimum number of characters shown after the first mismatch of a string. |
 
-- **MinimumNumberOfCharactersAfterStringDifference**  
-  The minimum number of characters included after the first mismatch in the string difference.
-
-## Json
-
-Under `Customize.aweXpect.Json()`, which comes with the separate
-[`aweXpect.Json`](https://github.com/aweXpect/aweXpect.Json) package, you have:
-- **DefaultJsonDocumentOptions**  
-  The default [options](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) used to parse a `JsonDocument`. 
-
-- **DefaultJsonSerializerOptions**  
-  The default [options](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) used for the `JsonSerializer`.
+The items of a collection beyond the maximum are summarized at the end of the list: `(… and 7 more)` when the total
+number of items is known, and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation
+stopped enumerating early.
 
 ## Reflection
 
-Under `Customize.aweXpect.Reflection()` you have:
-- **ExcludedAssemblyPrefixes**  
-  The assembly namespace prefixes that are excluded during reflection.
+Under `Customize.aweXpect.Reflection()`:
+
+| Option                     | Type       | Default                                               | Description                                                                                  |
+|----------------------------|------------|-------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| `ExcludedAssemblyPrefixes` | `string[]` | `System`, `Microsoft`, `xunit` and other known names | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
+
+A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
+assembly named `Systemics`.
 
 ## Settings
 
-Under `Customize.aweXpect.Settings()` you have:
-- **TestCancellation**  
-  A cancellation logic that is applied for all tests. This can be one of the following:
-  - `FromTimeout(TimeSpan timeout)`  
-    This will cancel the `CancellationToken` that is used internally and forwarded to the [delegates](../04-delegates.md) after the given timeout.
-  - `FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`  
-    This will use the returned `CancellationToken` internally and also forward it to the [delegates](../04-delegates.md).
+Under `Customize.aweXpect.Settings()`:
 
-- **DefaultCheckInterval**  
-  The default interval for repeatedly checking the condition on an object. It must be positive.
+| Option                           | Type               | Default | Description                                                                                                   |
+|----------------------------------|--------------------|---------|---------------------------------------------------------------------------------------------------------------|
+| `TestCancellation`               | `TestCancellation` | none    | A [timeout or `CancellationToken`](./03-cancellation.md) that is applied to all expectations.                 |
+| `DefaultCheckInterval`           | `TimeSpan`         | 100 ms  | The interval for re-checking a condition, e.g. for [`Eventually()`](../04-delegates.md#eventually).           |
+| `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s    | How long [`Eventually()`](../04-delegates.md#eventually) retries until the expectations must be met.          |
+| `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s    | How long a [`Signaler`](./04-callbacks.md) expectation waits without `Within(…)`.                             |
+| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../common-types/09-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
 
-- **DefaultEventuallyTimeout**  
-  The default timeout until the expectations of [`Eventually()`](../04-delegates.md) on a delegate must be met.
-  It must not be negative; `Timeout.InfiniteTimeSpan` retries until the expectations are met.
+`TestCancellation` is created with one of:
 
-- **DefaultSignalerTimeout**  
-  The default timeout for the [`Signaler`](./04-callbacks.md). It must not be negative;
-  `Timeout.InfiniteTimeSpan` waits without a limit.
+- `TestCancellation.FromTimeout(TimeSpan timeout)`, which cancels the `CancellationToken` that is used internally and
+  forwarded to the [delegates](../04-delegates.md) after the given timeout.
+- `TestCancellation.FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`, which uses the returned
+  `CancellationToken` internally and also forwards it to the [delegates](../04-delegates.md).
 
-- **DefaultTimeComparisonTolerance**  
-  The default tolerance when date or time values are compared without an explicit tolerance, see [default tolerance](../common-types/09-datetime-offset.md#default-tolerance).
-  *Note: In Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370)*
+The interval must be positive, and the timeouts must not be negative. `Timeout.InfiniteTimeSpan` retries or waits
+without a limit. See [default waits](./03-cancellation.md#default-waits) for which expectations use the timeouts.
+
+:::tip
+On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
+a `DefaultTimeComparisonTolerance` of about 15 ms avoids brittle comparisons of timestamps.
+:::
+
+## Extensions
+
+Extensions can add their own groups. For example, the
+[`aweXpect.Json`](https://github.com/aweXpect/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
+[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and
+[`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions). See
+[write your own extension](../08-write-extension.md#customization) to add a group yourself.
