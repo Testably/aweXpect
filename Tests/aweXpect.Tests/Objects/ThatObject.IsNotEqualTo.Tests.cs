@@ -233,7 +233,7 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
+			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				MyStruct? subject = null;
 

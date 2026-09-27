@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutablePredicateTests
 		{
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
 
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableItemTests
 		{
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 1, 2, 3, 4, 5,];
 

@@ -2207,7 +2207,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WithCollectionInDifferentOrder_ShouldFail()
+			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
 				string[] expected = ["a", "b", "c",];

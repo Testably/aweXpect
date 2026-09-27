@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenArrayContainsTooManyItems_ShouldSucceed()
+				public async Task WhenArrayContainsTooManyItems_ShouldFail()
 				{
 					int[] subject = [1, 2, 3, 4, 5, 6, 7,];
 
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
+				public async Task WhenEnumerableContainsTooManyItems_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3, 4, 5, 6, 7,]);
 

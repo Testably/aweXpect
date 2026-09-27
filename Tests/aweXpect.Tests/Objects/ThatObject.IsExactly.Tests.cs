@@ -257,7 +257,7 @@ public sealed partial class ThatObject
 
 			[Theory]
 			[AutoData]
-			public async Task WhenTypeIsSubtype_ShouldSucceed(int value)
+			public async Task WhenTypeIsSubtype_ShouldFail(int value)
 			{
 				object subject = new MyClass
 				{

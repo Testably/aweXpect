@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableTests
 		{
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
 

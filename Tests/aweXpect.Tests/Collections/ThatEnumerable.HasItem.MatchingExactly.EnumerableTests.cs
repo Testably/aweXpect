@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 			public sealed class EnumerableGenericPredicateTests
 			{
 				[Fact]
-				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = ToEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
 
@@ -184,7 +184,7 @@ public sealed partial class ThatEnumerable
 			public sealed class EnumerableGenericTests
 			{
 				[Fact]
-				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = ToEnumerable<MyBaseClass>([0, 1, 2,], x => new MyBaseClass(x));
 

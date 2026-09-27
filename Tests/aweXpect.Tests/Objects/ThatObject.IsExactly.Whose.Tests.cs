@@ -7,7 +7,7 @@ public sealed partial class ThatObject
 		public sealed class WhoseTests
 		{
 			[Fact]
-			public async Task WhenPropertyDoesNotMatch_ShouldSucceed()
+			public async Task WhenPropertyDoesNotMatch_ShouldFail()
 			{
 				object subject = new MyClass
 				{

@@ -37,7 +37,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
@@ -233,7 +233,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4, 5);
 
@@ -672,7 +672,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "bar", "c",]);
 
@@ -993,7 +993,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			[Theory]
 			[AutoData]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed(int expected)
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, expected, 3, 4);
 

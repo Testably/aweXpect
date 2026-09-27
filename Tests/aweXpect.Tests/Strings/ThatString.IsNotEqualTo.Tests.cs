@@ -7,7 +7,7 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenActualAndUnexpectedAreNull_ShouldSucceed()
+			public async Task WhenActualAndUnexpectedAreNull_ShouldFail()
 			{
 				string? subject = null;
 				string? unexpected = null;
@@ -157,7 +157,7 @@ public sealed partial class ThatString
 			[InlineAutoData("\tfoo", "\nfoo")]
 			[InlineAutoData("\r\nfoo", "foo")]
 			[InlineAutoData("foo", "\tfoo")]
-			public async Task WhenStringsDifferOnlyInLeadingWhiteSpace_ShouldSucceed(
+			public async Task WhenStringsDifferOnlyInLeadingWhiteSpace_ShouldFail(
 				string subject, string unexpected)
 			{
 				async Task Act()
@@ -181,7 +181,7 @@ public sealed partial class ThatString
 			[InlineAutoData("foo\rbar", "foo\r\nbar")]
 			[InlineAutoData("foo\r\nbar", "foo\nbar")]
 			[InlineAutoData("foo\r\nbar", "foo\rbar")]
-			public async Task WhenStringsDifferOnlyInNewlineStyle_ShouldSucceed(
+			public async Task WhenStringsDifferOnlyInNewlineStyle_ShouldFail(
 				string subject, string unexpected)
 			{
 				async Task Act()

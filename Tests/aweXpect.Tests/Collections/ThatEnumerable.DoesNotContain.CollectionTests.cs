@@ -1425,7 +1425,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WithSameCollection_ShouldSucceed()
+			public async Task WithSameCollection_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
 				string[] expected = ["a", "b", "c",];
