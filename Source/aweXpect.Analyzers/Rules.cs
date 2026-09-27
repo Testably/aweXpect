@@ -22,6 +22,16 @@ internal static class Rules
 	public static readonly DiagnosticDescriptor AsyncVoidExpectationRule =
 		CreateDescriptor("aweXpect0005", UsageCategory, DiagnosticSeverity.Warning);
 
+	public static readonly DiagnosticDescriptor UnorderedCollectionRule =
+		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning);
+
+	/// <summary>
+	///     The variant of <see cref="UnorderedCollectionRule" /> for an expectation that is about the order itself, so
+	///     that <c>InAnyOrder()</c> cannot help.
+	/// </summary>
+	public static readonly DiagnosticDescriptor UnorderedCollectionNoMeaningRule =
+		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning, "NoMeaningMessageFormat");
+
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>
@@ -41,11 +51,11 @@ internal static class Rules
 	);
 
 	private static DiagnosticDescriptor CreateDescriptor(string diagnosticId, string category,
-		DiagnosticSeverity severity) => new(
+		DiagnosticSeverity severity, string messageFormatName = "MessageFormat") => new(
 		diagnosticId,
 		new LocalizableResourceString(diagnosticId + "Title",
 			Resources.ResourceManager, typeof(Resources)),
-		new LocalizableResourceString(diagnosticId + "MessageFormat", Resources.ResourceManager,
+		new LocalizableResourceString(diagnosticId + messageFormatName, Resources.ResourceManager,
 			typeof(Resources)),
 		category,
 		severity,

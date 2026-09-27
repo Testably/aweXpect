@@ -204,6 +204,15 @@ namespace aweXpect.Analyzers {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Append &quot;.InAnyOrder()&quot;.
+        /// </summary>
+        internal static string aweXpect0006CodeFixTitle {
+            get {
+                return ResourceManager.GetString("aweXpect0006CodeFixTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..
         /// </summary>
         internal static string IsNotNullSuppressionJustification {
