@@ -19,7 +19,7 @@ public static partial class ThatAsyncEnumerable
 	private const string DoesNotMatch =
 		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection.";
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsEqualToCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
@@ -42,7 +42,7 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		IsEqualToForStringsCore(
 			IThat<IAsyncEnumerable<string?>?> subject,
@@ -65,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
@@ -91,7 +91,7 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo",
+	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.",
 		NegatedSummary =
 			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.")]
@@ -115,7 +115,7 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo",
+	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.",
 		NegatedSummary =
 			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.")]

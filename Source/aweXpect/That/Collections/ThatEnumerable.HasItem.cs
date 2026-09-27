@@ -32,7 +32,7 @@ public static partial class ThatEnumerable
 	private const string DoesNotHaveTheItem =
 		"Verifies that the collection does not have the <paramref name=\"unexpected\" /> item…";
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
 	internal static HasItemWithConditionResult<IEnumerable<TItem>, TItem>
 		HasItemCore<TItem>(
@@ -53,7 +53,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
@@ -73,7 +73,7 @@ public static partial class ThatEnumerable
 			indexOptions);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemResult<IEnumerable<TItem>, TItem>
 		HasTheItemCore<TItem>(
@@ -101,7 +101,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>
@@ -130,7 +130,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static StringHasItemResult<IEnumerable<string?>>
 		HasTheItemForStringsCore(
@@ -157,7 +157,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
 	internal static HasItemWithConditionResult<IEnumerable, object?>
 		HasItemForEnumerableCore(
@@ -176,7 +176,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true, Priority = -1,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IEnumerable>
 		HasMatchingItemForEnumerableCore(
@@ -198,7 +198,7 @@ public static partial class ThatEnumerable
 			indexOptions);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectHasItemResult<IEnumerable, object?>
 		HasTheItemForEnumerableCore(
@@ -227,7 +227,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<TCollection>
 		HasMatchingItemForCollectionCore<TCollection, TItem>(
@@ -250,7 +250,7 @@ public static partial class ThatEnumerable
 			indexOptions);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
 	internal static HasItemWithConditionResult<TCollection, TItem>
 		HasItemForCollectionCore<TCollection, TItem>(
@@ -270,7 +270,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemResult<TCollection, TItem>
 		HasTheItemForCollectionCore<TCollection, TItem>(
@@ -294,7 +294,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
@@ -319,7 +319,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static StringHasItemResult<TCollection>
 		HasTheItemForCollectionStringsCore<TCollection>(

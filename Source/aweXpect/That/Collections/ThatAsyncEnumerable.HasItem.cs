@@ -31,7 +31,7 @@ public static partial class ThatAsyncEnumerable
 	private const string DoesNotHaveTheItem =
 		"Verifies that the collection does not have the <paramref name=\"unexpected\" /> item…";
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasAnItem, NegatedSummary = DoesNotHaveAnItem)]
 	internal static HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>
 		HasItemCore<TItem>(
@@ -52,7 +52,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IAsyncEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
@@ -72,7 +72,7 @@ public static partial class ThatAsyncEnumerable
 			indexOptions);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>
 		HasTheItemCore<TItem>(
@@ -94,7 +94,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>
@@ -117,7 +117,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
+	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static StringHasItemResult<IAsyncEnumerable<string?>>
 		HasTheItemForStringsCore(

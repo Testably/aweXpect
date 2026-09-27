@@ -1,57 +1,12 @@
-﻿using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
-using aweXpect.Results;
+﻿using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
-public static partial class ThatString
-{
-	/// <summary>
-	///     Verifies that the subject is <see langword="null" />, <see cref="string.Empty" /> or consists only of white-space
-	///     characters.
-	/// </summary>
-	public static AndOrResult<string?, IThat<string?>> IsNullOrWhiteSpace(
-		this IThat<string?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsNullOrWhiteSpaceConstraint(it, grammars)),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is neither <see langword="null" /> nor <see cref="string.Empty" /> and does not
-	///     consist only of white-space characters.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<string, IThat<string?>> IsNotNullOrWhiteSpace(
-		this IThat<string?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsNullOrWhiteSpaceConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsNullOrWhiteSpaceConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<string?>(it, grammars),
-			IValueConstraint<string?>
-	{
-		public ConstraintResult IsMetBy(string? actual)
-		{
-			Actual = actual;
-			Outcome = string.IsNullOrWhiteSpace(actual) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is null or whitespace", "are null or whitespace"));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not null or whitespace", "are not null or whitespace"));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-}
+[CreateExpectationOnNullable<string>("Is{Not}NullOrWhiteSpace", "string.IsNullOrWhiteSpace({value})",
+	ExpectationText = "is {not} null or whitespace",
+	Summary = "Verifies that the subject is <see langword=\"null\" />, <see cref=\"string.Empty\" /> or consists only of white-space characters.",
+	NegatedSummary = "Verifies that the subject is neither <see langword=\"null\" /> nor <see cref=\"string.Empty\" /> and does not consist only of white-space characters.",
+	FailOnNull = false,
+	NegatedFailsOnNull = true
+)]
+public static partial class ThatString;

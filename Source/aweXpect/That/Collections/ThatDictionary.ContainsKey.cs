@@ -9,7 +9,7 @@ namespace aweXpect;
 
 public static partial class ThatDictionary
 {
-	[CreateCollectionExpectation("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
+	[CreateExpectationFamily("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
 		GuaranteesNotNull = true, NegatedReturnType = NegatedKeyReturnType,
 		Summary = "Verifies that the dictionary contains the <paramref name=\"expected\" /> key.",
 		NegatedSummary = "Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> key.")]

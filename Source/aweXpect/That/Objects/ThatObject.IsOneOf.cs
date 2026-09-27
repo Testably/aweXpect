@@ -19,8 +19,8 @@ public static partial class ThatObject
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static ObjectEqualityResult<object?, IThat<object?>, object?> IsOneOfCore(
 		IThat<object?> subject,
@@ -39,8 +39,8 @@ public static partial class ThatObject
 			options);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static ObjectEqualityResult<T, IThat<T>, T> IsOneOfForReferenceCore<T>(
 		IThat<T> subject,

@@ -38,6 +38,9 @@ internal readonly record struct ExpectationToGenerate
 				case "NegativeExpectationText":
 					negativeExpectationText = namedArgument.Value.Value?.ToString();
 					break;
+				case "Summary":
+					Summary = namedArgument.Value.Value?.ToString();
+					break;
 				case "NegatedSummary":
 					NegatedSummary = namedArgument.Value.Value?.ToString();
 					break;
@@ -84,6 +87,7 @@ internal readonly record struct ExpectationToGenerate
 	public string OutcomeMethod { get; }
 	public string ExpectationText { get; }
 	public string NegatedExpectationText { get; }
+	public string? Summary { get; }
 	public string? NegatedSummary { get; }
 	public string? Remarks { get; }
 

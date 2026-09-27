@@ -24,9 +24,9 @@ public static partial class ThatAsyncEnumerable
 	private const string DoesNotStartWithSummary =
 		"Verifies that the collection does not start with the provided <paramref name=\"unexpected\" /> collection.";
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		StartsWithCore<TItem>(
@@ -50,10 +50,10 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -80,9 +80,9 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>

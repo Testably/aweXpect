@@ -18,7 +18,7 @@ public static partial class ThatDictionary
 	private const string DoesNotContainValueSummary =
 		"Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> value.";
 
-	[CreateCollectionExpectation("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
+	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
 		ContainsValueCore<TCollection, TKey, TValue>(
@@ -37,7 +37,7 @@ public static partial class ThatDictionary
 			options);
 	}
 
-	[CreateCollectionExpectation("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
+	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
 	internal static StringEqualityResult<TCollection, IThat<TCollection?>>
 		ContainsValueForStringsCore<TCollection, TKey>(

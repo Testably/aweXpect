@@ -120,7 +120,7 @@ public static partial class ThatNumber
 	private const string IsNaNSummary = "Verifies that the subject is not a number (<see cref=\"double.IsNaN(double)\">NaN</see>).";
 	private const string IsNotNaNSummary = "Verifies that the subject is a number (not <see cref=\"double.IsNaN(double)\">NaN</see>).";
 
-	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory),
+	[CreateExpectationFamily("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory),
 		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsNaNCore<TNumber>(
 		IThat<TNumber> subject,
@@ -131,7 +131,7 @@ public static partial class ThatNumber
 				new IsNaNConstraint<TNumber>(it, grammars, traits.IsNaN).InvertIf(negated)),
 			subject);
 
-	[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
 		Summary = IsNaNSummary, NegatedSummary = IsNotNaNSummary,
 		Remarks = "<see langword=\"null\" /> is not treated as NaN.",
 		NegatedRemarks = "<see langword=\"null\" /> is neither treated as NaN nor as not NaN, so it fails.")]

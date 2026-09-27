@@ -38,7 +38,7 @@ public static partial class ThatObject
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsNullableEqualToConstraint<T>(it, grammars, expected, options)),
+				=> new NullableIsEqualToConstraint<T>(it, grammars, expected, options)),
 			subject,
 			options);
 	}
@@ -88,7 +88,7 @@ public static partial class ThatObject
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsNullableEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
+				=> new NullableIsEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
 			subject,
 			options);
 	}
@@ -173,7 +173,7 @@ public static partial class ThatObject
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 
-	private sealed class IsNullableEqualToConstraint<T>(
+	private sealed class NullableIsEqualToConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
 		T? expected,

@@ -130,7 +130,7 @@ public static partial class ThatNumber
 	private const string FiniteRemarks = "Finite means neither infinity nor not a number (NaN).";
 	private const string NotFiniteRemarks = "Not finite means either infinity or not a number (NaN).";
 
-	[CreateCollectionExpectation("Is{Not}Finite", Factory = typeof(FloatingPointNumberFactory),
+	[CreateExpectationFamily("Is{Not}Finite", Factory = typeof(FloatingPointNumberFactory),
 		Summary = IsFiniteSummary, NegatedSummary = IsNotFiniteSummary,
 		Remarks = FiniteRemarks, NegatedRemarks = NotFiniteRemarks)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsFiniteCore<TNumber>(
@@ -142,26 +142,17 @@ public static partial class ThatNumber
 				new IsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).InvertIf(negated)),
 			subject);
 
-	[CreateCollectionExpectation("IsFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
-		Summary = IsFiniteSummary,
-		Remarks = "Finite means neither infinity nor not a number (NaN) nor <see langword=\"null\" />.")]
+	[CreateExpectationFamily("Is{Not}Finite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
+		Summary = IsFiniteSummary, NegatedSummary = IsNotFiniteSummary,
+		Remarks = "Finite means neither infinity nor not a number (NaN) nor <see langword=\"null\" />.",
+		NegatedRemarks = "Not finite means either infinity or not a number (NaN). A <see langword=\"null\" /> subject fails.")]
 	internal static AndOrResult<TNumber, IThat<TNumber?>> IsFiniteForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
-		FloatingPointTraits<TNumber> traits)
+		FloatingPointTraits<TNumber> traits,
+		bool negated)
 		where TNumber : struct
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite)),
-			subject);
-
-	[CreateCollectionExpectation("IsNotFinite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
-		Summary = IsNotFiniteSummary,
-		Remarks = "Not finite means either infinity or not a number (NaN). A <see langword=\"null\" /> subject fails.")]
-	internal static AndOrResult<TNumber, IThat<TNumber?>> IsNotFiniteForNullableCore<TNumber>(
-		IThat<TNumber?> subject,
-		FloatingPointTraits<TNumber> traits)
-		where TNumber : struct
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).Invert()),
+				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).InvertIf(negated)),
 			subject);
 
 	private sealed class IsFiniteConstraint<TNumber>(

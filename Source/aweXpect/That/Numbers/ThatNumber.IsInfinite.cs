@@ -120,7 +120,7 @@ public static partial class ThatNumber
 	private const string IsInfiniteSummary = "Verifies that the subject is infinite.";
 	private const string IsNotInfiniteSummary = "Verifies that the subject is not infinite.";
 
-	[CreateCollectionExpectation("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
+	[CreateExpectationFamily("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
 		Summary = IsInfiniteSummary, NegatedSummary = IsNotInfiniteSummary)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsInfiniteCore<TNumber>(
 		IThat<TNumber> subject,
@@ -131,7 +131,7 @@ public static partial class ThatNumber
 				new IsInfiniteConstraint<TNumber>(it, grammars, traits.IsInfinity).InvertIf(negated)),
 			subject);
 
-	[CreateCollectionExpectation("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
+	[CreateExpectationFamily("Is{Not}Infinite", Factory = typeof(FloatingPointNumberFactory),
 		GuaranteesNotNull = true, Summary = IsInfiniteSummary, NegatedSummary = IsNotInfiniteSummary,
 		Remarks = "<see langword=\"null\" /> is not treated as infinite.",
 		NegatedRemarks = "<see langword=\"null\" /> is neither treated as infinite nor as not infinite, so it fails.")]

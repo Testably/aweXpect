@@ -47,7 +47,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("Is{Not}EqualTo", GuaranteesNotNull = true,
+				[CreateExpectationFamily("Is{Not}EqualTo", GuaranteesNotNull = true,
 					Summary = "Matches.", NegatedSummary = "Does not match.")]
 				internal static IThat<TItem> IsEqualToCore<TItem>(
 					IThat<IEnumerable<TItem>?> subject,
@@ -84,7 +84,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
 				internal static IThat<TItem?> IsEqualToCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
@@ -121,8 +121,8 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatNumber
 			{
-				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
-				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Params = true, Summary = "Is one of.")]
+				[CreateExpectationFamily("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
+				[CreateExpectationFamily("IsOneOf", Factory = typeof(Factory), Params = true, Summary = "Is one of.")]
 				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
 					IThat<TNumber?> subject,
 					IEnumerable<TNumber?> expected,
@@ -161,7 +161,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatNumber
 			{
-				[CreateCollectionExpectation("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
+				[CreateExpectationFamily("IsOneOf", Factory = typeof(Factory), Summary = "Is one of.")]
 				internal static IThat<TNumber?> IsOneOfCore<TNumber>(
 					IThat<TNumber?> subject,
 					IEnumerable<TNumber?> expected,
@@ -196,7 +196,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("StartsWith", Factory = typeof(Factory), Params = true,
+				[CreateExpectationFamily("StartsWith", Factory = typeof(Factory), Params = true,
 					Summary = "Starts with.")]
 				internal static IThat<TItem?> StartsWithCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
@@ -230,7 +230,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatNumber
 			{
-				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Is equal to.")]
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Is equal to.")]
 				internal static IThat<TNumber?> IsEqualToCore<TValue, TNumber>(
 					IThat<TNumber?> subject,
 					TNumber? expected,
@@ -263,14 +263,14 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatNumber
 			{
-				[CreateCollectionExpectation("IsPositive", Factory = typeof(Factory), Summary = "Is positive.")]
+				[CreateExpectationFamily("IsPositive", Factory = typeof(Factory), Summary = "Is positive.")]
 				internal static IThat<TNumber> IsPositiveCore<TNumber>(
 					IThat<TNumber> subject,
 					Sign<TNumber> sign)
 					where TNumber : struct
 					=> null!;
 
-				[CreateCollectionExpectation("Is{Not}NaN", Factory = typeof(Factory),
+				[CreateExpectationFamily("Is{Not}NaN", Factory = typeof(Factory),
 					Summary = "Is NaN.", NegatedSummary = "Is not NaN.")]
 				internal static IThat<TNumber> IsNaNCore<TNumber>(
 					IThat<TNumber> subject,
@@ -305,7 +305,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
 				internal static IThat<TItem?> IsEqualToCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
@@ -331,7 +331,7 @@ public sealed class CollectionExpectationGeneratorTests
 				Priority = -1, Remarks = "Shared declaring type.")]
 			public static partial class ThatDictionary
 			{
-				[CreateCollectionExpectation("ContainsKey", PerSubject = true, Summary = "Contains the key.")]
+				[CreateExpectationFamily("ContainsKey", PerSubject = true, Summary = "Contains the key.")]
 				internal static IThat<TCollection?> ContainsKeyCore<TCollection, TKey, TValue>(
 					IThat<TCollection?> subject,
 					TKey expected)
@@ -362,8 +362,8 @@ public sealed class CollectionExpectationGeneratorTests
 			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("IsEqualTo", PerSubject = true, Summary = "Matches.")]
-				[CreateCollectionExpectation("IsEqualTo", PerSubject = true, ExpectedType = "{subject}", Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, ExpectedType = "{subject}", Summary = "Matches.")]
 				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
 					IThat<TCollection?> subject,
 					IEnumerable<TItem> expected)
@@ -392,7 +392,7 @@ public sealed class CollectionExpectationGeneratorTests
 			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
 				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
 					IThat<TCollection?> subject,
 					IEnumerable<Func<TItem, bool>> expected)
@@ -421,7 +421,7 @@ public sealed class CollectionExpectationGeneratorTests
 			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
 			public static partial class ThatDictionary
 			{
-				[CreateCollectionExpectation("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
+				[CreateExpectationFamily("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
 				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey>(
 					IThat<TCollection?> subject,
 					string? expected)
@@ -453,7 +453,7 @@ public sealed class CollectionExpectationGeneratorTests
 			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
 			public static partial class ThatDictionary
 			{
-				[CreateCollectionExpectation("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
+				[CreateExpectationFamily("ContainsKey", NegatedName = "DoesNotContainKey", PerSubject = true,
 					NegatedReturnType = "Lib.Result<aweXpect.Core.IThat<TCollection?>>",
 					Summary = "Contains the key.", NegatedSummary = "Does not contain the key.")]
 				internal static KeyResult<IThat<TCollection?>> ContainsKeyCore<TCollection, TKey, TValue>(
@@ -485,8 +485,8 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("StartsWith", Summary = "Starts with.")]
-				[CreateCollectionExpectation("StartsWith", Params = true, ExpectedType = "string", Summary = "Starts with.")]
+				[CreateExpectationFamily("StartsWith", Summary = "Starts with.")]
+				[CreateExpectationFamily("StartsWith", Params = true, ExpectedType = "string", Summary = "Starts with.")]
 				internal static IThat<string?> StartsWithCore(
 					IThat<IEnumerable<string?>?> subject,
 					IEnumerable<string?> expected,
@@ -512,7 +512,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 		                      public static partial class ThatList
 		                      {
-		                      	[CreateCollectionExpectation("HasItem", Summary = "Has the item.")]
+		                      	[CreateExpectationFamily("HasItem", Summary = "Has the item.")]
 		                      	internal static IThat<TItem> HasItemCore<TItem>(IThat<IEnumerable<TItem>?> subject, TItem expected)
 		                      		=> null!;
 		                      }
@@ -547,7 +547,7 @@ public sealed class CollectionExpectationGeneratorTests
 			[CollectionSubjects("Lib.Keyed<TItem>")]
 			public static partial class ThatKeyed
 			{
-				[CreateCollectionExpectation("Contains", PerSubject = true, Summary = "Contains.")]
+				[CreateExpectationFamily("Contains", PerSubject = true, Summary = "Contains.")]
 				internal static IThat<TCollection?> ContainsCore<TCollection, TItem>(
 					IThat<TCollection?> subject,
 					TItem expected)
@@ -571,7 +571,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("Contains", Summary = "Contains.", NegatedSummary = "Does not contain.")]
+				[CreateExpectationFamily("Contains", Summary = "Contains.", NegatedSummary = "Does not contain.")]
 				internal static IThat<TItem> ContainsCore<TItem>(
 					IThat<IEnumerable<TItem>?> subject,
 					TItem expected,
@@ -595,7 +595,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatObject
 			{
-				[CreateCollectionExpectation("IsOneOf", Summary = "Is one of.")]
+				[CreateExpectationFamily("IsOneOf", Summary = "Is one of.")]
 				internal static IThat<T> IsOneOfCore<T>(
 					IThat<T> subject,
 					IEnumerable<T?> expected,
@@ -619,8 +619,8 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("StartsWith", Summary = "Starts with.")]
-				[CreateCollectionExpectation("StartsWith", Params = true, Summary = "Starts with.")]
+				[CreateExpectationFamily("StartsWith", Summary = "Starts with.")]
+				[CreateExpectationFamily("StartsWith", Params = true, Summary = "Starts with.")]
 				internal static IThat<TItem> StartsWithCore<TItem>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected)
@@ -648,7 +648,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
 				internal static IThat<TItem> IsEqualToCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
@@ -672,7 +672,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("HasItem", PerSubject = true, Summary = "Has the item.")]
+				[CreateExpectationFamily("HasItem", PerSubject = true, Summary = "Has the item.")]
 				internal static IThat<TCollection?> HasItemCore<TCollection, TItem>(
 					IThat<TCollection?> subject,
 					TItem expected)
@@ -695,7 +695,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static partial class ThatList
 			{
-				[CreateCollectionExpectation("Is{Not}EqualTo", Summary = "Matches.")]
+				[CreateExpectationFamily("Is{Not}EqualTo", Summary = "Matches.")]
 				internal static IThat<TItem> IsEqualToCore<TItem>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,

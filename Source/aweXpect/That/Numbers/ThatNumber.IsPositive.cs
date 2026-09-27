@@ -144,7 +144,7 @@ public static partial class ThatNumber
 		"Neither zero nor <c>NaN</c> is positive or negative, so both fail <c>IsPositive</c> and <c>IsNegative</c>\n" +
 		"and satisfy <c>IsNotPositive</c> and <c>IsNotNegative</c>.";
 
-	[CreateCollectionExpectation("Is{Not}Positive", Factory = typeof(SignedNumberFactory),
+	[CreateExpectationFamily("Is{Not}Positive", Factory = typeof(SignedNumberFactory),
 		Summary = IsPositiveSummary, NegatedSummary = IsNotPositiveSummary, Remarks = IsPositiveRemarks)]
 	internal static AndOrResult<TNumber, IThat<TNumber>> IsPositiveCore<TNumber>(
 		IThat<TNumber> subject,
@@ -155,7 +155,7 @@ public static partial class ThatNumber
 				new IsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive).InvertIf(negated)),
 			subject);
 
-	[CreateCollectionExpectation("Is{Not}Positive", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}Positive", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
 		Summary = IsPositiveSummary, NegatedSummary = IsNotPositiveSummary, Remarks = IsPositiveRemarks)]
 	internal static AndOrResult<TNumber, IThat<TNumber?>> IsPositiveForNullableCore<TNumber>(
 		IThat<TNumber?> subject,

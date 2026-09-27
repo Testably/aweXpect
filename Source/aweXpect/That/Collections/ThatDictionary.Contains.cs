@@ -133,7 +133,7 @@ public static partial class ThatDictionary
 			TValue unexpectedValue)
 		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsEntrySummary, NegatedSummary = DoesNotContainEntrySummary)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
 		ContainsCore<TCollection, TKey, TValue>(

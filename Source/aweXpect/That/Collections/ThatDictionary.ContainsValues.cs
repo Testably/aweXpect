@@ -24,10 +24,10 @@ public static partial class ThatDictionary
 		"<c>ContainsValues</c> with <c>DoesNotComplyWith</c>, which only fails when the dictionary\n" +
 		"contains all of them.";
 
-	[CreateCollectionExpectation("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValuesSummary, NegatedSummary = DoesNotContainValuesSummary,
 		NegatedRemarks = DoesNotContainValuesRemarks)]
-	[CreateCollectionExpectation("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Params = true, Summary = ContainsValuesSummary,
 		NegatedSummary = DoesNotContainValuesSummary, NegatedRemarks = DoesNotContainValuesRemarks)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
@@ -50,10 +50,10 @@ public static partial class ThatDictionary
 			options);
 	}
 
-	[CreateCollectionExpectation("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValuesSummary, NegatedSummary = DoesNotContainValuesSummary,
 		NegatedRemarks = DoesNotContainValuesRemarks)]
-	[CreateCollectionExpectation("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Params = true, Summary = ContainsValuesSummary,
 		NegatedSummary = DoesNotContainValuesSummary, NegatedRemarks = DoesNotContainValuesRemarks)]
 	internal static StringEqualityResult<TCollection, IThat<TCollection?>>

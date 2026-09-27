@@ -20,11 +20,11 @@ public static partial class ThatDictionary
 		"It fails when the dictionary contains any of the keys. This is stricter than negating <c>ContainsKeys</c>\n" +
 		"with <c>DoesNotComplyWith</c>, which only fails when the dictionary contains all of them.";
 
-	[CreateCollectionExpectation("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
+	[CreateExpectationFamily("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
 		GuaranteesNotNull = true, NegatedReturnType = NegatedKeyReturnType,
 		Summary = ContainsKeysSummary, NegatedSummary = DoesNotContainKeysSummary,
 		NegatedRemarks = DoesNotContainKeysRemarks)]
-	[CreateCollectionExpectation("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
+	[CreateExpectationFamily("ContainsKeys", NegatedName = "DoesNotContainKeys", PerSubject = true,
 		GuaranteesNotNull = true, Params = true, NegatedReturnType = NegatedKeyReturnType,
 		Summary = ContainsKeysSummary, NegatedSummary = DoesNotContainKeysSummary,
 		NegatedRemarks = DoesNotContainKeysRemarks)]
