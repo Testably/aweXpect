@@ -41,7 +41,7 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the value overloads, so that an empty collection expression binds to them\n" +
 		"instead of to this one.";
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
+	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks = SetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToCore<TItem>(
@@ -66,7 +66,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
+	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks = SetComparerRemarks)]
 	internal static StringCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsEqualToForStringsCore(
@@ -91,7 +91,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1,
+	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -1,
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsEqualToForEnumerableCore<TItem>(
@@ -117,7 +117,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -1,
+	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -1,
 		Summary =
 			"Verifies that the collection matches a collection of only the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =
@@ -134,7 +134,7 @@ public static partial class ThatEnumerable
 		=> IsEqualToForEnumerableCore<string?>(subject, expected is null ? null! : [expected,],
 			expectedExpression, negated);
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Priority = -2,
+	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -2,
 		Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks =
 			"Without this overload an untyped <see cref=\"System.Collections.IEnumerable\" /> would bind to the\n" +
@@ -165,7 +165,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SetComparerRemarks)]
 	internal static ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>
@@ -192,7 +192,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo",
+	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = MatchesPredicates, NegatedSummary = DoesNotMatchPredicates)]
 	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromPredicatesCore<TItem>(
@@ -215,7 +215,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo",
+	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = MatchesExpectations, NegatedSummary = DoesNotMatchExpectations)]
 	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromExpectationsCore<TItem>(
@@ -238,9 +238,9 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true,
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SameCollectionTypeRemarks)]
 	internal static ObjectCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
 		IsEqualToForCollectionCore<TCollection, TItem>(
@@ -266,9 +266,9 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true,
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SameCollectionTypeRemarks)]
 	internal static StringCollectionMatchResult<TCollection, IThat<TCollection>>
 		IsEqualToForCollectionStringsCore<TCollection>(
@@ -294,7 +294,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
@@ -321,7 +321,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Priority = -1,
 		Summary = MatchesPredicates, NegatedSummary = DoesNotMatchPredicates,
 		Remarks = BelowCollectionPriorityRemarks)]
 	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>
@@ -346,7 +346,7 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Priority = -1,
 		Summary = MatchesExpectations, NegatedSummary = DoesNotMatchExpectations,
 		Remarks = BelowCollectionPriorityRemarks)]
 	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>

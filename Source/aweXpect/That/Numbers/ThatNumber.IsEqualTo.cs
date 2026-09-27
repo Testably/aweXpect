@@ -171,7 +171,7 @@ public static partial class ThatNumber
 	private const string IsNotEqualToSummary =
 		"Verifies that the subject is not equal to the <paramref name=\"unexpected\" /> value.";
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(NumberToleranceFactory),
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsEqualToCore<TNumber>(
 		IThat<TNumber> subject,
@@ -184,7 +184,7 @@ public static partial class ThatNumber
 			subject,
 			options);
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(NumberToleranceFactory),
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsEqualToForNullableCore<TNumber>(
 		IThat<TNumber?> subject,

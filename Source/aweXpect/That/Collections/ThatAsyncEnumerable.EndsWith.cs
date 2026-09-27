@@ -24,9 +24,9 @@ public static partial class ThatAsyncEnumerable
 	private const string DoesNotEndWithSummary =
 		"Verifies that the collection does not end with the provided <paramref name=\"unexpected\" /> collection.";
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		EndsWithCore<TItem>(
@@ -50,10 +50,10 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -80,9 +80,9 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>

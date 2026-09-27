@@ -20,9 +20,9 @@ public static partial class ThatVersion
 	private const string IsOneOfRemarks =
 		"Uses the equality of <see cref=\"System.Version\" />, where an unset component is not treated as 0, so <c>1.2</c> is not equal to <c>1.2.0</c>.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary,
 		Remarks = IsOneOfRemarks)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary, Remarks = IsOneOfRemarks)]
 	internal static AndOrResult<Version?, IThat<Version?>> IsOneOfCore(
 		IThat<Version?> subject,

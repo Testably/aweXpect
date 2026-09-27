@@ -18,8 +18,8 @@ public static partial class ThatNullableTimeSpan
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOfCore(
 		IThat<TimeSpan?> subject,
@@ -38,7 +38,7 @@ public static partial class ThatNullableTimeSpan
 			tolerance);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOfForValuesCore(
 		IThat<TimeSpan?> subject,
 		IEnumerable<TimeSpan> expected,

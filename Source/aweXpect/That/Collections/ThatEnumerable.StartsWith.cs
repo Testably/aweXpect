@@ -36,9 +36,9 @@ public static partial class ThatEnumerable
 		"Without this overload a collection argument without an item type would bind to the <c>params</c> overload\n" +
 		"and be expected as a single item. The priority only takes effect with C# 13 or later.";
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
 		Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -64,9 +64,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
@@ -93,10 +93,10 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
@@ -123,10 +123,10 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
 		Remarks = UntypedSetComparerRemarks)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Params = true, Priority = -2, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
 		Remarks = LowerPriorityRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
@@ -153,7 +153,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
 		Remarks = UntypedCollectionRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
@@ -164,7 +164,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> StartsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
 		Summary = "Verifies that the collection starts with the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =
@@ -193,9 +193,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>
 		StartsWithForCollectionCore<TCollection, TItem>(
@@ -221,9 +221,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
 		ExpectedType = "string",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
@@ -251,10 +251,10 @@ public static partial class ThatEnumerable
 	}
 
 
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
-	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>

@@ -194,7 +194,7 @@ public static partial class ThatNumber
 		"<see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> one fails this\n" +
 		"expectation as well as <c>IsLessThan</c>.";
 
-	[CreateCollectionExpectation("Is{Not}LessThan", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}LessThan", Factory = typeof(NumberToleranceFactory),
 		Summary = IsLessThanSummary, NegatedSummary = IsNotLessThanSummary,
 		Remarks = IsLessThanRemarks, NegatedRemarks = IsNotLessThanRemarks)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsLessThanCore<TNumber>(
@@ -212,7 +212,7 @@ public static partial class ThatNumber
 			options);
 	}
 
-	[CreateCollectionExpectation("Is{Not}LessThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}LessThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
 		Summary = IsLessThanSummary, NegatedSummary = IsNotLessThanSummary,
 		Remarks = IsLessThanRemarks, NegatedRemarks = IsNotLessThanRemarks)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsLessThanForNullableCore<TNumber>(

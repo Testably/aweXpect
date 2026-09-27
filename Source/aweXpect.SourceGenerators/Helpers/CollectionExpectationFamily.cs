@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace aweXpect.SourceGenerators.Helpers;
 
 /// <summary>
-///     One <c>[CreateCollectionExpectation]</c> declaration, resolved into the rendered overloads.
+///     One <c>[CreateExpectationFamily]</c> declaration, resolved into the rendered overloads.
 /// </summary>
 /// <remarks>
 ///     The helper's own signature is the declaration: its return type, its subject and expected parameters and its

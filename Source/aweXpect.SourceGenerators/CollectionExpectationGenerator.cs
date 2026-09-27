@@ -17,12 +17,12 @@ namespace aweXpect.SourceGenerators;
 [Generator]
 public class CollectionExpectationGenerator : IIncrementalGenerator
 {
-	private const string AttributeName = "aweXpect.SourceGenerators.CreateCollectionExpectationAttribute";
+	private const string AttributeName = "aweXpect.SourceGenerators.CreateExpectationFamilyAttribute";
 
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"CreateCollectionExpectationAttribute.g.cs",
+			"CreateExpectationFamilyAttribute.g.cs",
 			SourceText.From(CollectionExpectationSources.Attribute, Encoding.UTF8)));
 
 		IncrementalValuesProvider<CollectionExpectationFamily> families = context.SyntaxProvider

@@ -29,7 +29,7 @@ public static partial class ThatNumber
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options)),
+					new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options)),
 				subject,
 				options);
 		});
@@ -51,7 +51,7 @@ public static partial class ThatNumber
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new NullableIsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options)),
+					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options)),
 				subject,
 				options);
 		});
@@ -72,7 +72,7 @@ public static partial class ThatNumber
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
+					new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
 				subject,
 				options);
 		});
@@ -94,12 +94,12 @@ public static partial class ThatNumber
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new NullableIsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
+					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
 				subject,
 				options);
 		});
 
-	private sealed class IsInRangeConstraint<TNumber> : OrderingConstraint<TNumber>,
+	private sealed class IsBetweenConstraint<TNumber> : OrderingConstraint<TNumber>,
 		IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -108,7 +108,7 @@ public static partial class ThatNumber
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
 
-		public IsInRangeConstraint(string it,
+		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
@@ -169,7 +169,7 @@ public static partial class ThatNumber
 		}
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
+	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -177,7 +177,7 @@ public static partial class ThatNumber
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
 
-		public NullableIsInRangeConstraint(string it,
+		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
@@ -248,7 +248,7 @@ public static partial class ThatNumber
 		"an <see cref=\"System.ArgumentOutOfRangeException\" />, while a <see langword=\"null\" /> bound fails the\n" +
 		"expectation as well as its negation. A <c>NaN</c> subject is never between them.";
 
-	[CreateCollectionExpectation("Is{Not}Between", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}Between", Factory = typeof(NumberToleranceFactory),
 		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
 	internal static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsBetweenCore<TNumber>(
 		IThat<TNumber> subject,
@@ -258,11 +258,11 @@ public static partial class ThatNumber
 		where TNumber : struct, IComparable<TNumber>
 		=> new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
+				new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
 			subject,
 			options));
 
-	[CreateCollectionExpectation("Is{Not}Between", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}Between", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
 		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
 	internal static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?>
 		IsBetweenForNullableCore<TNumber>(
@@ -273,11 +273,11 @@ public static partial class ThatNumber
 		where TNumber : struct, IComparable<TNumber>
 		=> new(maximum => new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
+				new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
 			subject,
 			options));
 
-	private sealed class IsInRangeConstraint<TNumber> : OrderingConstraint<TNumber>,
+	private sealed class IsBetweenConstraint<TNumber> : OrderingConstraint<TNumber>,
 		IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -286,7 +286,7 @@ public static partial class ThatNumber
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
 
-		public IsInRangeConstraint(string it,
+		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
@@ -348,7 +348,7 @@ public static partial class ThatNumber
 		}
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : OrderingConstraint<TNumber?>,
+	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -356,7 +356,7 @@ public static partial class ThatNumber
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
 
-		public NullableIsInRangeConstraint(string it,
+		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,

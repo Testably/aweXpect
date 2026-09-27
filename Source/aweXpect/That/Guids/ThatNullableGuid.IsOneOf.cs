@@ -17,8 +17,8 @@ public static partial class ThatNullableGuid
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static AndOrResult<Guid?, IThat<Guid?>> IsOneOfCore(
 		IThat<Guid?> subject,
@@ -34,7 +34,7 @@ public static partial class ThatNullableGuid
 			subject);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static AndOrResult<Guid?, IThat<Guid?>> IsOneOfForValuesCore(
 		IThat<Guid?> subject,
 		IEnumerable<Guid> expected,

@@ -3,7 +3,7 @@
 namespace aweXpect.SourceGenerators.Helpers;
 
 /// <summary>
-///     The diagnostics of <c>[CreateCollectionExpectation]</c> declarations that would otherwise fail silently.
+///     The diagnostics of <c>[CreateExpectationFamily]</c> declarations that would otherwise fail silently.
 /// </summary>
 internal static class CollectionExpectationDiagnostics
 {

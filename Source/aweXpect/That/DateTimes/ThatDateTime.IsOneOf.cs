@@ -19,8 +19,8 @@ public static partial class ThatDateTime
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static TimeToleranceResult<DateTime, IThat<DateTime>> IsOneOfCore(
 		IThat<DateTime> subject,
@@ -39,7 +39,7 @@ public static partial class ThatDateTime
 			tolerance);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
+	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static TimeToleranceResult<DateTime, IThat<DateTime>> IsOneOfForValuesCore(
 		IThat<DateTime> subject,
 		IEnumerable<DateTime> expected,

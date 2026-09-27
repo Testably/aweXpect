@@ -42,7 +42,7 @@ public static partial class ThatEnumerable
 	private const string NotContainedInExpectations =
 		"Verifies that the collection is not contained in the provided <paramref name=\"unexpected\" /> collection of expectations.";
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + SetComparerRemarks)]
@@ -72,7 +72,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + SetComparerRemarks)]
@@ -102,7 +102,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
@@ -135,7 +135,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + UntypedSetComparerRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + UntypedSetComparerRemarks)]
@@ -166,7 +166,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + UntypedSetComparerRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + UntypedSetComparerRemarks)]
@@ -179,7 +179,7 @@ public static partial class ThatEnumerable
 		=> IsContainedInForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression,
 			negated);
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary =
 			"Verifies that the collection is contained in a collection of only the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =
@@ -195,7 +195,7 @@ public static partial class ThatEnumerable
 		=> IsContainedInForEnumerableCore<string?>(subject, expected is null ? null! : [expected,],
 			expectedExpression, negated);
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedInPredicates, NegatedSummary = NotContainedInPredicates,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -221,7 +221,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Summary = ContainedInExpectations, NegatedSummary = NotContainedInExpectations,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -247,7 +247,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
@@ -276,7 +276,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static StringProperCollectionMatchResult<TCollection, IThat<TCollection>>
@@ -305,7 +305,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
@@ -335,7 +335,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
 		Summary = ContainedInPredicates, NegatedSummary = NotContainedInPredicates,
 		Remarks = ContainedInRemarks + "\n" + BelowCollectionPriorityRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + BelowCollectionPriorityRemarks)]
@@ -363,7 +363,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
 	}
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
 		Summary = ContainedInExpectations, NegatedSummary = NotContainedInExpectations,
 		Remarks = ContainedInRemarks + "\n" + BelowCollectionPriorityRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + BelowCollectionPriorityRemarks)]

@@ -428,9 +428,9 @@ public static partial class ThatNumber
 	private const string IsNotOneOfSummary =
 		"Verifies that the subject is not one of the <paramref name=\"unexpected\" /> values.";
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory), Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory), Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOfWithNullableValuesCore<TNumber>(
 		IThat<TNumber> subject,
@@ -451,7 +451,7 @@ public static partial class ThatNumber
 			options);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOfCore<TNumber>(
 		IThat<TNumber> subject,
@@ -472,9 +472,9 @@ public static partial class ThatNumber
 			options);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory), Params = true,
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory), Params = true,
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>>
 		IsOneOfForNullableWithNullableValuesCore<TNumber>(
@@ -496,7 +496,7 @@ public static partial class ThatNumber
 			options);
 	}
 
-	[CreateCollectionExpectation("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
+	[CreateExpectationFamily("Is{Not}OneOf", Factory = typeof(NumberToleranceFactory),
 		Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsOneOfForNullableCore<TNumber>(
 		IThat<TNumber?> subject,

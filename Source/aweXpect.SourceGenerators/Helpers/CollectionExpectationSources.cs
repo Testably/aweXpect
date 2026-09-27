@@ -13,7 +13,7 @@ internal static class CollectionExpectationSources
 
 		#nullable enable
 		/// <summary>
-		/// Create the overloads of a collection expectation from the annotated helper, which holds the body.
+		/// Create the overloads of an expectation from the annotated helper, which holds the body.
 		/// </summary>
 		/// <remarks>
 		/// The helper's signature is the declaration: its return type, its subject and expected parameters and its
@@ -23,10 +23,10 @@ internal static class CollectionExpectationSources
 		[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
 		// The generator reads the attributes from the source, so the never-defined symbol keeps them out of the assembly.
 		[System.Diagnostics.Conditional("AWEXPECT_SOURCE_GENERATOR")]
-		internal class CreateCollectionExpectationAttribute : System.Attribute
+		internal class CreateExpectationFamilyAttribute : System.Attribute
 		{
 			/// <param name="name">The expectation name, where <c>{Not}</c> marks the negated variant.</param>
-			public CreateCollectionExpectationAttribute(string name)
+			public CreateExpectationFamilyAttribute(string name)
 			{
 				Name = name;
 			}

@@ -12,7 +12,7 @@ public static partial class ThatAsyncEnumerable
 {
 	private const string ElementsAreEqualTo = "…are equal to the <paramref name=\"expected\" /> value.";
 
-	[CreateCollectionExpectation("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo)]
 	internal static ToleranceEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
@@ -36,7 +36,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
 	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		AreEqualToCore<TItem>(
 			Elements<TItem> elements,
@@ -58,7 +58,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
 	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		AreEqualToForStringsCore(
 			Elements elements,

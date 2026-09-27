@@ -19,7 +19,7 @@ public static partial class ThatEnumerable
 	private const string InAscendingOrder = "Verifies that the collection is in ascending order.";
 	private const string NotInAscendingOrder = "Verifies that the collection is not in ascending order.";
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInAscendingOrderCore<TItem>(
@@ -27,7 +27,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> IsInOrder(subject, x => x, aweXpect.SortOrder.Ascending, "", negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInAscendingOrderByMemberCore<TItem, TMember>(
@@ -38,7 +38,7 @@ public static partial class ThatEnumerable
 		=> IsInOrder(subject, memberAccessor, aweXpect.SortOrder.Ascending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true, Priority = -1,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
 		IsInAscendingOrderForEnumerableCore(
@@ -46,7 +46,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> IsInOrderForEnumerable(subject, x => x, aweXpect.SortOrder.Ascending, "", negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
 		IsInAscendingOrderForEnumerableByMemberCore<TMember>(
@@ -57,7 +57,7 @@ public static partial class ThatEnumerable
 		=> IsInOrderForEnumerable(subject, memberAccessor, aweXpect.SortOrder.Ascending,
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TItem, TCollection, IThat<TCollection>>
 		IsInAscendingOrderForCollectionCore<TCollection, TItem>(
@@ -67,7 +67,7 @@ public static partial class ThatEnumerable
 		=> IsInOrderForCollection<TCollection, TItem, TItem>(subject, x => x, aweXpect.SortOrder.Ascending, "",
 			negated);
 
-	[CreateCollectionExpectation("Is{Not}InAscendingOrder", PerSubject = true,
+	[CreateExpectationFamily("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
 		IsInAscendingOrderForCollectionByMemberCore<TCollection, TItem, TMember>(

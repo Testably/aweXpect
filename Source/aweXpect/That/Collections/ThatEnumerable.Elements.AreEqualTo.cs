@@ -12,7 +12,7 @@ public static partial class ThatEnumerable
 {
 	private const string ElementsAreEqualTo = "…are equal to the <paramref name=\"expected\" /> value.";
 
-	[CreateCollectionExpectation("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
 	internal static ToleranceEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
@@ -40,7 +40,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
 		AreEqualToCore<TItem>(
 			Elements<TItem> elements,
@@ -67,7 +67,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Priority = -1, Summary = ElementsAreEqualTo,
+	[CreateExpectationFamily("AreEqualTo", Priority = -1, Summary = ElementsAreEqualTo,
 		Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
 		AreEqualToForEnumerableCore(
@@ -95,7 +95,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
 	internal static ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>
 		AreEqualToForStructCore<TEnumerable, TItem>(
 			ElementsForStructEnumerable<TEnumerable, TItem> elements,
@@ -118,7 +118,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo)]
 	internal static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>
 		AreEqualToWithToleranceForStructCore<TEnumerable, TItem, TTolerance>(
@@ -142,7 +142,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
 	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		AreEqualToForStringsCore(
 			Elements elements,
@@ -169,7 +169,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("AreEqualTo", Summary = ElementsAreEqualTo)]
+	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
 	internal static StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>
 		AreEqualToForStructStringsCore<TEnumerable>(
 			ElementsForStructEnumerable<TEnumerable> elements,

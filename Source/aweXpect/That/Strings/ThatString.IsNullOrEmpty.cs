@@ -1,55 +1,12 @@
-﻿using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
-using aweXpect.Results;
+﻿using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
-public static partial class ThatString
-{
-	/// <summary>
-	///     Verifies that the subject is <see langword="null" /> or <see cref="string.Empty" />.
-	/// </summary>
-	public static AndOrResult<string?, IThat<string?>> IsNullOrEmpty(
-		this IThat<string?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsNullOrEmptyConstraint(it, grammars)),
-			subject);
-
-	/// <summary>
-	///     Verifies that the subject is neither <see langword="null" /> nor <see cref="string.Empty" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<string, IThat<string?>> IsNotNullOrEmpty(
-		this IThat<string?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsNullOrEmptyConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsNullOrEmptyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<string?>(it, grammars),
-			IValueConstraint<string?>
-	{
-		public ConstraintResult IsMetBy(string? actual)
-		{
-			Actual = actual;
-			Outcome = string.IsNullOrEmpty(actual) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is null or empty", "are null or empty"));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not null or empty", "are not null or empty"));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-	}
-}
+[CreateExpectationOnNullable<string>("Is{Not}NullOrEmpty", "string.IsNullOrEmpty({value})",
+	ExpectationText = "is {not} null or empty",
+	Summary = "Verifies that the subject is <see langword=\"null\" /> or <see cref=\"string.Empty\" />.",
+	NegatedSummary = "Verifies that the subject is neither <see langword=\"null\" /> nor <see cref=\"string.Empty\" />.",
+	FailOnNull = false,
+	NegatedFailsOnNull = true
+)]
+public static partial class ThatString;

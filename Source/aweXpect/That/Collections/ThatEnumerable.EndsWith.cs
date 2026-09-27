@@ -24,9 +24,9 @@ public static partial class ThatEnumerable
 	private const string DoesNotEndWithSummary =
 		"Verifies that the collection does not end with the provided <paramref name=\"unexpected\" /> collection.";
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
 		Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -52,9 +52,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, ExpectedType = "string",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
 	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
@@ -81,10 +81,10 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
 	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
@@ -111,10 +111,10 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
 		Remarks = UntypedSetComparerRemarks)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Params = true, Priority = -2, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
 		Remarks = LowerPriorityRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
@@ -141,7 +141,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary,
 		Remarks = UntypedCollectionRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
@@ -152,7 +152,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> EndsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
 		Summary = "Verifies that the collection ends with the provided <paramref name=\"expected\" /> value.",
 		NegatedSummary =
@@ -181,9 +181,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>
 		EndsWithForCollectionCore<TCollection, TItem>(
@@ -209,9 +209,9 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
 		ExpectedType = "string",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
@@ -238,10 +238,10 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
-	[CreateCollectionExpectation("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
+	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>

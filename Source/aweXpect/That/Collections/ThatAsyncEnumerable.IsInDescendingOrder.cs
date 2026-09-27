@@ -18,7 +18,7 @@ public static partial class ThatAsyncEnumerable
 	private const string InDescendingOrder = "Verifies that the collection is in Descending order.";
 	private const string NotInDescendingOrder = "Verifies that the collection is not in Descending order.";
 
-	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
 		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
 	internal static CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrderCore<TItem>(
@@ -26,7 +26,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 		=> IsInOrder(subject, x => x, SortOrder.Descending, "", negated);
 
-	[CreateCollectionExpectation("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
 		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
 	internal static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrderByMemberCore<TItem, TMember>(

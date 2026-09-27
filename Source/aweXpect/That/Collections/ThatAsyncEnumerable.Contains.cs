@@ -48,7 +48,7 @@ public static partial class ThatAsyncEnumerable
 		"without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with\n" +
 		"other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		ContainsItemCore<TItem>(
@@ -71,7 +71,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -97,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		ContainsItemForStringsCore(
@@ -120,7 +120,7 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		ContainsMatchingItemCore<TItem>(
@@ -143,7 +143,7 @@ public static partial class ThatAsyncEnumerable
 			quantifier);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
@@ -168,7 +168,7 @@ public static partial class ThatAsyncEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
@@ -196,7 +196,7 @@ public static partial class ThatAsyncEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
@@ -221,7 +221,7 @@ public static partial class ThatAsyncEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary =
 			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of predicates.",
 		NegatedSummary =
@@ -254,7 +254,7 @@ public static partial class ThatAsyncEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary =
 			"Verifies that the collection contains the provided <paramref name=\"expected\" /> collection of expectations.",
 		NegatedSummary =

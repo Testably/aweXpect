@@ -26,14 +26,6 @@ internal static class SourceGenerationHelper
 				}
 				OutcomeMethod = outcomeMethod;
 			}
-			
-			public CreateExpectationOnAttribute(string positiveName, string negativeName, string outcomeMethod)
-			{
-				TargetType = typeof(TTarget);
-				PositiveName = positiveName;
-				NegativeName = negativeName;
-				OutcomeMethod = outcomeMethod;
-			}
 
 			public Type TargetType { get; }
 			public string PositiveName { get; }
@@ -72,15 +64,7 @@ internal static class SourceGenerationHelper
 				}
 				OutcomeMethod = outcomeMethod;
 			}
-			
-			public CreateExpectationOnNullableAttribute(string positiveName, string negativeName, string outcomeMethod)
-			{
-				TargetType = typeof(TTarget);
-				PositiveName = positiveName;
-				NegativeName = negativeName;
-				OutcomeMethod = outcomeMethod;
-			}
-			
+
 			public bool FailOnNull { get; set; } = true;
 			public bool NegatedFailsOnNull { get; set; } = false;
 			public Type TargetType { get; }
@@ -90,6 +74,7 @@ internal static class SourceGenerationHelper
 			public string? ExpectationText { get; set; }
 			public string? PositiveExpectationText { get; set; }
 			public string? NegativeExpectationText { get; set; }
+			public string? Summary { get; set; }
 			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
 			public string[] Using { get; set; } = [];
@@ -110,6 +95,8 @@ internal static class SourceGenerationHelper
 		string negatedResultType = negatedFailsOnNull
 			? expectationToGenerate.NotNullTargetType
 			: expectationToGenerate.TargetType;
+		string summary = expectationToGenerate.Summary ??
+		                 $"Verifies that the subject {expectationToGenerate.ExpectationText}.";
 		string result = $$"""
 		                  {{string.Join("\n", expectationToGenerate.Usings.Select(x => $"using {x};"))}}
 		                  using aweXpect.Core;
@@ -123,7 +110,7 @@ internal static class SourceGenerationHelper
 		                  public static partial class {{expectationToGenerate.ClassName}}
 		                  {
 		                  	/// <summary>
-		                  	///     Verifies that the subject {{expectationToGenerate.ExpectationText}}.
+		                  	///     {{summary}}
 		                  	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{guaranteesNotNull}}
 		                  	public static AndOrResult<{{resultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 		                  		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

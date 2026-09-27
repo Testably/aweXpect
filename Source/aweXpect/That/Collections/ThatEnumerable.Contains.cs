@@ -108,7 +108,7 @@ public static partial class ThatEnumerable
 		"contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them\n" +
 		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SetLookupRemarks)]
 	internal static ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		ContainsItemCore<TItem>(
@@ -137,7 +137,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = 1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = 1,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue,
 		Remarks = NullLiteralRemarks + "\n" + SetLookupRemarks)]
 	internal static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
@@ -167,7 +167,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = SetLookupRemarks)]
 	internal static ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
@@ -197,7 +197,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		ContainsMatchingItemCore<TItem>(
@@ -220,7 +220,7 @@ public static partial class ThatEnumerable
 			quantifier);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue, Remarks = UntypedSetComparerRemarks)]
 	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
 		ContainsItemForEnumerableCore(
@@ -229,7 +229,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> ContainsItemForEnumerable<object?>(subject, expected, negated);
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue,
 		Remarks = SingleValueRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>
@@ -270,7 +270,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -2,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -2,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem,
 		Remarks = BelowValuePriorityRemarks)]
 	internal static CountResult<IEnumerable, IThat<IEnumerable?>>
@@ -294,7 +294,7 @@ public static partial class ThatEnumerable
 			quantifier);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static ObjectCountResult<TCollection, IThat<TCollection>, TItem>
 		ContainsItemForCollectionCore<TCollection, TItem>(
@@ -318,7 +318,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static StringEqualityTypeCountResult<TCollection, IThat<TCollection>>
 		ContainsItemForCollectionStringsCore<TCollection>(
@@ -342,7 +342,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
@@ -367,7 +367,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<TCollection, IThat<TCollection>>
 		ContainsMatchingItemForCollectionCore<TCollection, TItem>(
@@ -391,7 +391,7 @@ public static partial class ThatEnumerable
 			quantifier);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
 		NegatedRemarks = DoesNotContainRemarks + "\n" + SetComparerRemarks)]
@@ -418,7 +418,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
 		NegatedRemarks = DoesNotContainRemarks + "\n" + SetComparerRemarks)]
@@ -445,7 +445,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static StringProperCollectionMatchResult<string?[], IThat<string?[]?>>
@@ -470,7 +470,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks + "\n" + SetComparerRemarks,
@@ -501,7 +501,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks + "\n" + UntypedSetComparerRemarks,
 		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedSetComparerRemarks)]
@@ -528,7 +528,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks + "\n" + UntypedCollectionItemRemarks + "\n" + UntypedSetComparerRemarks,
 		NegatedRemarks = DoesNotContainRemarks + "\n" + UntypedCollectionItemRemarks + "\n" +
@@ -541,7 +541,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		=> ContainsForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
@@ -567,7 +567,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static StringProperCollectionMatchResult<TCollection, IThat<TCollection>>
@@ -593,7 +593,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
@@ -620,7 +620,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsPredicates, NegatedSummary = DoesNotContainPredicates,
 		Remarks = ContainsPredicatesRemarks, NegatedRemarks = DoesNotContainPredicatesRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -643,7 +643,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
 		Summary = ContainsExpectations, NegatedSummary = DoesNotContainExpectations,
 		Remarks = ContainsExpectationsRemarks, NegatedRemarks = DoesNotContainExpectationsRemarks)]
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
@@ -667,7 +667,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
 		Summary = ContainsPredicates, NegatedSummary = DoesNotContainPredicates,
 		Remarks = ContainsPredicatesRemarks + "\n" + BelowCollectionPriorityRemarks,
 		NegatedRemarks = DoesNotContainPredicatesRemarks + "\n" + BelowCollectionPriorityRemarks)]
@@ -692,7 +692,7 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
-	[CreateCollectionExpectation("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
 		Summary = ContainsExpectations, NegatedSummary = DoesNotContainExpectations,
 		Remarks = ContainsExpectationsRemarks + "\n" + BelowCollectionPriorityRemarks,
 		NegatedRemarks = DoesNotContainExpectationsRemarks + "\n" + BelowCollectionPriorityRemarks)]

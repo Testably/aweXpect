@@ -30,7 +30,7 @@ public static partial class ThatAsyncEnumerable
 		"and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it\n" +
 		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
-	[CreateCollectionExpectation("Is{Not}ContainedIn", GuaranteesNotNull = true,
+	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
 		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
