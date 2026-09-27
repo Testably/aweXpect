@@ -292,6 +292,130 @@ public sealed partial class ThatEnum
 			}
 
 			[Fact]
+			public async Task NotBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween(5L).And(2L);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("an inverted range would let the negated expectation succeed for every value");
+			}
+
+			[Theory]
+			[InlineData(null, 3L)]
+			[InlineData(1L, null)]
+			public async Task NotBetween_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(long? minimum, long? maximum)
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotBetween(minimum).And(maximum));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it had value 2
+					              """)
+					.Because("nothing can be ordered against a null bound, so the negation fails as well");
+			}
+
+			[Theory]
+			[InlineData(null, 3L)]
+			[InlineData(1L, null)]
+			public async Task NotBetween_WhenMinimumOrMaximumIsNull_ShouldFail(long? minimum, long? maximum)
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it had value 2
+					              """)
+					.Because("nothing can be ordered against a null bound");
+			}
+
+			[Fact]
+			public async Task NotBetween_WhenNegated_ShouldExpectTheRange()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotBetween(3L).And(5L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value between 3 and 5,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotBetween_WhenTheRangeExceedsInt64MaxValue_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64LessOne;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween((ulong)long.MaxValue).And(ulong.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value between 9223372036854775807 and 18446744073709551615,
+					             but it had value 18446744073709551614
+					             """);
+			}
+
+			[Fact]
+			public async Task NotBetween_WhenTheValueIsInTheRange_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween(1L).And(3L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value between 1 and 3,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotBetween_WhenTheValueIsOutsideTheRange_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween(3L).And(5L);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task NotBetween_WhenUnsignedMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				EnumULong subject = EnumULong.UInt64LessOne;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotBetween(ulong.MaxValue).And((ulong)long.MaxValue);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task NotEqualTo_WhenNegated_ShouldExpectEquality()
 			{
 				MyNumbers subject = MyNumbers.One;
@@ -361,6 +485,378 @@ public sealed partial class ThatEnum
 
 				async Task Act()
 					=> await That(subject).HasValue().NotEqualTo(null);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThan(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value greater than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenExpectedIsNull_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThan(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null");
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenNegated_ShouldExpectTheComparison()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThan(2L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value greater than 2,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThan((ulong)long.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than 9223372036854775807,
+					             but it had value 18446744073709551615
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenTheValueIsGreater_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThan(1L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than 1,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThan_WhenTheValueIsNotGreater_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThan(2L);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThanOrEqualTo(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value greater than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null");
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThanOrEqualTo(3L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value greater than or equal to 3,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenTheValueEqualsTheMaximumOfItsBackingType_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(ulong.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than or equal to 18446744073709551615,
+					             but it had value 18446744073709551615
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenTheValueIsEqual_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(2L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value greater than or equal to 2,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotGreaterThanOrEqualTo_WhenTheValueIsLess_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(3L);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenExpectedExceedsInt64MaxValue_AndTheSubjectIsSignedBacked_ShouldFail()
+			{
+				EnumLong subject = EnumLong.Int64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThan(ulong.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than 18446744073709551615,
+					             but it had value 9223372036854775807
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThan(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value less than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenExpectedIsNull_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThan(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null");
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenNegated_ShouldExpectTheComparison()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThan(2L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value less than 2,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenTheValueIsLess_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThan(3L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than 3,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThan_WhenTheValueIsNotLess_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThan(2L);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThanOrEqualTo(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value less than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null, so the negation fails as well");
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThanOrEqualTo(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than or equal to <null>,
+					             but it had value 2
+					             """)
+					.Because("nothing can be ordered against null");
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThanOrEqualTo(1L));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value less than or equal to 1,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenTheValueEqualsInt64MinValue_ShouldFail()
+			{
+				EnumLong subject = EnumLong.Int64Min;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThanOrEqualTo(long.MinValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than or equal to -9223372036854775808,
+					             but it had value -9223372036854775808
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenTheValueIsEqual_ShouldFail()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThanOrEqualTo(2L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value less than or equal to 2,
+					             but it had value 2
+					             """);
+			}
+
+			[Fact]
+			public async Task NotLessThanOrEqualTo_WhenTheValueIsGreater_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotLessThanOrEqualTo(1L);
 
 				await That(Act).DoesNotThrow();
 			}

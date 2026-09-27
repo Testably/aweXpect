@@ -143,6 +143,15 @@ public sealed partial class PropertyResultTests
 			ExpectationGrammars grammars)
 			=> new(source, a => a?.LongValue, "long value", grammars: grammars);
 
+		public static PropertyResult.Long<MyClass?> HasLongValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Long<MyClass?>(source, a => a?.LongValue, "long value");
+		}
+
 		/// <summary>
 		///     The mapper throws the <paramref name="exception" />, which is the shape of a property that cannot be read,
 		///     e.g. the length of a disposed stream.
@@ -233,6 +242,15 @@ public sealed partial class PropertyResultTests
 #pragma warning restore aweXpect0001
 			return new PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>>(
 				source, a => a?.TimeSpanValue, "TimeSpan value", grammars: grammars);
+		}
+
+		public static PropertyResult.TimeSpan<MyClass?> HasTimeSpanValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.TimeSpan<MyClass?>(source, a => a?.TimeSpanValue, "TimeSpan value");
 		}
 
 		public static PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> TimeSpanValueOf(

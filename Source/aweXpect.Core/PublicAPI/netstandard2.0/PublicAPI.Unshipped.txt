@@ -86,3 +86,18 @@ static aweXpect.Core.ExpectationBuilderExtensions.ForMember<TSource, TTarget>(th
 *REMOVED*~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.Whose<TMember>(System.Func<TType, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
 ~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.Whose<TMember>(System.Func<TType, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
 aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.WithToleranceValidation(System.Action<TTolerance>! validation) -> aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotBetween(int? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, int?>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotBetween(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, long?>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotBetween(System.TimeSpan? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, System.TimeSpan?>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!

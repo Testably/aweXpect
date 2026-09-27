@@ -81,6 +81,18 @@ public class EnumValueResult<TValue, TType>
 		=> AddGreaterThan(expected, Formatter.Format(expected));
 
 	/// <summary>
+	///     …is not greater than the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(long? expected)
+		=> AddNotGreaterThan(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not greater than the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(ulong? expected)
+		=> AddNotGreaterThan(expected, Formatter.Format(expected));
+
+	/// <summary>
 	///     …is greater than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public AndOrResult<TType, IThat<TValue>> GreaterThanOrEqualTo(long? expected)
@@ -91,6 +103,18 @@ public class EnumValueResult<TValue, TType>
 	/// </summary>
 	public AndOrResult<TType, IThat<TValue>> GreaterThanOrEqualTo(ulong? expected)
 		=> AddGreaterThanOrEqualTo(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not greater than or equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(long? expected)
+		=> AddNotGreaterThanOrEqualTo(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not greater than or equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(ulong? expected)
+		=> AddNotGreaterThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is less than the <paramref name="expected" /> value.
@@ -105,6 +129,18 @@ public class EnumValueResult<TValue, TType>
 		=> AddLessThan(expected, Formatter.Format(expected));
 
 	/// <summary>
+	///     …is not less than the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotLessThan(long? expected)
+		=> AddNotLessThan(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not less than the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotLessThan(ulong? expected)
+		=> AddNotLessThan(expected, Formatter.Format(expected));
+
+	/// <summary>
 	///     …is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public AndOrResult<TType, IThat<TValue>> LessThanOrEqualTo(long? expected)
@@ -115,6 +151,18 @@ public class EnumValueResult<TValue, TType>
 	/// </summary>
 	public AndOrResult<TType, IThat<TValue>> LessThanOrEqualTo(ulong? expected)
 		=> AddLessThanOrEqualTo(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not less than or equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(long? expected)
+		=> AddNotLessThanOrEqualTo(expected, Formatter.Format(expected));
+
+	/// <summary>
+	///     …is not less than or equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(ulong? expected)
+		=> AddNotLessThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
 	///     …is between the <paramref name="minimum" />…
@@ -128,6 +176,18 @@ public class EnumValueResult<TValue, TType>
 	public BetweenResult<AndOrResult<TType, IThat<TValue>>, ulong?> Between(ulong? minimum)
 		=> new(maximum => AddBetween(minimum, maximum, Formatter.Format(minimum), Formatter.Format(maximum)));
 
+	/// <summary>
+	///     …is not between the <paramref name="minimum" />…
+	/// </summary>
+	public BetweenResult<AndOrResult<TType, IThat<TValue>>, long?> NotBetween(long? minimum)
+		=> new(maximum => AddNotBetween(minimum, maximum, Formatter.Format(minimum), Formatter.Format(maximum)));
+
+	/// <summary>
+	///     …is not between the <paramref name="minimum" />…
+	/// </summary>
+	public BetweenResult<AndOrResult<TType, IThat<TValue>>, ulong?> NotBetween(ulong? minimum)
+		=> new(maximum => AddNotBetween(minimum, maximum, Formatter.Format(minimum), Formatter.Format(maximum)));
+
 	private AndOrResult<TType, IThat<TValue>> AddEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual?.Equals(expected) == true, $"equal to {formattedExpected}");
 
@@ -138,16 +198,32 @@ public class EnumValueResult<TValue, TType>
 		=> Add(actual => actual > expected, $"greater than {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
+	private AndOrResult<TType, IThat<TValue>> AddNotGreaterThan(decimal? expected, string formattedExpected)
+		=> Add(actual => !(actual > expected), $"greater than {formattedExpected}", isNegative: true,
+			isOrderedAgainstNull: expected is null);
+
 	private AndOrResult<TType, IThat<TValue>> AddGreaterThanOrEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual >= expected, $"greater than or equal to {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
+
+	private AndOrResult<TType, IThat<TValue>> AddNotGreaterThanOrEqualTo(decimal? expected, string formattedExpected)
+		=> Add(actual => !(actual >= expected), $"greater than or equal to {formattedExpected}", isNegative: true,
 			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TType, IThat<TValue>> AddLessThan(decimal? expected, string formattedExpected)
 		=> Add(actual => actual < expected, $"less than {formattedExpected}",
 			isOrderedAgainstNull: expected is null);
 
+	private AndOrResult<TType, IThat<TValue>> AddNotLessThan(decimal? expected, string formattedExpected)
+		=> Add(actual => !(actual < expected), $"less than {formattedExpected}", isNegative: true,
+			isOrderedAgainstNull: expected is null);
+
 	private AndOrResult<TType, IThat<TValue>> AddLessThanOrEqualTo(decimal? expected, string formattedExpected)
 		=> Add(actual => actual <= expected, $"less than or equal to {formattedExpected}",
+			isOrderedAgainstNull: expected is null);
+
+	private AndOrResult<TType, IThat<TValue>> AddNotLessThanOrEqualTo(decimal? expected, string formattedExpected)
+		=> Add(actual => !(actual <= expected), $"less than or equal to {formattedExpected}", isNegative: true,
 			isOrderedAgainstNull: expected is null);
 
 	private AndOrResult<TType, IThat<TValue>> AddBetween(decimal? minimum, decimal? maximum,
@@ -156,6 +232,15 @@ public class EnumValueResult<TValue, TType>
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 		return Add(actual => actual >= minimum && actual <= maximum,
 			$"between {formattedMinimum} and {formattedMaximum}",
+			isOrderedAgainstNull: minimum is null || maximum is null);
+	}
+
+	private AndOrResult<TType, IThat<TValue>> AddNotBetween(decimal? minimum, decimal? maximum,
+		string formattedMinimum, string formattedMaximum)
+	{
+		ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+		return Add(actual => !(actual >= minimum && actual <= maximum),
+			$"between {formattedMinimum} and {formattedMaximum}", isNegative: true,
 			isOrderedAgainstNull: minimum is null || maximum is null);
 	}
 

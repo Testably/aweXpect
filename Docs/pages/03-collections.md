@@ -90,6 +90,8 @@ await Expect.That(values).HasCount().LessThan(12)
 	.Because("item count should be '< 12'");
 await Expect.That(values).HasCount().Between(8).And(12)
 	.Because("item count should be '>= 8 AND <= 12'");
+await Expect.That(values).HasCount().NotBetween(1).And(5)
+	.Because("item count should be '< 1 OR > 5'");
 ```
 
 ## Equality of all items

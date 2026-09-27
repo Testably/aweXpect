@@ -21,6 +21,22 @@ public sealed partial class ThatEnum
 							"a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
 				}
 
+				[Fact]
+				public async Task NotBetween_WhenSubjectIsNull_ShouldFail()
+				{
+					MyNumbers? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue().NotBetween(1L).And(3L);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have value between 1 and 3,
+						             but it was <null>
+						             """);
+				}
+
 				[Theory]
 				[InlineData(MyNumbers.One, 2L)]
 				[InlineData(MyNumbers.Two, -7L)]
@@ -80,6 +96,70 @@ public sealed partial class ThatEnum
 						=> await That(subject).HasValue().NotEqualTo(null);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task NotGreaterThan_WhenSubjectIsNull_ShouldFail()
+				{
+					MyNumbers? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue().NotGreaterThan(2L);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have value greater than 2,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task NotGreaterThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+				{
+					MyNumbers? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue().NotGreaterThanOrEqualTo(2L);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have value greater than or equal to 2,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task NotLessThan_WhenSubjectIsNull_ShouldFail()
+				{
+					MyNumbers? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue().NotLessThan(2L);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have value less than 2,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task NotLessThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
+				{
+					MyNumbers? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue().NotLessThanOrEqualTo(2L);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have value less than or equal to 2,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]
