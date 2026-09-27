@@ -115,7 +115,10 @@ await Expect.That(0).IsNotNegative();
 
 Zero and `NaN` are neither positive nor negative, so both `IsNotPositive` and `IsNotNegative` succeed for them.
 
-*Note: below .NET 8 these expectations are only available for signed numbers; on .NET 8 or later they are available for every `INumber<T>`, including unsigned types.*
+:::note
+Below .NET 8 these expectations are only available for signed numbers. On .NET 8 or later they are available for every
+`INumber<T>`, including unsigned types.
+:::
 
 ## NaN
 

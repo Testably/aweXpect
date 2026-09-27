@@ -375,4 +375,6 @@ await Expect.That("42".AsSpan()).IsParsableInto<int>();
 await Expect.That("42"u8).IsParsableInto<int>();
 ```
 
-*Note: these expectations are only available on .NET 8 or later.*
+:::note
+The parsing expectations are only available on .NET 8 or later.
+:::

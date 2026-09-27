@@ -289,8 +289,8 @@ using (Customize.aweXpect.MyCustomization().Set(43))
 _ = Customize.aweXpect.MyCustomization().Get();
 ```
 
-*Note: you can also use this mechanism for complex objects like classes, but they can only be changed as a whole (and
-not individual properties)*
+You can also use this mechanism for complex objects like classes, but then they can only be changed as a whole and not
+property by property.
 
 ### Add a customization group
 

@@ -322,8 +322,10 @@ await Expect.That(midnight).IsEquivalentTo(new
 
 `It.Is<T>()` (without `.That`) only asserts that the property has the given type.
 
-*Note: because the type cannot be inferred from `null`, an `It.Is<T>().That.IsNull()` check still works, but
-`It.Is<T>().That.IsNotNull()` requires the property to be non-null.*
+:::note
+Because the type cannot be inferred from `null`, an `It.Is<T>().That.IsNull()` check still works, but
+`It.Is<T>().That.IsNotNull()` requires the property to be non-null.
+:::
 
 ## Failure messages
 

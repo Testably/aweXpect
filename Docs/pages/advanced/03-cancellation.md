@@ -13,7 +13,7 @@ Customize.aweXpect.Settings().TestCancellation
     .Set(TestCancellation.FromTimeout(TimeSpan.FromSeconds(10)));
 ```
 
-*Note: Like all customization options, the setter returns an `IDisposable` that will remove the cancellation on `Dispose()`.*
+Like all customization options, the setter returns an `IDisposable` that removes the timeout again on `Dispose()`.
 
 You can also apply a timeout on individual expectations, using the `WithTimeout(TimeSpan)` method:
 ```csharp
@@ -70,7 +70,7 @@ Customize.aweXpect.Settings().TestCancellation
     .Set(TestCancellation.FromCancellationToken(() => TestContext.Current.CancellationToken));
 ```
 
-*Note: Like all customization options, the setter returns an `IDisposable` that will remove the cancellation on `Dispose()`.*
+The setter again returns an `IDisposable` that removes the provider on `Dispose()`.
 
 You can overwrite or apply the `CancellationToken` also on individual expectations, using the `WithCancellation(CancellationToken)` method:
 ```csharp
@@ -80,8 +80,10 @@ await Expect.That(myEnumerable).All().AreEqualTo(1)
     .WithCancellation(cts.Token);
 ```
 
-*Note: A local `CancellationToken` will replace the global one and not be applied additionally.
-If necessary, provide a [linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource) yourself!*
+:::note
+A local `CancellationToken` replaces the global one instead of being applied additionally. If you need both, pass a
+[linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource).
+:::
 
 ## Outcome
 

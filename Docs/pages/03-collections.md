@@ -5,6 +5,11 @@ Describes the possible expectations for collections.
 Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `HasCount`, `HasSingle` and the
 [quantifiers](#number-of-matching-items) like `All()`, which take a negated comparison or `None()` instead.
 
+:::tip[`IAsyncEnumerable<T>`]
+Every expectation on this page, except the ones for [dictionaries](#dictionaries), works the same way for an
+`IAsyncEnumerable<T>`.
+:::
+
 :::info[C# 13 or later]
 Some overloads rely on `[OverloadResolutionPriority]` to bind as described here, e.g. so that a `string` is expected
 as a single item and not as a sequence of characters, or that a `params` list or a collection expression `[…]` is the
@@ -31,11 +36,9 @@ await Expect.That(values).IsNotEqualTo([1, 1, 3, 3, 2, 2]).IgnoringDuplicates();
 await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().IgnoringDuplicates();
 ```
 
-*Note: The items are compared in the order in which the collection enumerates them, also for a `HashSet<T>`, whose
-order is not defined, so use `InAnyOrder()` for it.*
-
 :::warning[A set or a dictionary has no defined order]
-`IsEqualTo`, `Contains` with a collection and `IsContainedIn` compare by position unless `InAnyOrder()` is used, so for
+`IsEqualTo`, `Contains` with a collection and `IsContainedIn` compare the items in the order in which the collection
+enumerates them unless `InAnyOrder()` is used, so for
 a `HashSet<T>` or a `Dictionary<TKey, TValue>` the result depends on an implementation detail. The analyzer rule
 `aweXpect0006` warns about it and offers to append `.InAnyOrder()`. It also warns about `StartsWith`, `EndsWith` and
 `IgnoringInterspersedItems()`, which have no meaning for such a collection. Sorted sets and dictionaries are not
@@ -67,8 +70,6 @@ This tolerance can be applied to `double`, `float`, `decimal`, `DateTime`, `Date
 .NET 8 or later also to `DateOnly`, whose tolerance must be a whole number of days, and `TimeOnly`, whose items are
 compared on the clock face, so that `23:59` and `00:01` are two minutes apart. A tolerance takes precedence over the
 comparer of a set.
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 ## Count
 
@@ -133,8 +134,6 @@ await Expect.That(values).All().AreEqualTo(2.0).Within(0.1);
 
 This tolerance can be applied to the same types as for [equality](#equality).
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ## Elements
 
 You can add expectations that a certain number of elements must meet.
@@ -153,8 +152,6 @@ await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
 await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ### Condition
 
 You can verify that items in a collection satisfy a condition:
@@ -168,8 +165,6 @@ await Expect.That([1, 2, 3]).Between(2).And(3).Satisfy(item => item > 0);
 await Expect.That([1, 2, 3]).Exactly(1).Satisfy(item => item == 2);
 await Expect.That([1, 2, 3]).None().Satisfy(item => item < 0);
 ```
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 ### Unique
 
@@ -204,8 +199,6 @@ items that its comparer considers equal, so its items are unique, unless a custo
 
 For dictionaries, verify the [values](#keys-and-values) instead, as the keys are unique by design.
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 
 ## Sort order
 
@@ -239,8 +232,6 @@ A collection of `DateTime` values (or a `DateTime` member) that contains both `D
 `DateTimeKind.Local` values fails the check, in its negated form as well, as the order of such values depends on the
 time zone. Values with `DateTimeKind.Unspecified` are compatible with both kinds. With a custom comparer, the comparer
 decides.
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 ## Contained items
 
@@ -312,8 +303,6 @@ await Expect.That(values).EndsWith(2.0, 3.0).Within(0.1);
 await Expect.That(values).HasItem(2.0).Within(0.1).AtIndex(1);
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ### Predicate
 
 You can verify that the collection contains an item that satisfies a condition:
@@ -336,8 +325,6 @@ await Expect.That(values).Contains(x => x == 1).AtMost(4.Times());
 await Expect.That(values).Contains(x => x == 1).Between(1).And(5.Times());
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ### Subset
 
 You can verify that a collection contains another collection as a subset:
@@ -352,14 +339,11 @@ await Expect.That(values).Contains([3, 3, 1, 1]).InAnyOrder().IgnoringDuplicates
 await Expect.That(values).Contains([1, 3]).IgnoringInterspersedItems();
 ```
 
-*Note: Without `InAnyOrder` the values must appear in the subject in the same order and contiguous, i.e. without other
-items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.*
+Without `InAnyOrder` the values must appear in the subject in the same order and contiguous, i.e. without other
+items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
 
-*Note: You can also negate this expectation with `DoesNotContain`.*
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
-To check for a proper subset, append `.Properly()` (which would fail for equal collections).
+To check for a proper subset, append `.Properly()` (which would fail for equal collections). The negation is
+`DoesNotContain`.
 
 ### Superset
 
@@ -375,14 +359,11 @@ await Expect.That(values).IsContainedIn([4, 4, 3, 3, 2, 2, 1, 1]).InAnyOrder().I
 await Expect.That(values).IsContainedIn([1, 4, 2, 3]).IgnoringInterspersedItems();
 ```
 
-*Note: Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
-without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.*
+Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
+without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
 
-*Note: You can also negate this expectation with `IsNotContainedIn`.*
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
-To check for a proper superset, append `.Properly()` (which would fail for equal collections).
+To check for a proper superset, append `.Properly()` (which would fail for equal collections). The negation is
+`IsNotContainedIn`.
 
 ## Collection start
 
@@ -413,8 +394,6 @@ leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
 await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ## Collection end
 
 You can verify if a collection ends with another collection or not:
@@ -444,9 +423,9 @@ leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
 await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
-*Caution: this method will always have to completely materialize the enumerable!*
+:::note
+`EndsWith` and `DoesNotEndWith` always enumerate the complete collection.
+:::
 
 
 ## Number of matching items
@@ -468,8 +447,6 @@ An empty collection satisfies `All()`, like it does `Enumerable.All`, so
 [`WithRecursiveInnerExceptions`](./04-delegates.md#recursive-inner-exceptions) and
 `HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 ### More than
 
 You can verify that more than `minimum` items in the collection satisfy an expectation:
@@ -480,8 +457,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 await Expect.That(values).MoreThan(8).Satisfy(i => i < 10);
 ```
 
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
-
 ### At least
 
 You can verify that at least `minimum` items in the collection satisfy an expectation:
@@ -491,8 +466,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 
 await Expect.That(values).AtLeast(9).Satisfy(i => i < 10);
 ```
-
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
 
 ### Any
 
@@ -505,8 +478,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 await Expect.That(values).Any().Satisfy(i => i == 13);
 ```
 
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
-
 ### At most
 
 You can verify that at most `maximum` items in the collection satisfy an expectation:
@@ -516,8 +487,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 
 await Expect.That(values).AtMost(1).Satisfy(i => i < 2);
 ```
-
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
 
 ### Less than
 
@@ -529,8 +498,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 await Expect.That(values).LessThan(2).Satisfy(i => i < 2);
 ```
 
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
-
 ### Between
 
 You can verify that between `minimum` and `maximum` items in the collection satisfy an expectation:
@@ -541,8 +508,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 await Expect.That(values).Between(1).And(2).Satisfy(i => i < 2);
 ```
 
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
-
 ### Exactly
 
 You can verify that exactly `expected` items in the collection satisfy an expectation:
@@ -552,8 +517,6 @@ IEnumerable<int> values = Enumerable.Range(1, 20);
 
 await Expect.That(values).Exactly(9).Satisfy(i => i < 10);
 ```
-
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
 
 ### None
 
@@ -572,8 +535,6 @@ IEnumerable<int> values = Array.Empty<int>();
 
 await Expect.That(values).IsEmpty();
 ```
-
-*Note: The same expectations work also for `IAsyncEnumerable<T>`.*
 
 ## Single item
 
@@ -612,8 +573,6 @@ IEnumerable<int> values = [42];
 int result = await Expect.That(values).HasSingle();
 await Expect.That(result).IsGreaterThan(41);
 ```
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 
 ## Item at index
@@ -664,8 +623,6 @@ await Expect.That(values).DoesNotHaveItem().Matching(it => it.StartsWith("2nd"))
 await Expect.That(values).DoesNotHaveItemThat(it => it.StartsWith("2nd")).AtIndex(1);
 ```
 
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
 
 ## Dictionaries
 
@@ -689,8 +646,8 @@ Dictionary<string, int> values = new(StringComparer.OrdinalIgnoreCase) { { "foo"
 await Expect.That(values).IsEqualTo(new Dictionary<string, int> { { "FOO", 42 } });
 ```
 
-*Note: To compare the entries in their enumeration order instead, compare them as a collection of
-`KeyValuePair<TKey, TValue>`:*
+To compare the entries in their enumeration order instead, compare them as a collection of
+`KeyValuePair<TKey, TValue>`:
 
 ```csharp
 SortedDictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };

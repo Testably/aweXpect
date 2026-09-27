@@ -42,9 +42,11 @@ You can also verify that the callback will not be signaled:
 await Expect.That(signaler).DidNotSignal();
 ```
 
-*NOTE: The last statement would never return, unless a timeout or cancellation is specified.
-Therefore, when nothing is specified, a default timeout of 30 seconds is applied, and a failure message shows it
-(e.g. "within 0:30")!*
+:::note
+Without a limit, the last statement would never return. So when no timeout is specified, `DidNotSignal()` waits for the
+default timeout of 30 seconds, which the failure message shows (e.g. "within 0:30"). See
+[default waits](./03-cancellation.md#default-waits).
+:::
 
 ### Timeout
 
@@ -78,8 +80,10 @@ await Expect.That(signaler).Signaled().Never();
 
 `Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form.
 
-*NOTE: Only expectations without an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled.
-All others have to wait for the timeout to expire, because only then is the number of signals final!*
+:::note
+Only expectations without an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled. All
+others have to wait for the timeout to expire, because only then is the number of signals final.
+:::
 
 ### Parameters
 
@@ -117,4 +121,4 @@ signaler.Signal("Let It Be");
 await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contains("Let It Be");
 ```
 
-*In case of a failed expectation, the recorded parameters will be displayed in the error message.*
+A failure message lists the recorded parameters.

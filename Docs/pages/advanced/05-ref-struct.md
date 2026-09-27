@@ -17,4 +17,4 @@ Synchronously.Verify(Expect.That(subject.Length).IsEqualTo(3));
 Expect.That(subject.Length).IsEqualTo(3).VerifySynchronously();
 ```
 
-*Note: These methods are in the namespace `aweXpect.Synchronous`.*
+Both methods are in the namespace `aweXpect.Synchronous`.

@@ -16,11 +16,13 @@ await Expect.That(subject).IsEqualTo(new Album("Abbey Road"));
 await Expect.That(subject).IsNotEqualTo(new Album("Revolver"));
 ```
 
-*Note: this uses the underlying `object.Equals(object?, object?)` method*
+This uses the `object.Equals(object?, object?)` method.
 
-*Note: a number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
+:::note
+A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
-[equivalency](../06-equivalency.md).*
+[equivalency](../06-equivalency.md).
+:::
 
 ### Reference equality
 
@@ -34,7 +36,7 @@ await Expect.That(subject).IsSameAs(subject);
 await Expect.That(subject).IsNotSameAs(new Album("Abbey Road"));
 ```
 
-*Note: this uses the underlying `object.ReferenceEquals(object?, object?)` method*
+This uses the `object.ReferenceEquals(object?, object?)` method.
 
 ### Custom comparer
 
@@ -69,9 +71,10 @@ await Expect.That(subject).IsEquatableTo(42L);
 await Expect.That(subject).IsNotEquatableTo(7L);
 ```
 
-*Note: this inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore,
-`IsEquatableTo` and `IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)`
-succeeds.*
+:::note
+This inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore, `IsEquatableTo` and
+`IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)` succeeds.
+:::
 
 ## Equivalency
 

@@ -44,9 +44,11 @@ await Expect.That(subject).IsNotTrue()
   .Because("it could be false or null");
 ```
 
-*Note: on a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
+:::note
+On a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
 Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` and
-`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.*
+`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.
+:::
 
 ## Implication
 
