@@ -85,6 +85,23 @@
 	<data name="aweXpect0005Title" xml:space="preserve">
 		<value>Expectations in an async void method or lambda are not observed by the test</value>
 	</data>
+	<data name="aweXpect0006Description" xml:space="preserve">
+		<value>A set or a dictionary enumerates its items in an order that is an implementation detail, but "IsEqualTo", "Contains" and "IsContainedIn" compare collections by position unless "InAnyOrder()" is used, so they depend on that order. "StartsWith", "EndsWith" and "IgnoringInterspersedItems()" are about the order itself and have no meaning for such a collection. Sorted sets and dictionaries have a defined order and are not reported.</value>
+	</data>
+	<data name="aweXpect0006MessageFormat" xml:space="preserve">
+		<value>"{0}" has no defined order; use "InAnyOrder()"</value>
+	</data>
+	<data name="aweXpect0006NoMeaningMessageFormat" xml:space="preserve">
+		<value>"{0}" has no meaning for an unordered "{1}"</value>
+		<comment>The message for an expectation that is about the order itself.</comment>
+	</data>
+	<data name="aweXpect0006Title" xml:space="preserve">
+		<value>Collections without a defined order must not be compared by position</value>
+	</data>
+	<data name="aweXpect0006CodeFixTitle" xml:space="preserve">
+		<value>Append ".InAnyOrder()"</value>
+		<comment>The title of the code fix.</comment>
+	</data>
 	<data name="IsNotNullSuppressionJustification" xml:space="preserve">
 		<value>The subject was verified to be not null by a preceding expectation.</value>
 	</data>

@@ -13,8 +13,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).IsEqualTo([11,]).Equivalent();
+#pragma warning restore aweXpect0006
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -72,8 +74,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<string> subject = new(new AllDifferentComparer()) { "a", };
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).IsEqualTo(["A",]).IgnoringCase();
+#pragma warning restore aweXpect0006
 
 				await That(Act).DoesNotThrow();
 			}
@@ -94,8 +98,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).IsEqualTo(["A",]).Using(new AllDifferentComparer());
+#pragma warning restore aweXpect0006
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -201,8 +207,10 @@ public sealed partial class ThatEnumerable
 			{
 				HashSet<object> subject = [1,];
 
+#pragma warning disable aweXpect0006
 				async Task Act()
 					=> await That(subject).IsEqualTo([1L,]);
+#pragma warning restore aweXpect0006
 
 				await That(Act).DoesNotThrow()
 					.Because("a set with the default comparer keeps the default equality, which compares numbers by value");
