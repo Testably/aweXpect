@@ -32,6 +32,9 @@ internal static class Rules
 	public static readonly DiagnosticDescriptor UnorderedCollectionNoMeaningRule =
 		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning, "NoMeaningMessageFormat");
 
+	public static readonly DiagnosticDescriptor ValueTaskDelegateRule =
+		CreateDescriptor("aweXpect0007", UsageCategory, DiagnosticSeverity.Warning);
+
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>

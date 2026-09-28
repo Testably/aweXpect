@@ -102,6 +102,19 @@
 		<value>Append ".InAnyOrder()"</value>
 		<comment>The title of the code fix.</comment>
 	</data>
+	<data name="aweXpect0007Description" xml:space="preserve">
+		<value>On .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7, aweXpect has no "Expect.That" overloads for delegates that return a "ValueTask", so such a delegate binds to the overload for a delegate with a return value, and the returned "ValueTask" becomes that value without ever being awaited: "Throws" fails when the exception is thrown asynchronously, and "DoesNotThrow" passes although the delegate throws. The same happens on any target framework when "ValueTask" is given explicitly as the type argument. Return a "Task" instead, as in "() =&gt; Act().AsTask()".</value>
+	</data>
+	<data name="aweXpect0007MessageFormat" xml:space="preserve">
+		<value>The "{0}" returned by the delegate is never awaited; return ".AsTask()" instead</value>
+	</data>
+	<data name="aweXpect0007Title" xml:space="preserve">
+		<value>A "ValueTask" returned by a delegate subject is never awaited</value>
+	</data>
+	<data name="aweXpect0007CodeFixTitle" xml:space="preserve">
+		<value>Return ".AsTask()"</value>
+		<comment>The title of the code fix.</comment>
+	</data>
 	<data name="IsNotNullSuppressionJustification" xml:space="preserve">
 		<value>The subject was verified to be not null by a preceding expectation.</value>
 	</data>
