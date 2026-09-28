@@ -120,7 +120,7 @@ public abstract class Expectation
 
 		/// <summary>
 		///     Specifies if the combination should be treated as
-		///     <see cref="Outcome.Success" /> or <see cref="Outcome.Failure" />.
+		///     <see cref="Outcome.Success" />, <see cref="Outcome.Failure" /> or <see cref="Outcome.Undecided" />.
 		/// </summary>
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
@@ -154,9 +154,13 @@ public abstract class Expectation
 					result.ConstraintResult.AppendExpectation(expectationTexts, "      ");
 				}
 
-				if (result.ConstraintResult.Outcome == Outcome.Failure)
+				if (result.ConstraintResult.Outcome != Outcome.Success)
 				{
-					failureCause ??= result.ConstraintResult.FailureCause;
+					if (result.ConstraintResult.Outcome == Outcome.Failure)
+					{
+						failureCause ??= result.ConstraintResult.FailureCause;
+					}
+
 					if (failureTexts.Length > 0)
 					{
 						failureTexts.AppendLine();
@@ -175,10 +179,10 @@ public abstract class Expectation
 				}
 			}
 
-			if (outcome != Outcome.Success)
+			if (outcome is Outcome.Failure or Outcome.Undecided)
 			{
 				return new Result(index, GetSubjectLine(),
-					new CombinationResult(Outcome.Failure, expectationTexts.ToString(), failureTexts.ToString(),
+					new CombinationResult(outcome.Value, expectationTexts.ToString(), failureTexts.ToString(),
 						failureCause));
 			}
 
@@ -243,6 +247,11 @@ public abstract class Expectation
 				sb.Append(content);
 			}
 
+			if (result.ConstraintResult.Outcome == Outcome.Undecided)
+			{
+				Fail.Inconclusive(sb.ToString());
+			}
+
 			Fail.Test(sb.ToString(), result.ConstraintResult.FailureCause);
 		}
 
@@ -295,10 +304,13 @@ public abstract class Expectation
 
 			/// <inheritdoc />
 			protected override Outcome CheckOutcome(Outcome? previous, Outcome current)
-				=> previous switch
+				=> (previous, current) switch
 				{
-					Outcome.Failure => Outcome.Failure,
-					_ => current,
+					(Outcome.Failure, _) => Outcome.Failure,
+					(_, Outcome.Failure) => Outcome.Failure,
+					(Outcome.Undecided, _) => Outcome.Undecided,
+					(_, Outcome.Undecided) => Outcome.Undecided,
+					(_, _) => Outcome.Success,
 				};
 		}
 
@@ -313,10 +325,13 @@ public abstract class Expectation
 
 			/// <inheritdoc />
 			protected override Outcome CheckOutcome(Outcome? previous, Outcome current)
-				=> previous switch
+				=> (previous, current) switch
 				{
-					Outcome.Success => Outcome.Success,
-					_ => current,
+					(Outcome.Success, _) => Outcome.Success,
+					(_, Outcome.Success) => Outcome.Success,
+					(Outcome.Undecided, _) => Outcome.Undecided,
+					(_, Outcome.Undecided) => Outcome.Undecided,
+					(_, _) => Outcome.Failure,
 				};
 		}
 	}

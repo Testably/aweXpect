@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks.Sources;
+using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -194,6 +196,125 @@ public class ExpectTests
 			=> await That(sut).IsGreaterThan(41);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenANestedCombinationIsUndecided_ShouldBeInconclusive()
+	{
+		Expectation.Result result1 = new(1, "foo1",
+			new DummyConstraintResult(Outcome.Undecided, "expectation1", "result1"));
+		Expectation.Result result2 = new(2, "foo2",
+			new DummyConstraintResult(Outcome.Failure, "expectation2", "result2"));
+		Expectation.Result result3 = new(3, "foo3", new DummyConstraintResult(Outcome.Success, "expectation3"));
+
+		async Task Act()
+			=> await ThatAll(
+				ThatAny(new MyExpectation(result1), new MyExpectation(result2)),
+				new MyExpectation(result3));
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			             foo3 expectation3
+			             but
+			                [01] result1
+			                [02] result2
+			             """)
+			.Because("an undecided nested combination leaves the outer combination undecided");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenOneExpectationFailsAndAnotherIsUndecided_ShouldFail()
+	{
+		Expectation.Result result1 = new(1, "foo1",
+			new DummyConstraintResult(Outcome.Undecided, "expectation1", "result1"));
+		Expectation.Result result2 = new(2, "foo2",
+			new DummyConstraintResult(Outcome.Failure, "expectation2", "result2"));
+
+		async Task Act()
+			=> await ThatAll(new MyExpectation(result1), new MyExpectation(result2));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			             foo1 expectation1
+			             foo2 expectation2
+			             but
+			              [01] result1
+			              [02] result2
+			             """)
+			.Because("a failed expectation fails all of them, regardless of the undecided one");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenOneExpectationIsCanceledAndTheOtherSucceeds_ShouldBeInconclusive()
+	{
+		Task<int> subject = PendingTask.Of<int>();
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await ThatAll(
+				That(subject).IsEqualTo(1).WithCancellation(cts.Token),
+				That(true).IsTrue());
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject is equal to 1
+			              [02] Expected that true is True
+			             but
+			              [01] it could not be verified, because it was already canceled
+			             """)
+			.Because("the canceled expectation was not verified, so not all of them succeeded");
+	}
+
+	[Fact]
+	public async Task ThatAny_WhenAllExpectationsAreUndecided_ShouldBeInconclusive()
+	{
+		Expectation.Result result1 = new(1, "foo1",
+			new DummyConstraintResult(Outcome.Undecided, "expectation1", "result1"));
+		Expectation.Result result2 = new(2, "foo2",
+			new DummyConstraintResult(Outcome.Undecided, "expectation2", "result2"));
+
+		async Task Act()
+			=> await ThatAny(new MyExpectation(result1), new MyExpectation(result2));
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected any of the following to succeed:
+			             foo1 expectation1
+			             foo2 expectation2
+			             but
+			              [01] result1
+			              [02] result2
+			             """);
+	}
+
+	[Fact]
+	public async Task ThatAny_WhenOneExpectationFailsAndAnotherIsUndecided_ShouldBeInconclusive()
+	{
+		Expectation.Result result1 = new(1, "foo1",
+			new DummyConstraintResult(Outcome.Undecided, "expectation1", "result1"));
+		Expectation.Result result2 = new(2, "foo2",
+			new DummyConstraintResult(Outcome.Failure, "expectation2", "result2"));
+
+		async Task Act()
+			=> await ThatAny(new MyExpectation(result1), new MyExpectation(result2));
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected any of the following to succeed:
+			             foo1 expectation1
+			             foo2 expectation2
+			             but
+			              [01] result1
+			              [02] result2
+			             """)
+			.Because("the undecided expectation could still have succeeded");
 	}
 
 	/// <remarks>
