@@ -580,6 +580,58 @@ public sealed partial class ThatAsyncEnumerable
 					             [2, 3]
 					             """);
 			}
+
+			[Fact]
+			public async Task WithSubsetMissingInsideTheAbandonedPartialMatch_ShouldReportTheDeviationOfTheRestartedMatch()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 3,]);
+				int[] expected = [1, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it
+					               contained item 3 at index 3 instead of 2 and
+					               lacked 1 of 3 expected items: 2
+
+					             Collection:
+					             [1, 1, 1, 3]
+
+					             Expected:
+					             [1, 1, 2]
+					             """)
+					.Because("the partial match that restarts inside the abandoned one is the longest");
+			}
+
+			[Fact]
+			public async Task WithSubsetOverlappingTheAbandonedPartialMatch_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 2, 1, 3,]);
+				int[] expected = [1, 2, 1, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expected items can start inside an abandoned partial match");
+			}
+
+			[Fact]
+			public async Task WithSubsetStartingInsideTheAbandonedPartialMatch_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 2,]);
+				int[] expected = [1, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expected items can start inside an abandoned partial match");
+			}
 		}
 
 		public sealed class InSameOrderIgnoringDuplicatesTests

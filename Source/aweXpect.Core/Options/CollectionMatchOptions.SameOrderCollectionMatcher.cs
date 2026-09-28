@@ -69,6 +69,7 @@ public partial class CollectionMatchOptions
 		private int _matchIndex;
 		private int _maxMatchIndex;
 		private int _positionalDeviations;
+		private List<int> _restartIndices = new();
 		private bool _runIsBroken;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
@@ -109,7 +110,12 @@ public partial class CollectionMatchOptions
 			}
 			else if (await AreConsideredEqual(value, _expectedItems[_matchIndex], options))
 			{
+				bool continuesTheRun = _matchIndex > 0;
 				VerifyTheCurrentValueIsEqualToTheExpectedValue(value);
+				if (!_ignoreInterspersedItems && continuesTheRun && _matchIndex < _expectedItems.Length)
+				{
+					await KeepTheRestartsThatContinueWith(value, options);
+				}
 			}
 			else if (_ignoreInterspersedItems)
 			{
@@ -367,9 +373,59 @@ public partial class CollectionMatchOptions
 			return (error != null, error);
 		}
 
+		/// <summary>
+		///     Keeps the subject indices at which a later run could start, as long as all items since then match the
+		///     expected items, because the expected items can overlap with themselves, e.g. <c>[1, 1, 2]</c> in
+		///     <c>[1, 1, 1, 2]</c>; the <paramref name="value" /> itself can start one as well.
+		/// </summary>
+		private async ValueTask KeepTheRestartsThatContinueWith(T value, IOptionsEquality<T2> options)
+		{
+			List<int> restartIndices = new();
+			foreach (int restartIndex in _restartIndices)
+			{
+				if (await AreConsideredEqual(value, _expectedItems[_index - restartIndex], options))
+				{
+					restartIndices.Add(restartIndex);
+				}
+			}
+
+			if (await AreConsideredEqual(value, _expectedItems[0], options))
+			{
+				restartIndices.Add(_index);
+			}
+
+			_restartIndices = restartIndices;
+		}
+
+		/// <summary>
+		///     The earliest restart inside the broken run is the longest run that still matches, so it continues as the
+		///     current run.
+		/// </summary>
+		private void RestartTheRunAt(int runStart, T value)
+		{
+			foreach ((int index, T matchingItem) in _matchingItems.Where(x => x.Index < runStart))
+			{
+				_additionalItems.Add(index, matchingItem);
+			}
+
+			_matchingItems.RemoveAll(x => x.Index < runStart);
+			_matchingItems.Add((_index, value));
+			_matchIndex = _index - runStart + 1;
+			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
+			_expectationIndex = _matchIndex - 1;
+		}
+
 		private async ValueTask
 			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
+			await KeepTheRestartsThatContinueWith(value, options);
+			if (_restartIndices.Count > 0 && _restartIndices[0] < _index)
+			{
+				RestartTheRunAt(_restartIndices[0], value);
+				_restartIndices.RemoveAt(0);
+				return;
+			}
+
 			if (_expectationIndex >= 0)
 			{
 				_expectationIndex++;
@@ -377,7 +433,7 @@ public partial class CollectionMatchOptions
 
 			_matchIndex = 0;
 
-			if (await AreConsideredEqual(value, _expectedItems[_matchIndex], options))
+			if (_restartIndices.Remove(_index))
 			{
 				foreach ((int index, T matchingItem) in _matchingItems)
 				{
