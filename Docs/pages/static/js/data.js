@@ -4194,6 +4194,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -4895,7 +4901,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -5600,7 +5607,8 @@ window.BENCHMARK_DATA = {
           372.89751529693604,
           353.43113381522045,
           364.52223185130526,
-          159.8373302391597
+          159.8373302391597,
+          328.3258736474173
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6306,6 +6314,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -7023,7 +7032,8 @@ window.BENCHMARK_DATA = {
           256.1119354565938,
           243.561039574941,
           322.3278011935098,
-          127.74056861950801
+          127.74056861950801,
+          243.26174642244976
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7216,6 +7226,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11479,6 +11490,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -12103,7 +12120,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -12731,7 +12749,8 @@ window.BENCHMARK_DATA = {
           461546.1349934896,
           429626.90471540176,
           413447.9342322716,
-          229295.6982596261
+          229295.6982596261,
+          449700.0759440104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13360,6 +13379,7 @@ window.BENCHMARK_DATA = {
           628384,
           628384,
           628384,
+          676856,
           676856,
           676856,
           676856,
@@ -14000,7 +14020,8 @@ window.BENCHMARK_DATA = {
           2616693.300223214,
           2589362.1609933036,
           2251714.272235577,
-          1231279.53125
+          1231279.53125,
+          2715198.849739583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14633,7 +14654,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841609,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18841,6 +18863,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -19542,7 +19570,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -20247,7 +20276,8 @@ window.BENCHMARK_DATA = {
           569.1707570893424,
           569.0224212237766,
           607.0824567354642,
-          258.22568420001437
+          258.22568420001437,
+          544.3072616713388
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20953,6 +20983,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -21670,7 +21701,8 @@ window.BENCHMARK_DATA = {
           493.43573640187583,
           482.6588548342387,
           597.5760265350342,
-          235.13927503994532
+          235.13927503994532,
+          474.20079441070556
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21863,6 +21895,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26588,6 +26621,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -27289,7 +27328,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -27994,7 +28034,8 @@ window.BENCHMARK_DATA = {
           341.6030615488688,
           328.68858222961427,
           371.87384190926184,
-          159.09055398305256
+          159.09055398305256,
+          338.32508718050445
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28700,6 +28741,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1064,
           1064,
           1064,
           1064,
@@ -29417,7 +29459,8 @@ window.BENCHMARK_DATA = {
           261.1682576497396,
           241.20117902755737,
           329.98674287114824,
-          120.11808069547017
+          120.11808069547017,
+          239.55810847649207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29610,6 +29653,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34335,6 +34379,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -35036,7 +35086,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -35741,7 +35792,8 @@ window.BENCHMARK_DATA = {
           618.7908314296177,
           622.8229312896729,
           637.1440219197955,
-          291.6919880594526
+          291.6919880594526,
+          614.5234347025554
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36447,6 +36499,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1600,
           1600,
           1600,
           1600,
@@ -37164,7 +37217,8 @@ window.BENCHMARK_DATA = {
           1295.366698582967,
           1181.2778409322102,
           1359.9278821211594,
-          567.6406101080088
+          567.6406101080088,
+          1253.7681101481119
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37593,6 +37647,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42082,6 +42137,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -42783,7 +42844,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -43488,7 +43550,8 @@ window.BENCHMARK_DATA = {
           3230.1673909505207,
           3171.617327372233,
           2448.9298133850098,
-          1537.74829687391
+          1537.74829687391,
+          3087.047616413661
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44194,6 +44257,7 @@ window.BENCHMARK_DATA = {
           4168,
           4168,
           4168,
+          4328,
           4328,
           4328,
           4328,
@@ -44911,7 +44975,8 @@ window.BENCHMARK_DATA = {
           1381.867888768514,
           1319.2126701061543,
           1542.2817803896392,
-          645.4647827784221
+          645.4647827784221,
+          1321.869647216797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45104,6 +45169,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49829,6 +49895,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
         "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
+      },
+      {
+        "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
+        "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
       }
     ],
     "labels": [
@@ -50530,7 +50602,8 @@ window.BENCHMARK_DATA = {
       "3262e6a4",
       "6afcb417",
       "702848e5",
-      "d94dae41"
+      "d94dae41",
+      "7b1dd6ef"
     ],
     "datasets": [
       {
@@ -51235,7 +51308,8 @@ window.BENCHMARK_DATA = {
           3237.1068412235804,
           3210.8174593607587,
           2571.2008267916167,
-          1633.2713779721942
+          1633.2713779721942,
+          3099.450386683146
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51941,6 +52015,7 @@ window.BENCHMARK_DATA = {
           3928,
           3928,
           3928,
+          4272,
           4272,
           4272,
           4272,
@@ -52658,7 +52733,8 @@ window.BENCHMARK_DATA = {
           27141.531180245536,
           26448.538559977213,
           18095.147993821363,
-          9753.625492095947
+          9753.625492095947,
+          27628.15655517578
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53368,6 +53444,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
