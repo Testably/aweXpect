@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          247.66236193974814,
           265.86803882462635,
           286.55735638936363,
           204.8831177075704,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           354.77341641698564,
           372.89751529693604,
           353.43113381522045,
-          364.52223185130526
+          364.52223185130526,
+          159.8373302391597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -433,7 +433,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -466,6 +465,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          235.957604101726,
           239.0194797515869,
           258.2686364991324,
           204.35752204259236,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           291.6323030471802,
           256.1119354565938,
           243.561039574941,
-          322.3278011935098
+          322.3278011935098,
+          127.74056861950801
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          309632.21650390624,
           306123.58328951325,
           323477.4386858259,
           257640.27161458333,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           449303.7570800781,
           461546.1349934896,
           429626.90471540176,
-          413447.9342322716
+          413447.9342322716,
+          229295.6982596261
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1041,7 +1041,6 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
-          617976,
           618120,
           618120,
           618120,
@@ -1074,6 +1073,7 @@ window.BENCHMARK_DATA = {
           628384,
           628384,
           628384,
+          676856,
           676856,
           676856,
           676856,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2550777.1184895835,
           2518065.354910714,
           2755319.0290178573,
           1944879.146108774,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2433865.0203125,
           2616693.300223214,
           2589362.1609933036,
-          2251714.272235577
+          2251714.272235577,
+          1231279.53125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841648,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841635,
           4841651,
           4841651,
-          4841609
+          4841609,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
       {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          459.48518797556557,
           446.8440067584698,
           496.19235967000327,
           400.83259906768797,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           598.3480112212045,
           569.1707570893424,
           569.0224212237766,
-          607.0824567354642
+          607.0824567354642,
+          258.22568420001437
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1649,7 +1649,6 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1682,6 +1681,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          460.8005311012268,
           460.00257263183596,
           507.2081116994222,
           423.6676195780436,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           546.7772801717123,
           493.43573640187583,
           482.6588548342387,
-          597.5760265350342
+          597.5760265350342,
+          235.13927503994532
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.36252348239606,
           260.43323510487875,
           276.0557094256083,
           224.4715517117427,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           356.2859659535544,
           341.6030615488688,
           328.68858222961427,
-          371.87384190926184
+          371.87384190926184,
+          159.09055398305256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2257,7 +2257,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2290,6 +2289,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1064,
           1064,
           1064,
           1064,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          234.77980106671652,
           226.8797260761261,
           257.68343985875447,
           207.47387848581587,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           306.6942390759786,
           261.1682576497396,
           241.20117902755737,
-          329.98674287114824
+          329.98674287114824,
+          120.11808069547017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          492.00807642936707,
           491.4921590941293,
           513.8926253000895,
           456.05161458651224,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           699.9428461619785,
           618.7908314296177,
           622.8229312896729,
-          637.1440219197955
+          637.1440219197955,
+          291.6919880594526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1256,
           1256,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
+          1600,
           1600
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1181.1749179840087,
           1163.9258127212524,
           1249.217861175537,
           975.6958395640055,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1368.4931264241536,
           1295.366698582967,
           1181.2778409322102,
-          1359.9278821211594
+          1359.9278821211594,
+          567.6406101080088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1966.861614227295,
           1852.0058815819878,
           2015.617419687907,
           1540.0985544840494,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2966.8654547471265,
           3230.1673909505207,
           3171.617327372233,
-          2448.9298133850098
+          2448.9298133850098,
+          1537.74829687391
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3473,7 +3473,6 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
           3104,
           3104,
           3104,
@@ -3506,6 +3505,7 @@ window.BENCHMARK_DATA = {
           4168,
           4168,
           4168,
+          4328,
           4328,
           4328,
           4328,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1290.9601651509604,
           1331.342593129476,
           1402.462478129069,
           1048.3148404439291,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1482.8327919006347,
           1381.867888768514,
           1319.2126701061543,
-          1542.2817803896392
+          1542.2817803896392,
+          645.4647827784221
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
-      },
-      {
         "sha": "e5e13677570629e46489752ab175c9a3f2ebeebc",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:06:18 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
         "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
+      },
+      {
+        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
+        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
       }
     ],
     "labels": [
-      "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
       "763e7578",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "24837307",
       "3262e6a4",
       "6afcb417",
-      "702848e5"
+      "702848e5",
+      "d94dae41"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2513.970354715983,
           2455.5898460388185,
           2607.561673227946,
           2002.1590328216553,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3035.0068926493327,
           3237.1068412235804,
           3210.8174593607587,
-          2571.2008267916167
+          2571.2008267916167,
+          1633.2713779721942
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4081,7 +4081,6 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
-          2944,
           3296,
           3296,
           3296,
@@ -4114,6 +4113,7 @@ window.BENCHMARK_DATA = {
           3928,
           3928,
           3928,
+          4272,
           4272,
           4272,
           4272,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26155.42914036342,
           25413.76973470052,
           27385.67385253906,
           16234.44164804312,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           23958.653832571847,
           27141.531180245536,
           26448.538559977213,
-          18095.147993821363
+          18095.147993821363,
+          9753.625492095947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4197,7 +4197,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
