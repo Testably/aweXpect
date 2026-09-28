@@ -355,6 +355,30 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """);
 			}
+
+			[Fact]
+			public async Task WithSubsetStartingInsideTheAbandonedPartialMatch_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 1, 2,]);
+				int[] expected = [1, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection expected in order and contiguous,
+					             but it did
+
+					             Collection:
+					             [1, 1, 1, 2]
+
+					             Expected:
+					             [1, 1, 2]
+					             """)
+					.Because("the expected items can start inside an abandoned partial match");
+			}
 		}
 
 		public sealed class InSameOrderIgnoringDuplicatesTests
