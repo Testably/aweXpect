@@ -238,6 +238,29 @@ public sealed class SignalerTests
 		}
 
 		[Fact]
+		public async Task Wait_WhenAnotherWaitIsPending_ShouldNotInterfereWithIt()
+		{
+			Signaler signaler = new();
+			SignalerResult? pendingResult = null;
+			Thread pendingWait = new(() => pendingResult = signaler.Wait(2.Times(), 5.Seconds()));
+			pendingWait.Start();
+			while ((pendingWait.ThreadState & System.Threading.ThreadState.WaitSleepJoin) == 0)
+			{
+				await Task.Delay(1.Milliseconds());
+			}
+
+			signaler.Signal();
+			SignalerResult result = signaler.Wait(2.Times(), TimeSpan.Zero);
+			signaler.Signal();
+			pendingWait.Join();
+
+			await That(result.IsSuccess).IsFalse();
+			await That(pendingResult?.IsSuccess).IsTrue()
+				.Because("the other wait must neither replace nor remove the event of the pending wait");
+			await That(pendingResult?.Count).IsEqualTo(2);
+		}
+
+		[Fact]
 		public async Task Wait_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignals()
 		{
 			Signaler signaler = new();
@@ -349,6 +372,23 @@ public sealed class SignalerTests
 		}
 
 		[Fact]
+		public async Task Signal_AfterAWaitEnded_ShouldNotInvokeItsPredicate()
+		{
+			Signaler<int> signaler = new();
+			int invocations = 0;
+			signaler.Wait(_ =>
+			{
+				invocations++;
+				return true;
+			}, TimeSpan.Zero);
+
+			signaler.Signal(1);
+
+			await That(invocations).IsEqualTo(0)
+				.Because("the predicate belongs to a wait that already ended");
+		}
+
+		[Fact]
 		public async Task Signal_WhenThePredicateOfTheWaitThrows_ShouldNotThrow()
 		{
 			Signaler<int> signaler = new();
@@ -438,6 +478,20 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsFalse();
 			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
+		}
+
+		[Fact]
+		public async Task Wait_Single_AfterATimedOutWait_ShouldSucceedWithTheNewSignal()
+		{
+			Signaler<int> signaler = new();
+			signaler.Wait(timeout: 10.Milliseconds());
+			signaler.Signal(1);
+
+			SignalerResult<int> result = signaler.Wait(timeout: 5.Seconds());
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("the new wait must not wait on the disposed event of the ended wait");
+			await That(result.Parameters).IsEqualTo([1,]);
 		}
 
 		[Fact]
@@ -653,6 +707,27 @@ public sealed class SignalerTests
 		}
 
 		[Fact]
+		public async Task Wait_WithPredicate_Single_WhenThePredicateSignals_ShouldCountTheNewSignal()
+		{
+			Signaler<int> signaler = new();
+			signaler.Signal(1);
+
+			SignalerResult<int> result = signaler.Wait(x =>
+			{
+				if (x == 1)
+				{
+					signaler.Signal(2);
+				}
+
+				return x == 2;
+			}, 5.Seconds());
+
+			await That(result.IsSuccess).IsTrue()
+				.Because("a signal while the recorded parameters are evaluated must not corrupt the evaluation");
+			await That(result.Parameters).IsEqualTo([1, 2,]);
+		}
+
+		[Fact]
 		public async Task Wait_WithPredicate_Single_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
@@ -674,6 +749,30 @@ public sealed class SignalerTests
 			sw.Stop();
 			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
 				.Because("the exception ends the wait instead of letting it run into the timeout");
+		}
+
+		[Fact]
+		public async Task Wait_WithPredicate_WhenAnotherWaitIsPending_ShouldKeepItsOwnPredicate()
+		{
+			Signaler<int> signaler = new();
+			using ManualResetEventSlim isWaiting = new();
+			signaler.Signal(0);
+			Task<SignalerResult<int>> pendingWait = Task.Run(() => signaler.Wait(2.Times(), x =>
+			{
+				// ReSharper disable once AccessToDisposedClosure
+				isWaiting.Set();
+				return x < 10;
+			}, 5.Seconds()));
+			isWaiting.Wait(5.Seconds());
+
+			SignalerResult<int> result = signaler.Wait(x => x == 10, TimeSpan.Zero);
+			signaler.Signal(1);
+			SignalerResult<int> pendingResult = await pendingWait;
+
+			await That(result.IsSuccess).IsFalse();
+			await That(pendingResult.IsSuccess).IsTrue()
+				.Because("the other wait must not replace the predicate of the pending wait");
+			await That(pendingResult.Parameters).IsEqualTo([0, 1,]);
 		}
 
 		[Fact]
