@@ -175,12 +175,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				count = actual is ICollection<TItem> collection
+					? collection.Count
+					: materialized.CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				index++;
 				bool? isIndexInRange = _options.Match switch
 				{
@@ -292,12 +305,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				count = actual is ICollection collection
+					? collection.Count
+					: materialized.Cast<TItem>().CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				index++;
 				bool? isIndexInRange = _options.Match switch
 				{

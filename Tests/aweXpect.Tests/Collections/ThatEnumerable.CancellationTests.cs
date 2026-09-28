@@ -412,6 +412,72 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortDoesNotHaveItem()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveItem(x => x < 0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have an item matching x => x < 0,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortDoesNotHaveItemThat()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveItemThat(it => it.IsNegative()).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have an item that is negative,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequested_ShouldAbortEndsWith()
 		{
 			using CancellationTokenSource cts = new();
@@ -475,6 +541,390 @@ public sealed partial class ThatEnumerable
 				             ]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItem()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItem(-1).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to -1,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemAtAnIndexFromEnd()
+		{
+			using CancellationTokenSource cts = new();
+			int enumeratedCount = 0;
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts).Select(x =>
+			{
+				enumeratedCount++;
+				return x;
+			});
+
+			async Task Act()
+				=> await That(subject).HasItem(-1).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to -1 at index 2 from end,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
+			await That(enumeratedCount).IsLessThan(100)
+				.Because("counting the items must stop at the cancellation as well");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemForAnUntypedEnumerable()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItem(-1).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to -1,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicate()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItem(x => x < 0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item matching x => x < 0,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicateAtAnIndexFromEnd()
+		{
+			using CancellationTokenSource cts = new();
+			int enumeratedCount = 0;
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts).Select(x =>
+			{
+				enumeratedCount++;
+				return x;
+			});
+
+			async Task Act()
+				=> await That(subject).HasItem(x => x < 0).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item matching x => x < 0 at index 2 from end,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
+			await That(enumeratedCount).IsLessThan(100)
+				.Because("counting the items must stop at the cancellation as well");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicateForAnUntypedEnumerable()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItem(x => x is < 0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item matching x => x is < 0,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThat()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(it => it.IsNegative()).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is negative,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThatAtAnIndexFromEnd()
+		{
+			using CancellationTokenSource cts = new();
+			int enumeratedCount = 0;
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts).Select(x =>
+			{
+				enumeratedCount++;
+				return x;
+			});
+
+			async Task Act()
+				=> await That(subject).HasItemThat(it => it.IsNegative()).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is negative at index 2 from end,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
+			await That(enumeratedCount).IsLessThan(100)
+				.Because("counting the items must stop at the cancellation as well");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThatForAnUntypedEnumerable()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(it => it.IsEqualTo(-1)).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is equal to -1,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasSingle()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasSingle().Matching(x => x < 0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a single item matching x => x < 0,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortHasSingleForAnUntypedEnumerable()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).HasSingle().Matching(x => x is < 0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a single item matching x => x is < 0,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
 		}
 
 		[Fact]
@@ -761,6 +1211,70 @@ public sealed partial class ThatEnumerable
 				             ]
 				             """)
 				.Because("a timeout must not be mistaken for the end of the source");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapses_ShouldFailHasItem()
+		{
+			IEnumerable<int> subject = SlowNumbers();
+
+			async Task Act()
+				=> await That(subject).HasItem(x => x < 0).WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item matching x => x < 0,
+				             but it did not finish within 0:00.050
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a timeout must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapses_ShouldFailHasSingle()
+		{
+			IEnumerable<int> subject = SlowNumbers();
+
+			async Task Act()
+				=> await That(subject).HasSingle().Matching(x => x < 0).WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a single item matching x => x < 0,
+				             but it did not finish within 0:00.050
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a timeout must not be reported as a missing item");
 		}
 
 		[Fact]

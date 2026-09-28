@@ -377,12 +377,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				count = actual is ICollection<TItem> collection
+					? collection.Count
+					: materialized.CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				index++;
 				bool? isIndexInRange = options.Match switch
 				{
@@ -485,12 +498,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				count = actual is ICollection collection
+					? collection.Count
+					: materialized.Cast<TItem>().CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				index++;
 				bool? isIndexInRange = options.Match switch
 				{
@@ -567,19 +593,20 @@ public static partial class ThatEnumerable
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IContextConstraint<IEnumerable<TItem>?>
+			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private TItem? _actual;
 		private bool _hasIndex;
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
@@ -590,12 +617,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				count = actual is ICollection<TItem> collection
+					? collection.Count
+					: materialized.CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				index++;
 				bool? isIndexInRange = options.Match switch
 				{
@@ -623,7 +663,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 #pragma warning restore S3776
 
@@ -673,19 +713,20 @@ public static partial class ThatEnumerable
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
-			IContextConstraint<TEnumerable>
+			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private object? _actual;
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
@@ -695,12 +736,25 @@ public static partial class ThatEnumerable
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				count = actual is ICollection collection
+					? collection.Count
+					: materialized.Cast<TItem>().CountUnlessCanceled(cancellationToken);
+				if (count is null)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				index++;
 				bool? isIndexInRange = options.Match switch
 				{
@@ -727,7 +781,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 #pragma warning restore S3776
 

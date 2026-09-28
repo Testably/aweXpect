@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -84,20 +86,21 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
 		: ConstraintResult.WithValue<TItem?>(it, grammars),
-			IContextConstraint<IEnumerable<TItem>?>
+			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private IEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isEmpty;
 		private IEnumerable<TItem>? _materialized;
 
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
@@ -107,6 +110,13 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materialized, true);
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				_isEmpty = false;
 				if (!options.Matches(item))
 				{
@@ -126,7 +136,7 @@ public static partial class ThatEnumerable
 				expectationBuilder.AddCollectionContext(materialized);
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		/// <remarks>
@@ -212,7 +222,7 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
 		: ConstraintResult.WithValue<TItem>(it, grammars),
-			IContextConstraint<TEnumerable>
+			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private TEnumerable? _actual;
@@ -220,13 +230,14 @@ public static partial class ThatEnumerable
 		private bool _isEmpty;
 		private IEnumerable? _materialized;
 
-		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
@@ -236,6 +247,13 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materialized, true);
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				_isEmpty = false;
 				if (!options.Matches(item))
 				{
@@ -255,7 +273,7 @@ public static partial class ThatEnumerable
 				expectationBuilder.AddCollectionContext(materialized);
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		/// <remarks>
