@@ -15,9 +15,8 @@ namespace aweXpect.Signaling;
 public class Signaler
 {
 	private readonly object _lock = new();
-	private CountdownEvent? _countdownEvent;
+	private readonly List<Waiter> _waiters = new();
 	private int _counter;
-	private ManualResetEventSlim? _resetEvent;
 
 	/// <summary>
 	///     Checks if the callback was signaled at least <paramref name="amount" /> times.
@@ -39,11 +38,9 @@ public class Signaler
 		lock (_lock)
 		{
 			Interlocked.Increment(ref _counter);
-			_resetEvent?.Set();
-			// A CountdownEvent throws when signaled beyond zero, e.g. by more signals than awaited.
-			if (_countdownEvent is { IsSet: false, } countdownEvent)
+			foreach (Waiter waiter in _waiters)
 			{
-				countdownEvent.Signal();
+				waiter.Receive();
 			}
 		}
 	}
@@ -61,36 +58,7 @@ public class Signaler
 	public SignalerResult Wait(
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-	{
-		lock (_lock)
-		{
-			if (_counter > 0)
-			{
-				return new SignalerResult(true, _counter);
-			}
-
-			_resetEvent = new ManualResetEventSlim();
-		}
-
-		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
-		try
-		{
-			if (timeout != TimeSpan.Zero && _resetEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
-			{
-				return new SignalerResult(true, _counter);
-			}
-		}
-		catch (OperationCanceledException)
-		{
-			// Ignore a cancelled operation
-		}
-		finally
-		{
-			_resetEvent.Dispose();
-		}
-
-		return new SignalerResult(false, _counter);
-	}
+		=> WaitFor(1, timeout, cancellationToken);
 
 	/// <summary>
 	///     Blocks the current thread until the callback was executed at least the required <paramref name="amount" /> of times
@@ -111,24 +79,30 @@ public class Signaler
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
-		CountdownEvent countdownEvent;
+		return WaitFor(amount.Value, timeout, cancellationToken);
+	}
+
+	private SignalerResult WaitFor(int amount, TimeSpan? timeout, CancellationToken cancellationToken)
+	{
+		Waiter waiter;
 		lock (_lock)
 		{
-			if (_counter >= amount.Value)
+			if (_counter >= amount)
 			{
 				return new SignalerResult(true, _counter);
 			}
 
-			countdownEvent = new CountdownEvent(amount.Value - _counter);
-			_countdownEvent = countdownEvent;
+			waiter = new Waiter(amount - _counter);
+			_waiters.Add(waiter);
 		}
 
-		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
+		int count;
 		try
 		{
-			if (timeout != TimeSpan.Zero && countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
+			timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
+			if (timeout != TimeSpan.Zero)
 			{
-				return new SignalerResult(true, _counter);
+				waiter.Event.Wait(timeout.Value.ToTimerTimeout(), cancellationToken);
 			}
 		}
 		catch (OperationCanceledException)
@@ -139,16 +113,32 @@ public class Signaler
 		{
 			lock (_lock)
 			{
-				if (_countdownEvent == countdownEvent)
-				{
-					_countdownEvent = null;
-				}
+				_waiters.Remove(waiter);
+				count = _counter;
 			}
 
-			countdownEvent.Dispose();
+			waiter.Event.Dispose();
 		}
 
-		return new SignalerResult(false, _counter);
+		return new SignalerResult(waiter.Missing == 0, count);
+	}
+
+	/// <remarks>
+	///     Each wait has its own waiter, so that concurrent waits do not interfere with each other.
+	///     Its state must only be changed under the lock of the signaler.
+	/// </remarks>
+	private sealed class Waiter(int missing)
+	{
+		public ManualResetEventSlim Event { get; } = new();
+		public int Missing { get; private set; } = missing;
+
+		public void Receive()
+		{
+			if (Missing > 0 && --Missing == 0)
+			{
+				Event.Set();
+			}
+		}
 	}
 }
 
@@ -159,11 +149,8 @@ public class Signaler<TParameter>
 {
 	private readonly object _lock = new();
 	private readonly List<TParameter> _parameters = new();
-	private CountdownEvent? _countdownEvent;
+	private readonly List<Waiter> _waiters = new();
 	private int _counter;
-	private Func<TParameter, bool>? _predicate;
-	private Exception? _predicateException;
-	private ManualResetEventSlim? _resetEvent;
 
 	/// <summary>
 	///     Checks if the callback was signaled at least <paramref name="amount" /> times.
@@ -186,31 +173,18 @@ public class Signaler<TParameter>
 	/// </remarks>
 	public void Signal(TParameter parameter)
 	{
+		Waiter[] waiters;
 		lock (_lock)
 		{
 			Interlocked.Increment(ref _counter);
 			_parameters.Add(parameter);
-			bool isMatch;
-			try
-			{
-				isMatch = _predicate?.Invoke(parameter) != false;
-			}
-			catch (Exception exception)
-			{
-				_predicateException ??= exception;
-				EndTheWait();
-				return;
-			}
+			waiters = _waiters.ToArray();
+		}
 
-			if (isMatch)
-			{
-				_resetEvent?.Set();
-				// A CountdownEvent throws when signaled beyond zero, e.g. by more signals than awaited.
-				if (_countdownEvent is { IsSet: false, } countdownEvent)
-				{
-					countdownEvent.Signal();
-				}
-			}
+		TParameter[] parameters = [parameter,];
+		foreach (Waiter waiter in waiters)
+		{
+			ReceiveOutsideTheLock(waiter, parameters);
 		}
 	}
 
@@ -232,43 +206,7 @@ public class Signaler<TParameter>
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-	{
-		_predicate = predicate;
-		lock (_lock)
-		{
-			_predicateException = null;
-			if (GetMatchingCount(predicate) == 0)
-			{
-				_resetEvent = new ManualResetEventSlim();
-			}
-		}
-
-		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
-		if (timeout != TimeSpan.Zero && _resetEvent != null)
-		{
-			try
-			{
-				if (_resetEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
-				{
-					ThrowIfThePredicateThrew();
-					return new SignalerResult<TParameter>(true, _parameters.ToArray());
-				}
-			}
-			catch (OperationCanceledException)
-			{
-				// Ignore a cancelled operation
-			}
-			finally
-			{
-				_resetEvent.Dispose();
-			}
-
-			ThrowIfThePredicateThrew();
-			return new SignalerResult<TParameter>(false, _parameters.ToArray());
-		}
-
-		return new SignalerResult<TParameter>(GetMatchingCount(predicate) > 0, _parameters.ToArray());
-	}
+		=> WaitFor(1, predicate, timeout, cancellationToken);
 
 	/// <summary>
 	///     Blocks the current thread until<br />
@@ -290,93 +228,133 @@ public class Signaler<TParameter>
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-
 	{
-		_predicate = predicate;
 		if (amount.Value <= 0)
 		{
 			throw Tracing.WriteException(
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
-		CountdownEvent countdownEvent;
+		return WaitFor(amount.Value, predicate, timeout, cancellationToken);
+	}
+
+	private SignalerResult<TParameter> WaitFor(int amount, Func<TParameter, bool>? predicate, TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
+		Waiter waiter = new(amount, predicate);
+		TParameter[] parameters;
+		// Registering the waiter together with the snapshot lets every signal count exactly once: either from the
+		// snapshot or from the signal itself.
 		lock (_lock)
 		{
-			_predicateException = null;
-			int actualCount = GetMatchingCount(predicate);
-			if (actualCount >= amount.Value)
-			{
-				return new SignalerResult<TParameter>(true, _parameters.ToArray());
-			}
-
-			countdownEvent = new CountdownEvent(amount.Value - actualCount);
-			_countdownEvent = countdownEvent;
+			parameters = _parameters.ToArray();
+			_waiters.Add(waiter);
 		}
 
-		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
+			ReceiveOutsideTheLock(waiter, parameters);
+			timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
+			if (timeout != TimeSpan.Zero)
 			{
-				ThrowIfThePredicateThrew();
-				return new SignalerResult<TParameter>(true, _parameters.ToArray());
+				try
+				{
+					waiter.Event.Wait(timeout.Value.ToTimerTimeout(), cancellationToken);
+				}
+				catch (OperationCanceledException)
+				{
+					// Ignore a cancelled operation
+				}
 			}
-		}
-		catch (OperationCanceledException)
-		{
-			// Ignore a cancelled operation
 		}
 		finally
 		{
 			lock (_lock)
 			{
-				if (_countdownEvent == countdownEvent)
-				{
-					_countdownEvent = null;
-				}
+				_waiters.Remove(waiter);
+				waiter.HasEnded = true;
+				parameters = _parameters.ToArray();
 			}
 
-			countdownEvent.Dispose();
+			waiter.Event.Dispose();
 		}
 
-		ThrowIfThePredicateThrew();
-		return new SignalerResult<TParameter>(false, _parameters.ToArray());
+		if (waiter.Exception is not null)
+		{
+			ExceptionDispatchInfo.Capture(waiter.Exception).Throw();
+		}
+
+		return new SignalerResult<TParameter>(waiter.Missing == 0, parameters);
 	}
 
 	/// <remarks>
-	///     A wait that already ended has disposed its event, so there is nobody left to wake.
+	///     The predicate is user code, so it runs outside the lock: it may signal again or block on another thread
+	///     that signals.
 	/// </remarks>
-	private void EndTheWait()
+	private void ReceiveOutsideTheLock(Waiter waiter, TParameter[] parameters)
 	{
+		int matches;
 		try
 		{
-			_resetEvent?.Set();
-			if (_countdownEvent is { IsSet: false, } countdownEvent)
+			matches = parameters.Count(waiter.Matches);
+		}
+		catch (Exception exception)
+		{
+			lock (_lock)
 			{
-				countdownEvent.Signal(countdownEvent.CurrentCount);
+				waiter.Fail(exception);
+			}
+
+			return;
+		}
+
+		lock (_lock)
+		{
+			waiter.Receive(matches);
+		}
+	}
+
+	/// <remarks>
+	///     Each wait has its own waiter, so that concurrent waits do not interfere with each other.
+	///     Its state must only be changed under the lock of the signaler.
+	/// </remarks>
+	private sealed class Waiter(int missing, Func<TParameter, bool>? predicate)
+	{
+		public ManualResetEventSlim Event { get; } = new();
+		public Exception? Exception { get; private set; }
+
+		/// <summary>
+		///     An ended wait has disposed its <see cref="Event" />, so it must no longer receive signals.
+		/// </summary>
+		public bool HasEnded { get; set; }
+
+		public int Missing { get; private set; } = missing;
+
+		public bool Matches(TParameter parameter) => predicate?.Invoke(parameter) != false;
+
+		public void Receive(int matches)
+		{
+			if (HasEnded || Missing == 0 || matches == 0)
+			{
+				return;
+			}
+
+			Missing = Math.Max(0, Missing - matches);
+			if (Missing == 0)
+			{
+				Event.Set();
 			}
 		}
-		catch (ObjectDisposedException)
-		{
-			// Ignore a wait that already ended
-		}
-	}
 
-	private void ThrowIfThePredicateThrew()
-	{
-		if (_predicateException is not null)
+		public void Fail(Exception exception)
 		{
-			ExceptionDispatchInfo.Capture(_predicateException).Throw();
-		}
-	}
+			if (HasEnded)
+			{
+				return;
+			}
 
-	private int GetMatchingCount(Func<TParameter, bool>? predicate)
-	{
-		if (predicate is null)
-		{
-			return _parameters.Count;
+			Exception ??= exception;
+			Event.Set();
 		}
-
-		return _parameters.Count(predicate);
 	}
 }

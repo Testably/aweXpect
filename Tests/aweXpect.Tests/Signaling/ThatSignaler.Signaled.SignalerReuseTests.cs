@@ -9,6 +9,20 @@ public sealed partial class ThatSignaler
 		public sealed class SignalerReuseTests
 		{
 			[Fact]
+			public async Task WhenAwaitingASignalWithParameterAfterAnUnmetExpectation_ShouldSucceed()
+			{
+				Signaler<int> signaler = new();
+				await That(signaler).DidNotSignal().Within(10.Milliseconds());
+				signaler.Signal(1);
+
+				async Task Act()
+					=> await That(signaler).Signaled().With(x => x == 1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the unmet expectation must not leave a disposed event behind for the next wait");
+			}
+
+			[Fact]
 			public async Task WhenSignalingAfterAnAwaitedExpectation_ShouldNotThrow()
 			{
 				Signaler signaler = new();
