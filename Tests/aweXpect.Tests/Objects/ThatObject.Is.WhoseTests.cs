@@ -133,6 +133,27 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenAsyncMemberIsCombinedWithNegatedAndWhose_ShouldUseOrInExpectation()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Is<AsyncClass>()
+						.Whose(o => o.Value, value => value.IsEqualTo(42))
+						.AndWhose(o => o.GetValueAsync(), value => value.IsEqualTo(42)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 or whose GetValueAsync() is not equal to 42,
+					             but it was ThatObject.Is.WhoseTests.AsyncClass and GetValueAsync() was 42
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenValueTaskMemberDoesNotMatch_ShouldFail()
 			{
 				object subject = new AsyncClass
@@ -330,10 +351,38 @@ public sealed partial class ThatObject
 					             """).AsWildcard();
 			}
 
+			[Fact]
+			public async Task AndWhose_WhenNegated_ShouldUseOrInExpectation()
+			{
+				object subject = new TwoValues
+				{
+					First = 1,
+					Second = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Is<TwoValues>()
+						.Whose(o => o.First, f => f.IsEqualTo(1))
+						.AndWhose(o => o.Second, s => s.IsEqualTo(2)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not of type ThatObject.Is.AndWhoseTests.TwoValues whose First is equal to 1 or whose Second is not equal to 2,
+					             but it was ThatObject.Is.AndWhoseTests.TwoValues and Second was 2
+					             """);
+			}
+
 			private sealed class TwoCollections
 			{
 				public List<int> First { get; set; } = [];
 				public List<int> Second { get; set; } = [];
+			}
+
+			private sealed class TwoValues
+			{
+				public int First { get; set; }
+				public int Second { get; set; }
 			}
 		}
 	}

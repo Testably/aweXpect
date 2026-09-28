@@ -60,7 +60,7 @@ public static partial class ThatGeneric
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
 		private readonly RepeatedCheckOptions _options;
 		private bool _isNegated;
-		private bool _isOnceNegated;
+		private ConstraintResult? _negatedResult;
 
 		public CompliesWithConstraint(ExpectationBuilder expectationBuilder, ExpectationGrammars grammars,
 			Action<IThatSubject<T>> expectations, RepeatedCheckOptions options)
@@ -76,10 +76,11 @@ public static partial class ThatGeneric
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			RevertPreviousNegation();
 			ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
 			if (isMatch.Outcome == Outcome.Success != _isNegated)
 			{
-				return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
+				return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 			}
 
 			if (_options.IsRepeated)
@@ -92,31 +93,56 @@ public static partial class ThatGeneric
 					isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
 					if (isMatch.Outcome == Outcome.Success != _isNegated)
 					{
-						return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
+						return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 					}
 				} while (_options.IsWithinTimeout(sw.Elapsed));
 			}
 
-			return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
+			return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 		}
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> NegateOnceIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
-				.AppendExpectationText(sb => sb.Append(_options));
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> _itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-
-		private ConstraintResult NegateOnceIfNegated(ConstraintResult constraintResult)
 		{
-			if (_isNegated && !_isOnceNegated)
+			RevertPreviousNegation();
+			return NegateIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
+				.AppendExpectationText(sb => sb.Append(_options));
+		}
+
+		/// <remarks>
+		///     The expectation text of the expectations is not aware of the negation, so the negated result of the last
+		///     evaluation is rendered instead, which applies De Morgan to combinations.
+		/// </remarks>
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_negatedResult is not null)
 			{
-				_isOnceNegated = true;
+				_negatedResult.AppendExpectation(stringBuilder, indentation);
+				return;
+			}
+
+			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
+		}
+
+		private ConstraintResult NegateIfNegated(ConstraintResult constraintResult)
+		{
+			if (_isNegated)
+			{
+				_negatedResult = constraintResult;
 				return constraintResult.Negate();
 			}
 
 			return constraintResult;
+		}
+
+		/// <summary>
+		///     The constraints of the expectations are reused by every evaluation (e.g. for each item of a collection) and
+		///     keep the negation of the previous result, so it is undone before evaluating again.
+		/// </summary>
+		private void RevertPreviousNegation()
+		{
+			_negatedResult?.Negate();
+			_negatedResult = null;
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
