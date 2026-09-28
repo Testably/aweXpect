@@ -40,7 +40,11 @@ public class Signaler
 		{
 			Interlocked.Increment(ref _counter);
 			_resetEvent?.Set();
-			_countdownEvent?.Signal();
+			// A CountdownEvent throws when signaled beyond zero, e.g. by more signals than awaited.
+			if (_countdownEvent is { IsSet: false, } countdownEvent)
+			{
+				countdownEvent.Signal();
+			}
 		}
 	}
 
@@ -107,6 +111,7 @@ public class Signaler
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		CountdownEvent countdownEvent;
 		lock (_lock)
 		{
 			if (_counter >= amount.Value)
@@ -114,13 +119,14 @@ public class Signaler
 				return new SignalerResult(true, _counter);
 			}
 
-			_countdownEvent = new CountdownEvent(amount.Value - _counter);
+			countdownEvent = new CountdownEvent(amount.Value - _counter);
+			_countdownEvent = countdownEvent;
 		}
 
 		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
+			if (timeout != TimeSpan.Zero && countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
 				return new SignalerResult(true, _counter);
 			}
@@ -131,7 +137,15 @@ public class Signaler
 		}
 		finally
 		{
-			_countdownEvent.Dispose();
+			lock (_lock)
+			{
+				if (_countdownEvent == countdownEvent)
+				{
+					_countdownEvent = null;
+				}
+			}
+
+			countdownEvent.Dispose();
 		}
 
 		return new SignalerResult(false, _counter);
@@ -191,7 +205,11 @@ public class Signaler<TParameter>
 			if (isMatch)
 			{
 				_resetEvent?.Set();
-				_countdownEvent?.Signal();
+				// A CountdownEvent throws when signaled beyond zero, e.g. by more signals than awaited.
+				if (_countdownEvent is { IsSet: false, } countdownEvent)
+				{
+					countdownEvent.Signal();
+				}
 			}
 		}
 	}
@@ -281,6 +299,7 @@ public class Signaler<TParameter>
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		CountdownEvent countdownEvent;
 		lock (_lock)
 		{
 			_predicateException = null;
@@ -290,13 +309,14 @@ public class Signaler<TParameter>
 				return new SignalerResult<TParameter>(true, _parameters.ToArray());
 			}
 
-			_countdownEvent = new CountdownEvent(amount.Value - actualCount);
+			countdownEvent = new CountdownEvent(amount.Value - actualCount);
+			_countdownEvent = countdownEvent;
 		}
 
 		timeout ??= Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 		try
 		{
-			if (timeout != TimeSpan.Zero && _countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
+			if (timeout != TimeSpan.Zero && countdownEvent.Wait(timeout.Value.ToTimerTimeout(), cancellationToken))
 			{
 				ThrowIfThePredicateThrew();
 				return new SignalerResult<TParameter>(true, _parameters.ToArray());
@@ -308,7 +328,15 @@ public class Signaler<TParameter>
 		}
 		finally
 		{
-			_countdownEvent.Dispose();
+			lock (_lock)
+			{
+				if (_countdownEvent == countdownEvent)
+				{
+					_countdownEvent = null;
+				}
+			}
+
+			countdownEvent.Dispose();
 		}
 
 		ThrowIfThePredicateThrew();
