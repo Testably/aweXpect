@@ -555,6 +555,22 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectCanOnlyBeEnumeratedOnce_ShouldUseMaterializedItem()
+			{
+				IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.Satisfies(x => (int?)x > 4);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item that satisfies x => (int?)x > 4,
+					             but it was 1
+					             """);
+			}
 		}
 	}
 }

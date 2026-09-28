@@ -747,6 +747,38 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectCanOnlyBeEnumeratedOnce_ShouldUseMaterializedItem()
+			{
+				ThrowWhenIteratingTwiceEnumerable subject = new();
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.IsGreaterThan(4);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item that is greater than 4,
+					             but it was 1, which differs by -3
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectCanOnlyBeEnumeratedOnce_WithPredicate_ShouldUseMaterializedItem()
+			{
+				ThrowWhenIteratingTwiceEnumerable subject = new();
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching(x => x > 0).Which.IsGreaterThan(4);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item matching x => x > 0 that is greater than 4,
+					             but it was 1, which differs by -3
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenNegated_AndSingleItemSatisfiesExpectation_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([3,]);
