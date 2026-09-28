@@ -67,7 +67,7 @@ public partial class CollectionMatchOptions
 
 			await RemoveFirst(_missingItems, e => AreConsideredEqual(value, e, options));
 			_index++;
-			return _additionalItems.Count > 2 * maximumNumber
+			return CountAdditionalDeviations() > 2 * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
 		}
@@ -75,7 +75,7 @@ public partial class CollectionMatchOptions
 		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_additionalItems.Count + _missingItems.Count > 2 * maximumNumber)
+			if (CountAdditionalDeviations() + _missingItems.Count > 2 * maximumNumber)
 			{
 				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
 				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
@@ -105,6 +105,12 @@ public partial class CollectionMatchOptions
 			string? error = ReturnErrorString(it, errors);
 			return new ValueTask<(bool, string?)>((error != null, error));
 		}
+
+		/// <summary>
+		///     Additional items are no deviation for the containment relation, so they are not counted.
+		/// </summary>
+		private int CountAdditionalDeviations()
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.

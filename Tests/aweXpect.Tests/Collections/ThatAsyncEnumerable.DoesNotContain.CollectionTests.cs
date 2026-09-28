@@ -1020,6 +1020,41 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithManyAdditionalItems_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection expected in any order,
+					             but it did
+
+					             Collection:
+					             [
+					               100,
+					               101,
+					               102,
+					               103,
+					               104,
+					               105,
+					               106,
+					               107,
+					               108,
+					               109,
+					               (… and 16 more)
+					             ]
+
+					             Expected:
+					             [1]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -1408,6 +1443,41 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c"
 					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WithManyAdditionalItems_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection expected in any order ignoring duplicates,
+					             but it did
+
+					             Collection:
+					             [
+					               100,
+					               101,
+					               102,
+					               103,
+					               104,
+					               105,
+					               106,
+					               107,
+					               108,
+					               109,
+					               (… and 16 more)
+					             ]
+
+					             Expected:
+					             [1]
 					             """);
 			}
 
