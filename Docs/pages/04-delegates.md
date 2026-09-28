@@ -10,6 +10,13 @@ A delegate can be any of the following. Each of them can also take a `Cancellati
 | Synchronous  | `Action`                        | `Func<T>`                             |
 | Asynchronous | `Func<Task>`, `Func<ValueTask>` | `Func<Task<T>>`, `Func<ValueTask<T>>` |
 
+:::warning[`ValueTask` delegates on .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7]
+These targets use the .NET Standard 2.0 build of aweXpect, which has no overloads for `Func<ValueTask>` and
+`Func<ValueTask<T>>`. Such a delegate is treated as a `Func<T>` whose result is the `ValueTask`, so it is never
+awaited: an exception thrown asynchronously is not seen. Return a `Task` instead, as in `() => Act().AsTask()`. The
+analyzer rule `aweXpect0007` reports it as an error and offers to add `.AsTask()`.
+:::
+
 A `Task` or `ValueTask` is treated like a delegate as well: an asynchronous operation without return value that is
 already running.
 

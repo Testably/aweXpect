@@ -213,6 +213,15 @@ namespace aweXpect.Analyzers {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Return &quot;.AsTask()&quot;.
+        /// </summary>
+        internal static string aweXpect0007CodeFixTitle {
+            get {
+                return ResourceManager.GetString("aweXpect0007CodeFixTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..
         /// </summary>
         internal static string IsNotNullSuppressionJustification {
