@@ -35,6 +35,40 @@ public sealed class SignalerTests
 			await That(result).IsEqualTo(expectedResult);
 		}
 
+		[Fact]
+		public async Task Signal_AfterASuccessfulWait_ShouldNotThrow()
+		{
+			Signaler signaler = new();
+			signaler.Signal();
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal();
+			});
+			SignalerResult result = signaler.Wait(2.Times(), 5.Seconds());
+
+			void Act()
+				=> signaler.Signal();
+
+			await That(result.IsSuccess).IsTrue();
+			await That(Act).DoesNotThrow()
+				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
+			await That(signaler.IsSignaled(3.Times())).IsTrue();
+		}
+
+		[Fact]
+		public async Task Signal_AfterATimedOutWait_ShouldNotThrow()
+		{
+			Signaler signaler = new();
+			signaler.Wait(2.Times(), 10.Milliseconds());
+
+			void Act()
+				=> signaler.Signal();
+
+			await That(Act).DoesNotThrow()
+				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
+		}
+
 		[Theory]
 		[InlineData(2)]
 		[InlineData(3)]
@@ -264,6 +298,40 @@ public sealed class SignalerTests
 			bool result = signaler.IsSignaled(amount?.Times());
 
 			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task Signal_AfterASuccessfulWait_ShouldNotThrow()
+		{
+			Signaler<int> signaler = new();
+			signaler.Signal(1);
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(2);
+			});
+			SignalerResult<int> result = signaler.Wait(2.Times(), timeout: 5.Seconds());
+
+			void Act()
+				=> signaler.Signal(3);
+
+			await That(result.IsSuccess).IsTrue();
+			await That(Act).DoesNotThrow()
+				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
+			await That(signaler.IsSignaled(3.Times())).IsTrue();
+		}
+
+		[Fact]
+		public async Task Signal_AfterATimedOutWait_ShouldNotThrow()
+		{
+			Signaler<int> signaler = new();
+			signaler.Wait(2.Times(), timeout: 10.Milliseconds());
+
+			void Act()
+				=> signaler.Signal(1);
+
+			await That(Act).DoesNotThrow()
+				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
 		}
 
 		[Fact]
