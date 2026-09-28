@@ -22,7 +22,7 @@ public sealed partial class ThatJsonString
 					await That(Act).Throws<XunitException>()
 						.WithMessage(""""
 						             Expected that subject
-						             is equal to "{}" as JSON for all items,
+						             is JSON equivalent to {} for all items,
 						             but only 1 of 3 were
 						             
 						             Not matching items:
@@ -269,7 +269,7 @@ public sealed partial class ThatJsonString
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
+				public async Task WhenSubjectAndExpectedAreNull_ShouldFail()
 				{
 					string? subject = null;
 					string? expected = null;
@@ -277,7 +277,12 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to ,
+						             but it was <null>
+						             """);
 				}
 
 				[Theory]

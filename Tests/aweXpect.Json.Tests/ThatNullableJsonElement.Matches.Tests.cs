@@ -212,7 +212,7 @@ public sealed partial class ThatNullableJsonElement
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonElement? subject = null;
 
@@ -220,7 +220,12 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Matches(new object(), o => o.IgnoringAdditionalProperties()));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not match new object(),
+					             but it was <null>
+					             """);
 			}
 		}
 

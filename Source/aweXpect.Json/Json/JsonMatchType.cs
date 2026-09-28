@@ -35,11 +35,7 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	}
 
 	/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-#if NET8_0_OR_GREATER
 	public async ValueTask<bool>
-#else
-	public async Task<bool>
-#endif
 		AreConsideredEqual(
 			string? actual,
 			string? expected,

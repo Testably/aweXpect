@@ -31,7 +31,9 @@ public sealed class ThatJsonObject
 					             Expected that subject
 					             is serializable as JSON,
 					             but it was not:
-					               Property Name was <null> instead of "foo"
+					               Property Name differed:
+					                   Actual: <null>
+					                 Expected: "foo"
 					             """);
 			}
 
@@ -178,7 +180,9 @@ public sealed class ThatJsonObject
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty JSON,
 					             but it was not:
-					               Property Name was <null> instead of "foo"
+					               Property Name differed:
+					                   Actual: <null>
+					                 Expected: "foo"
 					             """);
 			}
 
@@ -415,14 +419,36 @@ public sealed class ThatJsonObject
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as JSON,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_WithType_ShouldFail()
+			{
+				object? subject = null;
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.IsJsonSerializable<SimplePocoWithPrimitiveTypes>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]

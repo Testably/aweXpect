@@ -20,7 +20,7 @@ public static partial class ThatJsonElement
 		object? expected,
 		string expectedExpression,
 		JsonOptions options)
-		: ConstraintResult.WithValue<JsonElement>(grammars),
+		: ConstraintResult.WithValue<JsonElement>(it, grammars),
 			IAsyncConstraint<JsonElement>
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
@@ -56,7 +56,7 @@ public static partial class ThatJsonElement
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" differed as").Append(_comparisonResult);
+			=> stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -69,14 +69,14 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" did match in ");
+			stringBuilder.Append(It).Append(" did match in ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}
 
 
 	private sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
-		: ConstraintResult.WithValue<JsonElement>(grammars),
+		: ConstraintResult.WithValue<JsonElement>(it, grammars),
 			IValueConstraint<JsonElement>
 	{
 		public ConstraintResult IsMetBy(JsonElement actual)
@@ -90,13 +90,13 @@ public static partial class ThatJsonElement
 			=> stringBuilder.Append("is ").Append(JsonValidation.Format(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was ").Append(JsonValidation.Format(Actual.ValueKind))
+			=> stringBuilder.Append(It).Append(" was ").Append(JsonValidation.Format(Actual.ValueKind))
 				.Append(" instead of ").Append(JsonValidation.Format(expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("is ").Append(JsonValidation.Format(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

@@ -335,7 +335,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	bar2 = It.Is<double>().That.IsLessThan(2.0),
 					             },
-					             but it differed as $.bar2 was 2.1
+					             but it differed as $.bar2 was 2.1, which differs by 0.1
 					             """);
 			}
 
@@ -405,7 +405,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	bar = It.Is<int>().That.IsGreaterThan(3),
 					             },
-					             but it differed as $.bar was 2
+					             but it differed as $.bar was 2, which differs by -1
 					             """);
 			}
 
@@ -516,7 +516,7 @@ public sealed partial class ThatJsonString
 					             		foo = It.Is<string>().That.IsEqualTo("A"),
 					             	},
 					             },
-					             but it differed as $.nested.foo was "" with a length of 0 which is shorter than the expected length of 1 and misses:
+					             but it differed as $.nested.foo was "" with a length of 0, which is shorter than the expected length of 1 and misses:
 					               "A"
 					             """);
 			}
@@ -552,7 +552,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	foo = It.Is<string>().That.EndsWith("bc"),
 					             },
-					             but it differed as $.foo was "xyz" which differs before index 2:
+					             but it differed as $.foo was "xyz", which differs before index 2:
 					                  ↓ (actual)
 					               "xyz"
 					                "bc"

@@ -20,7 +20,7 @@ public static partial class ThatNullableJsonElement
 		object? expected,
 		string expectedExpression,
 		JsonOptions options)
-		: ConstraintResult.WithValue<JsonElement?>(grammars),
+		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
 			IAsyncConstraint<JsonElement?>
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
@@ -62,15 +62,7 @@ public static partial class ThatNullableJsonElement
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual == null)
-			{
-				stringBuilder.Append(it).Append(" was <null>");
-				return;
-			}
-
-			stringBuilder.Append(it).Append(" differed as").Append(_comparisonResult);
-		}
+			=> stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -83,7 +75,7 @@ public static partial class ThatNullableJsonElement
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" did match in ");
+			stringBuilder.Append(It).Append(" did match in ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}

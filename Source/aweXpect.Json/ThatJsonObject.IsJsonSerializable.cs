@@ -84,7 +84,7 @@ public static class ThatJsonObject
 		ExpectationGrammars grammars,
 		JsonSerializerOptions serializerOptions,
 		EquivalencyOptions options)
-		: ConstraintResult.WithValue<object?>(grammars),
+		: ConstraintResult.WithNotNullValue<object?>(it, grammars),
 			IAsyncConstraint<object?>
 	{
 		private string? _deserializationError;
@@ -137,22 +137,18 @@ public static class ThatJsonObject
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
+			if (Actual is not T)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
-			}
-			else if (Actual is not T)
-			{
-				stringBuilder.Append(it).Append(" was not assignable to ");
+				stringBuilder.Append(It).Append(" was not assignable to ");
 				Formatter.Format(stringBuilder, typeof(T));
 			}
 			else if (_deserializationError is not null)
 			{
-				stringBuilder.Append(it).Append(" could not be deserialized: ").Append(_deserializationError);
+				stringBuilder.Append(It).Append(" could not be deserialized: ").Append(_deserializationError);
 			}
 			else if (_failureBuilder is not null)
 			{
-				stringBuilder.Append(it).Append(" was not:").Append(_failureBuilder);
+				stringBuilder.Append(It).Append(" was not:").Append(_failureBuilder);
 			}
 		}
 
@@ -170,13 +166,9 @@ public static class ThatJsonObject
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
+			if (_failureBuilder is not null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
-			}
-			else if (_failureBuilder is not null)
-			{
-				stringBuilder.Append(it).Append(" was");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 

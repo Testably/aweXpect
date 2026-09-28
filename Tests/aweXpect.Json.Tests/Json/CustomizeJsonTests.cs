@@ -20,7 +20,7 @@ public sealed class CustomizeJsonTests
 			       AllowTrailingCommas = false,
 		       }))
 		{
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that jsonWithTrailingCommas
 				             is JSON equivalent to [1, 2],

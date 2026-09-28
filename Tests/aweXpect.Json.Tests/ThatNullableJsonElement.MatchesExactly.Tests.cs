@@ -210,6 +210,22 @@ public sealed partial class ThatNullableJsonElement
 					              but it did match in {json}
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(new object()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not match new object() exactly,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class ArrayTests

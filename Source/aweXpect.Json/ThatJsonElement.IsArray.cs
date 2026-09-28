@@ -48,7 +48,7 @@ public static partial class ThatJsonElement
 		ExpectationGrammars grammars,
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,
 		JsonOptions options)
-		: ConstraintResult.WithValue<JsonElement>(grammars),
+		: ConstraintResult.WithValue<JsonElement>(it, grammars),
 			IValueConstraint<JsonElement>
 	{
 		private JsonValidation? _jsonValidation;
@@ -67,14 +67,14 @@ public static partial class ThatJsonElement
 			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_jsonValidation?.GetFailure(it));
+			=> stringBuilder.Append(_jsonValidation?.GetFailure(It));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was in ");
+			stringBuilder.Append(It).Append(" was in ");
 			Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
 		}
 	}
