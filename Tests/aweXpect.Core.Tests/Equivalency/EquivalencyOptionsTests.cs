@@ -5,6 +5,19 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyOptionsTests
 {
 	[Fact]
+	public async Task For_ShouldNotChangeTheOptionsItIsCalledOn()
+	{
+		EquivalencyOptions inner = new();
+
+		EquivalencyOptions<int> result = new(inner);
+		_ = result.For<string>(_ => new EquivalencyTypeOptions());
+
+		await That(inner.GetOptionsFor(typeof(string))).IsSameAs(inner)
+			.Because("the customized default is shared by every expectation");
+		await That(result.GetOptionsFor(typeof(string))).IsSameAs(result);
+	}
+
+	[Fact]
 	public async Task ToString_WhenVisibilitiesAreCombined_ShouldNameEachOfThem()
 	{
 		EquivalencyOptions options = new()
@@ -29,29 +42,6 @@ public sealed class EquivalencyOptionsTests
 		EquivalencyOptions<int> result = new(inner);
 
 		await That(result.ComparisonType).IsEqualTo(EquivalencyComparisonType.ByValue)
-			.Because("a globally customized default must survive the typed options of a per-call callback");
-	}
-
-	[Fact]
-	public async Task TypedOptions_ShouldKeepCustomOptions()
-	{
-		EquivalencyTypeOptions typeOptions = new()
-		{
-			IgnoreCollectionOrder = true,
-		};
-		EquivalencyOptions inner = new()
-		{
-			CustomOptions =
-			{
-				{
-					typeof(int), typeOptions
-				},
-			},
-		};
-
-		EquivalencyOptions<int> result = new(inner);
-
-		await That(result.CustomOptions).ContainsKey(typeof(int)).WhoseValue.IsSameAs(typeOptions)
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
@@ -141,37 +131,31 @@ public sealed class EquivalencyOptionsTests
 	}
 
 	[Fact]
-	public async Task TypedOptions_ShouldNotShareCustomOptionsWithInnerOptions()
+	public async Task TypedOptions_ShouldKeepRegistrations()
 	{
-		EquivalencyOptions inner = new();
+		EquivalencyTypeOptions typeOptions = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		EquivalencyOptions inner = new EquivalencyOptions().For<int>(_ => typeOptions);
 
 		EquivalencyOptions<int> result = new(inner);
-		result.For<string>(o => o);
 
-		await That(inner.CustomOptions).IsEmpty()
-			.Because("For<T> mutates the dictionary in place, which must not reach the globally customized default");
+		await That(result.GetOptionsFor(typeof(int))).IsSameAs(typeOptions)
+			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
 	[Fact]
 	public async Task TypedOptions_WhenInnerOptionsAlreadyContainTheType_ShouldOverrideThem()
 	{
-		EquivalencyOptions inner = new()
-		{
-			CustomOptions =
-			{
-				{
-					typeof(string), new EquivalencyTypeOptions()
-				},
-			},
-		};
+		EquivalencyOptions inner = new EquivalencyOptions().For<string>(_ => new EquivalencyTypeOptions());
 
-		EquivalencyOptions<int> result = new(inner);
-		result.For<string>(o => o with
+		EquivalencyOptions<int> result = new EquivalencyOptions<int>(inner).For<string>(o => o with
 		{
 			IgnoreCollectionOrder = true,
 		});
 
-		await That(result.CustomOptions[typeof(string)].IgnoreCollectionOrder).IsTrue()
+		await That(result.GetOptionsFor(typeof(string)).IgnoreCollectionOrder).IsTrue()
 			.Because("the options of a single expectation win over the customized default");
 	}
 

@@ -193,6 +193,20 @@ public static partial class EquivalencyComparison
 			     not MemberToIgnore.ByPropertyPredicate,
 		};
 
+	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
+		EquivalencyContext context)
+	{
+		if (!context.RegisteredOptions.TryGetValue(type, out EquivalencyTypeOptions? options))
+		{
+			options = equivalencyOptions.TryGetOptionsFor(type, out EquivalencyTypeOptions? registeredOptions)
+				? registeredOptions
+				: null;
+			context.RegisteredOptions.Add(type, options);
+		}
+
+		return options;
+	}
+
 	/// <remarks>
 	///     Asked for both sides, and one of them being compared by value is enough: walking the members of the
 	///     expected object would otherwise reduce a value such as a string to the few public members it happens to
@@ -208,7 +222,9 @@ public static partial class EquivalencyComparison
 #pragma warning disable S107 // https://rules.sonarsource.com/csharp/RSPEC-107
 	/// <remarks>
 	///     Receives the options of the enclosing object instead of those of <paramref name="actual" />, because the
-	///     options that apply to <paramref name="expected" /> have to be looked up from there as well.
+	///     options that apply to <paramref name="expected" /> have to be looked up from there as well. A registration
+	///     for the type of <paramref name="expected" /> wins over one for the type of <paramref name="actual" />,
+	///     because the members that are compared come from the expected object.
 	/// </remarks>
 	private static async ValueTask<bool>
 		Compare<TActual, TExpected>(
@@ -256,17 +272,22 @@ public static partial class EquivalencyComparison
 			return CompareNulls(actual, expected, failureBuilder, memberPath, memberType, context);
 		}
 
-		EquivalencyTypeOptions typeOptions = equivalencyOptions.GetTypeOptions(actual.GetType(), parentTypeOptions);
-		if (IsComparedByValue(actual.GetType(), typeOptions, equivalencyOptions))
+		EquivalencyTypeOptions inheritedOptions = equivalencyOptions.GetInheritedOptions(parentTypeOptions);
+		EquivalencyTypeOptions? actualOptions =
+			GetRegisteredOptions(actual.GetType(), equivalencyOptions, context);
+		EquivalencyTypeOptions? expectedOptions =
+			GetRegisteredOptions(expected.GetType(), equivalencyOptions, context);
+		if (IsComparedByValue(actual.GetType(), actualOptions ?? inheritedOptions, equivalencyOptions))
 		{
 			return CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
 		}
 
-		if (IsComparedByValue(expected.GetType(),
-			    equivalencyOptions.GetTypeOptions(expected.GetType(), parentTypeOptions), equivalencyOptions))
+		if (IsComparedByValue(expected.GetType(), expectedOptions ?? inheritedOptions, equivalencyOptions))
 		{
 			return CompareByValue(actual, expected, true, failureBuilder, memberPath, memberType, context);
 		}
+
+		EquivalencyTypeOptions typeOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
 
 		ComparedPair comparedPair = new(actual, expected);
 		if (!context.ComparedPairs.Add(comparedPair))

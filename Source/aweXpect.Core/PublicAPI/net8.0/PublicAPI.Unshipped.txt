@@ -92,3 +92,6 @@ aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(Syste
 aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> TSelf!
 aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> string!
 *REMOVED*aweXpect.Equivalency.IncludeMembers.Private = 8 -> aweXpect.Equivalency.IncludeMembers
+*REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.get -> System.Collections.Generic.Dictionary<System.Type!, aweXpect.Equivalency.EquivalencyTypeOptions!>!
+*REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.init -> void
+aweXpect.Equivalency.EquivalencyOptions.GetOptionsFor(System.Type! type) -> aweXpect.Equivalency.EquivalencyTypeOptions!

@@ -217,11 +217,14 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<List<Track>>(x => x.IgnoringCollectionOrder()));
 ```
 
-Unlike the other fluent methods, `For<T>` mutates `CustomOptions` on the options it was called on rather than returning
-a copy. That is fine inside a single callback, but means an `EquivalencyOptions` instance you have already configured
-with `For<T>` should not be reused across separate assertions. The options of a single expectation start from a copy of
-the customized default, so a registration in the callback replaces one for the same type in that default without
-changing the default itself.
+Like the other fluent methods, `For<T>` returns a copy and leaves the options it was called on unchanged. The callback
+is applied to the final options of the expectation, so every other option applies to `T` as well, no matter whether it
+is set before or after `For<T>`. A registration in the callback of a single expectation replaces one for the same type
+in the [customized default](#customizing-the-global-defaults).
+
+When the subject and the expectation have different types and both are registered, the registration for the type of
+the expectation wins, because the members that are compared come from the expectation. An extension can read the
+options that apply to a type with `GetOptionsFor(type)`.
 
 ### Comparing by value or by members
 

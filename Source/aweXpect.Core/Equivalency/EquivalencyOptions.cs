@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 
@@ -17,7 +18,7 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	private readonly int _maxRecursionDepth = DefaultMaxRecursionDepth;
 
 	/// <summary>
-	///     Specifies the selector how types should be compared, if not overwritten in the <see cref="CustomOptions" />.
+	///     Specifies the selector how types should be compared, if not overwritten with <see cref="For{TMember}" />.
 	/// </summary>
 	/// <remarks>
 	///     Defaults to use the <see cref="EquivalencyDefaults.DefaultComparisonType" />.
@@ -50,24 +51,61 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 		}
 	}
 
-	/// <summary>
-	///     Custom type-specific equivalency options.
-	/// </summary>
-	public Dictionary<Type, EquivalencyTypeOptions> CustomOptions { get; init; } = new();
+	/// <remarks>
+	///     Only ever replaced as a whole, so that copies made with <see langword="with" /> can share it.
+	/// </remarks>
+	private Dictionary<Type, Func<EquivalencyTypeOptions, EquivalencyTypeOptions>> Registrations { get; init; } = new();
 
 	/// <summary>
 	///     Specifies the <paramref name="options" /> for members of type <typeparamref name="TMember" />.
 	/// </summary>
 	/// <remarks>
-	///     The last registration for a type wins, so that a single expectation can override what the customized
-	///     default already specifies for that type.
+	///     The <paramref name="options" /> are applied to the final options when a comparison looks them up, so every
+	///     other option applies to <typeparamref name="TMember" /> as well, regardless of the order of the calls. The
+	///     last registration for a type wins, so that a single expectation can override what the customized default
+	///     already specifies for that type.
 	/// </remarks>
 	public EquivalencyOptions For<TMember>(
 		Func<EquivalencyTypeOptions, EquivalencyTypeOptions> options)
+		=> this with
+		{
+			Registrations = new Dictionary<Type, Func<EquivalencyTypeOptions, EquivalencyTypeOptions>>(Registrations)
+			{
+				[typeof(TMember)] = options,
+			},
+		};
+
+	/// <summary>
+	///     Returns the options that apply to values of the <paramref name="type" />.
+	/// </summary>
+	/// <remarks>
+	///     Uses the registration with <see cref="For{TMember}" /> for the <paramref name="type" /> or its nearest base
+	///     type, and otherwise these options.
+	/// </remarks>
+	public EquivalencyTypeOptions GetOptionsFor(Type type)
+		=> TryGetOptionsFor(type, out EquivalencyTypeOptions? options) ? options : this;
+
+	/// <remarks>
+	///     The base types are walked, most derived first: the <paramref name="type" /> is the runtime type of a value,
+	///     which can never be an abstract type the user registered options for. A <see cref="Type" /> member is a
+	///     <c>RuntimeType</c> at runtime, a type that cannot even be named, so an exact match alone would make
+	///     <see cref="For{TMember}" /> unreachable for it. Interfaces are not considered, because several of them can
+	///     match without an order that decides between them.
+	/// </remarks>
+	internal bool TryGetOptionsFor(Type type, [NotNullWhen(true)] out EquivalencyTypeOptions? options)
 	{
-		EquivalencyTypeOptions typeOptions = options(this);
-		CustomOptions[typeof(TMember)] = typeOptions;
-		return this;
+		for (Type? candidate = type; candidate != null; candidate = candidate.BaseType)
+		{
+			if (Registrations.TryGetValue(candidate,
+				    out Func<EquivalencyTypeOptions, EquivalencyTypeOptions>? registration))
+			{
+				options = registration(this);
+				return true;
+			}
+		}
+
+		options = null;
+		return false;
 	}
 
 	/// <inheritdoc />
@@ -80,12 +118,13 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 			sb.Append(" - limit the recursion depth to ").Append(MaxRecursionDepth).AppendLine();
 		}
 
-		foreach (KeyValuePair<Type, EquivalencyTypeOptions> customOption in CustomOptions)
+		foreach (KeyValuePair<Type, Func<EquivalencyTypeOptions, EquivalencyTypeOptions>> registration in
+		         Registrations)
 		{
 			sb.Append(" - for ");
-			Formatter.Format(sb, customOption.Key);
+			Formatter.Format(sb, registration.Key);
 			sb.AppendLine(":");
-			customOption.Value.AppendOptions(sb, "  ");
+			registration.Value(this).AppendOptions(sb, "  ");
 		}
 
 		return sb.ToString().TrimEnd();
@@ -102,22 +141,18 @@ public record EquivalencyOptions<TExpected> : EquivalencyOptions
 	/// </summary>
 	/// <remarks>
 	///     Delegates to the copy constructor of the record, so that a member added later is copied as well instead of
-	///     being dropped silently. Only <see cref="EquivalencyOptions.CustomOptions" /> needs a copy of its own,
-	///     because <see cref="For{TMember}" /> mutates the dictionary in place and must not write into the
-	///     <paramref name="inner" /> options, which are the customized default shared by every expectation.
+	///     being dropped silently.
 	/// </remarks>
 	public EquivalencyOptions(EquivalencyOptions inner) : base(inner)
-		=> CustomOptions = new Dictionary<Type, EquivalencyTypeOptions>(inner.CustomOptions);
+	{
+	}
 
 	/// <summary>
 	///     Specifies the <paramref name="options" /> for members of type <typeparamref name="TMember" />.
 	/// </summary>
 	public new EquivalencyOptions<TExpected> For<TMember>(
 		Func<EquivalencyTypeOptions, EquivalencyTypeOptions> options)
-	{
-		base.For<TMember>(options);
-		return this;
-	}
+		=> (EquivalencyOptions<TExpected>)base.For<TMember>(options);
 
 	/// <inheritdoc />
 	public override string ToString() => base.ToString();

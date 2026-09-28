@@ -60,6 +60,30 @@ public sealed class CustomizeEquivalencyTests
 	}
 
 	[Fact]
+	public async Task SetDefaultEquivalencyOptions_WhenACallbackRegistersAType_ShouldNotChangeTheDefault()
+	{
+		ClassWithField actual = new(1, "foo");
+		ClassWithField expected = new(2, "foo");
+
+		async Task Act()
+			=> await That(actual).IsEqualTo(expected).Equivalent();
+
+		using (IDisposable __ = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Set(new EquivalencyOptions
+		       {
+			       IgnoreCollectionOrder = true,
+		       }))
+		{
+			await That(actual).IsEqualTo(expected).Equivalent(o => o.For<ClassWithField>(x => x with
+			{
+				Fields = IncludeMembers.None,
+			}));
+
+			await That(Act).Throws()
+				.Because("a registration in the callback of one expectation must not change the customized default");
+		}
+	}
+
+	[Fact]
 	public async Task SetMaxRecursionDepth_ShouldApplyOptionsWithinScope()
 	{
 		NestedNode actual = new(3);

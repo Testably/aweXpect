@@ -84,6 +84,15 @@ public static partial class EquivalencyComparison
 		///     that comparison and restores it afterwards when the differences were written into a throwaway builder.
 		/// </remarks>
 		public int DifferenceCount { get; set; }
+
+		/// <summary>
+		///     The options registered for a type, or <see langword="null" /> when it has no registration.
+		/// </summary>
+		/// <remarks>
+		///     Cached, because resolving a registration invokes its callback, and every compared pair looks up both
+		///     of its types.
+		/// </remarks>
+		public Dictionary<Type, EquivalencyTypeOptions?> RegisteredOptions { get; } = [];
 	}
 
 	private readonly struct ComparedPair : IEquatable<ComparedPair>
