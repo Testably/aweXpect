@@ -14,7 +14,7 @@ A delegate can be any of the following. Each of them can also take a `Cancellati
 These targets use the .NET Standard 2.0 build of aweXpect, which has no overloads for `Func<ValueTask>` and
 `Func<ValueTask<T>>`. Such a delegate is treated as a `Func<T>` whose result is the `ValueTask`, so it is never
 awaited: an exception thrown asynchronously is not seen. Return a `Task` instead, as in `() => Act().AsTask()`. The
-analyzer rule `aweXpect0007` warns about it and offers to add `.AsTask()`.
+analyzer rule `aweXpect0007` reports it as an error and offers to add `.AsTask()`.
 :::
 
 A `Task` or `ValueTask` is treated like a delegate as well: an asynchronous operation without return value that is

@@ -33,7 +33,7 @@ internal static class Rules
 		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning, "NoMeaningMessageFormat");
 
 	public static readonly DiagnosticDescriptor ValueTaskDelegateRule =
-		CreateDescriptor("aweXpect0007", UsageCategory, DiagnosticSeverity.Warning);
+		CreateDescriptor("aweXpect0007", UsageCategory, DiagnosticSeverity.Error);
 
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
