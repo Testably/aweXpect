@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,6 +56,7 @@ public static partial class ThatGeneric
 			IAsyncContextConstraint<T>,
 			IExpectationTextConstraint
 	{
+		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
 		private readonly RepeatedCheckOptions _options;
 		private bool _isNegated;
@@ -66,6 +66,7 @@ public static partial class ThatGeneric
 			Action<IThatSubject<T>> expectations, RepeatedCheckOptions options)
 			: base(grammars)
 		{
+			_expectationBuilder = expectationBuilder;
 			_options = options;
 			_itemExpectationBuilder = new ManualExpectationBuilder<T>(expectationBuilder, grammars);
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
@@ -77,28 +78,13 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			RevertPreviousNegation();
-			ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
-			if (isMatch.Outcome == Outcome.Success != _isNegated)
+			ConstraintResult? isMatch = null;
+			await _options.CheckRepeatedly(async () =>
 			{
-				return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
-			}
-
-			if (_options.IsRepeated)
-			{
-				Stopwatch sw = new();
-				sw.Start();
-				do
-				{
-					await Task.Delay(_options.Interval.NextCheckInterval(), cancellationToken);
-					isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
-					if (isMatch.Outcome == Outcome.Success != _isNegated)
-					{
-						return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
-					}
-				} while (_options.IsWithinTimeout(sw.Elapsed));
-			}
-
-			return NegateIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
+				isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
+				return isMatch.Outcome == Outcome.Success != _isNegated;
+			}, _expectationBuilder, cancellationToken);
+			return NegateIfNegated(isMatch!).AppendExpectationText(sb => sb.Append(_options));
 		}
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,

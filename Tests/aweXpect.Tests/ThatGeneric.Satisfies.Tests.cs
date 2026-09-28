@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
+using aweXpect.Customization;
 
 namespace aweXpect.Tests;
 
@@ -209,6 +211,66 @@ public sealed partial class ThatGeneric
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task WhenCanceledShortlyBeforeTheTimeout_ShouldFailWithTheResult()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				using ManualResetEventSlim firstCheck = new();
+				Task cancellation = Task.Run(() =>
+				{
+					firstCheck.Wait(10.Seconds());
+					Stopwatch stopwatch = Stopwatch.StartNew();
+					while (stopwatch.Elapsed < 49.Milliseconds())
+					{
+						Thread.SpinWait(10);
+					}
+
+					cts.Cancel();
+				});
+
+				bool StartsTheClock(Other _)
+				{
+					firstCheck.Set();
+					return false;
+				}
+
+				async Task Act()
+					=> await That(subject).Satisfies(StartsTheClock).Within(50.Milliseconds())
+						.CheckEvery(1.Hours()).WithCancellation(cts.Token);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies StartsTheClock within 0:00.050,
+					             but it was ThatGeneric.Other {
+					               Value = 0
+					             }
+					             """)
+					.Because("a cancellation at about the timeout must not hide the result of the last check");
+				await cancellation;
+			}
+
+			[Fact]
+			public async Task WhenCancellationIsRequestedWhileRetryingWithALongerGlobalTimeout_ShouldBeInconclusive()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
+						.WithTimeout(60.Seconds()).WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false within 0:30,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
+					.Because("only a timeout, not the cancellation by the caller, leaves the decision to the last check");
+			}
+
+			[Fact]
 			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
 			{
 				Other subject = new();
@@ -228,6 +290,47 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenDefaultIntervalIsNotPositive_ShouldCheckWithoutWaiting()
+			{
+				int count = 0;
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => ++count > 3).Within(5.Seconds());
+
+				using (Customize.aweXpect.Settings().Update(s => s with
+				       {
+					       DefaultCheckInterval = TimeSpan.FromMilliseconds(-5),
+				       }))
+				{
+					await That(Act).DoesNotThrow().WithTimeout(10.Seconds())
+						.Because("an interval that bypassed the validation is treated like Eventually() treats it");
+				}
+
+				await That(count).IsEqualTo(4);
+			}
+
+			[Fact]
+			public async Task WhenGlobalTimeoutEqualsTheTimeout_ShouldFailWithTheResult()
+			{
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(200.Milliseconds()).CheckEvery(1.Hours())
+						.WithTimeout(200.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false within 0:00.200,
+					             but it was ThatGeneric.Other {
+					               Value = 0
+					             }
+					             """)
+					.Because("the timeout elapsed at the same time as the global timeout");
+			}
+
+			[Fact]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				int count = 0;
@@ -244,6 +347,63 @@ public sealed partial class ThatGeneric
 					             but it did not finish within 0:00.050
 					             """).And
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
+			}
+
+			[Fact]
+			public async Task WhenIntervalExceedsTheTimeout_ShouldCheckAgainAtTheTimeout()
+			{
+				int count = 0;
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => ++count > 1).Within(200.Milliseconds())
+						.CheckEvery(1.Hours());
+
+				await That(Act).DoesNotThrow().WithTimeout(10.Seconds())
+					.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
+				await That(count).IsEqualTo(2);
+			}
+
+			[Fact]
+			public async Task WhenIntervalExceedsTheTimeout_ShouldNotCountASuccessAfterTheTimeout()
+			{
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => stopwatch.Elapsed >= 3.Seconds()).Within(100.Milliseconds())
+						.CheckEvery(6.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => stopwatch.Elapsed >= 3.Seconds() within 0:00.100,
+					             but it was ThatGeneric.Other {
+					               Value = 0
+					             }
+					             """)
+					.Because("no check is made after the timeout");
+			}
+
+			[Fact]
+			public async Task WhenIntervalExceedsTheTimerLimit_ShouldWaitUntilCanceled()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.CheckEvery(100.Days())
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false,
+					             but it could not be verified, because it was already canceled
+					             """).WithTimeout(10.Seconds())
+					.Because("an interval beyond the limit of a timer is capped instead of rejected");
 			}
 
 			[Theory]

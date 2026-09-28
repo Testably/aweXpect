@@ -2013,3 +2013,11 @@ static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collec
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>! subject, System.Collections.Generic.IEnumerable<string?>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<string?>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>!>!
 *REMOVED*static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>>! subject, params string![]! expected) -> aweXpect.Results.StringEqualityResult<System.Collections.Immutable.ImmutableArray<string?>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>>!>!
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>>! subject, params string![]! expected) -> aweXpect.Results.StringEqualityTypeResult<System.Collections.Immutable.ImmutableArray<string?>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>>!>!
+*REMOVED*aweXpect.Options.FixedCheckInterval
+*REMOVED*aweXpect.Options.FixedCheckInterval.FixedCheckInterval(System.TimeSpan interval) -> void
+*REMOVED*aweXpect.Options.FixedCheckInterval.NextCheckInterval() -> System.TimeSpan
+*REMOVED*aweXpect.Options.ICheckInterval
+*REMOVED*aweXpect.Options.ICheckInterval.NextCheckInterval() -> System.TimeSpan
+*REMOVED*aweXpect.Options.RepeatedCheckOptions.Interval.get -> aweXpect.Options.ICheckInterval!
+*REMOVED*static readonly aweXpect.Options.RepeatedCheckOptions.DefaultInterval -> System.TimeSpan
+aweXpect.Options.RepeatedCheckOptions.Interval.get -> System.TimeSpan

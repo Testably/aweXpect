@@ -1,4 +1,6 @@
-﻿using aweXpect.Customization;
+﻿using System.Threading;
+using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Options;
 using FluentAssertions.Extensions;
 
@@ -29,22 +31,40 @@ public class RepeatedCheckOptionsTests
 
 		await That(Act).DoesNotThrow()
 			.Because("the customized default interval is not an explicit interval");
-		await That(sut.Interval.NextCheckInterval()).IsEqualTo(20.Milliseconds());
+		await That(sut.Interval).IsEqualTo(20.Milliseconds());
 	}
 
 	[Fact]
-	public async Task DefaultInterval_ShouldBe100Milliseconds()
+	public async Task CheckRepeatedly_WhenIntervalIsNotPositive_ShouldYieldBetweenChecks()
 	{
-		TimeSpan result = RepeatedCheckOptions.DefaultInterval;
+		RepeatedCheckOptions sut = new();
+		sut.Within(Timeout.InfiniteTimeSpan);
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(5.Seconds());
+		Task<bool> result;
+		using (Customize.aweXpect.Settings().Update(s => s with
+		       {
+			       DefaultCheckInterval = TimeSpan.Zero,
+		       }))
+		{
+			result = sut.CheckRepeatedly(() => Task.FromResult(false), new ManualExpectationBuilder<int>(null),
+				cts.Token);
+		}
 
-		await That(result).IsEqualTo(100.Milliseconds());
+		bool isCompletedSynchronously = result.IsCompleted;
+		cts.Cancel();
+
+		await That(isCompletedSynchronously).IsFalse()
+			.Because("checking without waiting must still hand the thread back between the checks");
+		await That(async () => await result).Throws<OperationCanceledException>()
+			.Whose(e => e.CancellationToken, token => token.IsEqualTo(cts.Token));
 	}
 
 	[Fact]
 	public async Task Interval_ShouldBeReadOnlyOnceFromCustomization()
 	{
 		RepeatedCheckOptions sut = new();
-		ICheckInterval interval1, interval2;
+		TimeSpan interval1, interval2;
 		using (Customize.aweXpect.Settings().DefaultCheckInterval.Set(103.Milliseconds()))
 		{
 			interval1 = sut.Interval;
@@ -55,8 +75,8 @@ public class RepeatedCheckOptionsTests
 			interval2 = sut.Interval;
 		}
 
-		await That(interval1.NextCheckInterval()).IsEqualTo(103.Milliseconds());
-		await That(interval1.NextCheckInterval()).IsEqualTo(interval2.NextCheckInterval());
+		await That(interval1).IsEqualTo(103.Milliseconds());
+		await That(interval2).IsEqualTo(interval1);
 	}
 
 	[Fact]
