@@ -5,71 +5,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyOptionsExtensionsTests
 {
 	[Fact]
-	public async Task GetTypeOptions_ForARuntimeType_ShouldUseTheOptionsRegisteredForType()
-	{
-		EquivalencyTypeOptions typeOptions = new();
-		EquivalencyOptions options = new()
-		{
-			CustomOptions =
-			{
-				{
-					typeof(Type), typeOptions
-				},
-			},
-		};
-
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(int).GetType(), new EquivalencyTypeOptions());
-
-		await That(result).IsSameAs(typeOptions)
-			.Because("the runtime type of a Type member is RuntimeType, which is the only type a user cannot name");
-	}
-
-	[Fact]
-	public async Task GetTypeOptions_WhenBothTheTypeAndItsBaseTypeAreRegistered_ShouldUseTheOptionsOfTheType()
-	{
-		EquivalencyTypeOptions baseTypeOptions = new();
-		EquivalencyTypeOptions typeOptions = new();
-		EquivalencyOptions options = new()
-		{
-			CustomOptions =
-			{
-				{
-					typeof(MyBaseClass), baseTypeOptions
-				},
-				{
-					typeof(MyDerivedClass), typeOptions
-				},
-			},
-		};
-
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyDerivedClass), new EquivalencyTypeOptions());
-
-		await That(result).IsSameAs(typeOptions)
-			.Because("the more specific registration has to win over the one for the base type");
-	}
-
-	[Fact]
-	public async Task GetTypeOptions_WhenOnlyTheBaseTypeIsRegistered_ShouldUseTheOptionsOfTheBaseType()
-	{
-		EquivalencyTypeOptions baseTypeOptions = new();
-		EquivalencyOptions options = new()
-		{
-			CustomOptions =
-			{
-				{
-					typeof(MyBaseClass), baseTypeOptions
-				},
-			},
-		};
-
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyDerivedClass), new EquivalencyTypeOptions());
-
-		await That(result).IsSameAs(baseTypeOptions)
-			.Because("a member of an abstract type is always an instance of a derived type");
-	}
-
-	[Fact]
-	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldKeepTheComparisonTypeOfTheOptions()
+	public async Task GetInheritedOptions_ShouldKeepTheComparisonTypeOfTheOptions()
 	{
 		EquivalencyTypeOptions defaultValue = new()
 		{
@@ -80,14 +16,14 @@ public sealed class EquivalencyOptionsExtensionsTests
 			ComparisonType = EquivalencyComparisonType.ByMembers,
 		};
 
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyBaseClass), defaultValue);
+		EquivalencyTypeOptions result = options.GetInheritedOptions(defaultValue);
 
 		await That(result.ComparisonType).IsEqualTo(EquivalencyComparisonType.ByMembers)
 			.Because("the comparison type of the top-level options applies to the whole graph");
 	}
 
 	[Fact]
-	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldNotInheritTheComparisonTypeOfTheDefaultValue()
+	public async Task GetInheritedOptions_ShouldNotInheritTheComparisonTypeOfTheDefaultValue()
 	{
 		EquivalencyTypeOptions defaultValue = new()
 		{
@@ -96,7 +32,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		};
 		EquivalencyOptions options = new();
 
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyBaseClass), defaultValue);
+		EquivalencyTypeOptions result = options.GetInheritedOptions(defaultValue);
 
 		await That(result.ComparisonType).IsNull()
 			.Because("the comparison type of a registration describes the registered type only, not its members");
@@ -105,22 +41,70 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Fact]
-	public async Task GetTypeOptions_WhenTypeIsNotRegistered_ShouldUseTheDefaultValue()
+	public async Task GetOptionsFor_ForARuntimeType_ShouldUseTheOptionsRegisteredForType()
 	{
-		EquivalencyTypeOptions defaultValue = new();
-		EquivalencyOptions options = new()
+		EquivalencyTypeOptions typeOptions = new();
+		EquivalencyOptions options = new EquivalencyOptions().For<Type>(_ => typeOptions);
+
+		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(int).GetType());
+
+		await That(result).IsSameAs(typeOptions)
+			.Because("the runtime type of a Type member is RuntimeType, which is the only type a user cannot name");
+	}
+
+	[Fact]
+	public async Task GetOptionsFor_ShouldApplyTheRegistrationToTheFinalOptions()
+	{
+		EquivalencyOptions options = new EquivalencyOptions().For<MyBaseClass>(o => o with
 		{
-			CustomOptions =
-			{
-				{
-					typeof(MyDerivedClass), new EquivalencyTypeOptions()
-				},
-			},
+			Fields = IncludeMembers.None,
+		}) with
+		{
+			IgnoreCollectionOrder = true,
 		};
 
-		EquivalencyTypeOptions result = options.GetTypeOptions(typeof(MyBaseClass), defaultValue);
+		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(MyBaseClass));
 
-		await That(result).IsSameAs(defaultValue)
+		await That(result.Fields).IsEqualTo(IncludeMembers.None);
+		await That(result.IgnoreCollectionOrder).IsTrue()
+			.Because("an option set after the registration has to apply to the registered type as well");
+	}
+
+	[Fact]
+	public async Task GetOptionsFor_WhenBothTheTypeAndItsBaseTypeAreRegistered_ShouldUseTheOptionsOfTheType()
+	{
+		EquivalencyTypeOptions baseTypeOptions = new();
+		EquivalencyTypeOptions typeOptions = new();
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<MyBaseClass>(_ => baseTypeOptions)
+			.For<MyDerivedClass>(_ => typeOptions);
+
+		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(MyDerivedClass));
+
+		await That(result).IsSameAs(typeOptions)
+			.Because("the more specific registration has to win over the one for the base type");
+	}
+
+	[Fact]
+	public async Task GetOptionsFor_WhenOnlyTheBaseTypeIsRegistered_ShouldUseTheOptionsOfTheBaseType()
+	{
+		EquivalencyTypeOptions baseTypeOptions = new();
+		EquivalencyOptions options = new EquivalencyOptions().For<MyBaseClass>(_ => baseTypeOptions);
+
+		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(MyDerivedClass));
+
+		await That(result).IsSameAs(baseTypeOptions)
+			.Because("a member of an abstract type is always an instance of a derived type");
+	}
+
+	[Fact]
+	public async Task GetOptionsFor_WhenTypeIsNotRegistered_ShouldUseTheOptionsThemselves()
+	{
+		EquivalencyOptions options = new EquivalencyOptions().For<MyDerivedClass>(_ => new EquivalencyTypeOptions());
+
+		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(MyBaseClass));
+
+		await That(result).IsSameAs(options)
 			.Because("a registration for a derived type must not apply to its base type");
 	}
 

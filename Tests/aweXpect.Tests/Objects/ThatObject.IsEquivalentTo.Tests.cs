@@ -64,6 +64,105 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task ForType_WhenBothTypesAreRegistered_ShouldUseTheOptionsOfTheExpectedType()
+			{
+				Dto subject = new()
+				{
+					Id = 1,
+					Secret = "foo",
+				};
+				Entity expected = new()
+				{
+					Id = 2,
+					Secret = "foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<Dto>(x => x.IgnoringMember("Id"))
+						.For<Entity>(x => x.IgnoringMember("Secret")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Property Id differed:*").AsWildcard()
+					.Because("the compared members come from the expected object, so its registration applies");
+			}
+
+			[Fact]
+			public async Task ForType_WhenMemberIsIgnoredAfterwards_ShouldIgnoreItInTheType()
+			{
+				OuterClass subject = new()
+				{
+					Inner = new InnerClass
+					{
+						IntValue = 1,
+					},
+				};
+				OuterClass expected = new()
+				{
+					Inner = new InnerClass
+					{
+						IntValue = 2,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<InnerClass>(x => x.IgnoringCollectionOrder())
+						.IgnoringMember("Inner.IntValue"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForType_WhenOnlyTheExpectedTypeIsRegistered_ShouldApplyItsOptions()
+			{
+				Dto subject = new()
+				{
+					Id = 1,
+					Secret = "foo",
+				};
+				Entity expected = new()
+				{
+					Id = 1,
+					Secret = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<Entity>(x => x.IgnoringMember("Secret")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForType_WhenOptionIsSetAfterwards_ShouldApplyItToTheType()
+			{
+				OuterClass subject = new()
+				{
+					Inner = new InnerClass
+					{
+						Collection = ["a", "b",],
+						IntValue = 1,
+					},
+				};
+				OuterClass expected = new()
+				{
+					Inner = new InnerClass
+					{
+						Collection = ["b", "a",],
+						IntValue = 2,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<InnerClass>(x => x.IgnoringMember("IntValue"))
+						.IgnoringCollectionOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task IgnoringMismatchingProperties_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -1992,6 +2091,18 @@ public sealed partial class ThatObject
 
 				await That(Act).DoesNotThrow();
 			}
+		}
+
+		private sealed class Dto
+		{
+			public int Id { get; set; }
+			public string? Secret { get; set; }
+		}
+
+		private sealed class Entity
+		{
+			public int Id { get; set; }
+			public string? Secret { get; set; }
 		}
 
 		private sealed class WithEqualityComparerToOuterClass(bool shouldBeEqual) : IEqualityComparer

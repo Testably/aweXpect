@@ -13,8 +13,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			options.For<MyClass>(o => o.Ignoring((n, t) => n.EndsWith("At") && t == typeof(DateTime)));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -34,8 +33,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.Ignoring(x => x == "foo"));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -55,8 +53,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.Ignoring(x => x == typeof(DateTime)));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -78,8 +75,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.IgnoringCollectionOrder(ignoreCollectionOrder));
 
 		await That(result.IgnoreCollectionOrder).IsFalse();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				IgnoreCollectionOrder = ignoreCollectionOrder,
 			});
@@ -104,8 +100,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			=> o.IgnoringFields((n, t) => n.EndsWith("At") && t == typeof(DateTime)));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -127,8 +122,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.IgnoringMember(memberToIgnore));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -149,8 +143,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			=> o.IgnoringProperties((n, t) => n.EndsWith("At") && t == typeof(DateTime)));
 
 		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
@@ -179,8 +172,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.IncludingFields(fieldsToInclude));
 
 		await That(result.Fields).IsEqualTo(IncludeMembers.Public);
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				Fields = fieldsToInclude,
 			});
@@ -207,8 +199,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		EquivalencyOptions result = options.For<MyClass>(o => o.IncludingProperties(propertiesToInclude));
 
 		await That(result.Properties).IsEqualTo(IncludeMembers.Public);
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
+		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
 			{
 				Properties = propertiesToInclude,
 			});

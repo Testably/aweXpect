@@ -235,6 +235,13 @@ every `For<T>` registration of that default, so a global customization silently 
 It used to require the runtime type to match exactly, which no instance of an abstract type ever does, and which made
 `For<Type>()` unreachable because the runtime type of a `Type` is the internal `RuntimeType`.
 
+`For<T>()` returns a copy instead of changing the options it is called on, so a call inside `.Equivalent(o => …)` no
+longer writes into the customized default and from there into every later check; use its return value. Its callback
+is applied to the final options, so an option set after `For<T>()` (such as `IgnoringCollectionOrder()` or a later
+`IgnoringMember`) now applies to `T` as well. When the subject and the expectation have different types, a registration
+for the type of the expectation wins, because the compared members come from it. The public `CustomOptions` dictionary
+is gone; `GetOptionsFor(type)` returns the options that apply to a type.
+
 ## Extensions and aweXpect.Core
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what
