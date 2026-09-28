@@ -124,34 +124,6 @@ public sealed partial class EquivalencyComparerTests
 		}
 
 		[Theory]
-		[InlineData(5, 5, true)]
-		[InlineData(5, 6, false)]
-		public async Task WhenIncludingPrivateMembers_ShouldConsiderPublicAndInternalProperties(
-			int actualPrivateValue, int expectedPrivateValue, bool expectedResult)
-		{
-			MyClassWithProperties actual = new(1, 3, actualPrivateValue);
-			MyClassWithProperties expected = new(2, 4, expectedPrivateValue);
-			EquivalencyComparer sut = new(new EquivalencyOptions
-			{
-				Properties = IncludeMembers.Private,
-			});
-
-			bool result = await sut.AreConsideredEqual(actual, expected);
-
-			await That(result).IsEqualTo(expectedResult);
-			if (!expectedResult)
-			{
-				await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
-					.IsEqualTo($"""
-					            it was not:
-					              Property MyPrivateProperty differed:
-					                  Actual: {actualPrivateValue}
-					                Expected: {expectedPrivateValue}
-					            """);
-			}
-		}
-
-		[Theory]
 		[InlineData(1, 2, 1, 2, true)]
 		[InlineData(1, 2, 1, 3, false)]
 		[InlineData(1, 2, 3, 2, false)]

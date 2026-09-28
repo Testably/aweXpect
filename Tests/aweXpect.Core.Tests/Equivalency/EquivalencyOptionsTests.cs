@@ -10,12 +10,12 @@ public sealed class EquivalencyOptionsTests
 		EquivalencyOptions options = new()
 		{
 			Fields = IncludeMembers.Public | IncludeMembers.Internal,
-			Properties = IncludeMembers.Public | IncludeMembers.Internal | IncludeMembers.Private,
+			Properties = IncludeMembers.Internal,
 		};
 
 		string result = options.ToString();
 
-		await That(result).IsEqualTo(" - include public and internal fields and public, internal and private properties");
+		await That(result).IsEqualTo(" - include public and internal fields and internal properties");
 	}
 
 	[Fact]

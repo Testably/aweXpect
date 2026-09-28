@@ -280,13 +280,13 @@ public sealed class EquivalencyComparisonTests
 		};
 		EquivalencyOptions options = new()
 		{
-			Properties = IncludeMembers.Public | IncludeMembers.Private,
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
 		};
 
 		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
 
 		await That(result).IsTrue()
-			.Because("including private members makes the implementation visible under its qualified name, which still does not match the short one");
+			.Because("requesting non-public members still finds the explicit implementation by its short name");
 	}
 
 	[Fact]

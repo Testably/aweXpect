@@ -1521,40 +1521,18 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, false)]
-			[InlineData(0, 1, 0, true)]
-			[InlineData(1, 0, 0, true)]
-			[InlineData(0, 1, 1, false)]
-			[InlineData(1, 0, 1, false)]
-			[InlineData(1, 1, 0, true)]
-			[InlineData(1, 1, 1, false)]
-			public async Task WithPrivateFields_ShouldFailWhenPrivateFieldIsDifferent(int publicDifference,
-				int internalDifference, int privateDifference,
-				bool expectSuccess)
+			[Fact]
+			public async Task WithPublicAndInternalFields_ShouldIgnorePrivateFields()
 			{
 				MyClass subject = new(1, 2, 3);
-				MyClass expected = new(
-					1 + publicDifference,
-					2 + internalDifference,
-					3 + privateDifference);
+				MyClass expected = new(1, 2, 4);
 
 				async Task Act()
-					=> await That(subject).IsEquivalentTo(expected, o => o.IncludingFields(IncludeMembers.Private));
+					=> await That(subject).IsEquivalentTo(expected,
+						o => o.IncludingFields(IncludeMembers.Public | IncludeMembers.Internal));
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
-					.WithMessage($$"""
-					               Expected that subject
-					               is equivalent to expected,
-					               but it was not:
-					                 Field PrivateValue differed:
-					                     Actual: 3
-					                   Expected: {{3 + privateDifference}}
-
-					               Equivalency options:
-					                - include private fields and public properties
-					               """);
+				await That(Act).DoesNotThrow()
+					.Because("private fields are implementation details and never compared");
 			}
 
 			private sealed class MyClass(int publicValue, int internalValue, int privateValue)
@@ -1677,40 +1655,18 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, false)]
-			[InlineData(0, 1, 0, true)]
-			[InlineData(1, 0, 0, true)]
-			[InlineData(0, 1, 1, false)]
-			[InlineData(1, 0, 1, false)]
-			[InlineData(1, 1, 0, true)]
-			[InlineData(1, 1, 1, false)]
-			public async Task WithPrivateProperties_ShouldFailWhenPrivatePropertyIsDifferent(int publicDifference,
-				int internalDifference, int privateDifference,
-				bool expectSuccess)
+			[Fact]
+			public async Task WithPublicAndInternalProperties_ShouldIgnorePrivateProperties()
 			{
 				MyClass subject = new(1, 2, 3);
-				MyClass expected = new(
-					1 + publicDifference,
-					2 + internalDifference,
-					3 + privateDifference);
+				MyClass expected = new(1, 2, 4);
 
 				async Task Act()
-					=> await That(subject).IsEquivalentTo(expected, o => o.IncludingProperties(IncludeMembers.Private));
+					=> await That(subject).IsEquivalentTo(expected,
+						o => o.IncludingProperties(IncludeMembers.Public | IncludeMembers.Internal));
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
-					.WithMessage($$"""
-					               Expected that subject
-					               is equivalent to expected,
-					               but it was not:
-					                 Property PrivateValue differed:
-					                     Actual: 3
-					                   Expected: {{3 + privateDifference}}
-
-					               Equivalency options:
-					                - include public fields and private properties
-					               """);
+				await That(Act).DoesNotThrow()
+					.Because("private properties are implementation details and never compared");
 			}
 
 			private sealed class MyClass(int publicValue, int internalValue, int privateValue)

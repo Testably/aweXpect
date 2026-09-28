@@ -199,8 +199,12 @@ expectations as a static method.
 ## Equivalency
 
 `IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public
-members are registered at compile time, so asking for internal or private members falls back to reflection, which is
-unavailable under trimming.
+members are registered at compile time, so asking for internal members falls back to reflection, which is unavailable
+under trimming.
+
+`IncludeMembers.Private` is gone: protected and private members are implementation details and are never compared.
+To compare a type whose state is private, compare it [by value](./06-equivalency.md#comparing-by-value-or-by-members)
+so that its `Equals` decides.
 
 The numbers `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128` and `UInt128` are compared by value. Their members
 could not tell two values apart (`3` and `5` share `IsZero`, `IsEven` and `Sign`), and a type without public members,

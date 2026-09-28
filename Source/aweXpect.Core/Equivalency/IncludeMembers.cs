@@ -5,6 +5,9 @@ namespace aweXpect.Equivalency;
 /// <summary>
 ///     Specifies which members to include in the object comparison.
 /// </summary>
+/// <remarks>
+///     Protected and private members are never compared, because they are implementation details of a type.
+/// </remarks>
 [Flags]
 public enum IncludeMembers
 {
@@ -22,9 +25,4 @@ public enum IncludeMembers
 	///     Internal members should be included in the object comparison.
 	/// </summary>
 	Internal = 1 << 2,
-
-	/// <summary>
-	///     Private members should be included in the object comparison.
-	/// </summary>
-	Private = 1 << 3,
 }

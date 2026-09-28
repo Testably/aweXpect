@@ -41,7 +41,7 @@ internal static class IncludeMembersExtensions
 
 		return Fields.GetOrAdd((type, includeMembers), static key
 			=> GetAllFields(key.Item1, key.Item2)
-				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly, field.IsPrivate))
+				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly))
 				.ToArray());
 	}
 
@@ -57,7 +57,7 @@ internal static class IncludeMembersExtensions
 				.Where(property =>
 				{
 					MethodInfo getter = property.GetGetMethod(true)!;
-					return Includes(key.Item2, getter.IsPublic, getter.IsAssembly, getter.IsPrivate);
+					return Includes(key.Item2, getter.IsPublic, getter.IsAssembly);
 				})
 				.ToArray());
 	}
@@ -143,10 +143,9 @@ internal static class IncludeMembersExtensions
 	///     A member is included when it has one of the requested visibilities. Requiring all of them at once would
 	///     leave a combination such as <c>Public | Internal</c> without any member.
 	/// </remarks>
-	private static bool Includes(IncludeMembers includeMembers, bool isPublic, bool isAssembly, bool isPrivate)
+	private static bool Includes(IncludeMembers includeMembers, bool isPublic, bool isAssembly)
 		=> (includeMembers.HasFlag(IncludeMembers.Public) && isPublic) ||
-		   (includeMembers.HasFlag(IncludeMembers.Internal) && isAssembly) ||
-		   (includeMembers.HasFlag(IncludeMembers.Private) && isPrivate);
+		   (includeMembers.HasFlag(IncludeMembers.Internal) && isAssembly);
 
 	/// <remarks>
 	///     Reflection returns a member hidden with <see langword="new" /> once per declaration, which makes a lookup
