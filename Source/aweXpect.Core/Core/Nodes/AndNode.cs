@@ -203,15 +203,20 @@ internal class AndNode : Node
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
-			if (_separator == DefaultSeparator && _isNegated)
-			{
-				stringBuilder.Append(" or ");
-				_right.AppendExpectation(stringBuilder);
-			}
-			else
-			{
-				stringBuilder.AppendSeparatedExpectation(_separator, _right);
-			}
+			stringBuilder.AppendSeparatedExpectation(GetSeparator(), _right);
+		}
+
+		/// <remarks>
+		///     A negated combination is evaluated as "or" (De Morgan), so a leading "and" is swapped; <c>AndWhose</c> uses
+		///     <c>" and"</c> without a trailing space. Separators without an "and" (<c>" that "</c>, <c>" "</c>) attach the
+		///     right expectation to the subject introduced on the left, which an "or" would detach, so they are kept.
+		/// </remarks>
+		private string GetSeparator()
+		{
+			const string and = " and";
+			return _isNegated && _separator.StartsWith(and, StringComparison.Ordinal)
+				? " or" + _separator.Substring(and.Length)
+				: _separator;
 		}
 
 		private bool RendersLeft => _left.Outcome == Outcome.Failure;

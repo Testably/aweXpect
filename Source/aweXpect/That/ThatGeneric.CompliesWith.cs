@@ -109,8 +109,20 @@ public static partial class ThatGeneric
 				.AppendExpectationText(sb => sb.Append(_options));
 		}
 
+		/// <remarks>
+		///     The expectation text of the expectations is not aware of the negation, so the negated result of the last
+		///     evaluation is rendered instead, which applies De Morgan to combinations.
+		/// </remarks>
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> _itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
+		{
+			if (_negatedResult is not null)
+			{
+				_negatedResult.AppendExpectation(stringBuilder, indentation);
+				return;
+			}
+
+			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
+		}
 
 		private ConstraintResult NegateIfNegated(ConstraintResult constraintResult)
 		{

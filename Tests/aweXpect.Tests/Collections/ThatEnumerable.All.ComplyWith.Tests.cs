@@ -481,6 +481,88 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemsDoNotComplyWithAndCombination_ShouldUseOrInExpectation()
+				{
+					int[] subject = [20, 5,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.IsGreaterThan(0).And.IsLessThan(10)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not greater than 0 or is not less than 10 for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [5]
+
+						             Collection:
+						             [20, 5]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemsDoNotComplyWithAndWhose_ShouldUseOrInExpectation()
+				{
+					object[] subject = [new MyClass(1, "foo"),];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.Is<MyClass>()
+								.Whose(o => o.Value, v => v.IsEqualTo(1))
+								.AndWhose(o => o.StringValue, s => s.IsEqualTo("foo"))));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not of type MyClass whose Value is equal to 1 or whose StringValue is not equal to "foo" for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemsDoNotComplyWithNestedDoesNotComplyWith_ShouldCancelOutTheNegation()
+				{
+					int[] subject = [3, 1,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it
+								=> it.DoesNotComplyWith(y => y.IsEqualTo(1).Or.IsEqualTo(2))));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 1 or is equal to 2 for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [3]
+
+						             Collection:
+						             [3, 1]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenItemsDoNotComplyWithOrCombination_ShouldNegateEachItem()
 				{
 					int[] subject = [3, 1,];
@@ -492,7 +574,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to 1 or is not equal to 2 for all items,
+						             is not equal to 1 and is not equal to 2 for all items,
 						             but only 1 of 2 were
 
 						             Not matching items:
