@@ -652,53 +652,52 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
-			public async Task WhenActualImplementsIEqualityComparer_ShouldUseEqualityComparer(bool shouldBeEqual)
+			[Fact]
+			public async Task WhenActualImplementsIEqualityComparer_ShouldCompareByMembers()
 			{
-				WithEqualityComparerToOuterClass subject = new(shouldBeEqual);
-				OuterClass expected = new()
+				EqualToEverythingComparer subject = new("Foo");
+				var expected = new
 				{
-					Value = "Foo",
+					Value = "Bar",
 				};
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!shouldBeEqual)
+				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
 					             but it was not:
-					               ThatObject.IsEquivalentTo.WithEqualityComparerToOuterClass { } did not equal ThatObject.OuterClass { Inner = <null>, Value = "Foo" }
+					               Property Value differed:
+					                   Actual: "Foo"
+					                 Expected: "Bar"
 
 					             Equivalency options:
 					              - include public fields and properties
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
-			public async Task WhenExpectedImplementsIEqualityComparer_ShouldUseEqualityComparer(
-				bool shouldBeEqual)
+			[Fact]
+			public async Task WhenExpectedImplementsIEqualityComparer_ShouldCompareByMembers()
 			{
-				OuterClass subject = new()
+				var subject = new
 				{
 					Value = "Foo",
 				};
-				WithEqualityComparerToOuterClass expected = new(shouldBeEqual);
+				EqualToEverythingComparer expected = new("Bar");
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!shouldBeEqual)
+				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
 					             but it was not:
-					               ThatObject.OuterClass { Inner = <null>, Value = "Foo" } did not equal ThatObject.IsEquivalentTo.WithEqualityComparerToOuterClass { }
+					               Property Value differed:
+					                   Actual: "Foo"
+					                 Expected: "Bar"
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -2105,13 +2104,15 @@ public sealed partial class ThatObject
 			public string? Secret { get; set; }
 		}
 
-		private sealed class WithEqualityComparerToOuterClass(bool shouldBeEqual) : IEqualityComparer
+		private sealed class EqualToEverythingComparer(string value) : IEqualityComparer
 		{
+			public string Value { get; } = value;
+
 			bool IEqualityComparer.Equals(object? x, object? y)
-				=> shouldBeEqual;
+				=> true;
 
 			int IEqualityComparer.GetHashCode(object obj)
-				=> obj.GetHashCode();
+				=> 0;
 		}
 	}
 }
