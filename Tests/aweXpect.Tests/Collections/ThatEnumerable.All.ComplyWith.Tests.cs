@@ -466,6 +466,42 @@ public sealed partial class ThatEnumerable
 						.WithParamName("expectations").And
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
+
+				[Fact]
+				public async Task WhenItemsDoNotComplyWithAndCombination_ShouldNegateEachItem()
+				{
+					int[] subject = [20, -5,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.IsGreaterThan(0).And.IsLessThan(10)));
+
+					await That(Act).DoesNotThrow()
+						.Because("no item is between 0 and 10");
+				}
+
+				[Fact]
+				public async Task WhenItemsDoNotComplyWithOrCombination_ShouldNegateEachItem()
+				{
+					int[] subject = [3, 1,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1).Or.IsEqualTo(2)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 1 or is not equal to 2 for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [3, 1]
+						             """);
+				}
 			}
 		}
 	}
