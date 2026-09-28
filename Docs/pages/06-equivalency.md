@@ -174,15 +174,17 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 ### Including fields and properties
 
 You can change which fields and properties participate in the comparison. Both methods accept an `IncludeMembers` flags
-enum with the values `None`, `Public`, `Internal` and `Private`:
+enum with the values `None`, `Public` and `Internal`:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
   .IncludingFields(IncludeMembers.None)                         // exclude all fields
-  .IncludingProperties(IncludeMembers.Public | IncludeMembers.Private));
+  .IncludingProperties(IncludeMembers.Public | IncludeMembers.Internal));
 ```
 
-Default for both is `IncludeMembers.Public`.
+Default for both is `IncludeMembers.Public`. Protected and private members are never compared, because they are
+implementation details of a type. To compare such a type, let its `Equals` decide by comparing it
+[by value](#comparing-by-value-or-by-members).
 
 ### Ignoring collection order
 
@@ -417,12 +419,12 @@ The walk follows every member type the comparison would visit, including framewo
 too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
 their type stays on the reflection path.
 
-Reflection over a type without a registration is switched off when you publish with trimming or Native AOT
-enabled, because the trimmer removes members that only reflection reaches, and a comparison would silently verify
-less than it claims to. Such a comparison fails with an error that names the type and asks you to register it. The
-same applies to a comparison that requests `IncludeMembers.Internal` or `IncludeMembers.Private`, because only public
-members are registered. The `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way,
-and the `AweXpectReflectionFallback` property of your project sets that switch:
+Reflection over a type without a registration is switched off when you publish with trimming or Native AOT enabled,
+because the trimmer removes members that only reflection reaches, and a comparison would silently verify less than it
+claims to. Such a comparison fails with an error that names the type and asks you to register it. The same applies to
+a comparison that requests `IncludeMembers.Internal`, because only public members are registered. The
+`aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, and the
+`AweXpectReflectionFallback` property of your project sets that switch:
 
 ```xml
 <PropertyGroup>

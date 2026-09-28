@@ -166,7 +166,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 	[Theory]
 	[InlineData(IncludeMembers.None)]
 	[InlineData(IncludeMembers.Internal)]
-	[InlineData(IncludeMembers.Private)]
 	public async Task Generic_For_IncludingFields_ShouldSetOptionForType(IncludeMembers fieldsToInclude)
 	{
 		EquivalencyOptions options = new();
@@ -174,7 +173,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 		{
 			IncludeMembers.Public => "public",
 			IncludeMembers.Internal => "internal",
-			IncludeMembers.Private => "private",
 			_ => "no",
 		};
 
@@ -196,7 +194,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 	[Theory]
 	[InlineData(IncludeMembers.None)]
 	[InlineData(IncludeMembers.Internal)]
-	[InlineData(IncludeMembers.Private)]
 	public async Task Generic_For_IncludingProperties_ShouldSetOptionForType(IncludeMembers propertiesToInclude)
 	{
 		EquivalencyOptions options = new();
@@ -204,7 +201,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 		{
 			IncludeMembers.Public => "public",
 			IncludeMembers.Internal => "internal",
-			IncludeMembers.Private => "private",
 			_ => "no",
 		};
 

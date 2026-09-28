@@ -498,7 +498,7 @@ public static partial class EquivalencyComparison
 		Type type = dictionary.GetType();
 		if (IsReadOnlyDictionary(type))
 		{
-			return type.FindProperty("Dictionary", IncludeMembers.Private)?.GetValue(dictionary) is { } inner
+			return type.FindProperty("Dictionary", IncludeMembers.Internal)?.GetValue(dictionary) is { } inner
 				? GetKeyComparer(inner)
 				: null;
 		}

@@ -77,30 +77,13 @@ public record EquivalencyTypeOptions
 	}
 
 	private static string GetVisibilities(IncludeMembers includeMembers)
-	{
-		List<string> visibilities = [];
-		if (includeMembers.HasFlag(IncludeMembers.Public))
+		=> (includeMembers.HasFlag(IncludeMembers.Public), includeMembers.HasFlag(IncludeMembers.Internal)) switch
 		{
-			visibilities.Add("public");
-		}
-
-		if (includeMembers.HasFlag(IncludeMembers.Internal))
-		{
-			visibilities.Add("internal");
-		}
-
-		if (includeMembers.HasFlag(IncludeMembers.Private))
-		{
-			visibilities.Add("private");
-		}
-
-		return visibilities.Count switch
-		{
-			0 => "no",
-			1 => visibilities[0],
-			_ => $"{string.Join(", ", visibilities.Take(visibilities.Count - 1))} and {visibilities[visibilities.Count - 1]}",
+			(true, true) => "public and internal",
+			(true, false) => "public",
+			(false, true) => "internal",
+			_ => "no",
 		};
-	}
 
 	/// <remarks>
 	///     The kind is part of the rule, so it has to be part of the rendering too: otherwise a failure message cannot

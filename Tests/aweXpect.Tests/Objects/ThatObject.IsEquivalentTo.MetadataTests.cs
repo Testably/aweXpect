@@ -147,7 +147,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected,
-						o => o.IncludingProperties(IncludeMembers.Private));
+						o => o.IncludingProperties(IncludeMembers.Internal));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*Property Secret differed:*").AsWildcard()
@@ -204,7 +204,7 @@ public sealed partial class ThatObject
 			private sealed class RegisteredWithSecret(int secret)
 			{
 				public int Registered { get; set; }
-				private int Secret { get; } = secret;
+				internal int Secret { get; } = secret;
 			}
 
 			private sealed class WithEvent
