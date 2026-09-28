@@ -94,6 +94,13 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
 				var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
 				if (result)
 				{
@@ -215,6 +222,13 @@ public static partial class ThatEnumerable
 			NoOptions noOptions = new();
 			foreach (TItem item in materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
 				if (result)
 				{
@@ -336,6 +350,13 @@ public static partial class ThatEnumerable
 			NoOptions noOptions = new();
 			foreach (TItem item in materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
 				if (result)
 				{
@@ -468,6 +489,13 @@ public static partial class ThatEnumerable
 
 			foreach (object? item in materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
 				var (result, failure) = await matcher.Verify(It, item, untypedOptions, maximumNumber);
 				if (result)
 				{
