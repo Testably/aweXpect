@@ -7,6 +7,64 @@ namespace aweXpect.Core.Tests.Customization;
 public class TraceWriterTests
 {
 	[Fact]
+	public async Task EnableTracing_DoubleDispose_ShouldNotDisableLaterTraceWriter()
+	{
+		TestTraceWriter firstTraceWriter = new();
+		TestTraceWriter secondTraceWriter = new();
+		IDisposable firstLifetime = firstTraceWriter.Register();
+		firstLifetime.Dispose();
+		using (secondTraceWriter.Register())
+		{
+			firstLifetime.Dispose();
+			await That(true).IsTrue();
+		}
+
+		await That(secondTraceWriter.Messages).IsNotEmpty()
+			.Because("disposing a lifetime a second time must not disable a trace writer that was enabled afterwards");
+	}
+
+	[Fact]
+	public async Task EnableTracing_Global_DoubleDispose_ShouldNotDisableLaterTraceWriter()
+	{
+		AwexpectCustomization customization = new();
+		TestTraceWriter firstTraceWriter = new();
+		TestTraceWriter secondTraceWriter = new();
+		CustomizationLifetime firstLifetime = customization.Global.EnableTracing(firstTraceWriter);
+		firstLifetime.Dispose();
+		ITraceWriter? traceWriter;
+		using (customization.Global.EnableTracing(secondTraceWriter))
+		{
+			firstLifetime.Dispose();
+			traceWriter = customization.TraceWriter;
+		}
+
+		await That(traceWriter).IsSameAs(secondTraceWriter)
+			.Because("disposing a lifetime a second time must not disable a trace writer that was enabled afterwards");
+		await That(customization.TraceWriter).IsNull()
+			.Because("disposing the global lifetime disables the global trace writer again");
+	}
+
+	[Fact]
+	public async Task EnableTracing_Global_ShouldBeUsedWhenTheCurrentFlowHasNoTraceWriter()
+	{
+		AwexpectCustomization customization = new();
+		TestTraceWriter globalTraceWriter = new();
+		TestTraceWriter flowTraceWriter = new();
+		using CustomizationLifetime globalLifetime =
+			await Task.Run(() => customization.Global.EnableTracing(globalTraceWriter));
+		ITraceWriter? traceWriterWithoutFlowTraceWriter = customization.TraceWriter;
+		ITraceWriter? traceWriterWithFlowTraceWriter;
+		using (customization.EnableTracing(flowTraceWriter))
+		{
+			traceWriterWithFlowTraceWriter = customization.TraceWriter;
+		}
+
+		await That(traceWriterWithoutFlowTraceWriter).IsSameAs(globalTraceWriter)
+			.Because("the global trace writer applies to all flows");
+		await That(traceWriterWithFlowTraceWriter).IsSameAs(flowTraceWriter)
+			.Because("a trace writer enabled in the current flow takes precedence over the global one");
+	}
+	[Fact]
 	public async Task FailTest_ShouldBeLogged()
 	{
 		TestTraceWriter traceWriter = new();

@@ -1,9 +1,98 @@
-﻿using aweXpect.Customization;
+﻿using System.Threading;
+using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Customization;
 
 public class AwexpectCustomizationTests
 {
+	[Fact]
+	public async Task DoubleDispose_ShouldNotResetLaterValue()
+	{
+		CustomizationLifetime firstLifetime = Customize.aweXpect.MyConfiguration().Set("first");
+		firstLifetime.Dispose();
+		using (Customize.aweXpect.MyConfiguration().Set("second"))
+		{
+			firstLifetime.Dispose();
+
+			await That(Customize.aweXpect.MyConfiguration().Get()).IsEqualTo("second")
+				.Because("disposing a lifetime a second time must not reset a value that was set afterwards");
+		}
+	}
+
+	[Fact]
+	public async Task Formatting_PropertyLifetime_Dispose_ShouldOnlyRestoreThatProperty()
+	{
+		CustomizationLifetime itemsLifetime =
+			Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(5);
+		CustomizationLifetime lengthLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(20);
+
+		itemsLifetime.Dispose();
+		AwexpectCustomization.FormattingCustomizationValue afterFirstDispose = Customize.aweXpect.Formatting().Get();
+		lengthLifetime.Dispose();
+		AwexpectCustomization.FormattingCustomizationValue afterSecondDispose = Customize.aweXpect.Formatting().Get();
+
+		await That(afterFirstDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
+			.Because("disposing the lifetime restores its own property");
+		await That(afterFirstDispose.MaximumStringLength).IsEqualTo(20)
+			.Because("disposing a lifetime must not undo another property that is still active");
+		await That(afterSecondDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
+			.Because("disposing a lifetime must not bring back a property of an already disposed lifetime");
+		await That(afterSecondDispose.MaximumStringLength).IsEqualTo(100)
+			.Because("disposing the lifetime restores its own property");
+	}
+
+	[Fact]
+	public async Task Formatting_PropertyLifetime_DoubleDispose_ShouldNotResetLaterValue()
+	{
+		CustomizationLifetime firstLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(5);
+		firstLifetime.Dispose();
+		using (Customize.aweXpect.Formatting().MaximumStringLength.Set(7))
+		{
+			firstLifetime.Dispose();
+
+			await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(7)
+				.Because("disposing a lifetime a second time must not reset a value that was set afterwards");
+		}
+	}
+
+	[Fact]
+	public async Task Formatting_Set_InParallelFlows_ShouldNotInfluenceEachOther()
+	{
+		using CustomizationLifetime parentLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(50);
+		using SemaphoreSlim firstHasSet = new(0);
+		using SemaphoreSlim secondHasSet = new(0);
+		using SemaphoreSlim firstHasRead = new(0);
+
+		Task<int> first = Task.Run(async () =>
+		{
+			using CustomizationLifetime lifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(5);
+			firstHasSet.Release();
+			await secondHasSet.WaitAsync();
+			int value = Customize.aweXpect.Formatting().MaximumStringLength.Get();
+			firstHasRead.Release();
+			return value;
+		});
+		Task<int> second = Task.Run(async () =>
+		{
+			await firstHasSet.WaitAsync();
+			int value = Customize.aweXpect.Formatting().MaximumStringLength.Get();
+			using CustomizationLifetime lifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(20);
+			secondHasSet.Release();
+			await firstHasRead.WaitAsync();
+			return value;
+		});
+
+		int valueInFirst = await first;
+		int valueInSecond = await second;
+
+		await That(valueInFirst).IsEqualTo(5)
+			.Because("the value set in a parallel flow must not leak into this flow");
+		await That(valueInSecond).IsEqualTo(50)
+			.Because("the value set in a parallel flow must not leak into this flow");
+		await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(50)
+			.Because("a value set in a child flow must not leak into the parent flow");
+	}
+
 	[Fact]
 	public async Task Formatting_ShouldReturnTenAsDefaultMaximumNumberOfCollectionItems()
 	{
@@ -49,6 +138,123 @@ public class AwexpectCustomizationTests
 	}
 
 	[Fact]
+	public async Task Formatting_Update_DoubleDispose_ShouldNotResetLaterValue()
+	{
+		// ReSharper disable once WithExpressionModifiesAllMembers
+		CustomizationLifetime firstLifetime = Customize.aweXpect.Formatting().Update(p => p with
+		{
+			MaximumStringLength = 5,
+		});
+		firstLifetime.Dispose();
+		// ReSharper disable once WithExpressionModifiesAllMembers
+		using (Customize.aweXpect.Formatting().Update(p => p with
+		       {
+			       MaximumStringLength = 7,
+		       }))
+		{
+			firstLifetime.Dispose();
+
+			await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(7)
+				.Because("disposing a lifetime a second time must not reset a value that was set afterwards");
+		}
+	}
+
+	[Fact]
+	public async Task Global_Get_ShouldIgnoreValueOfCurrentFlow()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime globalLifetime = customization.Global.MyConfiguration().Set("global");
+		using CustomizationLifetime scopedLifetime = customization.MyConfiguration().Set("scoped");
+
+		await That(customization.Global.MyConfiguration().Get()).IsEqualTo("global")
+			.Because("the global customization only reads the global values");
+	}
+
+	[Fact]
+	public async Task Global_Global_ShouldReturnTheSameGlobalCustomization()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime lifetime = customization.Global.Global.MyConfiguration().Set("global");
+
+		await That(customization.Global.Global).IsSameAs(customization.Global)
+			.Because("the global customization is its own global customization");
+		await That(customization.MyConfiguration().Get()).IsEqualTo("global")
+			.Because("a value set on the global customization of the global customization is a global value");
+	}
+	[Fact]
+	public async Task Global_PropertyLifetime_Dispose_ShouldOnlyRestoreThatProperty()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime itemsLifetime =
+			customization.Global.Formatting().MaximumNumberOfCollectionItems.Set(5);
+		CustomizationLifetime lengthLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
+
+		itemsLifetime.Dispose();
+		AwexpectCustomization.FormattingCustomizationValue afterFirstDispose = customization.Formatting().Get();
+		lengthLifetime.Dispose();
+		AwexpectCustomization.FormattingCustomizationValue afterSecondDispose = customization.Formatting().Get();
+
+		await That(afterFirstDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
+			.Because("disposing the lifetime restores its own property");
+		await That(afterFirstDispose.MaximumStringLength).IsEqualTo(20)
+			.Because("disposing a lifetime must not undo another property that is still active");
+		await That(afterSecondDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
+			.Because("disposing a lifetime must not bring back a property of an already disposed lifetime");
+		await That(afterSecondDispose.MaximumStringLength).IsEqualTo(100)
+			.Because("disposing the lifetime restores its own property");
+	}
+
+	[Fact]
+	public async Task Global_ScopedPropertyLifetime_Dispose_ShouldApplyGlobalValuesSetInTheMeantime()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime scopedLifetime = customization.Formatting().MaximumNumberOfCollectionItems.Set(5);
+		using CustomizationLifetime globalLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
+
+		scopedLifetime.Dispose();
+
+		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(20)
+			.Because("disposing the scoped lifetime removes the group from the current flow again");
+	}
+
+	[Fact]
+	public async Task Global_ScopedValue_ShouldTakePrecedence()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime globalLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
+		string valueInScope;
+		using (customization.Formatting().MaximumNumberOfCollectionItems.Set(5))
+		using (customization.Formatting().MaximumStringLength.Set(30))
+		{
+			valueInScope = $"{customization.Formatting().MaximumNumberOfCollectionItems.Get()}/{customization.Formatting().MaximumStringLength.Get()}";
+		}
+
+		string valueAfterScope = $"{customization.Formatting().MaximumNumberOfCollectionItems.Get()}/{customization.Formatting().MaximumStringLength.Get()}";
+
+		await That(valueInScope).IsEqualTo("5/30")
+			.Because("a value set in the current flow takes precedence over the global value");
+		await That(valueAfterScope).IsEqualTo("10/20")
+			.Because("after the scope the global value applies again");
+	}
+
+	[Fact]
+	public async Task Global_Set_ShouldApplyToOtherFlows()
+	{
+		AwexpectCustomization customization = new();
+
+		CustomizationLifetime globalLifetime =
+			await Task.Run(() => customization.Global.MyConfiguration().Set("global"));
+		string valueWhileSet = customization.MyConfiguration().Get();
+		await Task.Run(globalLifetime.Dispose);
+		string valueAfterDispose = customization.MyConfiguration().Get();
+
+		await That(valueWhileSet).IsEqualTo("global")
+			.Because("a global value applies to all flows, also to one that did not start from the setting flow");
+		await That(valueAfterDispose).IsEqualTo("foo")
+			.Because("disposing the global lifetime restores the global value in all flows");
+	}
+
+	[Fact]
 	public async Task NestedLifetimes_ShouldSetPreviousValue()
 	{
 		string valueInLifetime1;
@@ -75,6 +281,75 @@ public class AwexpectCustomizationTests
 			That(valueInLifetime1AfterLifetime2).IsEqualTo("l1"),
 			That(valueAfterLifetime1).IsEqualTo("foo")
 		);
+	}
+
+	[Fact]
+	public async Task Set_InAwaitedAsyncMethod_ShouldNotBeVisibleToCaller()
+	{
+		using CustomizationLifetime outerLifetime = Customize.aweXpect.MyConfiguration().Set("outer");
+
+		await SetInAsyncMethod("inner");
+
+		await That(Customize.aweXpect.MyConfiguration().Get()).IsEqualTo("outer")
+			.Because("changes to an async local value in an awaited method do not flow back to the caller");
+
+		static async Task SetInAsyncMethod(string value)
+		{
+			await Task.Yield();
+			Customize.aweXpect.MyConfiguration().Set(value);
+		}
+	}
+
+	[Fact]
+	public async Task Set_InParallelFlows_ShouldNotInfluenceEachOther()
+	{
+		using CustomizationLifetime parentLifetime = Customize.aweXpect.MyConfiguration().Set("parent");
+		using SemaphoreSlim firstHasSet = new(0);
+		using SemaphoreSlim secondHasSet = new(0);
+		using SemaphoreSlim firstHasRead = new(0);
+
+		Task<string> first = Task.Run(async () =>
+		{
+			using CustomizationLifetime lifetime = Customize.aweXpect.MyConfiguration().Set("first");
+			firstHasSet.Release();
+			await secondHasSet.WaitAsync();
+			string value = Customize.aweXpect.MyConfiguration().Get();
+			firstHasRead.Release();
+			return value;
+		});
+		Task<string> second = Task.Run(async () =>
+		{
+			await firstHasSet.WaitAsync();
+			string value = Customize.aweXpect.MyConfiguration().Get();
+			using CustomizationLifetime lifetime = Customize.aweXpect.MyConfiguration().Set("second");
+			secondHasSet.Release();
+			await firstHasRead.WaitAsync();
+			return value;
+		});
+
+		string valueInFirst = await first;
+		string valueInSecond = await second;
+
+		await That(valueInFirst).IsEqualTo("first")
+			.Because("the value set in a parallel flow must not leak into this flow");
+		await That(valueInSecond).IsEqualTo("parent")
+			.Because("the value set in a parallel flow must not leak into this flow");
+		await That(Customize.aweXpect.MyConfiguration().Get()).IsEqualTo("parent")
+			.Because("a value set in a child flow must not leak into the parent flow");
+	}
+
+	[Fact]
+	public async Task Set_InSynchronousMethod_ShouldBeVisibleToCaller()
+	{
+		using CustomizationLifetime outerLifetime = Customize.aweXpect.MyConfiguration().Set("outer");
+
+		using CustomizationLifetime innerLifetime = SetInSynchronousMethod("inner");
+
+		await That(Customize.aweXpect.MyConfiguration().Get()).IsEqualTo("inner")
+			.Because("a synchronous method shares the async flow of its caller");
+
+		static CustomizationLifetime SetInSynchronousMethod(string value)
+			=> Customize.aweXpect.MyConfiguration().Set(value);
 	}
 }
 

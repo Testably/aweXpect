@@ -18,5 +18,9 @@ public interface ICustomizationValueUpdater<TValue>
 	/// <summary>
 	///     Update the stored <typeparamref name="TValue" />.
 	/// </summary>
+	/// <remarks>
+	///     Disposing the returned <see cref="CustomizationLifetime" /> restores the whole <typeparamref name="TValue" />
+	///     as it was before the update.
+	/// </remarks>
 	CustomizationLifetime Update(Func<TValue, TValue> update);
 }

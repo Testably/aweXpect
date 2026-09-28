@@ -26,12 +26,12 @@ public partial class AwexpectCustomization
 		internal EquivalencyCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			_awexpectCustomization = awexpectCustomization;
-			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyOptions>(
-				() => Get().DefaultEquivalencyOptions,
-				v => Update(p => p with
+			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyCustomizationValue, EquivalencyOptions>(this,
+				p => p.DefaultEquivalencyOptions,
+				(p, v) => p with
 				{
 					DefaultEquivalencyOptions = v,
-				}));
+				});
 		}
 
 		/// <inheritdoc cref="EquivalencyCustomizationValue.DefaultEquivalencyOptions" />

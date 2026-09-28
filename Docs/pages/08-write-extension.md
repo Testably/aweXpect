@@ -310,12 +310,12 @@ public static class JsonAwexpectCustomizationExtensions
         internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
         {
             _awexpectCustomization = awexpectCustomization;
-            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(
-                () => Get().DefaultJsonDocumentOptions,
-                v => Update(p => p with { DefaultJsonDocumentOptions = v }));
-            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(
-                () => Get().DefaultJsonSerializerOptions,
-                v => Update(p => p with { DefaultJsonSerializerOptions = v }));
+            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(this,
+                p => p.DefaultJsonDocumentOptions,
+                (p, v) => p with { DefaultJsonDocumentOptions = v });
+            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(this,
+                p => p.DefaultJsonSerializerOptions,
+                (p, v) => p with { DefaultJsonSerializerOptions = v });
         }
 
         public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
@@ -341,15 +341,29 @@ public static class JsonAwexpectCustomizationExtensions
     }
 
     private sealed class CustomizationValue<TValue>(
-        Func<TValue> getter,
-        Func<TValue, CustomizationLifetime> setter)
+        JsonCustomization group,
+        Func<JsonCustomizationValue, TValue> getter,
+        Func<JsonCustomizationValue, TValue, JsonCustomizationValue> setter)
         : ICustomizationValueSetter<TValue>
     {
-        public TValue Get() => getter();
-        public CustomizationLifetime Set(TValue value) => setter(value);
+        public TValue Get() => getter(group.Get());
+
+        public CustomizationLifetime Set(TValue value)
+        {
+            TValue previousValue = Get();
+            group.Update(p => setter(p, value));
+            return new CustomizationLifetime(() => group.Update(p => setter(p, previousValue)));
+        }
     }
 }
 ```
+
+Disposing the lifetime of a single value restores only this value, so that other values of the group that were changed
+in the meantime are kept.
+
+Both kinds of customizations work with [global defaults](./advanced/02-customization.md#global-defaults) without any
+change: Customize.aweXpect.Global.MyCustomization().Set(43) or Customize.aweXpect.Global.Json().Update(…) stores
+the value for all async flows, because Global is an AwexpectCustomization as well.
 
 This allows expectations to access values either individually or for the whole group:
 

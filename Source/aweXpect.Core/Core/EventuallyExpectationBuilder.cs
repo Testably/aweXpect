@@ -223,7 +223,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		try
 		{
 			TValue data = await subject(attemptToken).AbandonOnCancellation(attemptToken);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+			Customize.aweXpect.TraceWriter?.WriteMessage($"Checking expectation for {Subject} {data}");
 			return (data, null, false);
 		}
 		catch (Exception exception)
@@ -231,7 +231,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			bool hasTimedOut = exception is OperationCanceledException &&
 			                   attemptCts?.IsCancellationRequested == true &&
 			                   !cancellationToken.IsCancellationRequested;
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
+			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			return (default, hasTimedOut
 				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
