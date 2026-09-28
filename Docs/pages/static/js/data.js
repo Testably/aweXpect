@@ -4182,6 +4182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -4881,7 +4887,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -5584,7 +5591,8 @@ window.BENCHMARK_DATA = {
           286.55542169298445,
           354.77341641698564,
           372.89751529693604,
-          353.43113381522045
+          353.43113381522045,
+          364.52223185130526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6290,6 +6298,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920
@@ -7003,7 +7012,8 @@ window.BENCHMARK_DATA = {
           268.40035581588745,
           291.6323030471802,
           256.1119354565938,
-          243.561039574941
+          243.561039574941,
+          322.3278011935098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7196,6 +7206,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11445,6 +11456,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -12067,7 +12084,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -12693,7 +12711,8 @@ window.BENCHMARK_DATA = {
           336645.06989397324,
           449303.7570800781,
           461546.1349934896,
-          429626.90471540176
+          429626.90471540176,
+          413447.9342322716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13322,6 +13341,7 @@ window.BENCHMARK_DATA = {
           628384,
           628384,
           628384,
+          676856,
           676856,
           676856,
           676856
@@ -13958,7 +13978,8 @@ window.BENCHMARK_DATA = {
           1918723.2403738839,
           2433865.0203125,
           2616693.300223214,
-          2589362.1609933036
+          2589362.1609933036,
+          2251714.272235577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14589,7 +14610,8 @@ window.BENCHMARK_DATA = {
           4841609,
           4841635,
           4841651,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18785,6 +18807,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -19484,7 +19512,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -20187,7 +20216,8 @@ window.BENCHMARK_DATA = {
           479.8030530489408,
           598.3480112212045,
           569.1707570893424,
-          569.0224212237766
+          569.0224212237766,
+          607.0824567354642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20893,6 +20923,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576
@@ -21606,7 +21637,8 @@ window.BENCHMARK_DATA = {
           514.1353323276227,
           546.7772801717123,
           493.43573640187583,
-          482.6588548342387
+          482.6588548342387,
+          597.5760265350342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21799,6 +21831,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26510,6 +26543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -27209,7 +27248,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -27912,7 +27952,8 @@ window.BENCHMARK_DATA = {
           298.8287676493327,
           356.2859659535544,
           341.6030615488688,
-          328.68858222961427
+          328.68858222961427,
+          371.87384190926184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28618,6 +28659,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1064,
           1064,
           1064,
           1064
@@ -29331,7 +29373,8 @@ window.BENCHMARK_DATA = {
           295.770979983466,
           306.6942390759786,
           261.1682576497396,
-          241.20117902755737
+          241.20117902755737,
+          329.98674287114824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29524,6 +29567,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34235,6 +34279,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -34934,7 +34984,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -35637,7 +35688,8 @@ window.BENCHMARK_DATA = {
           516.2475307171161,
           699.9428461619785,
           618.7908314296177,
-          622.8229312896729
+          622.8229312896729,
+          637.1440219197955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36343,6 +36395,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1600,
           1600,
           1600,
           1600
@@ -37056,7 +37109,8 @@ window.BENCHMARK_DATA = {
           1165.7716802869525,
           1368.4931264241536,
           1295.366698582967,
-          1181.2778409322102
+          1181.2778409322102,
+          1359.9278821211594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37485,6 +37539,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -41960,6 +42015,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -42659,7 +42720,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -43362,7 +43424,8 @@ window.BENCHMARK_DATA = {
           1947.3610178629558,
           2966.8654547471265,
           3230.1673909505207,
-          3171.617327372233
+          3171.617327372233,
+          2448.9298133850098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44068,6 +44131,7 @@ window.BENCHMARK_DATA = {
           4168,
           4168,
           4168,
+          4328,
           4328,
           4328,
           4328
@@ -44781,7 +44845,8 @@ window.BENCHMARK_DATA = {
           1308.3196460088095,
           1482.8327919006347,
           1381.867888768514,
-          1319.2126701061543
+          1319.2126701061543,
+          1542.2817803896392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44974,6 +45039,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49685,6 +49751,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
@@ -50384,7 +50456,8 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
@@ -51087,7 +51160,8 @@ window.BENCHMARK_DATA = {
           1990.7065361567907,
           3035.0068926493327,
           3237.1068412235804,
-          3210.8174593607587
+          3210.8174593607587,
+          2571.2008267916167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51793,6 +51867,7 @@ window.BENCHMARK_DATA = {
           3928,
           3928,
           3928,
+          4272,
           4272,
           4272,
           4272
@@ -52506,7 +52581,8 @@ window.BENCHMARK_DATA = {
           15694.400777963492,
           23958.653832571847,
           27141.531180245536,
-          26448.538559977213
+          26448.538559977213,
+          18095.147993821363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53214,7 +53290,8 @@ window.BENCHMARK_DATA = {
           33465,
           33468,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
