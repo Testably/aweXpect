@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using aweXpect.Equivalency;
 
 // ReSharper disable UnusedMember.Local
@@ -642,7 +641,10 @@ public sealed partial class ThatObject
 			{
 				var subject = new
 				{
-					S = new StringBuilder("ab"),
+					S = new
+					{
+						Length = 2,
+					},
 				};
 				var expected = new
 				{
@@ -658,7 +660,7 @@ public sealed partial class ThatObject
 					             is equivalent to expected,
 					             but it was not:
 					               Property S differed:
-					                   Actual: ab
+					                   Actual: { Length = 2 }
 					                 Expected: "ab"
 
 					             Equivalency options:

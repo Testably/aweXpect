@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using System.Numerics;
 using System.Reflection;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+using System.Text;
 
 namespace aweXpect.Equivalency;
 
@@ -23,12 +28,34 @@ public static class EquivalencyDefaults
 		    || type == typeof(DateTimeOffset)
 		    || type == typeof(TimeSpan)
 		    || type == typeof(Guid)
+		    || type == typeof(StringBuilder)
+		    || IsNumber(type)
 		    || IsHandle(type))
 		{
 			return EquivalencyComparisonType.ByValue;
 		}
 
 		return EquivalencyComparisonType.ByMembers;
+	}
+
+	/// <remarks>
+	///     The public members of a number either only describe it (<c>Sign</c>, <c>IsEven</c>) or do not exist at all
+	///     (<c>Int128</c>), so they cannot tell two values apart.
+	/// </remarks>
+	private static bool IsNumber(Type type)
+	{
+#if NET8_0_OR_GREATER
+		if (type == typeof(Half)
+		    || type == typeof(NFloat)
+		    || type == typeof(Int128)
+		    || type == typeof(UInt128))
+		{
+			return true;
+		}
+#endif
+
+		return type == typeof(BigInteger)
+		       || type == typeof(Complex);
 	}
 
 	/// <remarks>

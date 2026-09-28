@@ -1209,7 +1209,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				   or SpecialType.System_UInt64 or SpecialType.System_IntPtr or SpecialType.System_UIntPtr
 				   or SpecialType.System_Single or SpecialType.System_Double or SpecialType.System_String
 				   or SpecialType.System_Decimal or SpecialType.System_DateTime ||
-			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid" ||
+			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid"
+				   or "System.Text.StringBuilder" or "System.Numerics.BigInteger" or "System.Numerics.Complex"
+				   or "System.Half" or "System.Runtime.InteropServices.NFloat" or "System.Int128" or "System.UInt128" ||
 			   IsHandle(type);
 
 		/// <remarks>

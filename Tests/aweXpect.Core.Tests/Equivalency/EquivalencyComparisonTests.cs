@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Numerics;
 using System.Reflection;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -491,6 +495,31 @@ public sealed class EquivalencyComparisonTests
 		                                                     Expected: {expected.Value}
 		                                                 """).IgnoringNewlineStyle()
 			.Because("an assembly only describes what it loaded, so walking it reaches getters that throw instead of state that could be compared");
+	}
+
+	[Fact]
+	public async Task WhenBigIntegerMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new BigInteger(3),
+		};
+		var expected = new
+		{
+			Value = new BigInteger(5),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 3
+		                                                    Expected: 5
+		                                                """).IgnoringNewlineStyle()
+			.Because("the members of a BigInteger (IsZero, IsEven, Sign, ...) cannot tell 3 and 5 apart");
 	}
 
 	[Fact]
@@ -2716,6 +2745,77 @@ public sealed class EquivalencyComparisonTests
 			.AsWildcard();
 	}
 
+	[Theory]
+	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
+	public async Task WhenNumberMemberDiffers_ShouldFail(object actualValue, object expectedValue)
+	{
+		var actual = new
+		{
+			Value = actualValue,
+		};
+		var expected = new
+		{
+			Value = expectedValue,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Value differed:");
+	}
+
+	public static TheoryData<object, object> DifferentNumbers()
+	{
+		TheoryData<object, object> theoryData = new()
+		{
+			{ new BigInteger(3), new BigInteger(5) },
+			{ new Complex(1, 2), new Complex(1, 3) },
+		};
+	#if NET8_0_OR_GREATER
+		theoryData.Add((Half)1, (Half)2);
+		theoryData.Add((NFloat)1, (NFloat)2);
+		theoryData.Add((Int128)1, (Int128)2);
+		theoryData.Add((UInt128)1, (UInt128)2);
+	#endif
+		return theoryData;
+	}
+
+	[Theory]
+	[MemberData(nameof(EqualNumbers), DisableDiscoveryEnumeration = true)]
+	public async Task WhenNumberMembersAreEqual_ShouldSucceed(object actualValue, object expectedValue)
+	{
+		var actual = new
+		{
+			Value = actualValue,
+		};
+		var expected = new
+		{
+			Value = expectedValue,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+	}
+
+	public static TheoryData<object, object> EqualNumbers()
+	{
+		TheoryData<object, object> theoryData = new()
+		{
+			{ new BigInteger(3), new BigInteger(3) },
+			{ new Complex(1, 2), new Complex(1, 2) },
+		};
+	#if NET8_0_OR_GREATER
+		theoryData.Add((Half)1, (Half)1);
+		theoryData.Add((NFloat)1, (NFloat)1);
+		theoryData.Add((Int128)1, (Int128)1);
+		theoryData.Add((UInt128)1, (UInt128)1);
+	#endif
+		return theoryData;
+	}
+
 	[Fact]
 	public async Task WhenOneMemberIsNull_ShouldNotAppendTheRuntimeType()
 	{
@@ -2950,6 +3050,97 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 #endif
+
+	[Fact]
+	public async Task WhenStringBuilderMemberDiffers_ShouldReportTheText()
+	{
+		var actual = new
+		{
+			Value = new StringBuilder("abc"),
+		};
+		var expected = new
+		{
+			Value = new StringBuilder("xyz"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: "abc"
+		                                                    Expected: "xyz"
+		                                                """).IgnoringNewlineStyle()
+			.Because("the members of a StringBuilder (Capacity, Length, ...) do not contain its text");
+	}
+
+	[Theory]
+	[InlineData(true)]
+	[InlineData(false)]
+	public async Task WhenStringBuilderMemberIsComparedWithADifferentString_ShouldReportTheText(
+		bool isStringBuilderActual)
+	{
+		var actual = new
+		{
+			Value = isStringBuilderActual ? new StringBuilder("abc") : (object)"abc",
+		};
+		var expected = new
+		{
+			Value = isStringBuilderActual ? "xyz" : (object)new StringBuilder("xyz"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: "abc"
+		                                                    Expected: "xyz"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Theory]
+	[InlineData(true)]
+	[InlineData(false)]
+	public async Task WhenStringBuilderMemberIsComparedWithAString_ShouldCompareTheText(bool isStringBuilderActual)
+	{
+		object stringBuilder = new StringBuilder("abc");
+		var actual = new
+		{
+			Value = isStringBuilderActual ? stringBuilder : "abc",
+		};
+		var expected = new
+		{
+			Value = isStringBuilderActual ? "abc" : stringBuilder,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task WhenStringBuilderMembersContainTheSameText_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = new StringBuilder("abc"),
+		};
+		var expected = new
+		{
+			Value = new StringBuilder().Append("ab").Append('c'),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+	}
 
 	[Fact]
 	public async Task WhenStringMemberIsLong_ShouldTruncateIt()

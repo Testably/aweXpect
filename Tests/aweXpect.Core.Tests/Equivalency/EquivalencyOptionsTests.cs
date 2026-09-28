@@ -5,6 +5,20 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyOptionsTests
 {
 	[Fact]
+	public async Task ToString_WhenVisibilitiesAreCombined_ShouldNameEachOfThem()
+	{
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Public | IncludeMembers.Internal,
+			Properties = IncludeMembers.Public | IncludeMembers.Internal | IncludeMembers.Private,
+		};
+
+		string result = options.ToString();
+
+		await That(result).IsEqualTo(" - include public and internal fields and public, internal and private properties");
+	}
+
+	[Fact]
 	public async Task TypedOptions_ShouldKeepComparisonType()
 	{
 		EquivalencyOptions inner = new()

@@ -21,7 +21,9 @@ public static partial class EquivalencyComparison
 	/// <remarks>
 	///     When only <paramref name="expected" /> is compared by value, its <see cref="object.Equals(object)" />
 	///     decides, because the type of <paramref name="actual" /> is compared by members, which ignores its
-	///     <see cref="object.Equals(object)" />.
+	///     <see cref="object.Equals(object)" />.<br />
+	///     A <see cref="StringBuilder" /> stands for the text it contains, so it is compared as that text, which also
+	///     matches a <see langword="string" />.
 	/// </remarks>
 	private static bool CompareByValue<TActual, TExpected>(
 		[DisallowNull] TActual actual,
@@ -32,6 +34,12 @@ public static partial class EquivalencyComparison
 		MemberType memberType,
 		EquivalencyContext context)
 	{
+		if (actual is StringBuilder || expected is StringBuilder)
+		{
+			return CompareByValue(ToText(actual), ToText(expected), isDecidedByExpected,
+				failureBuilder, memberPath, memberType, context);
+		}
+
 		if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
@@ -48,6 +56,9 @@ public static partial class EquivalencyComparison
 
 		return true;
 	}
+
+	private static object ToText(object value)
+		=> value is StringBuilder stringBuilder ? stringBuilder.ToString() : value;
 
 	private static bool CompareNulls<TActual, TExpected>(TActual actual, TExpected expected,
 		StringBuilder failureBuilder, string memberPath, MemberType memberType, EquivalencyContext context)

@@ -44,23 +44,11 @@ public record EquivalencyTypeOptions
 
 	internal void AppendOptions(StringBuilder sb, string indentation = "")
 	{
-		sb.Append(indentation).Append(" - include").Append(Fields switch
-		{
-			IncludeMembers.Public => " public",
-			IncludeMembers.Private => " private",
-			IncludeMembers.Internal => " internal",
-			_ => " no",
-		}).Append(" fields and");
+		sb.Append(indentation).Append(" - include ").Append(GetVisibilities(Fields)).Append(" fields and");
 
 		if (Fields != Properties)
 		{
-			sb.Append(Properties switch
-			{
-				IncludeMembers.Public => " public",
-				IncludeMembers.Private => " private",
-				IncludeMembers.Internal => " internal",
-				_ => " no",
-			});
+			sb.Append(' ').Append(GetVisibilities(Properties));
 		}
 
 		sb.AppendLine(" properties");
@@ -86,6 +74,32 @@ public record EquivalencyTypeOptions
 			MembersToIgnore.Where(x => x is MemberToIgnore.ByFieldPredicate));
 		AppendMembersToIgnore(sb, indentation, "properties",
 			MembersToIgnore.Where(x => x is MemberToIgnore.ByPropertyPredicate));
+	}
+
+	private static string GetVisibilities(IncludeMembers includeMembers)
+	{
+		List<string> visibilities = [];
+		if (includeMembers.HasFlag(IncludeMembers.Public))
+		{
+			visibilities.Add("public");
+		}
+
+		if (includeMembers.HasFlag(IncludeMembers.Internal))
+		{
+			visibilities.Add("internal");
+		}
+
+		if (includeMembers.HasFlag(IncludeMembers.Private))
+		{
+			visibilities.Add("private");
+		}
+
+		return visibilities.Count switch
+		{
+			0 => "no",
+			1 => visibilities[0],
+			_ => $"{string.Join(", ", visibilities.Take(visibilities.Count - 1))} and {visibilities[visibilities.Count - 1]}",
+		};
 	}
 
 	/// <remarks>

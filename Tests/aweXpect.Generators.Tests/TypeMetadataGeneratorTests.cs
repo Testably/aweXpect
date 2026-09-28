@@ -588,6 +588,22 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenMemberIsANumberOrAStringBuilder_ShouldNotRegisterItsMembers()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Call("""
+			     Expect.That(new { Number = System.Numerics.BigInteger.One, Text = new System.Text.StringBuilder() })
+			     	.IsEquivalentTo(new { Number = System.Numerics.BigInteger.One, Text = new System.Text.StringBuilder() });
+			     """),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("\"IsPowerOfTwo\"").And.DoesNotContain("\"Capacity\"")
+			.Because("numbers and string builders are compared by value");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsARefStruct_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

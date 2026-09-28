@@ -83,10 +83,12 @@ By default, equivalency:
   as ambiguous. Only the actual object is searched this way: the members compared are still those of the expected
   object.
 - Recurses into nested objects.
-- Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan` and `Guid` as
-  *value types* and compares them with `Equals`. The same applies to handles that describe something else instead of
-  carrying state of their own: `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri` and
-  `CultureInfo`, including anything derived from them. Everything else is compared **by members**.
+- Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid` and the numbers
+  `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128` and `UInt128` as *value types* and compares them with `Equals`.
+  The same applies to handles that describe something else instead of carrying state of their own: `MemberInfo` (and
+  therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri` and `CultureInfo`, including anything derived from them.
+  A `StringBuilder` is compared by the text it contains, so it also matches a `string` with the same text. Everything
+  else is compared **by members**.
 - Compares by value as soon as either side is compared by value, so a string is never equivalent to anything but an
   equal string, however many of its members another object shares, and swapping the subject and the expectation does
   not change the result.

@@ -202,6 +202,11 @@ expectations as a static method.
 members are registered at compile time, so asking for internal or private members falls back to reflection, which is
 unavailable under trimming.
 
+The numbers `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128` and `UInt128` are compared by value. Their members
+could not tell two values apart (`3` and `5` share `IsZero`, `IsEven` and `Sign`), and a type without public members,
+such as `Int128`, threw. A `StringBuilder` is compared by the text it contains, also against a `string`, instead of by
+its `Capacity` and `Length`.
+
 `IgnoringCollectionOrder()` no longer requires the elements to be comparable, so it now works for the collections it
 exists for, such as a collection of DTOs: each expected element is matched against an element that is equivalent to
 it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
