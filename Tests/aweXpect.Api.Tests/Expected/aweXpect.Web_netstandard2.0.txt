@@ -29,7 +29,7 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.PropertyResult.String<System.Uri> HasScheme(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri, System.Uri, aweXpect.Core.IThat<System.Uri>> HasScheme(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsFile(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
@@ -78,9 +78,9 @@ namespace aweXpect.Web.Results
         public string? Instance { get; }
         public int? Status { get; }
         public string? Title { get; }
-        public System.Threading.Tasks.Task<bool> IsDetailConsideredEqualTo(string? detail) { }
-        public System.Threading.Tasks.Task<bool> IsInstanceConsideredEqualTo(string? instance) { }
-        public System.Threading.Tasks.Task<bool> IsTitleConsideredEqualTo(string? title) { }
+        public System.Threading.Tasks.ValueTask<bool> IsDetailConsideredEqualTo(string? detail) { }
+        public System.Threading.Tasks.ValueTask<bool> IsInstanceConsideredEqualTo(string? instance) { }
+        public System.Threading.Tasks.ValueTask<bool> IsTitleConsideredEqualTo(string? title) { }
         public override string ToString() { }
         public aweXpect.Options.StringEqualityOptions WithDetail(string detail) { }
         public aweXpect.Options.StringEqualityOptions WithInstance(string instance) { }

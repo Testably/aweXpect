@@ -24,7 +24,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `Content-Type` header equal to "text/content-type",
-					             but it was "text/other-content-type" which differs at index 5:
+					             but it was "text/other-content-type", which differs at index 5:
 					                     ↓ (actual)
 					               "text/other-content-type"
 					               "text/content-type"

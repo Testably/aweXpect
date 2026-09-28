@@ -23,7 +23,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a request message which has a string content equal to "bar",
-					             but it was "foo" which differs at index 0:
+					             but it was "foo", which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"

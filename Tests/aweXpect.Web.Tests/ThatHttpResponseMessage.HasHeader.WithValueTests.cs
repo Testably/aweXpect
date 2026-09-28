@@ -49,7 +49,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `x-my-header` header whose value is equal to "some other header",
-					             but the value was "some header" which differs at index 5:
+					             but the value was "some header", which differs at index 5:
 					                     ↓ (actual)
 					               "some header"
 					               "some other header"

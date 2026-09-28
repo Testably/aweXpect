@@ -29,7 +29,8 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "http",
-					             but it had scheme "https"
+					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
+					               "s"
 					             """);
 			}
 
@@ -55,7 +56,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme not equal to "https",
+					             does not have scheme equal to "https",
 					             but it had scheme "https"
 					             """);
 			}
@@ -85,7 +86,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme not containing "http",
+					             does not have scheme containing "http",
 					             but it had scheme "https"
 					             """);
 			}
@@ -112,7 +113,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme not equal to "https",
+					             does not have scheme equal to "https",
 					             but it had scheme "https"
 					             """);
 			}
@@ -140,7 +141,8 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "http",
-					             but it had scheme "https"
+					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
+					               "s"
 					             """);
 			}
 		}

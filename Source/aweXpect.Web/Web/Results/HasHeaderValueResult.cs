@@ -39,7 +39,7 @@ public class HasHeaderValueResult<TType, TThat>
 	/// </summary>
 	public StringEqualityResult<TType, TThat> WithValue(string? expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		_expectationBuilder.And("").AddConstraint((_, grammars) =>
 			new WithHeaderValueConstraint("the value", grammars, expected, _headerValueAccessor, options));
 		return new StringEqualityResult<TType, TThat>(_expectationBuilder, _returnValue, options);
@@ -79,7 +79,7 @@ public class HasHeaderValueResult<TType, TThat>
 				MemberAccessor<TType, string?[]?>.FromFunc(t => _headerValueAccessor(t), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
 			.AddExpectations(e => expectations(new ThatSubject<string?[]>(e)),
-				grammars => grammars | ExpectationGrammars.Nested);
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
 		return this;
 	}
 
@@ -89,7 +89,7 @@ public class HasHeaderValueResult<TType, TThat>
 		string? expected,
 		Func<TType, string?[]?> headerValueAccessor,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<TType?>(grammars),
+		: ConstraintResult.WithValue<TType?>(it, grammars),
 			IAsyncConstraint<TType?>
 	{
 		private string?[]? _headerValues;
@@ -130,7 +130,7 @@ public class HasHeaderValueResult<TType, TThat>
 
 			if (_headerValues is null)
 			{
-				stringBuilder.Append(it).Append(" did not contain the expected header");
+				stringBuilder.Append(It).Append(" did not contain the expected header");
 			}
 			else if (_headerValues.Length != 1)
 			{
@@ -139,7 +139,7 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _headerValues[0], expected));
+				stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _headerValues[0], expected));
 			}
 		}
 
@@ -150,6 +150,6 @@ public class HasHeaderValueResult<TType, TThat>
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

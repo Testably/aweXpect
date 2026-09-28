@@ -29,7 +29,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a ProblemDetails content with type "FOO" ignoring case, title "BAR", status 404 and instance "could-be-SOME-guid " ignoring trailing white-space,
+					             has a ProblemDetails content with type "FOO" ignoring case, title "BAR", status 404 and instance "could-be-SOME-guid " ignoring trailing whitespace,
 					             but it had title "bar" which differs at index 0:
 					                ↓ (actual)
 					               "bar"

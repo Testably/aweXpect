@@ -11,10 +11,10 @@ namespace aweXpect.Web.Results;
 /// </summary>
 public class ProblemDetailsOptions
 {
-	private readonly StringEqualityOptions _detailOptions = new();
-	private readonly StringEqualityOptions _instanceOptions = new();
+	private readonly StringEqualityOptions _detailOptions = new("detail");
+	private readonly StringEqualityOptions _instanceOptions = new("instance");
 	private readonly List<Func<string>> _parts = new();
-	private readonly StringEqualityOptions _titleOptions = new();
+	private readonly StringEqualityOptions _titleOptions = new("title");
 
 	/// <summary>
 	///     The title of a problem details object.
@@ -98,33 +98,21 @@ public class ProblemDetailsOptions
 	/// <summary>
 	///     Checks if the <paramref name="title" /> matches the expected <see cref="Title" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool>
-#else
-	public Task<bool>
-#endif
 		IsTitleConsideredEqualTo(string? title)
 		=> _titleOptions.AreConsideredEqual(title, Title);
 
 	/// <summary>
 	///     Checks if the <paramref name="detail" /> matches the expected <see cref="Detail" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool>
-#else
-	public Task<bool>
-#endif
 		IsDetailConsideredEqualTo(string? detail)
 		=> _detailOptions.AreConsideredEqual(detail, Detail);
 
 	/// <summary>
 	///     Checks if the <paramref name="instance" /> matches the expected <see cref="Instance" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool>
-#else
-	public Task<bool>
-#endif
 		IsInstanceConsideredEqualTo(string? instance)
 		=> _instanceOptions.AreConsideredEqual(instance, Instance);
 

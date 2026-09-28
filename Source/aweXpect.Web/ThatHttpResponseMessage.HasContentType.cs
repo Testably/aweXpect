@@ -24,7 +24,7 @@ public static partial class ThatHttpResponseMessage
 	public static StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContentType(this IThat<HttpResponseMessage?> source, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())

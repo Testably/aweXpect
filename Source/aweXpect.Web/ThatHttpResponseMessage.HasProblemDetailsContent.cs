@@ -37,7 +37,7 @@ public static partial class ThatHttpResponseMessage
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
 		HasProblemDetailsContent(this IThat<HttpResponseMessage?> source, string? type = null)
 	{
-		StringEqualityOptions typeOptions = new();
+		StringEqualityOptions typeOptions = new(nameof(type));
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			source.Get().ExpectationBuilder

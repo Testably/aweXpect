@@ -33,7 +33,7 @@ public class DownloadTests(WebApplicationFactory<Program> factory) : IClassFixtu
 			.WithMessage("""
 			             Expected that response
 			             has a `Content-Type` header equal to "image/jpg",
-			             but it was "image/png" which differs at index 6:
+			             but it was "image/png", which differs at index 6:
 			                      ↓ (actual)
 			               "image/png"
 			               "image/jpg"

@@ -23,7 +23,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-some-other-key` header whose values has exactly 3 items,
+					             has a `x-some-other-key` header whose values have exactly 3 items,
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -49,7 +49,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-my-header` header whose values contains "some other header" at least once,
+					             has a `x-my-header` header whose values contain "some other header" at least once,
 					             but the values did not contain it
 
 					             HTTP-Request:
