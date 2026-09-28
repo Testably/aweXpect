@@ -129,9 +129,13 @@ public static partial class ThatEnumerable
 			return this;
 		}
 
+		/// <remarks>
+		///     The collection is served from the materialized items, so that the single item for further expectations
+		///     does not enumerate the source again.
+		/// </remarks>
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
-			if (_actual is TValue typedValue)
+			if (_materialized is TValue typedValue)
 			{
 				value = typedValue;
 				return true;
@@ -254,10 +258,14 @@ public static partial class ThatEnumerable
 			return this;
 		}
 
+		/// <remarks>
+		///     The collection is served from the materialized items, so that the single item for further expectations
+		///     does not enumerate the source again.
+		/// </remarks>
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
 			if (typeof(TValue) != typeof(object) &&
-			    _actual is TValue typedValue)
+			    _materialized is TValue typedValue)
 			{
 				value = typedValue;
 				return true;
