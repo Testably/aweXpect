@@ -211,7 +211,7 @@ public static partial class ThatEnumerable
 					=> new CollectionMatchOptions.ExpectationItem<TItem>(expectation,
 						Grammars & ~ExpectationGrammars.Negated,
 						context,
-						CancellationToken.None))
+						cancellationToken))
 				.ToArray();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
 					() => Formatter.Format(_expectations, typeof(TItem).GetFormattingOption(_expectations.Length)),
@@ -230,7 +230,8 @@ public static partial class ThatEnumerable
 				}
 
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
-				if (result)
+				// A canceled item expectation does not match, which must not be reported as a mismatch.
+				if (result && !cancellationToken.IsCancellationRequested)
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
@@ -238,6 +239,13 @@ public static partial class ThatEnumerable
 						materializedEnumerable.ExceedsFormatterLimit());
 					return this;
 				}
+			}
+
+			if (cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				return this;
 			}
 
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
@@ -1418,19 +1426,20 @@ public static partial class ThatEnumerable
 		string memberExpression,
 		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IContextConstraint<IEnumerable<TItem>?>
+			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private string? _failureText;
 		private bool _hasIncompatibleItems;
 		private IComparer<TMember>? _subjectOrder;
 
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable<TItem> materialized = context
@@ -1445,6 +1454,12 @@ public static partial class ThatEnumerable
 				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (TItem item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
 				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
 				{
@@ -1452,7 +1467,7 @@ public static partial class ThatEnumerable
 					_failureText = $"{It} {incompatibility}";
 					_hasIncompatibleItems = true;
 					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
-					return this;
+					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (index++ == 0)
@@ -1466,14 +1481,14 @@ public static partial class ThatEnumerable
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
 					Outcome = Outcome.Failure;
-					return this;
+					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				previous = current;
 			}
 
 			Outcome = Outcome.Success;
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -1531,20 +1546,21 @@ public static partial class ThatEnumerable
 		string memberExpression,
 		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
-			IContextConstraint<TEnumerable>
+			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private string? _failureText;
 		private bool _hasIncompatibleItems;
 		private IComparer<TMember>? _subjectOrder;
 
-		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
@@ -1558,6 +1574,12 @@ public static partial class ThatEnumerable
 				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (object? item in materialized)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				if (item is not TItem typedItem)
 				{
 					continue;
@@ -1570,7 +1592,7 @@ public static partial class ThatEnumerable
 					_failureText = $"{It} {incompatibility}";
 					_hasIncompatibleItems = true;
 					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
-					return this;
+					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (index++ == 0)
@@ -1584,14 +1606,14 @@ public static partial class ThatEnumerable
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
 					Outcome = Outcome.Failure;
-					return this;
+					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				previous = current;
 			}
 
 			Outcome = Outcome.Success;
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
