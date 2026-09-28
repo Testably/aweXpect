@@ -1127,7 +1127,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -1474,6 +1474,53 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithManyAdditionalItems_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithManyAdditionalItemsAndMissingItem_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in any order,
+					             but it lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [
+					               100,
+					               101,
+					               102,
+					               103,
+					               104,
+					               105,
+					               106,
+					               107,
+					               108,
+					               109,
+					               (… and 16 more)
+					             ]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -1568,7 +1615,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -1901,6 +1948,53 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithManyAdditionalItems_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithManyAdditionalItemsAndMissingItem_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in any order ignoring duplicates,
+					             but it lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [
+					               100,
+					               101,
+					               102,
+					               103,
+					               104,
+					               105,
+					               106,
+					               107,
+					               108,
+					               109,
+					               (… and 16 more)
+					             ]
+
+					             Expected:
+					             [1, 2]
+					             """);
 			}
 
 			[Fact]
@@ -3027,7 +3121,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order,
-					             but it had more than 20 deviations
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -3374,6 +3468,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithManyAdditionalItems_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Properly().InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -3492,7 +3598,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -3923,6 +4029,18 @@ public sealed partial class ThatAsyncEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithManyAdditionalItems_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([..Enumerable.Range(100, 25), 1,]);
+				int[] expected = [1,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Properly().InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
