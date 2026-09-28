@@ -892,18 +892,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -1306,18 +1306,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -2638,18 +2638,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -3100,18 +3100,18 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
-					             but it had more than 20 deviations:
-					               contained item 1 at index 0 that was not expected,
-					               contained item 2 at index 1 that was not expected,
-					               contained item 3 at index 2 that was not expected,
-					               contained item 4 at index 3 that was not expected,
-					               contained item 5 at index 4 that was not expected,
-					               contained item 6 at index 5 that was not expected,
-					               contained item 7 at index 6 that was not expected,
-					               contained item 8 at index 7 that was not expected,
-					               contained item 9 at index 8 that was not expected,
-					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [

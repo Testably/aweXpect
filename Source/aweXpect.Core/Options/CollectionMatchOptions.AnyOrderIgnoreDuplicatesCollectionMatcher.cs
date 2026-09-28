@@ -135,7 +135,7 @@ public partial class CollectionMatchOptions
 		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_missingItems.Count + CountAdditionalDeviations() > 2 * maximumNumber)
+			if (CountMissingDeviations() + CountAdditionalDeviations() > 2 * maximumNumber)
 			{
 				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
 				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
@@ -171,6 +171,12 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private int CountAdditionalDeviations()
 			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
+
+		/// <summary>
+		///     Missing items are no deviation for the IsContainedIn relation, so they are not counted.
+		/// </summary>
+		private int CountMissingDeviations()
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
