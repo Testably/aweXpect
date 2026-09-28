@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          126.12150863238743,
           247.66236193974814,
           265.86803882462635,
           286.55735638936363,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           286.55542169298445,
           354.77341641698564,
           372.89751529693604,
-          353.43113381522045
+          353.43113381522045,
+          364.52223185130526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -434,7 +434,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          128.32302194436392,
           235.957604101726,
           239.0194797515869,
           258.2686364991324,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           268.40035581588745,
           291.6323030471802,
           256.1119354565938,
-          243.561039574941
+          243.561039574941,
+          322.3278011935098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          167075.7402750651,
           309632.21650390624,
           306123.58328951325,
           323477.4386858259,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           336645.06989397324,
           449303.7570800781,
           461546.1349934896,
-          429626.90471540176
+          429626.90471540176,
+          413447.9342322716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1042,7 +1042,6 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
-          617976,
           618120,
           618120,
           618120,
@@ -1075,6 +1074,7 @@ window.BENCHMARK_DATA = {
           628384,
           628384,
           628384,
+          676856,
           676856,
           676856,
           676856
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1245822.333705357,
           2550777.1184895835,
           2518065.354910714,
           2755319.0290178573,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1918723.2403738839,
           2433865.0203125,
           2616693.300223214,
-          2589362.1609933036
+          2589362.1609933036,
+          2251714.272235577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841647,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841609,
           4841635,
           4841651,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
       {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          230.93623633044106,
           459.48518797556557,
           446.8440067584698,
           496.19235967000327,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           479.8030530489408,
           598.3480112212045,
           569.1707570893424,
-          569.0224212237766
+          569.0224212237766,
+          607.0824567354642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,6 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1683,6 +1682,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1576,
           1576,
           1576,
           1576
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          254.6541428906577,
           460.8005311012268,
           460.00257263183596,
           507.2081116994222,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           514.1353323276227,
           546.7772801717123,
           493.43573640187583,
-          482.6588548342387
+          482.6588548342387,
+          597.5760265350342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          131.7098513160433,
           263.36252348239606,
           260.43323510487875,
           276.0557094256083,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           298.8287676493327,
           356.2859659535544,
           341.6030615488688,
-          328.68858222961427
+          328.68858222961427,
+          371.87384190926184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2291,6 +2290,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1064,
           1064,
           1064,
           1064
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          126.57404637336731,
           234.77980106671652,
           226.8797260761261,
           257.68343985875447,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           295.770979983466,
           306.6942390759786,
           261.1682576497396,
-          241.20117902755737
+          241.20117902755737,
+          329.98674287114824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.7697854408851,
           492.00807642936707,
           491.4921590941293,
           513.8926253000895,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           516.2475307171161,
           699.9428461619785,
           618.7908314296177,
-          622.8229312896729
+          622.8229312896729,
+          637.1440219197955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1256,
           1256,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1576,
           1600,
           1600,
+          1600,
           1600
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          614.7207274436951,
           1181.1749179840087,
           1163.9258127212524,
           1249.217861175537,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1165.7716802869525,
           1368.4931264241536,
           1295.366698582967,
-          1181.2778409322102
+          1181.2778409322102,
+          1359.9278821211594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1035.1073854764302,
           1966.861614227295,
           1852.0058815819878,
           2015.617419687907,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1947.3610178629558,
           2966.8654547471265,
           3230.1673909505207,
-          3171.617327372233
+          3171.617327372233,
+          2448.9298133850098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3474,7 +3474,6 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
           3104,
           3104,
           3104,
@@ -3507,6 +3506,7 @@ window.BENCHMARK_DATA = {
           4168,
           4168,
           4168,
+          4328,
           4328,
           4328,
           4328
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          684.5522738456726,
           1290.9601651509604,
           1331.342593129476,
           1402.462478129069,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1308.3196460088095,
           1482.8327919006347,
           1381.867888768514,
-          1319.2126701061543
+          1319.2126701061543,
+          1542.2817803896392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
-        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
-      },
-      {
         "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
         "message": "docs: review the documentation pages (#1419)"
+      },
+      {
+        "sha": "702848e5414f11501d666449405de5b153f74a11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
+        "message": "fix: keep the separator of a leading ForWhich in the failure message (#1422)"
       }
     ],
     "labels": [
-      "aa20367d",
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "e2846045",
       "24837307",
       "3262e6a4",
-      "6afcb417"
+      "6afcb417",
+      "702848e5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1324.0991307667323,
           2513.970354715983,
           2455.5898460388185,
           2607.561673227946,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1990.7065361567907,
           3035.0068926493327,
           3237.1068412235804,
-          3210.8174593607587
+          3210.8174593607587,
+          2571.2008267916167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4082,7 +4082,6 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
-          2944,
           3296,
           3296,
           3296,
@@ -4115,6 +4114,7 @@ window.BENCHMARK_DATA = {
           3928,
           3928,
           3928,
+          4272,
           4272,
           4272,
           4272
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9916.93911743164,
           26155.42914036342,
           25413.76973470052,
           27385.67385253906,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           15694.400777963492,
           23958.653832571847,
           27141.531180245536,
-          26448.538559977213
+          26448.538559977213,
+          18095.147993821363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4198,7 +4198,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33465,
           33468,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
