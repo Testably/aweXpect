@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
@@ -107,18 +108,25 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("foo foo-separator ");
 	}
 
-	[Fact]
-	public async Task AppendExpectation_WithoutParent_ShouldOmitTheSeparator()
+	[Theory]
+	[InlineData(" whose parent ", "is bar", "whose parent is bar")]
+	[InlineData(" that ", "whose bar", "whose bar")]
+	[InlineData(" that ", "is bar", "that is bar")]
+	public async Task AppendExpectation_WithoutParent_ShouldTrimTheSeparatorAtTheStart(
+		string separator, string rightExpectation, string expectedExpectation)
 	{
-		DummyNode innerNode = new("inner-node", () => new DummyConstraintResult<string?>(Outcome.Success, "inner", ""));
-		WhichNode<string, int> whichNode = new(null, s => s.Length, "foo-separator ");
-		whichNode.AddNode(innerNode);
+		WhichNode<string, int> whichNode = new(null, _ => 3, separator);
+		whichNode.AddNode(new DummyNode(rightExpectation,
+			() => new DummyConstraintResult(Outcome.Failure, rightExpectation)));
 		StringBuilder sb = new();
 
 		whichNode.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("inner-node")
-			.Because("without a parent the result is the inner result alone, which carries no separator either");
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+		await That(sb.ToString()).IsEqualTo(expectedExpectation)
+			.Because("without a parent the separator has no left side, but still names the member");
+		await That(sb.ToString()).IsEqualTo(result.GetExpectationText())
+			.Because("a manual evaluation renders the expectation through the node and has to read the same");
 	}
 
 	[Fact]
@@ -868,6 +876,43 @@ public sealed class WhichNodeTests
 			             but Length was 3, which differs by -1
 			             """);
 	}
+
+	[Fact]
+	public async Task WhichWithoutParent_ShouldKeepTheSeparator()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseLength(That(subject), _ => 3).IsEqualTo(4);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it was 3, which differs by -1
+			             """);
+	}
+
+	[Fact]
+	public async Task WhichWithoutParent_WhenMemberAccessorThrows_ShouldKeepTheSeparator()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseLength(That(subject), _ => throw new MyException("no length")).IsEqualTo(4);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it did throw a MyException:
+			               no length
+			             """)
+			.Because("the failure message is the only place that names the member whose accessor threw");
+	}
+
+	private static IThat<int> WhoseLength(IThat<string> subject, Func<string, int> length)
+		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
 	private sealed class NegatableConstraintResult(Outcome outcome, string id = "2")
 		: ConstraintResult(FurtherProcessingStrategy.Continue)
