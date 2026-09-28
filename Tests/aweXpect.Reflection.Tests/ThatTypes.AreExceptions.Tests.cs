@@ -21,7 +21,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreExceptions();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreExceptions
 					             are all exceptions,

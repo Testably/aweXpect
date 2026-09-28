@@ -32,7 +32,7 @@ public sealed partial class ThatType
 					await That(subject).IsNested();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is nested,
@@ -50,7 +50,7 @@ public sealed partial class ThatType
 					await That(subject).IsNested();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is nested,

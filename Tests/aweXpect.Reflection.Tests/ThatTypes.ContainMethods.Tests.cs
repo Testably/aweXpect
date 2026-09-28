@@ -146,7 +146,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
@@ -167,7 +167,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod and ThatTypes.ContainMethods.BaseClassWithMarkedMethod
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,

@@ -38,7 +38,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreOperators();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all operators,
@@ -63,7 +63,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreOperators());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all operators,
@@ -104,7 +104,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreOperators());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all operators,
@@ -142,7 +142,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreOperators();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all operators,

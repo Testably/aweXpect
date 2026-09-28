@@ -46,7 +46,7 @@ public sealed partial class ThatAssembly
 					await That(subject).Targets("net8.0");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             targets equal to "net8.0",

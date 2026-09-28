@@ -38,7 +38,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,
@@ -62,7 +62,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreNotSealed());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a sealed method,
@@ -117,7 +117,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,

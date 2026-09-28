@@ -25,7 +25,7 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, expected, options)),
@@ -43,7 +43,7 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, expected, options)),
@@ -63,7 +63,7 @@ public static partial class ThatMembers
 		string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, expectedNameSelector,
@@ -85,7 +85,7 @@ public static partial class ThatMembers
 			string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, expectedNameSelector,

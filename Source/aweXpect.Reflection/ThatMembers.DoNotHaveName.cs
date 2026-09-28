@@ -23,7 +23,7 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),
@@ -41,7 +41,7 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),

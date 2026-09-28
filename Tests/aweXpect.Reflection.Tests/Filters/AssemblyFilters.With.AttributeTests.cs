@@ -22,7 +22,7 @@ public sealed partial class AssemblyFilters
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
 					.With<AssemblyTitleAttribute>();
 
-				await That(assemblies).HasCount().AtLeast(2);
+				await That(assemblies).HasCount().GreaterThanOrEqualTo(2);
 				await That(assemblies.GetDescription())
 					.IsEqualTo("in all loaded assemblies with AssemblyTitleAttribute")
 					.AsPrefix();
@@ -34,7 +34,7 @@ public sealed partial class AssemblyFilters
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
 					.With<AssemblyTitleAttribute>(false);
 
-				await That(assemblies).HasCount().AtLeast(2);
+				await That(assemblies).HasCount().GreaterThanOrEqualTo(2);
 				await That(assemblies.GetDescription())
 					.IsEqualTo("in all loaded assemblies with direct AssemblyTitleAttribute")
 					.AsPrefix();
@@ -89,7 +89,7 @@ public sealed partial class AssemblyFilters
 					.OrWith<NeverAppliedAssemblyAttribute>();
 
 				// No assembly has the NeverAppliedAssemblyAttribute, so an "and" semantic would yield none.
-				await That(assemblies).HasCount().AtLeast(2);
+				await That(assemblies).HasCount().GreaterThanOrEqualTo(2);
 			}
 
 			[Fact]

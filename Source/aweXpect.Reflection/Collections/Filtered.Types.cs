@@ -301,7 +301,7 @@ public static partial class Filtered
 			/// </summary>
 			public StringEqualityResult Using(IEqualityComparer<string> comparer)
 			{
-				_options.UsingComparer(comparer);
+				_options.Using(comparer);
 				return this;
 			}
 		}
@@ -317,15 +317,6 @@ public static partial class Filtered
 			internal StringEqualityResultType(Types inner, StringEqualityOptions options) : base(inner, options)
 			{
 				_options = options;
-			}
-
-			/// <summary>
-			///     Interprets the expected <see langword="string" /> to be exactly equal.
-			/// </summary>
-			public StringEqualityResult Exactly()
-			{
-				_options.Exactly();
-				return this;
 			}
 
 			/// <summary>

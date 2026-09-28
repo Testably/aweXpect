@@ -31,7 +31,7 @@ public sealed partial class ThatType
 					await That(subject).IsADelegate();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is a delegate,
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsADelegate();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is a delegate,

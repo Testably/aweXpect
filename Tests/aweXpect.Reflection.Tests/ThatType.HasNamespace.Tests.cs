@@ -23,7 +23,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has namespace equal to "Reflection.Tests.TestHelpers",
-					             but it was "aweXpect.Reflection.Tests.Test…" which differs at index 0:
+					             but it was "aweXpect.Reflection.Tests.Test…", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests.TestHelpers.Types"
 					               "Reflection.Tests.TestHelpers"
@@ -67,7 +67,7 @@ public sealed partial class ThatType
 					await That(subject).HasNamespace("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has namespace equal to "foo",

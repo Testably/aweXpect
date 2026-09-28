@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotStructs();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum in assembly containing type ThatTypes.AreNotStructs
 					             are all not structs,

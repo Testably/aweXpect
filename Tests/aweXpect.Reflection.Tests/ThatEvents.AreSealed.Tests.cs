@@ -22,7 +22,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all sealed,
@@ -76,7 +76,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreSealed());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all sealed,

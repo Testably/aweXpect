@@ -54,7 +54,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsInternal();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is internal,

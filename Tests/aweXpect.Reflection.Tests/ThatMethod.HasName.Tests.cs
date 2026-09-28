@@ -24,7 +24,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Method",
-					             but it was "PublicMethod" which differs at index 0:
+					             but it was "PublicMethod", which differs at index 0:
 					                ↓ (actual)
 					               "PublicMethod"
 					               "Method"
@@ -70,7 +70,7 @@ public sealed partial class ThatMethod
 					await That(subject).HasName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "foo",

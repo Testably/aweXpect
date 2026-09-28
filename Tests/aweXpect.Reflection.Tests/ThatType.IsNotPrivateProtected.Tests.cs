@@ -48,7 +48,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotPrivateProtected();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not private protected,

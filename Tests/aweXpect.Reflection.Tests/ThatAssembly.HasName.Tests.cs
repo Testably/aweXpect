@@ -24,7 +24,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Reflection",
-					             but it was "aweXpect.Reflection.Tests" which differs at index 0:
+					             but it was "aweXpect.Reflection.Tests", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests"
 					               "Reflection"
@@ -68,7 +68,7 @@ public sealed partial class ThatAssembly
 					await That(subject).HasName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "foo",

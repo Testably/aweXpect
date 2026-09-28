@@ -12,7 +12,7 @@ public static partial class PropertyFilters
 	/// </summary>
 	public static Filtered.Properties.StringEqualityResultType WithName(this Filtered.Properties @this, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new Filtered.Properties.StringEqualityResultType(@this.Which(Filter.Suffix<PropertyInfo>(
 				propertyInfo => options.AreConsideredEqual(propertyInfo.Name, expected),
 				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} ")),

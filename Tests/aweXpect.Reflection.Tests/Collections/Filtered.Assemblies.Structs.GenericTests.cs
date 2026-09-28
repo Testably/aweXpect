@@ -28,7 +28,7 @@ public sealed partial class Filtered
 							.AreNotGeneric();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that generic structs in all loaded assemblies
 						             are all not generic,
@@ -50,7 +50,7 @@ public sealed partial class Filtered
 							.AreNotGeneric();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}generic structs in all loaded assemblies
 						              are all not generic,

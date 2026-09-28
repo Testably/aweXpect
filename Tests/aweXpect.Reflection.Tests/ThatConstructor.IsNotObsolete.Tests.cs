@@ -37,7 +37,7 @@ public sealed partial class ThatConstructor
 					await That(subject).IsNotObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not obsolete,
@@ -56,7 +56,7 @@ public sealed partial class ThatConstructor
 					await That(subject).IsNotObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not obsolete,

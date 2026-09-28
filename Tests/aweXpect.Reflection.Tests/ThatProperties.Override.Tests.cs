@@ -38,7 +38,7 @@ public sealed partial class ThatProperties
 					await That(subject).Override();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,
@@ -62,7 +62,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.Override());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             do not all override a base property,
@@ -117,7 +117,7 @@ public sealed partial class ThatProperties
 					await That(subject).Override();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,

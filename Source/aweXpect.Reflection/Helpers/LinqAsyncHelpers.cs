@@ -7,15 +7,9 @@ namespace System.Linq;
 #pragma warning disable S3267
 internal static class LinqAsyncHelpers
 {
-#if NET8_0_OR_GREATER
 	public static async ValueTask<bool> AllAsync<TSource>(
 		this IEnumerable<TSource> source,
 		Func<TSource, ValueTask<bool>> predicate)
-#else
-	public static async Task<bool> AllAsync<TSource>(
-		this IEnumerable<TSource> source,
-		Func<TSource, Task<bool>> predicate)
-#endif
 	{
 		foreach (TSource item in source)
 		{
@@ -28,15 +22,9 @@ internal static class LinqAsyncHelpers
 		return true;
 	}
 
-#if NET8_0_OR_GREATER
 	public static async ValueTask<bool> AnyAsync<TSource>(
 		this IEnumerable<TSource> source,
 		Func<TSource, ValueTask<bool>> predicate)
-#else
-	public static async Task<bool> AnyAsync<TSource>(
-		this IEnumerable<TSource> source,
-		Func<TSource, Task<bool>> predicate)
-#endif
 	{
 		foreach (TSource item in source)
 		{
@@ -49,15 +37,9 @@ internal static class LinqAsyncHelpers
 		return false;
 	}
 
-#if NET8_0_OR_GREATER
 	public static async ValueTask<bool> AnyAsync<TSource>(
 		this IEnumerable<TSource> source,
 		Func<TSource, int, ValueTask<bool>> predicate)
-#else
-	public static async Task<bool> AnyAsync<TSource>(
-		this IEnumerable<TSource> source,
-		Func<TSource, int, Task<bool>> predicate)
-#endif
 	{
 		int index = 0;
 		foreach (TSource item in source)
@@ -92,15 +74,9 @@ internal static class LinqAsyncHelpers
 		return (matching.ToArray(), unmatching.ToArray());
 	}
 
-#if NET8_0_OR_GREATER
 	public static async ValueTask<(TSource[], TSource[])> SplitAsync<TSource>(
 		this IEnumerable<TSource> source,
 		Func<TSource, ValueTask<bool>> predicate)
-#else
-	public static async Task<(TSource[], TSource[])> SplitAsync<TSource>(
-		this IEnumerable<TSource> source,
-		Func<TSource, Task<bool>> predicate)
-#endif
 	{
 		List<TSource> matching = [];
 		List<TSource> unmatching = [];
@@ -163,17 +139,10 @@ internal static class LinqAsyncHelpers
 	}
 #endif
 
-#if NET8_0_OR_GREATER
 	public static async Task<(TSource[], TSource[])> SplitWhereAnyAsync<TSource, TTarget>(
 		this IEnumerable<TSource> source,
 		Func<TSource, IEnumerable<TTarget>?> generator,
 		Func<TTarget, ValueTask<bool>> predicate)
-#else
-	public static async Task<(TSource[], TSource[])> SplitWhereAnyAsync<TSource, TTarget>(
-		this IEnumerable<TSource> source,
-		Func<TSource, IEnumerable<TTarget>?> generator,
-		Func<TTarget, Task<bool>> predicate)
-#endif
 	{
 		List<TSource> matching = [];
 		List<TSource> unmatching = [];

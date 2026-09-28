@@ -21,7 +21,7 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> Targets(
 		this IThat<Assembly?> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new TargetsConstraint(it, grammars, expected, options)),

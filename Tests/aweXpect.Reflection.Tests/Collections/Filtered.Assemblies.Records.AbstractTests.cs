@@ -39,7 +39,7 @@ public sealed partial class Filtered
 							.AreInternal();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that abstract records in all loaded assemblies
 						             all are internal,

@@ -28,7 +28,7 @@ public sealed partial class Filtered
 							.AreNotStatic();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that static types in all loaded assemblies
 						             are all not static,
@@ -50,7 +50,7 @@ public sealed partial class Filtered
 							.AreNotStatic();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}static types in all loaded assemblies
 						              are all not static,

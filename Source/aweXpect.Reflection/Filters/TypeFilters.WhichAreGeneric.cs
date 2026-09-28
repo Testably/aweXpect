@@ -81,7 +81,7 @@ public static partial class TypeFilters
 		public GenericTypesWithNamedArgument WithArgument<T>(string expected)
 		{
 			Type argumentType = typeof(T);
-			StringEqualityOptions stringEqualityOptions = new();
+			StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(type, name) => argumentType == (name is null ? type.BaseType : type),
 				() => $"of type {Formatter.Format(typeof(T))}");
@@ -116,7 +116,7 @@ public static partial class TypeFilters
 		/// </summary>
 		public GenericTypesWithNamedArgument WithArgument(string expected)
 		{
-			StringEqualityOptions stringEqualityOptions = new();
+			StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -193,7 +193,7 @@ public static partial class TypeFilters
 			/// </summary>
 			public GenericTypesWithNamedArgument Using(IEqualityComparer<string> comparer)
 			{
-				options.UsingComparer(comparer);
+				options.Using(comparer);
 				return this;
 			}
 

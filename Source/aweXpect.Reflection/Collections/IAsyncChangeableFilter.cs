@@ -12,9 +12,5 @@ public interface IAsyncChangeableFilter<TEntity> : IFilter<TEntity>
 	///     Updates the original filter by applying the <paramref name="predicate" /> on the original result
 	///     and updating the <paramref name="description" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	void UpdateFilter(Func<bool, TEntity, ValueTask<bool>> predicate, Func<string, string> description);
-#else
-	void UpdateFilter(Func<bool, TEntity, Task<bool>> predicate, Func<string, string> description);
-#endif
 }

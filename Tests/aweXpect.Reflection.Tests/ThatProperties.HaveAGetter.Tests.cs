@@ -36,7 +36,7 @@ public sealed partial class ThatProperties
 					await That(subject).HaveAGetter();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all have a getter,
@@ -60,7 +60,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.HaveAGetter());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             not all have a getter,

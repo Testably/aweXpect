@@ -37,7 +37,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotNullable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,
@@ -58,7 +58,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotNullable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,
@@ -82,7 +82,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreNotNullable());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a nullable event,
@@ -137,7 +137,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotNullable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,

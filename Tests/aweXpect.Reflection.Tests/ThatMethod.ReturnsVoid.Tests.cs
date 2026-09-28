@@ -37,7 +37,7 @@ public sealed partial class ThatMethod
 					await That(subject).ReturnsVoid();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             returns void,
@@ -131,7 +131,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.ReturnsVoid());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             does not return void,

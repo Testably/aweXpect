@@ -34,7 +34,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfType<EventHandler>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is of type EventHandler,

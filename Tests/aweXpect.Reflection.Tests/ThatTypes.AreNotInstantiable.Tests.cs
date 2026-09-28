@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotInstantiable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not instantiable,
@@ -83,7 +83,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotInstantiable());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an instantiable type,
@@ -110,7 +110,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotInstantiable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not instantiable,
@@ -133,7 +133,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotInstantiable());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an instantiable type,

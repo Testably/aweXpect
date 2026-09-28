@@ -30,7 +30,7 @@ public sealed partial class ThatType
 					await That(subject).IsInstantiable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is instantiable,
@@ -48,7 +48,7 @@ public sealed partial class ThatType
 					await That(subject).IsInstantiable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is instantiable,

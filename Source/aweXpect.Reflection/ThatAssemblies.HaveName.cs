@@ -24,7 +24,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveName(
 		this IThat<IEnumerable<Assembly?>> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameConstraint(it, grammars, expected, options)),
@@ -40,7 +40,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
@@ -60,7 +60,7 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint(it, grammars, expectedNameSelector, doNotPopulateThisValue,
@@ -80,7 +80,7 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)

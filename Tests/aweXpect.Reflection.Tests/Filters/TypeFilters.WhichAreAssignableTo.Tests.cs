@@ -68,7 +68,7 @@ public sealed partial class TypeFilters
 						.AreAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are assignable to TypeFilters.WhichAreAssignableTo.Tests.AssignableBase in assembly containing type TypeFilters.WhichAreAssignableTo
 					             are all abstract,

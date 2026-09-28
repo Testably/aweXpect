@@ -81,7 +81,7 @@ public sealed partial class ThatMethod
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatMethod.Has.AttributeTests.TestAttribute,

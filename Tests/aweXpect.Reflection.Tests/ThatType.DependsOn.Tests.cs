@@ -352,7 +352,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              depends on namespace "{Layer1Namespace}",
@@ -712,7 +712,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              depends on types within namespace "{Layer1Namespace}" in all loaded assemblies,

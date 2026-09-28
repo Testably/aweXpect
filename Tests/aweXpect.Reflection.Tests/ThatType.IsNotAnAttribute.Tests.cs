@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAnAttribute();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an attribute,
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAnAttribute();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an attribute,

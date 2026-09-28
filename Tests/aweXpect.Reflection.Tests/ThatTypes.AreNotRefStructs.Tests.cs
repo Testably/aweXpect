@@ -42,7 +42,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotRefStructs();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not ref structs,
@@ -66,7 +66,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotRefStructs();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not ref structs,

@@ -20,7 +20,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreClasses();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreClasses
 					             are all classes,

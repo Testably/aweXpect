@@ -21,7 +21,7 @@ public sealed partial class ThatEvent
 					await That(subject).Overrides();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              overrides a base event,
@@ -39,7 +39,7 @@ public sealed partial class ThatEvent
 					await That(subject).Overrides();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             overrides a base event,

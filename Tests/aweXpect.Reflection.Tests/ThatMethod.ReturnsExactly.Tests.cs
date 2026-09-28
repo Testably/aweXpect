@@ -39,7 +39,7 @@ public sealed partial class ThatMethod
 					await That(subject).ReturnsExactly<int>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             returns exactly int,
@@ -110,7 +110,7 @@ public sealed partial class ThatMethod
 					await That(subject).ReturnsExactly(typeof(int));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             returns exactly int,

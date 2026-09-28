@@ -14,7 +14,7 @@ public static partial class AssemblyFilters
 	public static Filtered.Assemblies.StringEqualityResultType WhichDoNotDependOn(
 		this Filtered.Assemblies @this, string unexpected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
 				async assembly => !await assembly.GetReferencedAssemblies()
 					.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, unexpected)),

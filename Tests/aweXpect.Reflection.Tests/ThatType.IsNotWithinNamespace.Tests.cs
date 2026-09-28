@@ -53,7 +53,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotWithinNamespace("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not within namespace "foo",

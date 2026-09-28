@@ -23,13 +23,8 @@ public sealed class LinqAsyncHelpersTests
 	{
 		int[] source = [1, 2, 3, 4,];
 
-#if NET8_0_OR_GREATER
 		(int[] matching, int[] notMatching) =
 			await source.SplitAsync(i => new ValueTask<bool>(i % 2 == 0));
-#else
-		(int[] matching, int[] notMatching) =
-			await source.SplitAsync(i => Task.FromResult(i % 2 == 0));
-#endif
 
 		await That(matching).IsEqualTo([2, 4,]).InAnyOrder();
 		await That(notMatching).IsEqualTo([1, 3,]).InAnyOrder();
@@ -42,11 +37,7 @@ public sealed class LinqAsyncHelpersTests
 
 		(int[] matching, int[] notMatching) = await source.SplitWhereAnyAsync(
 			i => Enumerable.Range(0, i),
-#if NET8_0_OR_GREATER
 			target => new ValueTask<bool>(target > 0));
-#else
-			target => Task.FromResult(target > 0));
-#endif
 
 		// generator(1) => [0]            => no value > 0 => not matching
 		// generator(2) => [0, 1]         => contains 1   => matching
@@ -62,11 +53,7 @@ public sealed class LinqAsyncHelpersTests
 
 		(int[] matching, int[] notMatching) = await source.SplitWhereAnyAsync(
 			i => i == 1 ? null : Enumerable.Range(0, 5),
-#if NET8_0_OR_GREATER
 			target => new ValueTask<bool>(target >= 0));
-#else
-			target => Task.FromResult(target >= 0));
-#endif
 
 		// generator(1) => null => not matching (must not call AnyAsync on null)
 		// generator(2) => [0..4] => contains values >= 0 => matching
@@ -81,11 +68,7 @@ public sealed class LinqAsyncHelpersTests
 
 		(int[] matching, int[] notMatching) = await source.SplitWhereAnyAsync(
 			_ => Enumerable.Range(0, 3),
-#if NET8_0_OR_GREATER
 			target => new ValueTask<bool>(target > 100));
-#else
-			target => Task.FromResult(target > 100));
-#endif
 
 		// No generated value is > 100 => nothing matches.
 		await That(matching).IsEmpty();

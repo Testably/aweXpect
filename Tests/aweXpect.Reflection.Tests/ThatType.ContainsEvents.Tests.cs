@@ -32,7 +32,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsEvents(events => events.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains events with ThatType.ContainsEvents.MarkerAttribute at least once,
@@ -77,7 +77,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsEvents(events => events.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains events with ThatType.ContainsEvents.MarkerAttribute at least once,

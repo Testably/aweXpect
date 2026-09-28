@@ -77,7 +77,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotEnums();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsEnum in assembly containing type ThatTypes.AreNotEnums
 					             are all not enums,

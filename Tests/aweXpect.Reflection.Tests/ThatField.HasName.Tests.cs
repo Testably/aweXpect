@@ -24,7 +24,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Field",
-					             but it was "PublicField" which differs at index 0:
+					             but it was "PublicField", which differs at index 0:
 					                ↓ (actual)
 					               "PublicField"
 					               "Field"
@@ -70,7 +70,7 @@ public sealed partial class ThatField
 					await That(subject).HasName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "foo",

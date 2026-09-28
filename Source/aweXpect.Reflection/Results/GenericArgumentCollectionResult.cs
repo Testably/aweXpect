@@ -53,7 +53,7 @@ public class GenericArgumentCollectionResult<TThat>(
 	/// </summary>
 	public GenericArgumentCollectionWithNamedArgumentResult<TThat> WithArgument<T>(string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		Type argumentType = typeof(T);
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 			(type, name) => argumentType == (name is null ? type.BaseType : type),
@@ -73,7 +73,7 @@ public class GenericArgumentCollectionResult<TThat>(
 	/// </summary>
 	public GenericArgumentCollectionWithNamedArgumentResult<TThat> WithArgument(string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 			(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");

@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnOperator();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not an operator,
@@ -54,7 +54,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnOperator();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an operator,

@@ -35,7 +35,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is abstract,
@@ -53,7 +53,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is abstract,

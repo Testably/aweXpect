@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAClass();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not a class,
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAClass();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not a class,

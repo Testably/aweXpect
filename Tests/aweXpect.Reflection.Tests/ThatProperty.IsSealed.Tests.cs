@@ -21,7 +21,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is sealed,
@@ -39,7 +39,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is sealed,

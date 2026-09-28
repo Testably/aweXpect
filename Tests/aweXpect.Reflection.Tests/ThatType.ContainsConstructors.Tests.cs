@@ -45,7 +45,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsConstructors(constructors => constructors.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains constructors with ThatType.ContainsConstructors.MarkerAttribute at least once,

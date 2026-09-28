@@ -33,7 +33,7 @@ public sealed partial class ThatAssembly
 					await That(subject).IsNotStrongNamed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not strong named,
@@ -51,7 +51,7 @@ public sealed partial class ThatAssembly
 					await That(subject).IsNotStrongNamed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not strong named,

@@ -21,7 +21,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreAttributes();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreAttributes
 					             are all attributes,

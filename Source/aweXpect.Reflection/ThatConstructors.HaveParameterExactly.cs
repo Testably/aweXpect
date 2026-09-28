@@ -64,7 +64,7 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -89,7 +89,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -163,7 +163,7 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -190,7 +190,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));

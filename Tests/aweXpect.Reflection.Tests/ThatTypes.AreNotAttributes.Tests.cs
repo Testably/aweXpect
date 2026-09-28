@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotAttributes();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are attributes in assembly containing type ThatTypes.AreNotAttributes
 					             are all not attributes,

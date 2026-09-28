@@ -40,7 +40,7 @@ public sealed partial class ThatProperties
 					await That(subject).HaveASetter();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all have a setter,
@@ -69,7 +69,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.HaveASetter());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             not all have a setter,

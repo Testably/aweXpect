@@ -30,7 +30,7 @@ public sealed partial class TypeFilters
 						.AreAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which implement TypeFilters.WhichImplement.Tests.IFoo in assembly containing type TypeFilters.WhichImplement
 					             are all abstract,
@@ -88,7 +88,7 @@ public sealed partial class TypeFilters
 						.AreAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which do not implement TypeFilters.WhichDoNotImplement.Tests.IFoo in assembly containing type TypeFilters.WhichDoNotImplement
 					             are all abstract,

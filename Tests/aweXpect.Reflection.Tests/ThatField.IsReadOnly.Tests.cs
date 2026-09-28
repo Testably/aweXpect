@@ -20,7 +20,7 @@ public sealed partial class ThatField
 					await That(subject).IsReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is read-only,
@@ -38,7 +38,7 @@ public sealed partial class ThatField
 					await That(subject).IsReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is read-only,
@@ -88,7 +88,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.IsReadOnly());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not read-only,

@@ -39,7 +39,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfExactType<EventHandler>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type EventHandler,

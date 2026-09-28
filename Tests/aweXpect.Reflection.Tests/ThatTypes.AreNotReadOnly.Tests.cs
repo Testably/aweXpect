@@ -42,7 +42,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not read-only,
@@ -66,7 +66,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not read-only,

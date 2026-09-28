@@ -31,7 +31,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainConstructors(constructors => constructors.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainConstructors.ClassWithMarkedConstructor and ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
 					             all contain constructors with ThatTypes.ContainConstructors.MarkerAttribute at least once,

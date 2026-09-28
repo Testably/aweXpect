@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -40,7 +40,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -60,7 +60,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -80,7 +80,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -100,7 +100,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -120,7 +120,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -140,7 +140,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -172,7 +172,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
@@ -190,7 +190,7 @@ public sealed partial class ThatType
 					await That(subject).IsImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,

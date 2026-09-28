@@ -20,7 +20,7 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type?, IThat<Type?>> HasNamespace(
 		this IThat<Type?> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasNamespaceConstraint(it, grammars, expected, options)),
 			subject,

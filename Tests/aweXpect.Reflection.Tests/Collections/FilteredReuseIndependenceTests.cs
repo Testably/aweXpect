@@ -38,11 +38,11 @@ public sealed class FilteredReuseIndependenceTests
 		Filtered.Constructors view1 = @base.Which(c => c.GetParameters().Length == 0);
 		Filtered.Constructors view2 = @base.Which(c => c.GetParameters().Length == 1);
 
-		await That(view1).HasCount().AtLeast(1);
+		await That(view1).HasCount().GreaterThanOrEqualTo(1);
 		await That(view1).All().Satisfy(c => c.GetParameters().Length == 0);
-		await That(view2).HasCount().AtLeast(1);
+		await That(view2).HasCount().GreaterThanOrEqualTo(1);
 		await That(view2).All().Satisfy(c => c.GetParameters().Length == 1);
-		await That(@base).HasCount().AtLeast(2);
+		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
 	[Fact]
@@ -57,7 +57,7 @@ public sealed class FilteredReuseIndependenceTests
 
 		await That(view1).IsEqualTo([eventA,]).InAnyOrder();
 		await That(view2).IsEqualTo([eventB,]).InAnyOrder();
-		await That(@base).HasCount().AtLeast(2);
+		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
 	[Fact]
@@ -72,7 +72,7 @@ public sealed class FilteredReuseIndependenceTests
 
 		await That(view1).IsEqualTo([fieldA,]).InAnyOrder();
 		await That(view2).IsEqualTo([fieldB,]).InAnyOrder();
-		await That(@base).HasCount().AtLeast(2);
+		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
 	[Fact]
@@ -138,7 +138,7 @@ public sealed class FilteredReuseIndependenceTests
 
 		await That(view1).IsEqualTo([propertyA,]).InAnyOrder();
 		await That(view2).IsEqualTo([propertyB,]).InAnyOrder();
-		await That(@base).HasCount().AtLeast(2);
+		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
 	[Fact]

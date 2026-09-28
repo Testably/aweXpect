@@ -27,7 +27,7 @@ public sealed partial class Filtered
 							.AreInternal();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that static classes in all loaded assemblies
 						             all are internal,

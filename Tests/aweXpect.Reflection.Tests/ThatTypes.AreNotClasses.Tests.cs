@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotClasses();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsClass && !type.IsRecordClass() in assembly containing type ThatTypes.AreNotClasses
 					             are all not classes,

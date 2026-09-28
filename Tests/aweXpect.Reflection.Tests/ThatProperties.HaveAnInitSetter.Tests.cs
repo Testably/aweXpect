@@ -38,7 +38,7 @@ public sealed partial class ThatProperties
 					await That(subject).HaveAnInitSetter();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all have an init setter,
@@ -65,7 +65,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.HaveAnInitSetter());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             not all have an init setter,

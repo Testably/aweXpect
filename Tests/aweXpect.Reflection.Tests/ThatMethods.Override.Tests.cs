@@ -40,7 +40,7 @@ public sealed partial class ThatMethods
 					await That(subject).Override();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all override a base method,
@@ -65,7 +65,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.Override());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             do not all override a base method,
@@ -121,7 +121,7 @@ public sealed partial class ThatMethods
 					await That(subject).Override();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all override a base method,

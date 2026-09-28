@@ -27,7 +27,7 @@ public sealed partial class ThatFields
 					await That(subject).AreReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all read-only,
@@ -90,7 +90,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreReadOnly());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all read-only,
@@ -117,7 +117,7 @@ public sealed partial class ThatFields
 					await That(subject).AreReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all read-only,
@@ -141,7 +141,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreReadOnly());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all read-only,

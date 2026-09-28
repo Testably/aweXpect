@@ -42,7 +42,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).AreNotStrongNamed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not strong named,
@@ -68,7 +68,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoesNotComplyWith(they => they.AreNotStrongNamed());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a strong named assembly,
@@ -127,7 +127,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).AreNotStrongNamed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not strong named,

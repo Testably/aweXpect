@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAsync();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not async,
@@ -53,7 +53,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAsync();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not async,

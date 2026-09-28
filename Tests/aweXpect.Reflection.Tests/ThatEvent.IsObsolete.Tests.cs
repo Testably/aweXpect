@@ -21,7 +21,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is obsolete,
@@ -39,7 +39,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is obsolete,

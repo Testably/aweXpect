@@ -19,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfExactType<int>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type int,

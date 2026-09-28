@@ -49,7 +49,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAsync();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is async,
@@ -67,7 +67,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAsync();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is async,
@@ -86,7 +86,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAsync();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is async,

@@ -24,7 +24,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsAnExtensionProperty();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is an extension property,
@@ -42,7 +42,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsAnExtensionProperty();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is an extension property,
@@ -130,7 +130,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsAnExtensionProperty();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is an extension property,

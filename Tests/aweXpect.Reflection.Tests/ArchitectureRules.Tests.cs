@@ -64,7 +64,7 @@ public sealed class ArchitectureRulesTests
 				That(layer2).AreWithinNamespace(Layer2Namespace));
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("*TargetSeverityAttribute*").AsWildcard();
 	}
 

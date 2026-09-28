@@ -25,7 +25,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
@@ -79,7 +79,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an abstract event,
@@ -105,7 +105,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,

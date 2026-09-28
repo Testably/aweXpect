@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not abstract,
@@ -79,7 +79,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not abstract,

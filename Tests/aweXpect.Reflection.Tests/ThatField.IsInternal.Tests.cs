@@ -53,7 +53,7 @@ public sealed partial class ThatField
 					await That(subject).IsInternal();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is internal,

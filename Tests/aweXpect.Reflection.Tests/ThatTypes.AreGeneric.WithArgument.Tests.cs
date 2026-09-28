@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -51,7 +51,7 @@ public sealed partial class ThatTypes
 							.FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -85,7 +85,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatMethod.DerivedClass,
@@ -105,7 +105,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
 						             are all generic with argument of type ThatTypes.BaseClass,
@@ -132,7 +132,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -158,7 +158,7 @@ public sealed partial class ThatTypes
 							.FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -192,7 +192,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>("Tbar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatTypes.BaseClass and name equal to "Tbar",
@@ -212,7 +212,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>("TBar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
@@ -232,7 +232,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
 						             are all generic with argument of type ThatTypes.BaseClass and name equal to "TBar",
@@ -254,7 +254,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>(prefix).AsPrefix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -277,7 +277,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>(regex).AsRegex();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -300,7 +300,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>(suffix).AsSuffix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -323,7 +323,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument<BaseClass>(wildcard).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -347,7 +347,7 @@ public sealed partial class ThatTypes
 							.IgnoringCase(ignoreCase);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -389,7 +389,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -415,7 +415,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -449,7 +449,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument("Tbar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument name equal to "Tbar",
@@ -471,7 +471,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument(prefix).AsPrefix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -494,7 +494,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument(regex).AsRegex();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -517,7 +517,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument(suffix).AsSuffix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -540,7 +540,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument(wildcard).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -563,7 +563,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgument("TBAR").IgnoringCase(ignoreCase);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]

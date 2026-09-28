@@ -18,7 +18,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotGeneric();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
@@ -49,7 +49,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotGeneric();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
@@ -83,7 +83,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is generic,

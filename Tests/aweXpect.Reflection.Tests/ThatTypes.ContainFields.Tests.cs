@@ -54,7 +54,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.ClassWithMarkedField and ThatTypes.ContainFields.ClassWithoutMarkedField
 					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
@@ -75,7 +75,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField and ThatTypes.ContainFields.BaseClassWithMarkedField
 					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,

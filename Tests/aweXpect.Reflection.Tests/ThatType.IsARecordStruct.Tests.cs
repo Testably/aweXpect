@@ -31,7 +31,7 @@ public sealed partial class ThatType
 					await That(subject).IsARecordStruct();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is a record struct,
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsARecordStruct();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is a record struct,

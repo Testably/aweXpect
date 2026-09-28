@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>()).Exactly(2);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly twice,
@@ -63,7 +63,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -108,7 +108,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -126,7 +126,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -148,7 +148,7 @@ public sealed partial class ThatType
 						.AtLeast().Twice();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least twice,
@@ -181,7 +181,7 @@ public sealed partial class ThatType
 						.AtLeast(2);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least twice,
@@ -228,7 +228,7 @@ public sealed partial class ThatType
 						.AtMost(1);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at most once,
@@ -275,7 +275,7 @@ public sealed partial class ThatType
 						.AtMost().Once();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at most once,
@@ -294,7 +294,7 @@ public sealed partial class ThatType
 						.Between(2).And(3);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute between 2 and 3 times,
@@ -327,10 +327,10 @@ public sealed partial class ThatType
 						.LessThan().Twice();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             contains methods with ThatType.ContainsMethods.MarkerAttribute less than twice,
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute fewer than twice,
 					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
 					             """);
 			}
@@ -360,10 +360,10 @@ public sealed partial class ThatType
 						.LessThan(2);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             contains methods with ThatType.ContainsMethods.MarkerAttribute less than twice,
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute fewer than twice,
 					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
 					             """);
 			}
@@ -393,7 +393,7 @@ public sealed partial class ThatType
 						.MoreThan().Twice();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute more than twice,
@@ -440,7 +440,7 @@ public sealed partial class ThatType
 						.MoreThan(2);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute more than twice,
@@ -473,7 +473,7 @@ public sealed partial class ThatType
 						.Once();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly once,
@@ -492,7 +492,7 @@ public sealed partial class ThatType
 						.Twice();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly twice,

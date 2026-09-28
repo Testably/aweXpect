@@ -25,7 +25,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>().AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -51,7 +51,7 @@ public sealed partial class ThatMethods
 							.FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -85,7 +85,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument of type ThatMethod.DerivedClass,
@@ -105,7 +105,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument of type ThatMethod.BaseClass,
@@ -132,7 +132,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar").AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -158,7 +158,7 @@ public sealed partial class ThatMethods
 							.FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -192,7 +192,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("Tbar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument of type ThatMethod.BaseClass and name equal to "Tbar",
@@ -212,7 +212,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>("TBar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
@@ -232,7 +232,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar",
@@ -254,7 +254,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(prefix).AsPrefix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -277,7 +277,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(regex).AsRegex();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -300,7 +300,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(suffix).AsSuffix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -323,7 +323,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(wildcard).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -347,7 +347,7 @@ public sealed partial class ThatMethods
 							.IgnoringCase(ignoreCase);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -389,7 +389,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -415,7 +415,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -449,7 +449,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument("Tbar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with argument name equal to "Tbar",
@@ -471,7 +471,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument(prefix).AsPrefix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -494,7 +494,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument(regex).AsRegex();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -517,7 +517,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument(suffix).AsSuffix();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -540,7 +540,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument(wildcard).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -563,7 +563,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgument("TBAR").IgnoringCase(ignoreCase);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods

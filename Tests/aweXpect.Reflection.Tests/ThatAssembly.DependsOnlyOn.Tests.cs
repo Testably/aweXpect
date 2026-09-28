@@ -78,7 +78,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DependsOnlyOn("aweXpect.Core");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "aweXpect.Core",

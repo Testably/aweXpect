@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotNested();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsNested in assembly containing type ThatTypes.AreNotNested
 					             are all not nested,

@@ -23,7 +23,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Abstract",
-					             but it was "PublicAbstractClass" which differs at index 0:
+					             but it was "PublicAbstractClass", which differs at index 0:
 					                ↓ (actual)
 					               "PublicAbstractClass"
 					               "Abstract"
@@ -67,7 +67,7 @@ public sealed partial class ThatType
 					await That(subject).HasName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "foo",

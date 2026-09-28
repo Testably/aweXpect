@@ -20,7 +20,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreStructs();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreStructs
 					             are all structs,

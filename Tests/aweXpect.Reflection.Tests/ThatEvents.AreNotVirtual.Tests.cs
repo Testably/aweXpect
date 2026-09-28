@@ -24,7 +24,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not virtual,
@@ -76,7 +76,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreNotVirtual());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a virtual event,
@@ -102,7 +102,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not virtual,

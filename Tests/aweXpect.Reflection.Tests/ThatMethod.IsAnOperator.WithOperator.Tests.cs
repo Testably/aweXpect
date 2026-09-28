@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAnOperator(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is the operator Addition,
@@ -41,7 +41,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAnOperator(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is the operator Addition,
@@ -59,7 +59,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsAnOperator(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is the operator Addition,

@@ -42,7 +42,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all immutable,
@@ -82,7 +82,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreImmutable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all immutable,

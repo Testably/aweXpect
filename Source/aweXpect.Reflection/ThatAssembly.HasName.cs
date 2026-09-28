@@ -20,7 +20,7 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> HasName(
 		this IThat<Assembly?> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasNameConstraint(it, grammars, expected, options)),
 			subject,

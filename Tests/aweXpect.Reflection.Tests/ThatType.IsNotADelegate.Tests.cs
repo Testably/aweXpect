@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotADelegate();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not a delegate,
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotADelegate();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not a delegate,

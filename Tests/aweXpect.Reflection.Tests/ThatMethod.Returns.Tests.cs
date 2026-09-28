@@ -39,7 +39,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns<int>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             returns int,
@@ -104,7 +104,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns(typeof(int));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             returns int,
@@ -260,7 +260,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns<int>());
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,
@@ -334,7 +334,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(int)));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,

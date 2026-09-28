@@ -24,7 +24,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Property",
-					             but it was "PublicProperty" which differs at index 1:
+					             but it was "PublicProperty", which differs at index 1:
 					                 ↓ (actual)
 					               "PublicProperty"
 					               "Property"
@@ -70,7 +70,7 @@ public sealed partial class ThatProperty
 					await That(subject).HasName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "foo",

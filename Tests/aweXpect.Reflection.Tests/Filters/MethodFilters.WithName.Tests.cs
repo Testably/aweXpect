@@ -68,19 +68,6 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
-					.Methods().WithName(nameof(SomeClassToVerifyTheMethodNameOfIt.SomeMethodToVerifyTheNameOfIt))
-					.Exactly();
-
-				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
-				await That(methods.GetDescription())
-					.IsEqualTo("methods with name equal to \"SomeMethodToVerifyTheNameOfIt\" in")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -105,7 +92,7 @@ public sealed partial class MethodFilters
 				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with name equal to \"\\t SomeMethodToVerifyTheNameOfI…\" ignoring leading white-space in")
+						"methods with name equal to \"\\t SomeMethodToVerifyTheNameOfI…\" ignoring leading whitespace in")
 					.AsPrefix();
 			}
 
@@ -120,7 +107,7 @@ public sealed partial class MethodFilters
 				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with name equal to \"SomeMethodToVerifyTheNameOfIt\\t…\" ignoring trailing white-space in")
+						"methods with name equal to \"SomeMethodToVerifyTheNameOfIt\\t…\" ignoring trailing whitespace in")
 					.AsPrefix();
 			}
 

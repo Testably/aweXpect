@@ -21,7 +21,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsNotAnIndexer();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not an indexer,
@@ -53,7 +53,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsNotAnIndexer();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an indexer,

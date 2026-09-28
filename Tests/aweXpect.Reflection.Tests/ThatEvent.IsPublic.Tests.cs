@@ -40,7 +40,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsPublic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is public,

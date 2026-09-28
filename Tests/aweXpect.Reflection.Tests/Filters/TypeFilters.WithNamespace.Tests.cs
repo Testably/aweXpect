@@ -74,19 +74,6 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().WithNamespace(
-						"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt").Exactly();
-
-				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
-				await That(types.GetDescription())
-					.IsEqualTo("types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" in assembly")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -111,7 +98,7 @@ public sealed partial class TypeFilters
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with namespace equal to \"\\t aweXpect.Reflection.Tests.Te…\" ignoring leading white-space in assembly")
+						"types with namespace equal to \"\\t aweXpect.Reflection.Tests.Te…\" ignoring leading whitespace in assembly")
 					.AsPrefix();
 			}
 
@@ -126,7 +113,7 @@ public sealed partial class TypeFilters
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" ignoring trailing white-space in assembly")
+						"types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" ignoring trailing whitespace in assembly")
 					.AsPrefix();
 			}
 

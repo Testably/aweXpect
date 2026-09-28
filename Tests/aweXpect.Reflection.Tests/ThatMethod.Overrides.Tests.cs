@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).Overrides();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              overrides a base method,
@@ -39,7 +39,7 @@ public sealed partial class ThatMethod
 					await That(subject).Overrides();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             overrides a base method,

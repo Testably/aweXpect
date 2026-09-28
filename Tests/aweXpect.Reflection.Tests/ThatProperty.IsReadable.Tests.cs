@@ -19,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsReadable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is readable,
@@ -52,7 +52,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsReadable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is readable,
@@ -74,7 +74,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsReadable());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not readable,

@@ -23,7 +23,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -47,7 +47,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
@@ -69,7 +69,7 @@ public sealed partial class ThatMethods
 						await That(subject).AreGeneric().WithArgumentCount(1);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 						             are all generic with 1 generic argument,

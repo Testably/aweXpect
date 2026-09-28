@@ -54,7 +54,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.ClassWithMarkedEvent and ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
@@ -75,7 +75,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent and ThatTypes.ContainEvents.BaseClassWithMarkedEvent
 					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,

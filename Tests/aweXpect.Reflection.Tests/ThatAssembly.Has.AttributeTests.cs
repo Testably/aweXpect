@@ -81,7 +81,7 @@ public sealed partial class ThatAssembly
 					await That(subject).Has<AssemblyTitleAttribute>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has AssemblyTitleAttribute,

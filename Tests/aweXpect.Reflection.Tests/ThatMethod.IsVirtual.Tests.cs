@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is virtual,
@@ -39,7 +39,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is virtual,

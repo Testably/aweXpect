@@ -19,7 +19,7 @@ public sealed partial class ThatField
 					await That(subject).IsOfType<int>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is of type int,

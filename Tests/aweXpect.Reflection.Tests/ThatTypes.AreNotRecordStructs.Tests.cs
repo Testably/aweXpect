@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotRecordStructs();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsRecordStruct() in assembly containing type ThatTypes.AreNotRecordStructs
 					             are all not record structs,

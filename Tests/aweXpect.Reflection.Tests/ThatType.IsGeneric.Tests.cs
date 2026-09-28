@@ -32,7 +32,7 @@ public sealed partial class ThatType
 					await That(subject).IsGeneric();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is generic,
@@ -50,7 +50,7 @@ public sealed partial class ThatType
 					await That(subject).IsGeneric();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is generic,

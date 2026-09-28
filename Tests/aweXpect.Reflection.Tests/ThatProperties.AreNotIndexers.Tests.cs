@@ -24,7 +24,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotIndexers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not indexers,
@@ -76,7 +76,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreNotIndexers());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an indexer property,
@@ -102,7 +102,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotIndexers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not indexers,

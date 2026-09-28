@@ -75,7 +75,6 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 		return this;
 	}
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into <see cref="Matching" />
 	///     and <see cref="NotMatching" />.
@@ -87,19 +86,6 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 		Outcome = NotMatching.Length == 0 ? Outcome.Success : Outcome.Failure;
 		return this;
 	}
-#else
-	/// <summary>
-	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into <see cref="Matching" />
-	///     and <see cref="NotMatching" />.
-	/// </summary>
-	protected async Task<ConstraintResult> SetValue(IEnumerable<T> elements, Func<T, Task<bool>> predicate)
-	{
-		_elements = elements;
-		(Matching, NotMatching) = await elements.SplitAsync(predicate);
-		Outcome = NotMatching.Length == 0 ? Outcome.Success : Outcome.Failure;
-		return this;
-	}
-#endif
 
 #if NET8_0_OR_GREATER
 	/// <summary>

@@ -67,17 +67,6 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().WithName(nameof(SomeClassToVerifyTheNameOfIt)).Exactly();
-
-				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNameOfIt));
-				await That(types.GetDescription())
-					.IsEqualTo("types with name equal to \"SomeClassToVerifyTheNameOfIt\" in assembly").AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -100,7 +89,7 @@ public sealed partial class TypeFilters
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNameOfIt));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with name equal to \"\\t SomeClassToVerifyTheNameOfIt\" ignoring leading white-space in assembly")
+						"types with name equal to \"\\t SomeClassToVerifyTheNameOfIt\" ignoring leading whitespace in assembly")
 					.AsPrefix();
 			}
 
@@ -114,7 +103,7 @@ public sealed partial class TypeFilters
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNameOfIt));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with name equal to \"SomeClassToVerifyTheNameOfIt\\t \" ignoring trailing white-space in assembly")
+						"types with name equal to \"SomeClassToVerifyTheNameOfIt\\t \" ignoring trailing whitespace in assembly")
 					.AsPrefix();
 			}
 

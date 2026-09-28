@@ -69,19 +69,6 @@ public sealed partial class PropertyFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
-					.Properties().WithName(nameof(SomeClassToVerifyThePropertyNameOfIt.SomePropertyToVerifyTheNameOfIt))
-					.Exactly();
-
-				await That(properties).HasSingle().Which.IsEqualTo(ExpectedPropertyInfo());
-				await That(properties.GetDescription())
-					.IsEqualTo("properties with name equal to \"SomePropertyToVerifyTheNameOfI…\" in")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -106,7 +93,7 @@ public sealed partial class PropertyFilters
 				await That(properties).HasSingle().Which.IsEqualTo(ExpectedPropertyInfo());
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties with name equal to \"\\t SomePropertyToVerifyTheNameO…\" ignoring leading white-space in")
+						"properties with name equal to \"\\t SomePropertyToVerifyTheNameO…\" ignoring leading whitespace in")
 					.AsPrefix();
 			}
 
@@ -121,7 +108,7 @@ public sealed partial class PropertyFilters
 				await That(properties).HasSingle().Which.IsEqualTo(ExpectedPropertyInfo());
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties with name equal to \"SomePropertyToVerifyTheNameOfI…\" ignoring trailing white-space in")
+						"properties with name equal to \"SomePropertyToVerifyTheNameOfI…\" ignoring trailing whitespace in")
 					.AsPrefix();
 			}
 

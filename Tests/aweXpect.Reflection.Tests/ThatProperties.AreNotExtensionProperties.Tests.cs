@@ -22,7 +22,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreNotExtensionProperties());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an extension property,
@@ -84,7 +84,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotExtensionProperties();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not extension properties,

@@ -36,7 +36,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreExtensionProperties();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,
@@ -62,7 +62,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreExtensionProperties();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,
@@ -109,7 +109,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreExtensionProperties());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all extension properties,
@@ -134,7 +134,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreExtensionProperties();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,

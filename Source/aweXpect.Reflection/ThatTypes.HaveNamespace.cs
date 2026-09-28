@@ -22,7 +22,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveNamespace(
 		this IThat<IEnumerable<Type?>> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, expected, options)),
@@ -38,7 +38,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveNamespace(
 		this IThat<IAsyncEnumerable<Type?>> subject, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, expected, options)),

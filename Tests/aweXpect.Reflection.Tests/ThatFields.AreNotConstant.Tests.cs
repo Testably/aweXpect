@@ -27,7 +27,7 @@ public sealed partial class ThatFields
 					await That(subject).AreNotConstant();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not constant,
@@ -88,7 +88,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreNotConstant());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a constant field,
@@ -115,7 +115,7 @@ public sealed partial class ThatFields
 					await That(subject).AreNotConstant();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not constant,

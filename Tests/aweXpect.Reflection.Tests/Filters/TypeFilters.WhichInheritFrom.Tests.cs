@@ -27,7 +27,7 @@ public sealed partial class TypeFilters
 						.AreAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which inherit from TypeFilters.WhichInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichInheritFrom
 					             are all abstract,
@@ -85,7 +85,7 @@ public sealed partial class TypeFilters
 						.AreAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which do not inherit from TypeFilters.WhichDoNotInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichDoNotInheritFrom
 					             are all abstract,

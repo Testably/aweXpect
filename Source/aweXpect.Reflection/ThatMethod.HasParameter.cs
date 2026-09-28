@@ -44,7 +44,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -87,7 +87,7 @@ public static partial class ThatMethod
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -110,7 +110,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject,
 		string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder

@@ -21,7 +21,7 @@ public static partial class ThatMember
 		this IThat<TMember> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TMember, IThat<TMember>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasNameConstraint<TMember>(it, grammars, expected, options)),

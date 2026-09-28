@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not sealed,
@@ -67,7 +67,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotSealed();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not sealed,

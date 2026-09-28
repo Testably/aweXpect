@@ -12,7 +12,7 @@ public static partial class FieldFilters
 	/// </summary>
 	public static Filtered.Fields.StringEqualityResultType WithoutName(this Filtered.Fields @this, string unexpected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new Filtered.Fields.StringEqualityResultType(@this.Which(Filter.Suffix<FieldInfo>(
 				async fieldInfo => !await options.AreConsideredEqual(fieldInfo.Name, unexpected),
 				() => $"without name {options.GetExpectation(unexpected, ExpectationGrammars.None)} ")),

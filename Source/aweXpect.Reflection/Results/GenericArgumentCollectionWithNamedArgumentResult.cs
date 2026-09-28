@@ -37,7 +37,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	/// </summary>
 	public GenericArgumentCollectionWithArgumentResult<TThat> Using(IEqualityComparer<string> comparer)
 	{
-		options.UsingComparer(comparer);
+		options.Using(comparer);
 		return this;
 	}
 

@@ -19,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsWriteOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is write-only,
@@ -38,7 +38,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsWriteOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is write-only,
@@ -88,7 +88,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsWriteOnly());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not write-only,

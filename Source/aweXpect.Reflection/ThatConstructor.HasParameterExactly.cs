@@ -40,7 +40,7 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -85,7 +85,7 @@ public static partial class ThatConstructor
 	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));

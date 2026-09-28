@@ -68,19 +68,6 @@ public sealed partial class FieldFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
-					.Fields().WithName(nameof(SomeClassToVerifyTheFieldNameOfIt.SomeFieldToVerifyTheNameOfIt))
-					.Exactly();
-
-				await That(fields).HasSingle().Which.IsEqualTo(ExpectedFieldInfo());
-				await That(fields.GetDescription())
-					.IsEqualTo("fields with name equal to \"SomeFieldToVerifyTheNameOfIt\" in")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -105,7 +92,7 @@ public sealed partial class FieldFilters
 				await That(fields).HasSingle().Which.IsEqualTo(ExpectedFieldInfo());
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields with name equal to \"\\t SomeFieldToVerifyTheNameOfIt\" ignoring leading white-space in")
+						"fields with name equal to \"\\t SomeFieldToVerifyTheNameOfIt\" ignoring leading whitespace in")
 					.AsPrefix();
 			}
 
@@ -120,7 +107,7 @@ public sealed partial class FieldFilters
 				await That(fields).HasSingle().Which.IsEqualTo(ExpectedFieldInfo());
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields with name equal to \"SomeFieldToVerifyTheNameOfIt\\t \" ignoring trailing white-space in")
+						"fields with name equal to \"SomeFieldToVerifyTheNameOfIt\\t \" ignoring trailing whitespace in")
 					.AsPrefix();
 			}
 

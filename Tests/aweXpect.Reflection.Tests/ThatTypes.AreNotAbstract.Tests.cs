@@ -77,7 +77,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotAbstract();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: true, IsSealed: false, IsInterface: false, } in assembly containing type ThatTypes.AreNotAbstract
 					             are all not abstract,

@@ -220,7 +220,7 @@ public static partial class TypeFilters
 		public Task<int> CountMatchingMembers(Type value)
 			=> Task.FromResult(_filter(_navigate(new Filtered.Types([value,], ""))).Count());
 
-		public async Task<bool> Applies(Type value)
+		public async ValueTask<bool> Applies(Type value)
 			=> _quantifier.Check(await CountMatchingMembers(value), true) ?? false;
 #endif
 

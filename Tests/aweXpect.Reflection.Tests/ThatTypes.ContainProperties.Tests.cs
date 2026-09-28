@@ -54,7 +54,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.ClassWithMarkedProperty and ThatTypes.ContainProperties.ClassWithoutMarkedProperty
 					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
@@ -75,7 +75,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty and ThatTypes.ContainProperties.BaseClassWithMarkedProperty
 					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,

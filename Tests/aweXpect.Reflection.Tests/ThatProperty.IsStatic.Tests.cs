@@ -21,7 +21,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsStatic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is static,
@@ -39,7 +39,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsStatic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is static,
@@ -90,7 +90,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsStatic());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not static,

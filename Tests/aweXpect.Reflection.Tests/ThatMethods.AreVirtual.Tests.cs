@@ -40,7 +40,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,
@@ -65,7 +65,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreVirtual());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all virtual,
@@ -121,7 +121,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,

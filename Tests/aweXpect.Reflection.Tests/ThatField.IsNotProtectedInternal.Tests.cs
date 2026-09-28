@@ -37,7 +37,7 @@ public sealed partial class ThatField
 					await That(subject).IsNotProtectedInternal();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not protected internal,

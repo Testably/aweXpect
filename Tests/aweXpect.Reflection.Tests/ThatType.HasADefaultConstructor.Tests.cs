@@ -17,7 +17,7 @@ public sealed partial class ThatType
 					await That(subject).HasADefaultConstructor();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has a default constructor,
@@ -47,7 +47,7 @@ public sealed partial class ThatType
 					await That(subject).HasADefaultConstructor();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has a default constructor,
@@ -96,7 +96,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.HasADefaultConstructor());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have a default constructor,

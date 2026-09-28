@@ -31,7 +31,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOnlyOn(
 		this IThat<IEnumerable<Assembly?>> subject, params string[] allowed)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(allowed));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, allowed, options)),
@@ -55,7 +55,7 @@ public static partial class ThatAssemblies
 		DependOnlyOn(
 			this IThat<IAsyncEnumerable<Assembly?>> subject, params string[] allowed)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(allowed));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
@@ -87,11 +87,7 @@ public static partial class ThatAssemblies
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
 			=> await SetValue(actual, DependsOnlyOnAllowed);
 
-#if NET8_0_OR_GREATER
 		private async ValueTask<bool> DependsOnlyOnAllowed(Assembly? assembly)
-#else
-		private async Task<bool> DependsOnlyOnAllowed(Assembly? assembly)
-#endif
 		{
 			if (assembly is null)
 			{

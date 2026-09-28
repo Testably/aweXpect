@@ -37,7 +37,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	/// </summary>
 	public NamedParameterCollectionResult<TThat, TParameter> Using(IEqualityComparer<string> comparer)
 	{
-		options.UsingComparer(comparer);
+		options.Using(comparer);
 		return this;
 	}
 

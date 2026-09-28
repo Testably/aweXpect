@@ -38,7 +38,7 @@ public sealed partial class Filtered
 							.AreNotAbstract();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that abstract types in all loaded assemblies
 						             are all not abstract,
@@ -59,7 +59,7 @@ public sealed partial class Filtered
 							.AreNotAbstract();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}abstract types in all loaded assemblies
 						              are all not abstract,

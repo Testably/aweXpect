@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAnEnum();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an enum,
@@ -79,7 +79,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAnEnum();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an enum,

@@ -12,12 +12,8 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new prefix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public static IAsyncChangeableFilter<TEntity> Prefix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string prefix)
-#else
-	public static IAsyncChangeableFilter<TEntity> Prefix<TEntity>(Func<TEntity, Task<bool>> predicate, string prefix)
-#endif
 		=> new GenericAsyncPrefixFilter<TEntity>(predicate, prefix);
 
 	/// <summary>
@@ -29,12 +25,8 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new suffix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string suffix)
-#else
-	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, Task<bool>> predicate, string suffix)
-#endif
 		=> new GenericAsyncSuffixFilter<TEntity>(predicate, suffix);
 
 	/// <summary>
@@ -52,43 +44,23 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		Func<string> suffix)
-#else
-	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, Task<bool>> predicate, Func<string> suffix)
-#endif
 		=> new GenericAsyncSuffixFuncFilter<TEntity>(predicate, suffix);
 
-#if NET8_0_OR_GREATER
 	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter)
 		: IAsyncChangeableFilter<TEntity>
-#else
-	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, Task<bool>> filter) : IAsyncChangeableFilter<TEntity>
-#endif
 	{
 		private List<Func<string, string>>? _descriptions;
-#if NET8_0_OR_GREATER
 		private List<Func<bool, TEntity, ValueTask<bool>>>? _predicates;
-#else
-		private List<Func<bool, TEntity, Task<bool>>>? _predicates;
-#endif
 
 		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-#if NET8_0_OR_GREATER
 		public async ValueTask<bool> Applies(TEntity value)
-#else
-		public async Task<bool> Applies(TEntity value)
-#endif
 		{
 			bool result = await filter(value);
 			if (_predicates != null)
 			{
-#if NET8_0_OR_GREATER
 				foreach (Func<bool, TEntity, ValueTask<bool>> predicate in _predicates)
-#else
-				foreach (Func<bool, TEntity, Task<bool>> predicate in _predicates)
-#endif
 				{
 					result = await predicate(result, value);
 				}
@@ -112,14 +84,9 @@ internal static class Filter
 			return result;
 		}
 
-#if NET8_0_OR_GREATER
 		/// <inheritdoc
 		///     cref="IAsyncChangeableFilter{TEntity}.UpdateFilter(Func{bool, TEntity, ValueTask{bool}}, Func{string, string})" />
 		public void UpdateFilter(Func<bool, TEntity, ValueTask<bool>> predicate, Func<string, string> description)
-#else
-		/// <inheritdoc cref="IAsyncChangeableFilter{TEntity}.UpdateFilter(Func{bool, TEntity, Task{bool}}, Func{string, string})" />
-		public void UpdateFilter(Func<bool, TEntity, Task<bool>> predicate, Func<string, string> description)
-#endif
 		{
 			_predicates ??= [];
 			_predicates.Add(predicate);
@@ -136,11 +103,7 @@ internal static class Filter
 		private List<Func<bool, TEntity, bool>>? _predicates;
 
 		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-#if NET8_0_OR_GREATER
 		public ValueTask<bool> Applies(TEntity value)
-#else
-		public Task<bool> Applies(TEntity value)
-#endif
 		{
 			bool result = filter(value);
 			if (_predicates != null)
@@ -151,11 +114,7 @@ internal static class Filter
 				}
 			}
 
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(result);
-#else
-			return Task.FromResult(result);
-#endif
+			return new ValueTask<bool>(result);
 		}
 
 		/// <inheritdoc cref="IFilter{TEntity}.Describes(string)" />
@@ -185,11 +144,7 @@ internal static class Filter
 		protected abstract string DescribeCore(string text);
 	}
 
-#if NET8_0_OR_GREATER
 	private sealed class GenericAsyncPrefixFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter, string prefix)
-#else
-	private sealed class GenericAsyncPrefixFilter<TEntity>(Func<TEntity, Task<bool>> filter, string prefix)
-#endif
 		: GenericAsyncFilter<TEntity>(filter)
 	{
 		/// <inheritdoc cref="GenericAsyncFilter{TEntity}.DescribeCore(string)" />
@@ -201,11 +156,7 @@ internal static class Filter
 			=> prefix;
 	}
 
-#if NET8_0_OR_GREATER
 	private sealed class GenericAsyncSuffixFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter, string suffix)
-#else
-	private sealed class GenericAsyncSuffixFilter<TEntity>(Func<TEntity, Task<bool>> filter, string suffix)
-#endif
 		: GenericAsyncFilter<TEntity>(filter)
 	{
 		/// <inheritdoc cref="GenericAsyncFilter{TEntity}.DescribeCore(string)" />
@@ -217,13 +168,9 @@ internal static class Filter
 			=> suffix;
 	}
 
-#if NET8_0_OR_GREATER
 	private sealed class GenericAsyncSuffixFuncFilter<TEntity>(
 		Func<TEntity, ValueTask<bool>> filter,
 		Func<string> suffix)
-#else
-	private sealed class GenericAsyncSuffixFuncFilter<TEntity>(Func<TEntity, Task<bool>> filter, Func<string> suffix)
-#endif
 		: GenericAsyncFilter<TEntity>(filter)
 	{
 		/// <inheritdoc cref="GenericAsyncFilter{TEntity}.DescribeCore(string)" />

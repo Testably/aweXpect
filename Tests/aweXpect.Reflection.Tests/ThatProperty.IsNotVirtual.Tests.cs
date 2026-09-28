@@ -34,7 +34,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsNotVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not virtual,
@@ -53,7 +53,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsNotVirtual();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not virtual,

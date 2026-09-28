@@ -39,7 +39,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotStatic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
@@ -63,7 +63,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain a static property,
@@ -120,7 +120,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotStatic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,

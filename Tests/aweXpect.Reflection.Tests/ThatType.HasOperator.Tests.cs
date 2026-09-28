@@ -33,7 +33,7 @@ public sealed partial class ThatType
 					await That(subject).HasOperator(Operator.Subtraction);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has the operator Subtraction,
@@ -51,7 +51,7 @@ public sealed partial class ThatType
 					await That(subject).HasOperator(Operator.Modulus);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has the operator Modulus,
@@ -82,7 +82,7 @@ public sealed partial class ThatType
 					await That(subject).HasOperator(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has the operator Addition,
@@ -103,7 +103,7 @@ public sealed partial class ThatType
 					await That(subject).HasOperator<string>(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has the operator Addition with operand {Formatter.Format(typeof(string))},
@@ -176,7 +176,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHaveOperator(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have the operator Addition,
@@ -210,7 +210,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHaveOperator<int>(Operator.Addition);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have the operator Addition with operand {Formatter.Format(typeof(int))},
@@ -228,7 +228,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHaveOperator(Operator.Addition, typeof(Money));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have the operator Addition with operand {Formatter.Format(typeof(Money))},
@@ -262,7 +262,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.HasOperator(Operator.Addition));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have the operator Addition,

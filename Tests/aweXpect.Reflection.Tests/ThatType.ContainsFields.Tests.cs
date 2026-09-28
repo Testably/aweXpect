@@ -32,7 +32,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsFields(fields => fields.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains fields with ThatType.ContainsFields.MarkerAttribute at least once,
@@ -77,7 +77,7 @@ public sealed partial class ThatType
 					await That(subject).ContainsFields(fields => fields.With<MarkerAttribute>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             contains fields with ThatType.ContainsFields.MarkerAttribute at least once,

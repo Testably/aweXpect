@@ -24,7 +24,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoNotOverride();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all do not override a base event,
@@ -76,7 +76,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.DoNotOverride());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an event which overrides a base event,
@@ -102,7 +102,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoNotOverride();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             all do not override a base event,

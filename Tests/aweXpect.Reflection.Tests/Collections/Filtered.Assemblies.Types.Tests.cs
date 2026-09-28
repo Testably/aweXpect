@@ -50,7 +50,7 @@ public sealed partial class Filtered
 							.AreAbstract();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that types in all loaded assemblies
 						             are all abstract,

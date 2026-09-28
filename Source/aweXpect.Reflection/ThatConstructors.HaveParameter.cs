@@ -67,7 +67,7 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -91,7 +91,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveParameter(
 		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -115,7 +115,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveParameter(
 		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get()
@@ -184,7 +184,7 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -210,7 +210,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -236,7 +236,7 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(
 			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));

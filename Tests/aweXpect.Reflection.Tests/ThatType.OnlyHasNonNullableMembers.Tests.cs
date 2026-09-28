@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNonNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             only has non-nullable members,
@@ -54,7 +54,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNonNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has non-nullable members,
@@ -76,7 +76,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNonNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has non-nullable members,
@@ -96,7 +96,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNonNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             only has non-nullable members,
@@ -158,7 +158,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.OnlyHasNonNullableMembers());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not only have non-nullable members,

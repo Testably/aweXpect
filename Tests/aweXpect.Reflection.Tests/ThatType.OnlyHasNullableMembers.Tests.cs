@@ -46,7 +46,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
@@ -81,7 +81,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
@@ -103,7 +103,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
@@ -123,7 +123,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
@@ -169,7 +169,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers(MemberScope.IncludingInherited);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
@@ -189,7 +189,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers(MemberScope.IncludingInherited);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
@@ -224,7 +224,7 @@ public sealed partial class ThatType
 					await That(subject).OnlyHasNullableMembers(MemberScope.IncludingInherited);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
@@ -262,7 +262,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.OnlyHasNullableMembers());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not only have nullable members,

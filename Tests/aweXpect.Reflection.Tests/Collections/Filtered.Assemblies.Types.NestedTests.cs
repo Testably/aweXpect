@@ -37,7 +37,7 @@ public sealed partial class Filtered
 							.AreNotNested();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that nested types in all loaded assemblies
 						             are all not nested,
@@ -59,7 +59,7 @@ public sealed partial class Filtered
 							.AreNotNested();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}nested types in all loaded assemblies
 						              are all not nested,

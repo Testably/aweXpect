@@ -50,7 +50,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<T> WithParameter<T>(this Filtered.Constructors @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
@@ -113,7 +113,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<object?> WithParameter(this Filtered.Constructors @this,
 		Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
@@ -146,7 +146,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<object?> WithParameter(this Filtered.Constructors @this,
 		string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -328,7 +328,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithNamedParameter<T> Using(IEqualityComparer<string> comparer)
 		{
-			options.UsingComparer(comparer);
+			options.Using(comparer);
 			return this;
 		}
 

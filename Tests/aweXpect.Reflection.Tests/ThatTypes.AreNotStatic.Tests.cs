@@ -77,7 +77,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotStatic();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, } in assembly containing type ThatTypes.AreNotStatic
 					             are all not static,
@@ -100,7 +100,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that abstract types in assembly containing type ThatTypes.AreNotStatic
 					             also contain a static type,

@@ -12,7 +12,7 @@ public static partial class MethodFilters
 	/// </summary>
 	public static Filtered.Methods.StringEqualityResultType WithName(this Filtered.Methods @this, string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new Filtered.Methods.StringEqualityResultType(@this.Which(Filter.Suffix<MethodInfo>(
 				methodInfo => options.AreConsideredEqual(methodInfo.Name, expected),
 				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} ")),

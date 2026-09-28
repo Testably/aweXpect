@@ -21,7 +21,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsRequired();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is required,
@@ -39,7 +39,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsRequired();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is required,

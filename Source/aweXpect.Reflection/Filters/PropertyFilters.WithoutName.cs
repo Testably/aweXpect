@@ -13,7 +13,7 @@ public static partial class PropertyFilters
 	public static Filtered.Properties.StringEqualityResultType WithoutName(this Filtered.Properties @this,
 		string unexpected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new Filtered.Properties.StringEqualityResultType(@this.Which(Filter.Suffix<PropertyInfo>(
 				async propertyInfo => !await options.AreConsideredEqual(propertyInfo.Name, unexpected),
 				() => $"without name {options.GetExpectation(unexpected, ExpectationGrammars.None)} ")),

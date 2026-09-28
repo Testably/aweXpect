@@ -14,7 +14,7 @@ public static partial class AssemblyFilters
 	public static Filtered.Assemblies.StringEqualityResultType WhichTarget(this Filtered.Assemblies @this,
 		string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
 				assembly => options.AreConsideredEqual(assembly.GetTargetFramework(), expected),
 				() => $" targeting {options.GetExpectation(expected, ExpectationGrammars.None)}")),

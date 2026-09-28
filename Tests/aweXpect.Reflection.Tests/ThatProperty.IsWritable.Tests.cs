@@ -19,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsWritable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is writable,
@@ -38,7 +38,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsWritable();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is writable,
@@ -88,7 +88,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsWritable());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not writable,

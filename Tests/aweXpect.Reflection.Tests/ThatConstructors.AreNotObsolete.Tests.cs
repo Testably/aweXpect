@@ -47,7 +47,7 @@ public sealed partial class ThatConstructors
 					await That(subject).AreNotObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not obsolete,
@@ -76,7 +76,7 @@ public sealed partial class ThatConstructors
 					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an obsolete item,
@@ -127,7 +127,7 @@ public sealed partial class ThatConstructors
 					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             also contain an obsolete item,
@@ -174,7 +174,7 @@ public sealed partial class ThatConstructors
 					await That(subject).AreNotObsolete();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all not obsolete,

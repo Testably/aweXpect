@@ -28,7 +28,7 @@ public sealed partial class Filtered
 							.AreNotSealed();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sealed types in all loaded assemblies
 						             are all not sealed,
@@ -50,7 +50,7 @@ public sealed partial class Filtered
 							.AreNotSealed();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}sealed types in all loaded assemblies
 						              are all not sealed,

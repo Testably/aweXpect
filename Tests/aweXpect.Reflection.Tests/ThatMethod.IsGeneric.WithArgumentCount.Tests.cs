@@ -23,7 +23,7 @@ public sealed partial class ThatMethod
 						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that subject
@@ -45,7 +45,7 @@ public sealed partial class ThatMethod
 						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that subject
@@ -65,7 +65,7 @@ public sealed partial class ThatMethod
 						await That(subject).IsGeneric().WithArgumentCount(1);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that subject
 						             is generic with 1 generic argument,

@@ -34,20 +34,12 @@ public class GenericArgumentsFilterOptions
 	/// <summary>
 	///     Verifies that the generic type arguments of the <paramref name="type" /> matches all predicates.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool>
-#else
-	public Task<bool>
-#endif
 		Matches(Type? type)
 	{
 		if (type?.IsGenericType != true)
 		{
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(false);
-#else
-			return Task.FromResult(false);
-#endif
+			return new ValueTask<bool>(false);
 		}
 
 		return MatchesPredicatesAndFilters(type.GetGenericArguments(),
@@ -59,30 +51,18 @@ public class GenericArgumentsFilterOptions
 	/// <summary>
 	///     Verifies that the generic type arguments of the <paramref name="method" /> matches all predicates.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool>
-#else
-	public Task<bool>
-#endif
 		Matches(MethodInfo? method)
 	{
 		if (method?.IsGenericMethod != true)
 		{
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(false);
-#else
-			return Task.FromResult(false);
-#endif
+			return new ValueTask<bool>(false);
 		}
 
 		return MatchesPredicatesAndFilters(method.GetGenericArguments(), null);
 	}
 
-#if NET8_0_OR_GREATER
 	private async ValueTask<bool>
-#else
-	private async Task<bool>
-#endif
 		MatchesPredicatesAndFilters(Type[] arguments, string[]? genericTypeNames)
 	{
 		if (_predicates.Count == 0 && _filters.Count == 0)
@@ -102,7 +82,7 @@ public class GenericArgumentsFilterOptions
 		foreach (var (filter, collectionIndexOptions) in _filters)
 		{
 #else
-	private async Task<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
+	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
 	{
 		foreach (KeyValuePair<GenericArgumentFilterOptions, CollectionIndexOptions> keyItem in _filters)
 		{

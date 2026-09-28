@@ -24,7 +24,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
@@ -48,7 +48,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
@@ -70,7 +70,7 @@ public sealed partial class ThatTypes
 						await That(subject).AreGeneric().WithArgumentCount(1);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [PublicClass, ThatTypes.UnrelatedClass]
 						             are all generic with 1 generic argument,

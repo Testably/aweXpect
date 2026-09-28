@@ -69,7 +69,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotHaveName("foo");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "foo",
@@ -125,7 +125,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "NonExistentAssembly",
-					             but it was "aweXpect.Reflection.Tests" which differs at index 0:
+					             but it was "aweXpect.Reflection.Tests", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests"
 					               "NonExistentAssembly"

@@ -64,7 +64,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -89,7 +89,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveParameterExactly(
 		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -163,7 +163,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
@@ -190,7 +190,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveParameterExactly(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));

@@ -46,7 +46,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHaveImplicitConversionOperator<Money, decimal>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
@@ -64,7 +64,7 @@ public sealed partial class ThatType
 					await That(subject).HasImplicitConversionOperator<Money, string>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(string))},
@@ -108,7 +108,7 @@ public sealed partial class ThatType
 					await That(subject).HasImplicitConversionOperator<Money, decimal>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
@@ -155,7 +155,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHaveExplicitConversionOperator<Money, int>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
@@ -173,7 +173,7 @@ public sealed partial class ThatType
 					await That(subject).HasExplicitConversionOperator<Money, string>();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              has an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(string))},
@@ -221,7 +221,7 @@ public sealed partial class ThatType
 						.DoesNotComplyWith(it => it.HasExplicitConversionOperator<Money, int>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
@@ -240,7 +240,7 @@ public sealed partial class ThatType
 						.DoesNotComplyWith(it => it.HasImplicitConversionOperator<Money, decimal>());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},

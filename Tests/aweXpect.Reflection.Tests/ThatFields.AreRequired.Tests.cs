@@ -24,7 +24,7 @@ public sealed partial class ThatFields
 					await That(subject).AreRequired();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all required,
@@ -76,7 +76,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreRequired());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are not all required,
@@ -102,7 +102,7 @@ public sealed partial class ThatFields
 					await That(subject).AreRequired();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             are all required,

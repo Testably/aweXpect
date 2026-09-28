@@ -78,7 +78,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotDelegates();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are delegates in assembly containing type ThatTypes.AreNotDelegates
 					             are all not delegates,

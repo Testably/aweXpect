@@ -13,18 +13,10 @@ public class ParameterFilterOptions
 {
 	private readonly List<Func<string>> _descriptions;
 	private readonly List<Func<string>> _modifierDescriptions = [];
-#if NET8_0_OR_GREATER
 	private readonly List<Func<ParameterInfo, ValueTask<bool>>> _predicates;
-#else
-	private readonly List<Func<ParameterInfo, Task<bool>>> _predicates;
-#endif
 
 	/// <inheritdoc cref="ParameterFilterOptions" />
-#if NET8_0_OR_GREATER
 	public ParameterFilterOptions(Func<ParameterInfo, ValueTask<bool>> predicate, Func<string> description)
-#else
-	public ParameterFilterOptions(Func<ParameterInfo, Task<bool>> predicate, Func<string> description)
-#endif
 	{
 		_descriptions = [description,];
 		_predicates = [predicate,];
@@ -38,11 +30,7 @@ public class ParameterFilterOptions
 	}
 
 	/// <inheritdoc cref="ParameterFilterOptions" />
-#if NET8_0_OR_GREATER
 	internal ParameterFilterOptions(Func<ParameterInfo, ValueTask<bool>> predicate)
-#else
-	internal ParameterFilterOptions(Func<ParameterInfo, Task<bool>> predicate)
-#endif
 	{
 		_descriptions = [];
 		_predicates = [predicate,];
@@ -58,11 +46,7 @@ public class ParameterFilterOptions
 	/// <summary>
 	///     Adds an additional <paramref name="predicate" /> with the <paramref name="description" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public void AddPredicate(Func<ParameterInfo, ValueTask<bool>> predicate, Func<string> description)
-#else
-	public void AddPredicate(Func<ParameterInfo, Task<bool>> predicate, Func<string> description)
-#endif
 	{
 		_predicates.Add(predicate);
 		_descriptions.Add(description);
@@ -80,11 +64,7 @@ public class ParameterFilterOptions
 	/// <summary>
 	///     Adds an additional <paramref name="predicate" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	internal void AddPredicate(Func<ParameterInfo, ValueTask<bool>> predicate)
-#else
-	internal void AddPredicate(Func<ParameterInfo, Task<bool>> predicate)
-#endif
 	{
 		_predicates.Add(predicate);
 	}
@@ -111,31 +91,18 @@ public class ParameterFilterOptions
 	/// <summary>
 	///     Verifies that the <paramref name="parameter" /> matches all predicates.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	public ValueTask<bool> Matches(ParameterInfo parameter)
-#else
-	public Task<bool> Matches(ParameterInfo parameter)
-#endif
 	{
 		if (_predicates.Count == 0)
 		{
-#if NET8_0_OR_GREATER
-			return ValueTask.FromResult(true);
-#else
-			return Task.FromResult(true);
-#endif
+			return new ValueTask<bool>(true);
 		}
 
 		return _predicates.AllAsync(predicate => predicate(parameter));
 	}
 
-#if NET8_0_OR_GREATER
 	private static Func<ParameterInfo, ValueTask<bool>> ToAsyncPredicate(Func<ParameterInfo, bool> predicate)
-		=> p => ValueTask.FromResult(predicate(p));
-#else
-	private static Func<ParameterInfo, Task<bool>> ToAsyncPredicate(Func<ParameterInfo, bool> predicate)
-		=> p => Task.FromResult(predicate(p));
-#endif
+		=> p => new ValueTask<bool>(predicate(p));
 
 	/// <summary>
 	///     Returns the combination of all descriptions (including modifier descriptions) joined by <c>" and "</c>.

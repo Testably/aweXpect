@@ -19,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsReadWrite();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is read-write,
@@ -38,7 +38,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsReadWrite();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is read-write,
@@ -88,7 +88,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsReadWrite());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not read-write,

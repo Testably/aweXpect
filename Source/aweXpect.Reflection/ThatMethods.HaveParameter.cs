@@ -67,7 +67,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -91,7 +91,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveParameter(
 		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -115,7 +115,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveParameter(
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?>(subject.Get()
@@ -184,7 +184,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -210,7 +210,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveParameter(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -236,7 +236,7 @@ public static partial class ThatMethods
 	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveParameter(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new();
+		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(
 			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));

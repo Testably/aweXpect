@@ -68,19 +68,6 @@ public sealed partial class EventFilters
 			}
 
 			[Fact]
-			public async Task ShouldSupportExactly()
-			{
-				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
-					.Events().WithName(nameof(SomeClassToVerifyTheEventNameOfIt.SomeEventToVerifyTheNameOfIt))
-					.Exactly();
-
-				await That(events).HasSingle().Which.IsEqualTo(ExpectedEventInfo());
-				await That(events.GetDescription())
-					.IsEqualTo("events with name equal to \"SomeEventToVerifyTheNameOfIt\" in")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -105,7 +92,7 @@ public sealed partial class EventFilters
 				await That(events).HasSingle().Which.IsEqualTo(ExpectedEventInfo());
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events with name equal to \"\\t SomeEventToVerifyTheNameOfIt\" ignoring leading white-space in")
+						"events with name equal to \"\\t SomeEventToVerifyTheNameOfIt\" ignoring leading whitespace in")
 					.AsPrefix();
 			}
 
@@ -120,7 +107,7 @@ public sealed partial class EventFilters
 				await That(events).HasSingle().Which.IsEqualTo(ExpectedEventInfo());
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events with name equal to \"SomeEventToVerifyTheNameOfIt\\t \" ignoring trailing white-space in")
+						"events with name equal to \"SomeEventToVerifyTheNameOfIt\\t \" ignoring trailing whitespace in")
 					.AsPrefix();
 			}
 

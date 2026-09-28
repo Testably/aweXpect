@@ -25,7 +25,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnExtensionMethod();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not an extension method,
@@ -58,7 +58,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnExtensionMethod();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not an extension method,
@@ -120,7 +120,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnExtensionMethod();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not an extension method,
@@ -140,7 +140,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotAnExtensionMethod();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that subject
 					              is not an extension method,
