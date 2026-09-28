@@ -796,7 +796,7 @@ public static partial class ThatEnumerable
 		Func<TItem, bool> predicate,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
-			IContextConstraint<IEnumerable<TItem>?>
+			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private IEnumerable<TItem>? _actual;
 		private int _count;
@@ -804,21 +804,34 @@ public static partial class ThatEnumerable
 		private bool _isNegated;
 		private IEnumerable<TItem>? _materializedEnumerable;
 
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			_materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			_count = 0;
 			_isFinished = false;
-			foreach (TItem _ in _materializedEnumerable.Where(item => UserCode.Invoke(predicate, item, "the predicate")))
+			foreach (TItem item in _materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
+				if (!UserCode.Invoke(predicate, item, "the predicate"))
+				{
+					continue;
+				}
+
 				_count++;
 				bool? check = quantifier.Check(_count, false);
 				switch (check)
@@ -826,10 +839,10 @@ public static partial class ThatEnumerable
 					case false:
 						Outcome = Outcome.Failure;
 						expectationBuilder.AddCollectionContext(_materializedEnumerable);
-						return this;
+						return Task.FromResult<ConstraintResult>(this);
 					case true:
 						Outcome = Outcome.Success;
-						return this;
+						return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
@@ -838,11 +851,11 @@ public static partial class ThatEnumerable
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			Outcome = Outcome.Failure;
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -853,6 +866,10 @@ public static partial class ThatEnumerable
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
 			}
 			else if (_isFinished)
 			{
@@ -965,6 +982,13 @@ public static partial class ThatEnumerable
 			_count = 0;
 			foreach (TItem item in _materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
+					return this;
+				}
+
 				if (!await predicate(item))
 				{
 					continue;
@@ -1009,6 +1033,10 @@ public static partial class ThatEnumerable
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
 			}
 			else if (_isFinished && _count == 0)
 			{
@@ -1076,7 +1104,7 @@ public static partial class ThatEnumerable
 		Func<TItem, bool> predicate,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
-			IContextConstraint<TEnumerable?>
+			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable
 	{
 		private IEnumerable? _actual;
@@ -1085,13 +1113,14 @@ public static partial class ThatEnumerable
 		private bool _isNegated;
 		private IEnumerable? _materializedEnumerable;
 
-		public ConstraintResult IsMetBy(TEnumerable? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
@@ -1099,6 +1128,13 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
+					return Task.FromResult<ConstraintResult>(this);
+				}
+
 				if (TryCastItem(item, out TItem typedItem) && UserCode.Invoke(predicate, typedItem, "the predicate"))
 				{
 					_count++;
@@ -1108,10 +1144,10 @@ public static partial class ThatEnumerable
 						case false:
 							Outcome = Outcome.Failure;
 							expectationBuilder.AddCollectionContext(_materializedEnumerable);
-							return this;
+							return Task.FromResult<ConstraintResult>(this);
 						case true:
 							Outcome = Outcome.Success;
-							return this;
+							return Task.FromResult<ConstraintResult>(this);
 					}
 				}
 			}
@@ -1121,11 +1157,11 @@ public static partial class ThatEnumerable
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			Outcome = Outcome.Failure;
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -1136,6 +1172,10 @@ public static partial class ThatEnumerable
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
 			}
 			else if (_isFinished)
 			{
@@ -1246,6 +1286,13 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
+					return this;
+				}
+
 				if (TryCastItem(item, out TItem typedItem) && await predicate(typedItem))
 				{
 					_count++;
@@ -1283,6 +1330,10 @@ public static partial class ThatEnumerable
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
 			}
 			else if (_isFinished && _count == 0)
 			{
