@@ -114,7 +114,9 @@ By default, equivalency:
   that is referenced more than once is still compared against each of its expected counterparts.
 - Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see
   [Limiting the recursion depth](#limiting-the-recursion-depth)).
-- Honours `IEqualityComparer` if either side implements it: that comparer wins over the structural walk.
+- Compares a type that implements `IEqualityComparer` by its members, like any other type. To let its own `Equals`
+  decide, compare it [by value](#comparing-by-value-or-by-members). To check a member against a custom criterion, use
+  [`It.Is<T>()`](#per-property-expectations-with-itist).
 - Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
   verifying anything. Either include the relevant members, compare the type
   [by value](#comparing-by-value-or-by-members), or exclude all members explicitly with `IncludeMembers.None`.

@@ -242,6 +242,12 @@ is applied to the final options, so an option set after `For<T>()` (such as `Ign
 for the type of the expectation wins, because the compared members come from it. The public `CustomOptions` dictionary
 is gone; `GetOptionsFor(type)` returns the options that apply to a type.
 
+A type that implements the non-generic `IEqualityComparer` is compared by its members like any other type. When
+either side at the top level implemented it, v2 let its `Equals(x, y)` decide the whole comparison and ignored every
+option. To let a type decide with its own `Equals`, compare it
+[by value](./06-equivalency.md#comparing-by-value-or-by-members); to check a member against a custom criterion, use
+[`It.Is<T>()`](./06-equivalency.md#per-property-expectations-with-itist).
+
 ## Extensions and aweXpect.Core
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what
