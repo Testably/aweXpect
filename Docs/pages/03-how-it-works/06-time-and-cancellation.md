@@ -1,4 +1,6 @@
-# Cancellation
+# Time and cancellation
+
+*Structure preview: the timeout sections of the delegate, event and callback pages will move here.*
 
 You can add cancellation support on the expectations, so that they don't run indefinitely.
 

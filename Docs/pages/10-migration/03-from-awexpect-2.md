@@ -1,6 +1,7 @@
 ---
 title: What's new in v3
-sidebar_position: 10
+sidebar_position: 3
+sidebar_label: From aweXpect 2.x
 ---
 
 # What's new in v3

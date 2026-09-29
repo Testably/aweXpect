@@ -1,8 +1,32 @@
-# Multiple expectations
+# Combining expectations
+
+- `.And` and `.Or` combine expectations on the same subject, and `Expect.ThatAll` or `Expect.ThatAny` combine
+  expectations on different subjects (see [multiple expectations](./advanced/01-multiple-expectations.md)).
+- `Whose(member, expectations)` verifies a member of the subject and keeps the subject for further expectations.
+- `Which` continues with a new subject, e.g. the single item of a collection or the thrown exception:
+
+```csharp
+IEnumerable<int> values = [42];
+void Act() => throw new CustomException("my exception");
+
+await Expect.That(values).HasSingle().Which.IsGreaterThan(41);
+await Expect.That(Act).Throws<CustomException>().Which.HasMessage("my exception");
+```
+
+Awaiting an expectation returns the value it verified, e.g. the single item of a collection, so you can use it
+afterwards:
+
+```csharp
+IEnumerable<int> values = [42];
+
+int single = await Expect.That(values).HasSingle();
+```
+
+## Multiple expectations
 
 You can combine multiple expectations in different ways:
 
-## On the same property
+### On the same property
 
 Simply use `.And` or `.Or` to combine multiple expectations:
 
@@ -33,7 +57,7 @@ await Expect.That(subject).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(2))
 
 `.And` does not short-circuit: all expectations are evaluated, so that the failure message can report all of them.
 
-## On different properties of the same subject
+### On different properties of the same subject
 
 Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`:
 
@@ -63,7 +87,7 @@ When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply 
     .Whose(x => x.LoadTitleAsync(), x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
-## On different subjects
+### On different subjects
 
 Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expectations:
 

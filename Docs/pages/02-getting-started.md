@@ -68,9 +68,20 @@ is False, because the album is not in the library,
 but it was True
 ```
 
+## Target frameworks
+
+aweXpect supports .NET Framework 4.8 and .NET Standard 2.0 as well as .NET 8 and later. The following features are
+only available on .NET 8 or later:
+
+- expectations for `IAsyncEnumerable<T>`;
+- `DateOnly` and `TimeOnly`;
+- `Span<T>` and `ReadOnlySpan<T>` subjects;
+- `IsParsableInto` for strings;
+- `HasBufferSize` for buffered streams;
+- delegates that return a `ValueTask` or `ValueTask<T>`.
 ## Next steps
 
-- [Concepts](./02-concepts.md) explains how expectations are combined and negated, and how they treat `null`.
-- The pages for [common types](./common-types/01-boolean.md), [collections](./03-collections/index.md),
-  [delegates](./04-delegates.md), [events](./05-events.md) and [equivalency](./06-equivalency.md) list the available
+- [Concepts](./03-how-it-works/01-anatomy.md) explains how expectations are combined and negated, and how they treat `null`.
+- The pages for [common types](./04-values/01-boolean.md), [collections](./05-collections/index.md),
+  [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and [equivalency](./04-values/13-equivalency.md) list the available
   expectations.

@@ -1,4 +1,4 @@
-# Customization
+# Configuration
 
 You can customize certain behavior or specify default values to use globally.
 

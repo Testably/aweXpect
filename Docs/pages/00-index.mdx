@@ -61,7 +61,7 @@ The happy path (passing assertions, the common case in a healthy test suite) is 
 **Comparing strings, ignoring case**     
 <BenchmarkResult name="String" />
 
-See the [benchmarks](./09-benchmarks.mdx) for the full set.
+See the [benchmarks](./12-benchmarks.mdx) for the full set.
 
 </TabItem>
 <TabItem value="extensible" label="Extensible">
@@ -79,7 +79,7 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(
 await Expect.That("/var/log").IsAbsolutePath();
 ```
 
-The full walkthrough is at [Write your own extension](./08-write-extension.md).
+The full walkthrough is at [Write your own extension](./11-extending/01-your-first-expectation.md).
 
 </TabItem>
 <TabItem value="frameworks" label="Any runner">
@@ -101,19 +101,13 @@ xUnit (v2 and v3), NUnit (v3 and v4), MSTest and TUnit are detected automaticall
 
 The [aweXpect.Migration](https://github.com/aweXpect/aweXpect.Migration) analyzer ships code-fix providers that rewrite most FluentAssertions and `xunit.Assert` call sites for you. See the [migration guide](./migration) for the full walkthrough.
 
-## Companion libraries
+## Extensions
 
-`aweXpect` ships a small core with focused extensions for common ecosystems:
-
-- **[aweXpect.Json](https://github.com/aweXpect/aweXpect.Json)**: expectations for `System.Text.Json`.
-- **[aweXpect.Web](https://github.com/aweXpect/aweXpect.Web)**: expectations for `HttpClient` and `HttpResponseMessage`.
-- **[aweXpect.Reflection](https://github.com/aweXpect/aweXpect.Reflection)**: expectations for reflection types.
-- **[aweXpect.Testably](https://github.com/aweXpect/aweXpect.Testably)**: expectations for [Testably.Abstractions](https://github.com/Testably/Testably.Abstractions) file and time systems.
-- **[aweXpect.Mockolate](https://github.com/aweXpect/aweXpect.Mockolate)**: expectations for [Mockolate](https://github.com/aweXpect/Mockolate) mock interactions.
+Expectations for JSON, HTTP, reflection, mocks and more are provided by separate packages, see [Extensions](/Extensions/).
 
 ## Where to go next
 
-- **[Getting Started](./01-getting-started.md)**: install the package and write your first expectation.
+- **[Getting Started](./02-getting-started.md)**: install the package and write your first expectation.
 - **[Migration](./migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
-- **[Advanced](./advanced/01-multiple-expectations.md)**: multiple expectations, cancellation, customization, and more.
-- **[Write your own extension](./08-write-extension.md)**: add expectations for your own types using `aweXpect.Core`.
+- **[How aweXpect works](./03-how-it-works/01-anatomy.md)**: awaiting, negation, combining, `null`, options, time and configuration.
+- **[Write your own extension](./11-extending/01-your-first-expectation.md)**: add expectations for your own types using `aweXpect.Core`.

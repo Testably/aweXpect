@@ -25,6 +25,19 @@ later. With an older language version, such a call can bind to a different overl
 `<LangVersion>` to `13` or `latest` in a project that targets an older framework.
 :::
 
+## Spans
+
+On .NET 8 or later, you can pass a `Span<T>` or a `ReadOnlySpan<T>` directly to `Expect.That`. The items are copied
+into a `SpanWrapper<T>`, which implements `ICollection<T>`, so all [collection expectations](./index.md)
+are available:
+
+```csharp
+await Expect.That("foo".AsSpan()).HasCount(3);
+await Expect.That("foo".AsSpan()).IsEqualTo(['f', 'o', 'o']);
+```
+
+A span can't be kept across an `await`, so create it in the statement of the expectation.
+
 ## Sets
 
 :::warning[A set or a dictionary has no defined order]
