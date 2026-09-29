@@ -40,6 +40,22 @@ public sealed partial class ThatAsyncEnumerable
 						             [1, 2, 3, 3, 4, 4]
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IAsyncEnumerable<int>? subject = null;
+
+					async Task Act()
+						=> await That(subject).AtLeast(4).AreUnique();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for at least 4 items,
+						             but it was <null>
+						             """);
+				}
 			}
 
 			public sealed class AreNotUniqueTests
@@ -72,6 +88,42 @@ public sealed partial class ThatAsyncEnumerable
 						             Collection:
 						             [1, 2, 3]
 						             """);
+				}
+			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenEnoughItemsAreUnique_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 4, 5, 5,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.AtLeast(4).AreUnique());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for fewer than 4 items,
+						             but 4 of 6 were
+
+						             Matching items:
+						             [1, 2, 3, 4]
+
+						             Collection:
+						             [1, 2, 3, 4, 5, 5]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenTooFewItemsAreUnique_ShouldSucceed()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 3, 4, 4,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.AtLeast(4).AreUnique());
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 		}

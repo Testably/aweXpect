@@ -4,6 +4,25 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class MoreThan
 	{
+		public sealed class ComplyWithTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				int[]? subject = null;
+
+				async Task Act()
+					=> await That(subject).MoreThan(1).ComplyWith(it => it.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 3 for more than one item,
+					             but it was <null>
+					             """);
+			}
+		}
+
 		public sealed class NegatedComplyWithTests
 		{
 			[Fact]
