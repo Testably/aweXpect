@@ -62,7 +62,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies CancelingPredicate,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """)
 					.Because("a cancellation that was actually requested aborts the evaluation instead of answering the expectation");
 			}
@@ -265,7 +265,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => false within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("only a timeout, not the cancellation by the caller, leaves the decision to the last check");
 			}
@@ -285,7 +285,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => false within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds());
 			}
 
@@ -401,7 +401,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => false,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("an interval beyond the limit of a timer is capped instead of rejected");
 			}
@@ -541,7 +541,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => false,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
 			}

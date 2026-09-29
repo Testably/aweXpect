@@ -899,7 +899,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.050,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
 
@@ -920,7 +920,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.050,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
 		}

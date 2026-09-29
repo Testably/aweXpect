@@ -294,6 +294,19 @@ public class StringExtensionsTests
 			await That(result).IsEqualTo(input);
 		}
 
+		[Theory]
+		[InlineData("\n")]
+		[InlineData("\r\n")]
+		public async Task WhenBlankLinesAreShorterThanCommonWhiteSpace_ShouldIgnoreThem(string newLine)
+		{
+			string input = $"foo{newLine}{newLine}    bar{newLine}  {newLine}      baz";
+
+			string result = input.TrimCommonWhiteSpace();
+
+			await That(result).IsEqualTo($"foo{newLine}{newLine}bar{newLine}{newLine}  baz")
+				.Because("blank lines must neither limit the common whitespace nor break the trimming");
+		}
+
 		[Fact]
 		public async Task WhenEmpty_ShouldReturnEmptyString()
 		{
@@ -302,6 +315,19 @@ public class StringExtensionsTests
 			string result = input.TrimCommonWhiteSpace();
 
 			await That(result).IsEmpty();
+		}
+
+		[Theory]
+		[InlineData("\n")]
+		[InlineData("\r\n")]
+		public async Task WhenLinesAreSeparatedBy_ShouldTrimAndKeepLineEndings(string newLine)
+		{
+			string input = $"foo{newLine}    bar{newLine}      baz";
+
+			string result = input.TrimCommonWhiteSpace();
+
+			await That(result).IsEqualTo($"foo{newLine}bar{newLine}  baz")
+				.Because("the trimming must not depend on the line endings of the source or the operating system");
 		}
 
 		[Fact]

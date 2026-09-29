@@ -127,7 +127,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1 within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds());
 			}
 
@@ -201,7 +201,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
 			}

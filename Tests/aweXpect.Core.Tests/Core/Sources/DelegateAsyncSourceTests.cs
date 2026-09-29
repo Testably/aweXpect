@@ -32,7 +32,7 @@ public class DelegateAsyncSourceTests
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation must stop waiting for a delegate that does not observe it");
 	}

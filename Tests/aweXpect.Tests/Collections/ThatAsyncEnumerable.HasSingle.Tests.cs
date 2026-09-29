@@ -33,7 +33,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
-					             but it contained more than one item
+					             but it had more than one item
 
 					             Collection:
 					             [1, 2, 3]
@@ -131,7 +131,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item exactly of type MyBaseClass,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -161,7 +161,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item exactly of type MyBaseClass,
-					             but it did not contain any matching item
+					             but it had no matching item
 					             """);
 			}
 		}
@@ -191,7 +191,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item exactly of type MyBaseClass matching x => x.Value > 1,
-					             but it did not contain any matching item
+					             but it had no matching item
 					             """);
 			}
 
@@ -223,7 +223,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching x => x > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -264,7 +264,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching x => x > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [1, 2, 3]
@@ -353,7 +353,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -424,7 +424,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyBaseClass matching x => x.Value > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -456,7 +456,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass matching x => x.Value > 1,
-					             but it did not contain any matching item
+					             but it had no matching item
 					             """);
 			}
 
@@ -649,7 +649,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that is greater than 4,
-					             but it contained more than one item
+					             but it had more than one item
 
 					             Collection:
 					             [1, 2, 3]

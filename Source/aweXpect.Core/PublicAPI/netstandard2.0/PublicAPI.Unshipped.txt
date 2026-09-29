@@ -121,3 +121,4 @@ aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.PrepareExpectatio
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+static aweXpect.Core.Constraints.ConstraintResult.AppendCanceledResult(System.Text.StringBuilder! stringBuilder, string! it) -> void

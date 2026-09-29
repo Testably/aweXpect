@@ -50,7 +50,7 @@ public class AsyncValueSourceTests
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation must stop waiting for a task that does not observe it");
 	}

@@ -56,7 +56,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item matching item => Cancel(cts, item == 3),
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 				             """)
 				.Because("a cancellation between two items must not be mistaken for the end of the source");
 		}
@@ -74,7 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching item => Cancel(cts, item == 3) at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 				             """)
 				.Because("a cancellation between two items must not be reported as a missing item");
 		}
@@ -93,7 +93,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [1, 2, 3] using ThatAsyncEnumerable.CancellationTests.CancellingComparer in order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Expected:
 				             [1, 2, 3]
@@ -115,7 +115,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 3 items,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [1, 2, (… and maybe more)]
@@ -136,7 +136,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 				             """)
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
 		}
@@ -155,7 +155,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1 for all items,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -194,7 +194,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Expected:
 				             [
@@ -222,7 +222,7 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Expected:
 				             [

@@ -87,7 +87,7 @@ public class MappingNodeTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("""
 			             The member type for the actual value in the which node did not match.
-			             Expected: string,
+			             Expected: string
 			                Found: int
 			             """);
 	}

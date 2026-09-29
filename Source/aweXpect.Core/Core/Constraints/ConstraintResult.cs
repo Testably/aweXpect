@@ -9,7 +9,12 @@ namespace aweXpect.Core.Constraints;
 /// </summary>
 public abstract partial class ConstraintResult
 {
-	internal const string CancelledResultSuffix = " could not be verified, because it was already canceled";
+	/// <summary>
+	///     Appends the result text for an expectation that could not be verified, because its evaluation was canceled,
+	///     to the <paramref name="stringBuilder" />, starting with <paramref name="it" />.
+	/// </summary>
+	protected static void AppendCanceledResult(StringBuilder stringBuilder, string it)
+		=> stringBuilder.Append(it).Append(" could not be verified, because the evaluation was already canceled");
 
 	/// <summary>
 	///     Initializes a new instance of <see cref="ConstraintResult" />.

@@ -178,7 +178,7 @@ public sealed class EventRecordingTests
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut at least once within 0:30,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation of the evaluation ends the wait long before the timeout");
 	}
@@ -200,7 +200,7 @@ public sealed class EventRecordingTests
 			.WithMessage("""
 			             Expected that recording
 			             has never recorded the CustomEvent event on sut within 0:30,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the event could still be raised in the remaining time, so the cancelled wait proves nothing");
 	}

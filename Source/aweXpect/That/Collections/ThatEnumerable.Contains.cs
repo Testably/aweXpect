@@ -869,7 +869,7 @@ public static partial class ThatEnumerable
 			}
 			else if (Outcome == Outcome.Undecided)
 			{
-				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
+				AppendCanceledResult(stringBuilder, it);
 			}
 			else if (_isFinished)
 			{
@@ -1036,7 +1036,7 @@ public static partial class ThatEnumerable
 			}
 			else if (Outcome == Outcome.Undecided)
 			{
-				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
+				AppendCanceledResult(stringBuilder, it);
 			}
 			else if (_isFinished && _count == 0)
 			{
@@ -1175,7 +1175,7 @@ public static partial class ThatEnumerable
 			}
 			else if (Outcome == Outcome.Undecided)
 			{
-				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
+				AppendCanceledResult(stringBuilder, it);
 			}
 			else if (_isFinished)
 			{
@@ -1333,7 +1333,7 @@ public static partial class ThatEnumerable
 			}
 			else if (Outcome == Outcome.Undecided)
 			{
-				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
+				AppendCanceledResult(stringBuilder, it);
 			}
 			else if (_isFinished && _count == 0)
 			{

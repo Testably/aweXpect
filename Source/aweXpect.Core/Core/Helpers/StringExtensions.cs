@@ -129,6 +129,15 @@ internal static class StringExtensions
 		return $"{value.Substring(0, indexOfWordBoundary)}{ellipsis}";
 	}
 
+	/// <summary>
+	///     Removes the leading whitespace that all lines after the first one have in common.
+	/// </summary>
+	/// <remarks>
+	///     The lines are split on <c>\n</c>, so that the line endings (<c>\n</c> or <c>\r\n</c>) are kept.
+	///     Blank lines don't limit the common whitespace, as editors often trim them.
+	///     <para />
+	///     Keep in sync with the copy in aweXpect.
+	/// </remarks>
 	public static string TrimCommonWhiteSpace(this string value)
 	{
 		string[] lines = value.Split('\n');
@@ -137,43 +146,33 @@ internal static class StringExtensions
 			return value;
 		}
 
-		StringBuilder sb = new();
-		foreach (char c in lines[1])
+		string? commonWhiteSpace = null;
+		foreach (string line in lines.Skip(1).Where(line => !string.IsNullOrWhiteSpace(line)))
 		{
-			if (char.IsWhiteSpace(c))
+			int length = 0;
+			while (length < line.Length && char.IsWhiteSpace(line[length]) &&
+			       (commonWhiteSpace is null ||
+			        (length < commonWhiteSpace.Length && line[length] == commonWhiteSpace[length])))
 			{
-				sb.Append(c);
+				length++;
 			}
-			else
-			{
-				break;
-			}
+
+			commonWhiteSpace = line.Substring(0, length);
 		}
 
-		string commonWhiteSpace = sb.ToString();
-
-		for (int l = 2; l < lines.Length; l++)
+		commonWhiteSpace ??= "";
+		StringBuilder sb = new(lines[0]);
+		foreach (string line in lines.Skip(1))
 		{
-			if (lines[l].StartsWith(commonWhiteSpace))
+			sb.Append('\n');
+			if (line.StartsWith(commonWhiteSpace, StringComparison.Ordinal))
 			{
-				continue;
+				sb.Append(line, commonWhiteSpace.Length, line.Length - commonWhiteSpace.Length);
 			}
-
-			for (int i = 0; i < Math.Min(lines[l].Length, commonWhiteSpace.Length); i++)
+			else if (line.EndsWith('\r'))
 			{
-				if (lines[l][i] != commonWhiteSpace[i])
-				{
-					commonWhiteSpace = commonWhiteSpace[..i];
-					break;
-				}
+				sb.Append('\r');
 			}
-		}
-
-		sb.Clear();
-		sb.Append(lines[0]);
-		foreach (string? line in lines.Skip(1))
-		{
-			sb.Append('\n').Append(line[commonWhiteSpace.Length..]);
 		}
 
 		return sb.ToString();

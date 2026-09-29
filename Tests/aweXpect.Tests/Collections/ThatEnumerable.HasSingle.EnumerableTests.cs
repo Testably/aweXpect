@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
-					             but it contained more than one item
+					             but it had more than one item
 
 					             Collection:
 					             [
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
-					             but it contained more than one item
+					             but it had more than one item
 
 					             Collection:
 					             [
@@ -131,7 +131,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching x => (int?)x > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -172,7 +172,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching x => (int?)x > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -265,7 +265,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -336,7 +336,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyBaseClass matching x => x.Value > 1,
-					             but it contained more than one item
+					             but it had more than one matching item
 
 					             Collection:
 					             [
@@ -368,7 +368,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass matching x => x.Value > 1,
-					             but it did not contain any matching item
+					             but it had no matching item
 					             """);
 			}
 
@@ -502,7 +502,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that satisfies x => (int?)x > 2,
-					             but it contained more than one item
+					             but it had more than one item
 
 					             Collection:
 					             [

@@ -25,7 +25,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
 
@@ -66,7 +66,7 @@ public sealed partial class ThatSignaler
 						.WithMessage("""
 						             Expected that signaler
 						             has recorded the callback at least once,
-						             but it could not be verified, because it was already canceled
+						             but it could not be verified, because the evaluation was already canceled
 						             """)
 						.Because("an infinite timeout does not add any information to the expectation");
 				}
@@ -152,7 +152,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
 

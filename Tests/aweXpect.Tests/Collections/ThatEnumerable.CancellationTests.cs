@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1 for all items,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -96,7 +96,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to -1 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -129,7 +129,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [-1, -2] in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -165,7 +165,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [-1, -2] in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching x => x < 0 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -234,7 +234,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching x => x is < 0 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -268,7 +268,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -313,7 +313,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -355,7 +355,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to -1 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -393,7 +393,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -429,7 +429,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -467,7 +467,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not end with [-1],
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -500,7 +500,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item matching x => x < 0,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -533,7 +533,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that is negative,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -566,7 +566,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             ends with [-1],
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -599,7 +599,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             ends with [-1],
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -632,7 +632,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -670,7 +670,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1 at index 2 from end,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -705,7 +705,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -738,7 +738,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x < 0,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -776,7 +776,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x < 0 at index 2 from end,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -811,7 +811,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x is < 0,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -844,7 +844,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is negative,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -882,7 +882,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is negative at index 2 from end,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -917,7 +917,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is equal to -1,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -950,7 +950,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has a single item matching x => x < 0,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -983,7 +983,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             has a single item matching x => x is < 0,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1016,7 +1016,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [0, 1, 2, 3, 4, 5, 6, 7] in order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1055,7 +1055,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1103,7 +1103,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1136,7 +1136,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1169,7 +1169,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is not in ascending order,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [
@@ -1202,7 +1202,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once and contains an item equal to -1 at least once,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
 				             [

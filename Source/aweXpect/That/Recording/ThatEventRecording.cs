@@ -99,7 +99,7 @@ public static partial class ThatEventRecording
 
 			if (Outcome == Outcome.Undecided)
 			{
-				stringBuilder.Append(it).Append(" could not be verified, because it was already canceled");
+				AppendCanceledResult(stringBuilder, it);
 				return;
 			}
 

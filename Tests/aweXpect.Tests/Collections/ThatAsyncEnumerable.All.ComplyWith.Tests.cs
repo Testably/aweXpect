@@ -28,7 +28,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is less than 6 for all items,
-						             but it could not be verified, because it was already canceled
+						             but it could not be verified, because the evaluation was already canceled
 
 						             Collection:
 						             [0, 1, 2, 3, 4, (… and maybe more)]
@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Items are less than 6 for all items,
-						             but Items could not be verified, because it was already canceled
+						             but Items could not be verified, because the evaluation was already canceled
 						             *
 						             """).AsWildcard();
 				}
