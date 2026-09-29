@@ -19,7 +19,7 @@ public static partial class ThatDelegateThrows
 	///     <para />
 	///     The exception must have at least one inner exception.
 	/// </remarks>
-	public static AndOrResult<TException?, ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
+	public static AndOrResult<TException, ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
 		this ThatDelegateThrows<TException> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		where TException : Exception?

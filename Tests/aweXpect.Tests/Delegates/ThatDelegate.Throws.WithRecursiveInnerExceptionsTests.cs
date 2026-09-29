@@ -45,7 +45,7 @@ public sealed partial class ThatDelegate
 				Exception exception = new OuterException(innerException: new CustomException());
 				void Delegate() => throw exception;
 
-				Exception? result = await That(Delegate)
+				Exception result = await That(Delegate)
 					.Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
 
 				await That(result).IsSameAs(exception);
