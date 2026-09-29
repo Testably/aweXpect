@@ -128,6 +128,25 @@ public sealed partial class ThatDelegate
 			{
 				[Theory]
 				[AutoData]
+				public async Task WhenExpectedIsNull_ShouldFail(int hResult)
+				{
+					Exception exception = new HResultException(hResult);
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws().WithHResult(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that Delegate
+						              throws an exception with HResult equal to <null>,
+						              but it had HResult {hResult}
+						              """)
+						.Because("an exception always has an HResult, like for HasHResult(null)");
+				}
+
+				[Theory]
+				[AutoData]
 				public async Task WhenHResultIsDifferent_ShouldFail(int hResult)
 				{
 					int expectedHResult = hResult + 1;

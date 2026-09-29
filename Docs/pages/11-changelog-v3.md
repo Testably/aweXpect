@@ -126,6 +126,10 @@ expectation chain and the awaited result keep the subject type instead of wideni
 `ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
 whole. It is now an ordinary collection subject, so `IsEqualTo(…)`, `Contains(…)`, `HasCount(…)` and the other
 quantifiers such as `None()` are available as well.
+The `With…` expectations after `Throws()` accept the same arguments as their `Has…` twins: `WithMessage(expected)`
+takes a `string?` and `WithHResult(expected)` an `int?`, so `WithMessage(null)` requires the message to be `null` like
+`HasMessage(null)`. `WithRecursiveInnerExceptions(…)` returns the thrown exception as non-nullable like the other
+`With…` expectations.
 
 ## Failure messages
 

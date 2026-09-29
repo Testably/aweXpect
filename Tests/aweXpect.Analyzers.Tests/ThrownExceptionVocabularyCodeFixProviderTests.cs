@@ -12,6 +12,44 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 	private const string InsertWhichKey = nameof(Resources.aweXpect0003InsertWhichCodeFixTitle);
 
 	[Fact]
+	public async Task ShouldReplaceHasMessageWithNullableArgumentWithWithMessage() => await Verifier.VerifyCodeFixAsync(
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(string? message)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](message);
+		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](null).AsWildcard();
+		    }
+		}
+		""",
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(string? message)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().WithMessage(message);
+		        await Expect.That(Act).Throws<Exception>().WithMessage(null).AsWildcard();
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
 	public async Task ShouldReplaceHasMessageWithWithMessage() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -280,6 +318,44 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		        void Act() => throw new Exception("foo");
 
 		        await Expect.That(Act).Throws<Exception>().WithHResult(42);
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
+	public async Task ShouldReplaceHasHResultWithNullableArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(int? hResult)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|HasHResult|](hResult);
+		        await Expect.That(Act).Throws<Exception>().[|HasHResult|](null);
+		    }
+		}
+		""",
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(int? hResult)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().WithHResult(hResult);
+		        await Expect.That(Act).Throws<Exception>().WithHResult(null);
 		    }
 		}
 		""",

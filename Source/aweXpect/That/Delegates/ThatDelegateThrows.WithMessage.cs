@@ -22,7 +22,7 @@ public static partial class ThatDelegateThrows
 	/// </summary>
 	public static StringEqualityTypeResult<TException, ThatDelegateThrows<TException>> WithMessage<TException>(
 		this ThatDelegateThrows<TException> subject,
-		string expected)
+		string? expected)
 		where TException : Exception?
 		=> subject.WithMessage().EqualTo(expected);
 }

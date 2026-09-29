@@ -563,6 +563,26 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					Action action = () => throw new CustomException("foo");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with message equal to <null>,
+						             but it had message "foo"
+
+						             Message:
+						             foo
+						             """)
+						.Because("only a message of null matches, like for HasMessage(null)");
+				}
+
+				[Fact]
 				public async Task WhenMessagesAreDifferent_ShouldFail()
 				{
 					string actual = "actual text";

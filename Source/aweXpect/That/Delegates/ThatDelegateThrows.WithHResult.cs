@@ -21,7 +21,7 @@ public static partial class ThatDelegateThrows
 	/// </summary>
 	public static AndOrResult<TException, ThatDelegateThrows<TException>> WithHResult<TException>(
 		this ThatDelegateThrows<TException> subject,
-		int expected)
+		int? expected)
 		where TException : Exception?
 		=> subject.WithHResult().EqualTo(expected);
 }

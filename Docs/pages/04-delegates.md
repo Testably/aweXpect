@@ -159,7 +159,7 @@ await Expect.That(Act).Throws().WithMessage().EndingWith("exception text");
 await Expect.That(Act).Throws().WithMessage().NotEndingWith("something else");
 ```
 
-`WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`.
+`WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`, so a `null` argument requires the message to be `null` as well.
 
 Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
 neither is a substring anything could meaningfully be checked against.
