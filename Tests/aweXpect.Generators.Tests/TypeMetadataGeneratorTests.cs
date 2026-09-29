@@ -361,6 +361,21 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenCompilationChanges_ShouldCacheTheCallSites()
+	{
+		GeneratorDriverRunResult result = GeneratorRunner.RunTwice(new TypeMetadataGenerator(),
+			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Subject());"),],
+			"public class Unrelated;");
+
+		IncrementalStepRunReason[] reasons = result.Results[0].TrackedSteps["CallSites"]
+			.SelectMany(x => x.Outputs).Select(x => x.Reason).ToArray();
+		await That(reasons).IsNotEmpty();
+		await That(reasons).All()
+			.Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
+			.Because("an unchanged call site has to compare equal, so that the registrations are not collected again");
+	}
+
+	[Fact]
 	public async Task WhenConsumerUsesCSharp8_ShouldNotEmit()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

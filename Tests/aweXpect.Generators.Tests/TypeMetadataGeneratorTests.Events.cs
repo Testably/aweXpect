@@ -1,3 +1,4 @@
+using aweXpect.Core.Metadata;
 using Microsoft.CodeAnalysis;
 
 namespace aweXpect.Generators.Tests;
@@ -299,6 +300,41 @@ public sealed partial class TypeMetadataGeneratorTests
 		}
 
 		[Fact]
+		public async Task WhenExtensionIsDeclaredInAReferencedAssembly_ShouldRegisterTheArgumentType()
+		{
+			MetadataReference library = GeneratorRunner.CompileToReference("Watchers", """
+				using aweXpect.Core.Metadata;
+				using aweXpect.Recording;
+
+				namespace Watchers;
+
+				public static class Extensions
+				{
+					public static IEventRecording<T> Observe<T>([RequiresEventMetadata] this T subject)
+						where T : notnull
+						=> subject.Record().Events();
+				}
+				""", MetadataReference.CreateFromFile(typeof(TypeMetadataRegistry).Assembly.Location));
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[
+				Publishers,
+				"""
+				using Watchers;
+
+				public class Tests
+				{
+					public void Test() => new Models.Publisher().Observe();
+				}
+				""",
+			], additionalReferences: [library,]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
+				.Because("an extension of another package can carry the marker under any name");
+		}
+
+		[Fact]
 		public async Task WhenExtensionParameterIsNotMarked_ShouldNotRegisterTheArgumentType()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -353,6 +389,35 @@ public sealed partial class TypeMetadataGeneratorTests
 			await That(result.Errors).IsEmpty();
 			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
 				.Because("the type is only visible as a type argument at the call site");
+		}
+
+		[Fact]
+		public async Task WhenLocalFunctionParameterIsMarked_ShouldRegisterTheArgumentType()
+		{
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[
+				Publishers,
+				"""
+				using aweXpect.Core.Metadata;
+				using aweXpect.Recording;
+
+				public class Tests
+				{
+					public void Test()
+					{
+						Observe(new Models.Publisher());
+
+						static IEventRecording<T> Observe<T>([RequiresEventMetadata] T subject)
+							where T : notnull
+							=> subject.Record().Events();
+					}
+				}
+				""",
+			]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
+				.Because("a local function can carry the marker as well");
 		}
 
 		[Fact]
@@ -552,6 +617,17 @@ public sealed partial class TypeMetadataGeneratorTests
 			await That(result.Errors).IsEmpty();
 			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
 				.Because("the marker on Record itself is what makes a plain call site register its subject");
+		}
+
+		[Fact]
+		public async Task WhenSubjectIsRecordedThroughAConditionalAccess_ShouldRegisterItsEvents()
+		{
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+				[Publishers, Record("Models.Publisher? publisher = new(); publisher?.Watch();"),]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
+				.Because("a conditional access names the method through a member binding");
 		}
 
 		/// <remarks>

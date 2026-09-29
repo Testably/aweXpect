@@ -1,4 +1,6 @@
-﻿namespace aweXpect.SourceGenerators.Helpers;
+﻿using Microsoft.CodeAnalysis.CSharp;
+
+namespace aweXpect.SourceGenerators.Helpers;
 
 internal static class SourceGenerationHelper
 {
@@ -96,21 +98,26 @@ internal static class SourceGenerationHelper
 			? expectationToGenerate.NotNullTargetType
 			: expectationToGenerate.TargetType;
 		string summary = expectationToGenerate.Summary ??
-		                 $"Verifies that the subject {expectationToGenerate.ExpectationText}.";
+		                 $"Verifies that the subject {EscapeXml(expectationToGenerate.ExpectationText)}.";
+		string namespaceDeclaration = expectationToGenerate.Namespace is null
+			? ""
+			: $$"""
+
+
+			    namespace {{expectationToGenerate.Namespace}};
+			    """;
 		string result = $$"""
 		                  {{string.Join("\n", expectationToGenerate.Usings.Select(x => $"using {x};"))}}
 		                  using aweXpect.Core;
 		                  using aweXpect.Core.Constraints;
 		                  using aweXpect.Helpers;
-		                  using aweXpect.Results;
-
-		                  namespace {{expectationToGenerate.Namespace}};
+		                  using aweXpect.Results;{{namespaceDeclaration}}
 
 		                  #nullable enable
-		                  public static partial class {{expectationToGenerate.ClassName}}
+		                  {{expectationToGenerate.Accessibility}} static partial class {{expectationToGenerate.ClassName}}
 		                  {
 		                  	/// <summary>
-		                  	///     {{summary}}
+		                  	///     {{ContinueDocumentation(summary)}}
 		                  	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{guaranteesNotNull}}
 		                  	public static AndOrResult<{{resultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 		                  		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -122,10 +129,10 @@ internal static class SourceGenerationHelper
 		if (expectationToGenerate.IncludeNegated)
 		{
 			string negatedSummary = expectationToGenerate.NegatedSummary ??
-			                        $"Verifies that the subject {expectationToGenerate.NegatedExpectationText}.";
+			                        $"Verifies that the subject {EscapeXml(expectationToGenerate.NegatedExpectationText)}.";
 			result += $$"""
 			            	/// <summary>
-			            	///     {{negatedSummary}}
+			            	///     {{ContinueDocumentation(negatedSummary)}}
 			            	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{negatedGuaranteesNotNull}}
 			            	public static AndOrResult<{{negatedResultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 			            		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -221,6 +228,15 @@ internal static class SourceGenerationHelper
 			"does" => "do" + tail,
 			_ => text,
 		};
-		return $"Grammars.Verb(\"{text}\", \"{plural}\")";
+		return $"Grammars.Verb({SymbolDisplay.FormatLiteral(text, true)}, {SymbolDisplay.FormatLiteral(plural, true)})";
 	}
+
+	/// <remarks>
+	///     The expectation texts are plain text, whereas a summary given in the attribute is already XML.
+	/// </remarks>
+	private static string EscapeXml(string text)
+		=> text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+
+	private static string ContinueDocumentation(string text)
+		=> text.Replace("\n", "\n\t///     ");
 }
