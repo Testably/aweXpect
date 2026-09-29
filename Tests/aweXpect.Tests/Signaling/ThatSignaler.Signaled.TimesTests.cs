@@ -24,8 +24,9 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least 3 times within 0:00.050,
-					             but it was only recorded twice within 0:00.*
-					             """).AsWildcard();
+					             but it was only recorded twice within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]
@@ -46,8 +47,9 @@ public sealed partial class ThatSignaler
 					             but it was only recorded twice in [
 					               1,
 					               2
-					             ] within 0:00.*
-					             """).AsWildcard();
+					             ] within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]
