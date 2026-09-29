@@ -1,61 +1,120 @@
 # Analyzers
 
-The `aweXpect` package includes analyzers that report common mistakes while you write the test. Most of them come
-with a code fix.
+The `aweXpect` package includes analyzers that report common mistakes while you write the test. Errors stop the
+build, warnings point at code that compiles but probably does not do what you meant. Most rules come with a code fix.
 
 ## aweXpect0001
 
-**Expectations must be awaited or verified** (Error, code fix available)
+:::danger[Error]
+An expectation is neither awaited nor verified, so it is never evaluated and never fails. A code fix is available.
+:::
 
-An expectation is only evaluated when it is awaited or verified, so `Expect.That(value).IsTrue();` on its own never
-fails. Await the expectation (`await Expect.That(value).IsTrue();`) or call `.Verify()` on it in synchronous code.
+```csharp
+bool value = false;
+
+Expect.That(value).IsTrue();          // reported: never evaluated
+await Expect.That(value).IsTrue();    // fixed: awaited, so it fails
+```
+
+For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
+[Ref struct](./advanced/05-ref-struct.md).
 
 ## aweXpect0002
 
-**Replace "Equals" with "IsEqualTo"** (Error)
+:::danger[Error]
+`Equals` is called on an expectation. It compares the expectation object itself and does not verify anything.
+:::
 
-`object.Equals` on an expectation compares the expectation object itself and does not verify anything. Use
-`IsEqualTo` instead, as in `await Expect.That(subject).IsEqualTo(expected);`.
+```csharp
+int subject = 1;
+
+bool isEqual = Expect.That(subject).Equals(2);   // reported: verifies nothing
+await Expect.That(subject).IsEqualTo(2);         // fixed
+```
 
 ## aweXpect0003
 
-**Use "With…" instead of "Has…" directly after "Throws"** (Warning, code fix available)
+:::warning[Warning]
+A `Has…` expectation is used directly after `Throws`, where the sentence "throws a …" needs the `With…` vocabulary. A
+code fix is available.
+:::
 
-Directly after `Throws` the expectation continues the sentence "throws a …", so it must use the `With…` vocabulary,
-e.g. `Throws<MyException>().WithMessage("foo")`. The `Has…` vocabulary belongs after `.Which`. See
+```csharp
+void Act() => throw new InvalidOperationException("foo");
+
+await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("foo");    // reported
+await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("foo");   // fixed
+```
+
+The `Has…` vocabulary belongs after `.Which`. See
 [Delegates](./04-delegates.md#with-after-throws-has-on-the-exception).
 
 ## aweXpect0004
 
-**Expectations for an object must not be applied to a delegate subject** (Error, code fix available)
+:::danger[Error]
+An expectation for an object is applied to a delegate subject, so it checks the delegate instead of what it returns.
+A code fix is available.
+:::
 
-An expectation for an object, such as `IsEqualTo`, that is applied to a delegate checks the delegate instead of what
-it does. Insert `.DoesNotThrow().WhoseResult` to make the expectation about the returned value, as in
-`Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`. See
-[Delegates](./04-delegates.md#no-exception).
+```csharp
+int Act() => 3;
+
+await Expect.That(Act).IsEqualTo(3);                              // reported: checks the delegate
+await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
+```
+
+See [Delegates](./04-delegates.md#no-exception).
 
 ## aweXpect0005
 
-**Expectations in an async void method or lambda are not observed by the test** (Warning)
+:::warning[Warning]
+An expectation is awaited in an `async void` method or lambda, so its failure is thrown after the test has completed
+and is not observed by the test.
+:::
 
-An `async void` method, or an `async` lambda that is converted to a void-returning delegate (e.g. in
-`list.ForEach(async x => await Expect.That(x).IsTrue())`), returns before the expectation is evaluated, so its
-failure is thrown after the test has completed. Return a `Task` instead, or await the expectation in the test method
-itself.
+```csharp
+List<int> values = [1, 2, 3];
+
+values.ForEach(async x => await Expect.That(x).IsGreaterThan(0));   // reported: async void lambda
+foreach (int x in values)
+{
+    await Expect.That(x).IsGreaterThan(0);                            // fixed: awaited by the test
+}
+```
+
+Return a `Task` instead, or await the expectation in the test method itself.
 
 ## aweXpect0006
 
-**Collections without a defined order must not be compared by position** (Warning, code fix available)
+:::warning[Warning]
+A collection without a defined order, such as a set or a dictionary, is compared by position. A code fix is available.
+:::
 
-A set or a dictionary enumerates its items in an order that is an implementation detail. `IsEqualTo`, `Contains` and
-`IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix does. `StartsWith`,
-`EndsWith` and `IgnoringInterspersedItems()` are about the order itself and have no meaning for such a collection.
-See [Collections](./03-collections/index.md).
+```csharp
+HashSet<int> values = [1, 2, 3];
+
+await Expect.That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
+await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
+```
+
+`IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
+does. `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()` are about the order itself and have no meaning for
+such a collection, so `.InAnyOrder()` does not help there. Sorted collections are not reported. See
+[Collections](./03-collections/index.md).
 
 ## aweXpect0007
 
-**A "ValueTask" returned by a delegate subject is never awaited** (Error, code fix available)
+:::danger[Error]
+A delegate subject returns a `ValueTask` on a target without `ValueTask` delegate overloads, so the `ValueTask` is
+never awaited. A code fix is available.
+:::
 
-On .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7 there are no overloads for delegates that return a
-`ValueTask`, so the returned `ValueTask` is never awaited. Return a `Task` instead, as in `() => Act().AsTask()`,
-which the code fix does. See [Delegates](./04-delegates.md).
+```csharp
+async ValueTask Act() => await Task.Yield();
+
+await Expect.That(() => Act()).DoesNotThrow();            // reported on .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7
+await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
+```
+
+Only these older targets are affected, as they use the .NET Standard 2.0 build of aweXpect. See
+[Delegates](./04-delegates.md).
