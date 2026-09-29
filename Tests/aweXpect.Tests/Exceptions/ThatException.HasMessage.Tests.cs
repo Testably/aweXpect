@@ -623,6 +623,9 @@ public sealed partial class ThatException
 
 					              Message:
 					              {subject.Message}
+
+					              Param name:
+					              paramName
 					              """)
 					.Because("the framework appends the param name to the message in its own format");
 			}

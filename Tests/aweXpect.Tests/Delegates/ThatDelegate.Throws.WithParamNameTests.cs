@@ -38,6 +38,9 @@ public sealed partial class ThatDelegate
 						             Expected that Delegate
 						             throws an ArgumentException with param name containing "somethingElse",
 						             but it had param name "message" with a length of 7, which is shorter than the expected length of 13
+
+						             Param name:
+						             message
 						             """);
 				}
 			}
@@ -78,6 +81,9 @@ public sealed partial class ThatDelegate
 						               "message"
 						               "somethingElse"
 						                ↑ (expected)
+
+						             Param name:
+						             message
 						             """);
 				}
 
@@ -115,6 +121,9 @@ public sealed partial class ThatDelegate
 						             Expected that Delegate
 						             throws an ArgumentException with param name not containing "essag",
 						             but it had param name "message"
+
+						             Param name:
+						             message
 						             """);
 				}
 
@@ -165,6 +174,9 @@ public sealed partial class ThatDelegate
 						             Expected that Delegate
 						             throws an ArgumentException with param name not equal to "message",
 						             but it had param name "message"
+
+						             Param name:
+						             message
 						             """);
 				}
 			}
@@ -202,6 +214,9 @@ public sealed partial class ThatDelegate
 						             Expected that Delegate
 						             throws an ArgumentException with param name equal to <null>,
 						             but it had param name "message"
+
+						             Param name:
+						             message
 						             """)
 						.Because("the shorthand compares a null argument as null instead of skipping the check");
 				}
@@ -226,6 +241,9 @@ public sealed partial class ThatDelegate
 						               "message"
 						               "somethingElse"
 						                ↑ (expected)
+
+						             Param name:
+						             message
 						             """)
 						.Because("the shorthand renders exactly like the WithParamName().EqualTo(expected) continuation");
 				}

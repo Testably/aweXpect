@@ -41,6 +41,23 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenDelegateReturnsNullTask_ShouldFail()
+				{
+					Func<System.Threading.CancellationToken, Task> @delegate = _ => null!;
+
+					async Task<Exception> Act()
+						=> await That(@delegate).Throws().Within(5.Seconds());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             throws an exception within 0:05,
+						             but it returned <null> instead of a task
+						             """)
+						.Because("a null task is not an exception thrown by the delegate");
+				}
+
+				[Fact]
 				public async Task WhenDurationIsInfinite_AndNoExceptionIsThrown_ShouldNotMentionTheDuration()
 				{
 					Action action = () => { };
@@ -184,6 +201,46 @@ public sealed partial class ThatDelegate
 						             but it did not finish within 0:00.050
 						             """)
 						.Because("the tighter limit wins, so a longer timeout must not loosen the duration");
+				}
+
+				[Fact]
+				public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					Action action = () => throw new CustomException();
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(1.Seconds()).Within(5.Seconds());
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Within cannot be specified more than once.")
+						.Because("a second duration would silently disagree with the timeout of the first one");
+				}
+
+				[Fact]
+				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldThrowInvalidOperationException()
+				{
+					Action action = () => throw new CustomException();
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(System.Threading.Timeout.InfiniteTimeSpan)
+							.Within(1.Seconds());
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Within cannot be specified more than once.")
+						.Because("an infinite duration is specified as well, even though it imposes no limit");
+				}
+
+				[Fact]
+				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldThrowInvalidOperationException()
+				{
+					Action action = () => throw new CustomException();
+
+					async Task<Exception?> Act()
+						=> await That(action).Throws().Within(1.Seconds()).OnlyIf(true).Within(5.Seconds());
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Within cannot be specified more than once.")
+						.Because("the continuation shares the duration of the expectation");
 				}
 			}
 

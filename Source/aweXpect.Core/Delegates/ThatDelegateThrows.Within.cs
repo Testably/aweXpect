@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Delegates;
@@ -16,8 +17,11 @@ public partial class ThatDelegateThrows<TException>
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">A duration is already set.</exception>
 	public ThatDelegateThrows<TException> Within(TimeSpan duration)
 	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(ThrowOptions.IsWithinSpecified, nameof(Within));
+		ThrowOptions.IsWithinSpecified = true;
 		if (duration == System.Threading.Timeout.InfiniteTimeSpan)
 		{
 			return this;

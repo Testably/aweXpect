@@ -17,6 +17,23 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<Task> @delegate = () => null!;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly<NullReferenceException>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw exactly a NullReferenceException,
+					             but it returned <null> instead of a task
+					             """)
+					.Because("a null task is not an exception thrown by the delegate");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenDelegateThrowsMatchingException_ShouldFail(string message)
@@ -128,6 +145,23 @@ public sealed partial class ThatDelegate
 					=> await That(@delegate).DoesNotThrowExactly<CustomException>();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly<NullReferenceException>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw exactly a NullReferenceException,
+					             but it returned <null> instead of a task
+					             """)
+					.Because("a null task is not an exception thrown by the delegate");
 			}
 
 			[Theory]

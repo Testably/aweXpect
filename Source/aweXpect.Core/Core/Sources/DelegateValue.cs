@@ -55,6 +55,12 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	public bool IsNull { get; } = isNull;
 
 	/// <summary>
+	///     Flag, indicating if the delegate returned a <see langword="null" /> task, which is reported like a
+	///     <see langword="null" /> delegate (<see cref="IsNull" />), because there is nothing to await.
+	/// </summary>
+	internal bool IsNullTask { get; init; }
+
+	/// <summary>
 	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it, or
 	///     <see langword="null" /> if it finished in time or no timeout applied.
 	/// </summary>

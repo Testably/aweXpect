@@ -104,6 +104,23 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<Task> @delegate = () => null!;
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(5000.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:05,
+					             but it returned <null> instead of a task
+					             """)
+					.Because("a null task is not an exception thrown by the delegate");
+			}
+
+			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
 				Func<Task> @delegate = () => Task.Delay(30.Seconds());
@@ -186,6 +203,23 @@ public sealed partial class ThatDelegate
 					=> await That(@delegate).ExecutesIn().AtMost(5000.Milliseconds());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<CancellationToken, Task<int>> @delegate = _ => null!;
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(5000.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:05,
+					             but it returned <null> instead of a task
+					             """)
+					.Because("a null task is not an exception thrown by the delegate");
 			}
 
 			[Fact]

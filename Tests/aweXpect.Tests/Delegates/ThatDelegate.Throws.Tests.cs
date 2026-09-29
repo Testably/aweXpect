@@ -34,6 +34,24 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<Task> @delegate = () => null!;
+
+				async Task<Exception> Act()
+					=> await That(@delegate).Throws();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             throws an exception,
+					             but it returned <null> instead of a task
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsNull())
+					.Because("a null task is not an exception thrown by the delegate");
+			}
+
+			[Fact]
 			public async Task WhenExceptionIsThrown_ShouldSucceed()
 			{
 				Exception exception = new CustomException();
@@ -111,6 +129,23 @@ public sealed partial class ThatDelegate
 
 				await That(result.Value).IsEqualTo(value);
 				await That(result).IsSameAs(exception);
+			}
+
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
+
+				async Task<NullReferenceException> Act()
+					=> await That(@delegate).Throws<NullReferenceException>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             throws a NullReferenceException,
+					             but it returned <null> instead of a task
+					             """)
+					.Because("a null task is not an exception thrown by the delegate");
 			}
 
 			[Fact]

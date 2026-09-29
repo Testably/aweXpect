@@ -15,7 +15,8 @@ public static partial class ThatDelegateThrows
 			this ThatDelegateThrows<TException> subject)
 		where TException : ArgumentException?
 		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name",
-			grammars: ExpectationGrammars.Active | ExpectationGrammars.Nested);
+			grammars: ExpectationGrammars.Active | ExpectationGrammars.Nested,
+			includeValueInContext: true);
 
 	/// <summary>
 	///     Verifies that the thrown <see cref="ArgumentException" /> has an <paramref name="expected" /> param name.
