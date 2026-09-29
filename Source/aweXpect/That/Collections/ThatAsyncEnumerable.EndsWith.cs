@@ -35,15 +35,15 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
 			{
 				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -65,15 +65,15 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
 			{
 				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -92,15 +92,15 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
 			{
 				EndsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,

@@ -38,13 +38,6 @@ internal static class ExceptionHelpers
 		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
 		=> ThrowIfNullOrEmptyNamed(parameter, paramName);
 
-	/// <summary>
-	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
-	///     expectation: the expected collection, or the unexpected one when <paramref name="negated" />.
-	/// </summary>
-	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter, bool negated)
-		=> ThrowIfNullOrEmptyNamed(parameter, negated ? "unexpected" : "expected");
-
 	private static void ThrowIfNullOrEmptyNamed<T>(IEnumerable<T>? parameter, string? paramName)
 	{
 		ThrowIfNullNamed(parameter, paramName);
@@ -65,6 +58,28 @@ internal static class ExceptionHelpers
 		ThrowIfNullNamed(parameter, paramName);
 		IEnumerable<T> values = MaterializingEnumerable<T>.Wrap(parameter!);
 		if (!values.Any())
+		{
+			throw Tracing.WriteException(EmptyCollection(paramName));
+		}
+
+		return values;
+	}
+
+	/// <summary>
+	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
+	///     expectation, and returns its items as a collection, so that a sequence which can only be enumerated once
+	///     survives both the guard and the subsequent comparison.
+	/// </summary>
+	/// <remarks>
+	///     The items are copied instead of wrapped as in <see cref="ToNonEmptyValues{T}" />, so that an exception of the
+	///     sequence propagates unchanged instead of being reported as if the subject threw it.
+	/// </remarks>
+	public static ICollection<T> ToNonEmptyCollection<T>(this IEnumerable<T>? parameter, bool negated)
+	{
+		string paramName = negated ? "unexpected" : "expected";
+		ThrowIfNullNamed(parameter, paramName);
+		ICollection<T> values = parameter as ICollection<T> ?? parameter!.ToArray();
+		if (values.Count == 0)
 		{
 			throw Tracing.WriteException(EmptyCollection(paramName));
 		}

@@ -36,7 +36,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -44,8 +44,8 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -64,7 +64,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -73,8 +73,8 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.ComparesByOrdinalEquality);
 				EndsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -95,7 +95,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
@@ -103,8 +103,8 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
 				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -124,7 +124,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -133,8 +133,8 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 				EndsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), itemOptions, itemOptions.UseComparerOf);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -193,7 +193,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
@@ -201,8 +201,8 @@ public static partial class ThatEnumerable
 			{
 				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -222,7 +222,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
@@ -230,8 +230,8 @@ public static partial class ThatEnumerable
 			{
 				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -253,15 +253,15 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
 					expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
-					expected.ToArray(), options);
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
+					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
@@ -282,6 +282,7 @@ public static partial class ThatEnumerable
 		private TItem? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
+		private List<TItem>? _items;
 		private int _itemsCount;
 		private int _offset;
 
@@ -321,7 +322,7 @@ public static partial class ThatEnumerable
 
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
-			List<TItem> items = [];
+			_items = [];
 			foreach (TItem item in materializedEnumerable)
 			{
 				if (cancellationToken.IsCancellationRequested)
@@ -331,10 +332,10 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				items.Add(item);
+				_items.Add(item);
 			}
 
-			_itemsCount = items.Count;
+			_itemsCount = _items.Count;
 			_offset = _itemsCount - _expected.Length;
 			for (_index = _expected.Length - 1; _index >= 0; _index--)
 			{
@@ -345,7 +346,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				TItem item = items[_index + _offset];
+				TItem item = _items[_index + _offset];
 				TItem expectedItem = _expected[_index];
 				if (!await _options.AreConsideredEqual(item, expectedItem))
 				{
@@ -401,7 +402,7 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, Actual?.Skip(_offset), FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _items?.Skip(_offset), FormattingOptions.MultipleLines);
 			}
 		}
 	}
@@ -420,6 +421,7 @@ public static partial class ThatEnumerable
 		private object? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
+		private List<object?>? _items;
 		private int _itemsCount;
 		private int _offset;
 
@@ -458,7 +460,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			List<object?> items = [];
+			_items = [];
 			foreach (object? item in materializedEnumerable)
 			{
 				if (cancellationToken.IsCancellationRequested)
@@ -468,10 +470,10 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				items.Add(item);
+				_items.Add(item);
 			}
 
-			_itemsCount = items.Count;
+			_itemsCount = _items.Count;
 			_offset = _itemsCount - _expected.Length;
 			for (_index = _expected.Length - 1; _index >= 0; _index--)
 			{
@@ -482,7 +484,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				object? item = items[_index + _offset];
+				object? item = _items[_index + _offset];
 				TMatch expectedItem = _expected[_index];
 				if (!TryCastItem(item, out TMatch matchedItem) ||
 				    !await _options.AreConsideredEqual(matchedItem, expectedItem))
@@ -539,7 +541,7 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, Actual?.Cast<object?>().Skip(_offset), FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _items?.Skip(_offset), FormattingOptions.MultipleLines);
 			}
 		}
 	}

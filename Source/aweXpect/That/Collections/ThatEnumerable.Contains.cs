@@ -402,14 +402,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
 			subject,
@@ -429,14 +429,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.ComparesByOrdinalEquality).InvertIf(negated)),
 			subject,
@@ -455,14 +455,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<string?[], IThat<string?[]?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
@@ -484,14 +484,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options))
 					.InvertIf(negated)),
@@ -512,14 +512,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
 			subject,
@@ -552,14 +552,14 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<TCollection, TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
@@ -578,14 +578,14 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<TCollection, string?, string?>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
@@ -606,13 +606,13 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<TCollection, TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			options,
@@ -630,13 +630,13 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<Expression<Func<TItem, bool>>> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
@@ -653,14 +653,14 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<Action<IThatSubject<TItem?>>> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem>(expectationBuilder, it,
 					grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
@@ -679,13 +679,13 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<Expression<Func<TItem, bool>>> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TCollection, TItem, TItem>(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
@@ -704,14 +704,14 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
-		expected.ThrowIfNullOrEmpty(negated);
+		ICollection<Action<IThatSubject<TItem?>>> expectedValues = expected.ToNonEmptyCollection(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem>(expectationBuilder, it,
 					grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions,
+					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
 			matchOptions,
