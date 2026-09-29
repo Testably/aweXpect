@@ -118,7 +118,7 @@ public class AsyncMappingNodeTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("""
-			             The member type for the actual value in the which node did not match.
+			             The member type for the actual value in the mapping node did not match.
 			             Expected: string
 			                Found: int
 			             """);
@@ -289,6 +289,31 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task WhenMemberFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await HasAsyncLength(That(subject),
+				_ => FaultWithSeveralExceptions(),
+				length => length.IsEqualTo(3));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             length is equal to 3,
+			             but length did throw an InvalidOperationException:
+			               A
+
+			             Other exceptions:
+			             [
+			               ArgumentException: B,
+			               NotSupportedException: C
+			             ]
+			             """);
+	}
+
+	[Fact]
 	public async Task WhenMemberThrowsWithinTheTimeout_ShouldFail()
 	{
 		string subject = "foo";
@@ -356,6 +381,17 @@ public class AsyncMappingNodeTests
 		await That(Act).Throws<TaskCanceledException>()
 			.WithMessage(new TaskCanceledException().Message);
 		tcs.TrySetException(exception);
+	}
+
+	private static Task<int> FaultWithSeveralExceptions()
+	{
+		TaskCompletionSource<int> source = new();
+		source.SetException([
+			new InvalidOperationException("A"),
+			new ArgumentException("B"),
+			new NotSupportedException("C"),
+		]);
+		return source.Task;
 	}
 
 	private static AndOrResult<string?, IThat<string?>> HasAsyncLength(

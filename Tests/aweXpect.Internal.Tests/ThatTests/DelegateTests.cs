@@ -16,7 +16,7 @@ public sealed class DelegateTests
 			=> await That(@delegate).DoesNotThrow();
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Cannot use aweXpect on an async void method: Use Func<Task> instead.");
+			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
 	}
 
 	[Fact]
@@ -31,7 +31,7 @@ public sealed class DelegateTests
 			=> await That(@delegate).DoesNotThrow();
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Cannot use aweXpect on an async void method: Use Func<CancellationToken, Task> instead.");
+			.WithMessage("Cannot use aweXpect on an async void method: use Func<CancellationToken, Task> instead.");
 	}
 
 	[Fact]
@@ -45,7 +45,7 @@ public sealed class DelegateTests
 			=> await That(@delegate).Throws();
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Cannot use aweXpect on an async void method: Use Func<Task> instead.");
+			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
 	}
 
 	[Fact]
@@ -60,7 +60,7 @@ public sealed class DelegateTests
 			=> await That(@delegate).Throws();
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Cannot use aweXpect on an async void method: Use Func<CancellationToken, Task> instead.");
+			.WithMessage("Cannot use aweXpect on an async void method: use Func<CancellationToken, Task> instead.");
 	}
 
 	[Theory]

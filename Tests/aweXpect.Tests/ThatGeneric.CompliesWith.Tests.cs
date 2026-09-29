@@ -56,6 +56,17 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenInnerExpectationHasAnotherValueType_ShouldReturnTheSubject()
+			{
+				int[] subject = [1,];
+
+				int[]? result = await That(subject).CompliesWith(it => it.HasSingle());
+
+				await That(result).IsSameAs(subject)
+					.Because("the value of the inner expectation (the single item) is no int[]");
+			}
+
 			[Theory]
 			[InlineData(1, true)]
 			[InlineData(2, false)]

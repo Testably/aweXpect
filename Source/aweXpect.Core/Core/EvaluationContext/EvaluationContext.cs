@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace aweXpect.Core.EvaluationContext;
 
-internal class EvaluationContext : IEvaluationContext
+internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) : IEvaluationContext
 {
 	private Dictionary<string, object?>? _store;
 
@@ -32,4 +33,11 @@ internal class EvaluationContext : IEvaluationContext
 	}
 
 	#endregion
+
+	/// <summary>
+	///     Adds the <paramref name="otherExceptions" /> of a faulted task to the context of the expectation that is
+	///     evaluated, unless they are <see langword="null" />.
+	/// </summary>
+	public void AddOtherExceptions(Exception[]? otherExceptions)
+		=> expectationBuilder?.AddOtherExceptions(otherExceptions);
 }

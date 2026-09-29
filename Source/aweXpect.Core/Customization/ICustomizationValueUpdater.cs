@@ -21,6 +21,10 @@ public interface ICustomizationValueUpdater<TValue>
 	/// <remarks>
 	///     Disposing the returned <see cref="CustomizationLifetime" /> restores the whole <typeparamref name="TValue" />
 	///     as it was before the update.
+	///     <para />
+	///     The <paramref name="update" /> function can run again later, e.g. when a lifetime of the same group that was
+	///     created before is disposed first, so it must compute the new value only from its argument and must not have
+	///     side effects.
 	/// </remarks>
 	CustomizationLifetime Update(Func<TValue, TValue> update);
 }

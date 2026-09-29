@@ -31,8 +31,9 @@ public sealed partial class ThatSignaler
 					               1,
 					               2,
 					               3
-					             ] within 0:00.*
-					             """).AsWildcard();
+					             ] within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]
@@ -55,8 +56,9 @@ public sealed partial class ThatSignaler
 					             but it was only recorded once in [
 					               1,
 					               2
-					             ] within 0:00.*
-					             """).AsWildcard();
+					             ] within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]

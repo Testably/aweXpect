@@ -20,7 +20,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique for all items,
+					             has values of which all are unique,
 					             but only 2 of 4 were
 
 					             Not matching items:
@@ -53,7 +53,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique not for all items,
+					             has values of which not all are unique,
 					             but it was <null>
 					             """);
 			}
@@ -69,7 +69,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique for all items,
+					             has values of which all are unique,
 					             but it was <null>
 					             """);
 			}
@@ -85,7 +85,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique ignoring case for all items,
+					             has values of which all are unique ignoring case,
 					             but none of 2 were
 
 					             Not matching items:

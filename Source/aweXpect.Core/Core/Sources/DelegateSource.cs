@@ -56,7 +56,7 @@ internal class DelegateSource : IValueSource<DelegateValue>
 		{
 			throw Tracing.WriteException(
 				new InvalidOperationException(
-					$"Cannot use aweXpect on an async void method: Use {replaceType} instead."));
+					$"Cannot use aweXpect on an async void method: use {replaceType} instead."));
 		}
 	}
 }

@@ -7,6 +7,26 @@ namespace aweXpect.Core.Tests.Customization;
 public class TraceWriterTests
 {
 	[Fact]
+	public async Task EnableTracing_DisposedOutOfOrder_ShouldKeepTheRemainingTraceWriter()
+	{
+		AwexpectCustomization customization = new();
+		TestTraceWriter firstTraceWriter = new();
+		TestTraceWriter secondTraceWriter = new();
+		CustomizationLifetime firstLifetime = customization.EnableTracing(firstTraceWriter);
+		CustomizationLifetime secondLifetime = customization.EnableTracing(secondTraceWriter);
+
+		firstLifetime.Dispose();
+		ITraceWriter? traceWriterAfterFirstDispose = customization.TraceWriter;
+		secondLifetime.Dispose();
+		ITraceWriter? traceWriterAfterSecondDispose = customization.TraceWriter;
+
+		await That(traceWriterAfterFirstDispose).IsSameAs(secondTraceWriter)
+			.Because("disposing an earlier lifetime must not disable a trace writer that was enabled afterwards");
+		await That(traceWriterAfterSecondDispose).IsNull()
+			.Because("disposing the last lifetime must not restore a trace writer whose lifetime was already disposed");
+	}
+
+	[Fact]
 	public async Task EnableTracing_DoubleDispose_ShouldNotDisableLaterTraceWriter()
 	{
 		TestTraceWriter firstTraceWriter = new();
