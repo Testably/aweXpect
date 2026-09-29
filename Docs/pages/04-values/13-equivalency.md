@@ -61,59 +61,75 @@ await Expect.That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.Igno
 
 ## Default behaviour
 
-By default, equivalency:
+Equivalency takes the **public fields and properties of the expected object** and compares each one with the member
+of the same name on the actual object, recursing into nested objects. How a value is compared depends on its type:
 
-- Compares **public fields** and **public properties**.
-- Matches a member of the expected object against the member of the same name on the actual object, preferring the
-  same kind and falling back to the other one, so a class with public fields can be compared against an anonymous
-  object, which can only have properties. The failure names the kind of the *expected* member, and the fallback only
-  reaches a kind that is included, so `IncludingFields(IncludeMembers.None)` also stops an expected property from
-  matching a field.
-- Fails when a member of the expected object does not exist on the actual object, reporting it as missing instead of
-  comparing it against `null`.
-- Matches an expected member that the actual object does not have against a property the actual type implements
-  explicitly for an interface (`int IHasId.Id => 1;`), by its short name. A public field or property of that name
-  always takes precedence, and a name the actual type implements explicitly for more than one interface is reported
-  as ambiguous. Only the actual object is searched this way: the members compared are still those of the expected
-  object.
-- Recurses into nested objects.
-- Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid` and the numbers
-  `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128` and `UInt128` as *value types* and compares them with `Equals`.
-  The same applies to handles that describe something else instead of carrying state of their own: `MemberInfo` (and
-  therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri` and `CultureInfo`, including anything derived from them.
-  A `StringBuilder` is compared by the text it contains, so it also matches a `string` with the same text. Everything
-  else is compared **by members**.
-- Compares by value as soon as either side is compared by value, so a string is never equivalent to anything but an
-  equal string, however many of its members another object shares, and swapping the subject and the expectation does
-  not change the result.
-- Ignores a type's own `Equals` while comparing it by members, so two objects are equivalent exactly when their
-  members are: an `Equals` that reports everything as equal cannot hide differing members, and one that reports
-  nothing as equal cannot reject matching ones. To let `Equals` decide instead, compare the type
-  [by value](#comparing-by-value-or-by-members).
-- Respects collection **order** when comparing `IEnumerable<T>`, except for a set (`ISet<T>` or `IReadOnlySet<T>`),
-  which has none: its elements are matched without an order, exactly as
-  [ignoring collection order](#ignoring-collection-order) does. One side being a set is enough, so a `HashSet<T>` can
-  be compared against an array.
-- Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
-  instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
-  looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
-  cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
-  from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
-  `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
-  when reflection is unavailable (by default when publishing with Native AOT), the matched keys are told apart by
-  their own `Equals`, so two such keys are only noticed when the entry counts differ, and a type that only implements
-  `IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys up by their own `Equals`.
-- Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
-  that is referenced more than once is still compared against each of its expected counterparts.
-- Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see
-  [Limiting the recursion depth](#limiting-the-recursion-depth)).
-- Compares a type that implements `IEqualityComparer` by its members, like any other type. To let its own `Equals`
-  decide, compare it [by value](#comparing-by-value-or-by-members). To check a member against a custom criterion, use
+| Type                                                                                                                                                                 | Compared                                    |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid`, `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128`, `UInt128`            | by value, with `Equals`                     |
+| `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo` and anything derived from them                                           | by value, with `Equals`                     |
+| `StringBuilder`                                                                                                                                                      | by its text, so it also matches a `string`  |
+| collections (`IEnumerable<T>`)                                                                                                                                       | item by item, in order                      |
+| sets (`ISet<T>`, `IReadOnlySet<T>`)                                                                                                                                  | item by item, without an order              |
+| dictionaries (`IDictionary`, `IDictionary<TKey, TValue>`, `IReadOnlyDictionary<TKey, TValue>`)                                                                       | entry by entry, by key                      |
+| everything else                                                                                                                                                      | by its members, recursively                 |
+
+### Members
+
+- Only the members of the *expected* object are compared; additional members of the actual object are ignored.
+- A member that the actual object doesn't have is reported as missing instead of being compared against `null`.
+- A field and a property of the same name match each other, so a class with public fields can be compared against an
+  anonymous object, which only has properties. The same kind is preferred, and only included kinds are considered:
+  with `IncludingFields(IncludeMembers.None)` an expected property no longer matches a field.
+
+<details>
+<summary>Explicitly implemented interface properties</summary>
+
+An expected member that the actual object doesn't have is also matched against a property that the actual type
+implements explicitly for an interface (`int IHasId.Id => 1;`), by its short name. A public field or property of that
+name always takes precedence, and a name that the actual type implements explicitly for more than one interface is
+reported as ambiguous. Failures name the kind of the *expected* member.
+
+</details>
+
+### Values and objects
+
+- As soon as either side is compared by value, both are: a string is only equivalent to an equal string, and swapping
+  subject and expectation doesn't change the result.
+- A type that is compared by members ignores its own `Equals`, also when it implements `IEqualityComparer`, so an
+  `Equals` can neither hide differing members nor reject matching ones. To let `Equals` decide, compare the type
+  [by value](#comparing-by-value-or-by-members); to check a member against your own criterion, use
   [`It.Is<T>()`](#per-property-expectations-with-itist).
-- Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
-  verifying anything. Either include the relevant members, compare the type
-  [by value](#comparing-by-value-or-by-members), or exclude all members explicitly with `IncludeMembers.None`.
+
+### Collections and dictionaries
+
+- A set on either side is enough to match the items without an order, exactly like
+  [ignoring collection order](#ignoring-collection-order), so a `HashSet<T>` can be compared against an array.
+- A dictionary reports a differing, missing or superfluous entry under its key. Each expected key is looked up through
+  the actual dictionary, so its key comparer decides which keys are the same, as it does for
+  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
+  can't both be matched by one entry, so the second one is reported as lacking a distinct key.
+
+<details>
+<summary>How the key comparer is found</summary>
+
+The comparer is read from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
+`ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or when
+reflection is unavailable (by default when publishing with Native AOT), the matched keys are told apart by their own
+`Equals`, so two such keys are only noticed when the entry counts differ, and a type that only implements
+`IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys up by their own `Equals`.
+
+</details>
+
+### Safeguards
+
+- Cyclic references are detected, so graphs that reference themselves don't recurse forever. An instance that is
+  referenced more than once is still compared against each of its expected counterparts.
+- The comparison fails at a recursion depth of 100 nested objects instead of overflowing the stack, see
+  [Limiting the recursion depth](#limiting-the-recursion-depth).
+- A type without any members to compare throws an `InvalidOperationException` instead of succeeding without verifying
+  anything. Include the relevant members, compare the type [by value](#comparing-by-value-or-by-members), or exclude
+  all members explicitly with `IncludeMembers.None`.
 
 ## Configuration
 
