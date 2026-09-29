@@ -4200,6 +4200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -4902,7 +4908,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -5608,7 +5615,8 @@ window.BENCHMARK_DATA = {
           353.43113381522045,
           364.52223185130526,
           159.8373302391597,
-          328.3258736474173
+          328.3258736474173,
+          347.981173324585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6319,7 +6327,8 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920
+          920,
+          928
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7033,7 +7042,8 @@ window.BENCHMARK_DATA = {
           243.561039574941,
           322.3278011935098,
           127.74056861950801,
-          243.26174642244976
+          243.26174642244976,
+          260.9272581100464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7226,6 +7236,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11496,6 +11507,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -12121,7 +12138,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -12750,7 +12768,8 @@ window.BENCHMARK_DATA = {
           429626.90471540176,
           413447.9342322716,
           229295.6982596261,
-          449700.0759440104
+          449700.0759440104,
+          408692.31403459824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13384,7 +13403,8 @@ window.BENCHMARK_DATA = {
           676856,
           676856,
           676856,
-          676856
+          676856,
+          677056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14021,7 +14041,8 @@ window.BENCHMARK_DATA = {
           2589362.1609933036,
           2251714.272235577,
           1231279.53125,
-          2715198.849739583
+          2715198.849739583,
+          2462868.2723214286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14655,6 +14676,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -18869,6 +18891,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -19571,7 +19599,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -20277,7 +20306,8 @@ window.BENCHMARK_DATA = {
           569.0224212237766,
           607.0824567354642,
           258.22568420001437,
-          544.3072616713388
+          544.3072616713388,
+          611.0081187566121
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20988,7 +21018,8 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576
+          1576,
+          1584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21702,7 +21733,8 @@ window.BENCHMARK_DATA = {
           482.6588548342387,
           597.5760265350342,
           235.13927503994532,
-          474.20079441070556
+          474.20079441070556,
+          516.7548759460449
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21895,6 +21927,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26627,6 +26660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -27329,7 +27368,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -28035,7 +28075,8 @@ window.BENCHMARK_DATA = {
           328.68858222961427,
           371.87384190926184,
           159.09055398305256,
-          338.32508718050445
+          338.32508718050445,
+          346.272525038038
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28746,7 +28787,8 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
-          1064
+          1064,
+          1072
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29460,7 +29502,8 @@ window.BENCHMARK_DATA = {
           241.20117902755737,
           329.98674287114824,
           120.11808069547017,
-          239.55810847649207
+          239.55810847649207,
+          245.90422594547272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29653,6 +29696,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34385,6 +34429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -35087,7 +35137,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -35793,7 +35844,8 @@ window.BENCHMARK_DATA = {
           622.8229312896729,
           637.1440219197955,
           291.6919880594526,
-          614.5234347025554
+          614.5234347025554,
+          638.2788359778268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36504,7 +36556,8 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
-          1600
+          1600,
+          1608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37218,7 +37271,8 @@ window.BENCHMARK_DATA = {
           1181.2778409322102,
           1359.9278821211594,
           567.6406101080088,
-          1253.7681101481119
+          1253.7681101481119,
+          1239.2499777475994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37647,6 +37701,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42143,6 +42198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -42845,7 +42906,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -43551,7 +43613,8 @@ window.BENCHMARK_DATA = {
           3171.617327372233,
           2448.9298133850098,
           1537.74829687391,
-          3087.047616413661
+          3087.047616413661,
+          3213.690000661214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44262,7 +44325,8 @@ window.BENCHMARK_DATA = {
           4328,
           4328,
           4328,
-          4328
+          4328,
+          4376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44976,7 +45040,8 @@ window.BENCHMARK_DATA = {
           1319.2126701061543,
           1542.2817803896392,
           645.4647827784221,
-          1321.869647216797
+          1321.869647216797,
+          1379.8720521291098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45169,6 +45234,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49901,6 +49967,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
@@ -50603,7 +50675,8 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
@@ -51309,7 +51382,8 @@ window.BENCHMARK_DATA = {
           3210.8174593607587,
           2571.2008267916167,
           1633.2713779721942,
-          3099.450386683146
+          3099.450386683146,
+          3275.4314544677736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52020,7 +52094,8 @@ window.BENCHMARK_DATA = {
           4272,
           4272,
           4272,
-          4272
+          4272,
+          4280
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52734,7 +52809,8 @@ window.BENCHMARK_DATA = {
           26448.538559977213,
           18095.147993821363,
           9753.625492095947,
-          27628.15655517578
+          27628.15655517578,
+          20610.311613972983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53444,6 +53520,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
