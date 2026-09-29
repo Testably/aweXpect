@@ -19,7 +19,13 @@ public sealed class DocsPagesTests
 	public static TheoryData<string> Pages()
 	{
 #if NETFRAMEWORK
-		return new TheoryData<string> { "08-write-extension.md", };
+		TheoryData<string> extensionPages = new();
+		foreach (string page in AllPages().Where(page => page.StartsWith("11-extending/")))
+		{
+			extensionPages.Add(page);
+		}
+
+		return extensionPages;
 #else
 		TheoryData<string> pages = new();
 		foreach (string page in AllPages())

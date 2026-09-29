@@ -1,0 +1,323 @@
+---
+title: What's new in v3
+sidebar_position: 3
+sidebar_label: From aweXpect 2.x
+---
+
+# What's new in v3
+
+:::warning[Pre-release]
+
+aweXpect v3 is currently available as a pre-release only. The API described on this page can still change before the
+final v3.0.0 release.
+
+:::
+
+aweXpect v3 is the first release that can be published with trimming and Native AOT. Along the way it settles two
+things that had grown inconsistent over the v2 releases: how a `null` subject is treated, and how the same comparison
+is spelled across different result types. Most breaking changes are renames that the compiler points out; the
+behavioural changes are summarized below so that you know what to look for in your test suite.
+
+This page gives the overall picture. The complete list of changes, pull request by pull request, is in the
+[GitHub releases](https://github.com/Testably/aweXpect/releases).
+
+## Trimming and Native AOT
+
+Both `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later. Equivalency, the
+rendering of objects in failure messages and event recording no longer rely on reflection: a source generator
+registers the members and events they need at compile time. Reflection stays available as a fallback under the JIT;
+when you publish with trimming or Native AOT, a type without a registration fails with an error that tells you to add
+`[assembly: GenerateMetadata(typeof(MyType))]`.
+
+- **Test projects** that use the built-in expectations need no changes.
+- **Extension authors** replace `IAweXpectInitializer` with a `[ModuleInitializer]` and register a hand-written
+  `ITestFrameworkAdapter` explicitly. See [Initialization](../11-extending/05-initialization.md).
+- **Equivalency options** that inspected a `MemberInfo` move to `IgnoringFields` and `IgnoringProperties`.
+
+More details are in the [Equivalency](../03-how-it-works/08-native-aot.md#equivalency) and
+[Events](../03-how-it-works/08-native-aot.md#events) sections of Native AOT and trimming.
+
+## Null subjects
+
+v3 follows one rule: an expectation that **inspects** the subject fails for a `null` subject, in its negated form as
+well, because there is nothing to inspect. An expectation that **compares** the subject against a value you supply
+treats `null` as an ordinary value, so `IsEqualTo(null)` and `IsSameAs(null)` succeed for a `null` subject.
+
+As a result, many negated expectations such as `IsNotEmpty()`, `DoesNotContain(…)` or `IsNot<T>()` now fail for a
+`null` subject where they used to pass. In return, the analyzer knows every expectation that a `null` subject cannot
+satisfy, so you may be able to remove `!` operators after such an expectation.
+
+## Argument validation
+
+An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys()` without arguments, made an
+expectation that could never fail. Such calls now throw at the call site: `ArgumentNullException` for `null`,
+`ArgumentException` for an empty value.
+
+Ranges, counts and tolerances are validated the same way, when the expectation is built rather than when it is
+evaluated, and every one of them throws an `ArgumentOutOfRangeException`:
+
+- a maximum below the minimum in `Between(…).And(…)` on a collection quantifier, on `HasCount()`, on `HasLength()`
+  and on the other scalar `Has…()` continuations, in `ExecutesIn().Between(…).And(…)` and in `Version.IsBetween(…)`
+  and `IsNotBetween(…)`,
+- a negative count in `AtLeast`, `AtMost`, `Exactly`, `LessThan`, `MoreThan` and `Between` on a collection, and in
+  `HasCount(…)`,
+- a negative duration in `ExecutesWithin(…)` and in the `ExecutesIn()` family, of which only `Throws().Within(…)`
+  used to reject one,
+- a negative or `NaN` tolerance in `IsEqualTo(…).Within(…)` on a collection, and a negative
+  `DefaultTimeComparisonTolerance`.
+
+The negated forms are worth a second look: a reversed range such as `IsNotBetween(3).And(1)` used to pass for every
+subject, and a negative count such as `HasCount().NotEqualTo(-1)` used to hold for every collection. Both now throw.
+A reversed range on a `TimeOnly` is unaffected, because there it describes a range across midnight.
+
+`Between(…).And(…)` on an occurrence count, as in `Contains("a").Between(4).And(3)`, already threw for a reversed
+range; it now throws an `ArgumentOutOfRangeException` instead of a plain `ArgumentException`.
+
+## Conflicting string options
+
+`IgnoringCase()` and `Using(comparer)` could be combined although only one of them ever took effect, and a comparer
+set together with `AsRegex()` or `AsWildcard()` was ignored altogether, in both cases without a trace in the failure
+message. Such a combination now throws an `InvalidOperationException` at the call that creates it, in either order.
+Pass a case-insensitive comparer instead of combining it with `IgnoringCase()`, and express the casing of a pattern
+with `IgnoringCase()` alone.
+
+## Consistent vocabulary
+
+A continuation on a **value** compares (`EqualTo`, `GreaterThan`, `LessThanOrEqualTo`, `Between`, …) and a
+continuation on an **occurrence count** counts (`Exactly`, `AtLeast`, `AtMost`, `Never`, …). Every scalar `Has…`
+expectation offers both the shorthand `HasLength(9)` and the explicit form `HasLength().EqualTo(9)`.
+
+None of the renames has an `[Obsolete]` forwarder; each is a compile error that is fixed once:
+
+| v2                                                     | v3                                                           |
+|--------------------------------------------------------|--------------------------------------------------------------|
+| `ThrowsException()`                                    | `Throws()`                                                   |
+| `For(x => x.Member, m => m.IsEqualTo(…))`              | `Whose(x => x.Member, m => m.IsEqualTo(…))`                  |
+| `HasCount().MoreThan(n)`                               | `HasCount().GreaterThan(n)`                                  |
+| `HasCount().AtLeast(n)`                                | `HasCount().GreaterThanOrEqualTo(n)`                         |
+| `HasCount().AtMost(n)`                                 | `HasCount().LessThanOrEqualTo(n)`                            |
+| `DoesNotHaveCount(n)`                                  | `HasCount().NotEqualTo(n)`                                   |
+| `DoesNotHaveValue(n)` on an enum                       | `HasValue().NotEqualTo(n)`                                   |
+| `ExecutesIn().Approximately(expected, tolerance)`      | `ExecutesIn(expected).Within(tolerance)`                     |
+| `DoesNotExecuteWithin(d)`                              | `ExecutesIn().AtLeast(d)`                                    |
+| `DoesNotThrow().AndWhoseResult`                        | `DoesNotThrow().WhoseResult`                                 |
+| `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
+| `AreAllUnique()` on a dictionary                       | `Values.All().AreUnique()`                                   |
+| `ContainsKeys(…).WhoseValues.ComplyWith(…)`            | `ContainsKeys(…).WhoseValues.All().ComplyWith(…)`            |
+| `HasMessageContaining(…)` / `WithMessageContaining(…)` | `HasMessage().Containing(…)` / `WithMessage().Containing(…)` |
+| `DoesNotHaveMessage(…)` / `WithoutMessage(…)`          | `HasMessage().NotEqualTo(…)` / `WithMessage().NotEqualTo(…)` |
+| `HasParamNameContaining(…)` and the other variants     | `HasParamName().Containing(…)` and so on                     |
+| `HasInnerException()` / `WithInnerException()`         | `HasInner()` / `WithInner()`                                 |
+| `Contains(…).Exactly()` (the parameterless match type) | removed, it restated the default                             |
+
+`HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard.
+
+`DoesNotExecuteWithin` read like the negation of `ExecutesWithin`, but both required the delegate to complete without
+throwing, so neither was the complement of the other. `ExecutesIn().AtLeast(d)` says the same thing without that trap;
+it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required strictly more. If you measured a
+delegate that is expected to throw, add
+[`AllowingExceptions()`](../06-behaviour/01-delegates.md#allowing-exceptions) to let the duration decide alone.
+
+The element type checks `Are<T>()`, `Are(type)`, `AreExactly<T>()` and `AreExactly(type)` no longer offer `Using(…)`
+and `Equivalent(…)`. A type check does not compare values, so neither option ever had an effect; remove such a call.
+`ComplyWith(…)` on the elements of an `IEnumerable` or `IAsyncEnumerable` drops the same two options: the nested
+expectations bring their own, so an option set on the outer result never reached them.
+`IsExactly(type)` and `IsNotExactly(type)` are generic over the subject like `Is(type)` and `IsNot(type)`, so the
+expectation chain and the awaited result keep the subject type instead of widening it to `object`.
+`ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
+whole. It is now an ordinary collection subject, so `IsEqualTo(…)`, `Contains(…)`, `HasCount(…)` and the other
+quantifiers such as `None()` are available as well.
+The `With…` expectations after `Throws()` accept the same arguments as their `Has…` twins: `WithMessage(expected)`
+takes a `string?` and `WithHResult(expected)` an `int?`, so `WithMessage(null)` requires the message to be `null` like
+`HasMessage(null)`. `WithRecursiveInnerExceptions(…)` returns the thrown exception as non-nullable like the other
+`With…` expectations.
+
+## Failure messages
+
+Failure messages were reviewed as a whole. Options with several spellings now render the same way everywhere (for
+example a tolerance always reads `± x`), negated expectations name what they found instead of `but it did`, and many
+grammar slips were fixed. A `Whose(…)` nested inside a collection expectation such as `All().ComplyWith(…)` or
+`HasItemThat(…)` now names the member it inspects, instead of reporting only the expectation on it. The same
+expectations also keep the expectation they continue from, so `HasSingle().Which.Whose(…)` reads
+`has a single item whose … for all items` instead of starting at the dangling connector. Where a connector already
+introduced the subject, as in `has item that …` or `contains key 2 whose value …`, the member no longer starts a
+second relative clause but reads `has Value which is equal to 5`, and it agrees with a plural connector
+(`whose values have Length which …`). `IgnoringCase()` is now also named in the expectation when the value is matched
+as a regex or wildcard pattern, where it took effect but stayed invisible. A quantified collection expectation refers
+back to its own verb, so `All().ComplyWith(it => it.StartsWith("a"))` reports `but only 1 of 3 did` instead of
+`but only 1 of 3 were`, a negated quantifier names its complement (`for no items` instead of
+`for not at least one item`), and `HasCount` names its subject (`but it had only 3 items` instead of
+`but found only 3`). Every expectation text also mirrors the method it comes from, so `IsEqualTo` reads
+`is equal to …` for `Guid`, `enum` and `char?` as well, `IsOneOf` on an object reads `is one of […]` instead of the
+ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they match (`has item matching _ => true`,
+`has item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
+need an update.
+
+## Timeouts on negative event expectations
+
+`Within(…)` used to be ignored on event expectations with an upper bound, such as `DidNotTrigger(…)` or
+`Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
+the full timeout. This is the one change that can make a passing test fail without touching its code.
+
+## Execution time as timeout
+
+An execution time expectation used to await the delegate to completion, so a delegate that never returns hung the
+test run instead of failing at the bound. The upper bound of `ExecutesWithin(d)`, `Throws().Within(d)`,
+`ExecutesIn().AtMost(d)`, `ExecutesIn().Between(a).And(b)` and `ExecutesIn(x).Within(t)` is now applied as timeout,
+so a delegate accepting a `CancellationToken` is cancelled once it elapsed and the expectation fails with
+"did not finish within …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. The task of an asynchronous
+delegate is abandoned at that point even if it ignores the token, and so is a `Task<T>` subject under `WithTimeout`
+or `WithCancellation`; only a synchronous delegate still runs to completion. A cancellation fails the
+expectation even with `AllowingExceptions()`, because it aborts the execution instead of timing it. See
+[Delegates](../06-behaviour/01-delegates.md#execution-time).
+
+## `Task` and `ValueTask` subjects
+
+`Expect.That` awaited a `Task<T>` and used its result as the subject, but a non-generic `Task` or `ValueTask` became
+the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed without ever observing a failed operation. Both
+now bind to a delegate subject that awaits the task, which makes `DoesNotThrow()`, `Throws<TException>()` and the
+execution time expectations available. Every expectation on the task object is a compile error afterwards; where you
+really mean the object, name the type explicitly with `Expect.That<Task>(subject)`. See
+[Tasks](../06-behaviour/02-tasks.md).
+
+## `DateTime` kinds
+
+A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants for the same
+ticks. `IsEqualTo` already failed for such a pair; now the ordering expectations (`IsAfter`, `IsBefore`,
+`IsOnOrAfter`, `IsOnOrBefore`, `IsBetween`) fail as well, in their negated form too, `IsOneOf` ignores an expected
+value with the other kind, and `IsInAscendingOrder` / `IsInDescendingOrder` fail for a `DateTime` collection that
+mixes both kinds unless you specify a comparer. Comparing a `DateTime` as a value honours the kind as well, so a
+collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` for a `DateTime` member, no longer
+match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
+[DateTime / DateTimeOffset](../04-values/10-datetime-offset.md#kind).
+
+## Dictionary subjects
+
+`ContainsKey`, `ContainsKeys`, `ContainsValue`, `ContainsValues`, `Keys`, `Values` and their negated forms were
+declared once for `IDictionary<TKey, TValue>` and once for `IReadOnlyDictionary<TKey, TValue>` in two different
+classes, so a subject that implements both interfaces, such as `SortedDictionary<TKey, TValue>` or
+`ImmutableDictionary<TKey, TValue>`, did not compile. They are now declared together on `ThatDictionary` and such a
+subject resolves to the `IDictionary<TKey, TValue>` overload. No call needs an edit, but the class
+`aweXpect.ThatReadOnlyDictionary` is gone, so name `aweXpect.ThatDictionary` where you called one of these
+expectations as a static method.
+
+## Equivalency
+
+`IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public
+members are registered at compile time, so asking for internal members falls back to reflection, which is unavailable
+under trimming.
+
+`IncludeMembers.Private` is gone: protected and private members are implementation details and are never compared.
+To compare a type whose state is private, compare it
+[by value](../04-values/13-equivalency.md#comparing-by-value-or-by-members) so that its `Equals` decides.
+
+The numbers `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128` and `UInt128` are compared by value. Their members
+could not tell two values apart (`3` and `5` share `IsZero`, `IsEven` and `Sign`), and a type without public members,
+such as `Int128`, threw. A `StringBuilder` is compared by the text it contains, also against a `string`, instead of by
+its `Capacity` and `Length`.
+
+`IgnoringCollectionOrder()` no longer requires the elements to be comparable, so it now works for the collections it
+exists for, such as a collection of DTOs: each expected element is matched against an element that is equivalent to
+it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
+reports only the elements that were left over, each against the leftover element it differs from the least.
+
+A **set** and a **dictionary** are no longer compared by the order in which they enumerate: a set is matched element
+by element like a collection whose order is ignored, and a dictionary is compared by key. This applies to `ISet<T>`
+and `IReadOnlySet<T>`, and to `IDictionary<TKey, TValue>` and `IReadOnlyDictionary<TKey, TValue>`. v2 only
+recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only implements
+`IReadOnlyDictionary<TKey, TValue>` failed when both sides held the same content in a different order. Every other
+collection still compares by position.
+`IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
+the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
+[Limiting the recursion depth](../04-values/13-equivalency.md#limiting-the-recursion-depth).
+
+A default set with `Customize.aweXpect.Equivalency()` also applies to an expectation that passes an options callback
+of its own. The options handed to such a callback dropped the included fields and properties, the comparison type and
+every `For<T>` registration of that default, so a global customization silently had no effect on
+`IsEquivalentTo(expected, o => …)`. A registration in the callback replaces one for the same type in the default.
+
+`For<T>()` applies to a member whose runtime type derives from `T` as well, and the most derived registration wins.
+It used to require the runtime type to match exactly, which no instance of an abstract type ever does, and which made
+`For<Type>()` unreachable because the runtime type of a `Type` is the internal `RuntimeType`.
+
+`For<T>()` returns a copy instead of changing the options it is called on, so a call inside `.Equivalent(o => …)` no
+longer writes into the customized default and from there into every later check; use its return value. Its callback
+is applied to the final options, so an option set after `For<T>()` (such as `IgnoringCollectionOrder()` or a later
+`IgnoringMember`) now applies to `T` as well. When the subject and the expectation have different types, a registration
+for the type of the expectation wins, because the compared members come from it. The public `CustomOptions` dictionary
+is gone; `GetOptionsFor(type)` returns the options that apply to a type.
+
+A type that implements the non-generic `IEqualityComparer` is compared by its members like any other type. When
+either side at the top level implemented it, v2 let its `Equals(x, y)` decide the whole comparison and ignored every
+option. To let a type decide with its own `Equals`, compare it
+[by value](../04-values/13-equivalency.md#comparing-by-value-or-by-members); to check a member against a custom
+criterion, use [`It.Is<T>()`](../04-values/13-equivalency.md#per-property-expectations-with-itist).
+
+## Customization
+
+A value set with `Customize.aweXpect` stays in the async flow that set it and the flows started from there. Once a
+parent flow had set any customization, for example in an assembly-level setup, all tests shared one store, so a value
+set in one test leaked into the tests running in parallel with it. As a consequence, a value set inside an awaited
+`async` helper method is no longer visible to its caller after the `await`; set it in the calling method or in a
+synchronous helper. Disposing the lifetime of a single value such as `MaximumStringLength` restores only that value
+and keeps the other values of the group, and disposing a lifetime a second time has no effect. See
+[Configuration](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows).
+
+Whether a value set in an assembly-level setup reached the tests depended on the test framework and on whether the
+setup was asynchronous. Set such defaults on the new Customize.aweXpect.Global, e.g.
+Customize.aweXpect.Global.Formatting().MaximumStringLength.Set(500), which applies them to all async flows; a value
+set in a test still takes precedence. See [Global defaults](../03-how-it-works/07-configuration.md#global-defaults).
+
+## Extensions and aweXpect.Core
+
+Besides the initialization changes above, v3 renames several result and option types so that their names follow what
+they do, names the receiver parameter of every expectation `subject`, and moves a few types into more fitting
+namespaces. The new `[GuaranteesNotNull]` attribute marks an expectation that a `null` subject can never satisfy, and
+the [null rule](../11-extending/02-constraints-and-results.md#null-subjects) that an extension has to follow is
+documented.
+
+`DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in
+the v3 pre-releases, read like a timeout failure although it is the result of an absent signal.
+
+`RepeatedCheckOptions.Interval` is a plain `TimeSpan`. The `ICheckInterval` interface, its implementation
+`FixedCheckInterval` and the constant `RepeatedCheckOptions.DefaultInterval` are gone: nothing accepted a custom
+interval, and the default comes from `Customize.aweXpect.Settings().DefaultCheckInterval`. `Satisfies(…)` and
+`CompliesWith(…)` with `Within(…)` now shorten the last wait to the timeout like `Eventually()`, so they check a last
+time at the timeout and never after it. As there, a `WithTimeout(…)` that is not shorter than `Within(…)` reports the
+result of that last check instead of "did not finish within …".
+
+`EnumerableQuantifier.AppendResult` takes the `it` of the expectation, so that a result about the items themselves can
+name the subject that had them. A custom quantifier has to add the parameter.
+
+The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
+members that an equivalency comparison includes.
+
+## New expectations
+
+- **Dictionaries** navigate to their `Keys` and `Values` with the full collection vocabulary (needs C# 14).
+- **Collections** gain a positional `DoesNotHaveItem(x).AtIndex(n)`, and uniqueness becomes a quantifier:
+  `AtLeast(1).AreNotUnique()`.
+- **Events** gain a positional `DidNotTrigger(eventName)`.
+- **Delegates** gain `DoesNotSatisfy(…).Within(…)` and more message and `HResult` continuations, and
+  `Throws(…).WithoutInner()` as the twin of `DoesNotHaveInner()`.
+- **Version** gains comparisons and its components. See [Version](../04-values/07-version.md).
+- **Guid** gains `IsOneOf`, and **Char** gains character class checks such as `IsADigit` and `IsUpperCased`.
+
+## Analyzer
+
+- `aweXpect0001` follows the expectation instead of scanning the enclosing statement, so it no longer breaks the
+  build for an expectation that is assigned to a local, returned from a member or evaluated with
+  `GetAwaiter().GetResult()`. It now also covers `Expect.ThatAll` and `Expect.ThatAny`, and no longer accepts an
+  expectation because another branch of the same statement verifies one.
+- `aweXpect0003` flags a `Has…` or `DoesNotHave…` exception expectation directly after `Throws`, and offers a code
+  fix. See [Delegates](../06-behaviour/01-delegates.md#with-after-throws-has-on-the-exception).
+- `aweXpect0004` reports an expectation for an ordinary subject that is applied to a delegate subject, where it
+  checked the delegate instead of what it does, and offers a code fix. Because it is an error, an expectation such as
+  `Expect.That(() => sut.Count()).IsEqualTo(1)` that used to compile now has to be written as
+  `Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`. See
+  [Delegates](../06-behaviour/01-delegates.md#no-exception).
+- `aweXpect0005` warns about an expectation inside an `async` lambda that is converted to a void-returning delegate,
+  such as `list.ForEach(async x => await Expect.That(x).IsTrue())`, because the lambda returns before the expectation
+  is evaluated and its failure is thrown after the test has completed.
+- `aweXpect2001` warns when a type named in `[assembly: GenerateMetadata]` yields no registration.
+- The nullability suppressor reads `[GuaranteesNotNull]`, so it suppresses the warning after far more expectations.
