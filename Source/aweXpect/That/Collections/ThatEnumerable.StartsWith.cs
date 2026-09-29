@@ -399,7 +399,8 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did start with ");
-				Formatter.Format(stringBuilder, _materializedEnumerable?.Take(_index), FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _materializedEnumerable?.Take(_index),
+					typeof(TItem).GetFormattingOption(_index));
 			}
 		}
 	}
@@ -521,9 +522,9 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
+				IEnumerable<object?> prefix = _materializedEnumerable?.Cast<object?>().Take(_index) ?? [];
 				stringBuilder.Append(_it).Append(" did start with ");
-				Formatter.Format(stringBuilder, _materializedEnumerable?.Cast<object?>().Take(_index),
-					FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, prefix, prefix.GetItemType().GetFormattingOption(_index));
 			}
 		}
 	}

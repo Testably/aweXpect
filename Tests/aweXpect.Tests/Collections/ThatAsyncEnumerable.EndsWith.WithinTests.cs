@@ -951,7 +951,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -985,7 +985,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1019,7 +1019,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1053,7 +1053,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1087,7 +1087,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1121,7 +1121,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
 						              """);
 				}
 			}

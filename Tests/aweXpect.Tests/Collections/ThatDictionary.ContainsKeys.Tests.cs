@@ -220,7 +220,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [0] whose values are equal to "bar" for all items,
+					             contains keys [0] whose values all are equal to "bar",
 					             but it did not contain [
 					               0
 					             ]
@@ -260,7 +260,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values do not start with "f" for all items,
+					             contains keys [1, 2] whose values all do not start with "f",
 					             but only 1 of 2 did
 
 					             Not matching items:
@@ -285,6 +285,36 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeysExist_ButFewerValuesThanTheMinimumMatch_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2, 3).WhoseValues.AtLeast(2).AreEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2, 3] whose values at least 2 are equal to "foo",
+					             but only 1 of 3 were
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenKeysExist_ButOneValueCompliesWithNone_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -295,7 +325,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values start with "f" for no items,
+					             contains keys [1, 2] whose values none start with "f",
 					             but 1 of 2 did
 
 					             Matching items:
@@ -329,7 +359,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values are equal to "foo" for all items,
+					             contains keys [1, 2] whose values all are equal to "foo",
 					             but only 1 of 2 were
 
 					             Not matching items:
@@ -364,7 +394,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values have Length that is equal to 4 for all items,
+					             contains keys [1, 2] whose values all have Length that is equal to 4,
 					             but none of 2 did
 
 					             Not matching items:
@@ -434,7 +464,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2, 3] whose values are unique for all items,
+					             contains keys [1, 2, 3] whose values all are unique,
 					             but only 1 of 3 were
 
 					             Not matching items:
@@ -460,6 +490,41 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeysExist_ButValuesAreNotUniqueIgnoringCase_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "FOO", "bar",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All().AreUnique().IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2] whose values all are unique ignoring case,
+					             but none of 2 were
+
+					             Not matching items:
+					             [
+					               [1] = "foo",
+					               [2] = "FOO"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "FOO"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "FOO",
+					               [3] = "bar"
+					             }
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenKeysExist_ButValuesDoNotComply_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -470,7 +535,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values start with "f" for all items,
+					             contains keys [1, 2] whose values all start with "f",
 					             but only 1 of 2 did
 
 					             Not matching items:
@@ -533,7 +598,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [2] whose values are equal to "foo" for all items,
+					             contains keys [2] whose values all are equal to "foo",
 					             but none of 1 were
 
 					             Not matching items:
@@ -566,7 +631,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values satisfy v => v?.StartsWith("fo") == true for all items,
+					             contains keys [1, 2] whose values all satisfy v => v?.StartsWith("fo") == true,
 					             but only 1 of 2 did
 
 					             Not matching items:
@@ -640,7 +705,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 0, 3] whose values are equal to "bar" for all items,
+					             contains keys [1, 0, 3] whose values all are equal to "bar",
 					             but it did not contain [
 					               0
 					             ]
@@ -677,9 +742,71 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys ["foo"] whose values are equal to "" for all items,
+					             contains keys ["foo"] whose values all are equal to "",
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueExpectationIsNegated_AndAllValuesAreUnique_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2, 3).WhoseValues
+						.DoesNotComplyWith(values => values.All().AreUnique());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2, 3] whose values not all are unique,
+					             but all 3 were
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueExpectationIsNegated_AndNoValueStartsWithThePrefix_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(2, 3).WhoseValues
+						.DoesNotComplyWith(values => values.None().ComplyWith(v => v.StartsWith("f")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [2, 3] whose values at least one starts with "f",
+					             but none of 2 did
+
+					             Collection:
+					             [
+					               [2] = "bar",
+					               [3] = "baz"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """)
+					.Because("the complement of the quantifier is singular, so the verb of the values must be singular too");
 			}
 		}
 

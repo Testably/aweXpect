@@ -402,7 +402,8 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, _items?.Skip(_offset), FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _items?.Skip(_offset),
+					typeof(TItem).GetFormattingOption(_expected.Length));
 			}
 		}
 	}
@@ -540,8 +541,9 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
+				IEnumerable<object?> suffix = _items?.Skip(_offset) ?? [];
 				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, _items?.Skip(_offset), FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, suffix, suffix.GetItemType().GetFormattingOption(_expected.Length));
 			}
 		}
 	}

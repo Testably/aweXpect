@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using aweXpect.Core;
+using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
@@ -762,6 +764,45 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
+			[Theory]
+			[InlineData("AtLeast(2)", "contains \"some\" fewer than twice")]
+			[InlineData("AtMost(2)", "contains \"some\" more than twice")]
+			[InlineData("Between(1, 3)", "does not contain \"some\" between 1 and 3 times")]
+			[InlineData("Exactly(2)", "does not contain \"some\" exactly twice")]
+			[InlineData("LessThan(3)", "contains \"some\" at least 3 times")]
+			[InlineData("MoreThan(1)", "contains \"some\" at most once")]
+			[InlineData("Twice", "does not contain \"some\" exactly twice")]
+			public async Task WhenQuantifiedExpectationIsMet_ShouldNameTheComplementOrNegateTheVerb(
+				string quantifier, string expectedExpectation)
+			{
+				string subject = "some text with some words";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it =>
+					{
+						StringEqualityTypeCountResult<string, IThat<string?>> contains = it.Contains("some");
+						_ = quantifier switch
+						{
+							"AtLeast(2)" => contains.AtLeast(2),
+							"AtMost(2)" => contains.AtMost(2),
+							"Between(1, 3)" => contains.Between(1).And(3),
+							"Exactly(2)" => contains.Exactly(2),
+							"LessThan(3)" => contains.LessThan(3),
+							"MoreThan(1)" => contains.MoreThan(1),
+							"Twice" => contains.Twice(),
+							_ => throw new ArgumentOutOfRangeException(nameof(quantifier)),
+						};
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              {expectedExpectation},
+					              but it contained "some" twice in "some text with some words"
+					              """)
+					.Because("\"not\" in front of a quantifier without a complement reads more naturally on the verb");
+			}
+
 			[Fact]
 			public async Task WhenSubjectContainsExpected_ShouldFail()
 			{
@@ -789,7 +830,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains "some" not exactly twice,
+					             does not contain "some" exactly twice,
 					             but it contained "some" twice in "some text with some words"
 					             """);
 			}
