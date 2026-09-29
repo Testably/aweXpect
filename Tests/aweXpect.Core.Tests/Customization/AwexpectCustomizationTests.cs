@@ -1,10 +1,29 @@
 ﻿using System.Threading;
 using aweXpect.Customization;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Customization;
 
 public class AwexpectCustomizationTests
 {
+	[Fact]
+	public async Task Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime firstLifetime = customization.MyConfiguration().Set("first");
+		CustomizationLifetime secondLifetime = customization.MyConfiguration().Set("second");
+
+		firstLifetime.Dispose();
+		string valueAfterFirstDispose = customization.MyConfiguration().Get();
+		secondLifetime.Dispose();
+		using CustomizationLifetime globalLifetime = customization.Global.MyConfiguration().Set("global");
+
+		await That(valueAfterFirstDispose).IsEqualTo("second")
+			.Because("disposing a lifetime must not undo a later value that is still active");
+		await That(customization.MyConfiguration().Get()).IsEqualTo("global")
+			.Because("after all lifetimes in the current flow are disposed, the global value applies again");
+	}
+
 	[Fact]
 	public async Task DoubleDispose_ShouldNotResetLaterValue()
 	{
@@ -17,6 +36,58 @@ public class AwexpectCustomizationTests
 			await That(Customize.aweXpect.MyConfiguration().Get()).IsEqualTo("second")
 				.Because("disposing a lifetime a second time must not reset a value that was set afterwards");
 		}
+	}
+
+	[Fact]
+	public async Task Equivalency_Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
+	{
+		AwexpectCustomization customization = new();
+		EquivalencyOptions firstOptions = new();
+		EquivalencyOptions secondOptions = new();
+		EquivalencyOptions globalOptions = new();
+		CustomizationLifetime firstLifetime =
+			customization.Equivalency().DefaultEquivalencyOptions.Set(firstOptions);
+		CustomizationLifetime secondLifetime =
+			customization.Equivalency().DefaultEquivalencyOptions.Set(secondOptions);
+
+		firstLifetime.Dispose();
+		EquivalencyOptions valueAfterFirstDispose = customization.Equivalency().DefaultEquivalencyOptions.Get();
+		secondLifetime.Dispose();
+		using CustomizationLifetime globalLifetime =
+			customization.Global.Equivalency().DefaultEquivalencyOptions.Set(globalOptions);
+
+		await That(valueAfterFirstDispose).IsSameAs(secondOptions)
+			.Because("disposing a lifetime must not undo a later value of the same property that is still active");
+		await That(customization.Equivalency().DefaultEquivalencyOptions.Get()).IsSameAs(globalOptions)
+			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
+	}
+
+	[Fact]
+	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldFallBackToGlobalValue()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime lengthLifetime = customization.Formatting().MaximumStringLength.Set(5);
+		CustomizationLifetime itemsLifetime = customization.Formatting().MaximumNumberOfCollectionItems.Set(3);
+
+		lengthLifetime.Dispose();
+		itemsLifetime.Dispose();
+		using CustomizationLifetime globalLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
+
+		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(20)
+			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
+	}
+
+	[Fact]
+	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSameProperty()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime firstLifetime = customization.Formatting().MaximumStringLength.Set(5);
+		using CustomizationLifetime secondLifetime = customization.Formatting().MaximumStringLength.Set(7);
+
+		firstLifetime.Dispose();
+
+		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(7)
+			.Because("disposing a lifetime must not undo a later value of the same property that is still active");
 	}
 
 	[Fact]
@@ -350,6 +421,24 @@ public class AwexpectCustomizationTests
 
 		static CustomizationLifetime SetInSynchronousMethod(string value)
 			=> Customize.aweXpect.MyConfiguration().Set(value);
+	}
+
+	[Fact]
+	public async Task Settings_PropertyLifetime_Dispose_OutOfOrder_ShouldFallBackToGlobalValue()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime intervalLifetime =
+			customization.Settings().DefaultCheckInterval.Set(TimeSpan.FromSeconds(1));
+		CustomizationLifetime timeoutLifetime =
+			customization.Settings().DefaultEventuallyTimeout.Set(TimeSpan.FromSeconds(2));
+
+		intervalLifetime.Dispose();
+		timeoutLifetime.Dispose();
+		using CustomizationLifetime globalLifetime =
+			customization.Global.Settings().DefaultCheckInterval.Set(TimeSpan.FromSeconds(3));
+
+		await That(customization.Settings().DefaultCheckInterval.Get()).IsEqualTo(TimeSpan.FromSeconds(3))
+			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
 	}
 }
 

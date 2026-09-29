@@ -349,21 +349,18 @@ public static class JsonAwexpectCustomizationExtensions
         public TValue Get() => getter(group.Get());
 
         public CustomizationLifetime Set(TValue value)
-        {
-            TValue previousValue = Get();
-            group.Update(p => setter(p, value));
-            return new CustomizationLifetime(() => group.Update(p => setter(p, previousValue)));
-        }
+            => group.Update(p => setter(p, value));
     }
 }
 ```
 
-Disposing the lifetime of a single value restores only this value, so that other values of the group that were changed
-in the meantime are kept.
+Disposing the lifetime of a single value restores the group as it was before, so dispose the lifetimes in the reverse
+order in which you created them. Once all lifetimes of the group in an async flow are disposed, the flow uses the
+global values again.
 
 Both kinds of customizations work with [global defaults](./advanced/02-customization.md#global-defaults) without any
-change: Customize.aweXpect.Global.MyCustomization().Set(43) or Customize.aweXpect.Global.Json().Update(…) stores
-the value for all async flows, because Global is an AwexpectCustomization as well.
+change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or `Customize.aweXpect.Global.Json().Update(…)` stores
+the value for all async flows, because `Global` is an `AwexpectCustomization` as well.
 
 This allows expectations to access values either individually or for the whole group:
 

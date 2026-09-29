@@ -44,7 +44,8 @@ public partial class AwexpectCustomization
 		/// <inheritdoc
 		///     cref="ICustomizationValueUpdater{EquivalencyCustomizationValue}.Update(Func{EquivalencyCustomizationValue,EquivalencyCustomizationValue})" />
 		public CustomizationLifetime Update(Func<EquivalencyCustomizationValue, EquivalencyCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Equivalency), update(Get()));
+			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Equivalency),
+				new EquivalencyCustomizationValue(), update);
 	}
 
 	/// <summary>

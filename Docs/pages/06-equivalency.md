@@ -303,6 +303,16 @@ using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOpt
 // All equivalency checks within this scope ignore collection order by default.
 ```
 
+To change the default for all async flows, e.g. in an assembly-level setup, set it on
+[`Customize.aweXpect.Global`](./advanced/02-customization.md#global-defaults):
+
+```csharp
+using aweXpect.Customization;
+
+Customize.aweXpect.Global.Equivalency().DefaultEquivalencyOptions
+  .Set(new EquivalencyOptions().IgnoringCollectionOrder());
+```
+
 ## Per-property expectations with `It.Is<T>()`
 
 Equivalency lets you compare against an *anonymous expectation object* in which individual members assert their own
