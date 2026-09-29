@@ -26,24 +26,24 @@ public partial class AwexpectCustomization
 		internal FormattingCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			_awexpectCustomization = awexpectCustomization;
-			MaximumNumberOfCollectionItems = new CustomizationValue<int>(
-				() => Get().MaximumNumberOfCollectionItems,
-				v => Update(p => p with
+			MaximumNumberOfCollectionItems = new CustomizationValue<FormattingCustomizationValue, int>(this,
+				p => p.MaximumNumberOfCollectionItems,
+				(p, v) => p with
 				{
 					MaximumNumberOfCollectionItems = v,
-				}));
-			MinimumNumberOfCharactersAfterStringDifference = new CustomizationValue<int>(
-				() => Get().MinimumNumberOfCharactersAfterStringDifference,
-				v => Update(p => p with
+				});
+			MinimumNumberOfCharactersAfterStringDifference = new CustomizationValue<FormattingCustomizationValue, int>(this,
+				p => p.MinimumNumberOfCharactersAfterStringDifference,
+				(p, v) => p with
 				{
 					MinimumNumberOfCharactersAfterStringDifference = v,
-				}));
-			MaximumStringLength = new CustomizationValue<int>(
-				() => Get().MaximumStringLength,
-				v => Update(p => p with
+				});
+			MaximumStringLength = new CustomizationValue<FormattingCustomizationValue, int>(this,
+				p => p.MaximumStringLength,
+				(p, v) => p with
 				{
 					MaximumStringLength = v,
-				}));
+				});
 		}
 
 		/// <inheritdoc cref="FormattingCustomizationValue.MaximumNumberOfCollectionItems" />

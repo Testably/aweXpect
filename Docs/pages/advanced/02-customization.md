@@ -16,6 +16,36 @@ using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
 }
 ```
 
+## Lifetimes and async flows
+
+A value you set is visible in the current async flow and in every flow that starts from it afterwards, such as a `Task.Run`. It never reaches a parallel flow or the flow that started the current one:
+
+- A value set in a synchronous method is visible to its caller. A value set in an awaited `async` method is not: once that method returns, the caller continues with its own values. Set the value in the calling method, or return the lifetime from a synchronous helper method.
+- Disposing a lifetime restores only the value it set, so another value of the same group that was changed in the meantime is kept. Disposing it a second time has no effect.
+- `Update(…)` replaces the whole group, so disposing its lifetime restores the whole group as it was before the update.
+- Dispose lifetimes in the reverse order in which you created them, as nested `using` statements do, and in the same flow: disposing a lifetime restores the value in the flow that disposes it.
+
+## Global defaults
+
+A value set with `Set` in an assembly-level setup only reaches the tests if the test framework runs them in the async context of that setup, and most frameworks don't: in our measurements the value reached the tests for a synchronous `[AssemblyInitialize]` in MSTest, but not for an asynchronous one, in TUnit only after `context.AddAsyncLocalValues()`, in NUnit only partly, and in xUnit v2 not at all. Set such defaults on `Customize.aweXpect.Global` instead, which applies them to all async flows, in any assembly-level setup or in a module initializer:
+
+```csharp
+using System.Runtime.CompilerServices;
+using aweXpect.Customization;
+
+internal static class AwexpectDefaults
+{
+    [ModuleInitializer]
+    internal static void Initialize()
+        => Customize.aweXpect.Global.Formatting().MaximumStringLength.Set(500);
+}
+```
+
+- A value set in the current async flow takes precedence over the global value, so a test can still use `using (Customize.aweXpect.Formatting().MaximumStringLength.Set(20))` without influencing tests that run in parallel.
+- While such a value is set in the current flow, its group is kept in this flow as a whole: a global change to another value of the same group becomes visible in this flow only after the lifetime is disposed.
+- Set global values once, before the tests run. They can be changed at any time and the change is visible to all running tests immediately, but changing the same group concurrently from several threads can lose one of the changes.
+- `Customize.aweXpect.Global.EnableTracing(traceWriter)` enables a trace writer for all async flows. A trace writer enabled in the current flow takes precedence.
+- Groups of extension packages, such as `Customize.aweXpect.Global.Json()`, work the same way.
 ## Equivalency
 
 Under `Customize.aweXpect.Equivalency()`:

@@ -110,3 +110,4 @@ aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> s
 *REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.get -> System.Collections.Generic.Dictionary<System.Type!, aweXpect.Equivalency.EquivalencyTypeOptions!>!
 *REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.init -> void
 aweXpect.Equivalency.EquivalencyOptions.GetOptionsFor(System.Type! type) -> aweXpect.Equivalency.EquivalencyTypeOptions!
+aweXpect.Customization.AwexpectCustomization.Global.get -> aweXpect.Customization.AwexpectCustomization!

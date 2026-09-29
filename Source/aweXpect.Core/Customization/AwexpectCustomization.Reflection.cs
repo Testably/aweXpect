@@ -26,13 +26,13 @@ public partial class AwexpectCustomization
 		internal ReflectionCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			_awexpectCustomization = awexpectCustomization;
-			ExcludedAssemblyPrefixes = new CustomizationValue<string[]>(
-				() => Get().ExcludedAssemblyPrefixes,
+			ExcludedAssemblyPrefixes = new CustomizationValue<ReflectionCustomizationValue, string[]>(this,
+				p => p.ExcludedAssemblyPrefixes,
 				// ReSharper disable once WithExpressionModifiesAllMembers
-				v => Update(p => p with
+				(p, v) => p with
 				{
 					ExcludedAssemblyPrefixes = v,
-				}));
+				});
 		}
 
 		/// <inheritdoc cref="ReflectionCustomizationValue.ExcludedAssemblyPrefixes" />

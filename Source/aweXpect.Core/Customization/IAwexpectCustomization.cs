@@ -18,6 +18,9 @@ public interface IAwexpectCustomization
 	/// </summary>
 	/// <remarks>
 	///     When the returned <see cref="CustomizationLifetime" /> is disposed, the value will be reset to the previous value.
+	///     <para />
+	///     The value applies to the current async flow and the flows started from it afterwards, or to all async flows
+	///     when set on <see cref="AwexpectCustomization.Global" />.
 	/// </remarks>
 	CustomizationLifetime Set<TValue>(string key, TValue value);
 }

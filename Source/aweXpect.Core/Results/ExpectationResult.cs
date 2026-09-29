@@ -138,7 +138,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 		if (result.Outcome == Outcome.Success)
 		{
-			ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter.Value;
+			ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
 			if (traceWriter != null)
 			{
 				StringBuilder sb = new();
@@ -302,7 +302,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		{
 			case Outcome.Success
 				when result.TryGetValue(out TType? value):
-				ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter.Value;
+				ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
 				if (traceWriter != null)
 				{
 					StringBuilder sb = new();

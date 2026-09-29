@@ -29,8 +29,12 @@ public partial class AwexpectCustomization
 		internal SettingsCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			_awexpectCustomization = awexpectCustomization;
-			DefaultCheckInterval = new CustomizationValue<TimeSpan>(
-				() => Get().DefaultCheckInterval,
+			DefaultCheckInterval = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
+				p => p.DefaultCheckInterval,
+				(p, v) => p with
+				{
+					DefaultCheckInterval = v,
+				},
 				interval =>
 				{
 					if (interval <= TimeSpan.Zero)
@@ -39,34 +43,27 @@ public partial class AwexpectCustomization
 						throw Tracing.WriteException(
 							new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 					}
-
-					return Update(p => p with
-					{
-						DefaultCheckInterval = interval,
-					});
 				});
-			DefaultEventuallyTimeout = new CustomizationValue<TimeSpan>(
-				() => Get().DefaultEventuallyTimeout,
-				timeout =>
+			DefaultEventuallyTimeout = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
+				p => p.DefaultEventuallyTimeout,
+				(p, v) => p with
 				{
-					ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-					return Update(p => p with
-					{
-						DefaultEventuallyTimeout = timeout,
-					});
-				});
-			DefaultSignalerTimeout = new CustomizationValue<TimeSpan>(
-				() => Get().DefaultSignalerTimeout,
-				timeout =>
+					DefaultEventuallyTimeout = v,
+				},
+				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
+			DefaultSignalerTimeout = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
+				p => p.DefaultSignalerTimeout,
+				(p, v) => p with
 				{
-					ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-					return Update(p => p with
-					{
-						DefaultSignalerTimeout = timeout,
-					});
-				});
-			DefaultTimeComparisonTolerance = new CustomizationValue<TimeSpan>(
-				() => Get().DefaultTimeComparisonTolerance,
+					DefaultSignalerTimeout = v,
+				},
+				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
+			DefaultTimeComparisonTolerance = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
+				p => p.DefaultTimeComparisonTolerance,
+				(p, v) => p with
+				{
+					DefaultTimeComparisonTolerance = v,
+				},
 				tolerance =>
 				{
 					if (tolerance < TimeSpan.Zero)
@@ -75,18 +72,13 @@ public partial class AwexpectCustomization
 						throw Tracing.WriteException(
 							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
-
-					return Update(p => p with
-					{
-						DefaultTimeComparisonTolerance = tolerance,
-					});
 				});
-			TestCancellation = new CustomizationValue<TestCancellation?>(
-				() => Get().TestCancellation,
-				v => Update(p => p with
+			TestCancellation = new CustomizationValue<SettingsCustomizationValue, TestCancellation?>(this,
+				p => p.TestCancellation,
+				(p, v) => p with
 				{
 					TestCancellation = v,
-				}));
+				});
 		}
 
 		/// <inheritdoc cref="SettingsCustomizationValue.DefaultCheckInterval" />

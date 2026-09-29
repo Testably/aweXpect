@@ -16,7 +16,7 @@ public static class Tracing
 	public static TException WriteException<TException>(TException exception)
 		where TException : Exception
 	{
-		Customize.aweXpect.TraceWriter.Value?.WriteException(exception);
+		Customize.aweXpect.TraceWriter?.WriteException(exception);
 		return exception;
 	}
 }

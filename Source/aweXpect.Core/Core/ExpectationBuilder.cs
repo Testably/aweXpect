@@ -733,14 +733,14 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		try
 		{
 			data = await _subjectSource.GetValue(timeSystem, token);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage(timeout is null
+			Customize.aweXpect.TraceWriter?.WriteMessage(timeout is null
 				? $"Checking expectation for {Subject} {data}"
 				: $"Checking expectation for {Subject} {data} with timeout of {Formatter.Format(timeout)}");
 		}
 		catch (Exception exception)
 		{
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
-			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
+			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			return result;
 		}
