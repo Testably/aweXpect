@@ -330,6 +330,36 @@ public sealed partial class ThatTimeSpan
 						.Because("a widening tolerance must not make the assertion throw at the type limits");
 				}
 			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenSubjectIsInsideTheRange_ShouldSucceed()
+				{
+					TimeSpan? subject = 5.Seconds();
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotBetween(4.Seconds()).And(6.Seconds()));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsOutsideTheRange_ShouldFail()
+				{
+					TimeSpan? subject = 5.Seconds();
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotBetween(6.Seconds()).And(7.Seconds()));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is between 0:06 and 0:07,
+						             but it was 0:05, which differs by -0:01 from the minimum
+						             """);
+				}
+			}
 		}
 	}
 }

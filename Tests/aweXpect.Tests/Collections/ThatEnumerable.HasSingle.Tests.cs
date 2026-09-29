@@ -746,7 +746,7 @@ public sealed partial class ThatEnumerable
 			{
 				IEnumerable<object> subject = ToEnumerable<object>(1);
 
-				object result = await That(subject).HasSingle().Which.IsEqualTo(1);
+				object? result = await That(subject).HasSingle().Which.IsEqualTo(1);
 
 				await That(result).IsEqualTo(1);
 			}
