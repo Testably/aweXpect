@@ -34,19 +34,6 @@ internal static class ExceptionHelpers
 	private static string Describe(string? paramName)
 		=> paramName is "expected" or "unexpected" ? $"'{paramName}' value" : $"'{paramName}'";
 
-	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
-		=> ThrowIfNullOrEmptyNamed(parameter, paramName);
-
-	private static void ThrowIfNullOrEmptyNamed<T>(IEnumerable<T>? parameter, string? paramName)
-	{
-		ThrowIfNullNamed(parameter, paramName);
-		if (!parameter!.Any())
-		{
-			throw Tracing.WriteException(EmptyCollection(paramName));
-		}
-	}
-
 	/// <summary>
 	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
 	///     expectation, and returns it wrapped, so that a sequence which can only be enumerated once survives both the

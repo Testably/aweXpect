@@ -12,6 +12,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 	private readonly IEnumerator<T> _enumerator;
 	private readonly bool _isUserCode;
 	private readonly List<T> _materializedItems = new();
+	private bool _isMaterializedCompletely;
 	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable<T> enumerable, bool isUserCode)
@@ -57,21 +58,27 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 		}
 
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (MoveNext())
+		while (!_isMaterializedCompletely && MoveNext())
 		{
 			T item = _enumerator.Current;
 			_materializedItems.Add(item);
 			yield return item;
 		}
 
-		Count = _materializedItems.Count;
+		if (!_isMaterializedCompletely)
+		{
+			_isMaterializedCompletely = true;
+			_enumerator.Dispose();
+			Count = _materializedItems.Count;
+		}
 	}
 
 	#endregion
 
 	/// <remarks>
 	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
-	///     it cannot be mistaken for the end of the source.
+	///     it cannot be mistaken for the end of the source. The source is disposed once it threw or is exhausted; a
+	///     source that is only read partially is not disposed, as a later enumeration continues it.
 	/// </remarks>
 	private bool MoveNext()
 	{
@@ -87,6 +94,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 		catch (Exception exception)
 		{
 			_sourceException = exception;
+			_enumerator.Dispose();
 			throw;
 		}
 	}
@@ -163,6 +171,7 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 		catch (Exception exception)
 		{
 			_sourceException = exception;
+			(_enumerator as IDisposable)?.Dispose();
 			throw;
 		}
 	}
