@@ -48,6 +48,42 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortAllComplyWithWithinAnItem()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<IEnumerable<int>> subject = ToEnumerable<IEnumerable<int>>(GetCancellingEnumerable(5, cts));
+
+			async Task Act()
+				=> await That(subject).All().ComplyWith(x => x.DoesNotContain(-1)).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not contain an item equal to -1 for all items,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               [
+				                 0,
+				                 1,
+				                 2,
+				                 3,
+				                 4,
+				                 5,
+				                 6,
+				                 7,
+				                 8,
+				                 9,
+				                 (… and maybe more)
+				               ],
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation within an item must not be reported as a not matching item");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequested_ShouldAbortContains()
 		{
 			using CancellationTokenSource cts = new();
@@ -337,6 +373,46 @@ public sealed partial class ThatEnumerable
 				             ]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortContainsForAnUntypedEnumerableOfNullItems()
+		{
+			using CancellationTokenSource cts = new();
+			int enumeratedCount = 0;
+			IEnumerable subject = GetCancellingEnumerable(5, cts).Select(_ =>
+			{
+				enumeratedCount++;
+				return (object?)null;
+			});
+
+			async Task Act()
+				=> await That(subject).Contains(1).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains an item equal to 1 at least once,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               <null>,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be reported as a missing item");
+			await That(enumeratedCount).IsLessThan(100)
+				.Because("the collection context must not search the whole source for an item that is not null");
 		}
 
 		[Fact]
