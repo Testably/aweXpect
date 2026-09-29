@@ -64,20 +64,6 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
-				public async Task WithNamedMemberAccessor_ShouldSucceed(int hResult)
-				{
-					Exception exception = new HResultException(hResult);
-					void Delegate() => throw exception;
-
-					async Task Act()
-						=> await That(Delegate).Throws()
-							.Whose(memberAccessor: e => e.HResult, expectations: h => h.IsEqualTo(hResult));
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Fact]
 				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
 				{
@@ -95,6 +81,20 @@ public sealed partial class ThatDelegate
 						               bar
 						             """)
 						.Because("the members of an exception of another type are irrelevant");
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WithNamedMemberAccessor_ShouldSucceed(int hResult)
+				{
+					Exception exception = new HResultException(hResult);
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.Whose(memberAccessor: e => e.HResult, expectations: h => h.IsEqualTo(hResult));
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 
@@ -140,6 +140,38 @@ public sealed partial class ThatDelegate
 
 				[Theory]
 				[AutoData]
+				public async Task WhenAsyncMemberIsDifferent_ShouldFail(int value)
+				{
+					int expectedValue = value + 1;
+					void Delegate() => throw new AsyncException(value);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(expectedValue));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that Delegate
+						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsync() is equal to {expectedValue},
+						              but GetValueAsync() was {value}, which differs by -1
+						              """);
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenAsyncMemberMatchesExpected_ShouldSucceed(int value)
+				{
+					void Delegate() => throw new AsyncException(value);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(value));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[AutoData]
 				public async Task WhenMemberIsDifferent_ShouldFail(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -173,54 +205,6 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
-				public async Task WithInner_AllowsNestedIs()
-				{
-					void Throwing()
-						=> throw new InvalidOperationException(
-							"outer",
-							new InvalidCastException("inner"));
-
-					async Task Act()
-						=> await That(Throwing).Throws<InvalidOperationException>()
-							.WithInner(it => it.Is<InvalidCastException>()
-								.Whose(e => e!.Message, it => it.IsEqualTo("inner")));
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Theory]
-				[AutoData]
-				public async Task WhenAsyncMemberIsDifferent_ShouldFail(int value)
-				{
-					int expectedValue = value + 1;
-					void Delegate() => throw new AsyncException(value);
-
-					async Task Act()
-						=> await That(Delegate).Throws<AsyncException>()
-							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(expectedValue));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that Delegate
-						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsync() is equal to {expectedValue},
-						              but GetValueAsync() was {value}, which differs by -1
-						              """);
-				}
-
-				[Theory]
-				[AutoData]
-				public async Task WhenAsyncMemberMatchesExpected_ShouldSucceed(int value)
-				{
-					void Delegate() => throw new AsyncException(value);
-
-					async Task Act()
-						=> await That(Delegate).Throws<AsyncException>()
-							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(value));
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[AutoData]
 				public async Task WhenValueTaskMemberIsDifferent_ShouldFail(int value)
@@ -238,6 +222,22 @@ public sealed partial class ThatDelegate
 						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsValueTaskAsync() is equal to {expectedValue},
 						              but GetValueAsValueTaskAsync() was {value}, which differs by -1
 						              """);
+				}
+
+				[Fact]
+				public async Task WithInner_AllowsNestedIs()
+				{
+					void Throwing()
+						=> throw new InvalidOperationException(
+							"outer",
+							new InvalidCastException("inner"));
+
+					async Task Act()
+						=> await That(Throwing).Throws<InvalidOperationException>()
+							.WithInner(it => it.Is<InvalidCastException>()
+								.Whose(e => e!.Message, it => it.IsEqualTo("inner")));
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 

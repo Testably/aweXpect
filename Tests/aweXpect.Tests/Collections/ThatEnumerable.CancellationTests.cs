@@ -15,39 +15,6 @@ public sealed partial class ThatEnumerable
 	public sealed class CancellationTests
 	{
 		[Fact]
-		public async Task WhenCancellationIsRequested_ShouldAbortANegatedContains()
-		{
-			using CancellationTokenSource cts = new();
-			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
-
-			async Task Act()
-				=> await That(subject).DoesNotContain(-1).WithCancellation(cts.Token);
-
-			await That(Act).Throws<InconclusiveException>()
-				.WithMessage("""
-				             Expected that subject
-				             does not contain an item equal to -1,
-				             but it could not be verified, because the evaluation was already canceled
-
-				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """)
-				.Because("a cancellation must not be mistaken for the end of the source");
-		}
-
-		[Fact]
 		public async Task WhenCancellationIsRequested_ShouldAbortAllComplyWithWithinAnItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -81,6 +48,39 @@ public sealed partial class ThatEnumerable
 				             ]
 				             """)
 				.Because("a cancellation within an item must not be reported as a not matching item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldAbortANegatedContains()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).DoesNotContain(-1).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not contain an item equal to -1,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
 		[Fact]

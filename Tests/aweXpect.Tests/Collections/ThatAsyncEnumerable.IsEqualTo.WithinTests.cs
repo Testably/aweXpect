@@ -52,30 +52,6 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
-				{
-					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
-
-					async Task Act()
-						=> await That(subject).IsEqualTo([1.0m, 2.0m, 3.0m,]).Within(0.2m).InAnyOrder();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is equal to collection [1.0m, 2.0m, 3.0m,] ± 0.2 in any order,
-						             but it
-						               contained item 2.3 at index 1 that was not expected and
-						               lacked 1 of 3 expected items: 2.0
-
-						             Collection:
-						             [1.1, 2.3, 3.1]
-
-						             Expected:
-						             [1.0, 2.0, 3.0]
-						             """);
-				}
-
-				[Fact]
 				public async Task WhenExpectedIsAMultiLineExpression_ShouldTrimTheCommonWhiteSpace()
 				{
 					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
@@ -95,6 +71,30 @@ public sealed partial class ThatAsyncEnumerable
 						             	2.0m,
 						             	3.0m,
 						             ] ± 0.2 in any order,
+						             but it
+						               contained item 2.3 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 2.0
+
+						             Collection:
+						             [1.1, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, 2.0, 3.0]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([1.0m, 2.0m, 3.0m,]).Within(0.2m).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1.0m, 2.0m, 3.0m,] ± 0.2 in any order,
 						             but it
 						               contained item 2.3 at index 1 that was not expected and
 						               lacked 1 of 3 expected items: 2.0
@@ -170,30 +170,6 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
-				{
-					IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.1, 2.3, 3.1);
-
-					async Task Act()
-						=> await That(subject).IsEqualTo([1.0, 2.0, 3.0,]).Within(0.2).InAnyOrder();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is equal to collection [1.0, 2.0, 3.0,] ± 0.2 in any order,
-						             but it
-						               contained item 2.3 at index 1 that was not expected and
-						               lacked 1 of 3 expected items: 2.0
-
-						             Collection:
-						             [1.1, 2.3, 3.1]
-
-						             Expected:
-						             [1.0, 2.0, 3.0]
-						             """);
-				}
-
 				[Theory]
 				[InlineData(double.PositiveInfinity, 1.0)]
 				[InlineData(double.NegativeInfinity, 1.0)]
@@ -233,6 +209,30 @@ public sealed partial class ThatAsyncEnumerable
 						              Expected:
 						              [{Formatter.Format(expected)}]
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.1, 2.3, 3.1);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([1.0, 2.0, 3.0,]).Within(0.2).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1.0, 2.0, 3.0,] ± 0.2 in any order,
+						             but it
+						               contained item 2.3 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 2.0
+
+						             Collection:
+						             [1.1, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, 2.0, 3.0]
+						             """);
 				}
 			}
 
@@ -260,30 +260,6 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
-				{
-					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, null, 2.3, 3.1);
-
-					async Task Act()
-						=> await That(subject).IsEqualTo([1.0, null, 2.0, 3.0,]).Within(0.2).InAnyOrder();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is equal to collection [1.0, null, 2.0, 3.0,] ± 0.2 in any order,
-						             but it
-						               contained item 2.3 at index 2 that was not expected and
-						               lacked 1 of 4 expected items: 2.0
-
-						             Collection:
-						             [1.1, <null>, 2.3, 3.1]
-
-						             Expected:
-						             [1.0, <null>, 2.0, 3.0]
-						             """);
-				}
-
 				[Theory]
 				[InlineData(double.PositiveInfinity, 1.0)]
 				[InlineData(double.NegativeInfinity, 1.0)]
@@ -326,6 +302,30 @@ public sealed partial class ThatAsyncEnumerable
 						              ]
 						              """);
 				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, null, 2.3, 3.1);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([1.0, null, 2.0, 3.0,]).Within(0.2).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1.0, null, 2.0, 3.0,] ± 0.2 in any order,
+						             but it
+						               contained item 2.3 at index 2 that was not expected and
+						               lacked 1 of 4 expected items: 2.0
+
+						             Collection:
+						             [1.1, <null>, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, <null>, 2.0, 3.0]
+						             """);
+				}
 			}
 
 			public sealed class FloatTests
@@ -350,30 +350,6 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).IsEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F);
 
 					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
-				{
-					IAsyncEnumerable<float> subject = ToAsyncEnumerable(1.1F, 2.3F, 3.1F);
-
-					async Task Act()
-						=> await That(subject).IsEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is equal to collection [1.0F, 2.0F, 3.0F,] ± 0.2 in any order,
-						             but it
-						               contained item 2.3 at index 1 that was not expected and
-						               lacked 1 of 3 expected items: 2.0
-
-						             Collection:
-						             [1.1, 2.3, 3.1]
-
-						             Expected:
-						             [1.0, 2.0, 3.0]
-						             """);
 				}
 
 				[Theory]
@@ -416,6 +392,30 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(expected)}]
 						              """);
 				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IAsyncEnumerable<float> subject = ToAsyncEnumerable(1.1F, 2.3F, 3.1F);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1.0F, 2.0F, 3.0F,] ± 0.2 in any order,
+						             but it
+						               contained item 2.3 at index 1 that was not expected and
+						               lacked 1 of 3 expected items: 2.0
+
+						             Collection:
+						             [1.1, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, 2.0, 3.0]
+						             """);
+				}
 			}
 
 			public sealed class NullableFloatTests
@@ -440,30 +440,6 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).IsEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F);
 
 					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
-				{
-					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(1.1F, null, 2.3F, 3.1F);
-
-					async Task Act()
-						=> await That(subject).IsEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is equal to collection [1.0F, null, 2.0F, 3.0F,] ± 0.2 in any order,
-						             but it
-						               contained item 2.3 at index 2 that was not expected and
-						               lacked 1 of 4 expected items: 2.0
-
-						             Collection:
-						             [1.1, <null>, 2.3, 3.1]
-
-						             Expected:
-						             [1.0, <null>, 2.0, 3.0]
-						             """);
 				}
 
 				[Theory]
@@ -507,6 +483,30 @@ public sealed partial class ThatAsyncEnumerable
 						                {Formatter.Format(expected)}
 						              ]
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
+				{
+					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(1.1F, null, 2.3F, 3.1F);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1.0F, null, 2.0F, 3.0F,] ± 0.2 in any order,
+						             but it
+						               contained item 2.3 at index 2 that was not expected and
+						               lacked 1 of 4 expected items: 2.0
+
+						             Collection:
+						             [1.1, <null>, 2.3, 3.1]
+
+						             Expected:
+						             [1.0, <null>, 2.0, 3.0]
+						             """);
 				}
 			}
 

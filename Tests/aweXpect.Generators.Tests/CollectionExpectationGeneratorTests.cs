@@ -39,6 +39,177 @@ public sealed class CollectionExpectationGeneratorTests
 	                              """;
 
 	[Fact]
+	public async Task PerSubject_ShouldEmitEachExistingKindWithItsConstraintsPriorityAndRemarks()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>", "Missing.Type<TKey, TValue>")]
+			[CollectionSubjects("System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>",
+				Priority = -1, Remarks = "Shared declaring type.")]
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("ContainsKey", PerSubject = true, Summary = "Contains the key.")]
+				internal static IThat<TCollection?> ContainsKeyCore<TCollection, TKey, TValue>(
+					IThat<TCollection?> subject,
+					TKey expected)
+					where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("ContainsKey<TKey, TValue>(").Exactly(2);
+		await That(result.Generated).DoesNotContain("Missing.Type");
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, TValue>?> subject")
+			.Because("the kind is qualified like every other type");
+		await That(result.Generated).Contains("where TKey : notnull").Once()
+			.Because("only Dictionary<TKey, TValue> constrains its key");
+		await That(result.Generated).Contains("OverloadResolutionPriority(-1)").Once();
+		await That(result.Generated).Contains("///     Shared declaring type.").Once();
+	}
+
+	[Fact]
+	public async Task PerSubject_ShouldPutThePrimaryConstraintFirstWhicheverSideContributesIt()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public class Keyed<T> where T : IComparable<T> { }
+
+			[CollectionSubjects("Lib.Keyed<TItem>")]
+			public static partial class ThatKeyed
+			{
+				[CreateExpectationFamily("Contains", PerSubject = true, Summary = "Contains.")]
+				internal static IThat<TCollection?> ContainsCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					TItem expected)
+					where TCollection : class
+					where TItem : class
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("where TItem : class, global::System.IComparable<TItem>").Once()
+			.Because("the kind contributes the interface and the helper the primary constraint");
+	}
+
+	[Fact]
+	public async Task PerSubject_WhenKindIsAStruct_ShouldNotMakeItNullable()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, ExpectedType = "{subject}", Summary = "Matches.")]
+				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					IEnumerable<TItem> expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<TItem>> subject")
+			.Exactly(2);
+		await That(result.Generated).DoesNotContain("ImmutableArray<TItem>?");
+		await That(result.Generated).Contains("global::System.Collections.Generic.IEnumerable<TItem> expected").Once();
+		await That(result.Generated).Contains("global::System.Collections.Immutable.ImmutableArray<TItem> expected")
+			.Once();
+	}
+
+	[Fact]
+	public async Task PerSubject_WhenTheCollectionEnumeratesAnElement_ShouldTakeItForTheKind()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					IEnumerable<Func<TItem, bool>> expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<TItem>> subject")
+			.Once()
+			.Because("the element of a collection of predicates is not the first type argument of the expected type");
+		await That(result.Generated).DoesNotContain("ImmutableArray<global::System.Func");
+		await That(result.Generated)
+			.Contains("IsEqualToCore<global::System.Collections.Immutable.ImmutableArray<TItem>, TItem>(").Once();
+	}
+
+	[Fact]
+	public async Task PerSubject_WhenTheHelperFixesATypeArgumentOfTheKind_ShouldBindIt()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
+				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey>(
+					IThat<TCollection?> subject,
+					string? expected)
+					where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("ContainsValue<TKey>(").Once();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, string?>?> subject")
+			.Once()
+			.Because("the helper's constraint fixes the value type that the kind leaves to a type parameter");
+		await That(result.Generated).Contains("where TKey : notnull").Once();
+	}
+
+	[Fact]
+	public async Task PerSubject_WithoutCollectionSubjects_ShouldReport()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("HasItem", PerSubject = true, Summary = "Has the item.")]
+				internal static IThat<TCollection?> HasItemCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					TItem expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("[CollectionSubjects]"));
+		await That(result.Generated).DoesNotContain("HasItem<");
+	}
+
+	[Fact]
 	public async Task ShouldEmitBothPolaritiesFromTheHelperSignature()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -70,7 +241,79 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
-	public async Task WithFactory_ShouldInstantiateEachElementTypeAndCastUpTheNonNullableExpected()
+	public async Task WhenNegatedNameEqualsTheName_ShouldReportAndEmitOnlyThePositiveOverload()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("Contains", Summary = "Contains.", NegatedSummary = "Does not contain.")]
+				internal static IThat<TItem> ContainsCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					TItem expected,
+					bool negated)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3002");
+		await That(result.Generated).Contains("Contains<TItem>(").Once();
+	}
+
+	[Fact]
+	public async Task WhenTheConstraintIsANullableClass_ShouldKeepTheAnnotation()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatObject
+			{
+				[CreateExpectationFamily("IsOneOf", Summary = "Is one of.")]
+				internal static IThat<T> IsOneOfCore<T>(
+					IThat<T> subject,
+					IEnumerable<T?> expected,
+					string? expectedExpression)
+					where T : class?
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("where T : class?").Once();
+	}
+
+	[Fact]
+	public async Task WhenTheExpectedCollectionHasNoExpressionParameter_ShouldReport()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("StartsWith", Summary = "Starts with.")]
+				[CreateExpectationFamily("StartsWith", Params = true, Summary = "Starts with.")]
+				internal static IThat<TItem> StartsWithCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected)
+					=> null!;
+			}
+			""");
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3004" && x.Severity == DiagnosticSeverity.Error &&
+			                x.GetMessage().Contains("'StartsWith'"))
+			.Because("only the declaration without params takes the expected collection as one argument");
+	}
+
+	[Fact]
+	public async Task WhenTheFactoryHasNoCreateMethod_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
 			"""
@@ -78,14 +321,13 @@ public sealed class CollectionExpectationGeneratorTests
 
 			public static class Factory
 			{
-				public static ObjectEqualityWithToleranceOptions<double, double> CreateDouble() => new();
-				public static ObjectEqualityWithToleranceOptions<double?, double> CreateNullableDouble() => new();
+				public static ObjectEqualityWithToleranceOptions<double, double> Create(int value) => new();
 			}
 
 			public static partial class ThatList
 			{
 				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
-				internal static IThat<TItem?> IsEqualToCore<TItem, TTolerance>(
+				internal static IThat<TItem> IsEqualToCore<TItem, TTolerance>(
 					IThat<IEnumerable<TItem>?> subject,
 					IEnumerable<TItem> expected,
 					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
@@ -94,14 +336,40 @@ public sealed class CollectionExpectationGeneratorTests
 			}
 			""");
 
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated).Contains("IsEqualTo(").Exactly(3);
-		await That(result.Generated).Contains("global::Lib.Factory.CreateNullableDouble()").Exactly(2);
-		await That(result.Generated).Contains("global::System.Linq.Enumerable.Cast<double?>(expected)").Once();
-		await That(result.Generated).Contains("IThat<double>").Once()
-			.Because("an unconstrained TItem? is the value type itself");
-		await That(result.Generated).Contains("IThat<double?>").Exactly(2);
-		await That(result.Generated).DoesNotContain("??");
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("'Factory'"));
+		await That(result.Generated).DoesNotContain("IsEqualTo(");
+	}
+
+	[Fact]
+	public async Task WhenTheHelperIsOnlyTouched_ShouldReuseTheCachedOutput()
+	{
+		const string helper = """
+		                      namespace Lib;
+
+		                      public static partial class ThatList
+		                      {
+		                      	[CreateExpectationFamily("HasItem", Summary = "Has the item.")]
+		                      	internal static IThat<TItem> HasItemCore<TItem>(IThat<IEnumerable<TItem>?> subject, TItem expected)
+		                      		=> null!;
+		                      }
+		                      """;
+		CSharpCompilation compilation = GeneratorRunner.CreateCompilation([Stubs, Usings + helper,], false);
+		GeneratorDriver driver = CSharpGeneratorDriver.Create(
+			[new CollectionExpectationGenerator().AsSourceGenerator(),],
+			driverOptions: new GeneratorDriverOptions(IncrementalGeneratorOutputKind.None, true));
+		driver = driver.RunGenerators(compilation);
+		SyntaxTree tree = compilation.SyntaxTrees.Last();
+		Compilation touched = compilation.ReplaceSyntaxTree(tree,
+			CSharpSyntaxTree.ParseText(tree + Environment.NewLine + "// touched", (CSharpParseOptions)tree.Options));
+
+		driver = driver.RunGenerators(touched);
+
+		IEnumerable<IncrementalStepRunReason> reasons = driver.GetRunResult().Results[0].TrackedOutputSteps
+			.SelectMany(x => x.Value).SelectMany(x => x.Outputs).Select(x => x.Reason);
+		await That(reasons).IsNotEmpty();
+		await That(reasons).All().Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
+			.Because("the re-created family equals the previous one, so nothing is re-emitted");
 	}
 
 	[Fact]
@@ -141,6 +409,41 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("global::Lib.Factory.CreateFloat()").Exactly(2);
 		await That(result.Generated).DoesNotContain("Enumerable.Cast")
 			.Because("a non-nullable element has nothing to cast up");
+	}
+
+	[Fact]
+	public async Task WithFactory_ShouldInstantiateEachElementTypeAndCastUpTheNonNullableExpected()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static class Factory
+			{
+				public static ObjectEqualityWithToleranceOptions<double, double> CreateDouble() => new();
+				public static ObjectEqualityWithToleranceOptions<double?, double> CreateNullableDouble() => new();
+			}
+
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				internal static IThat<TItem?> IsEqualToCore<TItem, TTolerance>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected,
+					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+					string expectedExpression)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("IsEqualTo(").Exactly(3);
+		await That(result.Generated).Contains("global::Lib.Factory.CreateNullableDouble()").Exactly(2);
+		await That(result.Generated).Contains("global::System.Linq.Enumerable.Cast<double?>(expected)").Once();
+		await That(result.Generated).Contains("IThat<double>").Once()
+			.Because("an unconstrained TItem? is the value type itself");
+		await That(result.Generated).Contains("IThat<double?>").Exactly(2);
+		await That(result.Generated).DoesNotContain("??");
 	}
 
 	[Fact]
@@ -320,127 +623,6 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
-	public async Task PerSubject_ShouldEmitEachExistingKindWithItsConstraintsPriorityAndRemarks()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>", "Missing.Type<TKey, TValue>")]
-			[CollectionSubjects("System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>",
-				Priority = -1, Remarks = "Shared declaring type.")]
-			public static partial class ThatDictionary
-			{
-				[CreateExpectationFamily("ContainsKey", PerSubject = true, Summary = "Contains the key.")]
-				internal static IThat<TCollection?> ContainsKeyCore<TCollection, TKey, TValue>(
-					IThat<TCollection?> subject,
-					TKey expected)
-					where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated).Contains("ContainsKey<TKey, TValue>(").Exactly(2);
-		await That(result.Generated).DoesNotContain("Missing.Type");
-		await That(result.Generated)
-			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, TValue>?> subject")
-			.Because("the kind is qualified like every other type");
-		await That(result.Generated).Contains("where TKey : notnull").Once()
-			.Because("only Dictionary<TKey, TValue> constrains its key");
-		await That(result.Generated).Contains("OverloadResolutionPriority(-1)").Once();
-		await That(result.Generated).Contains("///     Shared declaring type.").Once();
-	}
-
-	[Fact]
-	public async Task PerSubject_WhenKindIsAStruct_ShouldNotMakeItNullable()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
-				[CreateExpectationFamily("IsEqualTo", PerSubject = true, ExpectedType = "{subject}", Summary = "Matches.")]
-				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
-					IThat<TCollection?> subject,
-					IEnumerable<TItem> expected)
-					where TCollection : IEnumerable<TItem>
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated)
-			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<TItem>> subject")
-			.Exactly(2);
-		await That(result.Generated).DoesNotContain("ImmutableArray<TItem>?");
-		await That(result.Generated).Contains("global::System.Collections.Generic.IEnumerable<TItem> expected").Once();
-		await That(result.Generated).Contains("global::System.Collections.Immutable.ImmutableArray<TItem> expected")
-			.Once();
-	}
-
-	[Fact]
-	public async Task PerSubject_WhenTheCollectionEnumeratesAnElement_ShouldTakeItForTheKind()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
-				internal static IThat<TCollection?> IsEqualToCore<TCollection, TItem>(
-					IThat<TCollection?> subject,
-					IEnumerable<Func<TItem, bool>> expected)
-					where TCollection : IEnumerable<TItem>
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated)
-			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<TItem>> subject")
-			.Once()
-			.Because("the element of a collection of predicates is not the first type argument of the expected type");
-		await That(result.Generated).DoesNotContain("ImmutableArray<global::System.Func");
-		await That(result.Generated)
-			.Contains("IsEqualToCore<global::System.Collections.Immutable.ImmutableArray<TItem>, TItem>(").Once();
-	}
-
-	[Fact]
-	public async Task PerSubject_WhenTheHelperFixesATypeArgumentOfTheKind_ShouldBindIt()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
-			public static partial class ThatDictionary
-			{
-				[CreateExpectationFamily("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
-				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey>(
-					IThat<TCollection?> subject,
-					string? expected)
-					where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Warnings).IsEmpty();
-		await That(result.Generated).Contains("ContainsValue<TKey>(").Once();
-		await That(result.Generated)
-			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, string?>?> subject")
-			.Once()
-			.Because("the helper's constraint fixes the value type that the kind leaves to a type parameter");
-		await That(result.Generated).Contains("where TKey : notnull").Once();
-	}
-
-	[Fact]
 	public async Task WithNegatedReturnType_ShouldDeclareItOnlyOnTheNegatedOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -477,6 +659,31 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WithoutSummary_ShouldWarn()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("Is{Not}EqualTo", Summary = "Matches.")]
+				internal static IThat<TItem> IsEqualToCore<TItem>(
+					IThat<IEnumerable<TItem>?> subject,
+					IEnumerable<TItem> expected,
+					string expectedExpression,
+					bool negated)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3003" && x.Severity == DiagnosticSeverity.Warning &&
+			                x.GetMessage().Contains("'IsNotEqualTo' has no NegatedSummary"));
+	}
+
+	[Fact]
 	public async Task WithParams_ShouldTakeAnArrayAndPassNoExpression()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -502,213 +709,6 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("CallerArgumentExpression(\"expected\")").Once();
 		await That(result.Generated).Contains("\t\t\tdoNotPopulateThisValue);").Once();
 		await That(result.Generated).Contains("\t\t\tnull);").Once();
-	}
-
-	[Fact]
-	public async Task WhenTheHelperIsOnlyTouched_ShouldReuseTheCachedOutput()
-	{
-		const string helper = """
-		                      namespace Lib;
-
-		                      public static partial class ThatList
-		                      {
-		                      	[CreateExpectationFamily("HasItem", Summary = "Has the item.")]
-		                      	internal static IThat<TItem> HasItemCore<TItem>(IThat<IEnumerable<TItem>?> subject, TItem expected)
-		                      		=> null!;
-		                      }
-		                      """;
-		CSharpCompilation compilation = GeneratorRunner.CreateCompilation([Stubs, Usings + helper,], false);
-		GeneratorDriver driver = CSharpGeneratorDriver.Create(
-			[new CollectionExpectationGenerator().AsSourceGenerator(),],
-			driverOptions: new GeneratorDriverOptions(IncrementalGeneratorOutputKind.None, true));
-		driver = driver.RunGenerators(compilation);
-		SyntaxTree tree = compilation.SyntaxTrees.Last();
-		Compilation touched = compilation.ReplaceSyntaxTree(tree,
-			CSharpSyntaxTree.ParseText(tree + Environment.NewLine + "// touched", (CSharpParseOptions)tree.Options));
-
-		driver = driver.RunGenerators(touched);
-
-		IEnumerable<IncrementalStepRunReason> reasons = driver.GetRunResult().Results[0].TrackedOutputSteps
-			.SelectMany(x => x.Value).SelectMany(x => x.Outputs).Select(x => x.Reason);
-		await That(reasons).IsNotEmpty();
-		await That(reasons).All().Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
-			.Because("the re-created family equals the previous one, so nothing is re-emitted");
-	}
-
-	[Fact]
-	public async Task PerSubject_ShouldPutThePrimaryConstraintFirstWhicheverSideContributesIt()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public class Keyed<T> where T : IComparable<T> { }
-
-			[CollectionSubjects("Lib.Keyed<TItem>")]
-			public static partial class ThatKeyed
-			{
-				[CreateExpectationFamily("Contains", PerSubject = true, Summary = "Contains.")]
-				internal static IThat<TCollection?> ContainsCore<TCollection, TItem>(
-					IThat<TCollection?> subject,
-					TItem expected)
-					where TCollection : class
-					where TItem : class
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated).Contains("where TItem : class, global::System.IComparable<TItem>").Once()
-			.Because("the kind contributes the interface and the helper the primary constraint");
-	}
-
-	[Fact]
-	public async Task WhenNegatedNameEqualsTheName_ShouldReportAndEmitOnlyThePositiveOverload()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("Contains", Summary = "Contains.", NegatedSummary = "Does not contain.")]
-				internal static IThat<TItem> ContainsCore<TItem>(
-					IThat<IEnumerable<TItem>?> subject,
-					TItem expected,
-					bool negated)
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.GeneratorDiagnostics).HasSingle().Which
-			.Satisfies(x => x.Id == "aweXpect3002");
-		await That(result.Generated).Contains("Contains<TItem>(").Once();
-	}
-
-	[Fact]
-	public async Task WhenTheConstraintIsANullableClass_ShouldKeepTheAnnotation()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static partial class ThatObject
-			{
-				[CreateExpectationFamily("IsOneOf", Summary = "Is one of.")]
-				internal static IThat<T> IsOneOfCore<T>(
-					IThat<T> subject,
-					IEnumerable<T?> expected,
-					string? expectedExpression)
-					where T : class?
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Warnings).IsEmpty();
-		await That(result.Generated).Contains("where T : class?").Once();
-	}
-
-	[Fact]
-	public async Task WhenTheExpectedCollectionHasNoExpressionParameter_ShouldReport()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("StartsWith", Summary = "Starts with.")]
-				[CreateExpectationFamily("StartsWith", Params = true, Summary = "Starts with.")]
-				internal static IThat<TItem> StartsWithCore<TItem>(
-					IThat<IEnumerable<TItem>?> subject,
-					IEnumerable<TItem> expected)
-					=> null!;
-			}
-			""");
-
-		await That(result.GeneratorDiagnostics).HasSingle().Which
-			.Satisfies(x => x.Id == "aweXpect3004" && x.Severity == DiagnosticSeverity.Error &&
-			                x.GetMessage().Contains("'StartsWith'"))
-			.Because("only the declaration without params takes the expected collection as one argument");
-	}
-
-	[Fact]
-	public async Task WhenTheFactoryHasNoCreateMethod_ShouldReport()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static class Factory
-			{
-				public static ObjectEqualityWithToleranceOptions<double, double> Create(int value) => new();
-			}
-
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
-				internal static IThat<TItem> IsEqualToCore<TItem, TTolerance>(
-					IThat<IEnumerable<TItem>?> subject,
-					IEnumerable<TItem> expected,
-					ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
-					string expectedExpression)
-					=> null!;
-			}
-			""");
-
-		await That(result.GeneratorDiagnostics).HasSingle().Which
-			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("'Factory'"));
-		await That(result.Generated).DoesNotContain("IsEqualTo(");
-	}
-
-	[Fact]
-	public async Task PerSubject_WithoutCollectionSubjects_ShouldReport()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("HasItem", PerSubject = true, Summary = "Has the item.")]
-				internal static IThat<TCollection?> HasItemCore<TCollection, TItem>(
-					IThat<TCollection?> subject,
-					TItem expected)
-					where TCollection : IEnumerable<TItem>
-					=> null!;
-			}
-			""");
-
-		await That(result.GeneratorDiagnostics).HasSingle().Which
-			.Satisfies(x => x.Id == "aweXpect3001" && x.GetMessage().Contains("[CollectionSubjects]"));
-		await That(result.Generated).DoesNotContain("HasItem<");
-	}
-
-	[Fact]
-	public async Task WithoutSummary_ShouldWarn()
-	{
-		GeneratorRunner.GeneratorResult result = Run(
-			"""
-			namespace Lib;
-
-			public static partial class ThatList
-			{
-				[CreateExpectationFamily("Is{Not}EqualTo", Summary = "Matches.")]
-				internal static IThat<TItem> IsEqualToCore<TItem>(
-					IThat<IEnumerable<TItem>?> subject,
-					IEnumerable<TItem> expected,
-					string expectedExpression,
-					bool negated)
-					=> null!;
-			}
-			""");
-
-		await That(result.Errors).IsEmpty();
-		await That(result.GeneratorDiagnostics).HasSingle().Which
-			.Satisfies(x => x.Id == "aweXpect3003" && x.Severity == DiagnosticSeverity.Warning &&
-			                x.GetMessage().Contains("'IsNotEqualTo' has no NegatedSummary"));
 	}
 
 	private static GeneratorRunner.GeneratorResult Run(string source)

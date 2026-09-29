@@ -66,6 +66,24 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a missing prefix is rejected before the subject is looked at");
 		}
 
+		[Fact]
+		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpace_ShouldThrowBeforeTheTaskIsAwaited()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix().IgnoringLeadingWhiteSpace();
+
+#if NET8_0_OR_GREATER
+			void Act() => _ = sut.AreConsideredEqual("foo", " ").AsTask();
+#else
+			void Act() => _ = sut.AreConsideredEqual("foo", " ");
+#endif
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("an unusable prefix must throw at the call instead of inside the returned task");
+		}
+
 		[Theory]
 		[InlineData(true, false)]
 		[InlineData(false, true)]
@@ -95,24 +113,6 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsTrue()
 				.Because("whitespace that is not ignored is a regular prefix");
-		}
-
-		[Fact]
-		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpace_ShouldThrowBeforeTheTaskIsAwaited()
-		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringLeadingWhiteSpace();
-
-#if NET8_0_OR_GREATER
-			void Act() => _ = sut.AreConsideredEqual("foo", " ").AsTask();
-#else
-			void Act() => _ = sut.AreConsideredEqual("foo", " ");
-#endif
-
-			await That(Act).Throws<ArgumentException>()
-				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
-				.WithParamName("expected")
-				.Because("an unusable prefix must throw at the call instead of inside the returned task");
 		}
 
 		[Fact]

@@ -12,45 +12,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 	private const string InsertWhichKey = nameof(Resources.aweXpect0003InsertWhichCodeFixTitle);
 
 	[Fact]
-	public async Task ShouldReplaceHasMessageWithNullableArgumentWithWithMessage() => await Verifier.VerifyCodeFixAsync(
-		"""
-		#nullable enable
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest(string? message)
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](message);
-		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](null).AsWildcard();
-		    }
-		}
-		""",
-		"""
-		#nullable enable
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest(string? message)
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>().WithMessage(message);
-		        await Expect.That(Act).Throws<Exception>().WithMessage(null).AsWildcard();
-		    }
-		}
-		""",
-		ReplaceKey);
-
-	[Fact]
-	public async Task ShouldReplaceHasMessageWithWithMessage() => await Verifier.VerifyCodeFixAsync(
+	public async Task ShouldInsertWhich() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
 		using System.Threading.Tasks;
@@ -77,11 +39,11 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		    {
 		        void Act() => throw new Exception("foo");
 
-		        await Expect.That(Act).Throws<Exception>().WithMessage("foo");
+		        await Expect.That(Act).Throws<Exception>().Which.HasMessage("foo");
 		    }
 		}
 		""",
-		ReplaceKey);
+		InsertWhichKey);
 
 	[Fact]
 	public async Task ShouldInsertWhichBeforeDoesNotHaveInner() => await Verifier.VerifyCodeFixAsync(
@@ -112,6 +74,42 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		        void Act() => throw new Exception("foo");
 
 		        await Expect.That(Act).Throws<Exception>().Which.DoesNotHaveInner();
+		    }
+		}
+		""",
+		InsertWhichKey);
+
+	[Fact]
+	public async Task ShouldInsertWhichBeforeLineBreak() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>()
+		            .[|HasMessage|]("foo");
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().Which
+		            .HasMessage("foo");
 		    }
 		}
 		""",
@@ -220,76 +218,6 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		ReplaceKey);
 
 	[Fact]
-	public async Task ShouldInsertWhich() => await Verifier.VerifyCodeFixAsync(
-		"""
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest()
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>().[|HasMessage|]("foo");
-		    }
-		}
-		""",
-		"""
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest()
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>().Which.HasMessage("foo");
-		    }
-		}
-		""",
-		InsertWhichKey);
-
-	[Fact]
-	public async Task ShouldInsertWhichBeforeLineBreak() => await Verifier.VerifyCodeFixAsync(
-		"""
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest()
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>()
-		            .[|HasMessage|]("foo");
-		    }
-		}
-		""",
-		"""
-		using System;
-		using System.Threading.Tasks;
-		using aweXpect;
-
-		public class MyClass
-		{
-		    public async Task MyTest()
-		    {
-		        void Act() => throw new Exception("foo");
-
-		        await Expect.That(Act).Throws<Exception>().Which
-		            .HasMessage("foo");
-		    }
-		}
-		""",
-		InsertWhichKey);
-
-	[Fact]
 	public async Task ShouldReplaceHasHResultWithArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -390,6 +318,78 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		        void Act() => throw new Exception("foo");
 
 		        await Expect.That(Act).Throws<Exception>().WithHResult().EqualTo(42);
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
+	public async Task ShouldReplaceHasMessageWithNullableArgumentWithWithMessage() => await Verifier.VerifyCodeFixAsync(
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(string? message)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](message);
+		        await Expect.That(Act).Throws<Exception>().[|HasMessage|](null).AsWildcard();
+		    }
+		}
+		""",
+		"""
+		#nullable enable
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(string? message)
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().WithMessage(message);
+		        await Expect.That(Act).Throws<Exception>().WithMessage(null).AsWildcard();
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
+	public async Task ShouldReplaceHasMessageWithWithMessage() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|HasMessage|]("foo");
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().WithMessage("foo");
 		    }
 		}
 		""",

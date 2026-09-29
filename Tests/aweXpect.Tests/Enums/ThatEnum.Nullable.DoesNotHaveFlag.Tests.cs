@@ -9,22 +9,6 @@ public sealed partial class ThatEnum
 			public sealed class Tests
 			{
 				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
-				{
-					MyColors? subject = null;
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveFlag(MyColors.Blue);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             does not have flag Blue,
-						             but it was <null>
-						             """);
-				}
-
-				[Fact]
 				public async Task WhenSubjectAndUnexpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					MyColors? subject = null;
@@ -64,6 +48,22 @@ public sealed partial class ThatEnum
 						              does not have flag {Formatter.Format(unexpected)},
 						              but it was {Formatter.Format(subject)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					MyColors? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveFlag(MyColors.Blue);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have flag Blue,
+						             but it was <null>
+						             """);
 				}
 
 				[Theory]

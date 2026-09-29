@@ -6,17 +6,6 @@ public sealed partial class ThatEnum
 	{
 		public sealed class ContinuationTests
 		{
-			[Theory]
-			[InlineData(MyNumbers.One, 2L)]
-			[InlineData(MyNumbers.Two, 3L)]
-			public async Task ShouldSupportTheComparisonVocabulary(MyNumbers subject, long maximum)
-			{
-				async Task Act()
-					=> await That(subject).HasValue().LessThan(maximum);
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task Between_WhenMaximumIsBelowMinimum_AndNegated_ShouldThrowArgumentOutOfRangeException()
 			{
@@ -857,6 +846,17 @@ public sealed partial class ThatEnum
 
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThanOrEqualTo(1L);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(MyNumbers.One, 2L)]
+			[InlineData(MyNumbers.Two, 3L)]
+			public async Task ShouldSupportTheComparisonVocabulary(MyNumbers subject, long maximum)
+			{
+				async Task Act()
+					=> await That(subject).HasValue().LessThan(maximum);
 
 				await That(Act).DoesNotThrow();
 			}

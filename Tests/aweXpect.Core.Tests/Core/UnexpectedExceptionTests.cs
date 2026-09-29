@@ -57,55 +57,6 @@ public sealed class UnexpectedExceptionTests
 	}
 
 	[Fact]
-	public async Task Task_WhenFailed_ShouldRenderTypeAndIndentedMessage()
-	{
-		Task<int> subject = Task.FromException<int>(new MyException($"first line{Environment.NewLine}second line"));
-
-		async Task Act()
-			=> await That(subject).IsEqualTo(1).Because("the value is required");
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that subject
-			             is equal to 1, because the value is required,
-			             but it did throw a MyException:
-			               first line
-			               second line
-			             """);
-	}
-
-	[Fact]
-	public async Task Task_WhenFailed_ShouldForwardExceptionAsInnerException()
-	{
-		MyException exception = new("failure");
-		Task<int> subject = Task.FromException<int>(exception);
-
-		async Task Act()
-			=> await That(subject).IsEqualTo(1);
-
-		await That(Act).Throws<XunitException>()
-			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
-	}
-
-	[Fact]
-	public async Task Task_WhenFailed_AndExpectationThrowsOnDefault_ShouldFailWithTheException()
-	{
-		Task<int> subject = Task.FromException<int>(new MyException("failure"));
-
-		async Task Act()
-			=> await That(subject).Satisfies(x => 10 / x > 1);
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that subject
-			             satisfies x => 10 / x > 1,
-			             but it did throw a MyException:
-			               failure
-			             """)
-			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
-	}
-
-	[Fact]
 	public async Task Task_WhenFailed_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
@@ -142,6 +93,55 @@ public sealed class UnexpectedExceptionTests
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
 		await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
 			.Because("a faulted task must fail at once instead of being retried for the 30 s window");
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_AndExpectationThrowsOnDefault_ShouldFailWithTheException()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("failure"));
+
+		async Task Act()
+			=> await That(subject).Satisfies(x => 10 / x > 1);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             satisfies x => 10 / x > 1,
+			             but it did throw a MyException:
+			               failure
+			             """)
+			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_ShouldForwardExceptionAsInnerException()
+	{
+		MyException exception = new("failure");
+		Task<int> subject = Task.FromException<int>(exception);
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(1);
+
+		await That(Act).Throws<XunitException>()
+			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_ShouldRenderTypeAndIndentedMessage()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException($"first line{Environment.NewLine}second line"));
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(1).Because("the value is required");
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1, because the value is required,
+			             but it did throw a MyException:
+			               first line
+			               second line
+			             """);
 	}
 
 	[Fact]

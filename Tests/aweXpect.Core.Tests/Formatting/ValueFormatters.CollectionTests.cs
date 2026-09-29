@@ -12,22 +12,6 @@ public partial class ValueFormatters
 	public sealed class CollectionTests
 	{
 		[Fact]
-		public async Task ShouldFormatItems()
-		{
-			string expectedResult = "[\"1\", \"2\", \"3\", \"4\"]";
-			IEnumerable<string> value = Enumerable.Range(1, 4).Select(x => x.ToString());
-			StringBuilder sb = new();
-
-			string result = Formatter.Format(value);
-			string objectResult = Formatter.Format((object?)value);
-			Formatter.Format(sb, value);
-
-			await That(result).IsEqualTo(expectedResult);
-			await That(objectResult).IsEqualTo(expectedResult);
-			await That(sb.ToString()).IsEqualTo(expectedResult);
-		}
-
-		[Fact]
 		public async Task InFailureMessage_WhenCountIsKnown_ShouldNameTheNumberOfRemainingItems()
 		{
 			int[] subject = Enumerable.Range(1, 25).ToArray();
@@ -138,6 +122,22 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task ShouldFormatItems()
+		{
+			string expectedResult = "[\"1\", \"2\", \"3\", \"4\"]";
+			IEnumerable<string> value = Enumerable.Range(1, 4).Select(x => x.ToString());
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task ShouldLimitTo10Items()
 		{
 			string expectedResult = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]";
@@ -151,22 +151,6 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
-		}
-
-		[Fact]
-		public async Task WhenCountIsNotKnown_ShouldNotEnumerateFurtherThanNeeded()
-		{
-			int enumeratedItems = 0;
-			IEnumerable<int> value = Enumerable.Range(1, 25).Select(x =>
-			{
-				enumeratedItems++;
-				return x;
-			}).Where(_ => true);
-
-			string result = Formatter.Format(value);
-
-			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
-			await That(enumeratedItems).IsEqualTo(11);
 		}
 
 		[Theory]
@@ -222,6 +206,22 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenCountIsNotKnown_ShouldNotEnumerateFurtherThanNeeded()
+		{
+			int enumeratedItems = 0;
+			IEnumerable<int> value = Enumerable.Range(1, 25).Select(x =>
+			{
+				enumeratedItems++;
+				return x;
+			}).Where(_ => true);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
+			await That(enumeratedItems).IsEqualTo(11);
+		}
+
+		[Fact]
 		public async Task WhenCountIsNotKnown_WithLineBreaks_ShouldSayOnTheLastLineThatMoreItemsMayFollow()
 		{
 			IEnumerable<int> value = Lazy(Enumerable.Range(1, 12));
@@ -267,16 +267,6 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
-		public async Task WhenReadOnlyCollection_ShouldNameTheNumberOfRemainingItems()
-		{
-			IEnumerable<int> value = new ReadOnlyCollection(Enumerable.Range(1, 13).ToArray());
-
-			string result = Formatter.Format(value);
-
-			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
-		}
-
-		[Fact]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			IEnumerable<int>? value = null;
@@ -289,6 +279,16 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(ValueFormatter.NullString);
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
+		}
+
+		[Fact]
+		public async Task WhenReadOnlyCollection_ShouldNameTheNumberOfRemainingItems()
+		{
+			IEnumerable<int> value = new ReadOnlyCollection(Enumerable.Range(1, 13).ToArray());
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
 		}
 
 		[Fact]

@@ -7,23 +7,6 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				Version? subject = null;
-				int expected = 1;
-
-				async Task Act()
-					=> await That(subject).HasMinor(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has minor equal to 1,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenMinorOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -51,6 +34,23 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasMinor(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has minor equal to 1,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class EqualToTests
@@ -70,6 +70,35 @@ public sealed partial class ThatVersion
 					             has minor equal to <null>,
 					             but it had minor 11
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMinorOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? expected = 12;
+
+				async Task Act()
+					=> await That(subject).HasMinor().EqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has minor equal to {Formatter.Format(expected)},
+					              but it had minor 11
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMinorOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 11;
+
+				async Task Act()
+					=> await That(subject).HasMinor().EqualTo(expected);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -104,35 +133,6 @@ public sealed partial class ThatVersion
 					             has minor equal to 1,
 					             but it was <null>
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenMinorOfSubjectIsDifferent_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? expected = 12;
-
-				async Task Act()
-					=> await That(subject).HasMinor().EqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has minor equal to {Formatter.Format(expected)},
-					              but it had minor 11
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenMinorOfSubjectIsTheSame_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int expected = 11;
-
-				async Task Act()
-					=> await That(subject).HasMinor().EqualTo(expected);
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -393,6 +393,35 @@ public sealed partial class ThatVersion
 		public sealed class NotEqualToTests
 		{
 			[Fact]
+			public async Task WhenMinorOfSubjectIsDifferent_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? unexpected = 12;
+
+				async Task Act()
+					=> await That(subject).HasMinor().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMinorOfSubjectIsTheSame_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int unexpected = 11;
+
+				async Task Act()
+					=> await That(subject).HasMinor().NotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have minor equal to {Formatter.Format(unexpected)},
+					              but it had minor 11
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -436,35 +465,6 @@ public sealed partial class ThatVersion
 					=> await That(subject).HasMinor().NotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenMinorOfSubjectIsDifferent_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? unexpected = 12;
-
-				async Task Act()
-					=> await That(subject).HasMinor().NotEqualTo(unexpected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenMinorOfSubjectIsTheSame_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int unexpected = 11;
-
-				async Task Act()
-					=> await That(subject).HasMinor().NotEqualTo(unexpected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not have minor equal to {Formatter.Format(unexpected)},
-					              but it had minor 11
-					              """);
 			}
 		}
 

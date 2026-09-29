@@ -439,6 +439,30 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenCancellationTokenIsCancelled_ShouldBeInconclusiveWithoutWaitingForTheTimeout()
+		{
+			using CancellationTokenSource cts = new();
+			cts.Cancel();
+			Counter counter = new();
+			Stopwatch stopwatch = new();
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().Within(30.Seconds()).IsEqualTo(1)
+					.WithCancellation(cts.Token);
+
+			stopwatch.Start();
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that () => counter.Value
+				             eventually is equal to 1,
+				             but it could not be verified, because the evaluation was already canceled
+				             """);
+			stopwatch.Stop();
+
+			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+		}
+
+		[Fact]
 		public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 		{
 			using CancellationTokenSource cts = new(100.Milliseconds());
@@ -482,30 +506,6 @@ public sealed partial class ThatDelegateTests
 
 			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
-		}
-
-		[Fact]
-		public async Task WhenCancellationTokenIsCancelled_ShouldBeInconclusiveWithoutWaitingForTheTimeout()
-		{
-			using CancellationTokenSource cts = new();
-			cts.Cancel();
-			Counter counter = new();
-			Stopwatch stopwatch = new();
-
-			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(30.Seconds()).IsEqualTo(1)
-					.WithCancellation(cts.Token);
-
-			stopwatch.Start();
-			await That(Act).Throws<InconclusiveException>()
-				.WithMessage("""
-				             Expected that () => counter.Value
-				             eventually is equal to 1,
-				             but it could not be verified, because the evaluation was already canceled
-				             """);
-			stopwatch.Stop();
-
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
 		}
 
 		[Fact]
@@ -561,22 +561,22 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WhenSubjectAlwaysThrows_ShouldFailWithTheExceptionAsCause()
+		public async Task WhenSubjectAlwaysThrows_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");
 
 			async Task Act()
-				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout)
+					.DoesNotComplyWith(it => it.IsEqualTo(1));
 
-			XunitException exception = await That(Act).Throws<XunitException>()
+			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
-				             eventually is equal to 1 within 0:00.050,
+				             eventually is not equal to 1 within 0:00.050,
 				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
 				               always broken
-				             """);
-			await That(exception.InnerException).Is<MyException>()
-				.Whose(e => e.Message, m => m.IsEqualTo("always broken"));
+				             """)
+				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
 		}
 
 		[Fact]
@@ -598,22 +598,22 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WhenSubjectAlwaysThrows_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
+		public async Task WhenSubjectAlwaysThrows_ShouldFailWithTheExceptionAsCause()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");
 
 			async Task Act()
-				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout)
-					.DoesNotComplyWith(it => it.IsEqualTo(1));
+				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
-				             eventually is not equal to 1 within 0:00.050,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
 				               always broken
-				             """)
-				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
+				             """);
+			await That(exception.InnerException).Is<MyException>()
+				.Whose(e => e.Message, m => m.IsEqualTo("always broken"));
 		}
 
 		[Fact]

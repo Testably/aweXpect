@@ -7,20 +7,6 @@ public sealed partial class ThatObject
 		public sealed class NullTests
 		{
 			[Fact]
-			public async Task WhenSubjectIsNotNull_ShouldSucceed()
-			{
-				OuterClass? subject = new()
-				{
-					Value = "Foo",
-				};
-
-				async Task Act()
-					=> await That(subject).IsNotEquivalentTo(null);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenBothAreNull_ShouldFail()
 			{
 				OuterClass? subject = null;
@@ -37,6 +23,20 @@ public sealed partial class ThatObject
 					             Equivalency options:
 					              - include public fields and properties
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotNull_ShouldSucceed()
+			{
+				OuterClass? subject = new()
+				{
+					Value = "Foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEquivalentTo(null);
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

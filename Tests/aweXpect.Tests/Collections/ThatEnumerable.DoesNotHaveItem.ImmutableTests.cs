@@ -90,6 +90,30 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringItemTests
 		{
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task ShouldSupportIgnoringCase(bool ignoreCase)
+			{
+				ImmutableArray<string?> subject = ["foo", "bar",];
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem("BAR").IgnoringCase(ignoreCase).AtIndex(1);
+
+				await That(Act).Throws<XunitException>().OnlyIf(ignoreCase)
+					.WithMessage("""
+					             Expected that subject
+					             does not have an item equal to "BAR" ignoring case at index 1,
+					             but it had item "bar" at index 1
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenEnumerableContainsOtherItemAtGivenIndex_ShouldSucceed()
 			{
@@ -113,30 +137,6 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to "bar" at index 1,
-					             but it had item "bar" at index 1
-
-					             Collection:
-					             [
-					               "foo",
-					               "bar"
-					             ]
-					             """);
-			}
-
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
-			public async Task ShouldSupportIgnoringCase(bool ignoreCase)
-			{
-				ImmutableArray<string?> subject = ["foo", "bar",];
-
-				async Task Act()
-					=> await That(subject).DoesNotHaveItem("BAR").IgnoringCase(ignoreCase).AtIndex(1);
-
-				await That(Act).Throws<XunitException>().OnlyIf(ignoreCase)
-					.WithMessage("""
-					             Expected that subject
-					             does not have an item equal to "BAR" ignoring case at index 1,
 					             but it had item "bar" at index 1
 
 					             Collection:

@@ -353,6 +353,26 @@ public sealed partial class ThatAsyncEnumerable
 			public sealed class NegatedTests
 			{
 				[Fact]
+				public async Task WhenAllItemsComply_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it
+							=> it.All().ComplyWith(x => x.IsGreaterThan(0)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is greater than 0 not for all items,
+						             but all 5 were
+
+						             Collection:
+						             [1, 2, 3, 4, 5]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 1, 1, 1);
@@ -371,26 +391,6 @@ public sealed partial class ThatAsyncEnumerable
 
 						             Collection:
 						             [1, 1, 1, 1, 1, 1, 1]
-						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllItemsComply_ShouldFail()
-				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5);
-
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it
-							=> it.All().ComplyWith(x => x.IsGreaterThan(0)));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is greater than 0 not for all items,
-						             but all 5 were
-
-						             Collection:
-						             [1, 2, 3, 4, 5]
 						             """);
 				}
 

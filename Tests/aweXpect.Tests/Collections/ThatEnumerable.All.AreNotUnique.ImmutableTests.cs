@@ -119,17 +119,6 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
-				{
-					ImmutableArray<string?> subject = ["a", "A",];
-
-					async Task Act()
-						=> await That(subject).All().AreNotUnique().IgnoringCase();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "cc", "dd",];
@@ -147,6 +136,17 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => x!).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
+				{
+					ImmutableArray<string?> subject = ["a", "A",];
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().IgnoringCase();
 
 					await That(Act).DoesNotThrow();
 				}

@@ -8,17 +8,6 @@ namespace aweXpect.Core.Tests.Results;
 public sealed class StringCountResultTests
 {
 	[Fact]
-	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
-	{
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new("expected");
-		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
-
-		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
-	}
-
-	[Fact]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		Quantifier quantifier = new();
@@ -27,6 +16,17 @@ public sealed class StringCountResultTests
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+	}
+
+	[Fact]
+	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
+	{
+		Quantifier quantifier = new();
+		StringEqualityOptions options = new("expected");
+		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
+
+		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,

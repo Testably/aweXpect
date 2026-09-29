@@ -170,26 +170,6 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenPredicateThrowsArgumentOutOfRangeException_ShouldFailWithTheExceptionAsInnerException()
-				{
-					List<int> values = [1, 2,];
-					int[] subject = [0, 1, 2,];
-
-					async Task Act()
-						=> await That(subject).All().Satisfy(i => values[i] > 0);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             satisfies i => values[i] > 0 for all items,
-						             but the predicate did throw an ArgumentOutOfRangeException:
-						               *
-						             """).AsWildcard().And
-						.Whose(e => e.InnerException, i => i.Is<ArgumentOutOfRangeException>())
-						.Because("an argument exception from the predicate is not a validation by aweXpect");
-				}
-
-				[Fact]
 				public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 				{
 					InvalidOperationException exception = new("predicate failed");
@@ -207,6 +187,26 @@ public sealed partial class ThatEnumerable
 						             """).And
 						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 						.Because("a predicate that throws fails the expectation instead of aborting its evaluation");
+				}
+
+				[Fact]
+				public async Task WhenPredicateThrowsArgumentOutOfRangeException_ShouldFailWithTheExceptionAsInnerException()
+				{
+					List<int> values = [1, 2,];
+					int[] subject = [0, 1, 2,];
+
+					async Task Act()
+						=> await That(subject).All().Satisfy(i => values[i] > 0);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies i => values[i] > 0 for all items,
+						             but the predicate did throw an ArgumentOutOfRangeException:
+						               *
+						             """).AsWildcard().And
+						.Whose(e => e.InnerException, i => i.Is<ArgumentOutOfRangeException>())
+						.Because("an argument exception from the predicate is not a validation by aweXpect");
 				}
 
 				[Fact]

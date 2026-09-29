@@ -575,6 +575,22 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotEqualTo("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value equal to "foo",
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
 		public async Task NotEqualTo_WhenSubjectIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -589,22 +605,6 @@ public sealed partial class PropertyResultTests
 				             but it was <null>
 				             """)
 				.Because("a null subject has no string value to compare, whatever the unexpected value is");
-		}
-
-		[Fact]
-		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
-		{
-			StringProperty sut = MyClass.HasStringValueOfNullSubject();
-
-			async Task Act()
-				=> await sut.NotEqualTo("foo");
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             does not have string value equal to "foo",
-				             but it was <null>
-				             """);
 		}
 
 		[Theory]
@@ -767,6 +767,25 @@ public sealed partial class PropertyResultTests
 		public sealed class ContextTests
 		{
 			[Fact]
+			public async Task WhenIncluded_ShouldAppendTheValue()
+			{
+				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"), true);
+
+				async Task Act()
+					=> await sut.EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value equal to "bar",
+					             but it had string value "foo"*
+
+					             String value:
+					             foo
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenIncludedTwiceWithTheSameValue_ShouldAppendTheValueOnlyOnce()
 			{
 				IThat<MyClass?> source = MyClass.WithStringValue("foo-bar");
@@ -785,25 +804,6 @@ public sealed partial class PropertyResultTests
 					             foo-bar
 					             """)
 					.Because("a chained expectation over the same property must not repeat the identical block");
-			}
-
-			[Fact]
-			public async Task WhenIncluded_ShouldAppendTheValue()
-			{
-				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"), true);
-
-				async Task Act()
-					=> await sut.EqualTo("bar");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has string value equal to "bar",
-					             but it had string value "foo"*
-
-					             String value:
-					             foo
-					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -866,6 +866,21 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNegated_ShouldNegateTheComparison()
+			{
+				async Task Act()
+					=> await MyClass.WithStringValue("foo")
+						.DoesNotComplyWith(s => MyClass.StringValueOf(s).EqualTo("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have string value equal to "foo",
+					             but it had string value "foo"
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
 			{
 				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -880,21 +895,6 @@ public sealed partial class PropertyResultTests
 					             whose string value is equal to "bar",
 					             but string value was "foo"*
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenNegated_ShouldNegateTheComparison()
-			{
-				async Task Act()
-					=> await MyClass.WithStringValue("foo")
-						.DoesNotComplyWith(s => MyClass.StringValueOf(s).EqualTo("foo"));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not have string value equal to "foo",
-					             but it had string value "foo"
-					             """);
 			}
 
 			[Fact]

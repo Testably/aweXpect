@@ -36,6 +36,17 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenLineIsIndented_ShouldSucceedWhenIndentationIsIgnored()
+			{
+				string subject = "Starting up\n    Connected to database\n        Ready";
+
+				async Task Act()
+					=> await That(subject).HasLines(lines => lines.Contains("Ready").IgnoringIndentation());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenLineIsMissing_ShouldFail()
 			{
 				string subject = "Starting up\nConnected to database\nReady";
@@ -56,17 +67,6 @@ public sealed partial class ThatString
 					               "Ready"
 					             ]
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenLineIsIndented_ShouldSucceedWhenIndentationIsIgnored()
-			{
-				string subject = "Starting up\n    Connected to database\n        Ready";
-
-				async Task Act()
-					=> await That(subject).HasLines(lines => lines.Contains("Ready").IgnoringIndentation());
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

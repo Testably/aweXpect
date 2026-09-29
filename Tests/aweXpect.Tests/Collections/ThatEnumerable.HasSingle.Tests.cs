@@ -772,6 +772,63 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenNegated_AndEnumerableContainsMoreThanOneElement_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([3, 3,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndSingleItemDoesNotSatisfyExpectation_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([4,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndSingleItemSatisfiesExpectation_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([3,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item that is equal to 3,
+					             but it had the single item 3
+
+					             Collection:
+					             [3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndSubjectIsNull_ShouldFail()
+			{
+				IEnumerable<int>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item that is equal to 3,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSingleItemDoesNotSatisfyExpectation_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([3,]);
@@ -827,63 +884,6 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             has a single item matching x => x > 0 that is greater than 4,
 					             but it was 1, which differs by -3
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenNegated_AndSingleItemSatisfiesExpectation_ShouldFail()
-			{
-				IEnumerable<int> subject = ToEnumerable([3,]);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not have a single item that is equal to 3,
-					             but it had the single item 3
-
-					             Collection:
-					             [3]
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenNegated_AndEnumerableContainsMoreThanOneElement_ShouldSucceed()
-			{
-				IEnumerable<int> subject = ToEnumerable([3, 3,]);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNegated_AndSingleItemDoesNotSatisfyExpectation_ShouldSucceed()
-			{
-				IEnumerable<int> subject = ToEnumerable([4,]);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNegated_AndSubjectIsNull_ShouldFail()
-			{
-				IEnumerable<int>? subject = null;
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsEqualTo(3));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not have a single item that is equal to 3,
-					             but it was <null>
 					             """);
 			}
 

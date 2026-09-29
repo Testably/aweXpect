@@ -7,6 +7,24 @@ public sealed partial class ThatChar
 		public sealed class Tests
 		{
 			[Theory]
+			[InlineData(' ')]
+			[InlineData('\t')]
+			[InlineData('\r')]
+			[InlineData('\n')]
+			public async Task WhenSubjectIsNotWhiteSpace_ShouldFail(char subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not whitespace,
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
 			[InlineData('0')]
 			[InlineData('1')]
 			[InlineData('4')]
@@ -29,24 +47,6 @@ public sealed partial class ThatChar
 					=> await That(subject).IsNotWhiteSpace();
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[InlineData(' ')]
-			[InlineData('\t')]
-			[InlineData('\r')]
-			[InlineData('\n')]
-			public async Task WhenSubjectIsNotWhiteSpace_ShouldFail(char subject)
-			{
-				async Task Act()
-					=> await That(subject).IsNotWhiteSpace();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not whitespace,
-					              but it was {Formatter.Format(subject)}
-					              """);
 			}
 		}
 		

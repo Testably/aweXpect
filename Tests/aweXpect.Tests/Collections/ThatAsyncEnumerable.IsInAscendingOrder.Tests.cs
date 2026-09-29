@@ -393,6 +393,17 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenKindIsUnspecified_ShouldSucceed()
+			{
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Unspecified, Utc.AddHours(2));
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Unspecified, Local);
@@ -406,17 +417,6 @@ public sealed partial class ThatAsyncEnumerable
 					              is in ascending order,
 					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
-			}
-
-			[Fact]
-			public async Task WhenKindIsUnspecified_ShouldSucceed()
-			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Unspecified, Utc.AddHours(2));
-
-				async Task Act()
-					=> await That(subject).IsInAscendingOrder();
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

@@ -286,6 +286,70 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
+			[Fact]
+			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent();
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.AtLeast(2.Times())
+						.Within(10.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Within_WhenCountIsReachedWithinTimeout_ShouldFail()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				_ = Task.Delay(20.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvents(2));
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.AtLeast(2.Times())
+						.Within(5.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut fewer than twice within 0:05,
+					             but it was recorded twice in [
+					               CustomEvent(),
+					               CustomEvent()
+					             ] after 0:*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task Within_WhenExactCountIsReachedWithinTimeout_ShouldFail()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent();
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Once()
+						.Within(10.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut not exactly once within 0:00.010,
+					             but it was recorded once in [
+					               CustomEvent()
+					             ] within 0:*
+					             """).AsWildcard();
+			}
+
 			[Theory]
 			[InlineData(1, true)]
 			[InlineData(2, false)]
@@ -352,70 +416,6 @@ public sealed partial class ThatEventRecording
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with sender s => s == sender more than once,
 					             but it was recorded once in *
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task Within_WhenCountIsReachedWithinTimeout_ShouldFail()
-			{
-				CustomEventWithoutParametersClass sut = new();
-				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
-
-				_ = Task.Delay(20.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvents(2));
-
-				async Task Act() =>
-					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.AtLeast(2.Times())
-						.Within(5.Seconds());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that recording
-					             has recorded the CustomEvent event on sut fewer than twice within 0:05,
-					             but it was recorded twice in [
-					               CustomEvent(),
-					               CustomEvent()
-					             ] after 0:*
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
-			{
-				CustomEventWithoutParametersClass sut = new();
-				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
-
-				sut.NotifyCustomEvent();
-
-				async Task Act() =>
-					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.AtLeast(2.Times())
-						.Within(10.Milliseconds());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Within_WhenExactCountIsReachedWithinTimeout_ShouldFail()
-			{
-				CustomEventWithoutParametersClass sut = new();
-				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
-
-				sut.NotifyCustomEvent();
-
-				async Task Act() =>
-					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Once()
-						.Within(10.Milliseconds());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that recording
-					             has recorded the CustomEvent event on sut not exactly once within 0:00.010,
-					             but it was recorded once in [
-					               CustomEvent()
-					             ] within 0:*
 					             """).AsWildcard();
 			}
 		}

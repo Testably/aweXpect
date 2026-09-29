@@ -23,23 +23,6 @@ public sealed partial class ThatVersion
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				Version? subject = null;
-				int expected = 1;
-
-				async Task Act()
-					=> await That(subject).HasMajor(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has major equal to 1,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -67,6 +50,23 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasMajor(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has major equal to 1,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class EqualToTests
@@ -86,6 +86,35 @@ public sealed partial class ThatVersion
 					             has major equal to <null>,
 					             but it had major 2010
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? expected = 2011;
+
+				async Task Act()
+					=> await That(subject).HasMajor().EqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has major equal to {Formatter.Format(expected)},
+					              but it had major 2010
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMajorOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 2010;
+
+				async Task Act()
+					=> await That(subject).HasMajor().EqualTo(expected);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -120,35 +149,6 @@ public sealed partial class ThatVersion
 					             has major equal to 1,
 					             but it was <null>
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? expected = 2011;
-
-				async Task Act()
-					=> await That(subject).HasMajor().EqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has major equal to {Formatter.Format(expected)},
-					              but it had major 2010
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenMajorOfSubjectIsTheSame_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int expected = 2010;
-
-				async Task Act()
-					=> await That(subject).HasMajor().EqualTo(expected);
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -409,6 +409,35 @@ public sealed partial class ThatVersion
 		public sealed class NotEqualToTests
 		{
 			[Fact]
+			public async Task WhenMajorOfSubjectIsDifferent_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? unexpected = 2011;
+
+				async Task Act()
+					=> await That(subject).HasMajor().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMajorOfSubjectIsTheSame_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int unexpected = 2010;
+
+				async Task Act()
+					=> await That(subject).HasMajor().NotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have major equal to {Formatter.Format(unexpected)},
+					              but it had major 2010
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -452,35 +481,6 @@ public sealed partial class ThatVersion
 					=> await That(subject).HasMajor().NotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenMajorOfSubjectIsDifferent_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? unexpected = 2011;
-
-				async Task Act()
-					=> await That(subject).HasMajor().NotEqualTo(unexpected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenMajorOfSubjectIsTheSame_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int unexpected = 2010;
-
-				async Task Act()
-					=> await That(subject).HasMajor().NotEqualTo(unexpected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not have major equal to {Formatter.Format(unexpected)},
-					              but it had major 2010
-					              """);
 			}
 		}
 

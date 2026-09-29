@@ -24,6 +24,22 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					char? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsNotUpperCased();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not upper-cased,
+						             but it was <null>
+						             """);
+				}
+
 				[Theory]
 				[InlineData('A')]
 				[InlineData('M')]
@@ -41,22 +57,6 @@ public sealed partial class ThatChar
 						              is not upper-cased,
 						              but it was {Formatter.Format(subject)}
 						              """);
-				}
-
-				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
-				{
-					char? subject = null;
-
-					async Task Act()
-						=> await That(subject).IsNotUpperCased();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not upper-cased,
-						             but it was <null>
-						             """);
 				}
 			}
 
@@ -83,20 +83,6 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u00C4')]
-				[InlineData('\u03A9')]
-				public async Task WhenSubjectIsUpperCased_ShouldSucceed(char? subject)
-				{
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.IsNotUpperCased());
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
@@ -111,6 +97,20 @@ public sealed partial class ThatChar
 						             is upper-cased,
 						             but it was <null>
 						             """);
+				}
+
+				[Theory]
+				[InlineData('A')]
+				[InlineData('M')]
+				[InlineData('Z')]
+				[InlineData('\u00C4')]
+				[InlineData('\u03A9')]
+				public async Task WhenSubjectIsUpperCased_ShouldSucceed(char? subject)
+				{
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotUpperCased());
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 		}

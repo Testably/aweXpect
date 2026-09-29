@@ -25,28 +25,6 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenSomeItemsAreUnique_ShouldFail()
-				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 3,]);
-
-					async Task Act()
-						=> await That(subject).All().AreNotUnique();
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not unique for all items,
-						             but only 2 of 4 were
-
-						             Not matching items:
-						             [2, 3]
-
-						             Collection:
-						             [1, 2, 1, 3]
-						             """);
-				}
-
-				[Fact]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable([1, 2, 1, 2,], x => new MyClass(x));
@@ -66,6 +44,28 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).All().AreNotUnique(x => x.StringValue);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSomeItemsAreUnique_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 3,]);
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique for all items,
+						             but only 2 of 4 were
+
+						             Not matching items:
+						             [2, 3]
+
+						             Collection:
+						             [1, 2, 1, 3]
+						             """);
 				}
 
 				[Fact]

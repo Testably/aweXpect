@@ -7,22 +7,6 @@ public sealed partial class ThatChar
 		public sealed class Tests
 		{
 			[Theory]
-			[InlineData('g')]
-			[InlineData('G')]
-			[InlineData('z')]
-			[InlineData(' ')]
-			[InlineData('/')]
-			[InlineData(':')]
-			[InlineData('\u0663')]
-			public async Task WhenSubjectIsNoAsciiHexDigit_ShouldSucceed(char subject)
-			{
-				async Task Act()
-					=> await That(subject).IsNotAnAsciiHexDigit();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
 			[InlineData('0')]
 			[InlineData('9')]
 			[InlineData('a')]
@@ -41,10 +25,41 @@ public sealed partial class ThatChar
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Theory]
+			[InlineData('g')]
+			[InlineData('G')]
+			[InlineData('z')]
+			[InlineData(' ')]
+			[InlineData('/')]
+			[InlineData(':')]
+			[InlineData('\u0663')]
+			public async Task WhenSubjectIsNoAsciiHexDigit_ShouldSucceed(char subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotAnAsciiHexDigit();
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Theory]
+			[InlineData('0')]
+			[InlineData('9')]
+			[InlineData('a')]
+			[InlineData('f')]
+			[InlineData('A')]
+			[InlineData('F')]
+			public async Task WhenSubjectIsAnAsciiHexDigit_ShouldSucceed(char subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnAsciiHexDigit());
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[InlineData('g')]
 			[InlineData('G')]
@@ -64,21 +79,6 @@ public sealed partial class ThatChar
 					              is an ASCII hex digit,
 					              but it was {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Theory]
-			[InlineData('0')]
-			[InlineData('9')]
-			[InlineData('a')]
-			[InlineData('f')]
-			[InlineData('A')]
-			[InlineData('F')]
-			public async Task WhenSubjectIsAnAsciiHexDigit_ShouldSucceed(char subject)
-			{
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnAsciiHexDigit());
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

@@ -63,6 +63,18 @@ public sealed partial class ThatAsyncEnumerable
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenTypeIsSupertype_ShouldSucceed()
+				{
+					IAsyncEnumerable<MyBaseClass> subject =
+						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyBaseClass(1));
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
@@ -91,18 +103,6 @@ public sealed partial class ThatAsyncEnumerable
 						               }
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenTypeIsSupertype_ShouldSucceed()
-				{
-					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyBaseClass(1));
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
-
-					await That(Act).DoesNotThrow();
 				}
 			}
 

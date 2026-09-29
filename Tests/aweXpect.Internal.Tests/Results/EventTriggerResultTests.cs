@@ -9,17 +9,6 @@ namespace aweXpect.Internal.Tests.Results;
 public sealed class EventTriggerResultTests
 {
 	[Fact]
-	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
-	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
-		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
-
-		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
-	}
-
-	[Fact]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		Quantifier quantifier = new();
@@ -28,6 +17,17 @@ public sealed class EventTriggerResultTests
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+	}
+
+	[Fact]
+	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
+	{
+		Quantifier quantifier = new();
+		RepeatedCheckOptions options = new();
+		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
+
+		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	[Fact]

@@ -173,6 +173,17 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenOneItemSatisfiesThePredicate_ShouldSucceed()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 6, 3,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => x > 5));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -186,17 +197,6 @@ public sealed partial class ThatEnumerable
 						             satisfies x => x > 5 for at least one item,
 						             but it was <null>
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenOneItemSatisfiesThePredicate_ShouldSucceed()
-				{
-					IEnumerable<int> subject = ToEnumerable([1, 6, 3,]);
-
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => x > 5));
-
-					await That(Act).DoesNotThrow();
 				}
 			}
 		}

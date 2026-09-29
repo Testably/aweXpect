@@ -109,24 +109,6 @@ public sealed partial class ThatTimeSpan
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
-			{
-				TimeSpan subject = CurrentTime();
-				TimeSpan minimum = EarlierTime();
-				TimeSpan maximum = LaterTime();
-
-				async Task Act()
-					=> await That(subject).IsNotBetween(minimum).And(maximum);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)}
-					              """);
-			}
-
-			[Fact]
 			public async Task WhenSubjectIsEarlierThanMinimum_ShouldSucceed()
 			{
 				TimeSpan subject = EarlierTime();
@@ -150,6 +132,24 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
+			{
+				TimeSpan subject = CurrentTime();
+				TimeSpan minimum = EarlierTime();
+				TimeSpan maximum = LaterTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]

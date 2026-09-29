@@ -1064,19 +1064,6 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
-			{
-				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
-
-				async Task Act()
-					=> await That(subject).Contains(predicate: null!);
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("predicate").And
-					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
-			}
-
-			[Fact]
 			public async Task WhenEnumeratingTheSubjectThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("enumeration failed");
@@ -1094,6 +1081,19 @@ public sealed partial class ThatAsyncEnumerable
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a subject that cannot be enumerated fails the expectation instead of aborting its evaluation");
+			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
+
+				async Task Act()
+					=> await That(subject).Contains(predicate: null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

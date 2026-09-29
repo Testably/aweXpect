@@ -338,6 +338,17 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task GetExtendedFailure_WhenIndentationIsIgnored_ShouldReportColumnOfOriginalLine()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringIndentation();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar");
+
+			await That(result).Contains("differs on line 2 and column 7:");
+		}
+
+		[Fact]
 		public async Task GetExtendedFailure_WhenIndentationIsIgnoredAsPrefix_ShouldReportOriginalIndex()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -368,17 +379,6 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foo", "bar");
 
 			await That(result).Contains("differs at index 2:");
-		}
-
-		[Fact]
-		public async Task GetExtendedFailure_WhenIndentationIsIgnored_ShouldReportColumnOfOriginalLine()
-		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
-
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar");
-
-			await That(result).Contains("differs on line 2 and column 7:");
 		}
 
 		[Fact]
@@ -478,6 +478,17 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task ToString_WhenIndentationIsIgnored_ShouldIncludeOptions()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringIndentation();
+
+			string result = sut.ToString();
+
+			await That(result).IsEqualTo(" ignoring indentation");
+		}
+
+		[Fact]
 		public async Task ToString_WhenIndentationIsIgnoredWithComparer_ShouldIncludeOptions()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -487,17 +498,6 @@ public sealed partial class StringEqualityOptionsTests
 
 			// The comparer type is named differently on .NET Framework.
 			await That(result).StartsWith(" using ").And.EndsWith(" ignoring indentation");
-		}
-
-		[Fact]
-		public async Task ToString_WhenIndentationIsIgnored_ShouldIncludeOptions()
-		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
-
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" ignoring indentation");
 		}
 
 		[Fact]

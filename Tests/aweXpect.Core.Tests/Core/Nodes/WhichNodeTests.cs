@@ -76,27 +76,6 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
-	public async Task AppendExpectation_WithParent_ShouldMatchTheResultExpectation(
-		string separator, string rightExpectation, string expectedExpectation)
-	{
-		WhichNode<string, int> whichNode = new(new DummyNode("foo",
-			() => new DummyConstraintResult(Outcome.Failure, "foo")), _ => 3, separator);
-		whichNode.AddNode(new DummyNode(rightExpectation,
-			() => new DummyConstraintResult(Outcome.Failure, rightExpectation)));
-		StringBuilder sb = new();
-
-		whichNode.AppendExpectation(sb);
-
-		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
-		await That(sb.ToString()).IsEqualTo(expectedExpectation);
-		await That(sb.ToString()).IsEqualTo(result.GetExpectationText())
-			.Because("a manual evaluation renders the expectation through the node and has to read the same");
-	}
-
 	[Fact]
 	public async Task AppendExpectation_WithoutInnerNode_ShouldAppendParentAndSeparator()
 	{
@@ -140,6 +119,27 @@ public sealed class WhichNodeTests
 		whichNode.AppendExpectation(sb);
 
 		await That(sb.ToString()).IsEqualTo("inner-node");
+	}
+
+	[Theory]
+	[InlineData(" that ", "whose bar", "foo whose bar")]
+	[InlineData(" that ", "is bar", "foo that is bar")]
+	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	public async Task AppendExpectation_WithParent_ShouldMatchTheResultExpectation(
+		string separator, string rightExpectation, string expectedExpectation)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("foo",
+			() => new DummyConstraintResult(Outcome.Failure, "foo")), _ => 3, separator);
+		whichNode.AddNode(new DummyNode(rightExpectation,
+			() => new DummyConstraintResult(Outcome.Failure, rightExpectation)));
+		StringBuilder sb = new();
+
+		whichNode.AppendExpectation(sb);
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+		await That(sb.ToString()).IsEqualTo(expectedExpectation);
+		await That(sb.ToString()).IsEqualTo(result.GetExpectationText())
+			.Because("a manual evaluation renders the expectation through the node and has to read the same");
 	}
 
 	[Theory]
@@ -357,22 +357,6 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenMemberAccessorThrowsFromUserCode_ShouldFailWithTheExceptionOfTheCaller()
-	{
-		MyException exception = new();
-		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
-			_ => UserCode.Invoke<int>(() => throw exception), memberName: "value [1]");
-		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
-
-		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
-
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
-		await That(result.FailureCause).IsSameAs(exception)
-			.Because("the exception of the caller is reported instead of the one that carried it out of the accessor");
-	}
-
-	[Fact]
 	public async Task IsMetBy_WhenMemberAccessorThrows_ShouldFailWithTheException()
 	{
 		MyException exception = new();
@@ -413,6 +397,22 @@ public sealed class WhichNodeTests
 		                                              value [1] did throw a MyException:
 		                                                IsMetBy_WhenMemberAccessorThrows_WhenNegated_ShouldNegateExpectationAndStillFail
 		                                              """);
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberAccessorThrowsFromUserCode_ShouldFailWithTheExceptionOfTheCaller()
+	{
+		MyException exception = new();
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			_ => UserCode.Invoke<int>(() => throw exception), memberName: "value [1]");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsSameAs(exception)
+			.Because("the exception of the caller is reported instead of the one that carried it out of the accessor");
 	}
 
 	[Fact]
@@ -538,6 +538,33 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WithoutInnerNode_ShouldThrowInvalidOperationException()
+	{
+		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
+		WhichNode<string, int> whichNode = new(node1, s => s.Length);
+		Task<ConstraintResult> Act() => whichNode.IsMetBy("", null!, CancellationToken.None);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("No inner node specified for the which node.");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithoutParent_ShouldUseNodeResult()
+	{
+		WhichNode<string, int> whichNode = new(null, s => s.Length);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("c2",
+			() => new DummyConstraintResult<int>(Outcome.Success, 4, "e2")));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(sb.ToString()).IsEqualTo("e2");
+	}
+
+	[Fact]
 	public async Task Negate_ShouldNegateTheWholeExpectation()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -553,24 +580,6 @@ public sealed class WhichNodeTests
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
 		await That(sb.ToString()).IsEqualTo("not e1 which e2");
 		await That(negated.GetResultText()).IsEqualTo("not r1");
-	}
-
-	[Fact]
-	public async Task Negate_WithNullValue_ShouldNegateTheWholeExpectationAndStayFailed()
-	{
-		WhichNode<string, int> whichNode = new(
-			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
-		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
-
-		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
-		await That(sb.ToString()).IsEqualTo("not e1 which e2");
-		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
 	[Fact]
@@ -612,30 +621,21 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WithoutInnerNode_ShouldThrowInvalidOperationException()
+	public async Task Negate_WithNullValue_ShouldNegateTheWholeExpectationAndStayFailed()
 	{
-		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
-		WhichNode<string, int> whichNode = new(node1, s => s.Length);
-		Task<ConstraintResult> Act() => whichNode.IsMetBy("", null!, CancellationToken.None);
-
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("No inner node specified for the which node.");
-	}
-
-	[Fact]
-	public async Task IsMetBy_WithoutParent_ShouldUseNodeResult()
-	{
-		WhichNode<string, int> whichNode = new(null, s => s.Length);
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("c2",
-			() => new DummyConstraintResult<int>(Outcome.Success, 4, "e2")));
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
 
-		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
 
-		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Success);
-		await That(sb.ToString()).IsEqualTo("e2");
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not e1 which e2");
+		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
 	[Theory]
@@ -849,6 +849,40 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task WhichWithoutParent_ShouldKeepTheSeparator()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseLength(That(subject), _ => 3).IsEqualTo(4);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it was 3, which differs by -1
+			             """);
+	}
+
+	[Fact]
+	public async Task WhichWithoutParent_WhenMemberAccessorThrows_ShouldKeepTheSeparator()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseLength(That(subject), _ => throw new MyException("no length")).IsEqualTo(4);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it did throw a MyException:
+			               no length
+			             """)
+			.Because("the failure message is the only place that names the member whose accessor threw");
+	}
+
+	[Fact]
 	public async Task WhichWithWhose_InManualEvaluation_ShouldReadLikeTheSingleValueExpectation()
 	{
 		string[][] subject = [["foo",],];
@@ -893,40 +927,6 @@ public sealed class WhichNodeTests
 			             has a single item whose Length is equal to 4,
 			             but Length was 3, which differs by -1
 			             """);
-	}
-
-	[Fact]
-	public async Task WhichWithoutParent_ShouldKeepTheSeparator()
-	{
-		string subject = "foo";
-
-		async Task Act()
-			=> await WhoseLength(That(subject), _ => 3).IsEqualTo(4);
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that subject
-			             whose length is equal to 4,
-			             but it was 3, which differs by -1
-			             """);
-	}
-
-	[Fact]
-	public async Task WhichWithoutParent_WhenMemberAccessorThrows_ShouldKeepTheSeparator()
-	{
-		string subject = "foo";
-
-		async Task Act()
-			=> await WhoseLength(That(subject), _ => throw new MyException("no length")).IsEqualTo(4);
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that subject
-			             whose length is equal to 4,
-			             but it did throw a MyException:
-			               no length
-			             """)
-			.Because("the failure message is the only place that names the member whose accessor threw");
 	}
 
 	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length)

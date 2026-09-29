@@ -342,6 +342,23 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
+	{
+		WithPublicValue actual = new(1);
+		WithInternalValue expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Internal,
+			Properties = IncludeMembers.None,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
+	}
+
+	[Fact]
 	public async Task WhenActualMemberIsNull_ShouldReportFoundAndExpected()
 	{
 		var actual = new
@@ -363,23 +380,6 @@ public sealed class EquivalencyComparisonTests
 		                                                      Actual: <null>
 		                                                    Expected: "Foo"
 		                                                """).IgnoringNewlineStyle();
-	}
-
-	[Fact]
-	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
-	{
-		WithPublicValue actual = new(1);
-		WithInternalValue expected = new(1);
-		EquivalencyOptions options = new()
-		{
-			Fields = IncludeMembers.Internal,
-			Properties = IncludeMembers.None,
-		};
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
-
-		await That(result).IsTrue()
-			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
 	}
 
 	[Fact]
@@ -2764,22 +2764,6 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("Property Value differed:");
 	}
 
-	public static TheoryData<object, object> DifferentNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(5) },
-			{ new Complex(1, 2), new Complex(1, 3) },
-		};
-	#if NET8_0_OR_GREATER
-		theoryData.Add((Half)1, (Half)2);
-		theoryData.Add((NFloat)1, (NFloat)2);
-		theoryData.Add((Int128)1, (Int128)2);
-		theoryData.Add((UInt128)1, (UInt128)2);
-	#endif
-		return theoryData;
-	}
-
 	[Theory]
 	[MemberData(nameof(EqualNumbers), DisableDiscoveryEnumeration = true)]
 	public async Task WhenNumberMembersAreEqual_ShouldSucceed(object actualValue, object expectedValue)
@@ -2797,22 +2781,6 @@ public sealed class EquivalencyComparisonTests
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
 
 		await That(result).IsTrue();
-	}
-
-	public static TheoryData<object, object> EqualNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(3) },
-			{ new Complex(1, 2), new Complex(1, 2) },
-		};
-	#if NET8_0_OR_GREATER
-		theoryData.Add((Half)1, (Half)1);
-		theoryData.Add((NFloat)1, (NFloat)1);
-		theoryData.Add((Int128)1, (Int128)1);
-		theoryData.Add((UInt128)1, (UInt128)1);
-	#endif
-		return theoryData;
 	}
 
 	[Fact]
@@ -3454,6 +3422,38 @@ public sealed class EquivalencyComparisonTests
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle()
 			.Because("an ordinary class carries its state in its members, so naming the differing component stays the better message");
+	}
+
+	public static TheoryData<object, object> DifferentNumbers()
+	{
+		TheoryData<object, object> theoryData = new()
+		{
+			{ new BigInteger(3), new BigInteger(5) },
+			{ new Complex(1, 2), new Complex(1, 3) },
+		};
+	#if NET8_0_OR_GREATER
+		theoryData.Add((Half)1, (Half)2);
+		theoryData.Add((NFloat)1, (NFloat)2);
+		theoryData.Add((Int128)1, (Int128)2);
+		theoryData.Add((UInt128)1, (UInt128)2);
+	#endif
+		return theoryData;
+	}
+
+	public static TheoryData<object, object> EqualNumbers()
+	{
+		TheoryData<object, object> theoryData = new()
+		{
+			{ new BigInteger(3), new BigInteger(3) },
+			{ new Complex(1, 2), new Complex(1, 2) },
+		};
+	#if NET8_0_OR_GREATER
+		theoryData.Add((Half)1, (Half)1);
+		theoryData.Add((NFloat)1, (NFloat)1);
+		theoryData.Add((Int128)1, (Int128)1);
+		theoryData.Add((UInt128)1, (UInt128)1);
+	#endif
+		return theoryData;
 	}
 
 	/// <remarks>

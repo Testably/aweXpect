@@ -77,22 +77,6 @@ public class MappingNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
-	{
-		MappingNode<string, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
-		async Task Act() => await node.IsMetBy(42, null!, CancellationToken.None);
-
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("""
-			             The member type for the actual value in the mapping node did not match.
-			             Expected: string
-			                Found: int
-			             """);
-	}
-
-	[Fact]
 	public async Task IsMetBy_WhenMemberThrows_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
@@ -106,6 +90,22 @@ public class MappingNodeTests
 		await That(result.Outcome).IsEqualTo(Outcome.Failure);
 		await That(result.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo("yeah!");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberThrows_ShouldUseTheExpectationResultOfExpectationTextConstraints()
+	{
+		MappingNode<string, int> node = new(
+			MemberAccessor<string, int>.FromFunc(_ => throw new NotSupportedException("foo"), " length "));
+		node.AddConstraint(new ExpectationTextConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
 	[Fact]
@@ -125,19 +125,19 @@ public class MappingNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenMemberThrows_ShouldUseTheExpectationResultOfExpectationTextConstraints()
+	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
 	{
-		MappingNode<string, int> node = new(
-			MemberAccessor<string, int>.FromFunc(_ => throw new NotSupportedException("foo"), " length "));
-		node.AddConstraint(new ExpectationTextConstraint<int>("yeah!", "not yeah!"));
-		StringBuilder sb = new();
+		MappingNode<string, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node.AddConstraint(
+			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
+		async Task Act() => await node.IsMetBy(42, null!, CancellationToken.None);
 
-		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
-
-		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
-		await That(sb.ToString()).IsEqualTo("not yeah!");
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("""
+			             The member type for the actual value in the mapping node did not match.
+			             Expected: string
+			                Found: int
+			             """);
 	}
 
 	[Fact]

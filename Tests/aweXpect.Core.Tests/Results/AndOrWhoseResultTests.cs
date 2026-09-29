@@ -3,6 +3,44 @@
 public class AndOrWhoseResultTests
 {
 	[Fact]
+	public async Task AndWhose_WhenAsyncMemberFaults_ShouldFail()
+	{
+		ThrowingClass sut = new("async member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.Value, f => f.IsFalse())
+				.AndWhose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
+			             but FaultedAsync() did throw an InvalidOperationException:
+			               async member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+	}
+
+	[Fact]
+	public async Task AndWhose_WithAsyncMember_ShouldVerifyAwaitedValue()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.AndWhose(f => f.GetValue1Async(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
+			             but GetValue1Async() was False
+			             """);
+	}
+
+	[Fact]
 	public async Task MultipleWhose_ShouldAllowChaining()
 	{
 		MyClass sut = new();
@@ -24,6 +62,32 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
+	[Theory]
+	[InlineData(true, true, true)]
+	[InlineData(true, false, false)]
+	[InlineData(false, true, false)]
+	[InlineData(false, false, false)]
+	public async Task MultipleWhose_ShouldVerifyAll(bool value1, bool value2, bool expectSuccess)
+	{
+		MyClass sut = new()
+		{
+			Value1 = value1,
+			Value2 = value2,
+		};
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsTrue())
+				.AndWhose(f => f.Value2, f => f.IsTrue());
+
+		await That(Act).Throws().OnlyIf(!expectSuccess)
+			.WithMessage($"""
+			              Expected that sut
+			              is of type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True,
+			              but {(value1 ? "" : "Value1 was False")}{(!value1 && !value2 ? " and " : "")}{(value2 ? "" : "Value2 was False")}
+			              """);
+	}
+
 	[Fact]
 	public async Task MultipleWhose_WithNamedMemberAccessor_ShouldSucceed()
 	{
@@ -38,19 +102,57 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
-	public async Task Whose_WithNestedMemberPath_ShouldOmitLeadingDot()
+	public async Task Whose_WhenAsyncMemberFaults_ShouldFail()
+	{
+		ThrowingClass sut = new("async member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
+			             but FaultedAsync() did throw an InvalidOperationException:
+			               async member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+	}
+
+	[Fact]
+	public async Task Whose_WhenMemberThrows_ShouldFail()
+	{
+		ThrowingClass sut = new("member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.Throwing(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
+			             but Throwing() did throw an InvalidOperationException:
+			               member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
+	}
+
+	[Fact]
+	public async Task Whose_WithAsyncMember_ShouldVerifyAwaitedValue()
 	{
 		MyClass sut = new();
 
 		async Task Act()
 			=> await That(sut).Is<MyClass>()
-				.Whose(f => f.Value1.ToString().Length, f => f.IsLessThan(5));
+				.Whose(f => f.GetValue1Async(), f => f.IsTrue());
 
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is of type AndOrWhoseResultTests.MyClass whose Value1.ToString().Length is less than 5,
-			             but Value1.ToString().Length was 5
+			             is of type AndOrWhoseResultTests.MyClass whose GetValue1Async() is True,
+			             but GetValue1Async() was False
 			             """);
 	}
 
@@ -109,6 +211,23 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task Whose_WithNestedMemberPath_ShouldOmitLeadingDot()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1.ToString().Length, f => f.IsLessThan(5));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value1.ToString().Length is less than 5,
+			             but Value1.ToString().Length was 5
+			             """);
+	}
+
+	[Fact]
 	public async Task Whose_WithNullConditional_ShouldOmitParameter()
 	{
 		MyClass sut = new();
@@ -140,125 +259,6 @@ public class AndOrWhoseResultTests
 			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True,
 			             but Value1 was False
 			             """);
-	}
-
-	[Theory]
-	[InlineData(true, true, true)]
-	[InlineData(true, false, false)]
-	[InlineData(false, true, false)]
-	[InlineData(false, false, false)]
-	public async Task MultipleWhose_ShouldVerifyAll(bool value1, bool value2, bool expectSuccess)
-	{
-		MyClass sut = new()
-		{
-			Value1 = value1,
-			Value2 = value2,
-		};
-
-		async Task Act()
-			=> await That(sut).Is<MyClass>()
-				.Whose(f => f.Value1, f => f.IsTrue())
-				.AndWhose(f => f.Value2, f => f.IsTrue());
-
-		await That(Act).Throws().OnlyIf(!expectSuccess)
-			.WithMessage($"""
-			              Expected that sut
-			              is of type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True,
-			              but {(value1 ? "" : "Value1 was False")}{(!value1 && !value2 ? " and " : "")}{(value2 ? "" : "Value2 was False")}
-			              """);
-	}
-
-	[Fact]
-	public async Task Whose_WithAsyncMember_ShouldVerifyAwaitedValue()
-	{
-		MyClass sut = new();
-
-		async Task Act()
-			=> await That(sut).Is<MyClass>()
-				.Whose(f => f.GetValue1Async(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that sut
-			             is of type AndOrWhoseResultTests.MyClass whose GetValue1Async() is True,
-			             but GetValue1Async() was False
-			             """);
-	}
-
-	[Fact]
-	public async Task AndWhose_WithAsyncMember_ShouldVerifyAwaitedValue()
-	{
-		MyClass sut = new();
-
-		async Task Act()
-			=> await That(sut).Is<MyClass>()
-				.Whose(f => f.Value2, f => f.IsFalse())
-				.AndWhose(f => f.GetValue1Async(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that sut
-			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
-			             but GetValue1Async() was False
-			             """);
-	}
-
-	[Fact]
-	public async Task Whose_WhenAsyncMemberFaults_ShouldFail()
-	{
-		ThrowingClass sut = new("async member failed");
-
-		async Task Act()
-			=> await That(sut).Is<ThrowingClass>()
-				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that sut
-			             is of type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
-			             but FaultedAsync() did throw an InvalidOperationException:
-			               async member failed
-			             """)
-			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-	}
-
-	[Fact]
-	public async Task Whose_WhenMemberThrows_ShouldFail()
-	{
-		ThrowingClass sut = new("member failed");
-
-		async Task Act()
-			=> await That(sut).Is<ThrowingClass>()
-				.Whose(f => f.Throwing(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that sut
-			             is of type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
-			             but Throwing() did throw an InvalidOperationException:
-			               member failed
-			             """)
-			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
-	}
-
-	[Fact]
-	public async Task AndWhose_WhenAsyncMemberFaults_ShouldFail()
-	{
-		ThrowingClass sut = new("async member failed");
-
-		async Task Act()
-			=> await That(sut).Is<ThrowingClass>()
-				.Whose(f => f.Value, f => f.IsFalse())
-				.AndWhose(f => f.FaultedAsync(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that sut
-			             is of type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
-			             but FaultedAsync() did throw an InvalidOperationException:
-			               async member failed
-			             """)
-			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
 	private sealed class MyClass

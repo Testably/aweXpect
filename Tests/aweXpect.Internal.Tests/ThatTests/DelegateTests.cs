@@ -20,6 +20,20 @@ public sealed class DelegateTests
 	}
 
 	[Fact]
+	public async Task ForAsyncVoidAction_WhenVerifyingDoesThrow_ShouldThrowInvalidOperationException()
+	{
+		Task incompleteTask = new TaskCompletionSource<bool>().Task;
+		// ReSharper disable once AsyncVoidLambda
+		Action @delegate = async () => await incompleteTask;
+
+		async Task Act()
+			=> await That(@delegate).Throws();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
+	}
+
+	[Fact]
 	public async Task
 		ForAsyncVoidAction_WithCancellationToken_WhenVerifyingDoesNotThrow_ShouldThrowInvalidOperationException()
 	{
@@ -32,20 +46,6 @@ public sealed class DelegateTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Cannot use aweXpect on an async void method: use Func<CancellationToken, Task> instead.");
-	}
-
-	[Fact]
-	public async Task ForAsyncVoidAction_WhenVerifyingDoesThrow_ShouldThrowInvalidOperationException()
-	{
-		Task incompleteTask = new TaskCompletionSource<bool>().Task;
-		// ReSharper disable once AsyncVoidLambda
-		Action @delegate = async () => await incompleteTask;
-
-		async Task Act()
-			=> await That(@delegate).Throws();
-
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
 	}
 
 	[Fact]

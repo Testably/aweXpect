@@ -8,16 +8,6 @@ public sealed class NestedCollectionGrammar
 	public sealed class Tests
 	{
 		[Fact]
-		public async Task AtLeast_ShouldUseOfWhich()
-		{
-			async Task Act()
-				=> await That("a\nb").HasLines(lines => lines.AtLeast(2).AreEqualTo("a"));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines of which at least 2 are equal to "a",*""").AsWildcard();
-		}
-
-		[Fact]
 		public async Task AreEqualToAsPrefix_ShouldUsePluralVerb()
 		{
 			async Task Act()
@@ -45,6 +35,16 @@ public sealed class NestedCollectionGrammar
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("*has lines of which all are unique by l => l!.Length,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task AtLeast_ShouldUseOfWhich()
+		{
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.AtLeast(2).AreEqualTo("a"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""*has lines of which at least 2 are equal to "a",*""").AsWildcard();
 		}
 
 		[Fact]
@@ -253,42 +253,6 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
-		public async Task NotHasItemWithExpected_ShouldUseSingularVerb()
-		{
-			IEnumerable<int> subject = [1, 2,];
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have an item*").AsWildcard();
-		}
-
-		[Fact]
-		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
-		{
-			IEnumerable<int> subject = [1, 2,];
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have an item*").AsWildcard();
-		}
-
-		[Fact]
-		public async Task NotHasItemWithString_ShouldUseSingularVerb()
-		{
-			IEnumerable<string?> subject = ["a", "b",];
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.HasItem("a"));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have an item*").AsWildcard();
-		}
-
-		[Fact]
 		public async Task NotHasItemForEnumerable_ShouldUseSingularVerb()
 		{
 			IEnumerable subject = new[] { 1, 2, };
@@ -313,12 +277,48 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
+		public async Task NotHasItemWithExpected_ShouldUseSingularVerb()
+		{
+			IEnumerable<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have an item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
+		{
+			IEnumerable<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have an item*").AsWildcard();
+		}
+
+		[Fact]
 		public async Task NotHasItemWithPredicateForEnumerable_ShouldUseSingularVerb()
 		{
 			IEnumerable subject = new[] { 1, 2, };
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => Equals(x, 1)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have an item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithString_ShouldUseSingularVerb()
+		{
+			IEnumerable<string?> subject = ["a", "b",];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem("a"));
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("*does not have an item*").AsWildcard();
