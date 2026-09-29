@@ -3,37 +3,49 @@ using Microsoft.CodeAnalysis;
 
 namespace aweXpect.Analyzers;
 
+/// <remarks>
+///     The ID, category and severity are passed to each constructor as constants, because the release tracking
+///     (RS2000) only recognises constant values when it checks the rules against <c>AnalyzerReleases.*.md</c>.
+/// </remarks>
 internal static class Rules
 {
 	private const string UsageCategory = "Usage";
 
-	public static readonly DiagnosticDescriptor AwaitExpectationRule =
-		CreateDescriptor("aweXpect0001", UsageCategory, DiagnosticSeverity.Error);
+	public static readonly DiagnosticDescriptor AwaitExpectationRule = new(
+		"aweXpect0001", Title("aweXpect0001"), MessageFormat("aweXpect0001"), UsageCategory,
+		DiagnosticSeverity.Error, true, Description("aweXpect0001"), HelpLinkUri("aweXpect0001"));
 
-	public static readonly DiagnosticDescriptor EqualsRule =
-		CreateDescriptor("aweXpect0002", UsageCategory, DiagnosticSeverity.Error);
+	public static readonly DiagnosticDescriptor EqualsRule = new(
+		"aweXpect0002", Title("aweXpect0002"), MessageFormat("aweXpect0002"), UsageCategory,
+		DiagnosticSeverity.Error, true, Description("aweXpect0002"), HelpLinkUri("aweXpect0002"));
 
-	public static readonly DiagnosticDescriptor ThrownExceptionVocabularyRule =
-		CreateDescriptor("aweXpect0003", UsageCategory, DiagnosticSeverity.Warning);
+	public static readonly DiagnosticDescriptor ThrownExceptionVocabularyRule = new(
+		"aweXpect0003", Title("aweXpect0003"), MessageFormat("aweXpect0003"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0003"), HelpLinkUri("aweXpect0003"));
 
-	public static readonly DiagnosticDescriptor DelegateSubjectRule =
-		CreateDescriptor("aweXpect0004", UsageCategory, DiagnosticSeverity.Error);
+	public static readonly DiagnosticDescriptor DelegateSubjectRule = new(
+		"aweXpect0004", Title("aweXpect0004"), MessageFormat("aweXpect0004"), UsageCategory,
+		DiagnosticSeverity.Error, true, Description("aweXpect0004"), HelpLinkUri("aweXpect0004"));
 
-	public static readonly DiagnosticDescriptor AsyncVoidExpectationRule =
-		CreateDescriptor("aweXpect0005", UsageCategory, DiagnosticSeverity.Warning);
+	public static readonly DiagnosticDescriptor AsyncVoidExpectationRule = new(
+		"aweXpect0005", Title("aweXpect0005"), MessageFormat("aweXpect0005"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0005"), HelpLinkUri("aweXpect0005"));
 
-	public static readonly DiagnosticDescriptor UnorderedCollectionRule =
-		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning);
+	public static readonly DiagnosticDescriptor UnorderedCollectionRule = new(
+		"aweXpect0006", Title("aweXpect0006"), MessageFormat("aweXpect0006"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0006"), HelpLinkUri("aweXpect0006"));
 
 	/// <summary>
 	///     The variant of <see cref="UnorderedCollectionRule" /> for an expectation that is about the order itself, so
 	///     that <c>InAnyOrder()</c> cannot help.
 	/// </summary>
-	public static readonly DiagnosticDescriptor UnorderedCollectionNoMeaningRule =
-		CreateDescriptor("aweXpect0006", UsageCategory, DiagnosticSeverity.Warning, "NoMeaningMessageFormat");
+	public static readonly DiagnosticDescriptor UnorderedCollectionNoMeaningRule = new(
+		"aweXpect0006", Title("aweXpect0006"), MessageFormat("aweXpect0006", "NoMeaningMessageFormat"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0006"), HelpLinkUri("aweXpect0006"));
 
-	public static readonly DiagnosticDescriptor ValueTaskDelegateRule =
-		CreateDescriptor("aweXpect0007", UsageCategory, DiagnosticSeverity.Error);
+	public static readonly DiagnosticDescriptor ValueTaskDelegateRule = new(
+		"aweXpect0007", Title("aweXpect0007"), MessageFormat("aweXpect0007"), UsageCategory,
+		DiagnosticSeverity.Error, true, Description("aweXpect0007"), HelpLinkUri("aweXpect0007"));
 
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
@@ -53,17 +65,16 @@ internal static class Rules
 			typeof(Resources))
 	);
 
-	private static DiagnosticDescriptor CreateDescriptor(string diagnosticId, string category,
-		DiagnosticSeverity severity, string messageFormatName = "MessageFormat") => new(
-		diagnosticId,
-		new LocalizableResourceString(diagnosticId + "Title",
-			Resources.ResourceManager, typeof(Resources)),
-		new LocalizableResourceString(diagnosticId + messageFormatName, Resources.ResourceManager,
-			typeof(Resources)),
-		category,
-		severity,
-		true,
-		new LocalizableResourceString(diagnosticId + "Description", Resources.ResourceManager,
-			typeof(Resources))
-	);
+	private static LocalizableResourceString Title(string diagnosticId)
+		=> new(diagnosticId + "Title", Resources.ResourceManager, typeof(Resources));
+
+	private static LocalizableResourceString MessageFormat(string diagnosticId,
+		string messageFormatName = "MessageFormat")
+		=> new(diagnosticId + messageFormatName, Resources.ResourceManager, typeof(Resources));
+
+	private static LocalizableResourceString Description(string diagnosticId)
+		=> new(diagnosticId + "Description", Resources.ResourceManager, typeof(Resources));
+
+	private static string HelpLinkUri(string diagnosticId)
+		=> "https://docs.testably.org/aweXpect/analyzers#" + diagnosticId.ToLowerInvariant();
 }
