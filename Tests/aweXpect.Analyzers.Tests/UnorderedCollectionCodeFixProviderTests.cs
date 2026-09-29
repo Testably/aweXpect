@@ -147,24 +147,27 @@ public class UnorderedCollectionCodeFixProviderTests
 		""",
 		AppendInAnyOrderKey);
 
-	[Fact]
-	public async Task ShouldNotOfferAFixForStartsWith()
+	[Theory]
+	[InlineData("{|#0:StartsWith|}(1)", "StartsWith")]
+	[InlineData("{|#0:EndsWith|}(1)", "EndsWith")]
+	[InlineData("Contains(new[] { 1, 2, }).InAnyOrder().{|#0:IgnoringInterspersedItems|}()", "IgnoringInterspersedItems")]
+	public async Task ShouldNotOfferAFixWhenInAnyOrderCannotHelp(string expectation, string method)
 	{
-		const string source = """
-		                      using System.Collections.Generic;
-		                      using System.Threading.Tasks;
-		                      using aweXpect;
+		string source = $$"""
+		                  using System.Collections.Generic;
+		                  using System.Threading.Tasks;
+		                  using aweXpect;
 
-		                      public class MyClass
+		                  public class MyClass
+		                  {
+		                      public async Task MyTest(HashSet<int> subject)
 		                      {
-		                          public async Task MyTest(HashSet<int> subject)
-		                          {
-		                              await Expect.That(subject).{|#0:StartsWith|}(1);
-		                          }
+		                          await Expect.That(subject).{{expectation}};
 		                      }
-		                      """;
+		                  }
+		                  """;
 		DiagnosticResult expected = Verifier.Diagnostic(Rules.UnorderedCollectionNoMeaningRule).WithLocation(0)
-			.WithArguments("StartsWith", "HashSet<int>");
+			.WithArguments(method, "HashSet<int>");
 		Verifier.Test test = new()
 		{
 			TestCode = source,

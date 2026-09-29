@@ -30,6 +30,67 @@ public class DelegateSubjectAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenUsingAHelperReturningAnUnconstrainedTypeParameter_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyExtensions
+			{
+			    public static TResult Get<TResult>(this IThat<object> subject, TResult result) => result;
+			}
+
+			public class MyClass
+			{
+			    public void MyTest<TResult>(TResult result)
+			    {
+			        int Act() => 1;
+
+			        _ = Expect.That(Act).Get(result);
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenUsingAnExpectationReturningAConstrainedTypeParameter_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public static class MyExpectations
+			{
+			    public static TResult Satisfies<TResult>(this IThat<object> subject, TResult result)
+			        where TResult : Expectation
+			        => result;
+			}
+
+			public class MyClass
+			{
+			    public void MyTest<TResult>(TResult result, ExpectationResult concreteResult)
+			        where TResult : ExpectationResult
+			    {
+			        int Act() => 1;
+
+			        _ = Expect.That(Act).{|#0:Satisfies|}(result);
+			        _ = Expect.That(Act).{|#1:Satisfies|}(concreteResult);
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(0)
+				.WithArguments("Satisfies"),
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(1)
+				.WithArguments("Satisfies")
+		);
+
+	[Fact]
 	public async Task WhenUsingAnExtensionDeclaredForADelegateSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

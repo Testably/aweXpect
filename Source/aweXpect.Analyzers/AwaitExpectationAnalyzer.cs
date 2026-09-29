@@ -98,7 +98,8 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 	/// <summary>
 	///     The <see langword="await" /> of a call like <c>Task.Run(() => Expect.That(…)…)</c> that only hands back the
 	///     expectation returned from the lambda: its delegate returns a type parameter of the method, and the method
-	///     returns a task of that type parameter, so awaiting it yields the expectation without evaluating it.
+	///     returns a task of that type parameter, so awaiting it (also through <c>ConfigureAwait(…)</c>) yields the
+	///     expectation without evaluating it.
 	/// </summary>
 	private static IAwaitOperation? GetAwaitOfDeferringCall(IReturnOperation returnOperation)
 	{
@@ -115,10 +116,11 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 			    {
 				    Parent: IArgumentOperation
 				    {
-					    Parameter: { } parameter, Parent: IInvocationOperation { Parent: IAwaitOperation awaitOperation, } invocation,
+					    Parameter: { } parameter, Parent: IInvocationOperation invocation,
 				    },
 			    },
 		    } ||
+		    GetAwait(invocation) is not { } awaitOperation ||
 		    parameter.OriginalDefinition.Type is not INamedTypeSymbol
 		    {
 			    DelegateInvokeMethod.ReturnType: ITypeParameterSymbol { TypeParameterKind: TypeParameterKind.Method, } result,
@@ -131,6 +133,15 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 
 		return awaitOperation;
 	}
+
+	private static IAwaitOperation? GetAwait(IInvocationOperation invocation)
+		=> invocation.Parent switch
+		{
+			IAwaitOperation awaitOperation => awaitOperation,
+			IInvocationOperation { TargetMethod.Name: "ConfigureAwait", Parent: IAwaitOperation awaitOperation, } configureAwait
+				when ReferenceEquals(configureAwait.Instance, invocation) => awaitOperation,
+			_ => null,
+		};
 
 	/// <summary>
 	///     An invocation that consumes the expectation instead of continuing it: nothing can be chained on a

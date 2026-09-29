@@ -77,9 +77,20 @@ public class DelegateSubjectAnalyzer : DiagnosticAnalyzer
 	///     Whether the method is an expectation, so that helpers on <c>IThat&lt;T&gt;</c> which authors of custom
 	///     delegate expectations call on the delegate subject on purpose (e.g. <c>Get()</c>) are not reported.
 	/// </summary>
-	private static bool ReturnsAnExpectation(IMethodSymbol method)
+	private static bool ReturnsAnExpectation(IMethodSymbol method) => IsExpectation(method.ReturnType);
+
+	/// <summary>
+	///     Whether the <paramref name="candidate" /> derives from <c>Expectation</c>, or, for a type parameter, is
+	///     constrained to such a type.
+	/// </summary>
+	private static bool IsExpectation(ITypeSymbol candidate)
 	{
-		for (ITypeSymbol? type = method.ReturnType; type is not null; type = type.BaseType)
+		if (candidate is ITypeParameterSymbol typeParameter)
+		{
+			return typeParameter.ConstraintTypes.Any(IsExpectation);
+		}
+
+		for (ITypeSymbol? type = candidate; type is not null; type = type.BaseType)
 		{
 			if (type is { Name: "Expectation", ContainingNamespace.Name: "Core", } &&
 			    type.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&

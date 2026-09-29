@@ -431,6 +431,24 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenReturnedFromLambda_AndAwaitedAgain_WithConfigureAwait_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await await Task.Run(() => Expect.That(subject).IsTrue()).ConfigureAwait(false);
+			    }
+			}
+			"""
+		);
+
+	[Fact]
 	public async Task WhenReturnedFromLambda_AsDelegate_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -464,6 +482,26 @@ public class AwaitExpectationAnalyzerTests
 			    {
 			        var subject = true;
 			        await Task.Run(() => {|#0:Expect.That(subject)|}.IsTrue());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenReturnedFromLambda_ToTaskRun_WithConfigureAwait_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Task.Run(() => {|#0:Expect.That(subject)|}.IsTrue()).ConfigureAwait(false);
 			    }
 			}
 			""",

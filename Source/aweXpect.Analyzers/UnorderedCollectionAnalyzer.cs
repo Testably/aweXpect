@@ -178,17 +178,25 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 	}
 
 	/// <summary>
-	///     The expectation on whose result the <paramref name="option" /> is chained.
+	///     The expectation on whose result the <paramref name="option" /> is chained, either directly or behind other
+	///     instance or extension method options: the first invocation whose receiver is an <c>IThat&lt;T&gt;</c>.
 	/// </summary>
 	private static IInvocationOperation? GetExpectation(IOperation option)
 	{
 		IOperation? current = option;
-		while (current is IInvocationOperation { Instance: { } instance, })
+		while (current is IInvocationOperation invocation)
 		{
-			current = instance;
+			IOperation? receiver = invocation.Instance ??
+			                       (invocation.TargetMethod.IsExtensionMethod ? GetReceiver(invocation) : null);
+			if (GetThatTypeArgument(receiver?.Type) is not null)
+			{
+				return invocation;
+			}
+
+			current = receiver;
 		}
 
-		return current as IInvocationOperation;
+		return null;
 	}
 
 	/// <summary>
