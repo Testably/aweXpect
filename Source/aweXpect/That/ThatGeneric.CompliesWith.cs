@@ -84,8 +84,16 @@ public static partial class ThatGeneric
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
 				return isMatch.Outcome == Outcome.Success != _isNegated;
 			}, _expectationBuilder, cancellationToken);
-			return NegateIfNegated(isMatch!).AppendExpectationText(sb => sb.Append(_options));
+			return KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
+				.AppendExpectationText(sb => sb.Append(_options));
 		}
+
+		/// <summary>
+		///     The expectations may have a value of another type (e.g. the single item of <c>HasSingle()</c>), but the
+		///     result of <c>CompliesWith</c> is the subject.
+		/// </summary>
+		private static ConstraintResult KeepSubjectAsValue(ConstraintResult result, T actual)
+			=> result.TryGetValue(out T? _) ? result : result.UseValue(actual);
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 			CancellationToken cancellationToken)
