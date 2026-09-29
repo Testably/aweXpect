@@ -1328,9 +1328,9 @@ public static partial class ThatEnumerable
 			_matchingCount = 0;
 			_notMatchingCount = 0;
 
-			if (actual is ICollection<TEnumerable> collectionOfT)
+			if (actual is ICollection collection)
 			{
-				_matchingCount = collectionOfT.Count;
+				_matchingCount = collection.Count;
 				_totalCount = _matchingCount;
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 				_expectationBuilder.AddCollectionContext(actual);

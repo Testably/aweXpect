@@ -67,6 +67,28 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemTypeIsAsyncEnumerable_ShouldReturnSingleItem()
+			{
+				IAsyncEnumerable<object> item = ToAsyncEnumerable<object>(1, 2);
+				IAsyncEnumerable<IAsyncEnumerable<object>> subject = ToAsyncEnumerable(item);
+
+				IAsyncEnumerable<object> result = await That(subject).HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an IAsyncEnumerable<object>");
+			}
+
+			[Fact]
+			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				IAsyncEnumerable<object> subject = ToAsyncEnumerable<object>(1);
+
+				object result = await That(subject).HasSingle();
+
+				await That(result).IsEqualTo(1);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<string>? subject = null;

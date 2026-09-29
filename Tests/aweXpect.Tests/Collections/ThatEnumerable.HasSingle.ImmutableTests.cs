@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -64,6 +65,28 @@ public sealed partial class ThatEnumerable
 					             has a single item,
 					             but it was empty
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemTypeIsEnumerable_ShouldReturnSingleItem()
+			{
+				IEnumerable<object> item = ToEnumerable<object>(1, 2);
+				ImmutableArray<IEnumerable<object>> subject = [item,];
+
+				IEnumerable<object> result = await That(subject).HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an IEnumerable<object>");
+			}
+
+			[Fact]
+			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				ImmutableArray<object> subject = [1,];
+
+				object result = await That(subject).HasSingle();
+
+				await That(result).IsEqualTo(1);
 			}
 		}
 

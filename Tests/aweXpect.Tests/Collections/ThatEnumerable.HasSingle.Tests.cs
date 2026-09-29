@@ -101,6 +101,28 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemTypeIsEnumerable_ShouldReturnSingleItem()
+			{
+				IEnumerable<object> item = ToEnumerable<object>(1, 2);
+				IEnumerable<IEnumerable<object>> subject = ToEnumerable(item);
+
+				IEnumerable<object> result = await That(subject).HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an IEnumerable<object>");
+			}
+
+			[Fact]
+			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				IEnumerable<object> subject = ToEnumerable<object>(1);
+
+				object result = await That(subject).HasSingle();
+
+				await That(result).IsEqualTo(1);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;
@@ -717,6 +739,16 @@ public sealed partial class ThatEnumerable
 					             has a single item that is greater than 4,
 					             but it was empty
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				IEnumerable<object> subject = ToEnumerable<object>(1);
+
+				object result = await That(subject).HasSingle().Which.IsEqualTo(1);
+
+				await That(result).IsEqualTo(1);
 			}
 
 			[Fact]
