@@ -76,7 +76,7 @@ internal static class AweXpectInitialization
 			{
 				throw Tracing.WriteException(
 					new InvalidOperationException(
-						$"Could not instantiate test framework '{Formatter.Format(frameworkType)}'!", ex));
+						$"Could not instantiate test framework {Formatter.Format(frameworkType)}.", ex));
 			}
 		}
 

@@ -297,11 +297,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     according to the <paramref name="ignoreIndentation" /> parameter.
 	/// </summary>
 	/// <remarks>
-	///     Enabling this option will remove the leading white-space from every line and replace all occurrences of
+	///     Enabling this option will remove the leading whitespace from every line and replace all occurrences of
 	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
 	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
-	///     Any Unicode white-space counts as indentation, e.g. also a non-breaking space.<br />
-	///     Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.<br />
+	///     Any Unicode whitespace counts as indentation, e.g. also a non-breaking space.<br />
+	///     Trailing whitespace within a line is kept, but a line that consists only of whitespace becomes empty.<br />
 	///     The expected value is transformed as well, which also applies to wildcard and regex patterns.
 	/// </remarks>
 	public StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true)
@@ -324,7 +324,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Ignores leading white-space when comparing <see langword="string" />s,
+	///     Ignores leading whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreLeadingWhiteSpace" /> parameter.
 	/// </summary>
 	/// <remarks>
@@ -338,7 +338,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Ignores trailing white-space when comparing <see langword="string" />s,
+	///     Ignores trailing whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
 	/// </summary>
 	public StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)
@@ -450,7 +450,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Removes the white-space at the start and the end of the <paramref name="value" />.
+	///     Removes the whitespace at the start and the end of the <paramref name="value" />.
 	/// </summary>
 	[return: NotNullIfNotNull(nameof(value))]
 	private string? TrimWhiteSpace(string? value)
@@ -469,7 +469,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Counts the lines and the columns in the last of these lines that are covered by the leading white-space
+	///     Counts the lines and the columns in the last of these lines that are covered by the leading whitespace
 	///     of the <paramref name="value" />.
 	/// </summary>
 	private static (int Lines, int Columns) CountLeadingWhiteSpace(string value)

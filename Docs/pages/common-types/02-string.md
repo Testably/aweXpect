@@ -11,7 +11,7 @@ negated comparison instead (e.g. `HasLength().NotEqualTo(9)`).
 
 You can verify that the `string` is equal to another one.  
 This expectation can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
-trailing white-space, or use a custom `IEqualityComparer<string>`:
+trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -25,9 +25,9 @@ await Expect.That("Abbey\r\nRoad").IsEqualTo("Abbey\nRoad").IgnoringNewlineStyle
 await Expect.That("  Abbey\n    Road").IsEqualTo("Abbey\nRoad").IgnoringIndentation()
   .Because("we ignored the indentation of every line");
 await Expect.That(subject).IsEqualTo("  Abbey Road").IgnoringLeadingWhiteSpace()
-  .Because("we ignored leading white-space");
+  .Because("we ignored leading whitespace");
 await Expect.That(subject).IsEqualTo("Abbey Road \t").IgnoringTrailingWhiteSpace()
-  .Because("we ignored trailing white-space");
+  .Because("we ignored trailing whitespace");
 await Expect.That(subject).IsEqualTo("ABBEY ROAD").Using(StringComparer.OrdinalIgnoreCase)
   .Because("the comparer ignored the casing");
 ```
@@ -35,7 +35,7 @@ await Expect.That(subject).IsEqualTo("ABBEY ROAD").Using(StringComparer.OrdinalI
 ### Indentation
 
 While `IgnoringLeadingWhiteSpace` only trims the start of the complete `string`, `IgnoringIndentation` removes the
-leading white-space from *every* line. This allows comparing against a raw string literal that is indented differently
+leading whitespace from *every* line. This allows comparing against a raw string literal that is indented differently
 than the subject:
 
 ```csharp
@@ -53,7 +53,7 @@ await Expect.That(subject).Contains("""
 
 As the lines are split on `\r\n`, `\n` and `\r`, this also normalizes the newline style, which makes
 `IgnoringNewlineStyle` redundant.  
-Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.  
+Trailing whitespace within a line is kept, but a line that consists only of whitespace becomes empty.  
 To keep the relative indentation within the snippet, use [`AsBlock`](#blocks) instead.
 
 ### Wildcards
@@ -132,7 +132,7 @@ both directions, exactly like `StartsWith` and `DoesNotStartWith` do.
 
 You can verify that the `string` is one of many alternatives.  
 This expectation can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
-trailing white-space, or use a custom `IEqualityComparer<string>`:
+trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -144,7 +144,7 @@ await Expect.That(subject).IsOneOf("HELP!", "ABBEY ROAD", "REVOLVER").Using(Stri
   .Because("the comparer ignored the casing");
 ```
 
-## Null, empty or white-space
+## Null, empty or whitespace
 
 You can verify that the `string` is null, empty or contains only whitespace:
 
@@ -227,7 +227,7 @@ await Expect.That("Come together\n\n").HasLineCount().EqualTo(2);
 
 You can verify that the `string` starts or ends with a given string.  
 These expectations can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
-trailing white-space, or use a custom `IEqualityComparer<string>`:
+trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -260,7 +260,7 @@ await Expect.That(subject).DoesNotEndWith("ROAD")
 
 You can verify that the `string` contains a given substring.  
 These expectations can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
-trailing white-space, or use a custom `IEqualityComparer<string>`:
+trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Strawberry Fields Forever";
@@ -294,7 +294,7 @@ await Expect.That(subject).Contains("get").Between(1).And(6)
 
 ### Blocks
 
-While `IgnoringIndentation` removes the leading white-space from every line, `AsBlock` keeps the relative
+While `IgnoringIndentation` removes the leading whitespace from every line, `AsBlock` keeps the relative
 indentation within the expected block and only allows the block as a whole to be indented in the subject.
 This is stricter, as a line that is indented differently from the rest of the block does not match:
 
@@ -317,8 +317,8 @@ await Expect.That(subject).Contains("""
                                     """).AsBlock();
 ```
 
-The block must start and end at line boundaries, and all its lines must share the same white-space prefix in the
-subject. A line that consists only of white-space matches any line that consists only of white-space.  
+The block must start and end at line boundaries, and all its lines must share the same whitespace prefix in the
+subject. A line that consists only of whitespace matches any line that consists only of whitespace.  
 The newline style is always ignored, and a single trailing line terminator does not start a new line, so
 `"a\nb\n"` has the same two lines as `"a\nb"` (as for [lines](#lines)).  
 `AsBlock` can be combined with `IgnoringCase`, `Using` and the count quantifiers.

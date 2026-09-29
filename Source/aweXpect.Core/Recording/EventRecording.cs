@@ -72,7 +72,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 				{
 					throw Tracing.WriteException(
 						new NotSupportedException(
-							$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}"));
+							$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "." : TrimmingHint)}"));
 				}
 
 				EventRecorder recorder = new(eventName, NotifyRecordedEvent);
@@ -286,7 +286,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 				: "";
 			throw Tracing.WriteException(
 				new NotSupportedException(
-					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{skipped}{(_isRegistered ? "" : TrimmingHint)}"));
+					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{skipped}{(_isRegistered ? "." : TrimmingHint)}"));
 		}
 
 		return recorder;

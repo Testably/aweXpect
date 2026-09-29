@@ -14,9 +14,9 @@ public partial class StringEqualityOptions
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
 	/// </summary>
 	/// <remarks>
-	///     The block must start and end at line boundaries. All its lines must share the same white-space prefix in the
+	///     The block must start and end at line boundaries. All its lines must share the same whitespace prefix in the
 	///     actual string, so the relative indentation within the block is still compared.<br />
-	///     A line that consists only of white-space matches any line that consists only of white-space.<br />
+	///     A line that consists only of whitespace matches any line that consists only of whitespace.<br />
 	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
 	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
@@ -76,7 +76,7 @@ public partial class StringEqualityOptions
 
 		/// <summary>
 		///     Checks whether the <paramref name="expectedLines" /> match the <paramref name="actualLines" /> starting
-		///     at <paramref name="index" />, when all lines are indented by the same white-space prefix.
+		///     at <paramref name="index" />, when all lines are indented by the same whitespace prefix.
 		/// </summary>
 		private static bool MatchesAt(string[] actualLines, int index, string[] expectedLines,
 			IEqualityComparer<string> comparer)

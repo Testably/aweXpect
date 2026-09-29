@@ -22,7 +22,7 @@ public sealed class AweXpectInitializationTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(
-				$"Could not instantiate test framework 'AweXpectInitializationTests.{nameof(IncorrectFrameworkAdapter)}'!");
+				$"Could not instantiate test framework AweXpectInitializationTests.{nameof(IncorrectFrameworkAdapter)}.");
 	}
 
 	[Theory]

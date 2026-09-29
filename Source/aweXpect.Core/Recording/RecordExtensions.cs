@@ -35,5 +35,5 @@ public static class RecordExtensions
 			? eventRecording.UntilDisposed()
 			: throw Tracing.WriteException(
 				new NotSupportedException(
-					$"Only a recording created by .Record().Events() supports .UntilDisposed(), but was {Formatter.Format(recording)}"));
+					$"Only a recording created by .Record().Events() supports .UntilDisposed(), but it was {Formatter.Format(recording)}."));
 }

@@ -1216,7 +1216,7 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("tolerance").And
-						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.WithMessage("The tolerance must be a whole number of days.").AsPrefix()
 						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 				}
 			}
@@ -1272,7 +1272,7 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("tolerance").And
-						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.WithMessage("The tolerance must be a whole number of days.").AsPrefix()
 						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 				}
 			}

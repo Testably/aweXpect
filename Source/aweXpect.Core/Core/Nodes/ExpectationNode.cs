@@ -32,7 +32,7 @@ internal class ExpectationNode : Node
 		{
 			throw Tracing.WriteException(
 				new InvalidOperationException(
-					"You have to specify how to combine the expectations! Use `And()` or `Or()` in between adding expectations."));
+					"You have to specify how to combine the expectations. Use `And()` or `Or()` in between adding expectations."));
 		}
 	}
 
@@ -97,7 +97,7 @@ internal class ExpectationNode : Node
 	public override void AddNode(Node node, string? separator = null)
 		=> throw Tracing.WriteException(
 			new NotSupportedException(
-				$"Don't specify the inner node for Expectation nodes directly. Use {nameof(AddMapping)}() instead!"));
+				$"Don't specify the inner node for Expectation nodes directly. Use {nameof(AddMapping)}() instead."));
 
 	/// <summary>
 	///     Indicates, if the node is empty.
@@ -164,7 +164,7 @@ internal class ExpectationNode : Node
 
 		return result ?? throw Tracing.WriteException(
 			new InvalidOperationException(
-				$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}"));
+				$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
 	}
 
 	/// <summary>

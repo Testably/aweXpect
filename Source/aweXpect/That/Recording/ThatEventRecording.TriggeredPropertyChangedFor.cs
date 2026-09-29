@@ -139,7 +139,7 @@ public static partial class ThatEventRecording
 		{
 			// ReSharper disable once LocalizableElement
 			throw new ArgumentException(
-				$"The 'propertyExpression' must refer to a property, but was '{propertyExpression.Body}'.",
+				$"The 'propertyExpression' must refer to a property, but it was {propertyExpression.Body}.",
 				nameof(propertyExpression));
 		}
 

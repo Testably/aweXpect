@@ -125,7 +125,7 @@ public sealed partial class ThatDateOnly
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithParamName("tolerance").And
-						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.WithMessage("The tolerance must be a whole number of days.").AsPrefix()
 						.Because("the expectation is malformed no matter which values it is applied to");
 				}
 

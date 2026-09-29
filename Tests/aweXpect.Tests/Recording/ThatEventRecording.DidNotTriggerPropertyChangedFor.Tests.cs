@@ -208,7 +208,7 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("propertyExpression").And
-					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x'.").AsPrefix()
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.").AsPrefix()
 					.Because("it would otherwise be checked against the event raised without a name");
 			}
 

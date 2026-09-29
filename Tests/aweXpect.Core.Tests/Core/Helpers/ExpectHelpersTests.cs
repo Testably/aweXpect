@@ -13,7 +13,7 @@ public class ExpectHelpersTests
 		IExpectThat<int> Act() => subject.Get();
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("IThat<T> must also implement IExpectThat<T>");
+			.WithMessage("IThat<T> must also implement IExpectThat<T>.");
 	}
 
 	[Fact]

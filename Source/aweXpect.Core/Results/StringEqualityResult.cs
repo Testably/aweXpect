@@ -52,10 +52,10 @@ public class StringEqualityResult<TType, TThat, TSelf>(
 	///     according to the <paramref name="ignoreIndentation" /> parameter.
 	/// </summary>
 	/// <remarks>
-	///     Enabling this option will remove the leading white-space from every line and replace all occurrences of
+	///     Enabling this option will remove the leading whitespace from every line and replace all occurrences of
 	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
 	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
-	///     Any Unicode white-space counts as indentation, e.g. also a non-breaking space.
+	///     Any Unicode whitespace counts as indentation, e.g. also a non-breaking space.
 	/// </remarks>
 	public TSelf IgnoringIndentation(bool ignoreIndentation = true)
 	{
@@ -78,7 +78,7 @@ public class StringEqualityResult<TType, TThat, TSelf>(
 	}
 
 	/// <summary>
-	///     Ignores leading white-space when comparing <see langword="string" />s,
+	///     Ignores leading whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreLeadingWhiteSpace" /> parameter.
 	/// </summary>
 	/// <remarks>
@@ -92,7 +92,7 @@ public class StringEqualityResult<TType, TThat, TSelf>(
 	}
 
 	/// <summary>
-	///     Ignores trailing white-space when comparing <see langword="string" />s,
+	///     Ignores trailing whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
 	/// </summary>
 	public TSelf IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)

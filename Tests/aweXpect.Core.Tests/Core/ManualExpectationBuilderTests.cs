@@ -214,7 +214,7 @@ public class ManualExpectationBuilderTests
 			new ExpectationNode(), null!, new TimeSystemMock(), null, CancellationToken.None);
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("Use IsMetBy for ManualExpectationBuilder!");
+			.WithMessage("Use IsMetBy for ManualExpectationBuilder.");
 	}
 
 	[Fact]

@@ -59,7 +59,7 @@ internal static class StringExtensions
 	}
 
 	/// <summary>
-	///     Removes the leading white-space from every line and normalizes the newline style to <c>\n</c>.
+	///     Removes the leading whitespace from every line and normalizes the newline style to <c>\n</c>.
 	/// </summary>
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? RemoveIndentation(this string? value)

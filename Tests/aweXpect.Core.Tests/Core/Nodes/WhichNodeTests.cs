@@ -318,7 +318,7 @@ public sealed class WhichNodeTests
 		Task<ConstraintResult> Act() => whichNode.IsMetBy("foo", null!, CancellationToken.None);
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("The expectation node does not support int with value 1");
+			.WithMessage("The expectation node does not support int with value 1.");
 	}
 
 	[Fact]

@@ -146,7 +146,7 @@ await Expect.That(albums).StartsWith(expected).Using(new AlbumComparer());
 ```
 
 For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
-leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
+leading or trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
@@ -175,7 +175,7 @@ await Expect.That(albums).EndsWith(expected).Using(new AlbumComparer());
 ```
 
 For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
-leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
+leading or trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();

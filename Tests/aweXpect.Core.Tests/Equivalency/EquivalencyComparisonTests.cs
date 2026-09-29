@@ -2741,8 +2741,7 @@ public sealed class EquivalencyComparisonTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(
-				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything.*")
-			.AsWildcard();
+				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or, when publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its members are preserved.");
 	}
 
 	[Theory]

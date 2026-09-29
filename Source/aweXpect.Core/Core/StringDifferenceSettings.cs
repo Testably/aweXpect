@@ -33,7 +33,7 @@ public class StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrail
 	///     <see langword="null" /> when no columns are ignored at the start of the lines.
 	/// </summary>
 	/// <remarks>
-	///     Each value is the width of the white-space that was removed at the start of the corresponding line, so that
+	///     Each value is the width of the whitespace that was removed at the start of the corresponding line, so that
 	///     a position in the compared value can be mapped back to the position in the original value, e.g. when the
 	///     indentation is ignored.<br />
 	///     When set, it takes precedence over <see cref="IgnoredTrailingColumns" />.

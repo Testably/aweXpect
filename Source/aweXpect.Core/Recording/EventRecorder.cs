@@ -51,14 +51,14 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 		if (handlerType.ReturnType != typeof(void))
 		{
 			return
-				$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}";
+				$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}.";
 		}
 
 		ParameterInfo? byReference = handlerType.GetParameters().FirstOrDefault(x => x.ParameterType.IsByRef);
 		if (byReference is not null)
 		{
 			return
-				$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference";
+				$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference.";
 		}
 
 		Delegate? handler = null;

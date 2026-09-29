@@ -87,7 +87,7 @@ public class ManualExpectationBuilder<TValue>(
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 		=> throw Tracing.WriteException(
-			new NotSupportedException($"Use {nameof(IsMetBy)} for ManualExpectationBuilder!"));
+			new NotSupportedException($"Use {nameof(IsMetBy)} for ManualExpectationBuilder."));
 
 	/// <inheritdoc cref="ExpectationBuilder.UpdateContexts(Action{ResultContexts})" />
 	public override ExpectationBuilder UpdateContexts(Action<ResultContexts> callback)
