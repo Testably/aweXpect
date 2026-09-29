@@ -2,7 +2,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
 
-public sealed class EquivalencyOptionsExtensionsTests
+public sealed class EquivalencyOptionsInternalExtensionsTests
 {
 	[Fact]
 	public async Task GetInheritedOptions_ShouldKeepTheComparisonTypeOfTheOptions()

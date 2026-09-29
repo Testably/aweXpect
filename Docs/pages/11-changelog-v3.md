@@ -283,6 +283,9 @@ result of that last check instead of "did not finish within …".
 `EnumerableQuantifier.AppendResult` takes the `it` of the expectation, so that a result about the items themselves can
 name the subject that had them. A custom quantifier has to add the parameter.
 
+The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
+members that an equivalency comparison includes.
+
 ## New expectations
 
 - **Dictionaries** navigate to their `Keys` and `Values` with the full collection vocabulary (needs C# 14).

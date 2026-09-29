@@ -113,3 +113,8 @@ aweXpect.Equivalency.EquivalencyOptions.GetOptionsFor(System.Type! type) -> aweX
 aweXpect.Customization.AwexpectCustomization.Global.get -> aweXpect.Customization.AwexpectCustomization!
 aweXpect.Core.ManualExpectationBuilder<TValue>.PrepareExpectation(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
 aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.PrepareExpectation() -> System.Threading.Tasks.Task!
+*REMOVED*aweXpect.Core.Helpers.MemberVisibilities
+*REMOVED*aweXpect.Core.Helpers.MemberVisibilities.ExplicitlyImplemented = 4 -> aweXpect.Core.Helpers.MemberVisibilities
+*REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Internal = 1 -> aweXpect.Core.Helpers.MemberVisibilities
+*REMOVED*aweXpect.Core.Helpers.MemberVisibilities.None = 0 -> aweXpect.Core.Helpers.MemberVisibilities
+*REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Public = 2 -> aweXpect.Core.Helpers.MemberVisibilities

@@ -3,7 +3,7 @@
 /// <summary>
 ///     Extension methods for <see cref="EquivalencyOptions" />.
 /// </summary>
-internal static class EquivalencyOptionsExtensions
+internal static class EquivalencyOptionsInternalExtensions
 {
 	/// <summary>
 	///     Returns the options that a type without a registration inherits from the enclosing type.
