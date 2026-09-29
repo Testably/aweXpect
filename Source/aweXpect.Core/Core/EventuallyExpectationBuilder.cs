@@ -220,9 +220,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 		using CancellationTokenSource? attemptCts =
 			CreateAttemptCancellation(retryTimeout, remaining, interval, cancellationToken);
 		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
+		Task<TValue>? task = null;
 		try
 		{
-			Task<TValue>? task = subject(attemptToken);
+			task = subject(attemptToken);
 			if (task is null)
 			{
 				return (default, null, false, true);
@@ -239,6 +240,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			                   !cancellationToken.IsCancellationRequested;
 			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
+			AddOtherExceptions(task?.GetOtherExceptions(exception));
 			return (default, hasTimedOut
 				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
 				: exception, hasTimedOut, false);

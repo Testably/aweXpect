@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.TimeSystem;
@@ -13,4 +14,8 @@ internal class AsyncValueSource<TValue>(Task<TValue> value) : IValueSource<TValu
 		=> value.AbandonOnCancellation(cancellationToken);
 
 	#endregion
+
+	/// <inheritdoc cref="TaskHelpers.GetOtherExceptions(Task, Exception)" />
+	public Exception[]? GetOtherExceptions(Exception exception)
+		=> value.GetOtherExceptions(exception);
 }

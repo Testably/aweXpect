@@ -20,10 +20,11 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action)
 		}
 
 		IStopwatch sw = timeSystem.Stopwatch.New();
+		Task? task = null;
 		try
 		{
 			sw.Start();
-			Task? task = action(cancellationToken);
+			task = action(cancellationToken);
 			if (task is null)
 			{
 				return new DelegateValue(null, sw.Elapsed, true)
@@ -38,7 +39,10 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action)
 		}
 		catch (Exception ex)
 		{
-			return new DelegateValue(ex, sw.Elapsed);
+			return new DelegateValue(ex, sw.Elapsed)
+			{
+				OtherExceptions = task?.GetOtherExceptions(ex),
+			};
 		}
 	}
 

@@ -61,6 +61,12 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	internal bool IsNullTask { get; init; }
 
 	/// <summary>
+	///     The exceptions of the faulted task besides the <see cref="Exception" />, which awaiting it threw, or
+	///     <see langword="null" /> when there are none.
+	/// </summary>
+	internal Exception[]? OtherExceptions { get; init; }
+
+	/// <summary>
 	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it, or
 	///     <see langword="null" /> if it finished in time or no timeout applied.
 	/// </summary>

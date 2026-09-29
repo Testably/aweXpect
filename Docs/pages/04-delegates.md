@@ -47,6 +47,10 @@ await Expect.That(task).IsEqualTo(42);
 await Expect.That(() => task).DoesNotThrow();
 ```
 
+An asynchronous delegate or task is awaited, so when it faults with several exceptions (e.g. from `Task.WhenAll`),
+only the first one counts as thrown, just as with `await`. A failure message lists the others under "Other
+exceptions".
+
 :::info[C# 13 or later]
 An `async` lambda and a lambda that only throws, as in `Expect.That(async () => await x.RunAsync())` or
 `Expect.That(() => throw new X())`, bind to the `Task` overload through `[OverloadResolutionPriority]`. The attribute
