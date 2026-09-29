@@ -84,6 +84,32 @@ public class SynchronouslyTests
 	}
 
 	[Fact]
+	public void WhenEvaluationYieldsOnABlockedTaskScheduler_ShouldNotDeadlock()
+	{
+		bool completed = BlockedTaskScheduler.Run(()
+			=> Verify(That(async () => await Task.Yield()).DoesNotThrow()));
+
+		Verify(That(completed).IsTrue()
+			.Because("the continuation must not wait for the scheduler that is blocked by the synchronous verification"));
+	}
+
+	[Fact]
+	public void WhenEvaluationYieldsOnABlockedTaskScheduler_WithValue_ShouldNotDeadlock()
+	{
+		int value = 0;
+
+		bool completed = BlockedTaskScheduler.Run(() => value = Verify(That(async () =>
+		{
+			await Task.Yield();
+			return 42;
+		}).DoesNotThrow()));
+
+		Verify(That(completed).IsTrue()
+			.Because("the continuation must not wait for the scheduler that is blocked by the synchronous verification"));
+		Verify(That(value).IsEqualTo(42));
+	}
+
+	[Fact]
 	public void WhenPropertyValuesMatch_ShouldFail()
 	{
 		Foo subject = new()

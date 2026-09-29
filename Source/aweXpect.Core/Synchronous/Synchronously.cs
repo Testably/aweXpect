@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Results;
 
 namespace aweXpect.Synchronous;
@@ -21,23 +23,13 @@ public static class Synchronously
 	/// </remarks>
 	public static void Verify(ExpectationResult result)
 	{
-		SynchronizationContext? context = SynchronizationContext.Current;
-		if (context is null)
+		if (CallerSchedulesContinuations())
 		{
-			result.GetAwaiter().GetResult();
+			StartDetached(result.GetAwaiter).GetResult();
 			return;
 		}
 
-		// A continuation posted to the context of the blocked thread would never run.
-		SynchronizationContext.SetSynchronizationContext(null);
-		try
-		{
-			result.GetAwaiter().GetResult();
-		}
-		finally
-		{
-			SynchronizationContext.SetSynchronizationContext(context);
-		}
+		result.GetAwaiter().GetResult();
 	}
 
 	/// <summary>
@@ -50,16 +42,31 @@ public static class Synchronously
 	public static TType Verify<TType, TSelf>(ExpectationResult<TType, TSelf> result)
 		where TSelf : ExpectationResult<TType, TSelf>
 	{
-		SynchronizationContext? context = SynchronizationContext.Current;
-		if (context is null)
+		if (CallerSchedulesContinuations())
 		{
-			return result.GetAwaiter().GetResult();
+			return StartDetached(result.GetAwaiter).GetResult();
 		}
 
+		return result.GetAwaiter().GetResult();
+	}
+
+	private static bool CallerSchedulesContinuations()
+		=> SynchronizationContext.Current is not null || TaskScheduler.Current != TaskScheduler.Default;
+
+	/// <summary>
+	///     Starts the evaluation on the current thread, but without the <see cref="SynchronizationContext" /> and the
+	///     <see cref="TaskScheduler" /> of the caller, because a continuation scheduled to the blocked caller would never
+	///     run.
+	/// </summary>
+	private static TAwaiter StartDetached<TAwaiter>(Func<TAwaiter> start)
+	{
+		SynchronizationContext? context = SynchronizationContext.Current;
 		SynchronizationContext.SetSynchronizationContext(null);
 		try
 		{
-			return result.GetAwaiter().GetResult();
+			Task<TAwaiter> task = new(start);
+			task.RunSynchronously(TaskScheduler.Default);
+			return task.GetAwaiter().GetResult();
 		}
 		finally
 		{
