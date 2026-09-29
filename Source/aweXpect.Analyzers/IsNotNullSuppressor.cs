@@ -105,24 +105,13 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 				return false;
 			}
 
-			// Any enclosing statement can write to the subject before the usage is reached, e.g. in the condition of
-			// an `if`, in an earlier statement of a `switch` section, in the `try` block before a `finally` or in an
-			// earlier argument of the same statement. A later iteration of a loop reaches the usage again, so a
-			// write anywhere in the loop counts. An expectation inside the loop is found before the loop is left.
-			if (node is StatementSyntax enclosing &&
-			    WritesTo(enclosing, subject, semanticModel, cancellationToken,
-				    IsLoop(enclosing) ? int.MaxValue : usage.SpanStart))
-			{
-				return false;
-			}
-
-			if (node is not StatementSyntax statement || statement.Parent is not BlockSyntax block)
+			if (node is not StatementSyntax statement)
 			{
 				continue;
 			}
 
-			Verification verification = ExpectsNotNullBefore(block.Statements, block.Statements.IndexOf(statement),
-				subject, semanticModel, cancellationToken);
+			Verification verification =
+				VerifyEnclosingStatement(statement, usage, subject, semanticModel, cancellationToken);
 			if (verification != Verification.NotFound)
 			{
 				return verification == Verification.Verified;
@@ -130,6 +119,33 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Checks if the enclosing <paramref name="statement" /> of the <paramref name="usage" /> invalidates the
+	///     <paramref name="subject" />, or if a statement before it in the same block expects it to be not
+	///     <see langword="null" />.
+	/// </summary>
+	private static Verification VerifyEnclosingStatement(StatementSyntax statement, SyntaxNode usage,
+		ISymbol subject, SemanticModel semanticModel, CancellationToken cancellationToken)
+	{
+		// Any enclosing statement can write to the subject before the usage is reached, e.g. in the condition of
+		// an `if`, in an earlier statement of a `switch` section, in the `try` block before a `finally` or in an
+		// earlier argument of the same statement. A later iteration of a loop reaches the usage again, so a
+		// write anywhere in the loop counts. An expectation inside the loop is found before the loop is left.
+		if (WritesTo(statement, subject, semanticModel, cancellationToken,
+			    IsLoop(statement) ? int.MaxValue : usage.SpanStart))
+		{
+			return Verification.Invalidated;
+		}
+
+		if (statement.Parent is not BlockSyntax block)
+		{
+			return Verification.NotFound;
+		}
+
+		return ExpectsNotNullBefore(block.Statements, block.Statements.IndexOf(statement),
+			subject, semanticModel, cancellationToken);
 	}
 
 	/// <summary>
