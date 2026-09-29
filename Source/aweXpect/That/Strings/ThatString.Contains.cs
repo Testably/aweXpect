@@ -98,20 +98,7 @@ public static partial class ThatString
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (quantifier.IsNever)
-			{
-				stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
-				Formatter.Format(stringBuilder, expected);
-				stringBuilder.Append(options);
-			}
-			else
-			{
-				stringBuilder.Append(Grammars.Verb("contains ", "contain "));
-				Formatter.Format(stringBuilder, expected);
-				stringBuilder.Append(options).Append(' ').Append(quantifier);
-			}
-		}
+			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}"));
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default

@@ -47,10 +47,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with [1, 2],
-					             but it did start with [
-					               1,
-					               2
-					             ]
+					             but it did start with [1, 2]
 					             """)
 					.Because("the message lists the matching items from the enumeration that compared them");
 			}
@@ -207,10 +204,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with [1, 2],
-					             but it did start with [
-					               1,
-					               2
-					             ]
+					             but it did start with [1, 2]
 					             """)
 					.Because("the message lists the matching items from the enumeration that compared them");
 			}
@@ -235,10 +229,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that GetSubject()
 					             does not start with [1, 2],
-					             but it did start with [
-					               1,
-					               2
-					             ]
+					             but it did start with [1, 2]
 					             """);
 				await That(enumerations).IsEqualTo(1)
 					.Because("the message must not run the side effects of the subject a second time");

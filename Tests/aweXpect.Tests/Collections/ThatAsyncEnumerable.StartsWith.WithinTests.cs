@@ -952,7 +952,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -986,7 +986,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1020,7 +1020,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1054,7 +1054,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1088,7 +1088,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1122,7 +1122,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not start with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.MultipleLines)}
+						              but it did start with {Formatter.Format(values.Take(3), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}

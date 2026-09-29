@@ -963,7 +963,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -997,7 +997,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1031,7 +1031,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1065,7 +1065,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1099,7 +1099,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1133,7 +1133,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}

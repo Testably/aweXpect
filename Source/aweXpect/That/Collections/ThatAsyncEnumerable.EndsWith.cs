@@ -241,7 +241,7 @@ public static partial class ThatAsyncEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, _foundValues, FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _foundValues, typeof(TItem).GetFormattingOption(_foundValues.Count));
 			}
 		}
 	}

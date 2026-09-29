@@ -77,11 +77,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with [1, 2, 3],
-					             but it did start with [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did start with [1, 2, 3]
 					             """);
 			}
 
@@ -176,10 +172,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with unexpected,
-					             but it did start with [
-					               1,
-					               2
-					             ]
+					             but it did start with [1, 2]
 					             """)
 					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
 			}
@@ -197,10 +190,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with unexpected,
-					             but it did start with [
-					               1,
-					               2
-					             ]
+					             but it did start with [1, 2]
 					             """)
 					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
 			}

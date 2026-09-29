@@ -232,7 +232,7 @@ public static partial class ThatAsyncEnumerable
 			else
 			{
 				stringBuilder.Append(_it).Append(" did start with ");
-				Formatter.Format(stringBuilder, _foundValues, FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, _foundValues, typeof(TItem).GetFormattingOption(_foundValues.Count));
 			}
 		}
 	}

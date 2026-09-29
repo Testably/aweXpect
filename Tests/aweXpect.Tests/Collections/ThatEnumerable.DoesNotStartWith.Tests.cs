@@ -198,11 +198,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not start with [1, 2, 3],
-					             but it did start with [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did start with [1, 2, 3]
 					             """);
 			}
 

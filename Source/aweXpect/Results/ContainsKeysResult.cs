@@ -35,5 +35,6 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	public IThat<IEnumerable<TValue>> WhoseValues
 		=> new ThatSubject<IEnumerable<TValue>>(_expectationBuilder
 			.ForWhich(_memberAccessor, " whose values ", $"values of keys {Formatter.Format(_keys)}",
-				grammars => grammars | ExpectationGrammars.Plural | ExpectationGrammars.Introduced));
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
+				            ExpectationGrammars.Introduced));
 }

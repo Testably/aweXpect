@@ -112,7 +112,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [0] whose values are equal to "bar" for all items,
+					             contains keys [0] whose values all are equal to "bar",
 					             but it did not contain [
 					               0
 					             ]
@@ -151,7 +151,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values start with "f" for no items,
+					             contains keys [1, 2] whose values none start with "f",
 					             but 1 of 2 did
 
 					             Matching items:
@@ -185,7 +185,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values are equal to "foo" for all items,
+					             contains keys [1, 2] whose values all are equal to "foo",
 					             but only 1 of 2 were
 
 					             Not matching items:
@@ -254,7 +254,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2, 3] whose values are unique for all items,
+					             contains keys [1, 2, 3] whose values all are unique,
 					             but only 1 of 3 were
 
 					             Not matching items:
@@ -290,7 +290,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values start with "f" for all items,
+					             contains keys [1, 2] whose values all start with "f",
 					             but only 1 of 2 did
 
 					             Not matching items:
@@ -353,7 +353,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [2] whose values are equal to "foo" for all items,
+					             contains keys [2] whose values all are equal to "foo",
 					             but none of 1 were
 
 					             Not matching items:
@@ -386,7 +386,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values satisfy v => v?.StartsWith("fo") == true for all items,
+					             contains keys [1, 2] whose values all satisfy v => v?.StartsWith("fo") == true,
 					             but only 1 of 2 did
 
 					             Not matching items:
@@ -460,7 +460,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 0, 3] whose values are equal to "bar" for all items,
+					             contains keys [1, 0, 3] whose values all are equal to "bar",
 					             but it did not contain [
 					               0
 					             ]
@@ -497,7 +497,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys ["foo"] whose values are equal to "" for all items,
+					             contains keys ["foo"] whose values all are equal to "",
 					             but it was <null>
 					             """);
 			}

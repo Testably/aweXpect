@@ -224,8 +224,8 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Theory]
-			[InlineData(1, "not exactly once")]
-			[InlineData(2, "not exactly twice")]
+			[InlineData(1, "exactly once")]
+			[InlineData(2, "exactly twice")]
 			public async Task ShouldSupportExactly_WhenNegated(int times, string expectedOccurrences)
 			{
 				IEnumerable<int> subject = new[] { 1, 2, 1, }.Take(times + 1);
@@ -236,7 +236,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              contains an item equal to 1 {expectedOccurrences},
+					              does not contain an item equal to 1 {expectedOccurrences},
 					              but it contained 1*
 					              """).AsWildcard();
 			}

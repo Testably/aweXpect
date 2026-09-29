@@ -136,7 +136,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains an item equal to 1 not between {minimum} and {maximum} times,
+					              does not contain an item equal to 1 between {minimum} and {maximum} times,
 					              but it contained 1 twice
 
 					              Collection:
@@ -238,7 +238,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains an item equal to 1 not exactly {times.ToTimesString()},
+					              does not contain an item equal to 1 exactly {times.ToTimesString()},
 					              but it contained 1 {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
@@ -558,7 +558,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains an item matching x => 1.Equals(x) not between {minimum} and {maximum} times,
+					              does not contain an item matching x => 1.Equals(x) between {minimum} and {maximum} times,
 					              but it contained it twice
 
 					              Collection:
@@ -592,7 +592,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              contains an item matching x => 1.Equals(x) not exactly {times.ToTimesString()},
+					              does not contain an item matching x => 1.Equals(x) exactly {times.ToTimesString()},
 					              but it contained it {(times == 1 ? "at least " : "")}twice
 
 					              Collection:

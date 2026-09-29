@@ -513,6 +513,13 @@ internal static class CollectionHelpers
 	}
 
 	/// <summary>
+	///     The type that determines the layout of the <paramref name="items" />: for untyped items the type of the first
+	///     one that is not <see langword="null" />, like in the "Collection" context.
+	/// </summary>
+	internal static Type GetItemType(this IEnumerable<object?> items)
+		=> items.FirstOrDefault(item => item is not null)?.GetType() ?? typeof(object);
+
+	/// <summary>
 	///     The layout follows the <paramref name="count" /> of items that are rendered, while a truncation marker names
 	///     the remainder of the <paramref name="totalCount" /> items the collection holds.
 	/// </summary>
