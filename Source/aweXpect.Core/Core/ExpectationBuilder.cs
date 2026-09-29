@@ -541,6 +541,19 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Adds the <paramref name="otherExceptions" /> of a faulted task to the context, unless they are
+	///     <see langword="null" />.
+	/// </summary>
+	internal void AddOtherExceptions(Exception[]? otherExceptions)
+	{
+		if (otherExceptions is not null)
+		{
+			AddContext(new ResultContext.SyncCallback("Other exceptions",
+				() => Formatter.Format(otherExceptions, FormattingOptions.MultipleLines)));
+		}
+	}
+
+	/// <summary>
 	///     Gets the list of <see cref="ResultContext" />.
 	/// </summary>
 	internal IEnumerable<ResultContext> GetContexts() => _contexts ?? [];
@@ -764,6 +777,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
+			AddOtherExceptions((_subjectSource as AsyncValueSource<TValue>)?.GetOtherExceptions(exception));
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
 			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
@@ -772,6 +786,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 
 		if (data is DelegateValue delegateValue)
 		{
+			AddOtherExceptions(delegateValue.OtherExceptions);
 			if (cancellation.IsCanceled(delegateValue.Exception))
 			{
 				return await FromException(rootNode, context, cancellation, delegateValue.Exception!);

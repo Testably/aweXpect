@@ -20,10 +20,11 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 		}
 
 		IStopwatch sw = timeSystem.Stopwatch.New();
+		Task<TValue>? task = null;
 		try
 		{
 			sw.Start();
-			Task<TValue>? task = action(cancellationToken);
+			task = action(cancellationToken);
 			if (task is null)
 			{
 				return new DelegateValue<TValue>(default, null, sw.Elapsed, true)
@@ -38,7 +39,10 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 		}
 		catch (Exception ex)
 		{
-			return new DelegateValue<TValue>(default, ex, sw.Elapsed);
+			return new DelegateValue<TValue>(default, ex, sw.Elapsed)
+			{
+				OtherExceptions = task?.GetOtherExceptions(ex),
+			};
 		}
 	}
 

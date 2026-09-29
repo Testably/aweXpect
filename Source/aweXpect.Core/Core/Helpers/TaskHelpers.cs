@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,6 +28,20 @@ internal static class TaskHelpers
 		=> task.IsCompleted || !cancellationToken.CanBeCanceled
 			? task
 			: AwaitOrAbandon(task, cancellationToken);
+
+	/// <summary>
+	///     Returns the exceptions of the faulted <paramref name="task" /> except the <paramref name="exception" /> that
+	///     awaiting it threw, or <see langword="null" /> when there are none.
+	/// </summary>
+	/// <remarks>
+	///     Awaiting a task only throws its first exception, so that the others, e.g. of
+	///     <see cref="Task.WhenAll(Task[])" />, would otherwise get lost.
+	/// </remarks>
+	public static Exception[]? GetOtherExceptions(this Task task, Exception exception)
+		=> task.Exception is { InnerExceptions: { Count: > 1, } exceptions, } &&
+		   ReferenceEquals(exceptions[0], exception)
+			? exceptions.Skip(1).ToArray()
+			: null;
 
 	private static async Task<TResult> AwaitOrAbandon<TResult>(Task<TResult> task,
 		CancellationToken cancellationToken)
