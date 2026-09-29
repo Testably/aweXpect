@@ -165,7 +165,7 @@ internal static class ThrowHelper
 		if (tolerance.Ticks % TimeSpan.TicksPerDay != 0)
 		{
 			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be a whole number of days"));
+				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must be a whole number of days."));
 		}
 	}
 }

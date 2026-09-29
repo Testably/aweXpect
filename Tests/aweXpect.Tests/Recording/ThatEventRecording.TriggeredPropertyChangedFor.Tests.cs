@@ -174,7 +174,7 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("propertyExpression").And
-					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x.MyField'.").AsPrefix()
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.MyField.").AsPrefix()
 					.Because("a field is no property and must not silently become the null property name");
 			}
 
@@ -191,7 +191,7 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("propertyExpression").And
-					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x.get_Item(1)'.")
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.get_Item(1).")
 					.AsPrefix()
 					.Because("an indexer access does not name a property that the PropertyChanged event could report");
 			}
@@ -209,7 +209,7 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("propertyExpression").And
-					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x.GetMyValue()'.")
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.GetMyValue().")
 					.AsPrefix()
 					.Because("a method call is no property and must not silently become the null property name");
 			}
@@ -242,7 +242,7 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("propertyExpression").And
-					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x'.").AsPrefix()
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.").AsPrefix()
 					.Because("it would otherwise match the event that was raised without a property name");
 			}
 

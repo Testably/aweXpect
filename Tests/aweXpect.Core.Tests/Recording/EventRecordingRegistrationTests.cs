@@ -56,7 +56,7 @@ public sealed class EventRecordingRegistrationTests
 			=> subject.Record().Events("Missing");
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("Event Missing is not supported on EventRecordingRegistrationTests.Publisher { }")
+			.WithMessage("Event Missing is not supported on EventRecordingRegistrationTests.Publisher { }.")
 			.Because("a registered type is served from the registry alone, so a missing event is missing for sure");
 	}
 

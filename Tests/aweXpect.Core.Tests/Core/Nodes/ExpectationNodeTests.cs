@@ -159,7 +159,7 @@ public class ExpectationNodeTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(
-				"You have to specify how to combine the expectations! Use `And()` or `Or()` in between adding expectations.");
+				"You have to specify how to combine the expectations. Use `And()` or `Or()` in between adding expectations.");
 	}
 
 	[Fact]
@@ -400,7 +400,7 @@ public class ExpectationNodeTests
 		void Act() => node.AddNode(new DummyNode("foo"));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("Don't specify the inner node for Expectation nodes directly. Use AddMapping() instead!");
+			.WithMessage("Don't specify the inner node for Expectation nodes directly. Use AddMapping() instead.");
 	}
 
 	[Fact]
@@ -776,7 +776,7 @@ public class ExpectationNodeTests
 			await node.IsMetBy("42", null!, CancellationToken.None);
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("The expectation node does not support string with value \"42\"");
+			.WithMessage("The expectation node does not support string with value \"42\".");
 	}
 
 	[Theory]

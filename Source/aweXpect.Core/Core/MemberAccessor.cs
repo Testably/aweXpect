@@ -63,7 +63,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	/// </summary>
 	/// <remarks>
 	///     A <paramref name="name" /> that is not such a lambda expression is displayed as is, without surrounding
-	///     white-space.
+	///     whitespace.
 	/// </remarks>
 	public static MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(
 		Func<TSource, TTarget> func, string name)

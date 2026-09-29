@@ -325,7 +325,7 @@ public sealed class EventRecordingTests
 			=> sut.Record().Events(nameof(ReturningHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int")
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int.")
 			.Because("the recorder cannot supply a return value, so the reason has to be named instead of a binding error");
 	}
 
@@ -340,7 +340,7 @@ public sealed class EventRecordingTests
 			=> result.GetEventCount(nameof(ReturningHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int")
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int.")
 			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
 	}
 
@@ -353,7 +353,7 @@ public sealed class EventRecordingTests
 			=> sut.Record().Events(nameof(ByReferenceHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference.")
 			.Because("a by-reference parameter cannot be boxed into the recorded arguments");
 	}
 
@@ -368,7 +368,7 @@ public sealed class EventRecordingTests
 			=> result.GetEventCount(nameof(ByReferenceHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference.")
 			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
 	}
 
@@ -445,7 +445,7 @@ public sealed class EventRecordingTests
 		await That(Act).DoesNotThrow();
 		await That(() => subject.Record().Events(nameof(RegisteredClass.OtherEvent)))
 			.Throws<NotSupportedException>()
-			.WithMessage("Event OtherEvent is not supported on EventRecordingTests.RegisteredClass { }")
+			.WithMessage("Event OtherEvent is not supported on EventRecordingTests.RegisteredClass { }.")
 			.Because("a registered type is served from the registry alone, so a missing event is missing for sure");
 	}
 
@@ -485,7 +485,7 @@ public sealed class EventRecordingTests
 			=> result.ToString(nameof(RegisteredClass.OtherEvent));
 
 		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("Event OtherEvent was not recorded on sut, only [\"CustomEvent\"]")
+			.WithMessage("Event OtherEvent was not recorded on sut, only [\"CustomEvent\"].")
 			.Because("a registered type is served from the registry alone, so nothing could have been removed");
 	}
 
@@ -640,7 +640,7 @@ public sealed class EventRecordingTests
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage(
-				"Only a recording created by .Record().Events() supports .UntilDisposed(), but was EventRecordingTests.ForeignRecording { }")
+				"Only a recording created by .Record().Events() supports .UntilDisposed(), but it was EventRecordingTests.ForeignRecording { }.")
 			.Because("only the recording of this library knows when it detaches its handlers");
 	}
 

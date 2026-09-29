@@ -99,7 +99,7 @@ await Expect.That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
 ```
 
 For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
-leading or trailing white-space, or use a custom `IEqualityComparer<string>`:
+leading or trailing whitespace, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 await Expect.That(["foo", "FOO", "Foo"]).All().AreEqualTo("foo").IgnoringCase();

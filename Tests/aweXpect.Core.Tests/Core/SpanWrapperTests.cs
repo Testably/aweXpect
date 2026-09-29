@@ -17,7 +17,7 @@ public sealed class SpanWrapperTests
 			=> sut.Add('b');
 
 		Synchronously.Verify(That(Act).Throws<NotSupportedException>()
-			.WithMessage("You may not change a SpanWrapper!"));
+			.WithMessage("You may not change a SpanWrapper."));
 	}
 
 	[Fact]
@@ -29,7 +29,7 @@ public sealed class SpanWrapperTests
 			=> sut.Clear();
 
 		Synchronously.Verify(That(Act).Throws<NotSupportedException>()
-			.WithMessage("You may not change a SpanWrapper!"));
+			.WithMessage("You may not change a SpanWrapper."));
 	}
 
 	[Theory]
@@ -83,7 +83,7 @@ public sealed class SpanWrapperTests
 			=> sut.Remove('b');
 
 		Synchronously.Verify(That(Act).Throws<NotSupportedException>()
-			.WithMessage("You may not change a SpanWrapper!"));
+			.WithMessage("You may not change a SpanWrapper."));
 	}
 }
 #endif

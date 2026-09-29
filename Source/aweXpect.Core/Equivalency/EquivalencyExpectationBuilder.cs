@@ -133,7 +133,7 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 		=> throw Tracing.WriteException(
-			new NotSupportedException($"Use {nameof(IsMetBy)} for EquivalencyExpectationBuilder!"));
+			new NotSupportedException($"Use {nameof(IsMetBy)} for EquivalencyExpectationBuilder."));
 
 	/// <inheritdoc cref="ExpectationBuilder.UpdateContexts(Action{ResultContexts})" />
 	public override ExpectationBuilder UpdateContexts(Action<ResultContexts> callback) => this;

@@ -127,13 +127,13 @@ await Expect.That('\n').IsAControlCharacter();
 This verifies that the subject is categorized as a control character
 (see [`char.IsControl(char)`](https://learn.microsoft.com/en-us/dotnet/api/system.char.iscontrol)).
 
-### White-space
+### Whitespace
 
-You can verify that the `char` is white-space:
+You can verify that the `char` is whitespace:
 
 ```csharp
 await Expect.That('\t').IsWhiteSpace();
 ```
 
-This verifies that the subject is categorized as white-space
+This verifies that the subject is categorized as whitespace
 (see [`char.IsWhiteSpace(char)`](https://learn.microsoft.com/en-us/dotnet/api/system.char.iswhitespace)).
