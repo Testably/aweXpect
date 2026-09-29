@@ -208,5 +208,35 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsContained_ShouldFail()
+			{
+				TimeSpan subject = 5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(5.Seconds(), 6.Seconds()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [0:05, 0:06],
+					             but it was 0:05
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotContained_ShouldSucceed()
+			{
+				TimeSpan subject = 5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(6.Seconds(), 7.Seconds()));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

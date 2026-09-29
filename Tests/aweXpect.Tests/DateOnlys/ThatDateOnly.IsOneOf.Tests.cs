@@ -165,6 +165,36 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsContained_ShouldFail()
+			{
+				DateOnly subject = new(2010, 11, 12);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(new DateOnly(2010, 11, 12), new DateOnly(2010, 11, 13)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [2010-11-12, 2010-11-13],
+					             but it was 2010-11-12
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotContained_ShouldSucceed()
+			{
+				DateOnly subject = new(2010, 11, 12);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(new DateOnly(2010, 11, 13), new DateOnly(2010, 11, 14)));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }
 #endif

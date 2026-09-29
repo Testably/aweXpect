@@ -81,5 +81,35 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsGreater_ShouldSucceed()
+			{
+				Version subject = new(1, 2, 3, 4);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsLessThanOrEqualTo(new Version(1, 2)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsTheSame_ShouldFail()
+			{
+				Version subject = new(1, 2, 3, 4);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsLessThanOrEqualTo(new Version(1, 2, 3, 4)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not less than or equal to 1.2.3.4,
+					             but it was 1.2.3.4
+					             """);
+			}
+		}
 	}
 }

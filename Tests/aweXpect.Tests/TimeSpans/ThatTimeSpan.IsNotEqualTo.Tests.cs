@@ -204,5 +204,35 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsDifferent_ShouldFail()
+			{
+				TimeSpan subject = 5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(6.Seconds()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 0:06,
+					             but it was 0:05, which differs by -0:01
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsTheSame_ShouldSucceed()
+			{
+				TimeSpan subject = 5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(5.Seconds()));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

@@ -76,5 +76,35 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNegative_ShouldSucceed()
+			{
+				TimeSpan subject = -5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPositive());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsPositive_ShouldFail()
+			{
+				TimeSpan subject = 5.Seconds();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPositive());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not positive,
+					             but it was 0:05
+					             """);
+			}
+		}
 	}
 }
