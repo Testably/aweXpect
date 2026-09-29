@@ -23,23 +23,31 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("foo", false)]
-			[InlineData("bar", true)]
-			public async Task WhenValueIsDifferent_ShouldSucceed(string expectedValue, bool expectSuccess)
+			[Fact]
+			public async Task WhenValueIsDifferent_ShouldSucceed()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo(expectedValue));
+					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo("bar"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenValueIsEqual_ShouldFail()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo("foo"));
 
 				await That(Act).Throws<XunitException>()
-					.OnlyIf(!expectSuccess)
-					.WithMessage($"""
-					              Expected that subject
-					              is not equal to "{expectedValue}",
-					              but it was "foo"
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to "foo",
+					             but it was "foo"
+					             """);
 			}
 		}
 

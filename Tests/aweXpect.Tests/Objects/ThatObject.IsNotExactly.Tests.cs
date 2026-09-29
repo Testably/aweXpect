@@ -26,7 +26,15 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await AssertIsNotExactlyString("foo");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that value
+					             is not exactly of type string,
+					             but it was string
+
+					             Actual:
+					             "foo"
+					             """);
 
 				static async Task AssertIsNotExactlyString<T>(T value)
 					=> await That(value).IsNotExactly<string>();

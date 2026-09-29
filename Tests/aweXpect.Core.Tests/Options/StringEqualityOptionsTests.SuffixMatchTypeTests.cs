@@ -94,7 +94,7 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual("foo ", " ");
 
 			await That(result).IsTrue()
-				.Because("white-space that is not ignored is a regular suffix");
+				.Because("whitespace that is not ignored is a regular suffix");
 		}
 
 		[Fact]

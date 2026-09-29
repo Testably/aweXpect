@@ -46,7 +46,14 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty,
+					             but it was [
+					               1
+					             ]
+					             """);
 			}
 
 			[Fact]

@@ -797,7 +797,7 @@ public sealed partial class ThatNumber
 			[AutoData]
 			public async Task ForNullableInt128_WhenUnexpectedIsNull_ShouldFail(int subjectValue)
 			{
-				Int128 subject = subjectValue;
+				Int128? subject = subjectValue;
 				Int128? unexpected = null;
 
 				async Task Act()
@@ -818,7 +818,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableInt128_WhenValueIsGreaterThanUnexpected_ShouldFail(
 				int subjectValue, int unexpectedValue, int expectedDifference)
 			{
-				Int128 subject = subjectValue;
+				Int128? subject = subjectValue;
 				Int128? unexpected = unexpectedValue;
 
 				async Task Act()
@@ -840,7 +840,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableInt128_WhenValueIsLessThanOrEqualToUnexpected_ShouldSucceed(
 				int subjectValue, int unexpectedValue)
 			{
-				Int128 subject = subjectValue;
+				Int128? subject = subjectValue;
 				Int128? unexpected = unexpectedValue;
 
 				async Task Act()

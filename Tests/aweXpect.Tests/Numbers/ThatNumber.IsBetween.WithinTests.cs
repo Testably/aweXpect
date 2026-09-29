@@ -295,7 +295,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is between 2 and 8 ± 1,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -308,7 +313,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within((sbyte)1);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is between 0 and 127 ± 1,
+					             but it was -128, which differs by -128 from the minimum
+					             """)
+					.Because("the difference must not overflow the range of sbyte");
 			}
 
 			[Theory]

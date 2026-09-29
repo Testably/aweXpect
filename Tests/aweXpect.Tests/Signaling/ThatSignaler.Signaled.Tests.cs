@@ -43,7 +43,7 @@ public sealed partial class ThatSignaler
 						.WithMessage("""
 						             Expected that signaler
 						             has recorded the callback at least once within 0:00.050,
-						             but it was never recorded within 0:00.*
+						             but it was never recorded within *
 						             """).AsWildcard()
 						.Because("the failure must show that the default timeout applied");
 				}
@@ -84,8 +84,9 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.050,
-					             but it was never recorded within 0:00.*
-					             """).AsWildcard();
+					             but it was never recorded within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]
@@ -168,8 +169,9 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.050,
-					             but it was never recorded within 0:00.*
-					             """).AsWildcard();
+					             but it was never recorded within *
+					             """).AsWildcard()
+					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
 			[Fact]

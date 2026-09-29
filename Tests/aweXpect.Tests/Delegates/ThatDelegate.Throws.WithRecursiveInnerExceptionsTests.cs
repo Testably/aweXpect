@@ -6,11 +6,8 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class WithRecursiveInnerExceptionsTests
 		{
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			public async Task WhenAnyInnerExceptionDoesMatch_ShouldSucceed(int minimum,
-				bool shouldThrow)
+			[Fact]
+			public async Task WhenAnyInnerExceptionDoesMatch_ShouldSucceed()
 			{
 				Action action = () => throw new OuterException(
 					innerException: new OtherException(
@@ -20,23 +17,9 @@ public sealed partial class ThatDelegate
 								innerException: new CustomException()))));
 
 				async Task Act()
-					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtLeast(minimum).Are<CustomException>());
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtLeast(1).Are<CustomException>());
 
-				await That(Act).Throws<XunitException>().OnlyIf(shouldThrow)
-					.WithMessage($"""
-					              Expected that action
-					              throws an exception with recursive inner exceptions of which at least {minimum} are of type ThatDelegate.CustomException,
-					              but only 1 of 5 were
-
-					              Collection:
-					              [
-					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                AggregateException: *,
-					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                ThatDelegate.CustomException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*
-					              ]
-					              """).AsWildcard();
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -80,6 +63,36 @@ public sealed partial class ThatDelegate
 					               ThatDelegate.CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenFewerInnerExceptionsMatchThanRequired_ShouldFail()
+			{
+				Action action = () => throw new OuterException(
+					innerException: new OtherException(
+						innerException: new AggregateException(
+							new OtherException(),
+							new OtherException(
+								innerException: new CustomException()))));
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtLeast(2).Are<CustomException>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which at least 2 are of type ThatDelegate.CustomException,
+					             but only 1 of 5 were
+
+					             Collection:
+					             [
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
+					               AggregateException: *,
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
+					               ThatDelegate.CustomException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*
+					             ]
+					             """).AsWildcard();
 			}
 
 			[Fact]

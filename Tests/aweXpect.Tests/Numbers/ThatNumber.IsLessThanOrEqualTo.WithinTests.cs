@@ -272,7 +272,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than or equal to 5 ± 1,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -284,7 +289,13 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within((sbyte)1);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than or equal to -128 ± 1,
+					             but it was 127, which differs by 255
+					             """)
+					.Because("the difference must not overflow the range of sbyte");
 			}
 
 			[Fact]
@@ -296,7 +307,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than or equal to 5,
+					             but it was 6, which differs by 1
+					             """);
 			}
 
 			[Fact]
@@ -308,7 +324,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(0);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than or equal to 5 ± 0,
+					             but it was 6, which differs by 1
+					             """);
 			}
 		}
 	}

@@ -146,7 +146,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
 					.WithParamName("expected")
-					.Because("the suffix is empty once the trailing white-space is ignored");
+					.Because("the suffix is empty once the trailing whitespace is ignored");
 			}
 
 			[Fact]
