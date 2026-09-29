@@ -23,7 +23,16 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 		try
 		{
 			sw.Start();
-			TValue value = await action(cancellationToken).AbandonOnCancellation(cancellationToken);
+			Task<TValue>? task = action(cancellationToken);
+			if (task is null)
+			{
+				return new DelegateValue<TValue>(default, null, sw.Elapsed, true)
+				{
+					IsNullTask = true,
+				};
+			}
+
+			TValue value = await task.AbandonOnCancellation(cancellationToken);
 			sw.Stop();
 			return new DelegateValue<TValue>(value, null, sw.Elapsed);
 		}

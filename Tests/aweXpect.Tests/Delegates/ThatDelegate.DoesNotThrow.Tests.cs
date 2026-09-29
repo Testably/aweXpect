@@ -67,8 +67,67 @@ public sealed partial class ThatDelegate
 			}
 		}
 
+		public sealed class FuncTaskTests
+		{
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<Task> @delegate = () => null!;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrow();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw any exception,
+					             but it returned <null> instead of a task
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsNull())
+					.Because("a null task is not an exception thrown by the delegate");
+			}
+		}
+
+		public sealed class FuncTaskValueTests
+		{
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_ShouldFail()
+			{
+				Func<Task<int>> @delegate = () => null!;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrow();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw any exception,
+					             but it returned <null> instead of a task
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsNull())
+					.Because("a null task is not an exception thrown by the delegate");
+			}
+
+			[Fact]
+			public async Task WhenDelegateReturnsNullTask_WhoseResult_ShouldFail()
+			{
+				Func<Task<int>> @delegate = () => null!;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw any exception and its result is equal to 1,
+					             but it returned <null> instead of a task
+					             """);
+			}
+		}
+
 		public sealed class FuncValueTests
 		{
+
 			[Theory]
 			[AutoData]
 			public async Task WhenAwaited_ShouldReturnResultFromDelegate(int value)
@@ -122,6 +181,22 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that subject
 					             does not throw any exception,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_WhoseResult_ShouldFail()
+			{
+				Func<int>? subject = null;
+
+				async Task Act()
+					=> await That(subject!).DoesNotThrow().WhoseResult.IsEqualTo(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not throw any exception and its result is equal to 1,
 					             but it was <null>
 					             """);
 			}

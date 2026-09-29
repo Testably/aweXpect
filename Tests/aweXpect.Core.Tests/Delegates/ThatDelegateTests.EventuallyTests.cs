@@ -677,6 +677,24 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenSubjectReturnsNullTask_ShouldFail()
+		{
+			Func<CancellationToken, Task<int>> subject = _ => null!;
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00.050,
+				             but it returned <null> instead of a task
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("a null task is not an exception thrown by the subject");
+		}
+
+		[Fact]
 		public async Task WhenSubjectThrowsOnlyAtFirst_ShouldSucceed()
 		{
 			Counter counter = new(2);

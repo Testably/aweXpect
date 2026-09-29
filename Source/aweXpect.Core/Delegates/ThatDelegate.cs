@@ -35,6 +35,21 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		return message;
 	}
 
+	/// <summary>
+	///     Appends the result for a delegate that was <see langword="null" /> or returned a <see langword="null" /> task.
+	/// </summary>
+	internal static void AppendNullResult(StringBuilder stringBuilder, string it, DelegateValue? actual)
+	{
+		if (actual?.IsNullTask == true)
+		{
+			stringBuilder.Append(it).Append(" returned <null> instead of a task");
+		}
+		else
+		{
+			stringBuilder.ItWasNull(it);
+		}
+	}
+
 	private sealed class DelegateIsNotNullWithinTimeoutConstraint(
 		string it,
 		ExpectationGrammars grammars,
@@ -77,7 +92,7 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		{
 			if (_actual?.IsNull != false)
 			{
-				stringBuilder.ItWasNull(it);
+				AppendNullResult(stringBuilder, it, _actual);
 			}
 			else if (_actual.ExceededTimeout is { } exceededTimeout)
 			{
@@ -117,5 +132,10 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		///     Options on the execution time to allow specifying a timeout.
 		/// </summary>
 		public ExecutionTimeOptions? ExecutionTimeOptions { get; set; }
+
+		/// <summary>
+		///     Flag indicating if a duration was already specified with <c>Within(…)</c>, even an infinite one.
+		/// </summary>
+		internal bool IsWithinSpecified { get; set; }
 	}
 }

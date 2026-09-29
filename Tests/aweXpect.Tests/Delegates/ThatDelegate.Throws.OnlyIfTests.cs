@@ -59,6 +59,23 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenFalse_ShouldFailWhenDelegateReturnsNullTask()
+				{
+					Func<Task> @delegate = () => null!;
+
+					async Task Act()
+						=> await That(@delegate).Throws().OnlyIf(false);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             does not throw any exception,
+						             but it returned <null> instead of a task
+						             """)
+						.Because("a null task neither throws nor completes successfully");
+				}
+
+				[Fact]
 				public async Task WhenFalse_ShouldSucceedWhenNoExceptionWasThrown()
 				{
 					Action action = () => { };

@@ -65,7 +65,12 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual?.ExceededTimeout is { } exceededTimeout)
+			// Repeats the result of the preceding delegate expectation, so that the combination renders it only once.
+			if (_actual?.IsNull == true)
+			{
+				ThatDelegate.AppendNullResult(stringBuilder, it, _actual);
+			}
+			else if (_actual?.ExceededTimeout is { } exceededTimeout)
 			{
 				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 			}

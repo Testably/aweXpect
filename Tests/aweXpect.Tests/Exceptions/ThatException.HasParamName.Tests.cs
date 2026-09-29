@@ -32,6 +32,9 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has param name containing "somethingElse",
 					             but it had param name "message" with a length of 7, which is shorter than the expected length of 13
+
+					             Param name:
+					             message
 					             """);
 			}
 		}
@@ -56,6 +59,9 @@ public sealed partial class ThatException
 					               "message"
 					               "somethingElse"
 					                ↑ (expected)
+
+					             Param name:
+					             message
 					             """);
 			}
 
@@ -180,6 +186,9 @@ public sealed partial class ThatException
 					             Expected that subject
 					             does not have param name equal to "message",
 					             but it had param name "message"
+
+					             Param name:
+					             message
 					             """);
 			}
 
@@ -217,6 +226,9 @@ public sealed partial class ThatException
 					             Expected that subject
 					             does not have param name containing "essag",
 					             but it had param name "message"
+
+					             Param name:
+					             message
 					             """);
 			}
 
@@ -261,6 +273,9 @@ public sealed partial class ThatException
 					             Expected that subject
 					             does not have param name equal to "message",
 					             but it had param name "message"
+
+					             Param name:
+					             message
 					             """);
 			}
 		}
@@ -294,6 +309,9 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has param name equal to <null>,
 					             but it had param name "message"
+
+					             Param name:
+					             message
 					             """)
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
@@ -316,6 +334,9 @@ public sealed partial class ThatException
 					               "message"
 					               "somethingElse"
 					                ↑ (expected)
+
+					             Param name:
+					             message
 					             """)
 					.Because("the shorthand renders exactly like the HasParamName().EqualTo(expected) continuation");
 			}

@@ -80,7 +80,7 @@ public abstract partial class ThatDelegate
 			{
 				if (_actual?.IsNull != false)
 				{
-					stringBuilder.ItWasNull(it);
+					AppendNullResult(stringBuilder, it, _actual);
 				}
 				else if (_actual.ExceededTimeout is { } exceededTimeout)
 				{
