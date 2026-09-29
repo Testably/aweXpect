@@ -5,6 +5,59 @@ public sealed partial class ThatDelegateTests
 	public sealed class WhoseTests
 	{
 		[Fact]
+		public async Task Throws_Whose_WithAsyncLambda_ShouldRenderMemberPath()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(async e => await e.GetValueAsync(), v => v.IsEqualTo(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetValueAsync() is equal to 2,
+				             but GetValueAsync() was 1, which differs by -1
+				             """);
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WithAsyncLambda_WithConfigureAwait_ShouldRenderMemberPath()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(async e => await e.GetValueAsync().ConfigureAwait(false), v => v.IsEqualTo(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetValueAsync() is equal to 2,
+				             but GetValueAsync() was 1, which differs by -1
+				             """)
+				.Because("ConfigureAwait does not select a member, so it is not part of the member path");
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WithAsyncLambda_WithoutMemberPath_ShouldRenderExpression()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(async e => await e.GetValueAsync() + 1, v => v.IsEqualTo(3));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose async e => await e.GetValueAsync() + 1 is equal to 3,
+				             but async e => await e.GetValueAsync() + 1 was 2, which differs by -1
+				             """)
+				.Because("an expression that is not a member path must not be shortened");
+		}
+
+		[Fact]
 		public async Task Throws_Whose_WithAsyncMember_ShouldVerifyAwaitedValue()
 		{
 			void Delegate() => throw new AsyncException(1);

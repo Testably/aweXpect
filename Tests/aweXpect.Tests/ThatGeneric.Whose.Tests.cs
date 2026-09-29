@@ -231,6 +231,26 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenAsyncLambdaIsNoMemberPath_ShouldRenderExpression()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(async o => await Task.FromResult(o.Value + 1), v => v.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose async o => await Task.FromResult(o.Value + 1) is equal to 3,
+					             but async o => await Task.FromResult(o.Value + 1) was 2, which differs by -1
+					             """)
+					.Because("an expression that is not a member path must not be shortened");
+			}
+
+			[Fact]
 			public async Task WhenAsyncLambdaIsUsed_ShouldVerifyAwaitedValue()
 			{
 				MyClass subject = new()
@@ -244,8 +264,28 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose async o => await o.GetValueAsync() is equal to 2,
-					             but async o => await o.GetValueAsync() was 1, which differs by -1
+					             whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1, which differs by -1
+					             """)
+					.Because("an async lambda that awaits a member is rendered as that member path");
+			}
+
+			[Fact]
+			public async Task WhenAsyncLambdaWithTypedParameterIsUsed_ShouldRenderMemberPath()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(async (MyClass o) => await o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1, which differs by -1
 					             """);
 			}
 

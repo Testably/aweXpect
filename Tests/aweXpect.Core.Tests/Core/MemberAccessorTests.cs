@@ -99,10 +99,72 @@ public sealed class MemberAccessorTests
 	[InlineData("_ => _.Value", "Value ")]
 	[InlineData("_ => 42", "42 ")]
 	[InlineData("@class => @class.Value", "Value ")]
+	[InlineData("async => async.Value", "Value ")]
 	[InlineData("(x, y) => x.Value", "(x, y) => x.Value ")]
 	[InlineData("GetSelector(x => x.Value)", "GetSelector(x => x.Value) ")]
 	[InlineData("selector", "selector ")]
 	public async Task FromFuncAsMemberAccessor_ShouldTryToExtractMemberAccessor(string expression, string expected)
+	{
+		MemberAccessor<string, int> subject = MemberAccessor<string, int>
+			.FromFuncAsMemberAccessor(x => x.Length, expression);
+
+		await That(subject.ToString()).IsEqualTo(expected);
+	}
+
+	[Theory]
+	[InlineData("async o => await Task.FromResult(o.Value + 1)")]
+	[InlineData("async o => await o.Value + 1")]
+	[InlineData("async o => await o.GetAsync() + await o.GetAsync()")]
+	[InlineData("async o => await o.GetAsync(\"(\") + o.Other(\")\")")]
+	[InlineData("async o => await o.Value < 1")]
+	[InlineData("async o => await o.A(/*(*/) + o.B(/*)*/)")]
+	[InlineData("async o => await o.A(// (\r\n) + o.B(// )\r\n)")]
+	[InlineData("async o => await o")]
+	[InlineData("async o => await o.ConfigureAwait(false)")]
+	[InlineData("async o => await o.GetAsync()?.ConfigureAwait(false)")]
+	[InlineData("async o => o.Value")]
+	[InlineData("async o => await ox.Value")]
+	[InlineData("async o => await (o.Value)")]
+	[InlineData("async o => await o .Value")]
+	[InlineData("async o => await o.Value /* comment */")]
+	[InlineData("async o => { return await o.Value; }")]
+	[InlineData("async (x, y) => await y.Value")]
+	[InlineData("async o => awaito.Value")]
+	[InlineData("static async o => await o.Value")]
+	public async Task FromFuncAsMemberAccessor_WithAsyncLambdaWithoutMemberPath_ShouldKeepExpression(
+		string expression)
+	{
+		MemberAccessor<string, int> subject = MemberAccessor<string, int>
+			.FromFuncAsMemberAccessor(x => x.Length, expression);
+
+		await That(subject.ToString()).IsEqualTo($"{expression} ")
+			.Because("only an awaited member path of the parameter can be reduced without changing its meaning");
+	}
+
+	[Theory]
+	[InlineData("async o => await o.Value", "Value ")]
+	[InlineData("async o => await o.GetValueAsync()", "GetValueAsync() ")]
+	[InlineData("async (o) => await o.Inner.Value", "Inner.Value ")]
+	[InlineData("async(o) => await o.Value", "Value ")]
+	[InlineData("async ( o ) => await o.Value", "Value ")]
+	[InlineData("async (Foo o) => await o.Value", "Value ")]
+	[InlineData("async (Dictionary<int, string> o) => await o.Value", "Value ")]
+	[InlineData("async @class => await @class.Value", "Value ")]
+	[InlineData("async o => await o.GetAsync().ConfigureAwait(false)", "GetAsync() ")]
+	[InlineData("async o => await o.Inner.GetAsync(1).ConfigureAwait(continueOnCapturedContext: true)",
+		"Inner.GetAsync(1) ")]
+	[InlineData("async o => await o.GetAsync<int>(1)", "GetAsync<int>(1) ")]
+	[InlineData("async o => await o.GetAsync<Dictionary<int, string>>()", "GetAsync<Dictionary<int, string>>() ")]
+	[InlineData("async o => await o.GetAsync(\"a)\", 'b', x => x.Value)",
+		"GetAsync(\"a)\", 'b', x => x.Value) ")]
+	[InlineData("async o => await o.GetAsync(/* ) */ 1)", "GetAsync(/* ) */ 1) ")]
+	[InlineData("async o => await o?.GetAsync()", "GetAsync() ")]
+	[InlineData("async o => await o[0]", "[0] ")]
+	[InlineData("async o => await o.Items?[0].Value", "Items?[0].Value ")]
+	[InlineData("async o => await o.Tasks[0]", "Tasks[0] ")]
+	[InlineData("  async  o  =>\r\n\tawait\r\n  o.Value  ", "Value ")]
+	public async Task FromFuncAsMemberAccessor_WithAsyncMemberLambda_ShouldExtractMemberPath(
+		string expression, string expected)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
 			.FromFuncAsMemberAccessor(x => x.Length, expression);
