@@ -1,11 +1,13 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace aweXpect.SourceGenerators.Helpers;
 
 internal readonly record struct ExpectationToGenerate
 {
-	public ExpectationToGenerate(string @namespace,
+	public ExpectationToGenerate(string? @namespace,
 		string className,
+		Accessibility accessibility,
 		INamedTypeSymbol targetType,
 		string positiveName,
 		string? negativeName,
@@ -14,6 +16,7 @@ internal readonly record struct ExpectationToGenerate
 	{
 		Namespace = @namespace;
 		ClassName = className;
+		Accessibility = SyntaxFacts.GetText(accessibility);
 		TargetType = targetType.ToDisplayString();
 		NotNullTargetType = TargetType;
 		Name = positiveName;
@@ -54,8 +57,8 @@ internal readonly record struct ExpectationToGenerate
 					NegatedFailsOnNull = namedArgument.Value.Value as bool? ?? false;
 					break;
 				case "Using":
-					Usings =
-						namedArgument.Value.Values.Select(x => x.Value?.ToString()).Where(x => x != null).ToArray()!;
+					Usings = new EquatableArray<string>(
+						namedArgument.Value.Values.Select(x => x.Value?.ToString()).Where(x => x != null).ToArray()!);
 					break;
 			}
 		}
@@ -69,18 +72,19 @@ internal readonly record struct ExpectationToGenerate
 
 		ExpectationText = positiveExpectationText ?? positiveName;
 		NegatedExpectationText = negativeExpectationText ?? $"not {positiveName}";
-		FileName = $"{ClassName}.{Name}.g.cs";
+		FileName = Namespace is null ? $"{ClassName}.{Name}.g.cs" : $"{Namespace}.{ClassName}.{Name}.g.cs";
 	}
 
 	public bool FailOnNull { get; } = true;
 	public bool NegatedFailsOnNull { get; }
-	public string[] Usings { get; } = [];
+	public EquatableArray<string> Usings { get; } = new([]);
 	public string FileName { get; }
 	public bool IncludeNegated { get; }
 	public bool IsNullable { get; }
 	public string? NegatedName { get; }
-	public string Namespace { get; }
+	public string? Namespace { get; }
 	public string ClassName { get; }
+	public string Accessibility { get; }
 	public string NotNullTargetType { get; }
 	public string TargetType { get; }
 	public string Name { get; }

@@ -39,6 +39,24 @@ internal static class GeneratorRunner
 			generatorDiagnostics);
 	}
 
+	/// <summary>
+	///     Runs the <paramref name="generator" /> on the <paramref name="sources" />, then again after adding the
+	///     <paramref name="addedSource" />, and returns the tracked result of the second run.
+	/// </summary>
+	public static GeneratorDriverRunResult RunTwice(IIncrementalGenerator generator, string[] sources,
+		string addedSource, bool referenceCore = true)
+	{
+		CSharpParseOptions parseOptions = new(LanguageVersion.Latest);
+		CSharpCompilation compilation = Compile("GeneratorTests", Parse(sources, parseOptions),
+			GetReferences(referenceCore));
+		GeneratorDriver driver = CSharpGeneratorDriver.Create([generator.AsSourceGenerator(),],
+			parseOptions: parseOptions,
+			driverOptions: new GeneratorDriverOptions(IncrementalGeneratorOutputKind.None, true));
+		driver = driver.RunGenerators(compilation);
+		return driver.RunGenerators(compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(addedSource, parseOptions)))
+			.GetRunResult();
+	}
+
 	public static MetadataReference CompileToReference(string assemblyName, string source,
 		params MetadataReference[] additionalReferences)
 	{

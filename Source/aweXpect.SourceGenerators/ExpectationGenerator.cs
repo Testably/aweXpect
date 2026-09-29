@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Text;
+﻿using System.Text;
 using aweXpect.SourceGenerators.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,11 +12,16 @@ namespace aweXpect.SourceGenerators;
 [Generator]
 public class ExpectationGenerator : IIncrementalGenerator
 {
-	private static readonly string[] _supportedAttributes =
-	[
-		nameof(SourceGenerationHelper.CreateExpectationOnAttribute),
-		nameof(SourceGenerationHelper.CreateExpectationOnNullableAttribute),
-	];
+	/// <summary>
+	///     Reported for an annotated class that cannot declare extension methods.
+	/// </summary>
+	private static readonly DiagnosticDescriptor NotTopLevel = new(
+		"aweXpect3005",
+		"The expectations need a top-level class",
+		"'{0}' cannot hold the generated expectations, because extension methods need a top-level static class",
+		"aweXpect.SourceGenerators",
+		DiagnosticSeverity.Error,
+		true);
 
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -29,73 +33,78 @@ public class ExpectationGenerator : IIncrementalGenerator
 			"CreateExpectationOnNullableAttribute.g.cs",
 			SourceText.From(SourceGenerationHelper.CreateExpectationOnNullableAttribute, Encoding.UTF8)));
 
-		HashSet<string> files = new();
-		IncrementalValuesProvider<ExpectationToGenerate> expectationsToGenerate = context.SyntaxProvider
-			.CreateSyntaxProvider(
-				static (s, _) => IsSyntaxTargetForGeneration(s),
-				(ctx, _) => GetSemanticTargetForGeneration(ctx, files))
-			.Where(static m => m is not null)
-			.SelectMany((x, _) => x!.ToImmutableArray());
+		RegisterExpectations(context, "aweXpect.SourceGenerators.CreateExpectationOnAttribute`1");
+		RegisterExpectations(context, "aweXpect.SourceGenerators.CreateExpectationOnNullableAttribute`1");
+	}
+
+	private static void RegisterExpectations(IncrementalGeneratorInitializationContext context,
+		string attributeMetadataName)
+	{
+		IncrementalValuesProvider<(EquatableArray<ExpectationToGenerate> Expectations, Problem? Problem)>
+			expectationsToGenerate = context.SyntaxProvider
+				.ForAttributeWithMetadataName(
+					attributeMetadataName,
+					static (node, _) => node is ClassDeclarationSyntax,
+					static (ctx, _) => GetExpectationsToGenerate(ctx))
+				.WithTrackingName("Expectations");
 
 		context.RegisterSourceOutput(expectationsToGenerate,
-			static (spc, source) => Execute(source, spc));
+			static (spc, source) => Execute(source.Expectations, source.Problem, spc));
 	}
 
-	private static bool IsSyntaxTargetForGeneration(SyntaxNode node)
-		=> node is ClassDeclarationSyntax { AttributeLists.Count: > 0, };
-
-	private static IEnumerable<ExpectationToGenerate> GetSemanticTargetForGeneration(GeneratorSyntaxContext context,
-		HashSet<string> files)
+	/// <remarks>
+	///     Only the attributes on the matched declaration are read, so that a class declared in several parts
+	///     yields every expectation once.
+	/// </remarks>
+	private static (EquatableArray<ExpectationToGenerate>, Problem?) GetExpectationsToGenerate(
+		GeneratorAttributeSyntaxContext context)
 	{
-		// we know the node is a ClassDeclarationSyntax thanks to IsSyntaxTargetForGeneration
-		ClassDeclarationSyntax classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-
-		SemanticModel semanticModel = context.SemanticModel;
-		if (semanticModel.GetDeclaredSymbol(classDeclarationSyntax) is not INamedTypeSymbol classSymbol)
+		if (context.TargetSymbol is not INamedTypeSymbol classSymbol)
 		{
-			yield break;
+			return (new EquatableArray<ExpectationToGenerate>([]), null);
 		}
 
-		foreach (AttributeData? attributeData in classSymbol.GetAttributes())
+		if (classSymbol.ContainingType is not null)
 		{
-			INamedTypeSymbol? attributeClass = attributeData.AttributeClass;
-			if (attributeClass == null || !attributeClass.IsGenericType ||
-			    !_supportedAttributes.Contains(attributeClass.Name))
-			{
-				continue;
-			}
+			return (new EquatableArray<ExpectationToGenerate>([]),
+				new Problem(NotTopLevel, ((ClassDeclarationSyntax)context.TargetNode).Identifier.GetLocation(),
+					classSymbol.ToDisplayString()));
+		}
 
-			// Extract the target type from the generic type argument
-			INamedTypeSymbol? targetType = attributeClass.TypeArguments[0] as INamedTypeSymbol;
-			if (targetType == null)
-			{
-				continue;
-			}
-
+		List<ExpectationToGenerate> expectations = [];
+		foreach (AttributeData attributeData in context.Attributes)
+		{
 			ExpectationToGenerate? expectationToGenerate = GetExpectationToGenerate(classSymbol, attributeData);
-			if (expectationToGenerate != null &&
-			    files.Add(expectationToGenerate.Value.FileName))
+			if (expectationToGenerate != null)
 			{
-				yield return expectationToGenerate.Value;
+				expectations.Add(expectationToGenerate.Value);
 			}
 		}
+
+		return (new EquatableArray<ExpectationToGenerate>(expectations.ToArray()), null);
 	}
 
-	private static void Execute(ExpectationToGenerate expectationToGenerate, SourceProductionContext context)
+	private static void Execute(EquatableArray<ExpectationToGenerate> expectationsToGenerate, Problem? problem,
+		SourceProductionContext context)
 	{
-		string result = SourceGenerationHelper.GenerateExtensionClass(expectationToGenerate);
-		// Create a separate partial class file for each enum
-		context.AddSource(expectationToGenerate.FileName, SourceText.From(result, Encoding.UTF8));
+		if (problem is not null)
+		{
+			context.ReportDiagnostic(problem.ToDiagnostic());
+		}
+
+		foreach (ExpectationToGenerate expectationToGenerate in expectationsToGenerate)
+		{
+			string result = SourceGenerationHelper.GenerateExtensionClass(expectationToGenerate);
+			context.AddSource(expectationToGenerate.FileName, SourceText.From(result, Encoding.UTF8));
+		}
 	}
 
 	private static ExpectationToGenerate? GetExpectationToGenerate(INamedTypeSymbol classSymbol,
 		AttributeData attributeData)
 	{
-		string containingNamespace = classSymbol.ContainingNamespace.ToString();
-		if (containingNamespace is null)
-		{
-			return null;
-		}
+		string? containingNamespace = classSymbol.ContainingNamespace.IsGlobalNamespace
+			? null
+			: classSymbol.ContainingNamespace.ToString();
 
 		INamedTypeSymbol? targetType = attributeData.AttributeClass?.TypeArguments[0] as INamedTypeSymbol;
 		if (targetType == null)
@@ -125,6 +134,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return new ExpectationToGenerate(
 			containingNamespace,
 			classSymbol.Name,
+			classSymbol.DeclaredAccessibility,
 			targetType,
 			positiveName,
 			negativeName,
