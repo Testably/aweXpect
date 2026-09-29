@@ -8,79 +8,96 @@ namespace aweXpect.Results;
 /// </summary>
 /// <param name="factory">
 ///     Creates the result from the <see cref="EnumerableQuantifier" /> to apply and a flag that is
-///     <see langword="true" /> when the expectation is negated, as for <see cref="NotEqualTo(int)" />.
+///     <see langword="true" /> when the expectation is negated, as for <see cref="NotEqualTo(int?)" />.
 /// </param>
+/// <remarks>
+///     A <see langword="null" /> count never matches, because a count is never <see langword="null" />. Compared
+///     for order, e.g. with <see cref="GreaterThan(int?)" />, it fails also when negated, because nothing can be
+///     ordered against <see langword="null" />.
+/// </remarks>
 public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TReturn> factory)
 {
 	/// <summary>
 	///     Verifies that the collection has exactly <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn EqualTo(int expected)
+	public TReturn EqualTo(int? expected)
 		=> factory(EnumerableQuantifier.Exactly(expected), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have exactly <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotEqualTo(int unexpected)
+	public TReturn NotEqualTo(int? unexpected)
 		=> factory(EnumerableQuantifier.Exactly(unexpected), true);
 
 	/// <summary>
 	///     Verifies that the collection has more than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThan(int expected)
-		=> factory(EnumerableQuantifier.MoreThan(expected), false);
+	public TReturn GreaterThan(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.MoreThan, "more than"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have more than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThan(int expected)
-		=> factory(EnumerableQuantifier.MoreThan(expected), true);
+	public TReturn NotGreaterThan(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.MoreThan, "more than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at least <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThanOrEqualTo(int expected)
-		=> factory(EnumerableQuantifier.AtLeast(expected), false);
+	public TReturn GreaterThanOrEqualTo(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.AtLeast, "at least"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have at least <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThanOrEqualTo(int expected)
-		=> factory(EnumerableQuantifier.AtLeast(expected), true);
+	public TReturn NotGreaterThanOrEqualTo(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.AtLeast, "at least"), true);
 
 	/// <summary>
 	///     Verifies that the collection has fewer than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThan(int expected)
-		=> factory(EnumerableQuantifier.LessThan(expected), false);
+	public TReturn LessThan(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.LessThan, "fewer than"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have fewer than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn NotLessThan(int expected)
-		=> factory(EnumerableQuantifier.LessThan(expected), true);
+	public TReturn NotLessThan(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.LessThan, "fewer than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at most <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThanOrEqualTo(int expected)
-		=> factory(EnumerableQuantifier.AtMost(expected), false);
+	public TReturn LessThanOrEqualTo(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.AtMost, "at most"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have at most <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn NotLessThanOrEqualTo(int expected)
-		=> factory(EnumerableQuantifier.AtMost(expected), true);
+	public TReturn NotLessThanOrEqualTo(int? expected)
+		=> factory(Ordered(expected, EnumerableQuantifier.AtMost, "at most"), true);
 
 	/// <summary>
 	///     Verifies that the collection has between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<TReturn> Between(int minimum)
-		=> new(maximum => factory(EnumerableQuantifier.Between(minimum, maximum), false));
+	public BetweenResult<TReturn, int?> Between(int? minimum)
+		=> new(maximum => factory(Range(minimum, maximum), false));
 
 	/// <summary>
 	///     Verifies that the collection does not have between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<TReturn> NotBetween(int minimum)
-		=> new(maximum => factory(EnumerableQuantifier.Between(minimum, maximum), true));
+	public BetweenResult<TReturn, int?> NotBetween(int? minimum)
+		=> new(maximum => factory(Range(minimum, maximum), true));
+
+	private static EnumerableQuantifier Ordered(int? expected, Func<int, EnumerableQuantifier> quantifier,
+		string text)
+		=> expected is null
+			? EnumerableQuantifier.OrderedAgainstNull($"{text} <null>")
+			: quantifier(expected.Value);
+
+	private static EnumerableQuantifier Range(int? minimum, int? maximum)
+		=> minimum is null || maximum is null
+			? EnumerableQuantifier.OrderedAgainstNull(
+				$"between {minimum?.ToString() ?? "<null>"} and {maximum?.ToString() ?? "<null>"}")
+			: EnumerableQuantifier.Between(minimum.Value, maximum.Value);
 }

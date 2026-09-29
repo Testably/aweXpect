@@ -332,6 +332,15 @@ public static partial class ThatAsyncEnumerable
 			_quantifier = quantifier;
 		}
 
+		/// <inheritdoc />
+		public override Outcome Outcome
+		{
+			get => _quantifier is EnumerableQuantifier.NullCountQuantifier { IsOrderedAgainstNull: true, }
+				? Outcome.Failure
+				: base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
 			IEvaluationContext context,

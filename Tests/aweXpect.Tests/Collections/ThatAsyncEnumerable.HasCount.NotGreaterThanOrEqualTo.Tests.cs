@@ -44,6 +44,26 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+					async Task Act()
+						=> await That(subject).HasCount().NotGreaterThanOrEqualTo(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have at least <null> items,
+						             but it had at least 1 item
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("nothing can be ordered against null");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -80,6 +100,27 @@ public sealed partial class ThatAsyncEnumerable
 						             Collection:
 						             [1, 2, 3]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it =>
+							it.HasCount().NotGreaterThanOrEqualTo(null));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has at least <null> items,
+						             but it had at least 1 item
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("nothing can be ordered against null, so the negation fails as well");
 				}
 			}
 		}

@@ -144,6 +144,18 @@ public sealed partial class ThatEnumerable
 						             but it was <null>
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenUnexpectedIsNull_ShouldSucceed()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).HasCount().NotEqualTo(null);
+
+					await That(Act).DoesNotThrow()
+						.Because("a count is never null");
+				}
 			}
 
 			public sealed class NegatedTests
@@ -208,12 +220,29 @@ public sealed partial class ThatEnumerable
 						             but it had at least 3 items
 
 						             Collection:
-						             [
-						               1,
-						               2,
-						               3
-						             ]
+						             [1, 2, 3]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenUnexpectedIsNull_ShouldFail()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it =>
+							it.HasCount().NotEqualTo(null));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has exactly <null> items,
+						             but it had 3 items
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("a count is never null");
 				}
 			}
 		}

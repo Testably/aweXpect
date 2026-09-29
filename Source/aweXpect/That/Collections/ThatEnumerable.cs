@@ -1186,6 +1186,15 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
+		/// <inheritdoc />
+		public override Outcome Outcome
+		{
+			get => _quantifier is EnumerableQuantifier.NullCountQuantifier { IsOrderedAgainstNull: true, }
+				? Outcome.Failure
+				: base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
@@ -1220,8 +1229,9 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					// Also when met, because an enclosing negation can still show the collection, which is laid out
+					// on one line only when this enumerates it up to the formatter limit.
+					_expectationBuilder.AddCollectionContext(materialized, materialized.ExceedsFormatterLimit());
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -1285,6 +1295,15 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
+		/// <inheritdoc />
+		public override Outcome Outcome
+		{
+			get => _quantifier is EnumerableQuantifier.NullCountQuantifier { IsOrderedAgainstNull: true, }
+				? Outcome.Failure
+				: base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public Task<ConstraintResult> IsMetBy(
 			TEnumerable? actual,
 			IEvaluationContext context,
@@ -1318,8 +1337,9 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					// Also when met, because an enclosing negation can still show the collection, which is laid out
+					// on one line only when this enumerates it up to the formatter limit.
+					_expectationBuilder.AddCollectionContext(materialized, materialized.ExceedsFormatterLimit());
 					return Task.FromResult<ConstraintResult>(this);
 				}
 

@@ -628,13 +628,13 @@ static aweXpect.ThatException.HasParamName<TException>(this aweXpect.Core.IThat<
 static aweXpect.ThatException.HasParamName<TException>(this aweXpect.Core.IThat<TException?>! subject, string? expected) -> aweXpect.Results.StringEqualityTypeResult<TException!, aweXpect.Core.IThat<TException?>!>!
 static aweXpect.ThatException.HasRecursiveInnerExceptions<TException>(this aweXpect.Core.IThat<TException?>! subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception!>!>!>! expectations) -> aweXpect.Results.AndOrResult<TException!, aweXpect.Core.IThat<TException?>!>!
 *REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int minimum) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int? expected) -> TReturn
 *REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int minimum) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int? expected) -> TReturn
 *REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int maximum) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int? expected) -> TReturn
 *REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int maximum) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int? expected) -> TReturn
 *REMOVED*static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char?>! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 *REMOVED*static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char>! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 *REMOVED*static aweXpect.ThatChar.IsOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char?>! expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
@@ -1831,11 +1831,11 @@ static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collec
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan?>>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectEqualityWithToleranceResult<System.Collections.Immutable.ImmutableArray<System.TimeSpan?>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan?>>!, System.TimeSpan?, System.TimeSpan>!
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan>>! subject, params System.TimeSpan[]! expected) -> aweXpect.Results.ObjectEqualityWithToleranceResult<System.Collections.Immutable.ImmutableArray<System.TimeSpan>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan>>!, System.TimeSpan, System.TimeSpan>!
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan>>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectEqualityWithToleranceResult<System.Collections.Immutable.ImmutableArray<System.TimeSpan>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<System.TimeSpan>>!, System.TimeSpan, System.TimeSpan>!
-aweXpect.Results.CollectionCountResult<TReturn>.NotBetween(int minimum) -> aweXpect.Results.BetweenResult<TReturn>!
-aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThan(int expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThanOrEqualTo(int expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotBetween(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int? expected) -> TReturn
 aweXpect.Results.EnumValueResult<TValue, TType>.NotBetween(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!, long?>!
 aweXpect.Results.EnumValueResult<TValue, TType>.NotBetween(ulong? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!, ulong?>!
 aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
@@ -2027,3 +2027,19 @@ static aweXpect.ThatDelegateThrows.WithHResult<TException>(this aweXpect.Delegat
 static aweXpect.ThatDelegateThrows.WithMessage<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException>! subject, string? expected) -> aweXpect.Results.StringEqualityTypeResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 *REMOVED*static aweXpect.ThatDelegateThrows.WithRecursiveInnerExceptions<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException>! subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception!>!>!>! expectations) -> aweXpect.Results.AndOrResult<TException?, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 static aweXpect.ThatDelegateThrows.WithRecursiveInnerExceptions<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException>! subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception!>!>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.Between(int minimum) -> aweXpect.Results.BetweenResult<TReturn>!
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.EqualTo(int expected) -> TReturn
+*REMOVED*aweXpect.Results.CollectionCountResult<TReturn>.NotEqualTo(int unexpected) -> TReturn
+*REMOVED*static aweXpect.ThatAsyncEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, int expected) -> aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!>!
+*REMOVED*static aweXpect.ThatEnumerable.HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?>! subject, int expected) -> aweXpect.Results.AndOrResult<System.Collections.IEnumerable!, aweXpect.Core.IThat<System.Collections.IEnumerable?>!>!
+*REMOVED*static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>! subject, int expected) -> aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>!>!
+*REMOVED*static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<TItem>>! subject, int expected) -> aweXpect.Results.AndOrResult<System.Collections.Immutable.ImmutableArray<TItem>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<TItem>>!>!
+*REMOVED*static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?>! subject, int expected) -> aweXpect.Results.AndOrResult<TItem[]!, aweXpect.Core.IThat<TItem[]?>!>!
+aweXpect.Results.CollectionCountResult<TReturn>.Between(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
+aweXpect.Results.CollectionCountResult<TReturn>.EqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotEqualTo(int? unexpected) -> TReturn
+static aweXpect.ThatAsyncEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!>!
+static aweXpect.ThatEnumerable.HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.IEnumerable!, aweXpect.Core.IThat<System.Collections.IEnumerable?>!>!
+static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>!>!
+static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<TItem>>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.Immutable.ImmutableArray<TItem>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<TItem>>!>!
+static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?>! subject, int? expected) -> aweXpect.Results.AndOrResult<TItem[]!, aweXpect.Core.IThat<TItem[]?>!>!

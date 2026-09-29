@@ -85,6 +85,26 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).HasCount(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly <null> items,
+					             but it had at least 1 item
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a count is never null, so the enumeration can stop at the first item");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;

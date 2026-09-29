@@ -13,6 +13,26 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableArrayTests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).HasCount(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly <null> items,
+					             but it had 3 items
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a count is never null");
+			}
+
+			[Fact]
 			public async Task WhenImmutableArrayContainsMatchingItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -64,6 +84,26 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableArrayEqualToTests
 		{
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).HasCount().EqualTo(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly <null> items,
+					             but it had 3 items
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a count is never null");
+			}
+
 			[Fact]
 			public async Task WhenImmutableArrayContainsMatchingItems_ShouldSucceed()
 			{
@@ -498,6 +538,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
+
+				async Task Act()
+					=> await That(subject).HasCount(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly <null> items,
+					             but it had 3 items
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a count is never null");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -572,6 +635,26 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [1, 2, 3]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+					=> await That(subject).HasCount().EqualTo(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly <null> items,
+					             but it had at least 1 item
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a count is never null, so the enumeration can stop at the first item");
 			}
 
 			[Fact]
