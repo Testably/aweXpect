@@ -630,7 +630,7 @@ public abstract class ExpectationBuilder
 
 	internal async Task<ConstraintResult> IsMet()
 	{
-		EvaluationContext.EvaluationContext context = new();
+		EvaluationContext.EvaluationContext context = new(this);
 		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
 		TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
 		CancellationToken cancellationToken = CancellationToken ??
