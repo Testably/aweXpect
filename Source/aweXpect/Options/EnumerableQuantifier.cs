@@ -64,10 +64,17 @@ public abstract partial class EnumerableQuantifier
 	///     Returns the <see cref="QuantifierContexts" /> which are helpful when the expectation is negated.
 	/// </summary>
 	/// <remarks>
-	///     A negated expectation fails when the items are on the other side, so these items explain the failure.
+	///     The negated expectation reads as its complement, so it shows the same items as the complement would. Without a
+	///     complement, the negated expectation fails when the items are on the other side, so these items explain the
+	///     failure.
 	/// </remarks>
 	internal virtual QuantifierContexts GetNegatedQuantifierContext()
 	{
+		if (GetComplement(ExpectationGrammars.None) is { } complement)
+		{
+			return complement.GetQuantifierContext();
+		}
+
 		QuantifierContexts contexts = GetQuantifierContext();
 		QuantifierContexts negatedContexts = QuantifierContexts.None;
 		if (contexts.HasFlag(QuantifierContexts.MatchingItems))
@@ -136,7 +143,7 @@ public abstract partial class EnumerableQuantifier
 	///     Returns <see langword="true" /> if the quantifier, or its complement when <paramref name="isNegated" />,
 	///     names a single item (e.g. <c>at least one</c>).
 	/// </summary>
-	internal bool IsSingle(bool isNegated)
+	internal bool IsRenderedSingle(bool isNegated)
 		=> isNegated
 			? (GetComplement(ExpectationGrammars.Nested) ?? this).IsSingle()
 			: IsSingle();

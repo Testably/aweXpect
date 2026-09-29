@@ -44,13 +44,6 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
-		/// <remarks>
-		///     The negated expectation only fails when no item matched, which the collection context already lists.
-		/// </remarks>
-		internal override QuantifierContexts GetNegatedQuantifierContext()
-			=> QuantifierContexts.None;
-
-		/// <inheritdoc />
 		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
 			=> AtLeast(1);
 

@@ -127,7 +127,7 @@ internal static class CollectionHelpers
 		}
 
 		ExpectationGrammars itemGrammars = grammars & ~ExpectationGrammars.Negated;
-		itemGrammars = quantifier.IsSingle(isNegated)
+		itemGrammars = quantifier.IsRenderedSingle(isNegated)
 			? itemGrammars & ~ExpectationGrammars.Plural
 			: itemGrammars | ExpectationGrammars.Plural;
 		stringBuilder.Append(' ').Append(expectationText(itemGrammars));

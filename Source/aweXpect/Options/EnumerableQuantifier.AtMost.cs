@@ -52,14 +52,6 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
-		/// <remarks>
-		///     With a maximum of 0 the negated expectation only fails when no item matched, which the collection context
-		///     already lists.
-		/// </remarks>
-		internal override QuantifierContexts GetNegatedQuantifierContext()
-			=> maximum == 0 ? QuantifierContexts.None : base.GetNegatedQuantifierContext();
-
-		/// <inheritdoc />
 		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
 			=> maximum switch
 			{
