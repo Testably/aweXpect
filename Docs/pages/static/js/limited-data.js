@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          286.55735638936363,
           204.8831177075704,
           250.18587831656137,
           177.46720306078592,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           353.43113381522045,
           364.52223185130526,
           159.8373302391597,
-          328.3258736474173
+          328.3258736474173,
+          347.981173324585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -431,7 +431,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920
+          920,
+          928
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.2686364991324,
           204.35752204259236,
           235.1757512826186,
           213.5767141342163,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           243.561039574941,
           322.3278011935098,
           127.74056861950801,
-          243.26174642244976
+          243.26174642244976,
+          260.9272581100464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323477.4386858259,
           257640.27161458333,
           313474.94373372395,
           212859.1596110026,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           429626.90471540176,
           413447.9342322716,
           229295.6982596261,
-          449700.0759440104
+          449700.0759440104,
+          408692.31403459824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1039,7 +1039,6 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
-          617976,
           618120,
           618120,
           618120,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           676856,
           676856,
           676856,
-          676856
+          676856,
+          677056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2755319.0290178573,
           1944879.146108774,
           2575158.3140625,
           1452274.2623697917,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2589362.1609933036,
           2251714.272235577,
           1231279.53125,
-          2715198.849739583
+          2715198.849739583,
+          2462868.2723214286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841648,
           4841651,
           4841609,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
       {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          496.19235967000327,
           400.83259906768797,
           458.5742767197745,
           309.30614109039306,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           569.0224212237766,
           607.0824567354642,
           258.22568420001437,
-          544.3072616713388
+          544.3072616713388,
+          611.0081187566121
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1647,7 +1647,6 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576
+          1576,
+          1584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          507.2081116994222,
           423.6676195780436,
           455.18602970668246,
           349.63048515319826,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           482.6588548342387,
           597.5760265350342,
           235.13927503994532,
-          474.20079441070556
+          474.20079441070556,
+          516.7548759460449
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          276.0557094256083,
           224.4715517117427,
           271.2452363014221,
           183.1254425219127,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           328.68858222961427,
           371.87384190926184,
           159.09055398305256,
-          338.32508718050445
+          338.32508718050445,
+          346.272525038038
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2255,7 +2255,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
-          1064
+          1064,
+          1072
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.68343985875447,
           207.47387848581587,
           239.5957540512085,
           183.8832524617513,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           241.20117902755737,
           329.98674287114824,
           120.11808069547017,
-          239.55810847649207
+          239.55810847649207,
+          245.90422594547272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          513.8926253000895,
           456.05161458651224,
           508.5778339249747,
           319.10603416883026,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           622.8229312896729,
           637.1440219197955,
           291.6919880594526,
-          614.5234347025554
+          614.5234347025554,
+          638.2788359778268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1256,
           1256,
@@ -2901,7 +2900,8 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
-          1600
+          1600,
+          1608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1249.217861175537,
           975.6958395640055,
           1155.7640056610107,
           824.2817416508992,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1181.2778409322102,
           1359.9278821211594,
           567.6406101080088,
-          1253.7681101481119
+          1253.7681101481119,
+          1239.2499777475994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2015.617419687907,
           1540.0985544840494,
           1942.7496509552002,
           1039.235434850057,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           3171.617327372233,
           2448.9298133850098,
           1537.74829687391,
-          3087.047616413661
+          3087.047616413661,
+          3213.690000661214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3471,7 +3471,6 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
           3104,
           3104,
           3104,
@@ -3509,7 +3508,8 @@ window.BENCHMARK_DATA = {
           4328,
           4328,
           4328,
-          4328
+          4328,
+          4376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1402.462478129069,
           1048.3148404439291,
           1282.7084517161052,
           998.9396559397379,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1319.2126701061543,
           1542.2817803896392,
           645.4647827784221,
-          1321.869647216797
+          1321.869647216797,
+          1379.8720521291098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e5ae83c490afcaa0a4dde53992fb1a8806125b83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 16 17:06:35 2026 \u002B0200",
-        "message": "fix!: let \u0060Within\u0060 wait out the timeout for an event expectation with an upper bound (#1144)"
-      },
-      {
         "sha": "763e757881428d6919f68444e7c7c5f909f28fec",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
         "message": "fix: treat undecided expectations in ThatAll and ThatAny as inconclusive (#1424)"
+      },
+      {
+        "sha": "1506ce4873ce551ea91790f1f3db6498fc9d03e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
       }
     ],
     "labels": [
-      "e5ae83c4",
       "763e7578",
       "3a011705",
       "59750756",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6afcb417",
       "702848e5",
       "d94dae41",
-      "7b1dd6ef"
+      "7b1dd6ef",
+      "1506ce48"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2607.561673227946,
           2002.1590328216553,
           2576.206933339437,
           1375.347214126587,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3210.8174593607587,
           2571.2008267916167,
           1633.2713779721942,
-          3099.450386683146
+          3099.450386683146,
+          3275.4314544677736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4079,7 +4079,6 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
-          2944,
           3296,
           3296,
           3296,
@@ -4117,7 +4116,8 @@ window.BENCHMARK_DATA = {
           4272,
           4272,
           4272,
-          4272
+          4272,
+          4280
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27385.67385253906,
           16234.44164804312,
           25930.931333269393,
           12203.467697143555,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26448.538559977213,
           18095.147993821363,
           9753.625492095947,
-          27628.15655517578
+          27628.15655517578,
+          20610.311613972983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4195,7 +4195,6 @@ window.BENCHMARK_DATA = {
         "data": [
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
