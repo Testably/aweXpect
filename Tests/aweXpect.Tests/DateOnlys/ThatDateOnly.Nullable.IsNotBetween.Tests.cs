@@ -346,6 +346,36 @@ public sealed partial class ThatDateOnly
 						.Because("a widening tolerance must not make the assertion throw at the type limits");
 				}
 			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenSubjectIsInsideTheRange_ShouldSucceed()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotBetween(new DateOnly(2010, 11, 11)).And(new DateOnly(2010, 11, 13)));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsOutsideTheRange_ShouldFail()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotBetween(new DateOnly(2010, 11, 13)).And(new DateOnly(2010, 11, 14)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is between 2010-11-13 and 2010-11-14,
+						             but it was 2010-11-12, which differs by -1 day from the minimum
+						             """);
+				}
+			}
 		}
 	}
 }

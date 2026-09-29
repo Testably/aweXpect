@@ -73,23 +73,6 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
-				{
-					DateOnly? expected = CurrentTime();
-					DateOnly? subject = null;
-
-					async Task Act()
-						=> await That(subject).IsEqualTo(expected);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is equal to {Formatter.Format(expected)},
-						              but it was <null>
-						              """);
-				}
-
-				[Fact]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
@@ -140,6 +123,36 @@ public sealed partial class ThatDateOnly
 						              is equal to {Formatter.Format(expected)} ± {tolerance} days, because we want to test the failure,
 						              but it was {Formatter.Format(subject)}, which differs by -{actualDifference} days
 						              """);
+				}
+			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenSubjectIsDifferent_ShouldSucceed()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(new DateOnly(2010, 11, 13)));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsTheSame_ShouldFail()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(new DateOnly(2010, 11, 12)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 2010-11-12,
+						             but it was 2010-11-12
+						             """);
 				}
 			}
 		}

@@ -52,22 +52,6 @@ public partial class ThatAsyncEnumerable
 		}
 	}
 
-	public static async IAsyncEnumerable<int> ToDelayedAsyncEnumerable(
-		int[] items,
-		[EnumeratorCancellation] CancellationToken cancellationToken = default)
-	{
-		foreach (int item in items)
-		{
-			await Task.Delay(100.Milliseconds(), cancellationToken);
-			if (cancellationToken.IsCancellationRequested)
-			{
-				break;
-			}
-
-			yield return item;
-		}
-	}
-
 	/// <summary>
 	///     Returns an <see cref="IAsyncEnumerable{T}" /> with incrementing numbers, starting with 0, which cancels the
 	///     <paramref name="cancellationTokenSource" /> after <paramref name="cancelAfter" /> iteration.
