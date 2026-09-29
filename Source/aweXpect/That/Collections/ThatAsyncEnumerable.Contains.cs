@@ -356,11 +356,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);
-					if (check == false)
-					{
-						isFailed = true;
-					}
-
+					isFailed |= check == false;
 					if (check == true)
 					{
 						Outcome = Outcome.Success;
@@ -515,11 +511,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);
-					if (check == false)
-					{
-						isFailed = true;
-					}
-
+					isFailed |= check == false;
 					if (check == true)
 					{
 						Outcome = Outcome.Success;

@@ -8,6 +8,7 @@ using aweXpect.Results;
 
 namespace aweXpect;
 
+#pragma warning disable S2166 // Rename this class to remove "Exception" or correct its inheritance
 public static partial class ThatException
 {
 	/// <summary>
@@ -96,3 +97,4 @@ public static partial class ThatException
 			=> stringBuilder.Append(It).Append(" had");
 	}
 }
+#pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

@@ -31,6 +31,7 @@ public static partial class ThatAsyncEnumerable
 			options,
 			async f =>
 			{
+#pragma warning disable S3267 // net8.0 has no LINQ over IAsyncEnumerable
 				await foreach (TItem item in f)
 				{
 					if (options.Matches(item))
@@ -38,6 +39,7 @@ public static partial class ThatAsyncEnumerable
 						return item;
 					}
 				}
+#pragma warning restore S3267
 
 				return default;
 			});

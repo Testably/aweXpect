@@ -4,6 +4,7 @@ public sealed partial class ThatDelegate
 {
 	public sealed partial class DoesNotThrowExactly
 	{
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class ActionTypeTests
 		{
 			[Fact]
@@ -190,5 +191,6 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 		}
+#pragma warning restore CA2263
 	}
 }
