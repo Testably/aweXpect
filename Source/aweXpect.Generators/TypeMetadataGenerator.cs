@@ -28,6 +28,17 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private const string EventMarkerAttribute = "aweXpect.Core.Metadata.RequiresEventMetadataAttribute";
 	private const string GenerateAttribute = "aweXpect.Core.Metadata.GenerateMetadataAttribute";
 	private const string Registry = "global::aweXpect.Core.Metadata.TypeMetadataRegistry";
+	private const string CoreAssembly = "aweXpect.Core";
+
+	private static readonly string[] MarkerNames =
+	[
+		"RequiresMemberMetadata", "RequiresMemberMetadataAttribute",
+		"RequiresEventMetadata", "RequiresEventMetadataAttribute",
+	];
+
+	private static readonly ConditionalWeakTable<Compilation, HashSet<string>> MarkedMethodNames = new();
+	private static readonly ConditionalWeakTable<SyntaxTree, string[]> DeclaredMarkedMethodNames = new();
+	private static readonly ConditionalWeakTable<IAssemblySymbol, string[]> ReferencedMarkedMethodNames = new();
 
 	/// <summary>
 	///     Reported for a type named in <c>GenerateMetadataAttribute</c> that yields no registration.
@@ -53,7 +64,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			.CreateSyntaxProvider(
 				static (node, _) => node is InvocationExpressionSyntax,
 				static (ctx, cancellationToken) => FromCallSite(ctx, cancellationToken))
-			.SelectMany(static (x, _) => x)
+			.WithTrackingName("CallSites")
+			.SelectMany(static (x, _) => x.Values)
 			.Collect()
 			.Select(static (x, _) => new EquatableArray<TypeRegistration>(x));
 
@@ -64,13 +76,16 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			static (spc, source) => Emit(spc, source.Left.Left, source.Left.Right, source.Right));
 	}
 
-	private static ImmutableArray<TypeRegistration> FromCallSite(GeneratorSyntaxContext context,
+	private static EquatableArray<TypeRegistration> FromCallSite(GeneratorSyntaxContext context,
 		CancellationToken cancellationToken)
 	{
 		InvocationExpressionSyntax invocation = (InvocationExpressionSyntax)context.Node;
-		if (context.SemanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is not IMethodSymbol method)
+		if ((GetInvokedName(invocation) is { } name &&
+		     !MarkedMethodNames.GetValue(context.SemanticModel.Compilation, CollectMarkedMethodNames)
+			     .Contains(name)) ||
+		    context.SemanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is not IMethodSymbol method)
 		{
-			return ImmutableArray<TypeRegistration>.Empty;
+			return new EquatableArray<TypeRegistration>(ImmutableArray<TypeRegistration>.Empty);
 		}
 
 		IMethodSymbol constructed = method.GetConstructedReducedFrom() ?? method;
@@ -86,7 +101,115 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 		}
 
-		return walker.Registrations;
+		return new EquatableArray<TypeRegistration>(walker.Registrations);
+	}
+
+	/// <returns>
+	///     The name of the invoked method, or <see langword="null" /> when the syntax does not reveal it.
+	/// </returns>
+	private static string? GetInvokedName(InvocationExpressionSyntax invocation)
+		=> invocation.Expression switch
+		{
+			SimpleNameSyntax name => name.Identifier.ValueText,
+			MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.ValueText,
+			MemberBindingExpressionSyntax memberBinding => memberBinding.Name.Identifier.ValueText,
+			_ => null,
+		};
+
+	/// <summary>
+	///     Collects the names of the methods in the compilation that carry a marker on a parameter or type
+	///     parameter, so that an invocation of any other method is dismissed without binding it.
+	/// </summary>
+	/// <remarks>
+	///     Only referenced assemblies that know aweXpect.Core can declare a marked method, so the others are not
+	///     searched. The names found in a referenced assembly or a syntax tree are kept as long as it lives, because
+	///     both survive an edit elsewhere.
+	/// </remarks>
+	private static HashSet<string> CollectMarkedMethodNames(Compilation compilation)
+	{
+		HashSet<string> names = new(StringComparer.Ordinal);
+		foreach (SyntaxTree tree in compilation.SyntaxTrees)
+		{
+			names.UnionWith(DeclaredMarkedMethodNames.GetValue(tree, CollectDeclaredMarkedMethodNames));
+		}
+
+		foreach (IAssemblySymbol assembly in compilation.SourceModule.ReferencedAssemblySymbols)
+		{
+			names.UnionWith(ReferencedMarkedMethodNames.GetValue(assembly, CollectReferencedMarkedMethodNames));
+		}
+
+		return names;
+	}
+
+	/// <remarks>
+	///     The attribute is recognised by its name, as the syntax tree alone cannot resolve it, so a marker applied
+	///     through a using alias is missed.
+	/// </remarks>
+	private static string[] CollectDeclaredMarkedMethodNames(SyntaxTree tree)
+	{
+		List<string> names = [];
+		foreach (AttributeSyntax attribute in tree.GetRoot().DescendantNodes().OfType<AttributeSyntax>())
+		{
+			string attributeName = attribute.Name switch
+			{
+				QualifiedNameSyntax qualified => qualified.Right.Identifier.ValueText,
+				AliasQualifiedNameSyntax aliasQualified => aliasQualified.Name.Identifier.ValueText,
+				SimpleNameSyntax simple => simple.Identifier.ValueText,
+				_ => "",
+			};
+			if (!MarkerNames.Contains(attributeName))
+			{
+				continue;
+			}
+
+			SyntaxNode? owner = attribute.Parent?.Parent is ParameterSyntax or TypeParameterSyntax
+				? attribute.Parent.Parent.Parent?.Parent
+				: null;
+			switch (owner)
+			{
+				case MethodDeclarationSyntax methodDeclaration:
+					names.Add(methodDeclaration.Identifier.ValueText);
+					break;
+				case LocalFunctionStatementSyntax localFunction:
+					names.Add(localFunction.Identifier.ValueText);
+					break;
+			}
+		}
+
+		return names.ToArray();
+	}
+
+	private static string[] CollectReferencedMarkedMethodNames(IAssemblySymbol assembly)
+	{
+		if (assembly.Name != CoreAssembly &&
+		    !assembly.Modules.Any(module => module.ReferencedAssemblies.Any(x => x.Name == CoreAssembly)))
+		{
+			return [];
+		}
+
+		List<string> names = [];
+		Stack<INamespaceOrTypeSymbol> containers = new();
+		containers.Push(assembly.GlobalNamespace);
+		while (containers.Count > 0)
+		{
+			foreach (ISymbol member in containers.Pop().GetMembers())
+			{
+				if (member is INamespaceOrTypeSymbol container)
+				{
+					containers.Push(container);
+				}
+				else if (member is IMethodSymbol method &&
+				         (method.Parameters.Any(HasMarker) || method.TypeParameters.Any(HasMarker)))
+				{
+					names.Add(method.Name);
+				}
+			}
+		}
+
+		return names.ToArray();
+
+		static bool HasMarker(ISymbol symbol)
+			=> IsMarked(symbol, MarkerAttribute) || IsMarked(symbol, EventMarkerAttribute);
 	}
 
 	/// <summary>
