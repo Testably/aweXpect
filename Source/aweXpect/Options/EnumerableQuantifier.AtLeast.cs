@@ -52,12 +52,12 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.None;
 
 		/// <inheritdoc />
-		internal override void AppendNegated(StringBuilder stringBuilder)
-			=> stringBuilder.Append(minimum switch
+		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
+			=> minimum switch
 			{
-				1 => " for no items",
-				_ => $" for fewer than {minimum} items",
-			});
+				1 => None(grammars),
+				_ => LessThan(minimum),
+			};
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,

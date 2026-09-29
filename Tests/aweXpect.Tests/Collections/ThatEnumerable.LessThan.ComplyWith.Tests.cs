@@ -21,8 +21,8 @@ public sealed partial class ThatEnumerable
 					             is greater than 2 for at least 4 items,
 					             but 3 of 5 were
 
-					             Matching items:
-					             [3, 4, 5]
+					             Not matching items:
+					             [1, 2]
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

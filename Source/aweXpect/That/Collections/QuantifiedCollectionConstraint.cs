@@ -69,22 +69,13 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		_totalCount = _matchingCount + _notMatchingCount;
 		Outcome = quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
-		EnumerableQuantifier.QuantifierContexts quantifierContexts = quantifier.GetQuantifierContext();
-		if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-		    _matchingItems is { Count: > 0 } matchingItems)
-		{
-			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-				() => matchingItems.Format(Actual, ItemType, _matchingCount),
-				int.MaxValue));
-		}
-
-		if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-		    _notMatchingItems is { Count: > 0 } notMatchingItems)
-		{
-			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-				() => notMatchingItems.Format(Actual, ItemType, _notMatchingCount),
-				int.MaxValue));
-		}
+		ExpectationBuilder.AddQuantifierContexts(this, quantifier,
+			_matchingItems is { Count: > 0 } matchingItems
+				? () => matchingItems.Format(Actual, ItemType, _matchingCount)
+				: null,
+			_notMatchingItems is { Count: > 0 } notMatchingItems
+				? () => notMatchingItems.Format(Actual, ItemType, _notMatchingCount)
+				: null);
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -101,14 +92,16 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 
 	private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 	{
+		// The quantifier carries the negation, so the item expectation is not negated.
+		string itemExpectation = expectationText(isNegated ? Grammars.Negate() : Grammars);
 		if (Grammars.HasFlag(ExpectationGrammars.Nested))
 		{
 			stringBuilder.AppendNestedQuantifier(quantifier, isNegated);
-			stringBuilder.Append(expectationText(Grammars));
+			stringBuilder.Append(itemExpectation);
 		}
 		else
 		{
-			stringBuilder.Append(expectationText(isNegated ? Grammars.Negate() : Grammars));
+			stringBuilder.Append(itemExpectation);
 			if (isNegated)
 			{
 				quantifier.AppendNegated(stringBuilder);

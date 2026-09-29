@@ -45,10 +45,14 @@ public abstract partial class EnumerableQuantifier
 
 		/// <inheritdoc />
 		/// <remarks>
-		///     <c>not no items</c> is not grammatical, so this renders the exact complement.
+		///     The negated expectation only fails when no item matched, which the collection context already lists.
 		/// </remarks>
-		internal override void AppendNegated(StringBuilder stringBuilder)
-			=> stringBuilder.Append(" for at least one item");
+		internal override QuantifierContexts GetNegatedQuantifierContext()
+			=> QuantifierContexts.None;
+
+		/// <inheritdoc />
+		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
+			=> AtLeast(1);
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,

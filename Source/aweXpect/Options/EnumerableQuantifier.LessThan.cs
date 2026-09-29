@@ -52,12 +52,16 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
-		internal override void AppendNegated(StringBuilder stringBuilder)
-			=> stringBuilder.Append(maximum switch
-			{
-				1 => " for at least one item",
-				_ => $" for at least {maximum} items",
-			});
+		/// <remarks>
+		///     With a maximum of 1 the negated expectation only fails when no item matched, which the collection context
+		///     already lists.
+		/// </remarks>
+		internal override QuantifierContexts GetNegatedQuantifierContext()
+			=> maximum == 1 ? QuantifierContexts.None : base.GetNegatedQuantifierContext();
+
+		/// <inheritdoc />
+		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
+			=> AtLeast(maximum);
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
