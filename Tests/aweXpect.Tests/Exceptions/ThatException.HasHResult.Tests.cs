@@ -51,7 +51,7 @@ public sealed partial class ThatException
 					.WithMessage($"""
 					              Expected that subject
 					              has an inner exception whose HResult is equal to {expectedHResult},
-					              but it had HResult {hResult}
+					              but HResult was {hResult}
 					              """);
 			}
 		}

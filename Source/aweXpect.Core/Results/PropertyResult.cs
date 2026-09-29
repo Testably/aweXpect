@@ -910,7 +910,16 @@ public static class PropertyResult
 				return;
 			}
 
-			stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
+			if (Grammars.HasFlag(ExpectationGrammars.Nested) && !Grammars.HasFlag(ExpectationGrammars.Active))
+			{
+				// The "whose" clause made the property the subject.
+				stringBuilder.Append(propertyExpression).Append(" was ");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
+			}
+
 			Formatter.Format(stringBuilder, _value);
 		}
 

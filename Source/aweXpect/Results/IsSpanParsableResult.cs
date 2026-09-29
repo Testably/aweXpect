@@ -29,6 +29,6 @@ public class IsSpanParsableResult<TType>(
 				}
 
 				return default;
-			}, " that "));
+			}, " that ", "it"));
 }
 #endif

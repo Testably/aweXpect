@@ -476,7 +476,8 @@ public abstract class ExpectationBuilder
 	///     Specifies a mapping to add expectations on the member from the <paramref name="asyncMemberAccessor" />.
 	/// </summary>
 	/// <remarks>
-	///     The member is a single value, so its expectations are in singular form.
+	///     The member is a single value, so its expectations are in singular form and refer to it as <c>it</c>, even
+	///     when the enclosing expectation named its subject (e.g. inside <c>Whose</c>).
 	///     <para />
 	///     If accessing or awaiting the member throws, the expectations on the member fail with <c>… did throw …</c> and
 	///     the exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
@@ -501,6 +502,7 @@ public abstract class ExpectationBuilder
 			_node = new ExpectationNode();
 		}
 
+		_it = DefaultCurrentSubject;
 		ExpectationGrammars &= ~(ExpectationGrammars.Introduced | ExpectationGrammars.Plural);
 		_whichNode = new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator);
 		return this;

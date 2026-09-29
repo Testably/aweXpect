@@ -1046,8 +1046,9 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is greater than 43,
-					             but it had int value 42
-					             """);
+					             but int value was 42
+					             """)
+					.Because("the whose clause makes the property the subject, as for a string property");
 			}
 
 			[Fact]
@@ -1063,7 +1064,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is not equal to 0,
-					             but it had int value 0
+					             but int value was 0
 					             """);
 			}
 
@@ -1080,7 +1081,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is equal to 1,
-					             but it had int value 0
+					             but int value was 0
 					             """);
 			}
 

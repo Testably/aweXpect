@@ -975,6 +975,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNested_ShouldNameTheProperty()
+			{
+				PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasLongValue(42L, ExpectationGrammars.Nested);
+
+				async Task Act()
+					=> await sut.GreaterThan(43L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose long value is greater than 43,
+					             but long value was 42
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();

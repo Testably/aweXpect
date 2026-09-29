@@ -292,6 +292,31 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForWhich_Async_InsideAPluralMember_ShouldReferToTheSingularValueAsIt()
+	{
+		Func<string, Task<char>> firstChar = s => Task.FromResult(s[0]);
+		ManualExpectationBuilder<string> sut = new(null);
+		string? usedIt = null;
+		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
+
+		sut.ForMember(MemberAccessor<string, string>.FromFunc(x => x, "chars "))
+			.AddExpectations(expectationBuilder => expectationBuilder
+				.ForWhich(firstChar, " whose first ")
+				.AddConstraint((it, g) =>
+				{
+					usedIt = it;
+					usedExpectationGrammars = g;
+					return new DummyConstraint<char>(c => c == 'b', "is 'b'");
+				}), _ => ExpectationGrammars.Plural);
+
+		await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(usedIt).IsEqualTo("it")
+			.Because("the value is no longer the member that the enclosing expectation named");
+		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
+	}
+
+	[Fact]
 	public async Task ForWhich_CalledThreeTimes_EachProjectionChainsFromPrevious_ShouldEvaluateDeeply()
 	{
 		ManualExpectationBuilder<string> sut = new(null);

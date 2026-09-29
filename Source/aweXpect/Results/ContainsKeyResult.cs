@@ -33,6 +33,6 @@ public class ContainsKeyResult<TCollection, TThat, TKey, TValue>
 	/// </summary>
 	public IThat<TValue> WhoseValue
 		=> new ThatSubject<TValue>(_expectationBuilder.ForWhich(_memberAccessor, " whose value ",
-			$"value [{Formatter.Format(_key)}]",
+			$"value of key {Formatter.Format(_key)}",
 			grammars => (grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced));
 }

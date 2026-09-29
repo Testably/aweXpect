@@ -752,6 +752,26 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenMemberOfWhose_AndNegated_ShouldDescribeTheCollection()
+			{
+				ItemsClass subject = new(1);
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Items,
+						v => v.DoesNotComplyWith(i => i.HasSingle().Which.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items do not have a single item that is equal to 1,
+					             but it had the single item 1
+
+					             Collection:
+					             [1]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSingleItemDoesNotSatisfyExpectation_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([3,]);
@@ -881,6 +901,11 @@ public sealed partial class ThatEnumerable
 					             has a single item whose Length is equal to 4,
 					             but Length was 3, which differs by -1
 					             """);
+			}
+
+			private sealed class ItemsClass(params int[] items)
+			{
+				public List<int> Items { get; } = [..items,];
 			}
 		}
 	}

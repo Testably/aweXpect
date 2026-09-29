@@ -944,6 +944,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNested_ShouldNameTheProperty()
+			{
+				PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasTimeSpanValue(42.Seconds(), ExpectationGrammars.Nested);
+
+				async Task Act()
+					=> await sut.GreaterThan(43.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose TimeSpan value is greater than 0:43,
+					             but TimeSpan value was 0:42
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();

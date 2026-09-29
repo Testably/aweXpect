@@ -400,7 +400,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values are equal to collection ["foo", "baz",] in order,
-					             but values [1, 2] contained item "bar" at index 1 instead of "baz"
+					             but values of keys [1, 2] contained item "bar" at index 1 instead of "baz"
 
 					             Collection:
 					             [
@@ -505,7 +505,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values contain "baz" at least once,
-					             but values [1, 2] did not contain it
+					             but values of keys [1, 2] did not contain it
 
 					             Collection:
 					             [
@@ -601,7 +601,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values have exactly 3 items,
-					             but values [1, 2] had only 2 items
+					             but values of keys [1, 2] had only 2 items
 
 					             Collection:
 					             [

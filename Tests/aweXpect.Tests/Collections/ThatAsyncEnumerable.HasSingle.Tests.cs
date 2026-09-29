@@ -673,6 +673,43 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenMemberOfWhose_AndNegated_ShouldDescribeTheCollection()
+			{
+				ItemsClass subject = new(1);
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Items,
+						v => v.DoesNotComplyWith(i => i.HasSingle().Which.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items do not have a single item that is equal to 1,
+					             but it had the single item 1
+
+					             Collection:
+					             [1]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberOfWhose_AndSingleItemDoesNotSatisfyExpectation_ShouldUseSingularFormAndNameTheItemIt()
+			{
+				ItemsClass subject = new(1);
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items have a single item that is equal to 2,
+					             but it was 1, which differs by -1
+					             """)
+					.Because("the single item, not the member Items, is the subject of the continued expectation");
+			}
+
+			[Fact]
 			public async Task WhenSingleItemDoesNotSatisfyExpectation_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(3);
@@ -719,6 +756,11 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).HasSingle().Which.IsGreaterThan(2);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class ItemsClass(params int[] items)
+			{
+				public IAsyncEnumerable<int> Items { get; } = ToAsyncEnumerable(items);
 			}
 		}
 	}
