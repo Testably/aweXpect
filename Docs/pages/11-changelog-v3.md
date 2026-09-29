@@ -292,7 +292,8 @@ members that an equivalency comparison includes.
 - **Collections** gain a positional `DoesNotHaveItem(x).AtIndex(n)`, and uniqueness becomes a quantifier:
   `AtLeast(1).AreNotUnique()`.
 - **Events** gain a positional `DidNotTrigger(eventName)`.
-- **Delegates** gain `DoesNotSatisfy(…).Within(…)` and more message and `HResult` continuations.
+- **Delegates** gain `DoesNotSatisfy(…).Within(…)` and more message and `HResult` continuations, and
+  `Throws(…).WithoutInner()` as the twin of `DoesNotHaveInner()`.
 - **Version** gains comparisons and its components. See [Version](./common-types/11-version.md).
 - **Guid** gains `IsOneOf`, and **Char** gains character class checks such as `IsADigit` and `IsUpperCased`.
 
@@ -302,8 +303,8 @@ members that an equivalency comparison includes.
   build for an expectation that is assigned to a local, returned from a member or evaluated with
   `GetAwaiter().GetResult()`. It now also covers `Expect.ThatAll` and `Expect.ThatAny`, and no longer accepts an
   expectation because another branch of the same statement verifies one.
-- `aweXpect0003` flags a `Has…` exception expectation directly after `Throws`, and offers a code fix. See
-  [Delegates](./04-delegates.md#with-after-throws-has-on-the-exception).
+- `aweXpect0003` flags a `Has…` or `DoesNotHave…` exception expectation directly after `Throws`, and offers a code
+  fix. See [Delegates](./04-delegates.md#with-after-throws-has-on-the-exception).
 - `aweXpect0004` reports an expectation for an ordinary subject that is applied to a delegate subject, where it
   checked the delegate instead of what it does, and offers a code fix. Because it is an error, an expectation such as
   `Expect.That(() => sut.Count()).IsEqualTo(1)` that used to compile now has to be written as

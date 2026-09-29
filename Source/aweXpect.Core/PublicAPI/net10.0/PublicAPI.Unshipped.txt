@@ -103,3 +103,6 @@ aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.PrepareExpectatio
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Internal = 1 -> aweXpect.Core.Helpers.MemberVisibilities
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.None = 0 -> aweXpect.Core.Helpers.MemberVisibilities
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Public = 2 -> aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!

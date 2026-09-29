@@ -46,6 +46,108 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		ReplaceKey);
 
 	[Fact]
+	public async Task ShouldInsertWhichBeforeDoesNotHaveInner() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|DoesNotHaveInner|]();
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().Which.DoesNotHaveInner();
+		    }
+		}
+		""",
+		InsertWhichKey);
+
+	[Fact]
+	public async Task ShouldReplaceDoesNotHaveInnerWithWithoutInner() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().[|DoesNotHaveInner|](typeof(ArgumentException));
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws<Exception>().WithoutInner(typeof(ArgumentException));
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
+	public async Task ShouldReplaceGenericDoesNotHaveInnerWithWithoutInner() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws().[|DoesNotHaveInner<ArgumentException>|]();
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        void Act() => throw new Exception("foo");
+
+		        await Expect.That(Act).Throws().WithoutInner<ArgumentException>();
+		    }
+		}
+		""",
+		ReplaceKey);
+
+	[Fact]
 	public async Task ShouldReplaceGenericHasInnerWithWithInner() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
