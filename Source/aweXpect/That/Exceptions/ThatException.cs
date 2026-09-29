@@ -5,6 +5,7 @@ using aweXpect.Helpers;
 
 namespace aweXpect;
 
+#pragma warning disable S2166 // Rename this class to remove "Exception" or correct its inheritance
 /// <summary>
 ///     Expectations on <see cref="Exception" /> values.
 /// </summary>
@@ -76,3 +77,4 @@ public static partial class ThatException
 				.Append(Actual!.InnerException!.FormatForMessage(indentation, "inner "));
 	}
 }
+#pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

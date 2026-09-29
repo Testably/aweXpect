@@ -139,6 +139,7 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class ImmutableTypeTests
 			{
 				[Fact]
@@ -278,6 +279,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 			}
+#pragma warning restore CA2263
 		}
 	}
 }

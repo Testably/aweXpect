@@ -113,6 +113,7 @@ public sealed partial class ThatDelegate
 				}
 			}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
 				[Fact]
@@ -175,6 +176,7 @@ public sealed partial class ThatDelegate
 					await That(@delegate).DoesNotThrow(typeof(CustomException)).WhoseResult.IsEqualTo(value);
 				}
 			}
+#pragma warning restore CA2263
 		}
 	}
 }

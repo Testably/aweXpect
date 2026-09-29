@@ -290,21 +290,17 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			public static TheoryData<Half> GetNormalOrNaNHalfValues() =>
-			[
+			public static TheoryData<Half> GetNormalOrNaNHalfValues() => new(
 				(Half)0.0,
 				(Half)1.0,
 				Half.MinValue,
 				Half.MaxValue,
 				Half.Epsilon,
-				Half.NaN,
-			];
+				Half.NaN);
 
-			public static TheoryData<Half> GetInfinityHalfValues() =>
-			[
+			public static TheoryData<Half> GetInfinityHalfValues() => new(
 				Half.NegativeInfinity,
-				Half.PositiveInfinity,
-			];
+				Half.PositiveInfinity);
 #endif
 		}
 		

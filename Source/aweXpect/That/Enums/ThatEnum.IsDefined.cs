@@ -36,7 +36,11 @@ public static partial class ThatEnum
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;
+#if NET8_0_OR_GREATER
+			Outcome = Enum.IsDefined(actual) ? Outcome.Success : Outcome.Failure;
+#else
 			Outcome = Enum.IsDefined(typeof(TEnum), actual) ? Outcome.Success : Outcome.Failure;
+#endif
 			return this;
 		}
 

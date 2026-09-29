@@ -340,14 +340,12 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			public static TheoryData<Half> GetNormalHalfValues() =>
-			[
+			public static TheoryData<Half> GetNormalHalfValues() => new(
 				(Half)0.0,
 				(Half)1.0,
 				Half.MinValue,
 				Half.MaxValue,
-				Half.Epsilon,
-			];
+				Half.Epsilon);
 #endif
 		}
 	}

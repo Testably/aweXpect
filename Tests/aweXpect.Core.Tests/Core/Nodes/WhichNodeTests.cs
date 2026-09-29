@@ -929,7 +929,7 @@ public sealed class WhichNodeTests
 			.Because("the failure message is the only place that names the member whose accessor threw");
 	}
 
-	private static IThat<int> WhoseLength(IThat<string> subject, Func<string, int> length)
+	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length)
 		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
 	private sealed class NegatableConstraintResult(Outcome outcome, string id = "2")
