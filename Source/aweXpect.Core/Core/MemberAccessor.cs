@@ -104,26 +104,33 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 					return "it ";
 				}
 
-				// Only a leading parameter access is stripped; any other body (e.g. a cast) is kept whole,
-				// because removing the parameter from it would no longer read as the selected member.
-				if (body.StartsWith(parameter + "?.", StringComparison.Ordinal))
-				{
-					body = body.Substring(parameter.Length + 2);
-				}
-				else if (body.StartsWith(parameter + ".", StringComparison.Ordinal))
-				{
-					body = body.Substring(parameter.Length + 1);
-				}
-				else if (body.StartsWith(parameter + "[", StringComparison.Ordinal))
-				{
-					body = body.Substring(parameter.Length);
-				}
-
-				return $"{body} ";
+				return $"{WithoutLeadingParameter(parameter, body)} ";
 			}
 		}
 
 		return $"{expression} ";
+	}
+
+	// Only a leading parameter access is stripped; any other body (e.g. a cast) is kept whole,
+	// because removing the parameter from it would no longer read as the selected member.
+	private static string WithoutLeadingParameter(string parameter, string body)
+	{
+		if (body.StartsWith(parameter + "?.", StringComparison.Ordinal))
+		{
+			return body.Substring(parameter.Length + 2);
+		}
+
+		if (body.StartsWith(parameter + ".", StringComparison.Ordinal))
+		{
+			return body.Substring(parameter.Length + 1);
+		}
+
+		if (body.StartsWith(parameter + "[", StringComparison.Ordinal))
+		{
+			return body.Substring(parameter.Length);
+		}
+
+		return body;
 	}
 
 	private static bool TryGetAsyncParameter(string parameter, out string name)
@@ -200,11 +207,11 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		{
 			path = path.Substring(2);
 		}
-		else if (path.StartsWith(".", StringComparison.Ordinal))
+		else if (path.StartsWith('.'))
 		{
 			path = path.Substring(1);
 		}
-		else if (!path.StartsWith("[", StringComparison.Ordinal))
+		else if (!path.StartsWith('['))
 		{
 			return null;
 		}
@@ -244,7 +251,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	private static int GetLastSegmentStart(string path)
 	{
 		int segmentStart = 0;
-		int index = path.StartsWith("[", StringComparison.Ordinal) ? 0 : SkipIdentifier(path, 0);
+		int index = path.StartsWith('[') ? 0 : SkipIdentifier(path, 0);
 		while (index >= 0 && index < path.Length)
 		{
 			int separatorLength = GetSeparatorLength(path, index);
