@@ -60,6 +60,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNested_ShouldNameTheProperty()
+			{
+				PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Nested);
+
+				async Task Act()
+					=> await sut.EqualTo(DateTimeKind.Local);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose kind value is equal to Local,
+					             but kind value was Utc
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();

@@ -108,6 +108,23 @@ public sealed partial class ThatString
 		public sealed class WhichTests
 		{
 			[Fact]
+			public async Task WhenMemberOfWhose_ShouldReferToTheParsedValueAsIt()
+			{
+				TextClass subject = new("1");
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Text, t => t.IsParsableInto<int>().Which.IsGreaterThan(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Text is parsable into int that is greater than 2,
+					             but it was 1, which differs by -1
+					             """)
+					.Because("the parsed value, not the member Text, is the subject of the continued expectation");
+			}
+
+			[Fact]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
@@ -162,6 +179,11 @@ public sealed partial class ThatString
 					=> await That(subject).IsParsableInto<decimal>(formatProvider).Which.IsEqualTo(12.34M);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class TextClass(string text)
+			{
+				public string Text { get; } = text;
 			}
 		}
 	}

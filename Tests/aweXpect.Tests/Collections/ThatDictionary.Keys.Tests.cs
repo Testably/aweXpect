@@ -42,6 +42,26 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenMemberOfWhose_ShouldReferToTheKeysAsIt()
+			{
+				MapClass subject = new(ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]));
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Map, m => m.Keys.Contains(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Map has keys that contain an item equal to 0 at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the keys, not the member Map, are the subject of the continued expectation");
+			}
+
+			[Fact]
 			public async Task WhenNegatedExpectationOnKeysFails_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -98,6 +118,11 @@ public sealed partial class ThatDictionary
 					             has keys that contain an item equal to 0 at least once,
 					             but it was <null>
 					             """);
+			}
+
+			private sealed class MapClass(IDictionary<int, string> map)
+			{
+				public IDictionary<int, string> Map { get; } = map;
 			}
 		}
 

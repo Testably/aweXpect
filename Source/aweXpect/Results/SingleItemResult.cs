@@ -34,8 +34,8 @@ public class SingleItemResult<TCollection, TItem>
 	///     Further expectations on the single <typeparamref name="TItem" />.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_memberAccessor, " that ",
-			expectationGrammar: grammars => grammars & ~ExpectationGrammars.Plural));
+		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_memberAccessor, " that ", "it",
+			grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;

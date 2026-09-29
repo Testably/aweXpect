@@ -288,8 +288,19 @@ public class EnumValueResult<TValue, TType>
 			=> Append(stringBuilder, isNegative);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ')
-				.Append(_value?.ToString(CultureInfo.InvariantCulture) ?? ValueFormatter.NullString);
+		{
+			if (Grammars.HasFlag(ExpectationGrammars.Nested) && !Grammars.HasFlag(ExpectationGrammars.Active))
+			{
+				// The "whose" clause made the property the subject.
+				stringBuilder.Append(propertyExpression).Append(" was ");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
+			}
+
+			stringBuilder.Append(_value?.ToString(CultureInfo.InvariantCulture) ?? ValueFormatter.NullString);
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> Append(stringBuilder, !isNegative);

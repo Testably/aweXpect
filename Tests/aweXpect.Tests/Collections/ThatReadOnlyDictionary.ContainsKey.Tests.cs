@@ -87,7 +87,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value is equal to "foo",
-					             but value [2] did throw an InvalidOperationException:
+					             but value of key 2 did throw an InvalidOperationException:
 					               lookup failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -107,7 +107,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key 2 whose value is equal to "foo",
-					             but value [2] did throw an InvalidOperationException:
+					             but value of key 2 did throw an InvalidOperationException:
 					               lookup failed
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -126,7 +126,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value is equal to "foo",
-					             but value [2] was "bar", which differs at index 0:
+					             but value of key 2 was "bar", which differs at index 0:
 					                ↓ (actual)
 					               "bar"
 					               "foo"

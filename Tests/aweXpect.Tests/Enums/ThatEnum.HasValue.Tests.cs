@@ -862,6 +862,24 @@ public sealed partial class ThatEnum
 			}
 
 			[Fact]
+			public async Task WhenNested_ShouldNameTheValue()
+			{
+				Exception subject = new("outer", new NumberException(MyNumbers.One));
+
+				async Task Act()
+					=> await That(subject).HasInner<NumberException>(e
+						=> e.Whose(x => x.Number, n => n.HasValue().EqualTo(2L)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an inner ThatEnum.HasValue.ContinuationTests.NumberException whose Number whose value is equal to 2,
+					             but value was 1
+					             """)
+					.Because("the whose clause makes the value the subject, as for other properties");
+			}
+
+			[Fact]
 			public async Task WhenSubjectDoesNotHaveExpectedValue_ShouldRenderLikeTheShorthand()
 			{
 				MyNumbers subject = MyNumbers.One;
@@ -876,6 +894,11 @@ public sealed partial class ThatEnum
 					             but it had value 1
 					             """)
 					.Because("the continuation renders exactly like the HasValue(expected) shorthand");
+			}
+
+			private sealed class NumberException(MyNumbers number) : Exception
+			{
+				public MyNumbers Number { get; } = number;
 			}
 		}
 

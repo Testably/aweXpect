@@ -985,8 +985,9 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose Items have a single item that is equal to 2,
-					             but Items was 1, which differs by -1
-					             """);
+					             but it was 1, which differs by -1
+					             """)
+					.Because("the single item, not the member Items, is the subject of the continued expectation");
 			}
 
 			[Fact]
@@ -1002,7 +1003,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             has a single item whose Items have a single item that is equal to 2,
-					             but Items was 1, which differs by -1
+					             but it was 1, which differs by -1
 					             """);
 			}
 
