@@ -79,7 +79,15 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Values.All().AreUnique());
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has values that are unique not for all items,
+					             but all 3 were
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
 			}
 
 			[Fact]
@@ -162,6 +170,32 @@ public sealed partial class ThatDictionary
 
 		public sealed class DictionaryTests
 		{
+			[Fact]
+			public async Task WhenExpectationOnValuesFails_ShouldFail()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).Values.Contains("baz");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has values that contain "baz" at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "foo",
+					               "bar"
+					             ]
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenExpectationOnValuesIsSatisfied_ShouldSucceed()
 			{

@@ -833,10 +833,10 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenLaterTimeoutIsLonger_ShouldKeepTheUpperBound()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(500.Milliseconds(), token);
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(30.Seconds());
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(60.Seconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

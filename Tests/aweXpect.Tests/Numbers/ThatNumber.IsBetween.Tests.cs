@@ -515,7 +515,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableDecimal_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimumValue,
 				double? maximumValue, string differenceSuffix)
 			{
-				decimal subject = 2;
+				decimal? subject = 2;
 				decimal? minimum = minimumValue == null ? null : new decimal(minimumValue.Value);
 				decimal? maximum = maximumValue == null ? null : new decimal(maximumValue.Value);
 
@@ -590,7 +590,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableDouble_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimum, double? maximum,
 				string differenceSuffix)
 			{
-				double subject = 2;
+				double? subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum);
@@ -639,7 +639,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableFloat_WhenMinimumOrMaximumIsNull_ShouldFail(float? minimum, float? maximum,
 				string differenceSuffix)
 			{
-				float subject = 2;
+				float? subject = 2;
 
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum);

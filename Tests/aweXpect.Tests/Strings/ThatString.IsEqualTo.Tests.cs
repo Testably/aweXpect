@@ -395,7 +395,16 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).IgnoringIndentation();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "foo\nbar" ignoring indentation,
+					             but it was "foo  \nbar", which differs on line 1 and column 4:
+					                   ↓ (actual)
+					               "foo  \nbar"
+					               "foo\nbar"
+					                   ↑ (expected)
+					             """);
 			}
 
 			[Fact]

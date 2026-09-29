@@ -73,7 +73,15 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<Outer>()
 						.Whose(o => o.Item, it => it.Is<Derived>());
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type Outer whose Item is of type Derived,
+					             but Item was OtherDerived
+
+					             Actual:
+					             OtherDerived { }
+					             """);
 			}
 
 			[Fact]

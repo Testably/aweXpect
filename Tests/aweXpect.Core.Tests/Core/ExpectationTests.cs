@@ -11,7 +11,12 @@ public sealed class ExpectationTests
 		async Task Act()
 			=> await That(true).IsEqualTo(a).And.IsEqualTo(b);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			              Expected that true
+			              is {a} and is {b},
+			              but it was True
+			              """);
 	}
 
 	[Theory]

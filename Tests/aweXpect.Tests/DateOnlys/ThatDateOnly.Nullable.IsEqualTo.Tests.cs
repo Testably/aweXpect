@@ -56,18 +56,6 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndExpectedIsNull_ShouldSucceed()
-				{
-					DateOnly? subject = null;
-					DateOnly? expected = null;
-
-					async Task Act()
-						=> await That(subject).IsEqualTo(expected);
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateOnly? subject = CurrentTime();

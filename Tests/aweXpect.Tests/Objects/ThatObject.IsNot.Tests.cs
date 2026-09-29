@@ -28,7 +28,15 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await AssertIsNotString("foo");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that value
+					             is not of type string,
+					             but it was string
+
+					             Actual:
+					             "foo"
+					             """);
 
 				static async Task AssertIsNotString<T>(T value)
 					=> await That(value).IsNot<string>();

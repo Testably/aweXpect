@@ -28,7 +28,15 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await AssertIsExactlyString(42);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that value
+					             is exactly of type string,
+					             but it was int
+
+					             Actual:
+					             42
+					             """);
 
 				static async Task AssertIsExactlyString<T>(T value)
 					=> await That(value).IsExactly<string>();

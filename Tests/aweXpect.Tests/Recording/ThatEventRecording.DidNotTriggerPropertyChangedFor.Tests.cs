@@ -228,5 +228,67 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenEventIsNotTriggered_ShouldFail()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(n => n.DidNotTriggerPropertyChangedFor(x => x.MyValue));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for property MyValue at least once,
+					             but it was never recorded in []
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenEventIsTriggered_ShouldSucceed()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(n => n.DidNotTriggerPropertyChangedFor(x => x.MyValue));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventIsTriggeredForOtherProperty_ShouldFail()
+			{
+				PropertyChangedClass sut = new()
+				{
+					MyValue = 428,
+				};
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged("SomeOtherProperty");
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(n => n.DidNotTriggerPropertyChangedFor(x => x.MyValue));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for property MyValue at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 428
+					                 }, PropertyChangedEventArgs {
+					                   PropertyName = "SomeOtherProperty"
+					                 })
+					             ]
+					             """);
+			}
+		}
 	}
 }

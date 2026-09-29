@@ -472,7 +472,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' suffix cannot be empty.").AsPrefix().And
 				.WithParamName("unexpected")
-				.Because("the suffix is empty once the trailing white-space is ignored");
+				.Because("the suffix is empty once the trailing whitespace is ignored");
 		}
 
 		[Fact]
@@ -690,7 +690,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix().And
 				.WithParamName("unexpected")
-				.Because("the prefix is empty once the leading white-space is ignored");
+				.Because("the prefix is empty once the leading whitespace is ignored");
 		}
 
 		[Theory]

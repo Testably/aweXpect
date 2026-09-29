@@ -68,7 +68,7 @@ public class SynchronouslyExtensionsTests
 	}
 
 	[Fact]
-	public void WhenPropertyValuesMatch_ShouldFail()
+	public void WhenPropertyValuesDiffer_ShouldFail()
 	{
 		Foo subject = new()
 		{

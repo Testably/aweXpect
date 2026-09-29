@@ -93,7 +93,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix().And
 					.WithParamName("unexpected")
-					.Because("the prefix is empty once the leading white-space is ignored");
+					.Because("the prefix is empty once the leading whitespace is ignored");
 			}
 
 			[Fact]

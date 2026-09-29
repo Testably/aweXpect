@@ -13,6 +13,9 @@ public sealed partial class ThatChar
 				[InlineData('1')]
 				[InlineData('4')]
 				[InlineData('9')]
+				[InlineData('\u00BD')]
+				[InlineData('\u2163')]
+				[InlineData('\u00B2')]
 				public async Task WhenSubjectIsANumber_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -35,7 +38,7 @@ public sealed partial class ThatChar
 				[InlineData(']')]
 				[InlineData('{')]
 				[InlineData('}')]
-				public async Task WhenSubjectIsNoLetter_ShouldFail(char? subject)
+				public async Task WhenSubjectIsNotANumber_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsANumber();
@@ -72,6 +75,9 @@ public sealed partial class ThatChar
 				[InlineData('1')]
 				[InlineData('4')]
 				[InlineData('9')]
+				[InlineData('\u00BD')]
+				[InlineData('\u2163')]
+				[InlineData('\u00B2')]
 				public async Task WhenSubjectIsANumber_ShouldFail(char? subject)
 				{
 					async Task Act()
@@ -99,7 +105,7 @@ public sealed partial class ThatChar
 				[InlineData(']')]
 				[InlineData('{')]
 				[InlineData('}')]
-				public async Task WhenSubjectIsNoLetter_ShouldSucceed(char? subject)
+				public async Task WhenSubjectIsNotANumber_ShouldSucceed(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsANumber());

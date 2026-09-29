@@ -376,7 +376,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
 
 				async Task Act() =>
-					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChanged());
+					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -390,20 +390,20 @@ public sealed partial class ThatEventRecording
 				};
 				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
 
-				sut.NotifyPropertyChanged("SomeArbitraryProperty");
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
 
 				async Task Act() =>
-					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChanged());
+					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that recording
-					             has never recorded the PropertyChanged event on sut,
+					             has never recorded the PropertyChanged event on sut for property MyValue,
 					             but it was recorded once in [
 					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
 					                   MyValue = 422
 					                 }, PropertyChangedEventArgs {
-					                   PropertyName = "SomeArbitraryProperty"
+					                   PropertyName = "MyValue"
 					                 })
 					             ]
 					             """);
@@ -436,6 +436,20 @@ public sealed partial class ThatEventRecording
 					             ]
 					             """)
 					.Because("the negation has to be the exact complement of the positive expectation");
+			}
+
+			[Fact]
+			public async Task WhenEventIsTriggeredForOtherProperty_ShouldSucceed()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged("SomeArbitraryProperty");
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

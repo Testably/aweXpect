@@ -44,7 +44,15 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(1).ComplyWith(it => it.IsEqualTo(99));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 99 for exactly one item,
+					             but none of 5 were
+
+					             Collection:
+					             [1, 2, 3, 4, 5]
+					             """);
 			}
 
 			[Fact]

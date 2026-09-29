@@ -1473,7 +1473,6 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-
 			[Theory]
 			[InlineData(2, 1, 3)]
 			[InlineData(2, 2, 4)]
@@ -1509,10 +1508,10 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(null, 1, ", which differs by 1 from the maximum")]
 			[InlineData(1, null, "")]
-			public async Task ForNullableInt_WhenMinimumIsNull_ShouldFail(
+			public async Task ForNullableInt_WhenMinimumOrMaximumIsNull_ShouldFail(
 				int? minimum, int? maximum, string differenceSuffix)
 			{
-				int subject = 2;
+				int? subject = 2;
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
@@ -1525,7 +1524,6 @@ public sealed partial class ThatNumber
 					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
 					              """);
 			}
-
 
 			[Theory]
 			[InlineData(2, 1, 3)]
