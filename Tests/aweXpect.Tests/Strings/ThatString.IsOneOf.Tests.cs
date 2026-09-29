@@ -111,6 +111,48 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedThrows_ShouldThrowTheExceptionOfTheExpectedItems()
+			{
+				string subject = "foo";
+
+				IEnumerable<string> GetExpected()
+				{
+					yield return "bar";
+					throw new InvalidOperationException("the expected values are broken");
+				}
+
+				async Task Act()
+					=> await That(subject).IsOneOf(GetExpected());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("the expected values are broken")
+					.Because("an exception of the expected values is not reported as if the subject threw it");
+			}
+
+			[Fact]
+			public async Task WhenExpectedThrowsForTheFirstItem_ShouldThrowTheExceptionOfTheExpectedItems()
+			{
+				string subject = "foo";
+
+				IEnumerable<string> GetExpected()
+				{
+					if (subject.Length > 0)
+					{
+						throw new InvalidOperationException("the expected values are broken");
+					}
+
+					yield return "bar";
+				}
+
+				async Task Act()
+					=> await That(subject).IsOneOf(GetExpected());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("the expected values are broken")
+					.Because("the check for an empty sequence passes on the exception of its first item unchanged");
+			}
+
+			[Fact]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";

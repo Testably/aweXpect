@@ -1,0 +1,269 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
+
+// ReSharper disable PossibleMultipleEnumeration
+
+namespace aweXpect.Tests;
+
+public sealed partial class ThatEnumerable
+{
+	public sealed partial class StartsWith
+	{
+		public sealed class SingleEnumerationTests
+		{
+			[Fact]
+			public async Task Enumerable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 4);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item 2 at index 1 instead of 4
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+
+			[Fact]
+			public async Task Enumerable_WhenSubjectCanOnlyBeEnumeratedOnce_ShouldFailForDoesNotStartWith()
+			{
+				IEnumerable subject = Factory.GetSingleUseEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("the message lists the matching items from the enumeration that compared them");
+			}
+
+			[Fact]
+			public async Task EnumerableWithUntypedExpected_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				IEnumerable expected = Factory.GetSingleUseEnumerable(1, 4);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item 2 at index 1 instead of 4
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task Immutable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 4);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item 2 at index 1 instead of 4
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ImmutableStrings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["a", "b", "c",];
+				IEnumerable<string> expected = Factory.GetSingleUseEnumerable("a", "d");
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item "b" at index 1 instead of "d"
+
+					             Collection:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ImmutableWithin_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				ImmutableArray<double> subject = [1.0, 2.0, 3.0,];
+				IEnumerable<double> expected = Factory.GetSingleUseEnumerable(1.1, 4.0);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected).Within(0.25);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected ± 0.25,
+					             but it contained item 2.0 at index 1 instead of 4.0
+
+					             Collection:
+					             [1.0, 2.0, 3.0]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+#endif
+
+			[Fact]
+			public async Task Strings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
+				IEnumerable<string> expected = Factory.GetSingleUseEnumerable("a", "d");
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item "b" at index 1 instead of "d"
+
+					             Collection:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+
+			[Fact]
+			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 4);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected,
+					             but it contained item 2 at index 1 instead of 4
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+
+			[Fact]
+			public async Task WhenSubjectCanOnlyBeEnumeratedOnce_ShouldFailForDoesNotStartWith()
+			{
+				IEnumerable<int> subject = Factory.GetSingleUseEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("the message lists the matching items from the enumeration that compared them");
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasSideEffects_ShouldEnumerateItOnlyOnceForDoesNotStartWith()
+			{
+				int enumerations = 0;
+
+				IEnumerable<int> GetSubject()
+				{
+					enumerations++;
+					yield return 1;
+					yield return 2;
+					yield return 3;
+				}
+
+				async Task Act()
+					=> await That(GetSubject()).DoesNotStartWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject()
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """);
+				await That(enumerations).IsEqualTo(1)
+					.Because("the message must not run the side effects of the subject a second time");
+			}
+
+			[Fact]
+			public async Task Within_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+			{
+				IEnumerable<double> subject = ToEnumerable(1.0, 2.0, 3.0);
+				IEnumerable<double> expected = Factory.GetSingleUseEnumerable(1.1, 4.0);
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected).Within(0.25);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with expected ± 0.25,
+					             but it contained item 2.0 at index 1 instead of 4.0
+
+					             Collection:
+					             [1.0, 2.0, 3.0]
+					             """)
+					.Because("the guard and the comparison share one enumeration of the expected items");
+			}
+		}
+	}
+}

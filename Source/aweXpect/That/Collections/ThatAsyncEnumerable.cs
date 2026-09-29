@@ -480,7 +480,8 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
+			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
 				? objectOptions.ForEvaluation()
 				: options;
@@ -491,7 +492,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expected, typeof(TItem).GetFormattingOption(expected switch
+					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 					{
 						ICollection<TItem> coll => coll.Count,
 						ICountable countable => countable.Count,
@@ -763,7 +764,9 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			ICollection<Expression<Func<TItem, bool>>> expectedItems =
+				expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
+			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			if (IsNegated)
 			{
@@ -771,12 +774,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expected, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
+					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			NoOptions noOptions = new();
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))

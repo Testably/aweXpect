@@ -72,6 +72,25 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenExpectedThrows_ShouldThrowTheExceptionOfTheExpectedItems()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+
+				IEnumerable<int> GetExpected()
+				{
+					yield return 41;
+					throw new InvalidOperationException("the expected values are broken");
+				}
+
+				async Task Act()
+					=> await That(subject).ContainsValues(GetExpected());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("the expected values are broken")
+					.Because("an exception of the expected values is not wrapped as if the subject threw it");
+			}
+
+			[Fact]
 			public async Task WhenOneValueIsMissing_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);

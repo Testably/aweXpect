@@ -34,36 +34,17 @@ internal static class ExceptionHelpers
 	private static string Describe(string? paramName)
 		=> paramName is "expected" or "unexpected" ? $"'{paramName}' value" : $"'{paramName}'";
 
-	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
-		=> ThrowIfNullOrEmptyNamed(parameter, paramName);
-
-	/// <summary>
-	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
-	///     expectation: the expected collection, or the unexpected one when <paramref name="negated" />.
-	/// </summary>
-	public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T>? parameter, bool negated)
-		=> ThrowIfNullOrEmptyNamed(parameter, negated ? "unexpected" : "expected");
-
-	private static void ThrowIfNullOrEmptyNamed<T>(IEnumerable<T>? parameter, string? paramName)
-	{
-		ThrowIfNullNamed(parameter, paramName);
-		if (!parameter!.Any())
-		{
-			throw Tracing.WriteException(EmptyCollection(paramName));
-		}
-	}
-
 	/// <summary>
 	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
 	///     expectation, and returns it wrapped, so that a sequence which can only be enumerated once survives both the
-	///     guard and the subsequent comparison, and an infinite sequence is only enumerated as far as needed.
+	///     guard and the subsequent comparison, and an infinite sequence is only enumerated as far as needed. An exception
+	///     of the sequence propagates unchanged instead of being reported as if the subject threw it.
 	/// </summary>
 	public static IEnumerable<T> ToNonEmptyValues<T>(this IEnumerable<T>? parameter, bool negated)
 	{
 		string paramName = negated ? "unexpected" : "expected";
 		ThrowIfNullNamed(parameter, paramName);
-		IEnumerable<T> values = MaterializingEnumerable<T>.Wrap(parameter!);
+		IEnumerable<T> values = MaterializingEnumerable<T>.WrapParameter(parameter!);
 		if (!values.Any())
 		{
 			throw Tracing.WriteException(EmptyCollection(paramName));

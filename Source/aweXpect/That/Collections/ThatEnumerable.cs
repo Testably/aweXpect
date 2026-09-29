@@ -73,8 +73,9 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expected, typeof(TItem).GetFormattingOption(expected switch
+					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 					{
 						ICollection<TItem> coll => coll.Count,
 						ICountable countable => countable.Count,
@@ -83,7 +84,7 @@ public static partial class ThatEnumerable
 					-2));
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
 				? objectOptions.ForEvaluation()
@@ -342,17 +343,14 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			ICollection<Expression<Func<TItem, bool>>> expectedItems =
+				expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expected, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
+					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
 			NoOptions noOptions = new();
@@ -477,8 +475,9 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expected, typeof(TItem).GetFormattingOption(expected switch
+					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 					{
 						ICollection<TItem> coll => coll.Count,
 						ICountable countable => countable.Count,
@@ -487,7 +486,7 @@ public static partial class ThatEnumerable
 					-2));
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
-				matchOptions.GetCollectionMatcher<object?, object?>(expected.Cast<object?>());
+				matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>());
 			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(
 				options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options,
 				usesDefaultEquality ?? (() => false));
