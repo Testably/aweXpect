@@ -62,7 +62,7 @@ public partial class AwexpectCustomization
 		/// <inheritdoc
 		///     cref="ICustomizationValueUpdater{FormattingCustomizationValue}.Update(Func{FormattingCustomizationValue,FormattingCustomizationValue})" />
 		public CustomizationLifetime Update(Func<FormattingCustomizationValue, FormattingCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Formatting), update(Get()));
+			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Formatting), EmptyValue, update);
 	}
 
 	/// <summary>

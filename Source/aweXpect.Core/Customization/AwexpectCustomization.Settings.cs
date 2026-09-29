@@ -103,7 +103,7 @@ public partial class AwexpectCustomization
 		/// <inheritdoc
 		///     cref="ICustomizationValueUpdater{SettingsCustomizationValue}.Update(Func{SettingsCustomizationValue,SettingsCustomizationValue})" />
 		public CustomizationLifetime Update(Func<SettingsCustomizationValue, SettingsCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Settings), update(Get()));
+			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Settings), EmptyValue, update);
 	}
 
 	/// <summary>

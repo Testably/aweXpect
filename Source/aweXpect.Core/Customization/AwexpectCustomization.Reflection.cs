@@ -45,7 +45,7 @@ public partial class AwexpectCustomization
 		/// <inheritdoc
 		///     cref="ICustomizationValueUpdater{ReflectionCustomizationValue}.Update(Func{ReflectionCustomizationValue,ReflectionCustomizationValue})" />
 		public CustomizationLifetime Update(Func<ReflectionCustomizationValue, ReflectionCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Reflection), update(Get()));
+			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Reflection), EmptyValue, update);
 	}
 
 	/// <summary>

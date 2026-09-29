@@ -4,17 +4,19 @@ You can add cancellation support on the expectations, so that they don't run ind
 
 ## Timeout
 
-You can set a global timeout that is applied for all expectations:
+You can set a global timeout that is applied for all expectations, e.g. in an assembly-level setup (see
+[global defaults](./02-customization.md#global-defaults)):
 
 ```csharp
 using aweXpect.Customization;
 
 // Sets a global timeout of 10 seconds
-Customize.aweXpect.Settings().TestCancellation
+Customize.aweXpect.Global.Settings().TestCancellation
     .Set(TestCancellation.FromTimeout(TimeSpan.FromSeconds(10)));
 ```
 
 Like all customization options, the setter returns an `IDisposable` that removes the timeout again on `Dispose()`.
+Without `Global`, the timeout only applies to the current async flow, e.g. to a single test.
 
 You can also apply a timeout on individual expectations, using the `WithTimeout(TimeSpan)` method:
 
@@ -68,7 +70,7 @@ You can set a global provider for getting a `CancellationToken` that is applied 
 
 ```csharp
 // Uses the CancellationToken from the test context
-Customize.aweXpect.Settings().TestCancellation
+Customize.aweXpect.Global.Settings().TestCancellation
     .Set(TestCancellation.FromCancellationToken(() => TestContext.Current.CancellationToken));
 ```
 

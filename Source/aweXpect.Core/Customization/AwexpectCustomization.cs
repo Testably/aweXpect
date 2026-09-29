@@ -38,7 +38,9 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	///     Customize the defaults for all async flows, e.g. once in an assembly-level setup.
 	/// </summary>
 	/// <remarks>
-	///     A value set in the current async flow takes precedence over the global value.<br />
+	///     A value set in the current async flow takes precedence over the global value. While a value of a group is set
+	///     in the current async flow, the other values of that group are taken from the global values at the time of the
+	///     set.<br />
 	///     Set global values once, before the tests run: changing a group concurrently from several threads can lose
 	///     one of the changes.
 	/// </remarks>
@@ -68,18 +70,27 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 	/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 	CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+		=> Set(key, value, null);
+
+	private CustomizationLifetime Update<TGroup>(string key, TGroup defaultValue, Func<TGroup, TGroup> update)
+		=> Set(key, update(((IAwexpectCustomization)this).Get(key, defaultValue)),
+			below => update(below is TGroup group ? group : defaultValue));
+
+	private CustomizationLifetime Set(string key, object? value, Func<object?, object?>? reapply)
 	{
 		if (_isGlobal)
 		{
-			return _global.Set(key, value);
+			return _global.Set(key, value, reapply);
 		}
 
-		object? previousValue = null;
-		bool hasPreviousValue = _store.Value?.TryGetValue(key, out previousValue) == true;
-		_store.Value = CustomizationStore.With(_store.Value, key, value);
-		return new CustomizationLifetime(() => _store.Value = hasPreviousValue
-			? CustomizationStore.With(_store.Value, key, previousValue)
-			: CustomizationStore.Without(_store.Value, key));
+		object token = new();
+		_store.Value = CustomizationStore.With(_store.Value, key, token, value, reapply);
+		return new CustomizationLifetime(() =>
+		{
+			object? globalValue = null;
+			_global.Store?.TryGetValue(key, out globalValue);
+			_store.Value = CustomizationStore.Without(_store.Value, key, token, globalValue);
+		});
 	}
 
 	/// <summary>
@@ -89,7 +100,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	{
 		if (_isGlobal)
 		{
-			return _global.Set(GlobalTraceWriterKey, traceWriter);
+			return _global.Set(GlobalTraceWriterKey, traceWriter, null);
 		}
 
 		ITraceWriter? previousTraceWriter = _traceWriter.Value;
@@ -114,22 +125,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		public CustomizationLifetime Set(TValue value)
 		{
 			validate?.Invoke(value);
-			TValue previousValue = Get();
-			CustomizationLifetime groupLifetime = group.Update(g => setter(g, value));
-			TGroup updatedGroup = group.Get();
-			return new CustomizationLifetime(() =>
-			{
-				// Undoing the whole update also removes the group from the async flow again, so that global values
-				// apply. When the group was changed in the meantime, only this value is restored to keep the changes.
-				if (ReferenceEquals(group.Get(), updatedGroup))
-				{
-					groupLifetime.Dispose();
-				}
-				else
-				{
-					group.Update(g => setter(g, previousValue));
-				}
-			});
+			return group.Update(g => setter(g, value));
 		}
 	}
 
@@ -143,23 +139,21 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 		public CustomizationStore? Store => Volatile.Read(ref _store);
 
-		public CustomizationLifetime Set(string key, object? value)
+		public CustomizationLifetime Set(string key, object? value, Func<object?, object?>? reapply)
 		{
+			object token = new();
 			lock (_lock)
 			{
-				object? previousValue = null;
-				bool hasPreviousValue = _store?.TryGetValue(key, out previousValue) == true;
-				Volatile.Write(ref _store, CustomizationStore.With(_store, key, value));
-				return new CustomizationLifetime(() =>
-				{
-					lock (_lock)
-					{
-						Volatile.Write(ref _store, hasPreviousValue
-							? CustomizationStore.With(_store, key, previousValue)
-							: CustomizationStore.Without(_store, key));
-					}
-				});
+				Volatile.Write(ref _store, CustomizationStore.With(_store, key, token, value, reapply));
 			}
+
+			return new CustomizationLifetime(() =>
+			{
+				lock (_lock)
+				{
+					Volatile.Write(ref _store, CustomizationStore.Without(_store, key, token, null));
+				}
+			});
 		}
 	}
 
@@ -168,16 +162,16 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	/// </summary>
 	private sealed class CustomizationStore
 	{
-		private readonly Dictionary<string, object?> _values;
+		private readonly Dictionary<string, Layer> _values;
 
-		private CustomizationStore(Dictionary<string, object?> values)
+		private CustomizationStore(Dictionary<string, Layer> values)
 		{
 			_values = values;
 		}
 
 		public TValue Get<TValue>(string key, TValue defaultValue)
 		{
-			if (_values.TryGetValue(key, out object? v) && v is TValue typedValue)
+			if (_values.TryGetValue(key, out Layer? layer) && layer.Value is TValue typedValue)
 			{
 				return typedValue;
 			}
@@ -186,25 +180,100 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		}
 
 		public bool TryGetValue(string key, out object? value)
-			=> _values.TryGetValue(key, out value);
-
-		public static CustomizationStore With(CustomizationStore? store, string key, object? value)
 		{
-			Dictionary<string, object?> values = store == null ? new() : new(store._values);
-			values[key] = value;
+			if (_values.TryGetValue(key, out Layer? layer))
+			{
+				value = layer.Value;
+				return true;
+			}
+
+			value = null;
+			return false;
+		}
+
+		public static CustomizationStore With(CustomizationStore? store, string key, object token, object? value,
+			Func<object?, object?>? reapply)
+		{
+			Dictionary<string, Layer> values = store == null ? new() : new(store._values);
+			values.TryGetValue(key, out Layer? below);
+			values[key] = new Layer(token, value, reapply, below);
 			return new CustomizationStore(values);
 		}
 
-		public static CustomizationStore? Without(CustomizationStore? store, string key)
+		/// <summary>
+		///     Removes the layer of the <paramref name="token" />, also when it is not the topmost one, so that the key
+		///     disappears once all its lifetimes are disposed.
+		/// </summary>
+		/// <remarks>
+		///     The layers above it are computed again on top of the layer below it, or on top of the
+		///     <paramref name="fallbackValue" /> when there is none.
+		/// </remarks>
+		public static CustomizationStore? Without(CustomizationStore? store, string key, object token,
+			object? fallbackValue)
 		{
-			if (store == null || !store._values.ContainsKey(key))
+			if (store == null || !store._values.TryGetValue(key, out Layer? top))
 			{
 				return store;
 			}
 
-			Dictionary<string, object?> values = new(store._values);
-			values.Remove(key);
+			Layer? newTop = Layer.Without(top, token, fallbackValue, out bool isFound);
+			if (!isFound)
+			{
+				return store;
+			}
+
+			Dictionary<string, Layer> values = new(store._values);
+			if (newTop == null)
+			{
+				values.Remove(key);
+			}
+			else
+			{
+				values[key] = newTop;
+			}
+
 			return new CustomizationStore(values);
+		}
+	}
+
+	/// <summary>
+	///     A value set for a key on top of the layer below it.
+	/// </summary>
+	/// <remarks>
+	///     A value that changes only some properties of a group can be reapplied to compute it again, when a layer below
+	///     it is removed.
+	/// </remarks>
+	private sealed class Layer(object token, object? value, Func<object?, object?>? reapply, Layer? below)
+	{
+		private readonly Layer? _below = below;
+		private readonly Func<object?, object?>? _reapply = reapply;
+		private readonly object _token = token;
+
+		public object? Value { get; } = value;
+
+		public static Layer? Without(Layer? layer, object token, object? fallbackValue, out bool isFound)
+		{
+			if (layer == null)
+			{
+				isFound = false;
+				return null;
+			}
+
+			if (layer._token == token)
+			{
+				isFound = true;
+				return layer._below;
+			}
+
+			Layer? newBelow = Without(layer._below, token, fallbackValue, out isFound);
+			if (!isFound)
+			{
+				return layer;
+			}
+
+			object? valueBelow = newBelow == null ? fallbackValue : newBelow.Value;
+			return new Layer(layer._token, layer._reapply == null ? layer.Value : layer._reapply(valueBelow),
+				layer._reapply, newBelow);
 		}
 	}
 }
