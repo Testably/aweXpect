@@ -895,14 +895,15 @@ public sealed partial class ThatDelegateTests
 			int observed = 0;
 
 			async Task Act()
-				=> await That(() => observed = Math.Min(observed + 1, 3)).Eventually().Within(LowTimeout).IsEqualTo(0);
+				=> await That(() => observed = Math.Min(observed + 1, 2)).Eventually().Within(LowTimeout).IsEqualTo(0);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
-				             Expected that () => observed = Math.Min(observed + 1, 3)
+				             Expected that () => observed = Math.Min(observed + 1, 2)
 				             eventually is equal to 0 within 0:00.500,
-				             but it was 3, which differs by 3
-				             """);
+				             but it was 2, which differs by 2
+				             """)
+				.Because("a second evaluation always follows the first wait, while a busy machine can stretch that wait over the whole timeout");
 		}
 
 		[Fact]

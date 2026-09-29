@@ -206,7 +206,7 @@ public class BecauseTests
 	public async Task WhenAsyncReasonIsSlow_WhenExpectationIsMet_ShouldNotAwaitTheReason()
 	{
 		bool reasonWasResolved = false;
-		Task<string?> becauseTask = Task.Delay(500).ContinueWith(_ =>
+		Task<string?> becauseTask = Task.Delay(TimeSpan.FromSeconds(30)).ContinueWith(_ =>
 		{
 			reasonWasResolved = true;
 			return (string?)"of reasons";

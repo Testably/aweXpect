@@ -17,7 +17,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>

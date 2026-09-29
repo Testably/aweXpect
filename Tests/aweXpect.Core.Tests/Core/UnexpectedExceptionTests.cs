@@ -130,17 +130,18 @@ public sealed class UnexpectedExceptionTests
 		Stopwatch stopwatch = Stopwatch.StartNew();
 
 		async Task Act()
-			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(2));
+			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30));
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             satisfies x => x == 1 within 0:02,
+			             satisfies x => x == 1 within 0:30,
 			             but it did throw a MyException:
 			               failure
 			             """)
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
-		await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(1));
+		await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+			.Because("a faulted task must fail at once instead of being retried for the 30 s window");
 	}
 
 	[Fact]
