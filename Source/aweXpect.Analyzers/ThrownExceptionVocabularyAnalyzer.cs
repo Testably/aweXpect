@@ -21,8 +21,8 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 	internal const string TwinProperty = "Twin";
 
 	/// <summary>
-	///     The <c>Has…</c> expectations of <c>ThatException</c> with the name of their <c>With…</c> twin, which
-	///     accepts the same arguments.
+	///     The <c>Has…</c> and <c>DoesNotHave…</c> expectations of <c>ThatException</c> with the name of their
+	///     <c>With…</c> or <c>Without…</c> twin, which accepts the same arguments.
 	/// </summary>
 	private static readonly ImmutableDictionary<string, string> Expectations =
 		new Dictionary<string, string>
@@ -31,6 +31,7 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 			["HasParamName"] = "WithParamName",
 			["HasHResult"] = "WithHResult",
 			["HasInner"] = "WithInner",
+			["DoesNotHaveInner"] = "WithoutInner",
 			["HasRecursiveInnerExceptions"] = "WithRecursiveInnerExceptions",
 		}.ToImmutableDictionary();
 
