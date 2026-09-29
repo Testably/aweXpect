@@ -95,6 +95,29 @@ public sealed partial class EquivalencyComparerTests
 			                              """);
 		}
 
+		[Fact]
+		public async Task WhenIncludingInternalMembers_ShouldConsiderProtectedInternalProperties()
+		{
+			MyClassWithProtectedProperties actual = new(1, 3);
+			MyClassWithProtectedProperties expected = new(2, 3);
+			EquivalencyComparer sut = new(new EquivalencyOptions
+			{
+				Properties = IncludeMembers.Internal,
+			});
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsFalse()
+				.Because("a protected internal property is visible to the whole assembly like an internal one");
+			await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+				.IsEqualTo("""
+				           it was not:
+				             Property MyProtectedInternalProperty differed:
+				                 Actual: 1
+				               Expected: 2
+				           """);
+		}
+
 		[Theory]
 		[InlineData(5, 5, true)]
 		[InlineData(5, 6, false)]
@@ -121,6 +144,22 @@ public sealed partial class EquivalencyComparerTests
 					                Expected: {expectedInternalValue}
 					            """);
 			}
+		}
+
+		[Fact]
+		public async Task WhenIncludingInternalMembers_ShouldNotConsiderPrivateProtectedProperties()
+		{
+			MyClassWithProtectedProperties actual = new(1, 3);
+			MyClassWithProtectedProperties expected = new(1, 4);
+			EquivalencyComparer sut = new(new EquivalencyOptions
+			{
+				Properties = IncludeMembers.Internal,
+			});
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsTrue()
+				.Because("a private protected property is only visible to derived types within the assembly");
 		}
 
 		[Theory]
@@ -177,6 +216,12 @@ public sealed partial class EquivalencyComparerTests
 			internal int MyInternalProperty { get; } = internalProperty;
 			private int MyPrivateProperty { get; } = privateProperty;
 			public int MyPublicProperty { get; } = publicProperty;
+		}
+
+		private class MyClassWithProtectedProperties(int protectedInternalProperty, int privateProtectedProperty)
+		{
+			private protected int MyPrivateProtectedProperty { get; } = privateProtectedProperty;
+			protected internal int MyProtectedInternalProperty { get; } = protectedInternalProperty;
 		}
 	}
 }
