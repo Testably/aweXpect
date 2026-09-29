@@ -19,7 +19,7 @@ public static class SynchronouslyExtensions
 	///     The only intended use case is to support synchronous evaluation for <c>ref struct</c>.
 	/// </remarks>
 	public static void VerifySynchronously(this ExpectationResult result)
-		=> result.GetAwaiter().GetResult();
+		=> Synchronously.Verify(result);
 
 	/// <summary>
 	///     Verifies synchronously that the expectation is satisfied.
@@ -30,5 +30,5 @@ public static class SynchronouslyExtensions
 	/// </remarks>
 	public static TType VerifySynchronously<TType, TSelf>(this ExpectationResult<TType, TSelf> result)
 		where TSelf : ExpectationResult<TType, TSelf>
-		=> result.GetAwaiter().GetResult();
+		=> Synchronously.Verify(result);
 }

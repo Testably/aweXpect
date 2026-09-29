@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Threading;
 using aweXpect.Core.Tests.TestHelpers;
 using static aweXpect.Synchronous.Synchronously;
 
@@ -37,6 +38,49 @@ public class SynchronouslyTests
 			             but it did throw a MyException:
 			               WhenActionThrows_ShouldFail
 			             """));
+	}
+
+	[Fact]
+	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
+	{
+		bool completed = BlockedSynchronizationContext.Run(()
+			=> Verify(That(async () => await Task.Yield()).DoesNotThrow()));
+
+		Verify(That(completed).IsTrue()
+			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification"));
+	}
+
+	[Fact]
+	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldRestoreIt()
+	{
+		SynchronizationContext? contextAfterwards = null;
+		SynchronizationContext? contextBefore = null;
+
+		BlockedSynchronizationContext.Run(() =>
+		{
+			contextBefore = SynchronizationContext.Current;
+			Verify(That(async () => await Task.Yield()).DoesNotThrow());
+			contextAfterwards = SynchronizationContext.Current;
+		});
+
+		Verify(That(contextAfterwards).IsSameAs(contextBefore)
+			.Because("the caller keeps running on its synchronization context after the verification"));
+	}
+
+	[Fact]
+	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_WithValue_ShouldNotDeadlock()
+	{
+		int value = 0;
+
+		bool completed = BlockedSynchronizationContext.Run(() => value = Verify(That(async () =>
+		{
+			await Task.Yield();
+			return 42;
+		}).DoesNotThrow()));
+
+		Verify(That(completed).IsTrue()
+			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification"));
+		Verify(That(value).IsEqualTo(42));
 	}
 
 	[Fact]

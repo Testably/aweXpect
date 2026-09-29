@@ -414,6 +414,9 @@ namespace MyExtension
 }
 ```
 
+A registered formatter applies process-wide, to all threads and async flows, until the returned `IDisposable` is
+disposed. When several registered formatters can format a value, the most recently registered one is used.
+
 :::note[Older target frameworks]
 `ModuleInitializerAttribute` is a compiler feature requiring C# 9, not a specific target framework. Where it is missing
 (e.g. `netstandard2.0` or `net48`), declare it as an `internal` type in your own package.

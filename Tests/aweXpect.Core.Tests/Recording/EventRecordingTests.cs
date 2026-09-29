@@ -124,6 +124,44 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenAnEventIsStillBeingRaisedWhenTheRecordingIsDisposedTwice_ShouldIgnoreIt()
+	{
+		CustomEventClass subject = new();
+		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
+		subject.NotifyCustomEvent(1);
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		Action<int> inFlightEvent = subject.StartNotifyingCustomEvent();
+		recording.Dispose();
+
+		inFlightEvent(2);
+		recording.Dispose();
+
+		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
+			.Because("a further disposal must not take up the event that arrived after the first one");
+	}
+
+	[Fact]
+	public async Task WhenAnEventIsStillBeingRaisedWhenTheRecordingStops_ShouldIgnoreIt()
+	{
+		CustomEventClass subject = new();
+		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+		subject.NotifyCustomEvent(1);
+		Action<int> inFlightEvent = subject.StartNotifyingCustomEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		inFlightEvent(2);
+
+		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
+			.Because("removing the handler cannot stop an invocation that already started, so the stopped recording has to ignore it");
+		await That(result.ToString(nameof(CustomEventClass.CustomEvent))).IsEqualTo("""
+			[
+			  CustomEvent(1)
+			]
+			""")
+			.Because("the listed events have to match the evaluated count");
+	}
+
+	[Fact]
 	public async Task WhenCancelled_ShouldStopWaiting()
 	{
 		CustomEventClass sut = new();
@@ -761,6 +799,12 @@ public sealed class EventRecordingTests
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
+
+		public Action<int> StartNotifyingCustomEvent()
+		{
+			CustomEventDelegate? handlers = CustomEvent;
+			return arg1 => handlers?.Invoke(arg1);
+		}
 	}
 
 	private sealed class ForeignRecording : IEventRecording<CustomEventClass>
