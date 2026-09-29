@@ -54,6 +54,19 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IReadOnlyDictionary<string, int> subject = ToDictionary(["foo",], [1,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContainKey(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
+			}
 		}
 	}
 }
