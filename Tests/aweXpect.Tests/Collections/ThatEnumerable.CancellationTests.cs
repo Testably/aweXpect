@@ -1190,6 +1190,39 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequested_ShouldReportTheChainedExpectationAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
+
+			async Task Act()
+				=> await That(subject).Contains(1).And.Contains(-1).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains an item equal to 1 at least once and contains an item equal to -1 at least once,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               0,
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("the met expectation cannot explain why the combination could not be verified");
+		}
+
+		[Fact]
 		public async Task WhenTimeoutElapses_ShouldFailANegatedContains()
 		{
 			IEnumerable<int> subject = SlowNumbers();

@@ -10,6 +10,23 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenNegatedInOrCombination_ShouldReportTheFailingExpectation()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.IsParsableInto<int>().Or.IsEqualTo("abc"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not parsable into int and is not equal to "abc",
+					             but it was "abc"
+					             """)
+					.Because("the unparsable string fulfills the negation, so only the equality explains the failure");
+			}
+
+			[Fact]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
