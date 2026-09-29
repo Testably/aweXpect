@@ -22,7 +22,7 @@ A value you set is visible in the current async flow and in every flow that star
 
 - A value set in a synchronous method is visible to its caller. A value set in an awaited `async` method is not: once that method returns, the caller continues with its own values. Set the value in the calling method, or return the lifetime from a synchronous helper method.
 - Disposing a lifetime restores only the value it set, so another value of the same group that was changed in the meantime is kept. Disposing it a second time has no effect.
-- `Update(…)` replaces the whole group, so disposing its lifetime restores the whole group as it was before the update.
+- `Update(…)` replaces the whole group, so disposing its lifetime restores the whole group as it was before the update. The function you pass can run again later, e.g. when a lifetime of the same group that was created before is disposed first, so it must compute the new value only from its argument and must not have side effects.
 - Dispose lifetimes in the reverse order in which you created them, as nested `using` statements do, and in the same flow: disposing a lifetime restores the value in the flow that disposes it.
 
 ## Global defaults
