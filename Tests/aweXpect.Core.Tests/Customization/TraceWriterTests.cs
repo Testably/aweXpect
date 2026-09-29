@@ -166,7 +166,9 @@ public class TraceWriterTests
 		}
 
 		await That(traceWriter.Messages).HasCount(2);
-		await That(traceWriter.Messages[0]).IsEqualTo("Checking expectation for callback delegate returning int 4 in 0:00").AsPrefix();
+		await That(traceWriter.Messages[0]).IsEqualTo("Checking expectation for callback delegate returning int 4 in 0:*")
+			.AsWildcard()
+			.Because("the measured duration is wall-clock time, which a busy machine can stretch beyond a second");
 		await That(traceWriter.Messages[1]).IsEqualTo("  Successfully verified that callback executes in at most 0:00.500");
 	}
 

@@ -82,7 +82,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>
@@ -156,7 +156,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent("foo"), token);
 
 				async Task Act() =>
@@ -200,7 +200,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1), token);
 
 				async Task Act() =>
@@ -244,7 +244,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true), token);
 
 				async Task Act() =>
@@ -288,7 +288,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true, DateTime.Now), token);
 
 				async Task Act() =>
@@ -332,7 +332,7 @@ public sealed partial class ThatEventRecording
 				using CancellationTokenSource cts = new();
 				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds(), token)
+				_ = Task.Delay(30.Seconds(), token)
 					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>
