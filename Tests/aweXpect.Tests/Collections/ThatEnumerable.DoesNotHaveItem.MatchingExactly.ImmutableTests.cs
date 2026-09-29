@@ -14,6 +14,17 @@ public sealed partial class ThatEnumerable
 			public sealed class ImmutableGenericTests
 			{
 				[Fact]
+				public async Task WhenTypeIsSubtype_ShouldSucceed()
+				{
+					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
 					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
@@ -41,17 +52,6 @@ public sealed partial class ThatEnumerable
 						               }
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenTypeIsSubtype_ShouldSucceed()
-				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
-
-					await That(Act).DoesNotThrow();
 				}
 			}
 

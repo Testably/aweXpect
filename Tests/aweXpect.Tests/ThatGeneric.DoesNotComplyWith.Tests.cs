@@ -70,6 +70,22 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task NotAAndBAndC_ShouldTranslateToNotAOrNotBOrNotC()
+			{
+				bool? subject = false;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.IsFalse().And.IsNotNull().And.IsNotTrue());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not False or is null or is True,
+					             but it was False
+					             """);
+			}
+
+			[Fact]
 			public async Task NotAOrB_ShouldTranslateToNotAAndNotB()
 			{
 				bool subject = true;
@@ -98,22 +114,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is not True and is not False,
 					             but it was True
-					             """);
-			}
-
-			[Fact]
-			public async Task NotAAndBAndC_ShouldTranslateToNotAOrNotBOrNotC()
-			{
-				bool? subject = false;
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsFalse().And.IsNotNull().And.IsNotTrue());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not False or is null or is True,
-					             but it was False
 					             """);
 			}
 		}

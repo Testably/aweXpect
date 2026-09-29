@@ -129,17 +129,6 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
-				{
-					IEnumerable<double> subject = [1.1, 2.3, 3.1,];
-
-					async Task Act()
-						=> await That(subject).IsNotEqualTo([1.0, 2.0, 3.0,]).Within(0.2);
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[InlineData(double.PositiveInfinity, 1.0)]
 				[InlineData(double.NegativeInfinity, 1.0)]
@@ -177,6 +166,17 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<double> subject = [1.1, 2.3, 3.1,];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo([1.0, 2.0, 3.0,]).Within(0.2);
 
 					await That(Act).DoesNotThrow();
 				}
@@ -233,17 +233,6 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
-				{
-					IEnumerable<double?> subject = [1.1, null, 2.3, 3.1,];
-
-					async Task Act()
-						=> await That(subject).IsNotEqualTo([1.0, null, 2.0, 3.0,]).Within(0.2);
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[InlineData(double.PositiveInfinity, 1.0)]
 				[InlineData(double.NegativeInfinity, 1.0)]
@@ -283,6 +272,17 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<double?> subject = [1.1, null, 2.3, 3.1,];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo([1.0, null, 2.0, 3.0,]).Within(0.2);
 
 					await That(Act).DoesNotThrow();
 				}
@@ -334,17 +334,6 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
-				{
-					IEnumerable<float> subject = [1.1F, 2.3F, 3.1F,];
-
-					async Task Act()
-						=> await That(subject).IsNotEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F);
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[InlineData(float.PositiveInfinity, 1.0F)]
 				[InlineData(float.NegativeInfinity, 1.0F)]
@@ -382,6 +371,17 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<float> subject = [1.1F, 2.3F, 3.1F,];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F);
 
 					await That(Act).DoesNotThrow();
 				}
@@ -438,17 +438,6 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
-				{
-					IEnumerable<float?> subject = [1.1F, null, 2.3F, 3.1F,];
-
-					async Task Act()
-						=> await That(subject).IsNotEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F);
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[InlineData(float.PositiveInfinity, 1.0F)]
 				[InlineData(float.NegativeInfinity, 1.0F)]
@@ -488,6 +477,17 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					IEnumerable<float?> subject = [1.1F, null, 2.3F, 3.1F,];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F);
 
 					await That(Act).DoesNotThrow();
 				}

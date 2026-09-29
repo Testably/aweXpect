@@ -36,18 +36,6 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldSucceed()
-			{
-				string subject = "some text";
-				string? unexpected = null;
-
-				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenStringHasMissingLeadingWhitespace_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -141,6 +129,18 @@ public sealed partial class ThatString
 			{
 				string subject = "actual text";
 				string unexpected = "unexpected other text";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			{
+				string subject = "some text";
+				string? unexpected = null;
 
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);

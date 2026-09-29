@@ -41,6 +41,17 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasAnotherValueType_ShouldReturnTheSubject()
+			{
+				int[] subject = [1,];
+
+				int[]? result = await That(subject).CompliesWith(it => it.HasSingle());
+
+				await That(result).IsSameAs(subject)
+					.Because("the value of the inner expectation (the single item) is no int[]");
+			}
+
+			[Fact]
 			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheInnerExpectation()
 			{
 				int subject = 1;
@@ -54,17 +65,6 @@ public sealed partial class ThatGeneric
 					             is equal to 2 or is equal to 3, because of reasons,
 					             but it was 1, which differs by -1 and was 1, which differs by -2
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenInnerExpectationHasAnotherValueType_ShouldReturnTheSubject()
-			{
-				int[] subject = [1,];
-
-				int[]? result = await That(subject).CompliesWith(it => it.HasSingle());
-
-				await That(result).IsSameAs(subject)
-					.Because("the value of the inner expectation (the single item) is no int[]");
 			}
 
 			[Theory]

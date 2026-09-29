@@ -13,6 +13,36 @@ public sealed partial class ThatEnumerable
 			public sealed class EnumerableGenericTests
 			{
 				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IEnumerable? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(0);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have an item exactly of type MyBaseClass at index 0,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsSubtype_ShouldSucceed()
+				{
+					IEnumerable subject = new object[]
+					{
+						new MyBaseClass(0), new MyClass(1),
+					};
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -42,36 +72,6 @@ public sealed partial class ThatEnumerable
 						                 Value = 1
 						               }
 						             ]
-						             """);
-				}
-
-				[Fact]
-				public async Task WhenTypeIsSubtype_ShouldSucceed()
-				{
-					IEnumerable subject = new object[]
-					{
-						new MyBaseClass(0), new MyClass(1),
-					};
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
-				{
-					IEnumerable? subject = null;
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(0);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             does not have an item exactly of type MyBaseClass at index 0,
-						             but it was <null>
 						             """);
 				}
 			}

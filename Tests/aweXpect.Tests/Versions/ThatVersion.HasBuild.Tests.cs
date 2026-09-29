@@ -7,23 +7,6 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				Version? subject = null;
-				int expected = 1;
-
-				async Task Act()
-					=> await That(subject).HasBuild(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has build equal to 1,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenBuildOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -51,10 +34,56 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasBuild(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has build equal to 1,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class EqualToTests
 		{
+			[Fact]
+			public async Task WhenBuildOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? expected = 13;
+
+				async Task Act()
+					=> await That(subject).HasBuild().EqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has build equal to {Formatter.Format(expected)},
+					              but it had build 12
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenBuildOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 12;
+
+				async Task Act()
+					=> await That(subject).HasBuild().EqualTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
@@ -105,56 +134,10 @@ public sealed partial class ThatVersion
 					             but it was <null>
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenBuildOfSubjectIsDifferent_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? expected = 13;
-
-				async Task Act()
-					=> await That(subject).HasBuild().EqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has build equal to {Formatter.Format(expected)},
-					              but it had build 12
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenBuildOfSubjectIsTheSame_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int expected = 12;
-
-				async Task Act()
-					=> await That(subject).HasBuild().EqualTo(expected);
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? expected = null;
-
-				async Task Act()
-					=> await That(subject).HasBuild().GreaterThanOrEqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has build greater than or equal to <null>,
-					             but it had build 12
-					             """);
-			}
-
 			[Fact]
 			public async Task WhenBuildOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
@@ -195,10 +178,7 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
-		}
 
-		public sealed class GreaterThanTests
-		{
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
@@ -206,16 +186,19 @@ public sealed partial class ThatVersion
 				int? expected = null;
 
 				async Task Act()
-					=> await That(subject).HasBuild().GreaterThan(expected);
+					=> await That(subject).HasBuild().GreaterThanOrEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has build greater than <null>,
+					             has build greater than or equal to <null>,
 					             but it had build 12
 					             """);
 			}
+		}
 
+		public sealed class GreaterThanTests
+		{
 			[Fact]
 			public async Task WhenBuildOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
@@ -261,10 +244,7 @@ public sealed partial class ThatVersion
 					              but it had build 12
 					              """);
 			}
-		}
 
-		public sealed class LessThanOrEqualToTests
-		{
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
@@ -272,16 +252,19 @@ public sealed partial class ThatVersion
 				int? expected = null;
 
 				async Task Act()
-					=> await That(subject).HasBuild().LessThanOrEqualTo(expected);
+					=> await That(subject).HasBuild().GreaterThan(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has build less than or equal to <null>,
+					             has build greater than <null>,
 					             but it had build 12
 					             """);
 			}
+		}
 
+		public sealed class LessThanOrEqualToTests
+		{
 			[Fact]
 			public async Task WhenBuildOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
@@ -322,10 +305,7 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
-		}
 
-		public sealed class LessThanTests
-		{
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
@@ -333,16 +313,19 @@ public sealed partial class ThatVersion
 				int? expected = null;
 
 				async Task Act()
-					=> await That(subject).HasBuild().LessThan(expected);
+					=> await That(subject).HasBuild().LessThanOrEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has build less than <null>,
+					             has build less than or equal to <null>,
 					             but it had build 12
 					             """);
 			}
+		}
 
+		public sealed class LessThanTests
+		{
 			[Fact]
 			public async Task WhenBuildOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
@@ -388,10 +371,56 @@ public sealed partial class ThatVersion
 					              but it had build 12
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? expected = null;
+
+				async Task Act()
+					=> await That(subject).HasBuild().LessThan(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has build less than <null>,
+					             but it had build 12
+					             """);
+			}
 		}
 
 		public sealed class NotEqualToTests
 		{
+			[Fact]
+			public async Task WhenBuildOfSubjectIsDifferent_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? unexpected = 13;
+
+				async Task Act()
+					=> await That(subject).HasBuild().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBuildOfSubjectIsTheSame_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int unexpected = 12;
+
+				async Task Act()
+					=> await That(subject).HasBuild().NotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have build equal to {Formatter.Format(unexpected)},
+					              but it had build 12
+					              """);
+			}
+
 			[Fact]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
@@ -436,35 +465,6 @@ public sealed partial class ThatVersion
 					=> await That(subject).HasBuild().NotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenBuildOfSubjectIsDifferent_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? unexpected = 13;
-
-				async Task Act()
-					=> await That(subject).HasBuild().NotEqualTo(unexpected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenBuildOfSubjectIsTheSame_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int unexpected = 12;
-
-				async Task Act()
-					=> await That(subject).HasBuild().NotEqualTo(unexpected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not have build equal to {Formatter.Format(unexpected)},
-					              but it had build 12
-					              """);
 			}
 		}
 

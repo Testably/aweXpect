@@ -212,6 +212,22 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				NotifyMyValueChanged(sut, 1);
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChanged()
+						.AtLeast(2.Times())
+						.Within(10.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task Within_WhenCountIsReachedWithinTimeout_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -231,22 +247,6 @@ public sealed partial class ThatEventRecording
 					             has recorded the PropertyChanged event on sut fewer than twice within 0:05,
 					             but it was recorded twice in * after 0:*
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
-			{
-				PropertyChangedClass sut = new();
-				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
-
-				NotifyMyValueChanged(sut, 1);
-
-				async Task Act() =>
-					await That(recording).DidNotTriggerPropertyChanged()
-						.AtLeast(2.Times())
-						.Within(10.Milliseconds());
-
-				await That(Act).DoesNotThrow();
 			}
 
 			private static void NotifyMyValueChanged(PropertyChangedClass sut, int count)

@@ -93,12 +93,12 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task Whose_WithEmptyExpectations_ShouldThrowArgumentException()
+		public async Task WhichWhose_WithEmptyExpectations_ShouldThrowArgumentException()
 		{
 			void Delegate() => throw new MyException();
 
 			async Task Act()
-				=> await That(Delegate).Throws<MyException>().Whose(e => e.Message, _ => { });
+				=> await That(Delegate).Throws<MyException>().Which.Whose(e => e.Message, _ => { });
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
@@ -106,12 +106,12 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WhichWhose_WithEmptyExpectations_ShouldThrowArgumentException()
+		public async Task Whose_WithEmptyExpectations_ShouldThrowArgumentException()
 		{
 			void Delegate() => throw new MyException();
 
 			async Task Act()
-				=> await That(Delegate).Throws<MyException>().Which.Whose(e => e.Message, _ => { });
+				=> await That(Delegate).Throws<MyException>().Whose(e => e.Message, _ => { });
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()

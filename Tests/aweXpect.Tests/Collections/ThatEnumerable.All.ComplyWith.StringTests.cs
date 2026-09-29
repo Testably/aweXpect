@@ -11,6 +11,30 @@ public sealed partial class ThatEnumerable
 			public sealed class StringTests
 			{
 				[Fact]
+				public async Task WhenAllItemsComplyUnderNegation_ShouldFail()
+				{
+					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it
+							=> it.All().ComplyWith(x => x.StartsWith("a")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             starts with "a" not for all items,
+						             but all 3 did
+
+						             Collection:
+						             [
+						               "apple",
+						               "ant",
+						               "avocado"
+						             ]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenAllItemsMatchExpectation_ShouldSucceed()
 				{
 					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
@@ -87,30 +111,6 @@ public sealed partial class ThatEnumerable
 						             Expected that subject
 						             starts with "a" for all items,
 						             but it was <null>
-						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllItemsComplyUnderNegation_ShouldFail()
-				{
-					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
-
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it
-							=> it.All().ComplyWith(x => x.StartsWith("a")));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             starts with "a" not for all items,
-						             but all 3 did
-
-						             Collection:
-						             [
-						               "apple",
-						               "ant",
-						               "avocado"
-						             ]
 						             """);
 				}
 			}

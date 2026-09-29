@@ -9,40 +9,6 @@ public sealed partial class ThatObject
 		public sealed class WhoseTests
 		{
 			[Fact]
-			public async Task WhenPropertyDoesNotMatch_ShouldFail()
-			{
-				object subject = new MyClass
-				{
-					Value = 42,
-				};
-
-				async Task Act()
-					=> await That(subject).Is<MyClass>()
-						.Whose(it => it.Value, value => value.IsLessThan(42));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type ThatObject.MyClass whose Value is less than 42,
-					             but Value was 42
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenPropertyMatches_ShouldSucceed()
-			{
-				object subject = new MyClass
-				{
-					Value = 42,
-				};
-
-				async Task Act()
-					=> await That(subject).Is<MyClass>().Whose(it => it.Value, value => value.IsEqualTo(42));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task AllowsNestedIs()
 			{
 				Outer subject = new()
@@ -59,29 +25,6 @@ public sealed partial class ThatObject
 							.Whose(d => d.Name, it => it.IsEqualTo("foo")));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Whose_AllowsNestedIs_FailsWhenInnerTypeMismatches()
-			{
-				Outer subject = new()
-				{
-					Item = new OtherDerived(),
-				};
-
-				async Task Act()
-					=> await That(subject).Is<Outer>()
-						.Whose(o => o.Item, it => it.Is<Derived>());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type Outer whose Item is of type Derived,
-					             but Item was OtherDerived
-
-					             Actual:
-					             OtherDerived { }
-					             """);
 			}
 
 			[Fact]
@@ -105,18 +48,61 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenAsyncMemberMatches_ShouldSucceed()
+			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
-				object subject = new AsyncClass
-				{
-					Value = 42,
-				};
+				object subject = new AsyncClass();
 
 				async Task Act()
 					=> await That(subject).Is<AsyncClass>()
-						.Whose(it => it.GetValueAsync(), value => value.IsEqualTo(42));
+						.Whose(it => it.FaultedAsync(), value => value.Satisfies(x => 10 / x > 1));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
+					             but FaultedAsync() did throw an InvalidOperationException:
+					               async member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldFail()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
+					             but FaultedAsync() did throw an InvalidOperationException:
+					               async member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberInAndWhoseFaults_ShouldFail()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.Value, value => value.IsEqualTo(0))
+						.AndWhose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
+					             but FaultedAsync() did throw an InvalidOperationException:
+					               async member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -162,6 +148,55 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenAsyncMemberMatches_ShouldSucceed()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.GetValueAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyDoesNotMatch_ShouldFail()
+			{
+				object subject = new MyClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<MyClass>()
+						.Whose(it => it.Value, value => value.IsLessThan(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type ThatObject.MyClass whose Value is less than 42,
+					             but Value was 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyMatches_ShouldSucceed()
+			{
+				object subject = new MyClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<MyClass>().Whose(it => it.Value, value => value.IsEqualTo(42));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenValueTaskMemberDoesNotMatch_ShouldFail()
 			{
 				object subject = new AsyncClass
@@ -179,6 +214,25 @@ public sealed partial class ThatObject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsValueTaskAsync() is less than 42,
 					             but GetValueAsValueTaskAsync() was 42
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueTaskMemberFaults_ShouldFail()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.FaultedValueTaskAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
+					             but FaultedValueTaskAsync() did throw an InvalidOperationException:
+					               async member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -203,80 +257,26 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenAsyncMemberFaults_ShouldFail()
+			public async Task Whose_AllowsNestedIs_FailsWhenInnerTypeMismatches()
 			{
-				object subject = new AsyncClass();
+				Outer subject = new()
+				{
+					Item = new OtherDerived(),
+				};
 
 				async Task Act()
-					=> await That(subject).Is<AsyncClass>()
-						.Whose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
+					=> await That(subject).Is<Outer>()
+						.Whose(o => o.Item, it => it.Is<Derived>());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
-					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed
-					             """)
-					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-			}
+					             is of type Outer whose Item is of type Derived,
+					             but Item was OtherDerived
 
-			[Fact]
-			public async Task WhenAsyncMemberInAndWhoseFaults_ShouldFail()
-			{
-				object subject = new AsyncClass();
-
-				async Task Act()
-					=> await That(subject).Is<AsyncClass>()
-						.Whose(it => it.Value, value => value.IsEqualTo(0))
-						.AndWhose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
-					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed
-					             """)
-					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-			}
-
-			[Fact]
-			public async Task WhenValueTaskMemberFaults_ShouldFail()
-			{
-				object subject = new AsyncClass();
-
-				async Task Act()
-					=> await That(subject).Is<AsyncClass>()
-						.Whose(it => it.FaultedValueTaskAsync(), value => value.IsEqualTo(42));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
-					             but FaultedValueTaskAsync() did throw an InvalidOperationException:
-					               async member failed
-					             """)
-					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-			}
-
-			[Fact]
-			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
-			{
-				object subject = new AsyncClass();
-
-				async Task Act()
-					=> await That(subject).Is<AsyncClass>()
-						.Whose(it => it.FaultedAsync(), value => value.Satisfies(x => 10 / x > 1));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
-					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed
-					             """)
-					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+					             Actual:
+					             OtherDerived { }
+					             """);
 			}
 
 			private sealed class AsyncClass

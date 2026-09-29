@@ -121,17 +121,6 @@ public sealed partial class ThatEnumerable
 			public sealed class StringTests
 			{
 				[Fact]
-				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
-				{
-					IEnumerable<string> subject = ToEnumerable(["a", "A",]);
-
-					async Task Act()
-						=> await That(subject).All().AreNotUnique().IgnoringCase();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenDiffersInCasing_ShouldFail()
 				{
 					IEnumerable<string> subject = ToEnumerable(["a", "A",]);
@@ -157,6 +146,17 @@ public sealed partial class ThatEnumerable
 						               "A"
 						             ]
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
+				{
+					IEnumerable<string> subject = ToEnumerable(["a", "A",]);
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().IgnoringCase();
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 

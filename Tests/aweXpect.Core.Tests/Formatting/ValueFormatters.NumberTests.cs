@@ -27,11 +27,15 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
-		public async Task Numbers_Decimal_ShouldReturnExpectedValue()
+		[Theory]
+		[InlineData(2, "2.0")]
+		[InlineData(1.1, "1.1")]
+		[InlineData(1.12, "1.12")]
+		[InlineData(1.123, "1.123")]
+		[InlineData(1.12345678910111, "1.12345678910111")]
+		public async Task Numbers_Decimal_ShouldHaveAtLeastOneDecimalDigit(double doubleValue, string expectedResult)
 		{
-			decimal value = new(11.3);
-			string expectedResult = "11.3";
+			decimal value = new(doubleValue);
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);
@@ -43,15 +47,11 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(1.1, "1.1")]
-		[InlineData(1.12, "1.12")]
-		[InlineData(1.123, "1.123")]
-		[InlineData(1.12345678910111, "1.12345678910111")]
-		public async Task Numbers_Decimal_ShouldHaveAtLeastOneDecimalDigit(double doubleValue, string expectedResult)
+		[Fact]
+		public async Task Numbers_Decimal_ShouldReturnExpectedValue()
 		{
-			decimal value = new(doubleValue);
+			decimal value = new(11.3);
+			string expectedResult = "11.3";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);
@@ -82,14 +82,11 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2F, "2.0")]
-		[InlineData(1.1F, "1.1")]
-		[InlineData(1.12F, "1.12")]
-		[InlineData(1.123F, "1.123")]
-		[InlineData(1.123456, "1.123456")]
-		public async Task Numbers_Float_ShouldHaveAtLeastOneDecimalDigit(float value, string expectedResult)
+		[Fact]
+		public async Task Numbers_Double_ShouldReturnExpectedValue()
 		{
+			double value = 10.2;
+			string expectedResult = "10.2";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);
@@ -101,11 +98,14 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
-		public async Task Numbers_Double_ShouldReturnExpectedValue()
+		[Theory]
+		[InlineData(2F, "2.0")]
+		[InlineData(1.1F, "1.1")]
+		[InlineData(1.12F, "1.12")]
+		[InlineData(1.123F, "1.123")]
+		[InlineData(1.123456, "1.123456")]
+		public async Task Numbers_Float_ShouldHaveAtLeastOneDecimalDigit(float value, string expectedResult)
 		{
-			double value = 10.2;
-			string expectedResult = "10.2";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);

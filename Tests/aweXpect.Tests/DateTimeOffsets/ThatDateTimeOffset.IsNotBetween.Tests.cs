@@ -109,24 +109,6 @@ public sealed partial class ThatDateTimeOffset
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
-			{
-				DateTimeOffset subject = CurrentTime();
-				DateTimeOffset minimum = EarlierTime();
-				DateTimeOffset maximum = LaterTime();
-
-				async Task Act()
-					=> await That(subject).IsNotBetween(minimum).And(maximum);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)}
-					              """);
-			}
-
-			[Fact]
 			public async Task WhenSubjectIsEarlierThanMinimum_ShouldSucceed()
 			{
 				DateTimeOffset subject = EarlierTime();
@@ -150,6 +132,24 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
+			{
+				DateTimeOffset subject = CurrentTime();
+				DateTimeOffset minimum = EarlierTime();
+				DateTimeOffset maximum = LaterTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]

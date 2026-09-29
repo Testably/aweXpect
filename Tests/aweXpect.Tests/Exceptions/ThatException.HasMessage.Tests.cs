@@ -354,32 +354,6 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
-			{
-				MyException exception = new("foo and some other text");
-
-				async Task Act()
-					=> await That(exception).HasMessage().NotContaining("");
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
-					.WithParamName("unexpected");
-			}
-
-			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
-			{
-				MyException exception = new("foo and some other text");
-
-				async Task Act()
-					=> await That(exception).HasMessage().NotContaining(null!);
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("unexpected").And
-					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
-			}
-
-			[Fact]
 			public async Task WhenTextIsFollowedByOtherText_ShouldFail()
 			{
 				string message = "foo and some other text";
@@ -417,6 +391,32 @@ public sealed partial class ThatException
 					             Message:
 					             some text before foo
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining("");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 		}
 

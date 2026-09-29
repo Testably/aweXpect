@@ -740,18 +740,6 @@ public sealed partial class ThatNumber
 		public sealed class NegatedTests
 		{
 			[Theory]
-			[InlineData(-1)]
-			[InlineData(0)]
-			public async Task ForInt_WhenValueIsLessThanOrEqualToZero_ShouldSucceed(int subject)
-			{
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
-						it.IsPositive());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
 			[InlineData(1)]
 			public async Task ForInt_WhenValueIsGreaterThanZero_ShouldFail(int subject)
 			{
@@ -766,12 +754,11 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
-			
+
 			[Theory]
 			[InlineData(-1)]
 			[InlineData(0)]
-			public async Task ForNullableInt_WhenValueIsLessThanOrEqualToZero_ShouldSucceed(
-				int? subject)
+			public async Task ForInt_WhenValueIsLessThanOrEqualToZero_ShouldSucceed(int subject)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => 
@@ -779,7 +766,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).DoesNotThrow();
 			}
-
+			
 			[Theory]
 			[InlineData(1)]
 			public async Task ForNullableInt_WhenValueIsGreaterThanZero_ShouldFail(int? subject)
@@ -794,6 +781,19 @@ public sealed partial class ThatNumber
 					              is not positive,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Theory]
+			[InlineData(-1)]
+			[InlineData(0)]
+			public async Task ForNullableInt_WhenValueIsLessThanOrEqualToZero_ShouldSucceed(
+				int? subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => 
+						it.IsPositive());
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

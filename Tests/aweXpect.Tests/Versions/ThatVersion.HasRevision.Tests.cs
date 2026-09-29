@@ -7,23 +7,6 @@ public sealed partial class ThatVersion
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				Version? subject = null;
-				int expected = 1;
-
-				async Task Act()
-					=> await That(subject).HasRevision(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has revision equal to 1,
-					             but it was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenRevisionOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -51,6 +34,23 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasRevision(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has revision equal to 1,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class EqualToTests
@@ -70,6 +70,35 @@ public sealed partial class ThatVersion
 					             has revision equal to <null>,
 					             but it had revision 13
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenRevisionOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? expected = 14;
+
+				async Task Act()
+					=> await That(subject).HasRevision().EqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has revision equal to {Formatter.Format(expected)},
+					              but it had revision 13
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenRevisionOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 13;
+
+				async Task Act()
+					=> await That(subject).HasRevision().EqualTo(expected);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -104,35 +133,6 @@ public sealed partial class ThatVersion
 					             has revision equal to 1,
 					             but it was <null>
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenRevisionOfSubjectIsDifferent_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? expected = 14;
-
-				async Task Act()
-					=> await That(subject).HasRevision().EqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has revision equal to {Formatter.Format(expected)},
-					              but it had revision 13
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenRevisionOfSubjectIsTheSame_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int expected = 13;
-
-				async Task Act()
-					=> await That(subject).HasRevision().EqualTo(expected);
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -393,6 +393,35 @@ public sealed partial class ThatVersion
 		public sealed class NotEqualToTests
 		{
 			[Fact]
+			public async Task WhenRevisionOfSubjectIsDifferent_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int? unexpected = 14;
+
+				async Task Act()
+					=> await That(subject).HasRevision().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenRevisionOfSubjectIsTheSame_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int unexpected = 13;
+
+				async Task Act()
+					=> await That(subject).HasRevision().NotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have revision equal to {Formatter.Format(unexpected)},
+					              but it had revision 13
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -436,35 +465,6 @@ public sealed partial class ThatVersion
 					=> await That(subject).HasRevision().NotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenRevisionOfSubjectIsDifferent_ShouldSucceed()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int? unexpected = 14;
-
-				async Task Act()
-					=> await That(subject).HasRevision().NotEqualTo(unexpected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenRevisionOfSubjectIsTheSame_ShouldFail()
-			{
-				Version? subject = new(2010, 11, 12, 13);
-				int unexpected = 13;
-
-				async Task Act()
-					=> await That(subject).HasRevision().NotEqualTo(unexpected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not have revision equal to {Formatter.Format(unexpected)},
-					              but it had revision 13
-					              """);
 			}
 		}
 

@@ -474,32 +474,6 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
-	public async Task WhenSubjectMemberIsDereferenced_ShouldSuppressOnlySubjectWarning() => await Verifier
-		.VerifySuppressorAsync(
-			"""
-			using System.Threading.Tasks;
-			using aweXpect;
-
-			public class Holder
-			{
-			    public string? Value = "foo";
-			}
-
-			public class MyClass
-			{
-			    public async Task MyTest(Holder? subject)
-			    {
-			        await Expect.That(subject).IsNotNull();
-			        _ = subject.Value.Length;
-			    }
-			}
-			""",
-			// Only the subject was verified, its member was not.
-			DiagnosticResult.CompilerWarning("CS8602").WithSpan(14, 13, 14, 20).WithIsSuppressed(true),
-			DiagnosticResult.CompilerWarning("CS8602").WithSpan(14, 13, 14, 26).WithIsSuppressed(false)
-		);
-
-	[Fact]
 	public async Task WhenOtherSubjectIsExpectedNotNull_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -972,6 +946,32 @@ public class IsNotNullSuppressorTests
 			_ = {|#0:subject|}.Length;
 			""",
 			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenSubjectMemberIsDereferenced_ShouldSuppressOnlySubjectWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class Holder
+			{
+			    public string? Value = "foo";
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(Holder? subject)
+			    {
+			        await Expect.That(subject).IsNotNull();
+			        _ = subject.Value.Length;
+			    }
+			}
+			""",
+			// Only the subject was verified, its member was not.
+			DiagnosticResult.CompilerWarning("CS8602").WithSpan(14, 13, 14, 20).WithIsSuppressed(true),
+			DiagnosticResult.CompilerWarning("CS8602").WithSpan(14, 13, 14, 26).WithIsSuppressed(false)
 		);
 
 	[Fact]

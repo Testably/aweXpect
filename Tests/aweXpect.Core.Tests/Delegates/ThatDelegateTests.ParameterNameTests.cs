@@ -8,17 +8,6 @@ public sealed partial class ThatDelegateTests
 	public sealed class ParameterNameTests
 	{
 		[Fact]
-		public async Task DoesNotThrow_WithValue_ShouldAcceptTypeAsNamedArgument()
-		{
-			Func<int> @delegate = () => 1;
-
-			async Task Act()
-				=> await That(@delegate).DoesNotThrow(type: typeof(MyException));
-
-			await That(Act).DoesNotThrow();
-		}
-
-		[Fact]
 		public async Task DoesNotThrow_WithoutValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => { };
@@ -30,12 +19,12 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task DoesNotThrowExactly_WithValue_ShouldAcceptTypeAsNamedArgument()
+		public async Task DoesNotThrow_WithValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Func<int> @delegate = () => 1;
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrowExactly(type: typeof(MyException));
+				=> await That(@delegate).DoesNotThrow(type: typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -44,6 +33,17 @@ public sealed partial class ThatDelegateTests
 		public async Task DoesNotThrowExactly_WithoutValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrowExactly(type: typeof(MyException));
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task DoesNotThrowExactly_WithValue_ShouldAcceptTypeAsNamedArgument()
+		{
+			Func<int> @delegate = () => 1;
 
 			async Task Act()
 				=> await That(@delegate).DoesNotThrowExactly(type: typeof(MyException));

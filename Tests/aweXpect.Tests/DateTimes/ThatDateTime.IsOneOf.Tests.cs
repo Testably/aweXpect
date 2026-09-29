@@ -60,42 +60,6 @@ public sealed partial class ThatDateTime
 			}
 
 			[Theory]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
-			public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind, DateTimeKind expectedKind)
-			{
-				DateTime subject = CurrentTime(subjectKind);
-				DateTime[] expected = [EarlierTime(1, expectedKind), CurrentTime(expectedKind),];
-
-				async Task Act()
-					=> await That(subject).IsOneOf(expected)
-						.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenKindIsIncompatibleButAnotherValueMatches_ShouldSucceed()
-			{
-				DateTime subject = DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Utc);
-				DateTime[] expected =
-				[
-					DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Local),
-					DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Utc),
-				];
-
-				async Task Act()
-					=> await That(subject).IsOneOf(expected);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
 			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
 			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
 			public async Task WhenKindIsIncompatible_ShouldFail(
@@ -118,6 +82,22 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenKindIsIncompatibleButAnotherValueMatches_ShouldSucceed()
+			{
+				DateTime subject = DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Utc);
+				DateTime[] expected =
+				[
+					DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Local),
+					DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Utc),
+				];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
 			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
@@ -131,6 +111,26 @@ public sealed partial class ThatDateTime
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
+			public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind, DateTimeKind expectedKind)
+			{
+				DateTime subject = CurrentTime(subjectKind);
+				DateTime[] expected = [EarlierTime(1, expectedKind), CurrentTime(expectedKind),];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected)
+						.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
 
 				await That(Act).DoesNotThrow();
 			}

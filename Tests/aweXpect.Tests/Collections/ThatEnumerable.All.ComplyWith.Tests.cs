@@ -493,28 +493,6 @@ public sealed partial class ThatEnumerable
 			public sealed class NegatedTests
 			{
 				[Fact]
-				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldFail()
-				{
-					IEnumerable<int> subject = ToEnumerable([1, 1, 1, 1, 1, 1, 1,]);
-
-					async Task Act()
-						=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1)));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is not equal to 1 for all items,
-						             but none of at least 1 were
-
-						             Not matching items:
-						             [1, (… and maybe more)]
-
-						             Collection:
-						             [1, 1, 1, 1, 1, 1, 1]
-						             """);
-				}
-
-				[Fact]
 				public async Task WhenAllItemsComply_ShouldFail()
 				{
 					int[] subject = [1, 2, 3, 4, 5,];
@@ -555,6 +533,28 @@ public sealed partial class ThatEnumerable
 
 						             Collection:
 						             [3, 1]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldFail()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 1, 1, 1, 1, 1, 1,]);
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 1 for all items,
+						             but none of at least 1 were
+
+						             Not matching items:
+						             [1, (… and maybe more)]
+
+						             Collection:
+						             [1, 1, 1, 1, 1, 1, 1]
 						             """);
 				}
 

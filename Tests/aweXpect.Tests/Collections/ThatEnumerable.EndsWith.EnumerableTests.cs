@@ -183,6 +183,31 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IEnumerable subject = ToEnumerable(1, 2);
+
+				async Task Act()
+					=> await That(subject).EndsWith(Array.Empty<int>());
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenSubjectEndsWithNull_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<string?>("a", null);
+				string?[] expected = [null,];
+
+				async Task Act()
+					=> await That(subject).EndsWith(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IEnumerable subject = ToEnumerable([2,]);
@@ -204,19 +229,6 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
-			{
-				IEnumerable subject = ToEnumerable(1, 2);
-
-				async Task Act()
-					=> await That(subject).EndsWith(Array.Empty<int>());
-
-				await That(Act).Throws<ArgumentException>()
-					.WithParamName("expected").And
-					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
-			}
-
-			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -230,18 +242,6 @@ public sealed partial class ThatEnumerable
 					             ends with [0],
 					             but it was <null>
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenSubjectEndsWithNull_ShouldSucceed()
-			{
-				IEnumerable subject = ToEnumerable<string?>("a", null);
-				string?[] expected = [null,];
-
-				async Task Act()
-					=> await That(subject).EndsWith(expected);
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

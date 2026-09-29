@@ -9,20 +9,6 @@ public sealed partial class ThatChar
 			public sealed class Tests
 			{
 				[Theory]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u00C4')]
-				[InlineData('\u03A9')]
-				public async Task WhenSubjectIsUpperCased_ShouldSucceed(char? subject)
-				{
-					async Task Act()
-						=> await That(subject).IsUpperCased();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Theory]
 				[InlineData('a')]
 				[InlineData('z')]
 				[InlineData('\u00E4')]
@@ -58,29 +44,24 @@ public sealed partial class ThatChar
 						             but it was <null>
 						             """);
 				}
-			}
 
-			public sealed class NegatedTests
-			{
 				[Theory]
 				[InlineData('A')]
 				[InlineData('M')]
 				[InlineData('Z')]
 				[InlineData('\u00C4')]
 				[InlineData('\u03A9')]
-				public async Task WhenSubjectIsUpperCased_ShouldFail(char? subject)
+				public async Task WhenSubjectIsUpperCased_ShouldSucceed(char? subject)
 				{
 					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.IsUpperCased());
+						=> await That(subject).IsUpperCased();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is not upper-cased,
-						              but it was {Formatter.Format(subject)}
-						              """);
+					await That(Act).DoesNotThrow();
 				}
+			}
 
+			public sealed class NegatedTests
+			{
 				[Theory]
 				[InlineData('a')]
 				[InlineData('z')]
@@ -111,6 +92,25 @@ public sealed partial class ThatChar
 						             is not upper-cased,
 						             but it was <null>
 						             """);
+				}
+
+				[Theory]
+				[InlineData('A')]
+				[InlineData('M')]
+				[InlineData('Z')]
+				[InlineData('\u00C4')]
+				[InlineData('\u03A9')]
+				public async Task WhenSubjectIsUpperCased_ShouldFail(char? subject)
+				{
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsUpperCased());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not upper-cased,
+						              but it was {Formatter.Format(subject)}
+						              """);
 				}
 			}
 		}

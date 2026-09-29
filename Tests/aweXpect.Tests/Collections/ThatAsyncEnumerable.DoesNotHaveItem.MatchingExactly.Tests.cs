@@ -14,6 +14,34 @@ public sealed partial class ThatAsyncEnumerable
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IAsyncEnumerable<MyClass>? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(0);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have an item exactly of type MyBaseClass at index 0,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsSubtype_ShouldSucceed()
+				{
+					IAsyncEnumerable<MyBaseClass> subject =
+						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
@@ -41,34 +69,6 @@ public sealed partial class ThatAsyncEnumerable
 						                 Value = 1
 						               }
 						             ]
-						             """);
-				}
-
-				[Fact]
-				public async Task WhenTypeIsSubtype_ShouldSucceed()
-				{
-					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
-				{
-					IAsyncEnumerable<MyClass>? subject = null;
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(0);
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             does not have an item exactly of type MyBaseClass at index 0,
-						             but it was <null>
 						             """);
 				}
 			}

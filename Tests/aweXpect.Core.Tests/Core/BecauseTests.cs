@@ -251,19 +251,29 @@ public class BecauseTests
 	}
 
 	[Fact]
-	public async Task WhenCombineWithAnd_ShouldApplyBecauseReason()
+	public async Task WhenCombinedWithWhichContinuation_ShouldAppendReasonAfterTheContinuation()
 	{
-		string because1 = "this is the first reason";
-		string because2 = "this is the second reason";
-		bool subject = true;
+		Action subject = () => throw new MyException("foo");
 
 		async Task Act()
 		{
-			await That(subject).IsTrue().Because(because1)
-				.And.IsFalse().Because(because2);
+			await That(subject).Throws<MyException>().Because("of reasons")
+				.WithMessage("bar");
 		}
 
-		await That(Act).Throws().WithMessage($"*{because2}*").AsWildcard();
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             throws a MyException with message equal to "bar", because of reasons,
+			             but it had message "foo", which differs at index 0:
+			                ↓ (actual)
+			               "foo"
+			               "bar"
+			                ↑ (expected)
+
+			             Message:
+			             foo
+			             """);
 	}
 
 	[Fact]
@@ -284,6 +294,22 @@ public class BecauseTests
 			             is True and is False, because we append it after all constraints,
 			             but it was True
 			             """);
+	}
+
+	[Fact]
+	public async Task WhenCombineWithAnd_ShouldApplyBecauseReason()
+	{
+		string because1 = "this is the first reason";
+		string because2 = "this is the second reason";
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsTrue().Because(because1)
+				.And.IsFalse().Because(because2);
+		}
+
+		await That(Act).Throws().WithMessage($"*{because2}*").AsWildcard();
 	}
 
 	[Fact]
@@ -321,53 +347,6 @@ public class BecauseTests
 			             Expected that subject
 			             is False or is False, because of reasons,
 			             but it was True
-			             """);
-	}
-
-	[Fact]
-	public async Task WhenCombinedWithWhichContinuation_ShouldAppendReasonAfterTheContinuation()
-	{
-		Action subject = () => throw new MyException("foo");
-
-		async Task Act()
-		{
-			await That(subject).Throws<MyException>().Because("of reasons")
-				.WithMessage("bar");
-		}
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected that subject
-			             throws a MyException with message equal to "bar", because of reasons,
-			             but it had message "foo", which differs at index 0:
-			                ↓ (actual)
-			               "foo"
-			               "bar"
-			                ↑ (expected)
-
-			             Message:
-			             foo
-			             """);
-	}
-
-	[Fact]
-	public async Task WhenUsedInExpectThatAll_ShouldAppendReasonToEachExpectation()
-	{
-		async Task Act()
-		{
-			await ThatAll(
-				That(true).IsFalse().Because("of the first reason").And.IsTrue(),
-				That(1).IsEqualTo(2).Because("of the second reason"));
-		}
-
-		await That(Act).Throws()
-			.WithMessage("""
-			             Expected all of the following to succeed:
-			              [01] Expected that true is False and is True, because of the first reason
-			              [02] Expected that 1 is equal to 2, because of the second reason
-			             but
-			              [01] it was True
-			              [02] it was 1, which differs by -1
 			             """);
 	}
 
@@ -440,5 +419,26 @@ public class BecauseTests
 		Exception exception = await That(Act).Throws()
 			.WithMessage("*because*").AsWildcard();
 		await That(exception.Message).DoesNotContain("because because");
+	}
+
+	[Fact]
+	public async Task WhenUsedInExpectThatAll_ShouldAppendReasonToEachExpectation()
+	{
+		async Task Act()
+		{
+			await ThatAll(
+				That(true).IsFalse().Because("of the first reason").And.IsTrue(),
+				That(1).IsEqualTo(2).Because("of the second reason"));
+		}
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is False and is True, because of the first reason
+			              [02] Expected that 1 is equal to 2, because of the second reason
+			             but
+			              [01] it was True
+			              [02] it was 1, which differs by -1
+			             """);
 	}
 }

@@ -122,23 +122,6 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(14.1, 12.0, 14.0)]
-			public async Task ForDouble_WhenOutsideToleranceOnUpperBound_ShouldFail(
-				double subject, double minimum, double maximum)
-			{
-				async Task Act()
-					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.05);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage(
-						$"""
-						 Expected that subject
-						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.05,
-						 but it was {Formatter.Format(subject)}, which differs by 0.0999999999999996 from the maximum
-						 """);
-			}
-
-			[Theory]
 			[InlineData(11.0, 12.0, 14.0)]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldFail(
 				double subject, double minimum, double maximum)
@@ -152,6 +135,23 @@ public sealed partial class ThatNumber
 						 Expected that subject
 						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.1,
 						 but it was {Formatter.Format(subject)}, which differs by -1.0 from the minimum
+						 """);
+			}
+
+			[Theory]
+			[InlineData(14.1, 12.0, 14.0)]
+			public async Task ForDouble_WhenOutsideToleranceOnUpperBound_ShouldFail(
+				double subject, double minimum, double maximum)
+			{
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.05);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage(
+						$"""
+						 Expected that subject
+						 is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0.05,
+						 but it was {Formatter.Format(subject)}, which differs by 0.0999999999999996 from the maximum
 						 """);
 			}
 

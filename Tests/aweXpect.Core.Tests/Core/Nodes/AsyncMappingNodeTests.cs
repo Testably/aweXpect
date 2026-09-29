@@ -108,23 +108,6 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
-	{
-		AsyncMappingNode<string, int> node =
-			new(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
-		async Task Act() => await node.IsMetBy(42, null!, CancellationToken.None);
-
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("""
-			             The member type for the actual value in the mapping node did not match.
-			             Expected: string
-			                Found: int
-			             """);
-	}
-
-	[Fact]
 	public async Task IsMetBy_WhenAbandonedMemberFaultsLater_ShouldNotRaiseUnobservedTaskException()
 	{
 		NotSupportedException exception = new("foo");
@@ -200,6 +183,23 @@ public class AsyncMappingNodeTests
 		await That(evaluation.IsCompleted).IsTrue();
 		Func<Task> awaitEvaluation = async () => await evaluation;
 		await That(awaitEvaluation).Throws<OperationCanceledException>();
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
+	{
+		AsyncMappingNode<string, int> node =
+			new(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
+		node.AddConstraint(
+			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
+		async Task Act() => await node.IsMetBy(42, null!, CancellationToken.None);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("""
+			             The member type for the actual value in the mapping node did not match.
+			             Expected: string
+			                Found: int
+			             """);
 	}
 
 	[Fact]

@@ -9,20 +9,6 @@ public sealed partial class ThatChar
 			public sealed class Tests
 			{
 				[Theory]
-				[InlineData('a')]
-				[InlineData('1')]
-				[InlineData(' ')]
-				[InlineData('@')]
-				[InlineData('\u00A0')]
-				public async Task WhenSubjectIsNoControlCharacter_ShouldSucceed(char? subject)
-				{
-					async Task Act()
-						=> await That(subject).IsNotAControlCharacter();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Theory]
 				[InlineData('\0')]
 				[InlineData('\t')]
 				[InlineData('\n')]
@@ -41,6 +27,20 @@ public sealed partial class ThatChar
 						              is not a control character,
 						              but it was {Formatter.Format(subject)}
 						              """);
+				}
+
+				[Theory]
+				[InlineData('a')]
+				[InlineData('1')]
+				[InlineData(' ')]
+				[InlineData('@')]
+				[InlineData('\u00A0')]
+				public async Task WhenSubjectIsNoControlCharacter_ShouldSucceed(char? subject)
+				{
+					async Task Act()
+						=> await That(subject).IsNotAControlCharacter();
+
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -63,6 +63,22 @@ public sealed partial class ThatChar
 			public sealed class NegatedTests
 			{
 				[Theory]
+				[InlineData('\0')]
+				[InlineData('\t')]
+				[InlineData('\n')]
+				[InlineData('\r')]
+				[InlineData('\u001B')]
+				[InlineData('\u007F')]
+				[InlineData('\u0085')]
+				public async Task WhenSubjectIsAControlCharacter_ShouldSucceed(char? subject)
+				{
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.IsNotAControlCharacter());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
 				[InlineData('a')]
 				[InlineData('1')]
 				[InlineData(' ')]
@@ -79,22 +95,6 @@ public sealed partial class ThatChar
 						              is a control character,
 						              but it was {Formatter.Format(subject)}
 						              """);
-				}
-
-				[Theory]
-				[InlineData('\0')]
-				[InlineData('\t')]
-				[InlineData('\n')]
-				[InlineData('\r')]
-				[InlineData('\u001B')]
-				[InlineData('\u007F')]
-				[InlineData('\u0085')]
-				public async Task WhenSubjectIsAControlCharacter_ShouldSucceed(char? subject)
-				{
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.IsNotAControlCharacter());
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]

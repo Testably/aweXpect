@@ -1351,6 +1351,18 @@ public sealed partial class ThatNumber
 
 
 			[Theory]
+			[InlineData(-1, -2)]
+			public async Task ForInt_WhenValueIsGreaterThanExpected_ShouldSucceed(int subject,
+				int? expected)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsLessThanOrEqualTo(expected));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
 			[InlineData(1, 2, ", which differs by -1")]
 			[InlineData(0, 0, "")]
 			public async Task ForInt_WhenValueIsLessThanOrEqualToExpected_ShouldFail(int subject,
@@ -1366,18 +1378,6 @@ public sealed partial class ThatNumber
 					              is not less than or equal to {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
-			}
-
-			[Theory]
-			[InlineData(-1, -2)]
-			public async Task ForInt_WhenValueIsGreaterThanExpected_ShouldSucceed(int subject,
-				int? expected)
-			{
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.IsLessThanOrEqualTo(expected));
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[Theory]
@@ -1402,6 +1402,18 @@ public sealed partial class ThatNumber
 
 
 			[Theory]
+			[InlineData(-1, -2)]
+			public async Task ForNullableInt_WhenValueIsGreaterThanExpected_ShouldSucceed(int? subject,
+				int? expected)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsLessThanOrEqualTo(expected));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
 			[InlineData(1, 2, ", which differs by -1")]
 			[InlineData(0, 0, "")]
 			public async Task ForNullableInt_WhenValueIsLessThanOrEqualToExpected_ShouldFail(int? subject,
@@ -1417,18 +1429,6 @@ public sealed partial class ThatNumber
 					              is not less than or equal to {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)}{expectedDifference}
 					              """);
-			}
-
-			[Theory]
-			[InlineData(-1, -2)]
-			public async Task ForNullableInt_WhenValueIsGreaterThanExpected_ShouldSucceed(int? subject,
-				int? expected)
-			{
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.IsLessThanOrEqualTo(expected));
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

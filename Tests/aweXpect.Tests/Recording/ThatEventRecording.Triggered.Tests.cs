@@ -269,35 +269,6 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, true)]
-			public async Task ExactlyOnce_WhenNotificationCountIsEnough_ShouldFail(int count, bool expectSuccess)
-			{
-				CustomEventWithoutParametersClass sut = new();
-				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
-
-				for (int i = 0; i < count; i++)
-				{
-					sut.NotifyCustomEvent();
-				}
-
-				async Task Act() =>
-					await That(recording).DoesNotComplyWith(r => r
-						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Exactly(1));
-
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
-					.WithMessage("""
-					             Expected that recording
-					             has recorded the CustomEvent event on sut not exactly once,
-					             but it was recorded once in [
-					               CustomEvent()
-					             ]
-					             """);
-			}
-
-
-			[Theory]
 			[InlineData(3, false)]
 			[InlineData(2, true)]
 			[InlineData(4, true)]
@@ -323,6 +294,35 @@ public sealed partial class ThatEventRecording
 					             but it was recorded 3 times in [
 					               CustomEvent(),
 					               CustomEvent(),
+					               CustomEvent()
+					             ]
+					             """);
+			}
+
+
+			[Theory]
+			[InlineData(1, false)]
+			[InlineData(0, true)]
+			public async Task ExactlyOnce_WhenNotificationCountIsEnough_ShouldFail(int count, bool expectSuccess)
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				for (int i = 0; i < count; i++)
+				{
+					sut.NotifyCustomEvent();
+				}
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(r => r
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Exactly(1));
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut not exactly once,
+					             but it was recorded once in [
 					               CustomEvent()
 					             ]
 					             """);

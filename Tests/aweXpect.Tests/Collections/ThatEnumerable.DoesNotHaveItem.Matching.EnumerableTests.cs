@@ -68,6 +68,20 @@ public sealed partial class ThatEnumerable
 			public sealed class EnumerableGenericTests
 			{
 				[Fact]
+				public async Task WhenTypeDoesNotMatchAtGivenIndex_ShouldSucceed()
+				{
+					IEnumerable subject = new object[]
+					{
+						"foo", 1,
+					};
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().Matching<int>().AtIndex(0);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -90,20 +104,6 @@ public sealed partial class ThatEnumerable
 						               1
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenTypeDoesNotMatchAtGivenIndex_ShouldSucceed()
-				{
-					IEnumerable subject = new object[]
-					{
-						"foo", 1,
-					};
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveItem().Matching<int>().AtIndex(0);
-
-					await That(Act).DoesNotThrow();
 				}
 			}
 

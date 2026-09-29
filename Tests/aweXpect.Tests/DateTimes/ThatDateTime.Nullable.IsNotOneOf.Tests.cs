@@ -75,6 +75,21 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				public async Task WhenKindIsIncompatible_ShouldSucceed(
+					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime?[] unexpected = [DateTime.SpecifyKind(CurrentTime()!.Value, unexpectedKind),];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(unexpected);
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenKindIsIncompatibleButAnotherValueMatches_ShouldFail()
 				{
@@ -94,21 +109,6 @@ public sealed partial class ThatDateTime
 						              is not one of {Formatter.Format(unexpected)},
 						              but it was {Formatter.Format(subject)}
 						              """);
-				}
-
-				[Theory]
-				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
-				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
-				public async Task WhenKindIsIncompatible_ShouldSucceed(
-					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
-				{
-					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
-					DateTime?[] unexpected = [DateTime.SpecifyKind(CurrentTime()!.Value, unexpectedKind),];
-
-					async Task Act()
-						=> await That(subject).IsNotOneOf(unexpected);
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Theory]

@@ -482,21 +482,6 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenSubjectIsNullAndPatternIsInvalid_ShouldThrowArgumentException()
-		{
-			string? sut = null;
-
-			async Task Act()
-				=> await That(sut).IsNotEqualTo("a(").AsRegex();
-
-			await That(Act).Throws<ArgumentException>()
-				.WithMessage($"The 'unexpected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
-				.WithParamName("unexpected").And
-				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("a(")))
-				.Because("a broken pattern must not go unnoticed only because the subject is null");
-		}
-
-		[Fact]
 		public async Task WhenSubjectIsNull_ShouldFail()
 		{
 			string? sut = null;
@@ -510,6 +495,21 @@ public sealed partial class StringEqualityOptionsTests
 				             matches regex ".*",
 				             but it was <null>
 				             """);
+		}
+
+		[Fact]
+		public async Task WhenSubjectIsNullAndPatternIsInvalid_ShouldThrowArgumentException()
+		{
+			string? sut = null;
+
+			async Task Act()
+				=> await That(sut).IsNotEqualTo("a(").AsRegex();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage($"The 'unexpected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
+				.WithParamName("unexpected").And
+				.WithInner<ArgumentException>(inner => inner.HasMessage(GetParseError("a(")))
+				.Because("a broken pattern must not go unnoticed only because the subject is null");
 		}
 
 		/// <remarks>

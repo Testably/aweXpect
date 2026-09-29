@@ -83,22 +83,6 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
-			public async Task WhenSubjectIsNullAndPredicateExpectsNull_ShouldFail()
-			{
-				string? subject = null;
-
-				async Task Act()
-					=> await That(subject).DoesNotSatisfy(x => x is null);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not satisfy x => x is null,
-					             but it was <null>
-					             """);
-			}
-
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
@@ -117,6 +101,22 @@ public sealed partial class ThatGeneric
 					             but it was <null>
 					             """)
 					.Because("the predicate decides about a null subject as well");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNullAndPredicateExpectsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotSatisfy(x => x is null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy x => x is null,
+					             but it was <null>
+					             """);
 			}
 		}
 

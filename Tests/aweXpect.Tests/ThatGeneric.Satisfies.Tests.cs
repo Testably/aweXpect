@@ -99,6 +99,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => throw exception);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => throw exception,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
 			public async Task WhenPredicateThrowsInsideDoesNotComplyWith_ShouldFail()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -136,41 +155,6 @@ public sealed partial class ThatGeneric
 					.Because("only a cancellation that was actually requested may abort the evaluation");
 			}
 
-			[Fact]
-			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
-			{
-				InvalidOperationException exception = new("predicate failed");
-				Other subject = new();
-
-				async Task Act()
-					=> await That(subject).Satisfies(_ => throw exception);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             satisfies _ => throw exception,
-					             but the predicate did throw an InvalidOperationException:
-					               predicate failed
-					             """).And
-					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
-			}
-
-			[Fact]
-			public async Task WhenSubjectIsNullAndPredicateExpectsNotNull_ShouldFail()
-			{
-				string? subject = null;
-
-				async Task Act()
-					=> await That(subject).Satisfies(x => x is not null);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             satisfies x => x is not null,
-					             but it was <null>
-					             """);
-			}
-
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
@@ -189,6 +173,22 @@ public sealed partial class ThatGeneric
 					             but it was <null>
 					             """)
 					.Because("the predicate decides about a null subject as well");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNullAndPredicateExpectsNotNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).Satisfies(x => x is not null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies x => x is not null,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -251,6 +251,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
+			{
+				Other subject = new();
+				using CancellationTokenSource cts = new();
+				cts.CancelAfter(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
+						.WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => false within 0:30,
+					             but it could not be verified, because the evaluation was already canceled
+					             """).WithTimeout(10.Seconds());
+			}
+
+			[Fact]
 			public async Task WhenCancellationIsRequestedWhileRetryingWithALongerGlobalTimeout_ShouldBeInconclusive()
 			{
 				Other subject = new();
@@ -268,25 +287,6 @@ public sealed partial class ThatGeneric
 					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("only a timeout, not the cancellation by the caller, leaves the decision to the last check");
-			}
-
-			[Fact]
-			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
-			{
-				Other subject = new();
-				using CancellationTokenSource cts = new();
-				cts.CancelAfter(50.Milliseconds());
-
-				async Task Act()
-					=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
-						.WithCancellation(cts.Token);
-
-				await That(Act).Throws<InconclusiveException>()
-					.WithMessage("""
-					             Expected that subject
-					             satisfies _ => false within 0:30,
-					             but it could not be verified, because the evaluation was already canceled
-					             """).WithTimeout(10.Seconds());
 			}
 
 			[Fact]
@@ -438,29 +438,6 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenPredicateThrowsUntilItReturnsTrue_ShouldSucceed()
-			{
-				int count = 0;
-				Other subject = new();
-
-				bool ThrowingPredicate(Other _)
-				{
-					if (++count <= 2)
-					{
-						throw new InvalidOperationException("not yet");
-					}
-
-					return true;
-				}
-
-				async Task Act()
-					=> await That(subject).Satisfies(ThrowingPredicate).Within(5.Seconds());
-
-				await That(Act).DoesNotThrow()
-					.Because("an exception is only a failed attempt, so the predicate is retried like any other failure");
-			}
-
-			[Fact]
 			public async Task WhenPredicateThrows_ShouldRetryAndFailWithTheLastException()
 			{
 				int count = 0;
@@ -524,6 +501,29 @@ public sealed partial class ThatGeneric
 					.Whose(e => e.InnerException, i => i.IsSameAs(lastException));
 				await That(count).IsGreaterThan(1)
 					.Because("an exception is only a failed attempt, so the predicate is retried until the time runs out");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrowsUntilItReturnsTrue_ShouldSucceed()
+			{
+				int count = 0;
+				Other subject = new();
+
+				bool ThrowingPredicate(Other _)
+				{
+					if (++count <= 2)
+					{
+						throw new InvalidOperationException("not yet");
+					}
+
+					return true;
+				}
+
+				async Task Act()
+					=> await That(subject).Satisfies(ThrowingPredicate).Within(5.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an exception is only a failed attempt, so the predicate is retried like any other failure");
 			}
 
 			[Fact]
