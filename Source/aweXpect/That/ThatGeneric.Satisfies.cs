@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,8 +28,9 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new SatisfiesConstraint<T>(
+						expectationBuilder,
 						it,
 						grammars,
 						predicate,
@@ -56,8 +56,9 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new SatisfiesConstraint<T>(
+						expectationBuilder,
 						it,
 						grammars,
 						predicate,
@@ -73,6 +74,7 @@ public static partial class ThatGeneric
 	///     the subject and states itself how a <see langword="null" /> is to be treated.
 	/// </remarks>
 	private sealed class SatisfiesConstraint<T>(
+		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
@@ -99,25 +101,8 @@ public static partial class ThatGeneric
 		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (IsMet(actual, cancellationToken))
-			{
-				return this;
-			}
-
-			if (options.IsRepeated)
-			{
-				Stopwatch sw = new();
-				sw.Start();
-				do
-				{
-					await Task.Delay(options.Interval.NextCheckInterval(), cancellationToken);
-					if (IsMet(actual, cancellationToken))
-					{
-						return this;
-					}
-				} while (options.IsWithinTimeout(sw.Elapsed));
-			}
-
+			await options.CheckRepeatedly(() => Task.FromResult(IsMet(actual, cancellationToken)), expectationBuilder,
+				cancellationToken);
 			return this;
 		}
 

@@ -42,7 +42,7 @@ public class RepeatedCheckResult<TType, TThat>(
 		///     Sets the interval in which the condition should be checked.
 		/// </summary>
 		/// <remarks>
-		///     Defaults to <see cref="RepeatedCheckOptions.DefaultInterval" /> if not specified.
+		///     Defaults to <c>Customize.aweXpect.Settings().DefaultCheckInterval</c> if not specified.
 		/// </remarks>
 		public AndOrResult<TType, TThat> CheckEvery(TimeSpan interval)
 		{

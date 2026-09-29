@@ -258,6 +258,13 @@ the [null rule](./08-write-extension.md#constraints) that an extension has to fo
 `DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in
 the v3 pre-releases, read like a timeout failure although it is the result of an absent signal.
 
+`RepeatedCheckOptions.Interval` is a plain `TimeSpan`. The `ICheckInterval` interface, its implementation
+`FixedCheckInterval` and the constant `RepeatedCheckOptions.DefaultInterval` are gone: nothing accepted a custom
+interval, and the default comes from `Customize.aweXpect.Settings().DefaultCheckInterval`. `Satisfies(…)` and
+`CompliesWith(…)` with `Within(…)` now shorten the last wait to the timeout like `Eventually()`, so they check a last
+time at the timeout and never after it. As there, a `WithTimeout(…)` that is not shorter than `Within(…)` reports the
+result of that last check instead of "did not finish within …".
+
 `EnumerableQuantifier.AppendResult` takes the `it` of the expectation, so that a result about the items themselves can
 name the subject that had them. A custom quantifier has to add the parameter.
 
