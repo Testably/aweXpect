@@ -625,6 +625,7 @@ public static partial class ThatAsyncEnumerable
 						context,
 						cancellationToken))
 				.ToArray();
+			await PrepareExpectations();
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(_expectations);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			if (IsNegated)
@@ -672,6 +673,14 @@ public static partial class ThatAsyncEnumerable
 
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		private async Task PrepareExpectations()
+		{
+			foreach (CollectionMatchOptions.ExpectationItem<TItem> expectation in _expectations)
+			{
+				await expectation.PrepareExpectation();
+			}
 		}
 
 		private string TooManyDeviationsError()

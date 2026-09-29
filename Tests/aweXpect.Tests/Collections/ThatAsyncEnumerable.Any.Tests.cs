@@ -40,6 +40,40 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsDoNotComplyWithAndSubjectIsNull_ShouldNegateExpectation()
+			{
+				IAsyncEnumerable<int>? subject = null;
+
+				async Task Act()
+					=> await That(subject).Any()
+						.ComplyWith(it => it.DoesNotComplyWith(x => x.IsEqualTo(1).Or.IsEqualTo(2)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1 and is not equal to 2 for at least one item,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedItemsDoNotComplyWithAndSubjectIsNull_ShouldNegateExpectation()
+			{
+				IAsyncEnumerable<IAsyncEnumerable<int>>? subject = null;
+
+				async Task Act()
+					=> await That(subject).Any()
+						.ComplyWith(it => it.Any().ComplyWith(x => x.DoesNotComplyWith(y => y.IsEqualTo(1).Or.IsEqualTo(2))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1 and is not equal to 2 for at least one item for at least one item,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);

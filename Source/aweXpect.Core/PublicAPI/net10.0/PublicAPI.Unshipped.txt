@@ -96,3 +96,5 @@ aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> s
 *REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.init -> void
 aweXpect.Equivalency.EquivalencyOptions.GetOptionsFor(System.Type! type) -> aweXpect.Equivalency.EquivalencyTypeOptions!
 aweXpect.Customization.AwexpectCustomization.Global.get -> aweXpect.Customization.AwexpectCustomization!
+aweXpect.Core.ManualExpectationBuilder<TValue>.PrepareExpectation(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.PrepareExpectation() -> System.Threading.Tasks.Task!

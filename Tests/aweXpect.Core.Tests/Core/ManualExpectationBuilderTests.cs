@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
@@ -71,6 +72,34 @@ public class ManualExpectationBuilderTests
 		await sut.IsMetBy(1, null!, CancellationToken.None);
 
 		await That(expectationBuilder).IsSameAs(sut);
+	}
+
+	[Fact]
+	public async Task AppendExpectation_ShouldAppendReasons()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason("of a");
+		sut.AddReason("because of b");
+		StringBuilder sb = new();
+
+		sut.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo, because of a, because of b");
+	}
+
+	[Fact]
+	public async Task AppendExpectation_ShouldOmitReasonsThatMustBeAwaited()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason(Task.FromResult<string?>("of a"));
+		StringBuilder sb = new();
+
+		sut.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo")
+			.Because("an asynchronous reason is only included once it is resolved");
 	}
 
 	[Fact]
@@ -208,6 +237,66 @@ public class ManualExpectationBuilderTests
 		ConstraintResult result = await sut.IsMetBy(1, null!, CancellationToken.None);
 
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenReasonIsResolvedAndConstraintFails_ShouldApplyReasonOnce()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => false, "is foo"));
+		sut.AddReason(Task.FromResult<string?>("of a"));
+		await sut.PrepareExpectation(null!, CancellationToken.None);
+		StringBuilder sb = new();
+
+		ConstraintResult result = await sut.IsMetBy(1, null!, CancellationToken.None);
+		result.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo, because of a");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenReasonIsResolvedAndConstraintSucceeds_ShouldNotApplyReason()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => true, "is foo"));
+		sut.AddReason(Task.FromResult<string?>("of a"));
+		await sut.PrepareExpectation(null!, CancellationToken.None);
+		StringBuilder sb = new();
+
+		ConstraintResult result = await sut.IsMetBy(1, null!, CancellationToken.None);
+		result.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo");
+	}
+
+	[Fact]
+	public async Task PrepareExpectation_ShouldNotEvaluateTheConstraints()
+	{
+		bool isEvaluated = false;
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ =>
+		{
+			isEvaluated = true;
+			return true;
+		}));
+
+		await sut.PrepareExpectation(null!, CancellationToken.None);
+
+		await That(isEvaluated).IsFalse();
+	}
+
+	[Fact]
+	public async Task PrepareExpectation_ShouldResolveReasonsThatMustBeAwaited()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason(Task.FromResult<string?>("of a"));
+		StringBuilder sb = new();
+
+		await sut.PrepareExpectation(null!, CancellationToken.None);
+		sut.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo, because of a");
 	}
 
 	[Fact]

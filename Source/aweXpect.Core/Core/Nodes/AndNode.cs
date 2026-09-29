@@ -114,13 +114,19 @@ internal class AndNode : Node
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		foreach (Node node in _nodes.Select(n => n.Item2))
+		bool isFirst = true;
+		foreach ((string separator, Node node) in GetNodes())
 		{
-			node.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(DefaultSeparator);
+			if (isFirst)
+			{
+				node.AppendExpectation(stringBuilder, indentation);
+				isFirst = false;
+			}
+			else
+			{
+				stringBuilder.AppendSeparatedExpectation(separator, sb => node.AppendExpectation(sb, indentation));
+			}
 		}
-
-		Current.AppendExpectation(stringBuilder, indentation);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />
