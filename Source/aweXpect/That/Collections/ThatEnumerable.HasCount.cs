@@ -36,7 +36,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> HasCount<TItem>(
-		this IThat<IEnumerable<TItem>?> subject, int expected)
+		this IThat<IEnumerable<TItem>?> subject, int? expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
@@ -68,7 +68,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TItem[], IThat<TItem[]?>> HasCount<TItem>(
-		this IThat<TItem[]?> subject, int expected)
+		this IThat<TItem[]?> subject, int? expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<TItem[], IThat<TItem[]?>>(
@@ -101,7 +101,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable, IThat<IEnumerable?>> HasCount(
-		this IThat<IEnumerable?> subject, int expected)
+		this IThat<IEnumerable?> subject, int? expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
@@ -135,7 +135,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
 	public static AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>> HasCount<TItem>(
-		this IThat<ImmutableArray<TItem>> subject, int expected)
+		this IThat<ImmutableArray<TItem>> subject, int? expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(

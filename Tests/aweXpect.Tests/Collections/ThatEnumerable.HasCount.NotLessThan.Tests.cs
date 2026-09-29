@@ -95,6 +95,26 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).HasCount().NotLessThan(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have fewer than <null> items,
+						             but it had 3 items
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("nothing can be ordered against null");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -172,11 +192,7 @@ public sealed partial class ThatEnumerable
 						             but it had at least 3 items
 
 						             Collection:
-						             [
-						               1,
-						               2,
-						               3
-						             ]
+						             [1, 2, 3]
 						             """);
 				}
 
@@ -190,6 +206,27 @@ public sealed partial class ThatEnumerable
 							it.HasCount().NotLessThan(4));
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it =>
+							it.HasCount().NotLessThan(null));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has fewer than <null> items,
+						             but it had 3 items
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("nothing can be ordered against null, so the negation fails as well");
 				}
 			}
 		}

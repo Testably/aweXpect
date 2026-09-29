@@ -146,6 +146,62 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ForArray_ShouldFail()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).HasCount().EqualTo(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has exactly <null> items,
+						             but it had 3 items
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("a count is never null");
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNull_ForEnumerable_ShouldFail()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+					async Task Act()
+						=> await That(subject).HasCount().EqualTo(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has exactly <null> items,
+						             but it had at least 1 item
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("a count is never null, so the enumeration can stop at the first item");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_AndExpectedIsNull_ShouldFail()
+				{
+					IEnumerable<int>? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasCount().EqualTo(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has exactly <null> items,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -226,6 +282,19 @@ public sealed partial class ThatEnumerable
 							it.HasCount().EqualTo(2));
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldSucceed()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it =>
+							it.HasCount().EqualTo(null));
+
+					await That(Act).DoesNotThrow()
+						.Because("a count is never null");
 				}
 			}
 		}

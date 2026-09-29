@@ -33,7 +33,7 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-		HasCount<TItem>(this IThat<IAsyncEnumerable<TItem>?> subject, int expected)
+		HasCount<TItem>(this IThat<IAsyncEnumerable<TItem>?> subject, int? expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
