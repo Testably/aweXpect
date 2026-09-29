@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using aweXpect.Customization;
 
@@ -10,8 +10,13 @@ namespace aweXpect.Formatting;
 /// </summary>
 public class ValueFormatter
 {
-	internal static readonly ConcurrentDictionary<int, IValueFormatter> RegisteredValueFormatters = new();
-	private static int _index;
+	private static readonly object RegistrationLock = new();
+
+	/// <remarks>
+	///     Replaced instead of changed, so that formatting reads it without a lock. The most recent registration is
+	///     last.
+	/// </remarks>
+	private static Registration[] _registrations = [];
 
 	/// <summary>
 	///     The default string representation of <see langword="null" />.
@@ -22,14 +27,40 @@ public class ValueFormatter
 	internal ValueFormatter() { }
 #pragma warning restore S1118
 
+	internal static Registration[] Registrations => Volatile.Read(ref _registrations);
+
 	/// <summary>
 	///     Registers a custom <paramref name="formatter" /> to use for formatting <see cref="object" />s.
 	/// </summary>
+	/// <remarks>
+	///     The registration is process-wide: it applies to all threads and async flows, including tests that run in
+	///     parallel, until the returned <see cref="IDisposable" /> is disposed.
+	///     <para />
+	///     When several registered formatters can format a value, the most recently registered one is used.
+	/// </remarks>
 	public static IDisposable Register(IValueFormatter formatter)
 	{
-		int index = Interlocked.Increment(ref _index);
-		RegisteredValueFormatters.TryAdd(index, formatter);
-		CustomizationLifetime disposable = new(() => RegisteredValueFormatters.TryRemove(index, out _));
-		return disposable;
+		Registration registration = new(formatter);
+		lock (RegistrationLock)
+		{
+			Volatile.Write(ref _registrations, [.._registrations, registration,]);
+		}
+
+		return new CustomizationLifetime(() =>
+		{
+			lock (RegistrationLock)
+			{
+				Volatile.Write(ref _registrations, _registrations.Where(x => x != registration).ToArray());
+			}
+		});
+	}
+
+	/// <remarks>
+	///     Gives each registration its own identity, so that disposing it removes only this registration, even when
+	///     the same formatter was registered more than once.
+	/// </remarks>
+	internal sealed class Registration(IValueFormatter formatter)
+	{
+		public IValueFormatter Formatter { get; } = formatter;
 	}
 }

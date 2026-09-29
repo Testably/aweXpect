@@ -3,10 +3,10 @@ using System.Collections;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using aweXpect.Core;
 #endif
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -49,15 +49,18 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (!ValueFormatter.RegisteredValueFormatters.IsEmpty)
+		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
+		if (registrations.Length > 0)
 		{
 			int length = stringBuilder.Length;
 			try
 			{
-				if (ValueFormatter.RegisteredValueFormatters.Any(item
-					    => item.Value.TryFormat(stringBuilder, value, options)))
+				for (int i = registrations.Length - 1; i >= 0; i--)
 				{
-					return;
+					if (registrations[i].Formatter.TryFormat(stringBuilder, value, options))
+					{
+						return;
+					}
 				}
 			}
 			catch (Exception exception)

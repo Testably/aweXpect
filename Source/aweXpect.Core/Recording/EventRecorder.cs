@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.Metadata;
 
@@ -11,10 +13,23 @@ namespace aweXpect.Recording;
 internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisposable
 {
 	private readonly ConcurrentQueue<RecordedEvent> _eventQueue = new();
+
+	/// <remarks>
+	///     Removing the handler cannot stop an invocation that already started, so a stopped recorder answers from the
+	///     events it had when it stopped, and an event that arrives later is ignored.
+	/// </remarks>
+	private RecordedEvent[]? _frozenEvents;
+
 	private Action? _onDispose;
 
+	private IReadOnlyCollection<RecordedEvent> Events
+		=> Volatile.Read(ref _frozenEvents) ?? (IReadOnlyCollection<RecordedEvent>)_eventQueue;
+
 	public void Dispose()
-		=> _onDispose?.Invoke();
+	{
+		_onDispose?.Invoke();
+		Interlocked.CompareExchange(ref _frozenEvents, _eventQueue.ToArray(), null);
+	}
 
 	/// <summary>
 	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
@@ -129,7 +144,7 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 	///     Returns a formatted string for all recorded events.
 	/// </summary>
 	public override string ToString()
-		=> Formatter.Format(_eventQueue, FormattingOptions.MultipleLines);
+		=> Formatter.Format(Events, FormattingOptions.MultipleLines);
 
 	/// <summary>
 	///     Gets the number of recorded events that match the <paramref name="filter" />.
@@ -138,10 +153,10 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 	{
 		if (filter != null)
 		{
-			return _eventQueue.Count(x => filter(x.Parameters));
+			return Events.Count(x => filter(x.Parameters));
 		}
 
-		return _eventQueue.Count;
+		return Events.Count;
 	}
 
 	private readonly struct RecordedEvent(string name, params object?[] parameters)

@@ -28,6 +28,21 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenDisposedTwice_ShouldOnlyRemoveItsOwnRegistration()
+	{
+		MyFormattableClass value = new();
+		MyCustomFormatter formatter = new("my-string");
+		using IDisposable first = ValueFormatter.Register(formatter);
+		IDisposable second = ValueFormatter.Register(formatter);
+
+		second.Dispose();
+		second.Dispose();
+
+		await That(Formatter.Format(value)).IsEqualTo("my-string")
+			.Because("each registration is removed on its own, even when the same formatter was registered twice");
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenItThrows_ShouldRenderAPlaceholderInTheFailureMessage()
 	{
 		MyThrowingFormattableClass subject = new();
@@ -47,6 +62,18 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenMultipleAreRegistered_ShouldUseTheMostRecentOne()
+	{
+		MyFormattableClass value = new();
+		using IDisposable first = ValueFormatter.Register(new MyCustomFormatter("first"));
+		using IDisposable second = ValueFormatter.Register(new MyCustomFormatter("second"));
+		using IDisposable third = ValueFormatter.Register(new MyCustomFormatter("third"));
+
+		await That(Formatter.Format(value)).IsEqualTo("third")
+			.Because("the most recently registered formatter takes precedence");
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenNull_ShouldUseDefaultNullString()
 	{
 		using IDisposable lifetime = ValueFormatter.Register(new MyCustomFormatter("my-string"));
@@ -55,6 +82,20 @@ public class ValueFormatterTests
 		string objectResult = Formatter.Format((object?)value);
 
 		await That(objectResult).IsEqualTo(ValueFormatter.NullString);
+	}
+
+	[Fact]
+	public async Task CustomFormatter_WhenTheMostRecentOneIsDisposed_ShouldFallBackToTheEarlierOne()
+	{
+		MyFormattableClass value = new();
+		using IDisposable first = ValueFormatter.Register(new MyCustomFormatter("first"));
+		using IDisposable second = ValueFormatter.Register(new MyCustomFormatter("second"));
+		IDisposable third = ValueFormatter.Register(new MyCustomFormatter("third"));
+
+		third.Dispose();
+
+		await That(Formatter.Format(value)).IsEqualTo("second")
+			.Because("disposing the most recent formatter restores the precedence of the earlier one");
 	}
 
 	[Fact]

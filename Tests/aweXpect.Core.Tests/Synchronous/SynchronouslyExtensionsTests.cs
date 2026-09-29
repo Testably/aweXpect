@@ -40,6 +40,34 @@ public class SynchronouslyExtensionsTests
 	}
 
 	[Fact]
+	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
+	{
+		bool completed = BlockedSynchronizationContext.Run(()
+			=> That(async () => await Task.Yield()).DoesNotThrow().VerifySynchronously());
+
+		That(completed).IsTrue()
+			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification")
+			.VerifySynchronously();
+	}
+
+	[Fact]
+	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_WithValue_ShouldNotDeadlock()
+	{
+		int value = 0;
+
+		bool completed = BlockedSynchronizationContext.Run(() => value = That(async () =>
+		{
+			await Task.Yield();
+			return 42;
+		}).DoesNotThrow().VerifySynchronously());
+
+		That(completed).IsTrue()
+			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification")
+			.VerifySynchronously();
+		That(value).IsEqualTo(42).VerifySynchronously();
+	}
+
+	[Fact]
 	public void WhenPropertyValuesMatch_ShouldFail()
 	{
 		Foo subject = new()
