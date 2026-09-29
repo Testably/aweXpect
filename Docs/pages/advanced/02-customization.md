@@ -43,7 +43,7 @@ internal static class AwexpectDefaults
 
 - A value set in the current async flow takes precedence over the global value, so a test can still use `using (Customize.aweXpect.Formatting().MaximumStringLength.Set(20))` without influencing tests that run in parallel.
 - While such a value is set in the current flow, its group is kept in this flow as a whole, with the other values taken from the global values at the time of the `Set`: a global change to another value of the same group can be hidden in this flow until all lifetimes of that group in this flow are disposed.
-- Set global values once, before the tests run. They can be changed at any time and the change is visible to all running tests immediately, but changing the same group concurrently from several threads can lose one of the changes.
+- Set global values once, before the tests run. They can be changed at any time and the change is visible to all running tests immediately.
 - `Customize.aweXpect.Global.EnableTracing(traceWriter)` enables a trace writer for all async flows. A trace writer enabled in the current flow takes precedence.
 - Groups of extension packages, such as `Customize.aweXpect.Global.Json()`, work the same way.
 

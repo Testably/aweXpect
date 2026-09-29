@@ -37,9 +37,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	/// <remarks>
 	///     A value set in the current async flow takes precedence over the global value. While a value of a group is set
 	///     in the current async flow, the other values of that group are taken from the global values at the time of the
-	///     set.<br />
-	///     Set global values once, before the tests run: changing a group concurrently from several threads can lose
-	///     one of the changes.
+	///     set.
 	/// </remarks>
 	public AwexpectCustomization Global
 		=> _isGlobal ? this : _globalCustomization ??= new AwexpectCustomization(this);
@@ -70,14 +68,18 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		=> Set(key, value, null);
 
 	private CustomizationLifetime Update<TGroup>(string key, TGroup defaultValue, Func<TGroup, TGroup> update)
-		=> Set(key, update(((IAwexpectCustomization)this).Get(key, defaultValue)),
-			below => update(below is TGroup group ? group : defaultValue));
+	{
+		Func<object?, object?> reapply = below => update(below is TGroup group ? group : defaultValue);
+		return _isGlobal
+			? _global.Set(key, reapply, reapply)
+			: Set(key, update(((IAwexpectCustomization)this).Get(key, defaultValue)), reapply);
+	}
 
 	private CustomizationLifetime Set(string key, object? value, Func<object?, object?>? reapply)
 	{
 		if (_isGlobal)
 		{
-			return _global.Set(key, value, reapply);
+			return _global.Set(key, _ => value, reapply);
 		}
 
 		object token = new();
@@ -127,12 +129,19 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 		public CustomizationStore? Store => Volatile.Read(ref _store);
 
-		public CustomizationLifetime Set(string key, object? value, Func<object?, object?>? reapply)
+		/// <remarks>
+		///     The value is computed from the current value under the lock, so that concurrent updates of the same
+		///     group cannot lose one another.
+		/// </remarks>
+		public CustomizationLifetime Set(string key, Func<object?, object?> getValue,
+			Func<object?, object?>? reapply)
 		{
 			object token = new();
 			lock (_lock)
 			{
-				Volatile.Write(ref _store, CustomizationStore.With(_store, key, token, value, reapply));
+				object? current = null;
+				_store?.TryGetValue(key, out current);
+				Volatile.Write(ref _store, CustomizationStore.With(_store, key, token, getValue(current), reapply));
 			}
 
 			return new CustomizationLifetime(() =>
