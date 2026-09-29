@@ -255,5 +255,51 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectDoesNotStartWithExpected_ShouldSucceed()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.StartsWith("text"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectStartsWithExpected_ShouldFail()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.StartsWith("Some"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with "Some",
+					             but it was "Some arbitrary text"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectStartsWithExpectedIgnoringCase_ShouldFail()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.StartsWith("SOME").IgnoringCase());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with "SOME" ignoring case,
+					             but it was "Some arbitrary text"
+					             """);
+			}
+		}
 	}
 }

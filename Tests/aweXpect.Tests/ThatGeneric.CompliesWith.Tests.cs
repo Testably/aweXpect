@@ -396,5 +396,35 @@ public sealed partial class ThatGeneric
 				public bool HasWaitedEnough => _iterations++ >= numberOfChanges;
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenExpectationsAreMet_ShouldFail()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.CompliesWith(x => x.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1,
+					             but it was 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectationsAreNotMet_ShouldSucceed()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.CompliesWith(x => x.IsEqualTo(2)));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

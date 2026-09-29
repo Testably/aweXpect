@@ -525,5 +525,40 @@ public sealed partial class ThatDictionary
 					.Because("a type that implements both dictionary interfaces must not become ambiguous");
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectHasDifferentEntries_ShouldSucceed()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
+				IDictionary<string, int> expected = ToDictionary(["a", "b",], [1, 3,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(expected));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasTheSameEntries_ShouldFail()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
+				IDictionary<string, int> expected = ToDictionary(["b", "a",], [2, 1,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to dictionary expected,
+					             but it was
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 2}
+					             """);
+			}
+		}
 	}
 }

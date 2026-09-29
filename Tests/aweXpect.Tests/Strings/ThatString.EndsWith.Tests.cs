@@ -229,5 +229,51 @@ public sealed partial class ThatString
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectDoesNotEndWithExpected_ShouldSucceed()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.EndsWith("Some"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectEndsWithExpected_ShouldFail()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.EndsWith("text"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with "text",
+					             but it was "Some arbitrary text"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectEndsWithExpectedIgnoringCase_ShouldFail()
+			{
+				string subject = "Some arbitrary text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.EndsWith("TEXT").IgnoringCase());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with "TEXT" ignoring case,
+					             but it was "Some arbitrary text"
+					             """);
+			}
+		}
 	}
 }

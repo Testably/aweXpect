@@ -329,5 +329,38 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectDoesNotStartWithExpected_ShouldSucceed()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.StartsWith(2, 3));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectStartsWithExpected_ShouldFail()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.StartsWith(1, 2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """);
+			}
+		}
 	}
 }
