@@ -20,10 +20,28 @@ public class ManualExpectationBuilder<TValue>(
 		IEqualityComparer<ManualExpectationBuilder<TValue>>
 {
 	/// <summary>
-	///     Appends the expectation of the root node to the <paramref name="stringBuilder" />.
+	///     Appends the expectation of the root node and its reasons to the <paramref name="stringBuilder" />.
 	/// </summary>
+	/// <remarks>
+	///     Reasons that must be awaited are omitted until they are resolved by <see cref="PrepareExpectation" /> or by a
+	///     failed evaluation.
+	/// </remarks>
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
+	{
+		GetRootNode().AppendExpectation(stringBuilder, indentation);
+		AppendReasons(stringBuilder);
+	}
+
+	/// <summary>
+	///     Prepares the expectation text without evaluating the expectations, so that
+	///     <see cref="AppendExpectation" /> also describes expectations whose text depends on an evaluation (e.g. a nested
+	///     <c>DoesNotComplyWith</c>) or on a reason that must be awaited, when no value is evaluated.
+	/// </summary>
+	public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		await GetRootNode().IsMetBy<TValue>(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
+		await ResolveReasons();
+	}
 
 	/// <summary>
 	///     Returns the pro-verb which stands in for the expectations when a result refers back to them, e.g. <c>did</c> in

@@ -378,6 +378,29 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Appends the reasons to the <paramref name="stringBuilder" />, except those that must be awaited and are not
+	///     resolved yet.
+	/// </summary>
+	internal void AppendReasons(StringBuilder stringBuilder)
+	{
+		foreach (IBecauseReason reason in _reasons ?? [])
+		{
+			stringBuilder.Append(reason);
+		}
+	}
+
+	/// <summary>
+	///     Resolves the reasons that must be awaited, so that <see cref="AppendReasons" /> includes them.
+	/// </summary>
+	internal async Task ResolveReasons()
+	{
+		foreach (AsyncBecauseReason reason in _reasons?.OfType<AsyncBecauseReason>() ?? [])
+		{
+			await reason.Resolve();
+		}
+	}
+
+	/// <summary>
 	///     Supports chaining for subsequent expectation constraints with the <paramref name="textSeparator" />.
 	/// </summary>
 	public ExpectationBuilder And(string textSeparator = " and ")

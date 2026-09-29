@@ -523,6 +523,16 @@ public partial class CollectionMatchOptions(
 			return result.Outcome == Outcome.Success;
 		}
 
+		/// <summary>
+		///     Prepares the expectation text without evaluating the expectation, so that it is also complete when no value
+		///     is evaluated.
+		/// </summary>
+		/// <remarks>
+		///     See <see cref="ManualExpectationBuilder{TValue}.PrepareExpectation" />.
+		/// </remarks>
+		public Task PrepareExpectation()
+			=> ItemExpectationBuilder.PrepareExpectation(_context, _cancellationToken);
+
 		/// <inheritdoc cref="object.Equals(object?)" />
 		public override bool Equals(object? obj) => obj is ExpectationItem<TItem> other && Equals(other);
 

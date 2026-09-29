@@ -214,6 +214,7 @@ public static partial class ThatEnumerable
 						context,
 						cancellationToken))
 				.ToArray();
+			await PrepareExpectations();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
 					() => Formatter.Format(_expectations, typeof(TItem).GetFormattingOption(_expectations.Length)),
 					-2));
@@ -261,6 +262,14 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddCollectionContext(materializedEnumerable);
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		private async Task PrepareExpectations()
+		{
+			foreach (CollectionMatchOptions.ExpectationItem<TItem> expectation in _expectations)
+			{
+				await expectation.PrepareExpectation();
+			}
 		}
 
 		private string TooManyDeviationsError()

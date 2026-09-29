@@ -34,7 +34,8 @@ public static partial class ThatEnumerable
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-				IAsyncContextConstraint<IEnumerable<TItem>?>
+				IAsyncContextConstraint<IEnumerable<TItem>?>,
+				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
 			private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
@@ -64,6 +65,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -121,6 +123,13 @@ public static partial class ThatEnumerable
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 				AppendContexts(false);
 				_expectationBuilder.AddCollectionContext(materialized);
+				return this;
+			}
+
+			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+				CancellationToken cancellationToken)
+			{
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
@@ -188,7 +197,8 @@ public static partial class ThatEnumerable
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<string?>?>,
-				IAsyncContextConstraint<IEnumerable<string?>?>
+				IAsyncContextConstraint<IEnumerable<string?>?>,
+				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
 			private readonly ManualExpectationBuilder<string?> _itemExpectationBuilder;
@@ -216,6 +226,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -273,6 +284,13 @@ public static partial class ThatEnumerable
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 				AppendContexts(false);
 				_expectationBuilder.AddCollectionContext(materialized);
+				return this;
+			}
+
+			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+				CancellationToken cancellationToken)
+			{
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
@@ -340,7 +358,8 @@ public static partial class ThatEnumerable
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable?>,
-				IAsyncContextConstraint<TEnumerable?>
+				IAsyncContextConstraint<TEnumerable?>,
+				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
 			private readonly ManualExpectationBuilder<object?> _itemExpectationBuilder;
@@ -369,6 +388,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -427,6 +447,13 @@ public static partial class ThatEnumerable
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 				AppendContexts(false);
 				_expectationBuilder.AddCollectionContext(materialized);
+				return this;
+			}
+
+			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+				CancellationToken cancellationToken)
+			{
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
@@ -496,7 +523,8 @@ public static partial class ThatEnumerable
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable>,
-				IAsyncContextConstraint<TEnumerable>
+				IAsyncContextConstraint<TEnumerable>,
+				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
 			private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
@@ -524,6 +552,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 
 				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 				bool cancelEarly = actual is not ICollection<TItem>;
@@ -576,6 +605,13 @@ public static partial class ThatEnumerable
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 				AppendContexts(false);
 				_expectationBuilder.AddCollectionContext(materialized);
+				return this;
+			}
+
+			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+				CancellationToken cancellationToken)
+			{
+				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 

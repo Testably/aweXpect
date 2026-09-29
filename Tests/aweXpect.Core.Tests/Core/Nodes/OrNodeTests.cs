@@ -84,6 +84,19 @@ public sealed class OrNodeTests
 	}
 
 	[Fact]
+	public async Task AppendExpectation_WithCustomSeparators_ShouldUseThem()
+	{
+		OrNode node = new(new DummyNode("foo"));
+		node.AddNode(new DummyNode("bar"), " my ");
+		node.AddNode(new DummyNode("baz"), " is ");
+		StringBuilder sb = new();
+
+		node.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("foo my bar is baz");
+	}
+
+	[Fact]
 	public async Task AppendExpectation_WithoutAdditionalNodes_ShouldUseFirstNode()
 	{
 		OrNode node = new(new DummyNode("foo"));

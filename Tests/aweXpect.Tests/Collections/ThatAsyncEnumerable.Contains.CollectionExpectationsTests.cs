@@ -223,6 +223,29 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemDoesNotComplyWithAndSubjectIsEmpty_ShouldNegateExpectedItem()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+				IEnumerable<Action<IThat<int>>> expected = [x => x.DoesNotComplyWith(y => y.IsEqualTo(1).Or.IsEqualTo(2)),];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it lacked the one expected item
+
+					             Collection:
+					             []
+
+					             Expected:
+					             [an item that is not equal to 1 and is not equal to 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<string>? subject = null;

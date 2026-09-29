@@ -52,7 +52,8 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
-		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
+		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>,
+		IExpectationTextConstraint
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly string _it;
@@ -80,6 +81,7 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -128,6 +130,13 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
+			return this;
+		}
+
+		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			return this;
 		}
 

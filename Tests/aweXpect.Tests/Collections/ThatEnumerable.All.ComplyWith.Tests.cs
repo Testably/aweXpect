@@ -171,6 +171,51 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenInnerExpectationHasAsyncReason_ShouldIncludeReasonInExpectation()
+				{
+					int[] subject = [1,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.IsEqualTo(2).Because(Task.FromResult<string?>("of reasons")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 2, because of reasons for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [1]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenInnerExpectationHasReason_ShouldIncludeReasonInExpectation()
+				{
+					int[] subject = [1,];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.IsEqualTo(2).Because("of reasons"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 2, because of reasons for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [1]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
 				{
 					int[][] subject = [[1, 2,], [1, 3,],];
@@ -254,6 +299,41 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).All().ComplyWith(x => x.HasItem(2));
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenItemsUseAndWhose_ShouldSeparateTheMembersWithSingleSpaces()
+				{
+					object[] subject = [new MyClass(1, "foo"),];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.Is<MyClass>()
+								.Whose(o => o.Value, v => v.IsEqualTo(1))
+								.AndWhose(o => o.StringValue, s => s.IsEqualTo("bar")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is of type MyClass whose Value is equal to 1 and whose StringValue is equal to "bar" for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+						             """);
 				}
 
 				[Fact]
@@ -455,6 +535,30 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenAsyncReasonFollowsDoesNotComplyWith_ShouldIncludeReasonOnceInExpectation()
+				{
+					int[] subject = [3, 1,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1))
+								.Because(Task.FromResult<string?>("of reasons")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 1, because of reasons for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [3, 1]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					int[] subject = [1, 2, 3,];
@@ -575,6 +679,29 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 1 and is not equal to 2 for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [3, 1]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenReasonFollowsDoesNotComplyWith_ShouldIncludeReasonInExpectation()
+				{
+					int[] subject = [3, 1,];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1)).Because("of reasons"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to 1, because of reasons for all items,
 						             but only 1 of 2 were
 
 						             Not matching items:

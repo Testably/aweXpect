@@ -133,7 +133,8 @@ public static partial class ThatEnumerable
 #endif
 
 	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-		IAsyncContextConstraint<IEnumerable<TItem>?>
+		IAsyncContextConstraint<IEnumerable<TItem>?>,
+		IExpectationTextConstraint
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly string _it;
@@ -161,6 +162,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -212,6 +214,13 @@ public static partial class ThatEnumerable
 			return this;
 		}
 
+		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+			return this;
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("has an item that ", "have an item that "));
@@ -250,7 +259,8 @@ public static partial class ThatEnumerable
 
 	private sealed class HasItemThatForEnumerableConstraint<TEnumerable, TItem> :
 		ConstraintResult.WithNotNullValue<TEnumerable>,
-		IAsyncContextConstraint<TEnumerable>
+		IAsyncContextConstraint<TEnumerable>,
+		IExpectationTextConstraint
 		where TEnumerable : IEnumerable?
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
@@ -279,6 +289,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -327,6 +338,13 @@ public static partial class ThatEnumerable
 				}
 			}
 
+			return this;
+		}
+
+		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			return this;
 		}
 

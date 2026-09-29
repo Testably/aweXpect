@@ -137,6 +137,44 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsDoNotComplyWithAndEnumerableIsEmpty_ShouldNegateExpectation()
+			{
+				List<int> subject = [];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.DoesNotComplyWith(x => x.IsEqualTo(1).Or.IsEqualTo(2)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is not equal to 1 and is not equal to 2,
+					             but it had no item
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveAsyncReasonAndEnumerableIsEmpty_ShouldIncludeReasonInExpectation()
+			{
+				List<int> subject = [];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(1).Because(Task.FromResult<string?>("of reasons")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to 1, because of reasons,
+					             but it had no item
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenItemsUseNestedWhose_ShouldRevertToWhoseForTheInnerMember()
 			{
 				MyClass[] subject = [new(1, "foo"),];
@@ -243,6 +281,28 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """)
 					.Because("an async member follows the same rule as a synchronous one");
+			}
+
+			[Fact]
+			public async Task WhenNestedItemsDoNotComplyWithAndInnerEnumerableIsEmpty_ShouldNegateExpectation()
+			{
+				List<int[][]> subject = [[],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it
+						=> it.Any().ComplyWith(x => x.HasItemThat(y => y.DoesNotComplyWith(z => z.IsEqualTo(1).Or.IsEqualTo(2)))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that has an item that is not equal to 1 and is not equal to 2 for at least one item,
+					             but it had item []
+
+					             Collection:
+					             [
+					               []
+					             ]
+					             """);
 			}
 
 			[Fact]

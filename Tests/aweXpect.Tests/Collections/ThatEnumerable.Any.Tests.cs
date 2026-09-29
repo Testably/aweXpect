@@ -64,6 +64,26 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsDoNotComplyWithAndSubjectIsEmpty_ShouldNegateExpectation()
+			{
+				IEnumerable<int> subject = [];
+
+				async Task Act()
+					=> await That(subject).Any()
+						.ComplyWith(it => it.DoesNotComplyWith(x => x.IsEqualTo(1).Or.IsEqualTo(2)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1 and is not equal to 2 for at least one item,
+					             but none of 0 were
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMultipleItemsMatch_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 2, 3, 2,];
@@ -72,6 +92,26 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(2));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNestedItemsDoNotComplyWithAndSubjectIsEmpty_ShouldNegateExpectation()
+			{
+				IEnumerable<int[]> subject = [];
+
+				async Task Act()
+					=> await That(subject).Any()
+						.ComplyWith(it => it.HasItemThat(x => x.DoesNotComplyWith(y => y.IsEqualTo(1).Or.IsEqualTo(2))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is not equal to 1 and is not equal to 2 for at least one item,
+					             but none of 0 did
+
+					             Collection:
+					             []
+					             """);
 			}
 
 			[Fact]
