@@ -29,6 +29,8 @@
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+# Rider settings for a directory opened on its own
+**/.idea/.idea.*.dir/
 
 
 ############################################################
