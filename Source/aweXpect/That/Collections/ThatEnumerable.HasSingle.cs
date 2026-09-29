@@ -141,11 +141,13 @@ public static partial class ThatEnumerable
 
 		/// <remarks>
 		///     The collection is served from the materialized items, so that the single item for further expectations
-		///     does not enumerate the source again.
+		///     does not enumerate the source again. Only the exact collection type is served, as the collection itself can
+		///     also be an item (e.g. an <see langword="object" />).
 		/// </remarks>
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
-			if (_materialized is TValue typedValue)
+			if (typeof(TValue) == typeof(IEnumerable<TItem>) &&
+			    _materialized is TValue typedValue)
 			{
 				value = typedValue;
 				return true;
@@ -278,11 +280,12 @@ public static partial class ThatEnumerable
 
 		/// <remarks>
 		///     The collection is served from the materialized items, so that the single item for further expectations
-		///     does not enumerate the source again.
+		///     does not enumerate the source again. Only the exact collection type is served, as the collection itself can
+		///     also be an item (e.g. an <see langword="object" />).
 		/// </remarks>
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
-			if (typeof(TValue) != typeof(object) &&
+			if (typeof(TValue) == typeof(TEnumerable) &&
 			    _materialized is TValue typedValue)
 			{
 				value = typedValue;

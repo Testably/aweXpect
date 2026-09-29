@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has exactly 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has exactly 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have more than 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -276,7 +276,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have at least 3 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -358,7 +358,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has fewer than 3 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -410,7 +410,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has at most 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
@@ -471,10 +471,29 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has exactly 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableIsNotACollection_AndContainsTooManyItems_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3, 4,]);
+
+				async Task Act()
+					=> await That(subject).HasCount(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly 2 items,
+					             but it had at least 3 items
+
+					             Collection:
+					             [1, 2, 3, 4]
 					             """);
 			}
 
@@ -548,7 +567,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has exactly 2 items,
-					             but it had at least 3 items
+					             but it had 3 items
 
 					             Collection:
 					             [1, 2, 3]
