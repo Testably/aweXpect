@@ -478,5 +478,35 @@ public sealed partial class ThatVersion
 
 			await That(Act).DoesNotThrow();
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenBuildDiffers_ShouldSucceed()
+			{
+				Version subject = new(1, 2, 3, 4);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasBuild(4));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBuildMatches_ShouldFail()
+			{
+				Version subject = new(1, 2, 3, 4);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasBuild(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have build equal to 3,
+					             but it had build 3
+					             """);
+			}
+		}
 	}
 }

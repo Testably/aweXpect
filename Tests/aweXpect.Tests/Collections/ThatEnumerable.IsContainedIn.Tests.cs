@@ -4245,5 +4245,66 @@ public sealed partial class ThatEnumerable
 					.Because("both occurrences are matched by a distinct expected item");
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsContained_ShouldFail()
+			{
+				int[] subject = [1, 2, 3,];
+				int[] expected = [0, 1, 2, 3, 4,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsContainedIn(expected));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection expected in order and contiguous,
+					             but it was
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [0, 1, 2, 3, 4]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsContainedInAnyOrder_ShouldFail()
+			{
+				int[] subject = [1, 2, 3,];
+				int[] expected = [3, 2, 1, 0,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsContainedIn(expected).InAnyOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection expected in any order,
+					             but it was
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [3, 2, 1, 0]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNotContained_ShouldSucceed()
+			{
+				int[] subject = [1, 2, 3,];
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsContainedIn(expected));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

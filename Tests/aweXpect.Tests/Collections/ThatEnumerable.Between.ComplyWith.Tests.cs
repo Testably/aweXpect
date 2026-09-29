@@ -4,6 +4,25 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class Between
 	{
+		public sealed class ComplyWithTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				int[]? subject = null;
+
+				async Task Act()
+					=> await That(subject).Between(1).And(2).ComplyWith(it => it.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 3 for between 1 and 2 items,
+					             but it was <null>
+					             """);
+			}
+		}
+
 		public sealed class NegatedComplyWithTests
 		{
 			[Fact]

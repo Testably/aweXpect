@@ -322,5 +322,38 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectDoesNotEndWithExpected_ShouldSucceed()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.EndsWith(1, 2));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectEndsWithExpected_ShouldFail()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.EndsWith(2, 3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with [2, 3],
+					             but it did end with [
+					               2,
+					               3
+					             ]
+					             """);
+			}
+		}
 	}
 }

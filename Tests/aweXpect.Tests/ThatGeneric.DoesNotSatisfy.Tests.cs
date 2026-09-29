@@ -276,5 +276,35 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenPredicateIsNotSatisfied_ShouldFail()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotSatisfy(x => x == 2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies x => x == 2,
+					             but it was 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPredicateIsSatisfied_ShouldSucceed()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotSatisfy(x => x == 1));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

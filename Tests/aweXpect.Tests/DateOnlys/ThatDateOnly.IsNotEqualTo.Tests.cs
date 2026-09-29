@@ -92,6 +92,36 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsDifferent_ShouldFail()
+			{
+				DateOnly subject = new(2010, 11, 12);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(new DateOnly(2010, 11, 13)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2010-11-13,
+					             but it was 2010-11-12, which differs by -1 day
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsTheSame_ShouldSucceed()
+			{
+				DateOnly subject = new(2010, 11, 12);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(new DateOnly(2010, 11, 12)));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }
 #endif
