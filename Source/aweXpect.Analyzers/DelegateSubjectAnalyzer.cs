@@ -36,7 +36,8 @@ public class DelegateSubjectAnalyzer : DiagnosticAnalyzer
 	{
 		if (context.Operation is not IInvocationOperation invocation ||
 		    !invocation.TargetMethod.IsExtensionMethod ||
-		    !TargetsAnOrdinarySubject(invocation.TargetMethod))
+		    !TargetsAnOrdinarySubject(invocation.TargetMethod) ||
+		    !ReturnsAnExpectation(invocation.TargetMethod))
 		{
 			return;
 		}
@@ -70,6 +71,25 @@ public class DelegateSubjectAnalyzer : DiagnosticAnalyzer
 		       subject.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
 		       subject.ContainingNamespace.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true &&
 		       !IsDelegateSubject(subject.TypeArguments[0], out _);
+	}
+
+	/// <summary>
+	///     Whether the method is an expectation, so that helpers on <c>IThat&lt;T&gt;</c> which authors of custom
+	///     delegate expectations call on the delegate subject on purpose (e.g. <c>Get()</c>) are not reported.
+	/// </summary>
+	private static bool ReturnsAnExpectation(IMethodSymbol method)
+	{
+		for (ITypeSymbol? type = method.ReturnType; type is not null; type = type.BaseType)
+		{
+			if (type is { Name: "Expectation", ContainingNamespace.Name: "Core", } &&
+			    type.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
+			    type.ContainingNamespace.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using aweXpect.Analyzers.Helpers;
@@ -90,30 +91,27 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	{
 		for (SyntaxNode? node = usage; node is not null; node = node.Parent)
 		{
+			if (node is GlobalStatementSyntax { Parent: CompilationUnitSyntax compilationUnit, } globalStatement)
+			{
+				List<StatementSyntax> statements = compilationUnit.Members.OfType<GlobalStatementSyntax>()
+					.Select(member => member.Statement).ToList();
+				return ExpectsNotNullBefore(statements, statements.IndexOf(globalStatement.Statement),
+					subject, semanticModel, cancellationToken) == Verification.Verified;
+			}
+
 			if (node is AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax or MemberDeclarationSyntax)
 			{
 				// The expectation must be evaluated in the same scope in which the subject is used.
 				return false;
 			}
 
-			// Any enclosing statement can write to the subject before the usage is reached, e.g. in the condition of
-			// an `if`, in an earlier statement of a `switch` section, in the `try` block before a `finally` or in an
-			// earlier argument of the same statement. A later iteration of a loop reaches the usage again, so a
-			// write anywhere in the loop counts. An expectation inside the loop is found before the loop is left.
-			if (node is StatementSyntax enclosing &&
-			    WritesTo(enclosing, subject, semanticModel, cancellationToken,
-				    IsLoop(enclosing) ? int.MaxValue : usage.SpanStart))
-			{
-				return false;
-			}
-
-			if (node is not StatementSyntax statement || statement.Parent is not BlockSyntax block)
+			if (node is not StatementSyntax statement)
 			{
 				continue;
 			}
 
-			Verification verification = ExpectsNotNullBefore(block.Statements, block.Statements.IndexOf(statement),
-				subject, semanticModel, cancellationToken);
+			Verification verification =
+				VerifyEnclosingStatement(statement, usage, subject, semanticModel, cancellationToken);
 			if (verification != Verification.NotFound)
 			{
 				return verification == Verification.Verified;
@@ -127,7 +125,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	///     Checks if one of the statements before <paramref name="usageIndex" /> expects the <paramref name="subject" />
 	///     to be not <see langword="null" />.
 	/// </summary>
-	private static Verification ExpectsNotNullBefore(SyntaxList<StatementSyntax> statements, int usageIndex,
+	private static Verification ExpectsNotNullBefore(IReadOnlyList<StatementSyntax> statements, int usageIndex,
 		ISymbol subject, SemanticModel semanticModel, CancellationToken cancellationToken)
 	{
 		for (int index = usageIndex - 1; index >= 0; index--)
@@ -157,6 +155,33 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	}
 
 	/// <summary>
+	///     Checks if the enclosing <paramref name="statement" /> of the <paramref name="usage" /> invalidates the
+	///     <paramref name="subject" />, or if a statement before it in the same block expects it to be not
+	///     <see langword="null" />.
+	/// </summary>
+	private static Verification VerifyEnclosingStatement(StatementSyntax statement, SyntaxNode usage,
+		ISymbol subject, SemanticModel semanticModel, CancellationToken cancellationToken)
+	{
+		// Any enclosing statement can write to the subject before the usage is reached, e.g. in the condition of
+		// an `if`, in an earlier statement of a `switch` section, in the `try` block before a `finally` or in an
+		// earlier argument of the same statement. A later iteration of a loop reaches the usage again, so a
+		// write anywhere in the loop counts. An expectation inside the loop is found before the loop is left.
+		if (WritesTo(statement, subject, semanticModel, cancellationToken,
+			    IsLoop(statement) ? int.MaxValue : usage.SpanStart))
+		{
+			return Verification.Invalidated;
+		}
+
+		if (statement.Parent is not BlockSyntax block)
+		{
+			return Verification.NotFound;
+		}
+
+		return ExpectsNotNullBefore(block.Statements, block.Statements.IndexOf(statement),
+			subject, semanticModel, cancellationToken);
+	}
+
+	/// <summary>
 	///     Checks if the <paramref name="statement" /> contains an expectation for the <paramref name="subject" /> that
 	///     guarantees it to be not <see langword="null" />.
 	/// </summary>
@@ -169,7 +194,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			if (semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is not IMethodSymbol methodSymbol ||
 			    !GuaranteesNotNull(methodSymbol, semanticModel.Compilation) ||
 			    IsCombinedWithOr(invocation) ||
-			    IsConditionallyEvaluated(invocation, statement) ||
+			    IsConditionallyEvaluated(invocation, statement, semanticModel, cancellationToken) ||
 			    IsInsideThatAny(invocation, statement, semanticModel, cancellationToken))
 			{
 				continue;
@@ -191,8 +216,10 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	///     <paramref name="statement" />, e.g. because it is nested inside a lambda, a conditional expression or a
 	///     null-coalescing operator.
 	/// </summary>
-	private static bool IsConditionallyEvaluated(SyntaxNode node, StatementSyntax statement)
+	private static bool IsConditionallyEvaluated(SyntaxNode node, StatementSyntax statement,
+		SemanticModel semanticModel, CancellationToken cancellationToken)
 	{
+		bool isEvaluated = false;
 		for (SyntaxNode? current = node.Parent; current is not null && current != statement; current = current.Parent)
 		{
 			// Only the nodes that make up an awaited expectation chain, an `Expect.ThatAll` combination or an
@@ -205,10 +232,34 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			{
 				return true;
 			}
+
+			if (current is AwaitExpressionSyntax ||
+			    (!isEvaluated && current is InvocationExpressionSyntax invocation &&
+			     IsSynchronousVerification(invocation, semanticModel, cancellationToken)))
+			{
+				isEvaluated = true;
+			}
+			else if (!isEvaluated && current is AssignmentExpressionSyntax or EqualsValueClauseSyntax)
+			{
+				// An expectation that is stored before it is evaluated might only be awaited after the usage.
+				return true;
+			}
 		}
 
 		return false;
 	}
+
+	private static bool IsSynchronousVerification(InvocationExpressionSyntax invocation, SemanticModel semanticModel,
+		CancellationToken cancellationToken)
+		=> invocation.Expression is MemberAccessExpressionSyntax
+			   {
+				   Name.Identifier.Text: "VerifySynchronously" or "Verify",
+			   }
+			   or IdentifierNameSyntax { Identifier.Text: "Verify", } &&
+		   semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol methodSymbol &&
+		   (methodSymbol.MatchesFullName("aweXpect", "Synchronous", "SynchronouslyExtensions", "VerifySynchronously") ||
+		    methodSymbol.MatchesFullName("aweXpect", "Synchronous", "Synchronously", "Verify")) &&
+		   IsAweXpectAssembly(methodSymbol.ContainingAssembly, semanticModel.Compilation);
 
 	/// <summary>
 	///     Checks if the <paramref name="node" /> is nested inside an <c>Expect.ThatAny</c> combination within the
@@ -238,7 +289,14 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	private static bool IsWrittenInsideLambda(SyntaxNode usage, ISymbol subject, SemanticModel semanticModel,
 		CancellationToken cancellationToken)
 	{
-		if (usage.FirstAncestorOrSelf<MemberDeclarationSyntax>() is not { } member)
+		SyntaxNode? member = usage.FirstAncestorOrSelf<MemberDeclarationSyntax>();
+		if (member is GlobalStatementSyntax)
+		{
+			// Top-level statements share their locals across all global statements of the file.
+			member = member.Parent;
+		}
+
+		if (member is null)
 		{
 			return false;
 		}
