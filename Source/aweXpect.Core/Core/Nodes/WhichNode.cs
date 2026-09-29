@@ -275,11 +275,11 @@ internal class WhichNode<TSource, TMember> : Node
 				// A negated whole phrase only fails when both parts were met, or when the member was not evaluated.
 				(_right is IUnevaluatedMemberResult ? _right : _left).AppendResult(stringBuilder, indentation);
 			}
-			else if (_left.Outcome == Outcome.Failure)
+			else if (_left.ExplainsOutcomeOf(this))
 			{
 				_left.AppendResult(stringBuilder, indentation);
 			}
-			else if (_right.Outcome == Outcome.Failure)
+			else if (_right.ExplainsOutcomeOf(this))
 			{
 				_right.AppendResult(stringBuilder, indentation);
 			}

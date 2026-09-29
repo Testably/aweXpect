@@ -586,6 +586,86 @@ public sealed partial class ThatDelegate
 						             actual text
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).Throws<CustomException>().WithMessage("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws a ThatDelegate.CustomException with message equal to "foo",
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_WithThrowsExactly_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).ThrowsExactly<CustomException>().WithMessage("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+
+						             Message:
+						             bar
+						             """)
+						.Because("a message mismatch of an exception of another type does not explain the failure");
+				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_WithThrowsExactlyType_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).ThrowsExactly(typeof(CustomException)).WithMessage("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+
+						             Message:
+						             bar
+						             """)
+						.Because("a message mismatch of an exception of another type does not explain the failure");
+				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).Throws(typeof(CustomException)).WithMessage("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws a ThatDelegate.CustomException with message equal to "foo",
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+
+						             Message:
+						             bar
+						             """)
+						.Because("a message mismatch of an exception of another type does not explain the failure");
+				}
 			}
 		}
 	}

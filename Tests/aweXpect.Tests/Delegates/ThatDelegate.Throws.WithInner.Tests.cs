@@ -402,6 +402,24 @@ public sealed partial class ThatDelegate
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).Throws(typeof(CustomException)).WithInner();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws a ThatDelegate.CustomException with an inner exception,
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+						             """)
+						.Because("the inner exception of an exception of another type is irrelevant");
+				}
 			}
 
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads

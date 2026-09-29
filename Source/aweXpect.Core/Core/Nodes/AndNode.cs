@@ -219,9 +219,9 @@ internal class AndNode : Node
 				: _separator;
 		}
 
-		private bool RendersLeft => _left.Outcome == Outcome.Failure;
+		private bool RendersLeft => _left.ExplainsOutcomeOf(this);
 
-		private bool RendersRight => _right.Outcome == Outcome.Failure &&
+		private bool RendersRight => _right.ExplainsOutcomeOf(this) &&
 		                             (!RendersLeft ||
 		                              (_furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
 		                               !_left.HasSameResultTextAs(_right)));

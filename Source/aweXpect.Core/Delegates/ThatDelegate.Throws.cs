@@ -234,17 +234,12 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			if (value is null)
-			{
-				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
-			}
-			else if (exceptionType.IsAssignableFrom(value.GetType()))
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			Outcome = Outcome.Failure;
+			bool isExpectedType = value is not null && exceptionType.IsAssignableFrom(value.GetType());
+			// Chained expectations on a missing exception or one of another type are irrelevant.
+			FurtherProcessingStrategy = isExpectedType
+				? FurtherProcessingStrategy.Continue
+				: FurtherProcessingStrategy.IgnoreResult;
+			Outcome = isExpectedType ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

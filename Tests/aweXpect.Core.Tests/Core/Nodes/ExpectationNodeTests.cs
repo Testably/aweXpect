@@ -38,6 +38,8 @@ public class ExpectationNodeTests
 	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
 	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddAsyncMapping_ShouldUseAndCombination(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -47,11 +49,11 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(node2, "foo2", "bar2")));
 		StringBuilder expectationSb = new();
 		StringBuilder resultSb = new();
-		string expectedResult = (node1 == Outcome.Failure, node2 == Outcome.Failure) switch
+		string expectedResult = (node1, node2) switch
 		{
-			(true, true) => "bar1 and bar2",
-			(true, _) => "bar1",
-			(_, true) => "bar2",
+			(Outcome.Failure, Outcome.Failure) or (Outcome.Undecided, Outcome.Undecided) => "bar1 and bar2",
+			(Outcome.Failure, _) or (Outcome.Undecided, Outcome.Success) => "bar1",
+			(_, Outcome.Failure) or (Outcome.Success, Outcome.Undecided) => "bar2",
 			(_, _) => "",
 		};
 
@@ -249,6 +251,8 @@ public class ExpectationNodeTests
 	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
 	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddMapping_ShouldUseAndCombination(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -258,11 +262,11 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(node2, "foo2", "bar2")));
 		StringBuilder expectationSb = new();
 		StringBuilder resultSb = new();
-		string expectedResult = (node1 == Outcome.Failure, node2 == Outcome.Failure) switch
+		string expectedResult = (node1, node2) switch
 		{
-			(true, true) => "bar1 and bar2",
-			(true, _) => "bar1",
-			(_, true) => "bar2",
+			(Outcome.Failure, Outcome.Failure) or (Outcome.Undecided, Outcome.Undecided) => "bar1 and bar2",
+			(Outcome.Failure, _) or (Outcome.Undecided, Outcome.Success) => "bar1",
+			(_, Outcome.Failure) or (Outcome.Success, Outcome.Undecided) => "bar2",
 			(_, _) => "",
 		};
 

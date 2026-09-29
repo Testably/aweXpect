@@ -276,6 +276,23 @@ public sealed class AndNodeTests
 	}
 
 	[Theory]
+	[InlineData(Outcome.Success, Outcome.Success, "l and r")]
+	[InlineData(Outcome.Success, Outcome.Undecided, "l and r")]
+	[InlineData(Outcome.Undecided, Outcome.Success, "l and r")]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	public async Task NegatedResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.GetResultText()).IsEqualTo(expectedResultText)
+			.Because("an undecided operand explains why the combination is undecided");
+	}
+
+	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
@@ -308,6 +325,26 @@ public sealed class AndNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
 		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
+	}
+
+	[Theory]
+	[InlineData(Outcome.Failure, Outcome.Success, "l")]
+	[InlineData(Outcome.Success, Outcome.Failure, "r")]
+	[InlineData(Outcome.Failure, Outcome.Failure, "l and r")]
+	[InlineData(Outcome.Failure, Outcome.Undecided, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Failure, "r")]
+	[InlineData(Outcome.Success, Outcome.Undecided, "r")]
+	[InlineData(Outcome.Undecided, Outcome.Success, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.GetResultText()).IsEqualTo(expectedResultText)
+			.Because("an undecided operand only explains the combination when no operand failed");
 	}
 
 	[Fact]

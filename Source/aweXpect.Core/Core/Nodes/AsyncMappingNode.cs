@@ -183,10 +183,10 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_left.Outcome == Outcome.Failure)
+			if (_left.ExplainsOutcomeOf(this))
 			{
 				_left.AppendResult(stringBuilder, indentation);
-				if (_right.Outcome == Outcome.Failure &&
+				if (_right.ExplainsOutcomeOf(this) &&
 				    _left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue &&
 				    !_left.HasSameResultTextAs(_right))
 				{
@@ -194,7 +194,7 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 					_right.AppendResult(stringBuilder, indentation);
 				}
 			}
-			else if (_right.Outcome == Outcome.Failure)
+			else if (_right.ExplainsOutcomeOf(this))
 			{
 				_right.AppendResult(stringBuilder, indentation);
 			}

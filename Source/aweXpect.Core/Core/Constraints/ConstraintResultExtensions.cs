@@ -57,6 +57,17 @@ public static class ConstraintResultExtensions
 		=> left.GetResultText() == right.GetResultText();
 
 	/// <summary>
+	///     Checks if the result of the <paramref name="operand" /> explains the outcome of the
+	///     <paramref name="combination" /> it is part of.
+	/// </summary>
+	/// <remarks>
+	///     An undecided operand only explains an undecided combination, as a failed one is explained by its failed operands.
+	/// </remarks>
+	internal static bool ExplainsOutcomeOf(this ConstraintResult operand, ConstraintResult combination)
+		=> operand.Outcome == Outcome.Failure ||
+		   (operand.Outcome == Outcome.Undecided && combination.Outcome == Outcome.Undecided);
+
+	/// <summary>
 	///     Appends the result of <paramref name="right" /> and omits its subject, when the last part of the result of
 	///     <paramref name="left" /> starts with the same subject.
 	/// </summary>

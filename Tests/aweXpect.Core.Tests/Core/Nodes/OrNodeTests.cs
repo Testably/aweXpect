@@ -309,6 +309,46 @@ public sealed class OrNodeTests
 	}
 
 	[Theory]
+	[InlineData(Outcome.Success, Outcome.Success, "l and r")]
+	[InlineData(Outcome.Failure, Outcome.Success, "r")]
+	[InlineData(Outcome.Success, Outcome.Failure, "l")]
+	[InlineData(Outcome.Success, Outcome.Undecided, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Success, "r")]
+	[InlineData(Outcome.Failure, Outcome.Undecided, "r")]
+	[InlineData(Outcome.Undecided, Outcome.Failure, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	public async Task NegatedResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
+	{
+		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.GetResultText()).IsEqualTo(expectedResultText)
+			.Because("an undecided operand only explains the combination when no operand failed");
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, FurtherProcessingStrategy.Continue)]
+	[InlineData(Outcome.Success, FurtherProcessingStrategy.IgnoreResult)]
+	[InlineData(Outcome.Undecided, FurtherProcessingStrategy.Continue)]
+	[InlineData(Outcome.Undecided, FurtherProcessingStrategy.IgnoreResult)]
+	public async Task NegatedResultText_WhenLeftSucceedsUnderNegation_ShouldIncludeRightResultText(
+		Outcome right, FurtherProcessingStrategy leftStrategy)
+	{
+		OrNode node = new(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Failure, "left", "l", leftStrategy)));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(right, "right", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.GetResultText()).IsEqualTo("r")
+			.Because("the strategy of the left operand only suppresses the right result after the left result");
+	}
+
+	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
 	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
@@ -326,6 +366,22 @@ public sealed class OrNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Theory]
+	[InlineData(Outcome.Failure, Outcome.Failure, "l and r")]
+	[InlineData(Outcome.Failure, Outcome.Undecided, "l and r")]
+	[InlineData(Outcome.Undecided, Outcome.Failure, "l and r")]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
+	{
+		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.GetResultText()).IsEqualTo(expectedResultText)
+			.Because("an undecided operand explains why the combination is undecided");
 	}
 
 	[Fact]
@@ -458,7 +514,7 @@ public sealed class OrNodeTests
 	}
 
 	[Fact]
-	public async Task WhenLeftIsSuccessAndHasIgnoreResultFurtherProcessingStrategy_ShouldExcludeRightResultText()
+	public async Task WhenLeftIsSuccessAndHasIgnoreResultFurtherProcessingStrategy_ShouldIncludeRightResultText()
 	{
 		OrNode node = new(new DummyNode("",
 			() => new DummyConstraintResult(Outcome.Success, "foo", null, FurtherProcessingStrategy.IgnoreResult)));
@@ -467,7 +523,8 @@ public sealed class OrNodeTests
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
-		await That(result.GetResultText()).IsEmpty();
+		await That(result.GetResultText()).IsEqualTo("r2")
+			.Because("the strategy of the left operand only suppresses the right result after the left result");
 	}
 
 	[Fact]

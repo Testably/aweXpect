@@ -77,6 +77,25 @@ public sealed partial class ThatDelegate
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
+				{
+					Action action = () => throw new OtherException("bar");
+
+					async Task Act()
+						=> await That(action).Throws(typeof(CustomException))
+							.Whose(e => e.HResult, h => h.IsEqualTo(42));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws a ThatDelegate.CustomException whose HResult is equal to 42,
+						             but it did throw a ThatDelegate.OtherException:
+						               bar
+						             """)
+						.Because("the members of an exception of another type are irrelevant");
+				}
 			}
 
 			public sealed class GenericTests

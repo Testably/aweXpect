@@ -216,11 +216,12 @@ internal class OrNode : Node
 			_right.AppendExpectation(stringBuilder);
 		}
 
-		private bool RendersLeft => _left.Outcome == Outcome.Failure;
+		private bool RendersLeft => _left.ExplainsOutcomeOf(this);
 
-		private bool RendersRight => _right.Outcome == Outcome.Failure &&
-		                             _furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
-		                             (!RendersLeft || !_left.HasSameResultTextAs(_right));
+		private bool RendersRight => _right.ExplainsOutcomeOf(this) &&
+		                             (!RendersLeft ||
+		                              (_furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
+		                               !_left.HasSameResultTextAs(_right)));
 
 		internal override string? LeadingSubject
 		{

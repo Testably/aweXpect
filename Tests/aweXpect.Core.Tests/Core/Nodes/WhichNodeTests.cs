@@ -658,6 +658,24 @@ public sealed class WhichNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
+	[Theory]
+	[InlineData(Outcome.Failure, Outcome.Undecided, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Failure, "r")]
+	[InlineData(Outcome.Success, Outcome.Undecided, "r")]
+	[InlineData(Outcome.Undecided, Outcome.Success, "l")]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, "l")]
+	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("",
+			() => new DummyConstraintResult(node1, "left", "l")), _ => 3);
+		whichNode.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.GetResultText()).IsEqualTo(expectedResultText)
+			.Because("an undecided part only explains the combination when no part failed");
+	}
+
 	[Fact]
 	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnLeftValue()
 	{
