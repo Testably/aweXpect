@@ -38,7 +38,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique for all items,
+					             has values of which all are unique,
 					             but only 2 of 4 were
 
 					             Not matching items:
@@ -82,7 +82,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique not for all items,
+					             has values of which not all are unique,
 					             but all 3 were
 
 					             Collection:
@@ -101,7 +101,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique not for all items,
+					             has values of which not all are unique,
 					             but it was <null>
 					             """);
 			}
@@ -117,7 +117,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique for all items,
+					             has values of which all are unique,
 					             but it was <null>
 					             """);
 			}
@@ -133,7 +133,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique ignoring case for all items,
+					             has values of which all are unique ignoring case,
 					             but none of 2 were
 
 					             Not matching items:
@@ -161,7 +161,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values that are unique by x => x.Value for all items,
+					             has values of which all are unique by x => x.Value,
 					             but only 1 of 3 were
 					             *
 					             """).AsWildcard();
