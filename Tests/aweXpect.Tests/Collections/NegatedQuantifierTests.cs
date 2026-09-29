@@ -71,10 +71,10 @@ public sealed class NegatedQuantifier
 				.WithMessage("""
 				             Expected that subject
 				             is equal to 1 for no items,
-				             but at least 1 of at least 1 were
+				             but 1 of 2 were
 
 				             Matching items:
-				             [1, (… and maybe more)]
+				             [1]
 
 				             Collection:
 				             [1, 2]

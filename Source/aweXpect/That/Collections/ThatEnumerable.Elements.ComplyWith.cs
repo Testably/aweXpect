@@ -378,7 +378,7 @@ public static partial class ThatEnumerable
 				}
 
 				IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-				bool cancelEarly = actual is not ICollection<object?>;
+				bool cancelEarly = actual is not ICollection;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
 				int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
