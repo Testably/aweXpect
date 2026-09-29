@@ -15,7 +15,7 @@ public class ExpectTests
 	{
 		Expectation.Result result1 = new(1, "foo1",
 			new DummyConstraintResult(Outcome.Failure, "expectation1", "result1"));
-		Expectation.Result result2 = new(1, "foo2", new DummyConstraintResult(Outcome.Success, "expectation2"));
+		Expectation.Result result2 = new(2, "foo2", new DummyConstraintResult(Outcome.Success, "expectation2"));
 
 		async Task Act()
 			=> await ThatAll(
@@ -30,8 +30,8 @@ public class ExpectTests
 			             but
 			              [01] result1
 
-			             [02] context-title2:
-			             contest-content2
+			             [01] context-title1:
+			             contest-content1
 			             """);
 	}
 
@@ -199,6 +199,35 @@ public class ExpectTests
 	}
 
 	[Fact]
+	public async Task ThatAll_WhenANestedCombinationFails_ShouldIncludeTheContextsOfItsFailedMembers()
+	{
+		async Task Act()
+			=> await ThatAll(
+				ThatAll(
+					Member(1, Outcome.Failure),
+					Member(2, Outcome.Success)),
+				Member(3, Outcome.Failure));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected all of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			             foo3 expectation3
+			             but
+			                [01] result1
+			              [03] result3
+
+			             [01] title1:
+			             content1
+
+			             [03] title3:
+			             content3
+			             """);
+	}
+
+	[Fact]
 	public async Task ThatAll_WhenANestedCombinationIsUndecided_ShouldBeInconclusive()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -224,6 +253,124 @@ public class ExpectTests
 			                [02] result2
 			             """)
 			.Because("an undecided nested combination leaves the outer combination undecided");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenANestedCombinationIsUndecided_ShouldIncludeTheContextsOfItsUndecidedAndFailedMembers()
+	{
+		async Task Act()
+			=> await ThatAll(
+				ThatAny(
+					Member(1, Outcome.Undecided),
+					Member(2, Outcome.Failure)),
+				Member(3, Outcome.Success));
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			             foo3 expectation3
+			             but
+			                [01] result1
+			                [02] result2
+
+			             [01] title1:
+			             content1
+
+			             [02] title2:
+			             content2
+			             """)
+			.Because("the context of the succeeded expectation after the nested combination must not be included");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenANestedCombinationSucceeds_ShouldExcludeTheContextsOfItsFailedMembers()
+	{
+		async Task Act()
+			=> await ThatAll(
+				ThatAny(
+					Member(1, Outcome.Failure),
+					Member(2, Outcome.Success)),
+				Member(3, Outcome.Failure));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			             foo3 expectation3
+			             but
+			              [03] result3
+
+			             [03] title3:
+			             content3
+			             """)
+			.Because("the failure of a member of a succeeded combination is not reported, so neither is its context");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenANestedCombinationSucceeds_ShouldNumberTheContextsOfLaterMembersLikeTheirResults()
+	{
+		async Task Act()
+			=> await ThatAll(
+				ThatAny(
+					Member(1, Outcome.Success),
+					Member(2, Outcome.Failure)),
+				Member(3, Outcome.Failure));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			             foo3 expectation3
+			             but
+			              [03] result3
+
+			             [03] title3:
+			             content3
+			             """);
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenDeeplyNested_ShouldNumberTheContextsLikeTheResults()
+	{
+		async Task Act()
+			=> await ThatAll(
+				ThatAny(
+					ThatAll(
+						Member(1, Outcome.Failure),
+						Member(2, Outcome.Success)),
+					Member(3, Outcome.Failure)),
+				Member(4, Outcome.Failure));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			                 Expected all of the following to succeed:
+			                 foo1 expectation1
+			                 foo2 expectation2
+			               foo3 expectation3
+			             foo4 expectation4
+			             but
+			                  [01] result1
+			                [03] result3
+			              [04] result4
+
+			             [01] title1:
+			             content1
+
+			             [03] title3:
+			             content3
+
+			             [04] title4:
+			             content4
+			             """);
 	}
 
 	[Fact]
@@ -316,6 +463,50 @@ public class ExpectTests
 			             """)
 			.Because("the undecided expectation could still have succeeded");
 	}
+
+	[Fact]
+	public async Task ThatAny_WhenSeveralNestedCombinationsFail_ShouldIncludeTheContextsOfTheirFailedMembers()
+	{
+		async Task Act()
+			=> await ThatAny(
+				ThatAll(
+					Member(1, Outcome.Failure),
+					Member(2, Outcome.Success)),
+				ThatAll(
+					Member(3, Outcome.Success),
+					Member(4, Outcome.Failure)),
+				Member(5, Outcome.Failure));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected any of the following to succeed:
+			               Expected all of the following to succeed:
+			               foo1 expectation1
+			               foo2 expectation2
+			               Expected all of the following to succeed:
+			               foo3 expectation3
+			               foo4 expectation4
+			             foo5 expectation5
+			             but
+			                [01] result1
+			                [04] result4
+			              [05] result5
+
+			             [01] title1:
+			             content1
+
+			             [04] title4:
+			             content4
+
+			             [05] title5:
+			             content5
+			             """);
+	}
+
+	private static MyExpectation Member(int index, Outcome outcome)
+		=> new(new Expectation.Result(index, $"foo{index}",
+				new DummyConstraintResult(outcome, $"expectation{index}", $"result{index}")),
+			new ResultContext.Fixed($"title{index}", $"content{index}"));
 
 	/// <remarks>
 	///     A <see cref="ValueTask" /> backed by this source detects a second consumption, which a
