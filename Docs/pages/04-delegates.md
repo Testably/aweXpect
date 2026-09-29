@@ -177,6 +177,14 @@ await Expect.That(Act).Throws().WithInner();
 await Expect.That(Act).Throws().WithInner<CustomException>();
 ```
 
+You can also verify that the thrown exception has no inner exception, or none of a given type:
+
+```csharp
+void Act() => throw new CustomException("outer", new CustomException("inner"));
+
+await Expect.That(Act).Throws().WithoutInner<ArgumentException>();
+```
+
 ### Recursive inner exceptions
 
 You can recursively verify the collection of inner exceptions of the thrown exception:

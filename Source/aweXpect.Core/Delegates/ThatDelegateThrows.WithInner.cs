@@ -94,6 +94,35 @@ public partial class ThatDelegateThrows<TException>
 					new HasInnerExceptionValueConstraint(type, it, grammars)),
 			this);
 
+	/// <summary>
+	///     Verifies that the thrown exception has no inner exception.
+	/// </summary>
+	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner()
+		=> new(ExpectationBuilder
+				.AddConstraint((it, grammars) =>
+					new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars).Invert()),
+			this);
+
+	/// <summary>
+	///     Verifies that the thrown exception has no inner exception of type <typeparamref name="TInnerException" />.
+	/// </summary>
+	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner<TInnerException>()
+		where TInnerException : Exception?
+		=> new(ExpectationBuilder
+				.AddConstraint((it, grammars) =>
+					new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars).Invert()),
+			this);
+
+	/// <summary>
+	///     Verifies that the thrown exception has no inner exception of type <paramref name="type" />.
+	/// </summary>
+	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner(
+		Type type)
+		=> new(ExpectationBuilder
+				.AddConstraint((it, grammars) =>
+					new HasInnerExceptionValueConstraint(type, it, grammars).Invert()),
+			this);
+
 	private sealed class HasInnerExceptionValueConstraint(
 		Type innerExceptionType,
 		string it,
@@ -156,6 +185,7 @@ public partial class ThatDelegateThrows<TException>
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+			=> stringBuilder.Append(It).Append(" had ")
+				.Append(ThatDelegate.FormatForMessage(Actual!.InnerException!, indentation, "inner "));
 	}
 }

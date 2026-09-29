@@ -112,6 +112,72 @@ public class ThrownExceptionVocabularyAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenUsingDoesNotHaveInnerAfterWhich_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await Expect.That(Act).Throws<Exception>().Which.DoesNotHaveInner();
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenUsingDoesNotHaveInnerOnThrows_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await Expect.That(Act).Throws().{|#0:DoesNotHaveInner|}();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
+				.WithLocation(0)
+				.WithArguments("DoesNotHaveInner", "WithoutInner")
+		);
+
+	[Fact]
+	public async Task WhenUsingDoesNotHaveInnerOnThrows_ShouldBeFlaggedOnTheGenericName() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await Expect.That(Act).Throws().{|#0:DoesNotHaveInner<ArgumentException>|}();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
+				.WithLocation(0)
+				.WithArguments("DoesNotHaveInner", "WithoutInner")
+		);
+
+	[Fact]
 	public async Task WhenUsingHasInnerOnThrows_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
