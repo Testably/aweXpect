@@ -173,10 +173,12 @@ sides; an ordering or a range does not, which is why `IsGreaterThan` and `IsNotB
 `ConstraintResult.WithNotNullValue<T>`.
 
 Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all (a non-nullable `bool`, `int` or
-`DateTime`), or when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
-`IsNull()` or `IsOneOf(...)`. It applies no `null` policy of its own, so deciding the outcome with
-`Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure is inverted into a success
-when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is applied.
+`DateTime`), when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
+`IsNull()`, or when it decides every `null` case itself, such as `IsOneOf(...)`, whose expected values may or may not
+include `null`, which the single flag of `WithEqualToValue<T>` cannot express. It applies no `null` policy of its own,
+so deciding the outcome with `Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure
+is inverted into a success when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is
+applied.
 
 With these the above example could be written (with support for the negated case):
 

@@ -110,6 +110,20 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
   .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10);
 ```
 
+This matches an event when any of its parameters is of the given type and satisfies the predicate. To check the
+parameter at a specific zero-based position instead, pass the position first:
+
+```csharp
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
+
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
+  .WithParameter<ThresholdReachedEventArgs>(1, e => e.Threshold > 10);
+```
+
+An event whose parameter at that position is missing or of another type does not match.
+
 ### Sender
 
 When you follow

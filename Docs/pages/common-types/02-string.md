@@ -32,6 +32,10 @@ await Expect.That(subject).IsEqualTo("ABBEY ROAD").Using(StringComparer.OrdinalI
   .Because("the comparer ignored the casing");
 ```
 
+`IgnoringCase()` and `Using(…)` can't be combined, because only one of them could decide how the casing is compared:
+the second one throws an `InvalidOperationException`, whichever order they are specified in. Use a case-insensitive
+comparer such as `StringComparer.OrdinalIgnoreCase` instead.
+
 ### Indentation
 
 While `IgnoringLeadingWhiteSpace` only trims the start of the complete `string`, `IgnoringIndentation` removes the
@@ -107,6 +111,11 @@ An empty pattern is rejected with an `ArgumentException` and a `null` pattern wi
 an empty pattern matches every subject and a `null` pattern matches no subject, so one of the two expectations could
 never fail. A pattern that is not a valid regex is rejected with an `ArgumentException` that carries the parse error as
 its inner exception, even for a `null` subject.
+
+A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so `Using(…)` after
+`AsWildcard()` or `AsRegex()` throws an `InvalidOperationException`. Matching a pattern is limited to one second. A
+pattern that takes longer, e.g. because of catastrophic backtracking, throws an `ArgumentException` that asks you to
+simplify the pattern.
 
 ### Prefix / Suffix
 

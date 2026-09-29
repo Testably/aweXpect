@@ -16,6 +16,14 @@ Expect.That(value).IsTrue();          // reported: never evaluated
 await Expect.That(value).IsTrue();    // fixed: awaited, so it fails
 ```
 
+The code fix awaits the expectation in its innermost enclosing method, local function or lambda. A method or local
+function that is not `async` yet is made `async`: a `void` or `T` return type becomes `Task` or `Task<T>`, and the
+`return` statements of a method that already returns a task are adjusted where needed. The fix is not offered where
+the result would not compile or would change a signature that other code depends on, e.g. in a lambda that is not
+`async` (such as one converted to an `Action`), in a constructor, a property, an iterator or a `lock` statement, in a
+method with `ref`, `out` or `in` parameters, or in an override, a virtual method or an interface implementation whose
+return type would have to change.
+
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
 [Ref struct](./advanced/05-ref-struct.md).
 

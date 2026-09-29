@@ -53,7 +53,7 @@ Under `Customize.aweXpect.Equivalency()`:
 
 | Option                      | Type                 | Default                     | Description                                                                                                                 |
 |-----------------------------|----------------------|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `DefaultEquivalencyOptions` | `EquivalencyOptions` | `new EquivalencyOptions()`  | The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) used when an expectation configures none. |
+| `DefaultEquivalencyOptions` | `EquivalencyOptions` | `new EquivalencyOptions()`  | The [equivalency options](../06-equivalency.md#customizing-the-global-defaults) that every expectation starts from.         |
 
 ## Formatting
 
@@ -79,6 +79,12 @@ Under `Customize.aweXpect.Reflection()`:
 
 A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
 assembly named `Systemics`.
+
+:::note
+The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
+later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
+effect there.
+:::
 
 ## Settings
 

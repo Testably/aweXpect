@@ -291,8 +291,9 @@ A limit other than the default is listed in the failure message under `Equivalen
 
 ### Customizing the global defaults
 
-You can change the default `EquivalencyOptions` that are used when no callback is provided, via the
-[customization API](./advanced/02-customization.md):
+You can change the default `EquivalencyOptions` via the [customization API](./advanced/02-customization.md). Every
+equivalency expectation starts from them: they are used as they are when no callback is provided, and a callback
+receives them as its starting point:
 
 ```csharp
 using aweXpect.Customization;
