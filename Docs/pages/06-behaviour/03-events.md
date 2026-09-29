@@ -2,38 +2,46 @@
 
 Describes the possible expectations for verifying events.
 
-## Recording
+| Expectation                                      | Negated                           | Summary                                       |
+|--------------------------------------------------|-----------------------------------|-----------------------------------------------|
+| [`Triggered`](#triggering)                       | `DidNotTrigger`                   | the recording recorded the event              |
+| [`TriggeredPropertyChanged`](#special-events)    | `DidNotTriggerPropertyChanged`    | `PropertyChanged` was raised for any property |
+| [`TriggeredPropertyChangedFor`](#special-events) | `DidNotTriggerPropertyChangedFor` | `PropertyChanged` was raised for the property |
 
-First, you have to start a recording of events. This can be done with the `.Record().Events()` extension method in the
-`aweXpect.Recording` namespace:
+The events are recorded first. The samples on this page use the following recording:
 
 ```csharp
 using aweXpect.Recording;
 
-class ThresholdReachedEventArgs(int threshold = 0) : EventArgs
+class TrackStartedEventArgs(string title = "") : EventArgs
 {
-    public int Threshold { get; } = threshold;
+  public string Title { get; } = title;
 }
-class MyClass
+class Player
 {
-  public event EventHandler? ThresholdReached;
-  public void OnThresholdReached(ThresholdReachedEventArgs e)
-    => ThresholdReached?.Invoke(this, e);
+  public event EventHandler<TrackStartedEventArgs>? TrackStarted;
+  public void Play(string title)
+    => TrackStarted?.Invoke(this, new TrackStartedEventArgs(title));
 }
-MyClass subject = new MyClass();
+Player player = new Player();
 
 // ↓ Records all events
-IEventRecording<MyClass> recording = subject.Record().Events();
-IEventRecording<MyClass> thresholdRecording = subject.Record().Events(nameof(MyClass.ThresholdReached));
-// ↑ Records only the ThresholdReached event
+IEventRecording<Player> recording = player.Record().Events();
+IEventRecording<Player> trackRecording = player.Record().Events(nameof(Player.TrackStarted));
+// ↑ Records only the TrackStarted event
 ```
 
-Without a registration from the [source generator](#trimming-and-native-aot), the handler is bound reflectively. Such
-a handler must take at most four parameters, must return nothing and must take no parameter by reference.
-Recording all events skips an event whose handler does not fit, so that the other events of the subject are still
-recorded, and an expectation on the skipped event fails with the reason; recording it by name fails right away.
+## Recording
 
-## Stopping
+`.Record().Events()` in the `aweXpect.Recording` namespace starts a recording of all events of the subject, or of the
+events with the given names.
+
+Without a registration from the [source generator](../03-how-it-works/08-native-aot.md#events), the handler is bound
+reflectively. Such a handler must take at most four parameters, must return nothing and must take no parameter by
+reference. Recording all events skips an event whose handler does not fit, so that the other events of the subject are
+still recorded, and an expectation on the skipped event fails with the reason; recording it by name fails right away.
+
+### Stopping
 
 An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Every
 constraint of that one expectation still sees the recorded events, because `.And` and `.Or` combine into a single
@@ -41,26 +49,26 @@ expectation. A further expectation on the same recording fails, so that it canno
 that were recorded until then:
 
 ```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
+IEventRecording<Player> recording = player.Record().Events();
 
-subject.OnThresholdReached(new ThresholdReachedEventArgs());
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Once();
+player.Play("Let It Be");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
 
-subject.OnThresholdReached(new ThresholdReachedEventArgs());
+player.Play("Yesterday");
 // ↓ throws, because the previous expectation already stopped the recording
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Twice();
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
 `.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
 
 ```csharp
-using IDisposableEventRecording<MyClass> recording = subject.Record().Events().UntilDisposed();
+using IDisposableEventRecording<Player> recording = player.Record().Events().UntilDisposed();
 
-subject.OnThresholdReached(new ThresholdReachedEventArgs());
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Once();
+player.Play("Let It Be");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
 
-subject.OnThresholdReached(new ThresholdReachedEventArgs());
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Twice();
+player.Play("Yesterday");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
 Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more and an
@@ -71,152 +79,101 @@ expectation on the disposed recording fails as well.
 You can verify that a recording recorded an event:
 
 ```csharp
-// Start the recording
-IEventRecording<MyClass> recording = subject.Record().Events();
+IEventRecording<Player> recording = player.Record().Events();
 
-// Perform some action on the subject under test
-subject.OnThresholdReached(new ThresholdReachedEventArgs());
+player.Play("Let It Be");
 
-// Expect that the ThresholdReached event was triggered at least once
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached));
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted));
 ```
 
 You can also verify that a recording did not record an event:
 
 ```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
+IEventRecording<Player> recording = player.Record().Events();
 
-// Perform some action on the subject under test that must stay below the threshold
+// Perform an action on the player that must not start a track
 
-// Expect that the ThresholdReached event was never triggered
-await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached));
+await Expect.That(recording).DidNotTrigger(nameof(Player.TrackStarted));
 ```
 
-This is equivalent to `.Triggered(nameof(MyClass.ThresholdReached)).Never()`.
-A count negates the expectation, so `DidNotTrigger(nameof(MyClass.ThresholdReached)).AtLeast(2.Times())` expects the
-event to be triggered less than twice.
+`Triggered` expects the event at least once, and `DidNotTrigger` is equivalent to `Triggered(…).Never()`. A count
+negates the expectation, so `DidNotTrigger(nameof(Player.TrackStarted)).AtLeast(2.Times())` expects the event to be
+triggered less than twice.
 
-## Filtering
+Without `Within(…)`, only the events recorded so far count. To wait for events that are triggered in the background,
+see [waiting for events](../03-how-it-works/06-time-and-cancellation.md#events).
 
-You can filter the recorded events based on their parameters:
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10);
-```
-
-This matches an event when any of its parameters is of the given type and satisfies the predicate. To check the
-parameter at a specific zero-based position instead, pass the position first:
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .WithParameter<ThresholdReachedEventArgs>(1, e => e.Threshold > 10);
-```
-
-An event whose parameter at that position is missing or of another type does not match.
-
-### Sender
-
-When you follow
-the [event best practices](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/best-practices-for-implementing-the-event-based-asynchronous-pattern),
-you can filter the recorded events based on the sender (the first parameter):
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .WithSender(s => s == subject);
-```
-
-### EventArgs
-
-When you follow
-the [event best practices](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/best-practices-for-implementing-the-event-based-asynchronous-pattern),
-you can filter the recorded events based on their `EventArgs` (the second parameter):
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .With<ThresholdReachedEventArgs>(e => e.Threshold < 10);
-```
-
-## Timeout
-
-You can specify a timeout within which the expected events must be triggered:
-
-```csharp
-using aweXpect.Chronology; // from the aweXpect.Chronology package
-
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-_ = Task.Delay(2.Seconds()).ContinueWith(_ => {
-    // Trigger the events in the background
-    subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-    subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
-});
-
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .WithParameter<ThresholdReachedEventArgs>(e => e.Threshold > 10)
-  .Within(3.Seconds());
-```
-
-The `.Within(TimeSpan)` method will wait up to 3 seconds for the expected events and
-finish successfully as soon as the events are triggered.
-
-More precisely, it stops as soon as the outcome can no longer change, and otherwise waits for the
-whole timeout. For an expectation with an upper bound (`DidNotTrigger`, `Never()`,
-`AtMost(2.Times())`, `Exactly(1)`) that means the opposite: it waits out the timeout to be sure no
-further event arrives, and returns early only when one event too many is recorded:
-
-```csharp
-IEventRecording<MyClass> recording = subject.Record().Events();
-
-// Waits for 3 seconds and expects that no ThresholdReached event is triggered in that time
-await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached))
-  .Within(3.Seconds());
-```
-
-## Counting
+### Counting
 
 You can verify that an event was recorded a specific number of times:
 
 ```csharp
 using aweXpect.Core; // for `Times()`
 
-IEventRecording<MyClass> recording = subject.Record().Events();
+IEventRecording<Player> recording = player.Record().Events();
 
-subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
-subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
+player.Play("Let It Be");
+player.Play("Yesterday");
 
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .Between(1).And(2.Times());
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Between(1).And(2.Times());
 ```
 
-You can use the same occurrence constraints as in the [contain](./03-collections/01-equality.md#contained-items) method:
+The same occurrence constraints as for [`Contains`](../05-collections/01-equality.md#contained-items) are available:
+`AtLeast(2.Times())`, `AtMost(3.Times())`, `Between(1).And(4.Times())`, `Exactly(0.Times())`, `MoreThan(1.Times())`,
+`LessThan(3.Times())`, `Once()`, `Twice()` and `Never()`.
 
-- `AtLeast(2.Times())`
-- `AtMost(3.Times())`
-- `Between(1).And(4.Times())`
-- `Exactly(0.Times())`
-- `MoreThan(1.Times())`
-- `LessThan(3.Times())`
-- `Once()`
-- `Twice()`
-- `Never()`
+## Filtering
+
+You can filter the recorded events based on their parameters:
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Let It Be");
+player.Play("Yesterday");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+  .WithParameter<TrackStartedEventArgs>(e => e.Title == "Yesterday");
+```
+
+This matches an event when any of its parameters is of the given type and satisfies the predicate. To check the
+parameter at a specific zero-based position instead, pass the position first:
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Yesterday");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+  .WithParameter<TrackStartedEventArgs>(1, e => e.Title == "Yesterday");
+```
+
+An event whose parameter at that position is missing or of another type does not match.
+
+When you follow
+the [event best practices](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/best-practices-for-implementing-the-event-based-asynchronous-pattern),
+you can also filter the recorded events based on the sender (the first parameter) or on their `EventArgs` (the second
+parameter):
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Let It Be");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+  .WithSender(s => s == player)
+  .Because("the sender is the first parameter");
+```
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Let It Be");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+  .With<TrackStartedEventArgs>(e => e.Title.StartsWith("Let"))
+  .Because("the EventArgs are the second parameter");
+```
 
 ## Special events
 
@@ -226,30 +183,36 @@ Included are some overloads for the
 event:
 
 ```csharp
-MyViewModel subject = // ...implements INotifyPropertyChanged
-IEventRecording<MyViewModel> recording = subject.Record().Events();
+AlbumViewModel album = // ...implements INotifyPropertyChanged
+using IDisposableEventRecording<AlbumViewModel> recording = album.Record().Events().UntilDisposed();
 
-// do something that triggers the PropertyChanged event
-subject.Execute();
+album.Rename("Let It Be... Naked");
 
 await Expect.That(recording).TriggeredPropertyChanged()
   .Because("it should trigger the PropertyChanged event for any property name");
+await Expect.That(recording).TriggeredPropertyChangedFor(x => x.Title)
+  .Because("it should trigger the PropertyChanged event for the 'Title' property name");
+```
 
-await Expect.That(recording).TriggeredPropertyChangedFor(x => x.MyProperty)
-  .Because("it should trigger the PropertyChanged event for the 'MyProperty' property name");
+The negated expectations verify that the event was not triggered:
+
+```csharp
+AlbumViewModel album = // ...implements INotifyPropertyChanged
+using IDisposableEventRecording<AlbumViewModel> recording = album.Record().Events().UntilDisposed();
+
+// do something that must not change the album
 
 await Expect.That(recording).DidNotTriggerPropertyChanged()
   .Because("it should not trigger for any property name");
-
-await Expect.That(recording).DidNotTriggerPropertyChangedFor(x => x.MyProperty)
-  .Because("it should not trigger for the 'MyProperty' property name");
+await Expect.That(recording).DidNotTriggerPropertyChangedFor(x => x.Title)
+  .Because("it should not trigger for the 'Title' property name");
 ```
 
 As defined by the `INotifyPropertyChanged`
-[contract](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged?view=net-10.0#remarks),
+[contract](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged#remarks),
 an event that was triggered with a `null` or empty property name notifies that *all* properties changed: it
 satisfies `TriggeredPropertyChangedFor` for every property name and lets `DidNotTriggerPropertyChangedFor`
-fail for every property name. A whitespace-only name is a name like any other.  
-Expecting the `null` or the empty property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches
-only the events that notify that all properties changed, but no named one, and without distinguishing the two
-spellings, which the contract allows interchangeably.
+fail for every property name. A whitespace-only name is a name like any other. Expecting the `null` or the empty
+property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches only the events that notify that all
+properties changed, but no named one, and without distinguishing the two spellings, which the contract allows
+interchangeably.

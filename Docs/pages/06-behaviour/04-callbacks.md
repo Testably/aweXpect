@@ -2,6 +2,10 @@
 
 Describes the possible expectations for working with callbacks.
 
+| Expectation             | Negated        | Summary                                       |
+|-------------------------|----------------|-----------------------------------------------|
+| [`Signaled`](#signaler) | `DidNotSignal` | the callback was signaled (a number of times) |
+
 ## Signaler
 
 First, you have to start recording callback signals using the `Signaler` class. This class is available in the
@@ -12,54 +16,41 @@ using aweXpect.Signaling;
 
 // ↓ Counts signals from callbacks without parameters
 Signaler signaler = new();
-Signaler<string> stringSignaler = new();
+Signaler<string> titleSignaler = new();
 // ↑ Counts signals from callbacks with a string parameter
 ```
 
 Then, you can signal the callback on the recording:
 
 ```csharp
-class MyClass
+class Player
 {
-  public void Execute(Action<string> onCompleted)
+  public void Play(string title, Action<string> onCompleted)
   {
-    // do something in a background thread and then call the onCompleted callback
+    // play the track in a background thread and then call the onCompleted callback
   }
 }
 
-sut.Execute(v => signaler.Signal(v));
+player.Play("Let It Be", title => titleSignaler.Signal(title));
 ```
 
 At last, you can wait for the callback to be signaled:
 
 ```csharp
-await Expect.That(signaler).Signaled();
+await Expect.That(titleSignaler).Signaled();
 ```
 
 You can also verify that the callback will not be signaled:
 
 ```csharp
-await Expect.That(signaler).DidNotSignal();
+await Expect.That(titleSignaler).DidNotSignal();
 ```
 
 :::note
-Without a limit, the last statement would never return. So when no timeout is specified, `DidNotSignal()` waits for the
-default timeout of 30 seconds, which the failure message shows (e.g. "within 0:30"). See
-[default waits](./03-cancellation.md#default-waits).
+Without a limit, `DidNotSignal()` would never return. So when no timeout is specified, it waits for the default
+timeout of 30 seconds, which the failure message shows (e.g. "within 0:30"). Use `Within(…)` to wait for a shorter
+time, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
-
-### Timeout
-
-You can specify a timeout for how long to wait for the callback to be signaled:
-
-```csharp
-await Expect.That(signaler).Signaled().Within(TimeSpan.FromSeconds(5))
-  .Because("it should take at most 5 seconds to complete");
-```
-
-A `CancellationToken` (`WithCancellation`) also ends the wait, but the signals received until then decide nothing, so
-the expectation is then [inconclusive](./03-cancellation.md#outcome) instead of failed or
-successful. Use `Within(…)` to limit how long to wait.
 
 ### Amount
 
@@ -78,25 +69,11 @@ await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form.
-
-:::note
-Only expectations without an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled. All
-others have to wait for the timeout to expire, because only then is the number of signals final.
-:::
+`Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form. Only expectations without
+an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled, all others wait for the
+timeout.
 
 ### Parameters
-
-You can also include a parameter during signaling:
-
-```csharp
-Signaler<string> signaler = new();
-
-signaler.Signal("Yesterday");
-signaler.Signal("Let It Be");
-
-await Expect.That(signaler).Signaled().AtLeast(2.Times());
-```
 
 You can filter for signals with specific parameters by providing a `predicate`:
 

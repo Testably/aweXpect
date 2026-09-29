@@ -56,7 +56,7 @@ The [aweXpect.Core](https://www.nuget.org/packages/aweXpect.Core/) package is in
 extensions, so that the risk of version conflicts between different extensions can be reduced.
 
 You can extend the functionality for any types, by adding extension methods on `IThat<TType>`.
-More information can be found in the [extensibility guide](https://docs.testably.org/aweXpect/write-extension).
+More information can be found in the [extensibility guide](https://docs.testably.org/aweXpect/extending/your-first-expectation).
 
 **Extension projects**
 

@@ -1,17 +1,33 @@
 # Constraints and results
 
+The samples on this page use the following namespaces:
+
+```csharp
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Formatting;
+using aweXpect.Results;
+using static aweXpect.Formatting.Format;
+```
+
+## Constraints
+
 The basis for expectations are constraints. You can add different constraints to the `ExpectationBuilder` that is
 available for the `IThat<T>`. They differ in the input and output parameters for the `IsMetBy` method:
 
-- `IValueConstraint<T>`   
-  It receives the actual value `T` and returns a `ConstraintResult`.
-- `IAsyncConstraint<T>`  
-  It receives the actual value `T` and a `CancellationToken` and returns the `ConstraintResult` asynchronously.  
-  *Use it when you need asynchronous functionality or access to the timeout `CancellationToken`.*
-- `IContextConstraint<T>` / `IAsyncContextConstraint<T>`  
-  Similar to the `IValueConstraint<T>` and `IAsyncConstraint<T>` respectively but receives an additional
-  `IEvaluationContext` parameter that allows storing and receiving data between expectations.  
-  *This mechanism is used for example to avoid enumerating an `IEnumerable` multiple times across multiple constraints.*
+| Constraint                                            | `IsMetBy` receives                         | Use it                                          |
+|-------------------------------------------------------|--------------------------------------------|-------------------------------------------------|
+| `IValueConstraint<T>`                                 | the actual value                           | for a synchronous check                         |
+| `IAsyncConstraint<T>`                                 | the actual value and a `CancellationToken` | for asynchronous work or to observe the timeout |
+| `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data between constraints               |
+
+The `IEvaluationContext` allows storing and receiving data between expectations. This mechanism is used for example to
+avoid enumerating an `IEnumerable` multiple times across multiple constraints.
+
+`IsMetBy` returns a `ConstraintResult`, which decides the outcome and writes the expectation and the result texts of
+the failure message:
 
 ```csharp
 /// <summary>
@@ -59,57 +75,24 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
 e.g. with the [Nullable](https://www.nuget.org/packages/Nullable) package.
 :::
 
-All constraints should also provide the expectations and results for the negated case (so that they are compatible with
-`DoesNotComplyWith`).
+## Results
 
-In order to streamline common cases, the recommended practice is to use the same class also for the `ConstraintResult`;
-in most cases with one of the following helper classes:
+All constraints should also provide the expectations and results for the negated case, so that they are compatible
+with `DoesNotComplyWith`. In order to streamline common cases, the recommended practice is to use the same class also
+for the `ConstraintResult`, in most cases with one of the following helper classes:
 
-- `ConstraintResult.WithValue<T>`
-  You have to set the `Actual` property in the `IsMetBy` method and overwrite `AppendNormalExpectation` and
-  `AppendNegatedExpectation` as well as either the corresponding `AppendNormalResult` and `AppendNegatedResult` or the
-  common method for both cases `AppendResult` (when the result text is identical in both cases)
-- `ConstraintResult.WithNotNullValue<T>`
-  Similar to `ConstraintResult.WithValue<T>`, but will automatically include a check that Actual is not `null` with the
-  generic result text.
-- `ConstraintResult.WithEqualToValue<T>`
-  Ensures consistent `null`-handling when comparing two values for equality. Similar to `ConstraintResult.WithValue<T>`,
-  but you have to also provide a flag indicating if the expected value is `null` or not.
+| Helper class                           | `null` subject                                   | Use it when the expectation                         |
+|----------------------------------------|--------------------------------------------------|-----------------------------------------------------|
+| `ConstraintResult.WithNotNullValue<T>` | fails the expectation and its negation           | inspects the subject                                |
+| `ConstraintResult.WithEqualToValue<T>` | is an ordinary value, compared with the expected | compares for equality or identity                   |
+| `ConstraintResult.WithValue<T>`        | is not handled                                   | handles `null` itself or has a non-nullable subject |
+
+With all three, you set the `Actual` property in the `IsMetBy` method and override `AppendNormalExpectation` and
+`AppendNegatedExpectation` as well as `AppendNormalResult` and `AppendNegatedResult`. `WithEqualToValue<T>`
+additionally takes a flag indicating if the expected value is `null`.
 
 All three take the name of the subject (`it`) and the `grammars` in their constructor and expose the name as the
 inherited `It` property, which the default result texts use.
-
-Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows the rule that
-all built-in expectations follow (see [concepts](./02-concepts.md#null-subjects)):
-
-> A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
-> identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
-
-A `null` subject does not mean "the expectation is false", it means there is no value to inspect and the question
-cannot be answered. Negating an unanswerable question does not make it true, which is why the rule covers the negated
-case as well.
-
-- Your expectation **inspects the subject**: its length, its type, its items, whether it is empty. There is nothing to
-  inspect when the subject is `null`, so it has to fail, in the negated case as well: `IsNotEmpty()` fails for a `null`
-  subject just like `IsEmpty()` does, and so does `DoesNotComplyWith(x => x.IsEmpty())`. Use
-  `ConstraintResult.WithNotNullValue<T>`.
-- Your expectation **compares the subject for equality or identity** against a value the caller supplied. Then `null`
-  is an ordinary value on both sides: `IsEqualTo(null)` succeeds for a `null` subject, `IsNotEqualTo(null)` fails and
-  `IsNotEqualTo("foo")` succeeds. Use `ConstraintResult.WithEqualToValue<T>` and pass whether the expected value is
-  `null`; that flag is what makes the subject fail on the side where `null` is not a legitimate answer.
-
-Do not read the second case as "any value the caller supplied": `HasValue(2)` takes one and still fails for `null`,
-because it inspects the subject rather than comparing it. Only equality and identity give `null` a meaning on both
-sides; an ordering or a range does not, which is why `IsGreaterThan` and `IsNotBetween` use
-`ConstraintResult.WithNotNullValue<T>`.
-
-Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all (a non-nullable `bool`, `int` or
-`DateTime`), when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
-`IsNull()`, or when it decides every `null` case itself, such as `IsOneOf(...)`, whose expected values may or may not
-include `null`, which the single flag of `WithEqualToValue<T>` cannot express. It applies no `null` policy of its own,
-so deciding the outcome with `Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure
-is inverted into a success when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is
-applied.
 
 With these the above example could be written (with support for the negated case):
 
@@ -148,8 +131,40 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
 Note that the `it` parameter is passed to the base class and the inherited `It` property is used in the body: capturing
 the parameter *and* passing it to the base stores it twice, which the compiler warns about (CS9107).
 
-This then also allows you to write an explicit negated expectation with the same constraint using the `.Invert()`
-method:
+## `null` subjects
+
+Which of the three helper classes to pick is decided by how your expectation treats a `null` subject, and that follows
+the rule that all built-in expectations follow (see [`null` subjects](../03-how-it-works/04-null-subjects.md)):
+
+> A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
+> identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
+
+- Your expectation **inspects the subject**: its length, its type, its items, whether it is empty. There is nothing to
+  inspect when the subject is `null`, so it has to fail, in the negated case as well: `IsNotEmpty()` fails for a `null`
+  subject just like `IsEmpty()` does, and so does `DoesNotComplyWith(x => x.IsEmpty())`. Use
+  `ConstraintResult.WithNotNullValue<T>`.
+- Your expectation **compares the subject for equality or identity** against a value the caller supplied. Then `null`
+  is an ordinary value on both sides: `IsEqualTo(null)` succeeds for a `null` subject, `IsNotEqualTo(null)` fails and
+  `IsNotEqualTo("foo")` succeeds. Use `ConstraintResult.WithEqualToValue<T>` and pass whether the expected value is
+  `null`; that flag is what makes the subject fail on the side where `null` is not a legitimate answer.
+
+Do not read the second case as "any value the caller supplied": `HasValue(2)` takes one and still fails for `null`,
+because it inspects the subject rather than comparing it. Only equality and identity give `null` a meaning on both
+sides; an ordering or a range does not, which is why `IsGreaterThan` and `IsNotBetween` use
+`ConstraintResult.WithNotNullValue<T>`.
+
+Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all (a non-nullable `bool`, `int` or
+`DateTime`), when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
+`IsNull()`, or when it decides every `null` case itself, such as `IsOneOf(...)`, whose expected values may or may not
+include `null`, which the single flag of `WithEqualToValue<T>` cannot express. It applies no `null` policy of its own,
+so deciding the outcome with `Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure
+is inverted into a success when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is
+applied.
+
+## Negated expectations
+
+A constraint that supports the negated case also allows you to write an explicit negated expectation with the
+`.Invert()` method:
 
 ```csharp
 /// <summary>

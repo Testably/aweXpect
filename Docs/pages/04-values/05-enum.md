@@ -1,21 +1,30 @@
+import PropertyComparisons from '../_property-comparisons.md';
+
 # Enum
 
 Describes the possible expectations for `enum` values.
 
-Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `HasValue`, which takes a negated comparison
-instead (e.g. `HasValue().NotEqualTo(2)`).
+| Expectation              | Negated            | Summary                                   |
+|--------------------------|--------------------|-------------------------------------------|
+| [`IsEqualTo`](#equality) | `IsNotEqualTo`     | equal to the expected value               |
+| [`IsOneOf`](#one-of)     | `IsNotOneOf`       | equal to one of the expected values       |
+| [`HasValue`](#value)     | negated comparison | has the expected underlying numeric value |
+| [`IsDefined`](#defined)  | `IsNotDefined`     | a named member of the `enum`              |
+| [`HasFlag`](#flags)      | `DoesNotHaveFlag`  | has the expected flag set                 |
+
+The samples on this page use the following `enum`:
+
+```csharp
+enum Genre { Rock = 1, Pop = 2, Jazz = 3, Blues = 4 }
+```
 
 ## Equality
 
 You can verify that the `enum` is equal to another one or not:
 
 ```csharp
-enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
-
-await Expect.That(Colors.Red).IsEqualTo(Colors.Red)
-  .Because("it is 'Red'");
-await Expect.That(Colors.Red).IsNotEqualTo(Colors.Blue)
-  .Because("it is 'Red'");
+await Expect.That(Genre.Rock).IsEqualTo(Genre.Rock);
+await Expect.That(Genre.Rock).IsNotEqualTo(Genre.Jazz);
 ```
 
 ## One of
@@ -23,33 +32,21 @@ await Expect.That(Colors.Red).IsNotEqualTo(Colors.Blue)
 You can verify that the `enum` is one of many alternatives:
 
 ```csharp
-enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
-
-await Expect.That(Colors.Red).IsOneOf(Colors.Red, Colors.Green, Colors.Blue);
-await Expect.That(Colors.Yellow).IsNotOneOf(Colors.Red, Colors.Green, Colors.Blue);
+await Expect.That(Genre.Rock).IsOneOf(Genre.Rock, Genre.Pop, Genre.Jazz);
+await Expect.That(Genre.Blues).IsNotOneOf(Genre.Rock, Genre.Pop, Genre.Jazz);
 ```
 
 ## Value
 
-You can verify that the `enum` has a given value or not:
+You can verify that the `enum` has a given underlying numeric value or not:
 
 ```csharp
-enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
-
-await Expect.That(Colors.Red).HasValue(1)
-  .Because("'Red' is 1");
-// or more explicit
-await Expect.That(Colors.Red).HasValue().EqualTo(1)
-  .Because("'Red' is 1");
-
-await Expect.That(Colors.Red).HasValue().NotEqualTo(2)
-  .Because("'Red' is 1");
+await Expect.That(Genre.Rock).HasValue(1);
+await Expect.That(Genre.Rock).HasValue().NotEqualTo(2);
+await Expect.That(Genre.Jazz).HasValue().GreaterThan(2);
 ```
 
-The `HasValue()` continuation compares the underlying numeric value and supports the same comparisons as the
-other properties: `EqualTo`, `NotEqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`,
-`LessThanOrEqualTo`, `Between` and their negations `NotGreaterThan`, `NotGreaterThanOrEqualTo`, `NotLessThan`,
-`NotLessThanOrEqualTo` and `NotBetween`.
+<PropertyComparisons />
 
 Every backing type from `sbyte` to `ulong` is covered. Each comparison takes a `long` or a `ulong`, so a member of
 a `ulong`-backed `enum` above `long.MaxValue` can be named as well:
@@ -66,12 +63,10 @@ await Expect.That(Big.Max).HasValue().GreaterThan(0);
 You can verify that the `enum` has a defined value or not:
 
 ```csharp
-enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
-
-await Expect.That((Colors)3).IsDefined()
-  .Because("3 corresponds to 'Blue'");
-await Expect.That((Colors)5).IsNotDefined()
-  .Because("5 is no valid color");
+await Expect.That((Genre)3).IsDefined()
+  .Because("3 corresponds to 'Jazz'");
+await Expect.That((Genre)5).IsNotDefined()
+  .Because("5 is no valid genre");
 ```
 
 ## Flags
@@ -81,12 +76,10 @@ You can verify that the `enum` has a specific flag or not:
 ```csharp
 using System.Text.RegularExpressions;
 
-RegexOptions subject = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
 
-await Expect.That(subject).HasFlag(RegexOptions.IgnoreCase)
-  .Because("it has the 'IgnoreCase' flag");
-await Expect.That(subject).DoesNotHaveFlag(RegexOptions.ExplicitCapture)
-  .Because("it does not have the 'ExplicitCapture' flag");
+await Expect.That(options).HasFlag(RegexOptions.IgnoreCase);
+await Expect.That(options).DoesNotHaveFlag(RegexOptions.ExplicitCapture);
 ```
 
 Unlike the property-style `Has…` expectations such as `HasValue`, `HasFlag` has no continuation: it asks whether a bit

@@ -1,8 +1,20 @@
 # Object
 
-Describes the possible expectations for objects.
+Describes the possible expectations for any object.
 
-Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`).
+| Expectation                                                             | Negated             | Summary                                               |
+|-------------------------------------------------------------------------|---------------------|-------------------------------------------------------|
+| [`IsEqualTo`](#equality)                                                | `IsNotEqualTo`      | equal to the expected object                          |
+| [`IsSameAs`](#reference-equality)                                       | `IsNotSameAs`       | the same reference as the expected object             |
+| [`IsEquatableTo`](#iequatablet)                                         | `IsNotEquatableTo`  | equal according to its `IEquatable<T>` implementation |
+| [`IsEquivalentTo`](#equivalency)                                        | `IsNotEquivalentTo` | structurally equal to the expected object             |
+| [`IsOneOf`](#one-of)                                                    | `IsNotOneOf`        | equal to one of the expected objects                  |
+| [`Is<T>`](#type-check)                                                  | `IsNot<T>`          | of type `T` or a derived type                         |
+| [`IsExactly<T>`](#type-check)                                           | `IsNotExactly<T>`   | exactly of type `T`                                   |
+| [`IsNull`](#null)                                                       | `IsNotNull`         | `null`                                                |
+| [`Satisfies`](#condition)                                               | `DoesNotSatisfy`    | satisfies a predicate                                 |
+| [`CompliesWith`](#nested-expectation)                                   | `DoesNotComplyWith` | meets a nested expectation                            |
+| [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
 
 ## Equality
 
@@ -10,10 +22,10 @@ You can verify that the `object` is equal to another one or not:
 
 ```csharp
 record Album(string Title);
-Album subject = new("Abbey Road");
+Album album = new("Abbey Road");
 
-await Expect.That(subject).IsEqualTo(new Album("Abbey Road"));
-await Expect.That(subject).IsNotEqualTo(new Album("Revolver"));
+await Expect.That(album).IsEqualTo(new Album("Abbey Road"));
+await Expect.That(album).IsNotEqualTo(new Album("Revolver"));
 ```
 
 This uses the `object.Equals(object?, object?)` method.
@@ -21,7 +33,7 @@ This uses the `object.Equals(object?, object?)` method.
 :::note
 A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
-[equivalency](../06-equivalency.md).
+[equivalency](./13-equivalency.md).
 :::
 
 ### Reference equality
@@ -30,10 +42,10 @@ You can verify that the `object` has the same reference as another one:
 
 ```csharp
 record Album(string Title);
-Album subject = new("Abbey Road");
+Album album = new("Abbey Road");
 
-await Expect.That(subject).IsSameAs(subject);
-await Expect.That(subject).IsNotSameAs(new Album("Abbey Road"));
+await Expect.That(album).IsSameAs(album);
+await Expect.That(album).IsNotSameAs(new Album("Abbey Road"));
 ```
 
 This uses the `object.ReferenceEquals(object?, object?)` method.
@@ -46,13 +58,13 @@ You can verify that the `object` is equal to another one while using a custom `I
 class AlbumComparer : IEqualityComparer<object>
 {
   public bool Equals(object? x, object? y)
-    => x != null && y != null;
+    => (x as Album)?.Title == (y as Album)?.Title;
   public int GetHashCode(object obj)
     => obj.GetHashCode();
 }
-Album subject = new("Abbey Road");
+Album album = new("Abbey Road");
 
-await Expect.That(subject).IsEqualTo(new Album("Revolver")).Using(new AlbumComparer());
+await Expect.That(album).IsEqualTo(new Album("Abbey Road")).Using(new AlbumComparer());
 ```
 
 ### `IEquatable<T>`
@@ -65,10 +77,10 @@ class TrackId(long value) : IEquatable<long>
 {
   public bool Equals(long other) => value == other;
 }
-TrackId subject = new(42);
+TrackId trackId = new(42);
 
-await Expect.That(subject).IsEquatableTo(42L);
-await Expect.That(subject).IsNotEquatableTo(7L);
+await Expect.That(trackId).IsEquatableTo(42L);
+await Expect.That(trackId).IsNotEquatableTo(7L);
 ```
 
 :::note
@@ -79,17 +91,13 @@ This inspects the subject by calling its `IEquatable<T>.Equals(T)` method. There
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
-[equivalency](../06-equivalency.md) page for details and configuration options:
+[equivalency](./13-equivalency.md) page for details and configuration options:
 
 ```csharp
-class Album(string title)
-{
-  public string Title { get; } = title;
-}
-Album subject = new("Abbey Road");
+Album album = new("Abbey Road");
 
-await Expect.That(subject).IsEquivalentTo(new Album("Abbey Road"));
-await Expect.That(subject).IsNotEquivalentTo(new Album("Revolver"));
+await Expect.That(album).IsEquivalentTo(new Album("Abbey Road"));
+await Expect.That(album).IsNotEquivalentTo(new Album("Revolver"));
 ```
 
 ## One of
@@ -98,36 +106,34 @@ You can verify that the `object` is one of many alternatives:
 
 ```csharp
 record Album(string Title);
-Album subject = new("Abbey Road");
+Album album = new("Abbey Road");
 
-await Expect.That(subject).IsOneOf([new Album("Abbey Road"), new Album("Revolver")]);
-await Expect.That(subject).IsNotOneOf([new Album("Revolver"), new Album("Help!")]);
+await Expect.That(album).IsOneOf([new Album("Abbey Road"), new Album("Revolver")]);
+await Expect.That(album).IsNotOneOf([new Album("Revolver"), new Album("Help!")]);
 ```
 
 ## Type check
 
-You can verify that the `object` is of a given type or not:
+You can verify that the `object` is of a given type or a derived type, or that it is not:
 
 ```csharp
-object subject = new Album("Abbey Road");
+object album = new Album("Abbey Road");
 
-await Expect.That(subject).Is<Album>();
-await Expect.That(subject).Is(typeof(Album));
-await Expect.That(subject).IsNot<Single>();
-await Expect.That(subject).IsNot(typeof(Single));
+await Expect.That(album).Is<Album>();
+await Expect.That(album).Is(typeof(Album));
+await Expect.That(album).IsNot<Track>();
+await Expect.That(album).IsNot(typeof(Track));
 ```
 
-This verifies if the subject is of the given type or a derived type.
-
-You can also verify that the `object` is only of the given type and not of a derived type:
+`IsExactly` and `IsNotExactly` do not accept a derived type:
 
 ```csharp
-object subject = new Album("Abbey Road");
+object album = new Album("Abbey Road");
 
-await Expect.That(subject).IsExactly<Album>();
-await Expect.That(subject).IsExactly(typeof(Album));
-await Expect.That(subject).IsNotExactly<Single>();
-await Expect.That(subject).IsNotExactly(typeof(Single));
+await Expect.That(album).IsExactly<Album>();
+await Expect.That(album).IsExactly(typeof(Album));
+await Expect.That(album).IsNotExactly<Track>();
+await Expect.That(album).IsNotExactly(typeof(Track));
 ```
 
 ## Null
@@ -135,10 +141,10 @@ await Expect.That(subject).IsNotExactly(typeof(Single));
 You can verify if the `object` is `null` or not:
 
 ```csharp
-object? subject = null;
+object? album = null;
 
-await Expect.That(subject).IsNull();
-await Expect.That(new object()).IsNotNull();
+await Expect.That(album).IsNull();
+await Expect.That(new Album("Abbey Road")).IsNotNull();
 ```
 
 ## Condition
@@ -146,23 +152,14 @@ await Expect.That(new object()).IsNotNull();
 You can verify that any object satisfies a given predicate:
 
 ```csharp
-object? subject = null;
+Track track = new() { Title = "Let It Be", PlayCount = 3 };
 
-await Expect.That(subject).Satisfies(x => x == null);
-await Expect.That(subject).DoesNotSatisfy(x => x != null);
+await Expect.That(track).Satisfies(x => x.PlayCount > 0);
+await Expect.That(track).DoesNotSatisfy(x => x.IsPlayed);
 ```
 
-When the object changes in the background, you can also verify that it satisfies a condition within a given time
-period:
-
-```csharp
-using aweXpect.Chronology; // from the aweXpect.Chronology package
-
-Track subject = new() { IsPlayed = false };
-// Start a background task that sets `IsPlayed` to true
-
-await Expect.That(subject).Satisfies(x => x.IsPlayed == true).Within(2.Seconds());
-```
+When the object changes in the background, `Within(…)` waits until it satisfies the predicate, see
+[waiting for a condition](../03-how-it-works/06-time-and-cancellation.md#a-condition).
 
 ## Nested expectation
 
@@ -175,16 +172,6 @@ await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
 await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
 
-`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails.
-
-When the object changes in the background, you can also verify that it complies with an expectation within a given time
-period:
-
-```csharp
-using aweXpect.Chronology; // from the aweXpect.Chronology package
-
-List<Track> tracks = new();
-// Start a background task that adds items to `tracks`
-
-await Expect.That(tracks).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
-```
+`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails. Like
+`Satisfies`, `CompliesWith` can [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with
+`Within(…)`.

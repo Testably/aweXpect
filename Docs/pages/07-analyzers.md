@@ -25,7 +25,7 @@ method with `ref`, `out` or `in` parameters, or in an override, a virtual method
 return type would have to change.
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
-[Ref struct](./advanced/05-ref-struct.md).
+[When you cannot await](./03-how-it-works/01-anatomy.md#when-you-cannot-await).
 
 ## aweXpect0002
 
@@ -55,7 +55,7 @@ await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("foo");  
 ```
 
 The `Has…` vocabulary belongs after `.Which`. See
-[Delegates](./04-delegates.md#with-after-throws-has-on-the-exception).
+[Delegates](./06-behaviour/01-delegates.md#with-after-throws-has-on-the-exception).
 
 ## aweXpect0004
 
@@ -71,7 +71,7 @@ await Expect.That(Act).IsEqualTo(3);                              // reported: c
 await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
 ```
 
-See [Delegates](./04-delegates.md#no-exception).
+See [Delegates](./06-behaviour/01-delegates.md#no-exception).
 
 ## aweXpect0005
 
@@ -108,7 +108,7 @@ await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
 `IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
 does. `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()` are about the order itself and have no meaning for
 such a collection, so `.InAnyOrder()` does not help there. Sorted collections are not reported. See
-[Collections](./03-collections/index.md).
+[Collections](./05-collections/index.md#sets).
 
 ## aweXpect0007
 
@@ -125,4 +125,4 @@ await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
 Only these older targets are affected, as they use the .NET Standard 2.0 build of aweXpect. See
-[Delegates](./04-delegates.md).
+[Delegates](./06-behaviour/01-delegates.md).

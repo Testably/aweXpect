@@ -1,48 +1,32 @@
 # Combining expectations
 
-- `.And` and `.Or` combine expectations on the same subject, and `Expect.ThatAll` or `Expect.ThatAny` combine
-  expectations on different subjects (see [multiple expectations](./advanced/01-multiple-expectations.md)).
-- `Whose(member, expectations)` verifies a member of the subject and keeps the subject for further expectations.
-- `Which` continues with a new subject, e.g. the single item of a collection or the thrown exception:
+Expectations can be combined on the same subject, on its members or on different subjects:
+
+| Syntax                                                       | Combines                                                            |
+|--------------------------------------------------------------|---------------------------------------------------------------------|
+| [`.And`, `.Or`](#on-the-same-subject)                        | expectations on the same subject                                    |
+| [`Whose(member, …)`](#on-members-of-the-subject)             | expectations on a member, and keeps the subject for further ones    |
+| [`Which`](#on-a-new-subject)                                 | continues with a new subject, e.g. the single item or the exception |
+| [`Expect.ThatAll`, `Expect.ThatAny`](#on-different-subjects) | expectations on different subjects                                  |
+
+## On the same subject
+
+Use `.And` or `.Or` to combine multiple expectations on the same subject:
 
 ```csharp
-IEnumerable<int> values = [42];
-void Act() => throw new CustomException("my exception");
+string title = "Let It Be";
 
-await Expect.That(values).HasSingle().Which.IsGreaterThan(41);
-await Expect.That(Act).Throws<CustomException>().Which.HasMessage("my exception");
-```
-
-Awaiting an expectation returns the value it verified, e.g. the single item of a collection, so you can use it
-afterwards:
-
-```csharp
-IEnumerable<int> values = [42];
-
-int single = await Expect.That(values).HasSingle();
-```
-
-## Multiple expectations
-
-You can combine multiple expectations in different ways:
-
-### On the same property
-
-Simply use `.And` or `.Or` to combine multiple expectations:
-
-```csharp
-string subject = "something different";
-await Expect.That(subject).StartsWith("some").And.EndsWith("text");
+await Expect.That(title).StartsWith("Let").And.EndsWith("Road");
 ```
 
 ```text title="Failure message"
-Expected that subject
-starts with "some" and ends with "text",
-but it was "something different", which differs before index 17:
-                    ↓ (actual)
-  "something different"
-                 "text"
-                    ↑ (expected suffix)
+Expected that title
+starts with "Let" and ends with "Road",
+but it was "Let It Be", which differs before index 8:
+           ↓ (actual)
+  "Let It Be"
+       "Road"
+           ↑ (expected suffix)
 ```
 
 `.And` binds tighter than `.Or`, so `A.And.B.Or.C` is evaluated as `(A && B) || C`.
@@ -51,27 +35,28 @@ but it was "something different", which differs before index 17:
 using it as a guard:
 
 ```csharp
-string? subject = null;
-await Expect.That(subject).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(2));
+string? title = null;
+
+await Expect.That(title).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(9));
 ```
 
 `.And` does not short-circuit: all expectations are evaluated, so that the failure message can report all of them.
 
-### On different properties of the same subject
+## On members of the subject
 
-Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`:
+Use `Whose` to verify different members of a common subject and combine them again with `.And` or `.Or`:
 
 ```csharp
-  public record Album(int TrackCount, string Title);
-  Album subject = new(1, "Dark Side of the Sun");
-  
-  await Expect.That(subject)
-    .Whose(x => x.TrackCount, x => x.IsGreaterThan(1)).And
-    .Whose(x => x.Title, x => x.IsEqualTo("Dark Side of the Moon"));
+record Album(int TrackCount, string Title);
+Album album = new(1, "Dark Side of the Sun");
+
+await Expect.That(album)
+  .Whose(x => x.TrackCount, x => x.IsGreaterThan(1)).And
+  .Whose(x => x.Title, x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
 ```text title="Failure message"
-Expected that subject
+Expected that album
 whose TrackCount is greater than 1 and whose Title is equal to "Dark Side of the Moon",
 but TrackCount was 1 and Title was "Dark Side of the Sun", which differs at index 17:
                 ↓ (actual)
@@ -83,31 +68,58 @@ but TrackCount was 1 and Title was "Dark Side of the Sun", which differs at inde
 When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result:
 
 ```csharp
-  await Expect.That(subject)
-    .Whose(x => x.LoadTitleAsync(), x => x.IsEqualTo("Dark Side of the Moon"));
+await Expect.That(album)
+  .Whose(x => x.LoadTitleAsync(), x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
-### On different subjects
+## On a new subject
 
-Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expectations:
+`Which` continues with a new subject, e.g. the single item of a collection or the thrown exception:
 
 ```csharp
-  string subjectA = "ABC";
-  string subjectB = "XYZ";
-  
-  await Expect.ThatAll(
-    Expect.That(subjectA).IsEqualTo("ABC"),
-    Expect.That(subjectB).IsEqualTo("DEF"));
+IEnumerable<int> playCounts = [42];
+void Act() => throw new CustomException("Yesterday");
+
+await Expect.That(playCounts).HasSingle().Which.IsGreaterThan(41);
+await Expect.That(Act).Throws<CustomException>().Which.HasMessage("Yesterday");
 ```
 
-```text title="Failure message"
+## On different subjects
+
+Use `Expect.ThatAll` or `Expect.ThatAny` to combine arbitrary expectations. `ThatAll` requires all of them to
+succeed, `ThatAny` at least one:
+
+```csharp
+string album = "Abbey Road";
+string song = "Something";
+
+await Expect.ThatAll(
+  Expect.That(album).IsEqualTo("Abbey Road"),
+  Expect.That(song).IsEqualTo("Yesterday"));
+await Expect.ThatAny(
+  Expect.That(album).IsEqualTo("Let It Be"),
+  Expect.That(song).IsEqualTo("Something"));
+```
+
+```text title="Failure message of ThatAll"
 Expected all of the following to succeed:
- [01] Expected that subjectA is equal to "ABC"
- [02] Expected that subjectB is equal to "DEF"
+ [01] Expected that album is equal to "Abbey Road"
+ [02] Expected that song is equal to "Yesterday"
 but
- [02] it was "XYZ", which differs at index 0:
+ [02] it was "Something", which differs at index 0:
          ↓ (actual)
-        "XYZ"
-        "DEF"
+        "Something"
+        "Yesterday"
          ↑ (expected)
+```
+
+## Using the result
+
+Awaiting an expectation returns the value it verified, e.g. the single item of a collection, so you can use it
+afterwards:
+
+```csharp
+IEnumerable<int> playCounts = [42];
+
+int single = await Expect.That(playCounts).HasSingle();
 ```

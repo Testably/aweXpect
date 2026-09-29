@@ -73,15 +73,20 @@ but it was True
 aweXpect supports .NET Framework 4.8 and .NET Standard 2.0 as well as .NET 8 and later. The following features are
 only available on .NET 8 or later:
 
-- expectations for `IAsyncEnumerable<T>`;
-- `DateOnly` and `TimeOnly`;
-- `Span<T>` and `ReadOnlySpan<T>` subjects;
-- `IsParsableInto` for strings;
-- `HasBufferSize` for buffered streams;
-- delegates that return a `ValueTask` or `ValueTask<T>`.
+- expectations for [`IAsyncEnumerable<T>`](./05-collections/index.md);
+- [`DateOnly` and `TimeOnly`](./04-values/11-date-time-only.md);
+- [`Span<T>` and `ReadOnlySpan<T>`](./05-collections/index.md#spans) subjects;
+- [`IsParsableInto`](./04-values/03-string.md#parsing) for strings;
+- [`HasBufferSize`](./04-values/08-stream.md#buffer-size) for buffered streams;
+- [`IsPositive` and `IsNegative`](./04-values/02-number.md#positive--negative) for unsigned numbers;
+- [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`;
+- the custom comparer of an `ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`
+  ([sets](./05-collections/index.md#sets)).
+
 ## Next steps
 
-- [Concepts](./03-how-it-works/01-anatomy.md) explains how expectations are combined and negated, and how they treat `null`.
-- The pages for [common types](./04-values/01-boolean.md), [collections](./05-collections/index.md),
-  [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and [equivalency](./04-values/13-equivalency.md) list the available
-  expectations.
+- [How aweXpect works](./03-how-it-works/01-anatomy.md) explains how expectations are evaluated, negated and combined,
+  how they treat `null`, and the options they share.
+- The pages for [values](./04-values/01-boolean.md), [collections](./05-collections/index.md),
+  [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and
+  [equivalency](./04-values/13-equivalency.md) list the available expectations.

@@ -1,7 +1,14 @@
 # Customization values
 
-You can add your own [customizations](./advanced/02-customization.md) on top of the `AwexpectCustomization`
+You can add your own [customizations](../03-how-it-works/07-configuration.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
+
+The samples on this page use the following namespaces:
+
+```csharp
+using System.Text.Json;
+using aweXpect.Customization;
+```
 
 ## Add a simple customization value
 
@@ -112,8 +119,8 @@ Disposing the lifetime of a single value restores the group as it was before, so
 order in which you created them. Once all lifetimes of the group in an async flow are disposed, the flow uses the
 global values again.
 
-Both kinds of customizations work with [global defaults](./advanced/02-customization.md#global-defaults) without any
-change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or `Customize.aweXpect.Global.Json().Update(…)` stores
+Both kinds of customizations work with [global defaults](../03-how-it-works/07-configuration.md#global-defaults)
+without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or `Customize.aweXpect.Global.Json().Update(…)` stores
 the value for all async flows, because `Global` is an `AwexpectCustomization` as well.
 
 This allows expectations to access values either individually or for the whole group:

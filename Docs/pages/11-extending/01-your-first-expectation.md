@@ -11,15 +11,8 @@ The samples on this page use the following namespaces:
 
 ```csharp
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Text.Json;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.Metadata;
-using aweXpect.Customization;
-using aweXpect.Recording;
 using aweXpect.Results;
-using static aweXpect.Formatting.Format;
 ```
 
 ## Expectations
@@ -38,7 +31,10 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<strin
 }
 ```
 
-### ExpectationBuilder
+The result type decides how the expectation can continue: `AndOrResult` allows combining it with further expectations
+using `.And` and `.Or`.
+
+## ExpectationBuilder
 
 The next step is to extract the `ExpectationBuilder`. In order to keep the automatic code suggestions for developers
 clear, you have to cast the `IThat<TType>` interface to `IExpectThat<TType>`, which will then give access to the
@@ -58,7 +54,7 @@ internal static IExpectThat<T> Get<T>(this IThat<T> subject)
 }
 ```
 
-You can then use the `ExpectationBuilder` to add a `IsAbsolutePathConstraint`:
+You can then use the `ExpectationBuilder` to add an `IsAbsolutePathConstraint`:
 
 ```csharp
 public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<string> subject)
@@ -66,3 +62,7 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<strin
             => new IsAbsolutePathConstraint(it, grammars)),
         subject);
 ```
+
+The factory receives the name of the subject (`it`) and the `grammars` of the sentence, which the constraint uses to
+write its part of the failure message. [Constraints and results](./02-constraints-and-results.md) shows how to write
+the `IsAbsolutePathConstraint`, and [message conventions](./03-message-conventions.md) how its texts should read.

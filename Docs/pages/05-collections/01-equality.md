@@ -1,7 +1,17 @@
 # Equality and containment
 
 Describes how to compare a collection with another collection, and how to verify that it contains, starts with or ends
-with items. The rules for [sets](./index.md#sets) and [tolerances](./index.md#tolerance) apply to all of them.
+with items.
+
+| Expectation                          | Negated            | Summary                                                |
+|--------------------------------------|--------------------|--------------------------------------------------------|
+| [`IsEqualTo`](#equality)             | `IsNotEqualTo`     | has the same items as the expected collection          |
+| [`Contains(item)`](#contained-items) | `DoesNotContain`   | contains the item, optionally a number of times        |
+| [`Contains(predicate)`](#predicate)  | `DoesNotContain`   | contains an item that satisfies the predicate          |
+| [`Contains(collection)`](#subset)    | `DoesNotContain`   | contains the expected items (a subset)                 |
+| [`IsContainedIn`](#superset)         | `IsNotContainedIn` | all its items are contained in the expected collection |
+| [`StartsWith`](#start--end)          | `DoesNotStartWith` | starts with the expected items                         |
+| [`EndsWith`](#start--end)            | `DoesNotEndWith`   | ends with the expected items                           |
 
 ## Equality
 
@@ -17,8 +27,6 @@ await Expect.That(values).IsEqualTo([3, 3, 2, 2, 1, 1]).InAnyOrder().IgnoringDup
 
 await Expect.That(values).IsNotEqualTo([2, 3]);
 await Expect.That(values).IsNotEqualTo([4, 3, 2, 1]).InAnyOrder();
-await Expect.That(values).IsNotEqualTo([1, 1, 3, 3, 2, 2]).IgnoringDuplicates();
-await Expect.That(values).IsNotEqualTo([3, 3, 2, 2, 1, 1, 4]).InAnyOrder().IgnoringDuplicates();
 ```
 
 Without `InAnyOrder()` the items are compared in the order in which the collection enumerates them, which is not
@@ -29,13 +37,13 @@ defined for a [set](./index.md#sets).
 You can verify that the collection contains a specific item or not:
 
 ```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
+IEnumerable<string> songs = ["Come Together", "Something", "Let It Be"];
 
-await Expect.That(values).Contains(13);
-await Expect.That(values).DoesNotContain(42);
+await Expect.That(songs).Contains("Let It Be");
+await Expect.That(songs).DoesNotContain("Yesterday");
 ```
 
-You can also set occurrence constraints on `Contain`:
+You can also set occurrence constraints on `Contains`:
 
 ```csharp
 using aweXpect.Core; // for `Times()`
@@ -50,37 +58,16 @@ await Expect.That(values).Contains(1).LessThan(5.Times());
 await Expect.That(values).Contains(1).Between(1).And(5.Times());
 ```
 
-You can also use a [custom comparer](../common-types/06-object.md#custom-comparer) or
-configure [equivalency](../06-equivalency.md):
-
-```csharp
-IEnumerable<Album> albums = //...
-Album expected = //...
-
-await Expect.That(albums).Contains(expected).Equivalent();
-await Expect.That(albums).Contains(expected).Using(new AlbumComparer());
-```
-
 ### Predicate
 
-You can verify that the collection contains an item that satisfies a condition:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 20);
-
-await Expect.That(values).Contains(x => x > 12 && x < 14);
-await Expect.That(values).DoesNotContain(x => x >= 42);
-```
-
-You can also set occurrence constraints on `Contain`:
+You can verify that the collection contains an item that satisfies a condition, with the same occurrence constraints:
 
 ```csharp
 IEnumerable<int> values = [1, 1, 1, 2];
 
-await Expect.That(values).Contains(x => x == 1).AtLeast(2.Times());
+await Expect.That(values).Contains(x => x > 1);
 await Expect.That(values).Contains(x => x == 1).Exactly(3.Times());
-await Expect.That(values).Contains(x => x == 1).AtMost(4.Times());
-await Expect.That(values).Contains(x => x == 1).Between(1).And(5.Times());
+await Expect.That(values).DoesNotContain(x => x >= 42);
 ```
 
 ### Subset
@@ -113,8 +100,8 @@ IEnumerable<int> values = Enumerable.Range(1, 3);
 await Expect.That(values).IsContainedIn([1, 2, 3, 4]);
 await Expect.That(values).IsContainedIn([4, 3, 2, 1]).InAnyOrder();
 await Expect.That(values).IsContainedIn([1, 1, 2, 2, 3, 3, 4, 4]).IgnoringDuplicates();
-await Expect.That(values).IsContainedIn([4, 4, 3, 3, 2, 2, 1, 1]).InAnyOrder().IgnoringDuplicates();
 await Expect.That(values).IsContainedIn([1, 4, 2, 3]).IgnoringInterspersedItems();
+await Expect.That(values).IsNotContainedIn([1, 2]);
 ```
 
 Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
@@ -123,64 +110,36 @@ without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unle
 To check for a proper superset, append `.Properly()` (which would fail for equal collections). The negation is
 `IsNotContainedIn`.
 
-## Collection start
+## Start / end
 
-You can verify if a collection starts with another collection or not:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 3);
-
-await Expect.That(values).StartsWith(1, 2);
-await Expect.That(values).DoesNotStartWith(2, 3);
-```
-
-You can also use a [custom comparer](../common-types/06-object.md#custom-comparer) or
-configure [equivalency](../06-equivalency.md):
+You can verify if a collection starts or ends with other items or not:
 
 ```csharp
-IEnumerable<Album> albums = //...
-Album expected = //...
+IEnumerable<string> songs = ["Come Together", "Something", "Let It Be"];
 
-await Expect.That(albums).StartsWith(expected).Equivalent();
-await Expect.That(albums).StartsWith(expected).Using(new AlbumComparer());
-```
-
-For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
-leading or trailing whitespace, or use a custom `IEqualityComparer<string>`:
-
-```csharp
-await Expect.That(["FOO", "BAR"]).StartsWith(["foo"]).IgnoringCase();
-```
-
-## Collection end
-
-You can verify if a collection ends with another collection or not:
-
-```csharp
-IEnumerable<int> values = Enumerable.Range(1, 5);
-
-await Expect.That(values).EndsWith(4, 5);
-await Expect.That(values).DoesNotEndWith(3, 5);
-```
-
-You can also use a [custom comparer](../common-types/06-object.md#custom-comparer) or
-configure [equivalency](../06-equivalency.md):
-
-```csharp
-IEnumerable<Album> albums = //...
-Album expected = //...
-
-await Expect.That(albums).EndsWith(expected).Equivalent();
-await Expect.That(albums).EndsWith(expected).Using(new AlbumComparer());
-```
-
-For strings, you can configure this expectation to ignore case, ignore newline style, ignore the indentation, ignoring
-leading or trailing whitespace, or use a custom `IEqualityComparer<string>`:
-
-```csharp
-await Expect.That(["FOO", "BAR"]).EndsWith(["bar"]).IgnoringCase();
+await Expect.That(songs).StartsWith("Come Together", "Something");
+await Expect.That(songs).EndsWith("Let It Be");
+await Expect.That(songs).DoesNotStartWith("Let It Be");
+await Expect.That(songs).DoesNotEndWith("Something");
 ```
 
 :::note
 `EndsWith` and `DoesNotEndWith` always enumerate the complete collection.
 :::
+
+## Comparing items
+
+The expectations on this page compare the items with the expected items by their default equality, unless you specify a
+[custom comparer](../04-values/12-object.md#custom-comparer), [equivalency](../04-values/13-equivalency.md), a
+[tolerance](./index.md#tolerance) or, for strings, one of the [string options](../04-values/03-string.md#string-options):
+
+```csharp
+IEnumerable<Album> albums = //...
+Album expected = //...
+
+await Expect.That(albums).Contains(expected).Equivalent();
+await Expect.That(albums).StartsWith(expected).Using(new AlbumComparer());
+await Expect.That(["COME TOGETHER", "SOMETHING"]).EndsWith(["something"]).IgnoringCase();
+```
+
+The rules for [sets](./index.md#sets) with a custom comparer apply as well.

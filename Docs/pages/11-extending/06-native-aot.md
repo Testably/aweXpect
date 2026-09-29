@@ -2,7 +2,8 @@
 
 aweXpect reflects over a type only when it has no registration in `TypeMetadataRegistry`, and switches that fallback
 off when an application is published with trimming or Native AOT enabled, so that a comparison or recording never
-silently verifies less than it claims to. An extension takes part in this in two ways.
+silently verifies less than it claims to (see [Native AOT and trimming](../03-how-it-works/08-native-aot.md)). An
+extension takes part in this in two ways.
 
 An extension method whose argument reaches an equivalency comparison or an event recording only reveals an open type
 parameter at its own call site, so it has to carry the marker that lets the source generator register the type at the
@@ -10,6 +11,9 @@ consumer's call site: `[RequiresMemberMetadata]` for a value that is compared, `
 that is recorded:
 
 ```csharp
+using aweXpect.Core.Metadata;
+using aweXpect.Recording;
+
 public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject)
     where T : notnull
     => subject.Record().Events();

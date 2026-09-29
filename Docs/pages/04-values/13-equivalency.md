@@ -3,28 +3,22 @@
 Describes how to verify that two objects are *equivalent* (that is, structurally equal) rather than referentially or
 strictly equal. Equivalency walks both objects recursively and compares them member by member.
 
+| Expectation                                  | Negated                       | Summary                                                 |
+|----------------------------------------------|-------------------------------|---------------------------------------------------------|
+| [`IsEquivalentTo`](#on-objects)              | `IsNotEquivalentTo`           | structurally equal to the expected object               |
+| [`AreEquivalentTo`](#on-collection-items)    | a quantifier such as `None()` | the selected items are equivalent to the expected value |
+| [`Equivalent()`](#as-a-modifier-of-equality) |                               | switches an equality expectation to equivalency         |
+
 ## Overview
 
 Equality (`IsEqualTo`) delegates to `object.Equals`, which for most reference types means *reference* equality.
 Equivalency instead compares the public state of two objects field by field and property by property, recursing into
-nested objects and collections. Two objects are equivalent when every included member compares as equivalent:
+nested objects and collections. Two objects are equivalent when every included member compares as equivalent.
 
-```csharp
-class Album(string title)
-{
-  public string Title { get; } = title;
-}
-Album subject = new("Abbey Road");
+When you publish with trimming or Native AOT, see
+[Native AOT and trimming](../03-how-it-works/08-native-aot.md#equivalency).
 
-await Expect.That(subject).IsEquivalentTo(new Album("Abbey Road"));
-await Expect.That(subject).IsNotEquivalentTo(new Album("Revolver"));
-```
-
-## Where equivalency is available
-
-Equivalency is exposed on three different surfaces.
-
-### Direct on objects
+### On objects
 
 `IsEquivalentTo` and `IsNotEquivalentTo` are extension methods on any object. They accept an optional callback to
 configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration):
@@ -37,9 +31,9 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 await Expect.That(album).IsNotEquivalentTo(unexpected);
 ```
 
-### On collection elements
+### On collection items
 
-`AreEquivalentTo` checks every selected element of an `IEnumerable<T>` (or `IAsyncEnumerable<T>`) against a single
+`AreEquivalentTo` checks every selected item of an `IEnumerable<T>` (or `IAsyncEnumerable<T>`) against a single
 expected value, using the same equivalency comparison:
 
 ```csharp
@@ -50,7 +44,7 @@ await Expect.That(tracks).All().AreEquivalentTo(expected);
 await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
 ```
 
-### As a modifier on equality assertions
+### As a modifier of equality
 
 For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`, `StartsWith`, `EndsWith`, `HasItem`,
 `All().AreEqualTo(...)`, …), append `.Equivalent()` to switch the comparison from `Equals` to structural equivalency:
@@ -103,7 +97,7 @@ By default, equivalency:
 - Compares a dictionary (`IDictionary`, `IDictionary<TKey, TValue>` or `IReadOnlyDictionary<TKey, TValue>`) **by key**
   instead of by position, and reports a differing, missing or superfluous entry under its key. Each expected key is
   looked up through the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](./03-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
+  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
   cannot both be matched by one entry, so the second one is reported as lacking a distinct key. The comparer is read
   from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
   `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or
@@ -132,6 +126,16 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .IgnoringMember("PlayCount")
   .IgnoringCollectionOrder());
 ```
+
+| Option                                                                               | Effect                                           |
+|--------------------------------------------------------------------------------------|--------------------------------------------------|
+| [`IgnoringMember`](#ignoring-members-by-name)                                        | ignores members by name                          |
+| [`Ignoring`, `IgnoringFields`, `IgnoringProperties`](#ignoring-members-by-predicate) | ignores members by path and type                 |
+| [`IncludingFields`, `IncludingProperties`](#including-fields-and-properties)         | chooses which fields and properties are compared |
+| [`IgnoringCollectionOrder`](#ignoring-collection-order)                              | matches collection items without an order        |
+| [`For<T>`](#per-type-options-with-fort)                                              | applies options to members of type `T` only      |
+| [`ComparisonType`](#comparing-by-value-or-by-members)                                | compares a type by value or by its members       |
+| [`LimitingRecursionDepth`](#limiting-the-recursion-depth)                            | changes the maximum recursion depth of 100       |
 
 ### Ignoring members by name
 
@@ -292,8 +296,8 @@ A limit other than the default is listed in the failure message under `Equivalen
 
 ### Customizing the global defaults
 
-You can change the default `EquivalencyOptions` via the [customization API](./advanced/02-customization.md). Every
-equivalency expectation starts from them: they are used as they are when no callback is provided, and a callback
+You can change the default `EquivalencyOptions` via the [configuration](../03-how-it-works/07-configuration.md).
+Every equivalency expectation starts from them: they are used as they are when no callback is provided, and a callback
 receives them as its starting point:
 
 ```csharp
@@ -306,7 +310,7 @@ using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOpt
 ```
 
 To change the default for all async flows, e.g. in an assembly-level setup, set it on
-[`Customize.aweXpect.Global`](./advanced/02-customization.md#global-defaults):
+[`Customize.aweXpect.Global`](../03-how-it-works/07-configuration.md#global-defaults):
 
 ```csharp
 using aweXpect.Customization;

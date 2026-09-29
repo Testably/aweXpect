@@ -1,5 +1,9 @@
 # Native AOT and trimming
 
+Publishing with trimming or Native AOT removes code and metadata that is only reached through reflection. aweXpect
+needs reflection for equivalency and for recording events, so a source generator that ships with the `aweXpect`
+package generates the registrations they need when your project is compiled.
+
 ## Equivalency
 
 Equivalency has to know the members of the compared types. Reflection provides them under the JIT, but publishing
@@ -87,7 +91,7 @@ reflected over as before, and a registered handler takes any number of parameter
 <summary>Types the generator cannot see, and how reflection is switched off</summary>
 
 The generator works from the declared type, so the same limits apply as for
-[equivalency](./06-equivalency.md#trimming-and-native-aot):
+[equivalency](#equivalency):
 
 - a subject declared as an interface, an abstract class or a base type only reveals the declared type; the recording
   looks up the runtime type of the instance, which stays on reflection,
@@ -105,7 +109,7 @@ Reflection over a subject without a registration is switched off when you publis
 enabled, because the trimmer removes events that only reflection reaches and the reflective recorder needs runtime
 code generation. Recording such a subject fails with an error that names the type and asks you to register it. The
 `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
-[equivalency](./06-equivalency.md#trimming-and-native-aot); with the fallback forced on, the error for an
+[equivalency](#equivalency); with the fallback forced on, the error for an
 unknown event name, and for an event that a recording of all events did not find, asks you to root the type instead.
 
 </details>

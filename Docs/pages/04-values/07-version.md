@@ -4,22 +4,33 @@ import PropertyComparisons from '../_property-comparisons.md';
 
 Describes the possible expectations for `Version`.
 
-A `null` subject fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../02-concepts.md#null-subjects) says. Reference equality and `null`
-checks come from the [object expectations](./06-object.md).
+| Expectation                                          | Negated                     | Summary                                       |
+|------------------------------------------------------|-----------------------------|-----------------------------------------------|
+| [`IsEqualTo`](#equality)                             | `IsNotEqualTo`              | equal to the expected version                 |
+| [`IsOneOf`](#one-of)                                 | `IsNotOneOf`                | equal to one of the expected versions         |
+| [`IsGreaterThan`](#greater-than--less-than)          | `IsNotGreaterThan`          | greater than the expected version             |
+| [`IsGreaterThanOrEqualTo`](#greater-than--less-than) | `IsNotGreaterThanOrEqualTo` | greater than or equal to the expected version |
+| [`IsLessThan`](#greater-than--less-than)             | `IsNotLessThan`             | less than the expected version                |
+| [`IsLessThanOrEqualTo`](#greater-than--less-than)    | `IsNotLessThanOrEqualTo`    | less than or equal to the expected version    |
+| [`IsBetween`](#between)                              | `IsNotBetween`              | between two versions, both bounds included    |
+| [`HasMajor`](#components)                            | negated comparison          | has the expected major component              |
+| [`HasMinor`](#components)                            | negated comparison          | has the expected minor component              |
+| [`HasBuild`](#components)                            | negated comparison          | has the expected build component              |
+| [`HasRevision`](#components)                         | negated comparison          | has the expected revision component           |
 
-Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except the `Has…` components, which take a negated
-comparison instead (e.g. `HasRevision().NotEqualTo(5)`).
+A `null` subject fails every expectation on this page except equality and one of, as the
+[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says. Reference equality and `null` checks come
+from the [object expectations](./12-object.md).
 
 ## Equality
 
 You can verify that the `Version` is equal to another one or not:
 
 ```csharp
-Version subject = new(1, 2);
+Version release = new(1, 2);
 
-await Expect.That(subject).IsEqualTo(new Version(1, 2));
-await Expect.That(subject).IsNotEqualTo(new Version(1, 2, 0));
+await Expect.That(release).IsEqualTo(new Version(1, 2));
+await Expect.That(release).IsNotEqualTo(new Version(1, 2, 0));
 ```
 
 This uses the equality of `Version`, where an unspecified component is not treated as zero, so `1.2` is not equal
@@ -30,10 +41,40 @@ to `1.2.0`.
 You can verify that the `Version` is one of many alternatives:
 
 ```csharp
-Version subject = new(1, 2);
+Version release = new(1, 2);
 
-await Expect.That(subject).IsOneOf(new Version(1, 2), new Version(1, 3));
-await Expect.That(subject).IsNotOneOf(new Version(2, 0), new Version(3, 0));
+await Expect.That(release).IsOneOf(new Version(1, 2), new Version(1, 3));
+await Expect.That(release).IsNotOneOf(new Version(2, 0), new Version(3, 0));
+```
+
+## Greater than / less than
+
+You can verify that the `Version` is greater than or less than (or equal to) another one, or that it is not:
+
+```csharp
+Version release = new(1, 5);
+
+await Expect.That(release).IsGreaterThan(new Version(1, 2));
+await Expect.That(release).IsGreaterThanOrEqualTo(new Version(1, 5));
+await Expect.That(release).IsLessThan(new Version(2, 0));
+await Expect.That(release).IsLessThanOrEqualTo(new Version(1, 5));
+await Expect.That(release).IsNotGreaterThan(new Version(2, 0));
+await Expect.That(release).IsNotLessThan(new Version(1, 2));
+```
+
+All comparisons follow
+[`Version.CompareTo`](https://learn.microsoft.com/en-us/dotnet/api/system.version.compareto), which treats an
+unspecified component as less than an explicit zero, so `1.2` is less than `1.2.0`.
+
+## Between
+
+You can verify that the `Version` is between two values, with both bounds included:
+
+```csharp
+Version release = new(1, 5);
+
+await Expect.That(release).IsBetween(new Version(1, 2)).And(new Version(2, 0));
+await Expect.That(release).IsNotBetween(new Version(2, 0)).And(new Version(3, 0));
 ```
 
 ## Components
@@ -41,63 +82,21 @@ await Expect.That(subject).IsNotOneOf(new Version(2, 0), new Version(3, 0));
 You can verify the individual components of the `Version`:
 
 ```csharp
-Version subject = new(1, 2, 3, 4);
+Version release = new(1, 2, 3, 4);
 
-await Expect.That(subject).HasMajor(1);
-// or more explicit
-await Expect.That(subject).HasMajor().EqualTo(1);
-
-await Expect.That(subject).HasMinor().GreaterThan(1);
-await Expect.That(subject).HasBuild().LessThanOrEqualTo(3);
-await Expect.That(subject).HasRevision().NotEqualTo(5);
+await Expect.That(release).HasMajor(1);
+await Expect.That(release).HasMinor().GreaterThan(1);
+await Expect.That(release).HasBuild().LessThanOrEqualTo(3);
+await Expect.That(release).HasRevision().NotEqualTo(5);
 ```
-
-<PropertyComparisons />
 
 An unspecified build or revision is `-1`, not `0`:
 
 ```csharp
-Version subject = new(1, 2);
+Version release = new(1, 2);
 
-await Expect.That(subject).HasBuild(-1);
-await Expect.That(subject).HasRevision(-1);
+await Expect.That(release).HasBuild(-1);
+await Expect.That(release).HasRevision(-1);
 ```
 
-## Greater than
-
-You can verify that the `Version` is greater than (or equal to) another one:
-
-```csharp
-Version subject = new(1, 5);
-
-await Expect.That(subject).IsGreaterThan(new Version(1, 2));
-await Expect.That(subject).IsGreaterThanOrEqualTo(new Version(1, 5));
-await Expect.That(subject).IsNotGreaterThan(new Version(2, 0));
-```
-
-## Less than
-
-You can verify that the `Version` is less than (or equal to) another one:
-
-```csharp
-Version subject = new(1, 5);
-
-await Expect.That(subject).IsLessThan(new Version(2, 0));
-await Expect.That(subject).IsLessThanOrEqualTo(new Version(1, 5));
-await Expect.That(subject).IsNotLessThan(new Version(1, 2));
-```
-
-## Between
-
-You can verify that the `Version` is between two values, with both bounds included:
-
-```csharp
-Version subject = new(1, 5);
-
-await Expect.That(subject).IsBetween(new Version(1, 2)).And(new Version(2, 0));
-await Expect.That(subject).IsNotBetween(new Version(2, 0)).And(new Version(3, 0));
-```
-
-All comparisons follow
-[`Version.CompareTo`](https://learn.microsoft.com/en-us/dotnet/api/system.version.compareto), which treats an
-unspecified component as less than an explicit zero, so `1.2` is less than `1.2.0`.
+<PropertyComparisons />

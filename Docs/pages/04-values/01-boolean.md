@@ -1,19 +1,24 @@
 # Boolean
 
-Describes the possible expectations for boolean values.
+Describes the possible expectations for `bool` and `bool?` values.
 
-Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `IsTrue` and `IsFalse` on a non-nullable
-`bool` (see below).
+| Expectation               | Negated                     | Summary                               |
+|---------------------------|-----------------------------|---------------------------------------|
+| [`IsEqualTo`](#equality)  | `IsNotEqualTo`              | equal to the expected value           |
+| [`IsTrue`](#true--false)  | `IsNotTrue` (only `bool?`)  | `true`                                |
+| [`IsFalse`](#true--false) | `IsNotFalse` (only `bool?`) | `false`                               |
+| [`IsNull`](#true--false)  | `IsNotNull` (only `bool?`)  | `null`                                |
+| [`Implies`](#implication) | `DoesNotImply`              | `false`, or the other value is `true` |
 
 ## Equality
 
 You can verify that the `bool` is equal to another one or not:
 
 ```csharp
-bool subject = false;
+bool isPlayed = false;
 
-await Expect.That(subject).IsEqualTo(false);
-await Expect.That(subject).IsNotEqualTo(true);
+await Expect.That(isPlayed).IsEqualTo(false);
+await Expect.That(isPlayed).IsNotEqualTo(true);
 ```
 
 ## True / False
@@ -28,20 +33,21 @@ await Expect.That(true).IsTrue();
 Awaiting a `bool` without any expectation is a shorthand for `IsTrue()`:
 
 ```csharp
-bool isValid = true;
+bool isInLibrary = true;
 
-await Expect.That(isValid);
+await Expect.That(isInLibrary);
 ```
 
-The negation is only available for nullable booleans:
+The negations and the `null` checks are only available for a `bool?`:
 
 ```csharp
-bool? subject = null;
+bool? isPlayed = null;
 
-await Expect.That(subject).IsNotFalse()
+await Expect.That(isPlayed).IsNotFalse()
   .Because("it could be true or null");
-await Expect.That(subject).IsNotTrue()
+await Expect.That(isPlayed).IsNotTrue()
   .Because("it could be false or null");
+await Expect.That(isPlayed).IsNull();
 ```
 
 :::note
@@ -52,13 +58,12 @@ Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` 
 
 ## Implication
 
-You can verify that `a` implies `b` or not (*find [here](https://mathworld.wolfram.com/Implies.html) a mathematical
-explanation*):
+You can verify that `a` [implies](https://mathworld.wolfram.com/Implies.html) `b` or not:
 
 ```csharp
-bool a = false;
-bool b = true;
+bool isPlayed = false;
+bool isInLibrary = true;
 
-await Expect.That(a).Implies(b);
-await Expect.That(b).DoesNotImply(a);
+await Expect.That(isPlayed).Implies(isInLibrary);
+await Expect.That(isInLibrary).DoesNotImply(isPlayed);
 ```
