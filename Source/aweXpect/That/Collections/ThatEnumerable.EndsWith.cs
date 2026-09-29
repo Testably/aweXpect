@@ -321,7 +321,18 @@ public static partial class ThatEnumerable
 
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
-			List<TItem> items = materializedEnumerable.ToList();
+			List<TItem> items = [];
+			foreach (TItem item in materializedEnumerable)
+			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					_expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
+				items.Add(item);
+			}
 
 			_itemsCount = items.Count;
 			_offset = _itemsCount - _expected.Length;
@@ -447,7 +458,18 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			List<object?> items = materializedEnumerable.Cast<object?>().ToList();
+			List<object?> items = [];
+			foreach (object? item in materializedEnumerable)
+			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					_expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					return this;
+				}
+
+				items.Add(item);
+			}
 
 			_itemsCount = items.Count;
 			_offset = _itemsCount - _expected.Length;

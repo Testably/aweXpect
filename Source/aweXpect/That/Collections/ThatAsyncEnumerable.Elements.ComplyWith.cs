@@ -98,6 +98,13 @@ public static partial class ThatAsyncEnumerable
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				items.Add(item);
+				// A canceled item expectation decides nothing, so the item must not count as not matching.
+				if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+				{
+					break;
+				}
+
 				if (isMatch.Outcome == Outcome.Success)
 				{
 					_matchingCount++;
@@ -108,8 +115,6 @@ public static partial class ThatAsyncEnumerable
 					_notMatchingCount++;
 					_notMatchingItems.Add(item);
 				}
-
-				items.Add(item);
 
 				// items.IsReadOnly is set to true, once the limit is reached.
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount) && items.IsReadOnly)

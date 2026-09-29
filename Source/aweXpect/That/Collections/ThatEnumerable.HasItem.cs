@@ -343,6 +343,40 @@ public static partial class ThatEnumerable
 			options);
 	}
 
+	/// <summary>
+	///     Counts the items when the index is counted from the end, and returns <see langword="false" /> when the
+	///     <paramref name="cancellationToken" /> is canceled before the count is known.
+	/// </summary>
+	private static bool TryCountForIndex<TItem>(CollectionIndexOptions options, object actual, IEnumerable<TItem> items,
+		CancellationToken cancellationToken, out int? count)
+	{
+		count = null;
+		if (options.Match is not CollectionIndexOptions.IMatchFromEnd)
+		{
+			return true;
+		}
+
+		count = actual switch
+		{
+			ICollection<TItem> collection => collection.Count,
+			ICollection collection => collection.Count,
+			_ => items.CountUnlessCanceled(cancellationToken),
+		};
+		return count is not null;
+	}
+
+	/// <summary>
+	///     Returns <see langword="true" /> when the item at the <paramref name="index" /> is in range,
+	///     <see langword="false" /> when no later item can be in range and <see langword="null" /> otherwise.
+	/// </summary>
+	private static bool? IsIndexInRange(CollectionIndexOptions options, int index, int? count)
+		=> options.Match switch
+		{
+			CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
+			CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
+			_ => false,
+		};
+
 	private sealed class HasAsyncItemConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -357,7 +391,6 @@ public static partial class ThatEnumerable
 		private TItem? _actual;
 		private bool _hasIndex;
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
@@ -374,29 +407,30 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(options, actual, materialized, cancellationToken, out int? count))
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
-				index++;
-				bool? isIndexInRange = options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -412,7 +446,6 @@ public static partial class ThatEnumerable
 
 			return this;
 		}
-#pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
@@ -466,7 +499,6 @@ public static partial class ThatEnumerable
 	{
 		private object? _actual;
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
@@ -482,29 +514,30 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddCollectionContext(materialized);
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				index++;
-				bool? isIndexInRange = options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -519,7 +552,6 @@ public static partial class ThatEnumerable
 
 			return this;
 		}
-#pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
@@ -567,19 +599,19 @@ public static partial class ThatEnumerable
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IContextConstraint<IEnumerable<TItem>?>
+			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private TItem? _actual;
 		private bool _hasIndex;
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
@@ -587,29 +619,30 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(options, actual, materialized, cancellationToken, out int? count))
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				Outcome = Outcome.Undecided;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
-				index++;
-				bool? isIndexInRange = options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -623,9 +656,8 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
-#pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
@@ -673,48 +705,49 @@ public static partial class ThatEnumerable
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
-			IContextConstraint<TEnumerable>
+			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private object? _actual;
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
+		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
-				return this;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				Outcome = Outcome.Undecided;
+				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				index++;
-				bool? isIndexInRange = options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return Task.FromResult<ConstraintResult>(this);
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -727,9 +760,8 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
-#pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())

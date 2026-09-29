@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 #if NET8_0_OR_GREATER
 using System.Runtime.CompilerServices;
-using System.Threading;
 #endif
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -155,15 +155,11 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		Type type = typeof(object);
-		foreach (object? item in value)
-		{
-			if (item is not null)
-			{
-				type = item.GetType();
-				break;
-			}
-		}
+		// Only the first items are listed, so an endless source of null items must not be searched to its end.
+		IEnumerable<object?> items = value is ICollection
+			? value.Cast<object?>()
+			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+		Type type = items.FirstOrDefault(item => item is not null)?.GetType() ?? typeof(object);
 
 		return expectationBuilder.UpdateContexts(contexts
 			=>
@@ -283,6 +279,27 @@ internal static class CollectionHelpers
 		}
 	}
 #endif
+
+	/// <summary>
+	///     Counts the items of the <paramref name="source" />, or returns <see langword="null" /> when the
+	///     <paramref name="cancellationToken" /> is canceled before the <paramref name="source" /> ends.
+	/// </summary>
+	internal static int? CountUnlessCanceled<TItem>(this IEnumerable<TItem> source,
+		CancellationToken cancellationToken)
+	{
+		int count = 0;
+		foreach (TItem _ in source)
+		{
+			if (cancellationToken.IsCancellationRequested)
+			{
+				return null;
+			}
+
+			count++;
+		}
+
+		return count;
+	}
 
 	/// <summary>
 	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not

@@ -81,6 +81,14 @@ public static partial class ThatEnumerable
 				foreach (TItem item in materialized)
 				{
 					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					// A canceled item expectation decides nothing, so the item must not count as not matching.
+					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+					{
+						Outcome = Outcome.Undecided;
+						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
 					if (isMatch.Outcome == Outcome.Success)
 					{
 						_matchingItems.Add(item, _matchingCount + _notMatchingCount);
@@ -225,6 +233,14 @@ public static partial class ThatEnumerable
 				foreach (string? item in materialized)
 				{
 					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					// A canceled item expectation decides nothing, so the item must not count as not matching.
+					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+					{
+						Outcome = Outcome.Undecided;
+						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
 					if (isMatch.Outcome == Outcome.Success)
 					{
 						_matchingItems.Add(item, _matchingCount + _notMatchingCount);
@@ -369,12 +385,16 @@ public static partial class ThatEnumerable
 
 				foreach (object? item in materialized)
 				{
-					if (_itemType is null && item is not null)
+					_itemType ??= item?.GetType();
+					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					// A canceled item expectation decides nothing, so the item must not count as not matching.
+					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 					{
-						_itemType = item.GetType();
+						Outcome = Outcome.Undecided;
+						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
 					}
 
-					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 					if (isMatch.Outcome == Outcome.Success)
 					{
 						_matchingCount++;
@@ -516,6 +536,14 @@ public static partial class ThatEnumerable
 				foreach (TItem item in materialized)
 				{
 					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					// A canceled item expectation decides nothing, so the item must not count as not matching.
+					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+					{
+						Outcome = Outcome.Undecided;
+						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
 					if (isMatch.Outcome == Outcome.Success)
 					{
 						_matchingCount++;

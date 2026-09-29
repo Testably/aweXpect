@@ -172,29 +172,30 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(_options, actual, materialized, cancellationToken, out int? count))
 			{
-				count = actual is ICollection<TItem> collection ? collection.Count : materialized.Count();
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
-				index++;
-				bool? isIndexInRange = _options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(_options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -289,29 +290,30 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(_options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
 			{
-				count = actual is ICollection collection ? collection.Count : materialized.Cast<TItem>().Count();
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				index++;
-				bool? isIndexInRange = _options.Match switch
+				if (cancellationToken.IsCancellationRequested)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					Outcome = Outcome.Undecided;
+					return this;
+				}
 
+				index++;
+				bool? isIndexInRange = IsIndexInRange(_options, index, count);
+				if (isIndexInRange == false)
+				{
+					break;
+				}
+
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 

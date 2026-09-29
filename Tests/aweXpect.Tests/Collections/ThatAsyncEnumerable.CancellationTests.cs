@@ -1,7 +1,9 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -137,6 +139,107 @@ public sealed partial class ThatAsyncEnumerable
 				             but it could not be verified, because it was already canceled
 				             """)
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortAllComplyWith()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int>[] items = [[], [], [], [], [], [], [], [], [], [], CancellingItems(5, cts),];
+			IAsyncEnumerable<IEnumerable<int>> subject = ToAsyncEnumerable(items);
+
+			async Task Act()
+				=> await That(subject).All().ComplyWith(x => x.DoesNotContain(-1)).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not contain an item equal to -1 for all items,
+				             but it could not be verified, because it was already canceled
+
+				             Collection:
+				             [
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("a cancellation within an item must not be reported as a not matching item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortContainsExpectations()
+		{
+			using CancellationTokenSource cts = new();
+			int enumeratedCount = 0;
+			IAsyncEnumerable<IEnumerable<int>> subject = ToAsyncEnumerable<IEnumerable<int>>(CancellingItems(5, cts).Select(x =>
+			{
+				enumeratedCount++;
+				return x;
+			}));
+			IEnumerable<Action<IThat<IEnumerable<int>?>>> expected = [a => a.Contains(-1),];
+
+			async Task Act()
+				=> await That(subject).Contains(expected).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in order and contiguous,
+				             but it could not be verified, because it was already canceled
+
+				             Expected:
+				             [
+				               an item that contains an item equal to -1 at least once
+				             ]
+				             """)
+				.Because("a cancellation within an item must not be reported as a missing item");
+			await That(enumeratedCount).IsLessThan(100)
+				.Because("the item expectation must stop at the cancellation instead of enumerating the whole item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortIsEqualToExpectations()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<IEnumerable<int>> subject =
+				ToAsyncEnumerable(Enumerable.Repeat<IEnumerable<int>>([], 20).Append(CancellingItems(5, cts)).ToArray());
+			IEnumerable<Action<IThat<IEnumerable<int>?>>> expected =
+				Enumerable.Repeat<Action<IThat<IEnumerable<int>?>>>(a => a.Contains(-1), 21);
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but it could not be verified, because it was already canceled
+
+				             Expected:
+				             [
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               an item that contains an item equal to -1 at least once,
+				               (… and 11 more)
+				             ]
+				             """)
+				.Because("a cancellation within an item must not be reported as a deviation");
 		}
 
 		[Fact]
@@ -391,6 +494,19 @@ public sealed partial class ThatAsyncEnumerable
 		///     a busy machine. The hang ends after half a minute, so that a regression which waits for it fails the test
 		///     instead of hanging the test run.
 		/// </remarks>
+		private static IEnumerable<int> CancellingItems(int cancelAfter, CancellationTokenSource cts)
+		{
+			for (int index = 0; index < 10_000; index++)
+			{
+				if (index == cancelAfter)
+				{
+					cts.Cancel();
+				}
+
+				yield return index;
+			}
+		}
+
 		private static async IAsyncEnumerable<int> HangAfter(params int[] items)
 		{
 			foreach (int item in items)

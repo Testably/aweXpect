@@ -622,7 +622,7 @@ public static partial class ThatAsyncEnumerable
 					=> new CollectionMatchOptions.ExpectationItem<TItem>(expectation,
 						Grammars & ~ExpectationGrammars.Negated,
 						context,
-						CancellationToken.None))
+						cancellationToken))
 				.ToArray();
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(_expectations);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
@@ -643,7 +643,8 @@ public static partial class ThatAsyncEnumerable
 				}
 
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
-				if (result)
+				// A canceled item expectation does not match, which must not be reported as a mismatch.
+				if (result && !cancellationToken.IsCancellationRequested)
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
@@ -654,6 +655,12 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			await expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedEnumerable<TItem>);
+			if (cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				return this;
+			}
+
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
 			if (completedResult)
 			{
