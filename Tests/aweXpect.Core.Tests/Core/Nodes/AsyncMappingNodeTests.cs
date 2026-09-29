@@ -118,7 +118,7 @@ public class AsyncMappingNodeTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("""
-			             The member type for the actual value in the which node did not match.
+			             The member type for the actual value in the mapping node did not match.
 			             Expected: string
 			                Found: int
 			             """);

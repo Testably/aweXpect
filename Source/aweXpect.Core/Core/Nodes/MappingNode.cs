@@ -67,7 +67,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 
 		throw Tracing.WriteException(
 			new InvalidOperationException(
-				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
+				$"The member type for the actual value in the mapping node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
 	/// <inheritdoc />
