@@ -190,7 +190,7 @@ internal static class StringExtensions
 			{
 				sb.Append(line, commonWhiteSpace.Length, line.Length - commonWhiteSpace.Length);
 			}
-			else if (line.EndsWith("\r", StringComparison.Ordinal))
+			else if (line.EndsWith('\r'))
 			{
 				sb.Append('\r');
 			}
