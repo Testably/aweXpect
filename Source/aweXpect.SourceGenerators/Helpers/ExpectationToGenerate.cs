@@ -5,18 +5,18 @@ namespace aweXpect.SourceGenerators.Helpers;
 
 internal readonly record struct ExpectationToGenerate
 {
-	public ExpectationToGenerate(string? @namespace,
-		string className,
-		Accessibility accessibility,
+	public ExpectationToGenerate(INamedTypeSymbol classSymbol,
 		INamedTypeSymbol targetType,
 		string positiveName,
 		string? negativeName,
 		string outcomeMethod,
 		AttributeData attributeData)
 	{
-		Namespace = @namespace;
-		ClassName = className;
-		Accessibility = SyntaxFacts.GetText(accessibility);
+		Namespace = classSymbol.ContainingNamespace.IsGlobalNamespace
+			? null
+			: classSymbol.ContainingNamespace.ToString();
+		ClassName = classSymbol.Name;
+		Accessibility = SyntaxFacts.GetText(classSymbol.DeclaredAccessibility);
 		TargetType = targetType.ToDisplayString();
 		NotNullTargetType = TargetType;
 		Name = positiveName;

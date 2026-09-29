@@ -102,10 +102,6 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private static ExpectationToGenerate? GetExpectationToGenerate(INamedTypeSymbol classSymbol,
 		AttributeData attributeData)
 	{
-		string? containingNamespace = classSymbol.ContainingNamespace.IsGlobalNamespace
-			? null
-			: classSymbol.ContainingNamespace.ToString();
-
 		INamedTypeSymbol? targetType = attributeData.AttributeClass?.TypeArguments[0] as INamedTypeSymbol;
 		if (targetType == null)
 		{
@@ -132,9 +128,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 		}
 
 		return new ExpectationToGenerate(
-			containingNamespace,
-			classSymbol.Name,
-			classSymbol.DeclaredAccessibility,
+			classSymbol,
 			targetType,
 			positiveName,
 			negativeName,
