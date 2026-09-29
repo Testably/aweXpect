@@ -98,8 +98,9 @@ events, or retries with `Within(…)` or [`Eventually()`](../04-delegates.md#eve
 - When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
   finish within …" and a `TimeoutException` as inner exception.
 - When the **`CancellationToken`** is canceled (`WithCancellation` or `TestCancellation.FromCancellationToken`), the
-  expectation is inconclusive: "could not be verified, because it was already canceled". It neither passes nor throws
-  the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the wait.
+  expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
+  nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
+  wait.
 - An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
   `CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
   OperationCanceledException".

@@ -163,7 +163,7 @@ public sealed class DelegateTests
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
@@ -253,7 +253,7 @@ public sealed class DelegateTests
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
@@ -343,7 +343,7 @@ public sealed class DelegateTests
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
@@ -437,7 +437,7 @@ public sealed class DelegateTests
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}

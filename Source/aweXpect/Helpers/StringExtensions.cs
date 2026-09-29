@@ -150,38 +150,50 @@ internal static class StringExtensions
 		static bool IsVowel(char c) => c is 'a' or 'e' or 'i' or 'o' or 'u' or 'A' or 'E' or 'I' or 'O' or 'U';
 	}
 
+	/// <summary>
+	///     Removes the leading whitespace that all lines after the first one have in common.
+	/// </summary>
+	/// <remarks>
+	///     The lines are split on <c>\n</c>, so that the line endings (<c>\n</c> or <c>\r\n</c>) are kept.
+	///     Blank lines don't limit the common whitespace, as editors often trim them.
+	///     <para />
+	///     Keep in sync with the copy in aweXpect.Core.
+	/// </remarks>
 	public static string TrimCommonWhiteSpace(this string value)
 	{
-		string[] lines = value.Split(Environment.NewLine);
+		string[] lines = value.Split('\n');
 		if (lines.Length <= 1)
 		{
 			return value;
 		}
 
-		StringBuilder sb = new();
-		foreach (char c in lines[1].TakeWhile(char.IsWhiteSpace))
+		string? commonWhiteSpace = null;
+		foreach (string line in lines.Skip(1).Where(line => !string.IsNullOrWhiteSpace(line)))
 		{
-			sb.Append(c);
-		}
-
-		string commonWhiteSpace = sb.ToString();
-
-		foreach (string line in lines.Skip(2).Where(line => !line.StartsWith(commonWhiteSpace)))
-		{
-			for (int i = 0; i < Math.Min(line.Length, commonWhiteSpace.Length); i++)
+			int length = 0;
+			while (length < line.Length && char.IsWhiteSpace(line[length]) &&
+			       (commonWhiteSpace is null ||
+			        (length < commonWhiteSpace.Length && line[length] == commonWhiteSpace[length])))
 			{
-				if (line[i] != commonWhiteSpace[i])
-				{
-					commonWhiteSpace = commonWhiteSpace[..i];
-				}
+				length++;
 			}
+
+			commonWhiteSpace = line.Substring(0, length);
 		}
 
-		sb.Clear();
-		sb.Append(lines[0]);
-		foreach (string? line in lines.Skip(1))
+		commonWhiteSpace ??= "";
+		StringBuilder sb = new(lines[0]);
+		foreach (string line in lines.Skip(1))
 		{
-			sb.Append(Environment.NewLine).Append(line[commonWhiteSpace.Length..]);
+			sb.Append('\n');
+			if (line.StartsWith(commonWhiteSpace, StringComparison.Ordinal))
+			{
+				sb.Append(line, commonWhiteSpace.Length, line.Length - commonWhiteSpace.Length);
+			}
+			else if (line.EndsWith("\r", StringComparison.Ordinal))
+			{
+				sb.Append('\r');
+			}
 		}
 
 		return sb.ToString();

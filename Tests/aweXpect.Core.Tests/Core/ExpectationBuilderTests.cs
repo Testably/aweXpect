@@ -429,7 +429,7 @@ public class ExpectationBuilderTests
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("a requested cancellation leaves the expectation unverified instead of failing it");
 	}
@@ -548,7 +548,7 @@ public class ExpectationBuilderTests
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
-			             but it could not be verified, because it was already canceled
+			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("an infinite timeout imposes no limit, so only the cancellation ends the evaluation");
 	}

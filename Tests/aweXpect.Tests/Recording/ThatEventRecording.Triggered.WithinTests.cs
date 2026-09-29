@@ -403,7 +403,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the wait");
 			}

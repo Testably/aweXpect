@@ -24,7 +24,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """)
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
 			}
@@ -111,7 +111,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """)
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
 			}

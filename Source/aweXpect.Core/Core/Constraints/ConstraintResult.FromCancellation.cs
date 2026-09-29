@@ -29,7 +29,7 @@ public abstract partial class ConstraintResult
 
 		/// <inheritdoc cref="ConstraintResult.AppendResult(StringBuilder, string?)" />
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it").Append(CancelledResultSuffix);
+			=> AppendCanceledResult(stringBuilder, "it");
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
 		public override bool TryGetValue<T>([NotNullWhen(true)] out T? value) where T : default

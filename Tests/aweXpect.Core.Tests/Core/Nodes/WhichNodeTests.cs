@@ -497,8 +497,8 @@ public sealed class WhichNodeTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("""
 			             The member type for the actual value in the which node did not match.
-			                  Found: DateTime
-			               Expected: string
+			             Expected: string
+			                Found: DateTime
 			             """);
 	}
 

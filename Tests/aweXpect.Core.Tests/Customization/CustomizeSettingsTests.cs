@@ -216,7 +216,7 @@ public sealed class CustomizeSettingsTests
 				.WithMessage("""
 				             Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
 				             does not throw any exception,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 				             """);
 			stopwatch.Stop();
 		}
@@ -327,7 +327,7 @@ public sealed class CustomizeSettingsTests
 				.WithMessage("""
 				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
-				             but it could not be verified, because it was already canceled
+				             but it could not be verified, because the evaluation was already canceled
 				             """);
 			stopwatch.Stop();
 		}

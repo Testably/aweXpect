@@ -166,7 +166,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 		throw Tracing.WriteException(
 			new InvalidOperationException(
-				$"The member type for the actual value in the which node did not match.{Environment.NewLine}     Found: {Formatter.Format(value.GetType())}{Environment.NewLine}  Expected: {Formatter.Format(typeof(TSource))}"));
+				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
 	private async Task<TMember?> ComputeMatchingValueAsync(TSource? source)

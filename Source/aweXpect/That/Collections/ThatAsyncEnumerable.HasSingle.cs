@@ -127,11 +127,13 @@ public static partial class ThatAsyncEnumerable
 			{
 				stringBuilder.Append(It).Append(_isEmpty
 					? Grammars.SubjectVerb(It, " was empty", " were empty")
-					: " did not contain any matching item");
+					: " had no matching item");
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" contained more than one item");
+				stringBuilder.Append(It).Append(options.GetDescription().Length == 0
+					? " had more than one item"
+					: " had more than one matching item");
 			}
 		}
 

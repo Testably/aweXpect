@@ -488,7 +488,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose CancelAsync() is equal to 1,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
 
@@ -815,7 +815,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose HangAsync() is equal to 1,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds());
 			}
 
@@ -852,7 +852,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose HangAsync() is not equal to 1,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds())
 					.Because("a cancellation must not be inverted into a success by the negation");
 			}
@@ -871,7 +871,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose HangValueTaskAsync() is equal to 1,
-					             but it could not be verified, because it was already canceled
+					             but it could not be verified, because the evaluation was already canceled
 					             """).WithTimeout(10.Seconds());
 			}
 

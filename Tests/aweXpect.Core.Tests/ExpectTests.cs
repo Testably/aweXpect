@@ -414,7 +414,7 @@ public class ExpectTests
 			              [01] Expected that subject is equal to 1
 			              [02] Expected that true is True
 			             but
-			              [01] it could not be verified, because it was already canceled
+			              [01] it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("the canceled expectation was not verified, so not all of them succeeded");
 	}
