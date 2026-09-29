@@ -70,8 +70,8 @@ enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
 
 await Expect.That((Colors)3).IsDefined()
   .Because("3 corresponds to 'Blue'");
-await Expect.That((Colors)4).IsNotDefined()
-  .Because("4 is no valid color");
+await Expect.That((Colors)5).IsNotDefined()
+  .Because("5 is no valid color");
 ```
 
 ## Flags

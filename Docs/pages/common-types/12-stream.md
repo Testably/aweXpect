@@ -66,6 +66,10 @@ await Expect.That(subject).HasBufferSize().EqualTo(2);
 await Expect.That(subject).HasBufferSize().NotEqualTo(3);
 ```
 
+:::note
+The buffer size expectations are only available on .NET 8 or later.
+:::
+
 ## Comparisons
 
 <PropertyComparisons />

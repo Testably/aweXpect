@@ -13,8 +13,8 @@ Every expectation has a negated counterpart (`IsNot…`/`DoesNot…`), except `H
 [quantifiers](./02-items.md#elements) like `All()`, which take a negated comparison or `None()` instead.
 
 :::tip[`IAsyncEnumerable<T>`]
-Every collection expectation, except the ones for [dictionaries](./04-dictionaries.md), works the same way for an
-`IAsyncEnumerable<T>`.
+On .NET 8 or later, every collection expectation, except the ones for [dictionaries](./04-dictionaries.md), works the
+same way for an `IAsyncEnumerable<T>`.
 :::
 
 :::info[C# 13 or later]

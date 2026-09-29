@@ -32,7 +32,8 @@ Assert unit tests in natural language using awesome expectations.
 
 By using async assertions per default, we have a consistent API and other perks:
 
-- Complete async support, e.g. `IAsyncEnumerable` `HttpResponseMessage` or similar async types
+- Complete async support, e.g. `IAsyncEnumerable`, `HttpResponseMessage` (via
+  [aweXpect.Web](https://github.com/aweXpect/aweXpect.Web)) or similar async types
 - No need to distinguish between `action.Throws()` and `await asyncAction.ThrowsAsync()`
 - The evaluation is only triggered after the complete fluent chain is loaded, which has some nice benefits:
 	- `Because` can be registered once as a general method that can be applied at the end of the expectation instead of
@@ -65,7 +66,7 @@ More information can be found in the [extensibility guide](https://docs.testably
 
 - [aweXpect.Web](https://github.com/aweXpect/aweXpect.Web)  
   [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)  
-  Expectations for HttpClient.
+  Expectations for HttpClient and HttpResponseMessage.
 
 - [aweXpect.Reflection](https://github.com/aweXpect/aweXpect.Reflection)  
   [![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection)  
