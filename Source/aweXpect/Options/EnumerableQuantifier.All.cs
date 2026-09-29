@@ -45,6 +45,13 @@ public abstract partial class EnumerableQuantifier
 
 		/// <inheritdoc />
 		/// <remarks>
+		///     The negated expectation only fails when every item matched, which the collection context already lists.
+		/// </remarks>
+		internal override QuantifierContexts GetNegatedQuantifierContext()
+			=> QuantifierContexts.None;
+
+		/// <inheritdoc />
+		/// <remarks>
 		///     <c>not for all items</c> keeps the negation in front of the connector, because <c>for not all items</c>
 		///     reads as a statement about the items rather than about the quantifier.
 		/// </remarks>

@@ -108,10 +108,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
-						             but only 4 of at least 5 were
+						             but only 4 of 7 were
 
 						             Not matching items:
-						             [2, (… and maybe more)]
+						             [2, 2, 3]
 
 						             Collection:
 						             [1, 1, 1, 1, 2, 2, 3]

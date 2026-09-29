@@ -83,6 +83,9 @@ public sealed partial class ThatEnumerable
 					             is greater than 2 for fewer than 2 items,
 					             but 3 of 5 were
 
+					             Matching items:
+					             [3, 4, 5]
+
 					             Collection:
 					             [1, 2, 3, 4, 5]
 					             """);

@@ -96,15 +96,18 @@ internal static class CollectionHelpers
 		=> quantifier.IsSingle() ? "item" : "items";
 
 	/// <summary>
-	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
-	///     <c>has lines that …</c>.
+	///     Appends the <paramref name="quantifier" /> of a nested collection expectation followed by the
+	///     <paramref name="expectationText" /> for the items, e.g. in <c>has lines of which at least one is …</c>.
 	/// </summary>
 	/// <remarks>
 	///     The parent renders the separator <c>" that "</c> before it knows that a quantifier follows, and
 	///     <c>that at least 2 are …</c> is not grammatical, so the separator is replaced with <c>" of which "</c>.
+	///     <para />
+	///     The quantifier carries the negation and is the subject of the item expectation, so the item expectation is
+	///     not negated and its verb agrees with the number of the quantifier.
 	/// </remarks>
 	internal static void AppendNestedQuantifier(this StringBuilder stringBuilder, EnumerableQuantifier quantifier,
-		bool isNegated)
+		bool isNegated, ExpectationGrammars grammars, Func<ExpectationGrammars, string> expectationText)
 	{
 		const string that = " that ";
 		if (stringBuilder.Length >= that.Length &&
@@ -116,10 +119,102 @@ internal static class CollectionHelpers
 
 		if (isNegated)
 		{
-			stringBuilder.Append("not ");
+			quantifier.AppendNestedNegated(stringBuilder);
+		}
+		else
+		{
+			stringBuilder.Append(quantifier);
 		}
 
-		stringBuilder.Append(quantifier).Append(' ');
+		ExpectationGrammars itemGrammars = grammars & ~ExpectationGrammars.Negated;
+		itemGrammars = quantifier.IsRenderedSingle(isNegated)
+			? itemGrammars & ~ExpectationGrammars.Plural
+			: itemGrammars | ExpectationGrammars.Plural;
+		stringBuilder.Append(' ').Append(expectationText(itemGrammars));
+	}
+
+	/// <summary>
+	///     Adds the <paramref name="matchingItems" /> and the <paramref name="notMatchingItems" /> of the
+	///     <paramref name="constraint" /> as context, as far as the <paramref name="quantifier" /> requests them.
+	/// </summary>
+	/// <remarks>
+	///     The negation is applied after the evaluation, so the contexts for both cases are added and each is only
+	///     shown while the <paramref name="constraint" /> requests it.
+	/// </remarks>
+	internal static void AddQuantifierContexts(this ExpectationBuilder expectationBuilder,
+		ConstraintResult constraint, EnumerableQuantifier quantifier,
+		Func<string>? matchingItems, Func<string>? notMatchingItems)
+	{
+		EnumerableQuantifier.QuantifierContexts normal = quantifier.GetQuantifierContext();
+		EnumerableQuantifier.QuantifierContexts negated = quantifier.GetNegatedQuantifierContext();
+
+		void Add(string title, EnumerableQuantifier.QuantifierContexts context, Func<string>? items)
+		{
+			if (items is not null && (normal | negated).HasFlag(context))
+			{
+				expectationBuilder.AddQuantifierItemsContext(title, constraint, () =>
+				{
+					EnumerableQuantifier.QuantifierContexts shown = constraint.Grammars.IsNegated() ? negated : normal;
+					return shown.HasFlag(context) ? items() : null;
+				});
+			}
+		}
+
+		// The context of the expectation that is not negated is added first to keep its position among the contexts.
+		if (normal.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems))
+		{
+			Add("Not matching items", EnumerableQuantifier.QuantifierContexts.NotMatchingItems, notMatchingItems);
+			Add("Matching items", EnumerableQuantifier.QuantifierContexts.MatchingItems, matchingItems);
+		}
+		else
+		{
+			Add("Matching items", EnumerableQuantifier.QuantifierContexts.MatchingItems, matchingItems);
+			Add("Not matching items", EnumerableQuantifier.QuantifierContexts.NotMatchingItems, notMatchingItems);
+		}
+	}
+
+	private static void AddQuantifierItemsContext(this ExpectationBuilder expectationBuilder, string title,
+		ConstraintResult owner, Func<string?> content)
+		=> expectationBuilder.UpdateContexts(contexts =>
+		{
+			ResultContext? existing = contexts.FirstOrDefault(context => context.Title == title);
+			if (existing is null)
+			{
+				contexts.Add(new QuantifierItemsContext(title, owner, content));
+			}
+			else if (existing is QuantifierItemsContext itemsContext)
+			{
+				itemsContext.Add(owner, content);
+			}
+		});
+
+	/// <summary>
+	///     The matching or not matching items of the quantified constraints that share an expectation builder.
+	/// </summary>
+	/// <remarks>
+	///     The first constraint whose items are shown provides the content. A constraint that is evaluated again keeps
+	///     the items of its first evaluation.
+	/// </remarks>
+	private sealed class QuantifierItemsContext : ResultContext
+	{
+		private readonly List<(ConstraintResult Owner, Func<string?> Content)> _candidates = [];
+
+		public QuantifierItemsContext(string title, ConstraintResult owner, Func<string?> content)
+			: base(title, int.MaxValue)
+			=> Add(owner, content);
+
+		public void Add(ConstraintResult owner, Func<string?> content)
+		{
+			if (_candidates.All(candidate => !ReferenceEquals(candidate.Owner, owner)))
+			{
+				_candidates.Add((owner, content));
+			}
+		}
+
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult(_candidates
+				.Select(candidate => candidate.Content())
+				.FirstOrDefault(content => content is not null));
 	}
 
 	/// <summary>

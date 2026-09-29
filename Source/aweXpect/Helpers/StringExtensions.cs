@@ -89,13 +89,13 @@ internal static class StringExtensions
 		// Split matches the earliest separator and, on ties, the first one listed,
 		// so "\r\n" is never split into two lines.
 		string[] lines = value!.Split(["\r\n", "\n", "\r",], StringSplitOptions.None);
-		int count = lines.Length;
-		if (lines[count - 1].Length == 0)
+		// The lines are returned as a collection, so that expectations on them know the number of lines up front.
+		if (lines[lines.Length - 1].Length == 0)
 		{
-			count--;
+			Array.Resize(ref lines, lines.Length - 1);
 		}
 
-		return lines.Take(count);
+		return lines;
 	}
 
 	[return: NotNullIfNotNull(nameof(value))]

@@ -116,8 +116,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false);
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
 			}
 			else
 			{
@@ -136,8 +135,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true);
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
 			}
 			else
 			{
@@ -151,26 +149,17 @@ public static partial class ThatAsyncEnumerable
 
 		private void AppendContexts(bool isIncomplete)
 		{
-			EnumerableQuantifier.QuantifierContexts quantifierContexts = _quantifier.GetQuantifierContext();
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-			    _matchingItems?.Count > 0)
-			{
-				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-						() => Formatter.Format(_matchingItems,
-								typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-							.AppendIsIncomplete(isIncomplete),
-						int.MaxValue));
-			}
-
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-			    _notMatchingItems?.Count > 0)
-			{
-				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-						() => Formatter.Format(_notMatchingItems,
-								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-							.AppendIsIncomplete(isIncomplete),
-						int.MaxValue));
-			}
+			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
+				_matchingItems?.Count > 0
+					? () => Formatter.Format(_matchingItems,
+							typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
+						.AppendIsIncomplete(isIncomplete)
+					: null,
+				_notMatchingItems?.Count > 0
+					? () => Formatter.Format(_notMatchingItems,
+							typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
+						.AppendIsIncomplete(isIncomplete)
+					: null);
 		}
 	}
 
@@ -271,8 +260,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false);
-				stringBuilder.Append(_expectationText(_grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, false, _grammars, _expectationText);
 			}
 			else
 			{
@@ -292,8 +280,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true);
-				stringBuilder.Append(_expectationText(_grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, true, _grammars, _expectationText);
 			}
 			else
 			{
@@ -308,26 +295,17 @@ public static partial class ThatAsyncEnumerable
 
 		private void AppendContexts(bool isIncomplete)
 		{
-			EnumerableQuantifier.QuantifierContexts quantifierContexts = _quantifier.GetQuantifierContext();
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-			    _matchingItems?.Count > 0)
-			{
-				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-						() => Formatter.Format(_matchingItems,
-								typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-							.AppendIsIncomplete(isIncomplete),
-						int.MaxValue));
-			}
-
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-			    _notMatchingItems?.Count > 0)
-			{
-				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-						() => Formatter.Format(_notMatchingItems,
-								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-							.AppendIsIncomplete(isIncomplete),
-						int.MaxValue));
-			}
+			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
+				_matchingItems?.Count > 0
+					? () => Formatter.Format(_matchingItems,
+							typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
+						.AppendIsIncomplete(isIncomplete)
+					: null,
+				_notMatchingItems?.Count > 0
+					? () => Formatter.Format(_notMatchingItems,
+							typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
+						.AppendIsIncomplete(isIncomplete)
+					: null);
 		}
 	}
 

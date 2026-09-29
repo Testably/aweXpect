@@ -52,12 +52,8 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
-		internal override void AppendNegated(StringBuilder stringBuilder)
-			=> stringBuilder.Append(maximum switch
-			{
-				1 => " for at least one item",
-				_ => $" for at least {maximum} items",
-			});
+		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
+			=> AtLeast(maximum);
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,

@@ -178,6 +178,9 @@ public sealed partial class ThatAsyncEnumerable
 					             is greater than 2 for no items,
 					             but 3 of 5 were
 
+					             Matching items:
+					             [3, 4, 5]
+
 					             Collection:
 					             [1, 2, 3, 4, 5]
 					             """);

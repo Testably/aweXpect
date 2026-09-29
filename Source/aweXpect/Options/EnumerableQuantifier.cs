@@ -61,6 +61,36 @@ public abstract partial class EnumerableQuantifier
 		=> QuantifierContexts.None;
 
 	/// <summary>
+	///     Returns the <see cref="QuantifierContexts" /> which are helpful when the expectation is negated.
+	/// </summary>
+	/// <remarks>
+	///     The negated expectation reads as its complement, so it shows the same items as the complement would. Without a
+	///     complement, the negated expectation fails when the items are on the other side, so these items explain the
+	///     failure.
+	/// </remarks>
+	internal virtual QuantifierContexts GetNegatedQuantifierContext()
+	{
+		if (GetComplement(ExpectationGrammars.None) is { } complement)
+		{
+			return complement.GetQuantifierContext();
+		}
+
+		QuantifierContexts contexts = GetQuantifierContext();
+		QuantifierContexts negatedContexts = QuantifierContexts.None;
+		if (contexts.HasFlag(QuantifierContexts.MatchingItems))
+		{
+			negatedContexts |= QuantifierContexts.NotMatchingItems;
+		}
+
+		if (contexts.HasFlag(QuantifierContexts.NotMatchingItems))
+		{
+			negatedContexts |= QuantifierContexts.MatchingItems;
+		}
+
+		return negatedContexts;
+	}
+
+	/// <summary>
 	///     Appends the result text to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public abstract void AppendResult(StringBuilder stringBuilder,
@@ -80,7 +110,54 @@ public abstract partial class EnumerableQuantifier
 	///     itself (<c>not for all items</c>).
 	/// </remarks>
 	internal virtual void AppendNegated(StringBuilder stringBuilder)
-		=> stringBuilder.Append(" for not ").Append(this).Append(' ').Append(this.GetItemString());
+	{
+		EnumerableQuantifier? complement = GetComplement(ExpectationGrammars.None);
+		if (complement is null)
+		{
+			stringBuilder.Append(" for not ").Append(this).Append(' ').Append(this.GetItemString());
+		}
+		else
+		{
+			stringBuilder.Append(" for ").Append(complement).Append(' ').Append(complement.GetItemString());
+		}
+	}
+
+	/// <summary>
+	///     Appends the complement of the quantifier in a nested expectation, e.g. <c>fewer than 2</c> in
+	///     <c>has lines of which fewer than 2 are …</c>.
+	/// </summary>
+	internal void AppendNestedNegated(StringBuilder stringBuilder)
+	{
+		EnumerableQuantifier? complement = GetComplement(ExpectationGrammars.Nested);
+		if (complement is null)
+		{
+			stringBuilder.Append("not ").Append(this);
+		}
+		else
+		{
+			stringBuilder.Append(complement);
+		}
+	}
+
+	/// <summary>
+	///     Returns <see langword="true" /> if the quantifier, or its complement when <paramref name="isNegated" />,
+	///     names a single item (e.g. <c>at least one</c>).
+	/// </summary>
+	internal bool IsRenderedSingle(bool isNegated)
+		=> isNegated
+			? (GetComplement(ExpectationGrammars.Nested) ?? this).IsSingle()
+			: IsSingle();
+
+	/// <summary>
+	///     Returns the quantifier that matches exactly when this one does not, or <see langword="null" /> when the
+	///     negation is written as <c>not</c> in front of this quantifier.
+	/// </summary>
+	/// <remarks>
+	///     A named complement avoids texts like <c>not no items</c> or <c>not at least 2</c>. The
+	///     <paramref name="grammars" /> select its wording, e.g. <c>none</c> instead of <c>no</c> in a nested expectation.
+	/// </remarks>
+	private protected virtual EnumerableQuantifier? GetComplement(ExpectationGrammars grammars)
+		=> null;
 
 	/// <summary>
 	///     Appends the <paramref name="matchingCount" /> relative to the <paramref name="totalCount" />,
