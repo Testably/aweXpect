@@ -280,6 +280,35 @@ public class UnorderedCollectionAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenUsingIgnoringInterspersedItems_AfterAnExtensionMethodOption_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyOptions
+			{
+			    public static TResult WithLogging<TResult>(this TResult result)
+			        where TResult : Expectation
+			        => result;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject, List<int> list)
+			    {
+			        await Expect.That(subject).Contains(new[] { 1, 2, }).InAnyOrder().WithLogging().{|#0:IgnoringInterspersedItems|}();
+			        await Expect.That(list).Contains(new[] { 1, 2, }).WithLogging().IgnoringInterspersedItems();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionNoMeaningRule).WithLocation(0)
+				.WithArguments("IgnoringInterspersedItems", "HashSet<int>")
+		);
+
+	[Fact]
 	public async Task WhenUsingIgnoringInterspersedItems_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
