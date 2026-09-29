@@ -1312,3 +1312,4 @@ aweXpect.Results.CollectionCountResult<TReturn>.NotEqualTo(int? unexpected) -> T
 static aweXpect.ThatEnumerable.HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.IEnumerable!, aweXpect.Core.IThat<System.Collections.IEnumerable?>!>!
 static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>! subject, int? expected) -> aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>!>!
 static aweXpect.ThatEnumerable.HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?>! subject, int? expected) -> aweXpect.Results.AndOrResult<TItem[]!, aweXpect.Core.IThat<TItem[]?>!>!
+*REMOVED*aweXpect.Options.EnumerableQuantifier.EnumerableQuantifier() -> void

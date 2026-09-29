@@ -38,7 +38,7 @@ public static partial class ThatEnumerable
 				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
-			private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
+			private readonly ComplyWithItemExpectations<TItem> _itemExpectations;
 			private readonly EnumerableQuantifier _quantifier;
 			private int _matchingCount;
 			private LimitedCollection<TItem>? _matchingItems;
@@ -53,10 +53,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				// The quantifier names no subject of its own, so the item expectations keep the number of the
-				// subject that a connector such as "whose values" introduced.
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
-				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
+				_itemExpectations = new ComplyWithItemExpectations<TItem>(quantifier, grammars, expectations);
 			}
 
 			public async Task<ConstraintResult> IsMetBy(
@@ -65,7 +62,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -82,7 +79,7 @@ public static partial class ThatEnumerable
 
 				foreach (TItem item in materialized)
 				{
-					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					ConstraintResult isMatch = await _itemExpectations.Builder.IsMetBy(item, context, cancellationToken);
 					// A canceled item expectation decides nothing, so the item must not count as not matching.
 					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 					{
@@ -129,32 +126,23 @@ public static partial class ThatEnumerable
 			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
 			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectationBuilder.GetResultVerb());
+					_itemExpectations.Builder.GetResultVerb());
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				_quantifier.AppendNegated(stringBuilder);
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectationBuilder.GetResultVerb());
+					_totalCount, _itemExpectations.Builder.GetResultVerb());
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -192,7 +180,7 @@ public static partial class ThatEnumerable
 				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
-			private readonly ManualExpectationBuilder<string?> _itemExpectationBuilder;
+			private readonly ComplyWithItemExpectations<string?> _itemExpectations;
 			private readonly EnumerableQuantifier _quantifier;
 			private int _matchingCount;
 			private LimitedCollection<string?>? _matchingItems;
@@ -207,8 +195,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<string?>(null, grammars);
-				expectations.Invoke(new ThatSubject<string?>(_itemExpectationBuilder));
+				_itemExpectations = new ComplyWithItemExpectations<string?>(quantifier, grammars, expectations);
 			}
 
 			public async Task<ConstraintResult> IsMetBy(
@@ -217,7 +204,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -234,7 +221,7 @@ public static partial class ThatEnumerable
 
 				foreach (string? item in materialized)
 				{
-					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					ConstraintResult isMatch = await _itemExpectations.Builder.IsMetBy(item, context, cancellationToken);
 					// A canceled item expectation decides nothing, so the item must not count as not matching.
 					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 					{
@@ -281,32 +268,23 @@ public static partial class ThatEnumerable
 			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
 			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectationBuilder.GetResultVerb());
+					_itemExpectations.Builder.GetResultVerb());
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				_quantifier.AppendNegated(stringBuilder);
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectationBuilder.GetResultVerb());
+					_totalCount, _itemExpectations.Builder.GetResultVerb());
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -344,7 +322,7 @@ public static partial class ThatEnumerable
 				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
-			private readonly ManualExpectationBuilder<object?> _itemExpectationBuilder;
+			private readonly ComplyWithItemExpectations<object?> _itemExpectations;
 			private readonly EnumerableQuantifier _quantifier;
 			private Type? _itemType;
 			private int _matchingCount;
@@ -360,8 +338,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<object?>(null, grammars);
-				expectations.Invoke(new ThatSubject<object?>(_itemExpectationBuilder));
+				_itemExpectations = new ComplyWithItemExpectations<object?>(quantifier, grammars, expectations);
 			}
 
 			public async Task<ConstraintResult> IsMetBy(
@@ -370,7 +347,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
 					Outcome = Outcome.Failure;
@@ -388,7 +365,7 @@ public static partial class ThatEnumerable
 				foreach (object? item in materialized)
 				{
 					_itemType ??= item?.GetType();
-					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					ConstraintResult isMatch = await _itemExpectations.Builder.IsMetBy(item, context, cancellationToken);
 					// A canceled item expectation decides nothing, so the item must not count as not matching.
 					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 					{
@@ -435,32 +412,23 @@ public static partial class ThatEnumerable
 			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
 			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectationBuilder.GetResultVerb());
+					_itemExpectations.Builder.GetResultVerb());
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				_quantifier.AppendNegated(stringBuilder);
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectationBuilder.GetResultVerb());
+					_totalCount, _itemExpectations.Builder.GetResultVerb());
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -500,7 +468,7 @@ public static partial class ThatEnumerable
 				IExpectationTextConstraint
 		{
 			private readonly ExpectationBuilder _expectationBuilder;
-			private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
+			private readonly ComplyWithItemExpectations<TItem> _itemExpectations;
 			private readonly EnumerableQuantifier _quantifier;
 			private int _matchingCount;
 			private LimitedCollection<TItem>? _matchingItems;
@@ -515,8 +483,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
-				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
+				_itemExpectations = new ComplyWithItemExpectations<TItem>(quantifier, grammars, expectations);
 			}
 
 			public async Task<ConstraintResult> IsMetBy(
@@ -525,7 +492,7 @@ public static partial class ThatEnumerable
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 
 				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 				bool cancelEarly = actual is not ICollection<TItem>;
@@ -537,7 +504,7 @@ public static partial class ThatEnumerable
 
 				foreach (TItem item in materialized)
 				{
-					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+					ConstraintResult isMatch = await _itemExpectations.Builder.IsMetBy(item, context, cancellationToken);
 					// A canceled item expectation decides nothing, so the item must not count as not matching.
 					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 					{
@@ -584,32 +551,23 @@ public static partial class ThatEnumerable
 			public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
-				await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
+				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				return this;
 			}
 
 			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectationBuilder.GetResultVerb());
+					_itemExpectations.Builder.GetResultVerb());
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				_quantifier.AppendNegated(stringBuilder);
-			}
+				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectationBuilder.GetResultVerb());
+					_totalCount, _itemExpectations.Builder.GetResultVerb());
 
 			private void AppendContexts(bool isIncomplete)
 			{

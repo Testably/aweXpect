@@ -41,7 +41,7 @@ internal static class IncludeMembersExtensions
 
 		return Fields.GetOrAdd((type, includeMembers), static key
 			=> GetAllFields(key.Item1, key.Item2)
-				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly))
+				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly || field.IsFamilyOrAssembly))
 				.ToArray());
 	}
 
@@ -57,7 +57,7 @@ internal static class IncludeMembersExtensions
 				.Where(property =>
 				{
 					MethodInfo getter = property.GetGetMethod(true)!;
-					return Includes(key.Item2, getter.IsPublic, getter.IsAssembly);
+					return Includes(key.Item2, getter.IsPublic, getter.IsAssembly || getter.IsFamilyOrAssembly);
 				})
 				.ToArray());
 	}
@@ -141,7 +141,9 @@ internal static class IncludeMembersExtensions
 
 	/// <remarks>
 	///     A member is included when it has one of the requested visibilities. Requiring all of them at once would
-	///     leave a combination such as <c>Public | Internal</c> without any member.
+	///     leave a combination such as <c>Public | Internal</c> without any member.<br />
+	///     A <c>protected internal</c> member counts as internal, because the whole assembly can access it, while a
+	///     <c>private protected</c> member is only accessible to derived types.
 	/// </remarks>
 	private static bool Includes(IncludeMembers includeMembers, bool isPublic, bool isAssembly)
 		=> (includeMembers.HasFlag(IncludeMembers.Public) && isPublic) ||

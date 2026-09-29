@@ -193,8 +193,11 @@ public static class Corpus
 		internal int Internal = 2;
 		protected int Protected = 3;
 		public int Public = 4;
+		protected internal int ProtectedInternal = 5;
+		private protected int PrivateProtected = 6;
 
-		public override string ToString() => $"{_private}{Internal}{Protected}{Public}";
+		public override string ToString()
+			=> $"{_private}{Internal}{Protected}{Public}{ProtectedInternal}{PrivateProtected}";
 	}
 
 	public interface IHasEvent

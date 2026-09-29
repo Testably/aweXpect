@@ -52,6 +52,7 @@ public abstract partial class ThatDelegate
 				IValueConstraint<DelegateValue>
 		{
 			private DelegateValue? _actual;
+			private bool _isNegated;
 
 			/// <inheritdoc cref="ConstraintResult.FailureCause" />
 			public override Exception? FailureCause
@@ -61,16 +62,7 @@ public abstract partial class ThatDelegate
 			public ConstraintResult IsMetBy(DelegateValue value)
 			{
 				_actual = value;
-				if (value.IsNull || value.ExceededTimeout is not null)
-				{
-					Outcome = Outcome.Failure;
-					return this;
-				}
-
-				Outcome = value.Exception is null ||
-				          !exceptionType.IsAssignableFrom(value.Exception.GetType())
-					? Outcome.Success
-					: Outcome.Failure;
+				UpdateOutcome(value);
 				return this;
 			}
 
@@ -78,11 +70,11 @@ public abstract partial class ThatDelegate
 			{
 				if (exceptionType == typeof(Exception))
 				{
-					stringBuilder.Append("does not throw any exception");
+					stringBuilder.Append(_isNegated ? "throws an exception" : "does not throw any exception");
 				}
 				else
 				{
-					stringBuilder.Append("does not throw ")
+					stringBuilder.Append(_isNegated ? "throws " : "does not throw ")
 						.Append(Formatter.Format(exceptionType).PrependAOrAn());
 				}
 			}
@@ -97,6 +89,10 @@ public abstract partial class ThatDelegate
 				{
 					stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 				}
+				else if (_actual.Exception is null)
+				{
+					stringBuilder.Append(it).Append(" did not throw any exception");
+				}
 				else
 				{
 					stringBuilder.Append(it).Append(" did throw ");
@@ -110,7 +106,27 @@ public abstract partial class ThatDelegate
 				return false;
 			}
 
-			public override ConstraintResult Negate() => this;
+			/// <remarks>
+			///     A negating expectation, such as <c>DoesNotComplyWith</c>, negates the result after the evaluation, so
+			///     the outcome is updated as well.
+			/// </remarks>
+			public override ConstraintResult Negate()
+			{
+				_isNegated = !_isNegated;
+				if (_actual is not null)
+				{
+					UpdateOutcome(_actual);
+				}
+
+				return this;
+			}
+
+			private void UpdateOutcome(DelegateValue value)
+				=> Outcome = value.IsNull || value.ExceededTimeout is not null ||
+				             _isNegated == (value.Exception is null ||
+				                            !exceptionType.IsAssignableFrom(value.Exception.GetType()))
+					? Outcome.Failure
+					: Outcome.Success;
 		}
 	}
 }

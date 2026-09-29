@@ -74,16 +74,21 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
-	///     Rejects a negative duration, because an elapsed time is never below zero.
+	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
+	///     only ever be unsatisfiable or vacuous.
 	/// </summary>
-	public static void ThrowIfDurationIsNegative(TimeSpan duration,
+	/// <remarks>
+	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
+	///     <c>duration</c>, a <c>minimum</c> or a <c>maximum</c>, but not for every caller.
+	/// </remarks>
+	public static void ThrowIfDurationIsNegative(TimeSpan duration, string? description = null,
 		[CallerArgumentExpression(nameof(duration))] string? paramName = null)
 	{
 		if (duration < TimeSpan.Zero)
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
-				$"The {paramName} must not be negative."));
+				$"The {description ?? paramName} must not be negative."));
 		}
 	}
 
@@ -96,12 +101,13 @@ internal static class ThrowHelper
 	{
 		if (timeout != System.Threading.Timeout.InfiniteTimeSpan)
 		{
-			ThrowIfDurationIsNegative(timeout, paramName);
+			ThrowIfDurationIsNegative(timeout, paramName: paramName);
 		}
 	}
 
 	/// <summary>
-	///     Rejects an inverted range, so that a tolerance cannot silently turn it into a satisfiable one.
+	///     Rejects an inverted range, so that a negated expectation cannot silently succeed on a range that can
+	///     never contain anything.
 	/// </summary>
 	public static void ThrowIfMaximumIsBelowMinimum<T>(T? minimum, T? maximum)
 		where T : struct, IComparable<T>

@@ -190,11 +190,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not end with [1, 2, 3],
-					             but it did end with [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did end with [1, 2, 3]
 					             """);
 			}
 

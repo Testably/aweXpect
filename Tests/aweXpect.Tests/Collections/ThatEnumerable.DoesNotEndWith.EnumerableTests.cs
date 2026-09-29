@@ -69,11 +69,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not end with [1, 2, 3],
-					             but it did end with [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did end with [1, 2, 3]
 					             """);
 			}
 
@@ -168,10 +164,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not end with unexpected,
-					             but it did end with [
-					               2,
-					               3
-					             ]
+					             but it did end with [2, 3]
 					             """)
 					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
 			}
@@ -189,10 +182,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not end with unexpected,
-					             but it did end with [
-					               2,
-					               3
-					             ]
+					             but it did end with [2, 3]
 					             """)
 					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
 			}
