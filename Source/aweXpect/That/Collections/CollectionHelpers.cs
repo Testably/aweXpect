@@ -155,19 +155,11 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		Type type = typeof(object);
 		// Only the first items are listed, so an endless source of null items must not be searched to its end.
 		IEnumerable<object?> items = value is ICollection
 			? value.Cast<object?>()
 			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		foreach (object? item in items)
-		{
-			if (item is not null)
-			{
-				type = item.GetType();
-				break;
-			}
-		}
+		Type type = items.FirstOrDefault(item => item is not null)?.GetType() ?? typeof(object);
 
 		return expectationBuilder.UpdateContexts(contexts
 			=>

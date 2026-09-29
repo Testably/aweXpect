@@ -385,11 +385,7 @@ public static partial class ThatEnumerable
 
 				foreach (object? item in materialized)
 				{
-					if (_itemType is null && item is not null)
-					{
-						_itemType = item.GetType();
-					}
-
+					_itemType ??= item?.GetType();
 					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 					// A canceled item expectation decides nothing, so the item must not count as not matching.
 					if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
