@@ -326,6 +326,35 @@ public class AwexpectCustomizationTests
 	}
 
 	[Fact]
+	public async Task Global_Update_WhileAnotherUpdateIsComputed_ShouldApplyBothUpdates()
+	{
+		AwexpectCustomization customization = new();
+		using ManualResetEventSlim concurrentUpdateDone = new();
+		Task<CustomizationLifetime>? concurrentUpdate = null;
+
+		using CustomizationLifetime lengthLifetime = customization.Global.Formatting().Update(p =>
+		{
+			concurrentUpdate ??= Task.Run(() =>
+			{
+				CustomizationLifetime lifetime =
+					customization.Global.Formatting().MaximumNumberOfCollectionItems.Set(5);
+				concurrentUpdateDone.Set();
+				return lifetime;
+			});
+			concurrentUpdateDone.Wait(TimeSpan.FromMilliseconds(200));
+			return p with
+			{
+				MaximumStringLength = 20,
+			};
+		});
+		using CustomizationLifetime itemsLifetime = await concurrentUpdate!;
+
+		await That(customization.Global.Formatting().MaximumStringLength.Get()).IsEqualTo(20);
+		await That(customization.Global.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(5)
+			.Because("a global update that completes while another one computes its value must not be lost");
+	}
+
+	[Fact]
 	public async Task NestedLifetimes_ShouldSetPreviousValue()
 	{
 		string valueInLifetime1;

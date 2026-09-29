@@ -184,7 +184,8 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .IncludingProperties(IncludeMembers.Public | IncludeMembers.Internal));
 ```
 
-Default for both is `IncludeMembers.Public`. Protected and private members are never compared, because they are
+Default for both is `IncludeMembers.Public`. `IncludeMembers.Internal` also includes `protected internal` members,
+because the whole assembly can access them. Other protected and private members are never compared, because they are
 implementation details of a type. To compare such a type, let its `Equals` decide by comparing it
 [by value](#comparing-by-value-or-by-members).
 

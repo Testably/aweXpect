@@ -32,6 +32,13 @@ public abstract partial class EnumerableQuantifier
 		None = 0,
 	}
 
+	/// <remarks>
+	///     Only the built-in quantifiers can derive, because the negated texts rely on members that are not public.
+	/// </remarks>
+	private protected EnumerableQuantifier()
+	{
+	}
+
 	/// <summary>
 	///     Checks for each iteration if the result is determinable by the <paramref name="matchingCount" /> and
 	///     <paramref name="notMatchingCount" />.

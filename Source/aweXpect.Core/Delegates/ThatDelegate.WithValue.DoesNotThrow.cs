@@ -65,16 +65,7 @@ public abstract partial class ThatDelegate
 			public ConstraintResult IsMetBy(DelegateValue<T> value)
 			{
 				_actual = value;
-				if (value.IsNull || value.ExceededTimeout is not null)
-				{
-					Outcome = Outcome.Failure;
-					return this;
-				}
-
-				Outcome = _isNegated == (value.Exception is null ||
-				                         !exceptionType.IsAssignableFrom(value.Exception.GetType()))
-					? Outcome.Failure
-					: Outcome.Success;
+				UpdateOutcome(value);
 				return this;
 			}
 
@@ -116,18 +107,14 @@ public abstract partial class ThatDelegate
 				{
 					stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 				}
+				else if (_actual.Exception is null)
+				{
+					stringBuilder.Append(it).Append(" did not throw any exception");
+				}
 				else
 				{
-					switch (_isNegated)
-					{
-						case true when _actual.Exception is null:
-							stringBuilder.Append(it).Append(" did not throw any exception");
-							break;
-						case false when _actual.Exception is not null:
-							stringBuilder.Append(it).Append(" did throw ");
-							stringBuilder.Append(FormatForMessage(_actual.Exception, indentation));
-							break;
-					}
+					stringBuilder.Append(it).Append(" did throw ");
+					stringBuilder.Append(FormatForMessage(_actual.Exception, indentation));
 				}
 			}
 
@@ -143,11 +130,27 @@ public abstract partial class ThatDelegate
 				return typeof(TValue).IsAssignableFrom(typeof(T));
 			}
 
+			/// <remarks>
+			///     A negating expectation, such as <c>DoesNotComplyWith</c>, negates the result after the evaluation, so
+			///     the outcome is updated as well.
+			/// </remarks>
 			public override ConstraintResult Negate()
 			{
 				_isNegated = !_isNegated;
+				if (_actual is not null)
+				{
+					UpdateOutcome(_actual);
+				}
+
 				return this;
 			}
+
+			private void UpdateOutcome(DelegateValue<T> value)
+				=> Outcome = value.IsNull || value.ExceededTimeout is not null ||
+				             _isNegated == (value.Exception is null ||
+				                            !exceptionType.IsAssignableFrom(value.Exception.GetType()))
+					? Outcome.Failure
+					: Outcome.Success;
 		}
 	}
 }
