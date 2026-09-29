@@ -6,5 +6,6 @@ namespace Snippets;
 internal static class Prelude
 {
 	public static Signaler<string> signaler = new();
-	public static MyClass sut = new();
+	public static Signaler<string> titleSignaler = new();
+	public static Player player = new();
 }

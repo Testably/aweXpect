@@ -4,5 +4,5 @@ namespace Snippets;
 
 internal static class Prelude
 {
-	public static string subject = "Come together\nRight now\nOver me";
+	public static string lyrics = "Come together\nRight now\nOver me";
 }

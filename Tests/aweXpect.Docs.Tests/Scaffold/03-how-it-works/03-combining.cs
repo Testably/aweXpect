@@ -4,7 +4,7 @@ namespace Snippets;
 
 internal static class Prelude
 {
-	public static AlbumWithLoader subject = new();
+	public static AlbumWithLoader album = new();
 
 	public class AlbumWithLoader
 	{

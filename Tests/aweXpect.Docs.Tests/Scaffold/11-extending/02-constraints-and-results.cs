@@ -1,7 +1,6 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Formatting;
 
 namespace Snippets
 {
@@ -21,19 +20,14 @@ namespace Snippets
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null) { }
 	}
 
-	internal sealed class MyValueFormatter : IValueFormatter
+	// The "Your first expectation" page shows this helper.
+	internal static class ExpectThatExtensions
 	{
-		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options) => false;
+		public static IExpectThat<T> Get<T>(this IThat<T> subject) => (IExpectThat<T>)subject;
 	}
 }
 
-// The page tells to declare these attributes on targets that miss them, and on the others they only cause a warning.
-namespace System.Runtime.CompilerServices
-{
-	[AttributeUsage(AttributeTargets.Method)]
-	internal sealed class ModuleInitializerAttribute : Attribute;
-}
-
+// The page tells to declare this attribute on targets that miss it, and on the others it only causes a warning.
 namespace System.Diagnostics.CodeAnalysis
 {
 	[AttributeUsage(AttributeTargets.Parameter)]
