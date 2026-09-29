@@ -172,17 +172,10 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(_options, actual, materialized, cancellationToken, out int? count))
 			{
-				count = actual is ICollection<TItem> collection
-					? collection.Count
-					: materialized.CountUnlessCanceled(cancellationToken);
-				if (count is null)
-				{
-					Outcome = Outcome.Undecided;
-					return this;
-				}
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
@@ -195,19 +188,14 @@ public static partial class ThatEnumerable
 				}
 
 				index++;
-				bool? isIndexInRange = _options.Match switch
+				bool? isIndexInRange = IsIndexInRange(_options, index, count);
+				if (isIndexInRange == false)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					break;
+				}
 
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 
@@ -302,17 +290,10 @@ public static partial class ThatEnumerable
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
-			int? count = null;
-			if (_options.Match is CollectionIndexOptions.IMatchFromEnd)
+			if (!TryCountForIndex(_options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
 			{
-				count = actual is ICollection collection
-					? collection.Count
-					: materialized.Cast<TItem>().CountUnlessCanceled(cancellationToken);
-				if (count is null)
-				{
-					Outcome = Outcome.Undecided;
-					return this;
-				}
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			int index = -1;
@@ -325,19 +306,14 @@ public static partial class ThatEnumerable
 				}
 
 				index++;
-				bool? isIndexInRange = _options.Match switch
+				bool? isIndexInRange = IsIndexInRange(_options, index, count);
+				if (isIndexInRange == false)
 				{
-					CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-					_ => false,
-				};
-				if (isIndexInRange != true)
-				{
-					if (isIndexInRange == false)
-					{
-						break;
-					}
+					break;
+				}
 
+				if (isIndexInRange is null)
+				{
 					continue;
 				}
 

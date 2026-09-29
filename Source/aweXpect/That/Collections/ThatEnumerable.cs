@@ -1461,12 +1461,8 @@ public static partial class ThatEnumerable
 				}
 
 				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
-				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				if (IsIncompatible(incompatibilityCheck, current))
 				{
-					// The order of incompatible items cannot be verified, so the negated check fails as well.
-					_failureText = $"{It} {incompatibility}";
-					_hasIncompatibleItems = true;
-					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -1489,6 +1485,20 @@ public static partial class ThatEnumerable
 
 			Outcome = Outcome.Success;
 			return Task.FromResult<ConstraintResult>(this);
+		}
+
+		private bool IsIncompatible(Func<TMember, string?>? incompatibilityCheck, TMember current)
+		{
+			if (incompatibilityCheck?.Invoke(current) is not { } incompatibility)
+			{
+				return false;
+			}
+
+			// The order of incompatible items cannot be verified, so the negated check fails as well.
+			_failureText = $"{It} {incompatibility}";
+			_hasIncompatibleItems = true;
+			Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			return true;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -1586,12 +1596,8 @@ public static partial class ThatEnumerable
 				}
 
 				TMember current = UserCode.Invoke(memberAccessor, typedItem, "the member selector");
-				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				if (IsIncompatible(incompatibilityCheck, current))
 				{
-					// The order of incompatible items cannot be verified, so the negated check fails as well.
-					_failureText = $"{It} {incompatibility}";
-					_hasIncompatibleItems = true;
-					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -1614,6 +1620,20 @@ public static partial class ThatEnumerable
 
 			Outcome = Outcome.Success;
 			return Task.FromResult<ConstraintResult>(this);
+		}
+
+		private bool IsIncompatible(Func<TMember, string?>? incompatibilityCheck, TMember current)
+		{
+			if (incompatibilityCheck?.Invoke(current) is not { } incompatibility)
+			{
+				return false;
+			}
+
+			// The order of incompatible items cannot be verified, so the negated check fails as well.
+			_failureText = $"{It} {incompatibility}";
+			_hasIncompatibleItems = true;
+			Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			return true;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
