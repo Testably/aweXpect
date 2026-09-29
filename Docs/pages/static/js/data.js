@@ -4206,6 +4206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -4909,7 +4915,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -5616,7 +5623,8 @@ window.BENCHMARK_DATA = {
           364.52223185130526,
           159.8373302391597,
           328.3258736474173,
-          347.981173324585
+          347.981173324585,
+          352.7635374069214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6328,6 +6336,7 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
+          928,
           928
         ],
         "borderColor": "#63A2AC",
@@ -7043,7 +7052,8 @@ window.BENCHMARK_DATA = {
           322.3278011935098,
           127.74056861950801,
           243.26174642244976,
-          260.9272581100464
+          260.9272581100464,
+          247.54009710947673
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7236,6 +7246,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11513,6 +11524,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -12139,7 +12156,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -12769,7 +12787,8 @@ window.BENCHMARK_DATA = {
           413447.9342322716,
           229295.6982596261,
           449700.0759440104,
-          408692.31403459824
+          408692.31403459824,
+          418200.58443777903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13404,6 +13423,7 @@ window.BENCHMARK_DATA = {
           676856,
           676856,
           676856,
+          677056,
           677056
         ],
         "borderColor": "#63A2AC",
@@ -14042,7 +14062,8 @@ window.BENCHMARK_DATA = {
           2251714.272235577,
           1231279.53125,
           2715198.849739583,
-          2462868.2723214286
+          2462868.2723214286,
+          2553543.66796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14676,6 +14697,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -18897,6 +18919,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -19600,7 +19628,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -20307,7 +20336,8 @@ window.BENCHMARK_DATA = {
           607.0824567354642,
           258.22568420001437,
           544.3072616713388,
-          611.0081187566121
+          611.0081187566121,
+          627.5784405390422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21019,6 +21049,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1584,
           1584
         ],
         "borderColor": "#63A2AC",
@@ -21734,7 +21765,8 @@ window.BENCHMARK_DATA = {
           597.5760265350342,
           235.13927503994532,
           474.20079441070556,
-          516.7548759460449
+          516.7548759460449,
+          495.29159579958235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21927,6 +21959,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26666,6 +26699,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -27369,7 +27408,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -28076,7 +28116,8 @@ window.BENCHMARK_DATA = {
           371.87384190926184,
           159.09055398305256,
           338.32508718050445,
-          346.272525038038
+          346.272525038038,
+          352.8747487408774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28788,6 +28829,7 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
+          1072,
           1072
         ],
         "borderColor": "#63A2AC",
@@ -29503,7 +29545,8 @@ window.BENCHMARK_DATA = {
           329.98674287114824,
           120.11808069547017,
           239.55810847649207,
-          245.90422594547272
+          245.90422594547272,
+          257.2361434936523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29696,6 +29739,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34435,6 +34479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -35138,7 +35188,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -35845,7 +35896,8 @@ window.BENCHMARK_DATA = {
           637.1440219197955,
           291.6919880594526,
           614.5234347025554,
-          638.2788359778268
+          638.2788359778268,
+          639.4461165110271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36557,6 +36609,7 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
+          1608,
           1608
         ],
         "borderColor": "#63A2AC",
@@ -37272,7 +37325,8 @@ window.BENCHMARK_DATA = {
           1359.9278821211594,
           567.6406101080088,
           1253.7681101481119,
-          1239.2499777475994
+          1239.2499777475994,
+          1188.7313748677573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37701,6 +37755,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42204,6 +42259,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -42907,7 +42968,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -43614,7 +43676,8 @@ window.BENCHMARK_DATA = {
           2448.9298133850098,
           1537.74829687391,
           3087.047616413661,
-          3213.690000661214
+          3213.690000661214,
+          3228.9326716105143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44326,6 +44389,7 @@ window.BENCHMARK_DATA = {
           4328,
           4328,
           4328,
+          4376,
           4376
         ],
         "borderColor": "#63A2AC",
@@ -45041,7 +45105,8 @@ window.BENCHMARK_DATA = {
           1542.2817803896392,
           645.4647827784221,
           1321.869647216797,
-          1379.8720521291098
+          1379.8720521291098,
+          1327.537137545072
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45234,6 +45299,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -49973,6 +50039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:01:33 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.10 (#1478)"
+      },
+      {
+        "sha": "1917fc4cf3b3ee0061001cac673aabac5b183f9f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 00:03:46 2026 \u002B0200",
+        "message": "docs: restructure the documentation (#1479)"
       }
     ],
     "labels": [
@@ -50676,7 +50748,8 @@ window.BENCHMARK_DATA = {
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
-      "1506ce48"
+      "1506ce48",
+      "1917fc4c"
     ],
     "datasets": [
       {
@@ -51383,7 +51456,8 @@ window.BENCHMARK_DATA = {
           2571.2008267916167,
           1633.2713779721942,
           3099.450386683146,
-          3275.4314544677736
+          3275.4314544677736,
+          3207.185521443685
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52095,6 +52169,7 @@ window.BENCHMARK_DATA = {
           4272,
           4272,
           4272,
+          4280,
           4280
         ],
         "borderColor": "#63A2AC",
@@ -52810,7 +52885,8 @@ window.BENCHMARK_DATA = {
           18095.147993821363,
           9753.625492095947,
           27628.15655517578,
-          20610.311613972983
+          20610.311613972983,
+          26412.724094645182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53520,6 +53596,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
