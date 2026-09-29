@@ -774,12 +774,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
+					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			NoOptions noOptions = new();
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))

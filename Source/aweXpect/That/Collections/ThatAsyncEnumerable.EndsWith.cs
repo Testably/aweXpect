@@ -35,7 +35,7 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -65,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
@@ -92,7 +92,7 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(

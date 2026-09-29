@@ -346,12 +346,7 @@ public static partial class ThatEnumerable
 			ICollection<Expression<Func<TItem, bool>>> expectedItems =
 				expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
 			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
+					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);

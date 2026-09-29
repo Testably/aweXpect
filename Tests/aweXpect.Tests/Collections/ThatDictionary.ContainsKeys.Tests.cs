@@ -77,6 +77,25 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenExpectedThrows_ShouldThrowTheExceptionOfTheExpectedItems()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
+
+				IEnumerable<int> GetExpected()
+				{
+					yield return 1;
+					throw new InvalidOperationException("the expected keys are broken");
+				}
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(GetExpected());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("the expected keys are broken")
+					.Because("an exception of the expected keys is not wrapped as if the subject threw it");
+			}
+
+			[Fact]
 			public async Task WhenOneKeyIsMissing_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);

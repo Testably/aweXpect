@@ -10,24 +10,36 @@ namespace aweXpect.Helpers;
 internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 {
 	private readonly IEnumerator<T> _enumerator;
+	private readonly bool _isUserCode;
 	private readonly List<T> _materializedItems = new();
 	private Exception? _sourceException;
 
-	private MaterializingEnumerable(IEnumerable<T> enumerable)
+	private MaterializingEnumerable(IEnumerable<T> enumerable, bool isUserCode)
 	{
 		_enumerator = enumerable.GetEnumerator();
+		_isUserCode = isUserCode;
 	}
 
 	public int? Count { get; private set; }
 
 	public static IEnumerable<T> Wrap(IEnumerable<T> enumerable)
+		=> Wrap(enumerable, true);
+
+	/// <summary>
+	///     Wraps a sequence that the caller passed as a parameter, e.g. the expected values, whose exceptions propagate
+	///     unchanged instead of being reported as if the subject threw them.
+	/// </summary>
+	public static IEnumerable<T> WrapParameter(IEnumerable<T> enumerable)
+		=> Wrap(enumerable, false);
+
+	private static IEnumerable<T> Wrap(IEnumerable<T> enumerable, bool isUserCode)
 	{
 		if (enumerable is ICollection<T> or MaterializingEnumerable<T>)
 		{
 			return enumerable;
 		}
 
-		return new MaterializingEnumerable<T>(enumerable);
+		return new MaterializingEnumerable<T>(enumerable, isUserCode);
 	}
 
 	#region IEnumerable<T> Members
@@ -70,7 +82,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 
 		try
 		{
-			return UserCode.Invoke(_enumerator.MoveNext);
+			return _isUserCode ? UserCode.Invoke(_enumerator.MoveNext) : _enumerator.MoveNext();
 		}
 		catch (Exception exception)
 		{

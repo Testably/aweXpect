@@ -48,7 +48,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -76,7 +76,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -107,7 +107,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
@@ -136,7 +136,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -205,7 +205,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
@@ -234,7 +234,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		ICollection<string?> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
@@ -266,7 +266,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		ICollection<TItem> expectedValues = expected.ToNonEmptyCollection(negated);
+		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>

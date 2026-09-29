@@ -50,36 +50,15 @@ internal static class ExceptionHelpers
 	/// <summary>
 	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
 	///     expectation, and returns it wrapped, so that a sequence which can only be enumerated once survives both the
-	///     guard and the subsequent comparison, and an infinite sequence is only enumerated as far as needed.
+	///     guard and the subsequent comparison, and an infinite sequence is only enumerated as far as needed. An exception
+	///     of the sequence propagates unchanged instead of being reported as if the subject threw it.
 	/// </summary>
 	public static IEnumerable<T> ToNonEmptyValues<T>(this IEnumerable<T>? parameter, bool negated)
 	{
 		string paramName = negated ? "unexpected" : "expected";
 		ThrowIfNullNamed(parameter, paramName);
-		IEnumerable<T> values = MaterializingEnumerable<T>.Wrap(parameter!);
+		IEnumerable<T> values = MaterializingEnumerable<T>.WrapParameter(parameter!);
 		if (!values.Any())
-		{
-			throw Tracing.WriteException(EmptyCollection(paramName));
-		}
-
-		return values;
-	}
-
-	/// <summary>
-	///     Throws when the <paramref name="parameter" /> is null or empty, naming it after the polarity of the
-	///     expectation, and returns its items as a collection, so that a sequence which can only be enumerated once
-	///     survives both the guard and the subsequent comparison.
-	/// </summary>
-	/// <remarks>
-	///     The items are copied instead of wrapped as in <see cref="ToNonEmptyValues{T}" />, so that an exception of the
-	///     sequence propagates unchanged instead of being reported as if the subject threw it.
-	/// </remarks>
-	public static ICollection<T> ToNonEmptyCollection<T>(this IEnumerable<T>? parameter, bool negated)
-	{
-		string paramName = negated ? "unexpected" : "expected";
-		ThrowIfNullNamed(parameter, paramName);
-		ICollection<T> values = parameter as ICollection<T> ?? parameter!.ToArray();
-		if (values.Count == 0)
 		{
 			throw Tracing.WriteException(EmptyCollection(paramName));
 		}

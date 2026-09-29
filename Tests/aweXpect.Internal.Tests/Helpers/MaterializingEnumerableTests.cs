@@ -40,6 +40,25 @@ public class MaterializingEnumerableTests
 		await That(materialized1).IsSameAs(materialized2);
 	}
 
+	[Fact]
+	public async Task WrapParameter_WhenSourceThrows_ShouldThrowTheSameExceptionOnEveryEnumeration()
+	{
+		InvalidOperationException exception = new("the source is broken");
+
+		IEnumerable<int> GetSource()
+		{
+			yield return 1;
+			throw exception;
+		}
+
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.WrapParameter(GetSource());
+
+		void Act() => _ = materialized.ToList();
+
+		await That(Act).Throws<InvalidOperationException>().Which.IsSameAs(exception);
+		await That(Act).Throws<InvalidOperationException>().Which.IsSameAs(exception)
+			.Because("a source that threw is not advanced again, but throws the same exception");
+	}
 
 	private static IEnumerable<T> ToEnumerable<T>(T[] items)
 	{

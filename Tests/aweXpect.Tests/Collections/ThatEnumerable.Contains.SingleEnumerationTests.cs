@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Collections.Immutable;
 #endif
 using aweXpect.Core;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -344,6 +345,29 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """)
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
+			}
+
+			[Fact]
+			public async Task WhenExpectationIsBuilt_ShouldOnlyReadTheFirstExpectedItem()
+			{
+				int readItems = 0;
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				IEnumerable<int> GetExpected()
+				{
+					readItems++;
+					yield return 2;
+					readItems++;
+					yield return 3;
+				}
+
+				ObjectProperCollectionMatchResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int> expectation =
+					That(subject).Contains(GetExpected());
+				int readItemsWhenBuilt = readItems;
+				await expectation;
+
+				await That(readItemsWhenBuilt).IsEqualTo(1)
+					.Because("the check for an empty sequence reads only the first item and the rest is read on evaluation");
 			}
 
 			[Fact]
