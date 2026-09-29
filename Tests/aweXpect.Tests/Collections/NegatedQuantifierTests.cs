@@ -182,18 +182,16 @@ public sealed class NegatedQuantifier
 		[Theory]
 		[InlineData("All", "a,a", "not all", "all 2 did", null, "")]
 		[InlineData("None", "b,b", "at least one", "none of 2 did", null, "")]
+		[InlineData("AtLeast(1)", "a,b", "none", "1 of 2 did", null, "")]
+		[InlineData("AtLeast(2)", "a,a", "fewer than 2", "2 of 2 did", null, "")]
 		[InlineData("AtMost(0)", "b,b", "at least one", "none of 2 did", null, "")]
 		[InlineData("AtMost(1)", "a,b", "more than one", "1 of 2 did", "Not matching items", "b")]
 		[InlineData("Between(1, 2)", "a,b", "not between 1 and 2", "1 of 2 did", null, "")]
 		[InlineData("Exactly(1)", "a,b", "not exactly one", "1 of 2 did", null, "")]
 		[InlineData("LessThan(1)", "b,b", "at least one", "none of 2 did", null, "")]
 		[InlineData("LessThan(2)", "a,b", "at least 2", "1 of 2 did", "Not matching items", "b")]
-#if NET8_0_OR_GREATER
-		[InlineData("AtLeast(1)", "a,b", "none", "1 of 2 did", null, "")]
-		[InlineData("AtLeast(2)", "a,a", "fewer than 2", "2 of 2 did", null, "")]
 		[InlineData("MoreThan(0)", "a,b", "none", "1 of 2 did", "Matching items", "a")]
 		[InlineData("MoreThan(1)", "a,a", "at most one", "2 of 2 did", "Matching items", "a,a")]
-#endif
 		public async Task NestedSatisfy_WhenNegated_ShouldNegateTheQuantifierOnceAndShowTheItemsThatExplainTheFailure(
 			string quantifier, string lines, string expectedQuantifier, string expectedResult,
 			string? expectedContextTitle, string expectedContextItems)
