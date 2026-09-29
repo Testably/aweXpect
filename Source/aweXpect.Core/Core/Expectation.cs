@@ -124,7 +124,6 @@ public abstract class Expectation
 		/// </summary>
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 		/// <inheritdoc />
 		internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
 		{
@@ -134,10 +133,11 @@ public abstract class Expectation
 			Outcome? outcome = null;
 			foreach (Expectation? expectation in _expectations)
 			{
+				int firstIndex = index + 1;
 				Result result = await expectation.GetResult(index, outcomes);
 				outcome = CheckOutcome(outcome, result.ConstraintResult.Outcome);
 				index = result.Index;
-				outcomes[index] = result.ConstraintResult.Outcome;
+				RecordOutcome(expectation, firstIndex, result, outcomes);
 				if (expectationTexts.Length > 0)
 				{
 					expectationTexts.AppendLine();
@@ -161,21 +161,7 @@ public abstract class Expectation
 						failureCause ??= result.ConstraintResult.FailureCause;
 					}
 
-					if (failureTexts.Length > 0)
-					{
-						failureTexts.AppendLine();
-					}
-
-					if (expectation is Combination)
-					{
-						failureTexts.Append("  ");
-						result.ConstraintResult.AppendResult(failureTexts, "  ");
-					}
-					else
-					{
-						failureTexts.Append(" [").Append(index.ToString("00")).Append("] ");
-						result.ConstraintResult.AppendResult(failureTexts, "      ");
-					}
+					AppendFailureText(failureTexts, expectation, result);
 				}
 			}
 
@@ -189,16 +175,25 @@ public abstract class Expectation
 			return new Result(index, GetSubjectLine(),
 				new CombinationResult(Outcome.Success, expectationTexts.ToString()));
 		}
-#pragma warning restore S3776
 
 		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
 		{
 			List<ResultContext> combinedContexts = new();
+			AddContexts(index, outcomes, combinedContexts);
+			return combinedContexts;
+		}
+
+		/// <summary>
+		///     Adds the contexts of the expectations that did not succeed and returns the index of the last expectation,
+		///     so that nested combinations are numbered like in <see cref="GetResult" />.
+		/// </summary>
+		private int AddContexts(int index, Dictionary<int, Outcome> outcomes, List<ResultContext> combinedContexts)
+		{
 			foreach (Expectation expectation in _expectations)
 			{
-				if (expectation is Combination)
+				if (expectation is Combination combination)
 				{
-					combinedContexts.AddRange(expectation.GetContexts(index, outcomes));
+					index = combination.AddContexts(index, outcomes, combinedContexts);
 				}
 				else
 				{
@@ -216,7 +211,45 @@ public abstract class Expectation
 				}
 			}
 
-			return combinedContexts;
+			return index;
+		}
+
+		private static void RecordOutcome(Expectation expectation, int firstIndex, Result result,
+			Dictionary<int, Outcome> outcomes)
+		{
+			if (expectation is not Combination)
+			{
+				outcomes[result.Index] = result.ConstraintResult.Outcome;
+				return;
+			}
+
+			// The failures of the members of a succeeded combination are not reported, so neither are their contexts.
+			if (result.ConstraintResult.Outcome == Outcome.Success)
+			{
+				for (int index = firstIndex; index <= result.Index; index++)
+				{
+					outcomes[index] = Outcome.Success;
+				}
+			}
+		}
+
+		private static void AppendFailureText(StringBuilder failureTexts, Expectation expectation, Result result)
+		{
+			if (failureTexts.Length > 0)
+			{
+				failureTexts.AppendLine();
+			}
+
+			if (expectation is Combination)
+			{
+				failureTexts.Append("  ");
+				result.ConstraintResult.AppendResult(failureTexts, "  ");
+			}
+			else
+			{
+				failureTexts.Append(" [").Append(result.Index.ToString("00")).Append("] ");
+				result.ConstraintResult.AppendResult(failureTexts, "      ");
+			}
 		}
 
 		private async Task GetResultOrThrow(CancellationToken cancellationToken = default)
