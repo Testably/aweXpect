@@ -133,6 +133,15 @@ public abstract partial class EnumerableQuantifier
 	}
 
 	/// <summary>
+	///     Returns <see langword="true" /> if the quantifier, or its complement when <paramref name="isNegated" />,
+	///     names a single item (e.g. <c>at least one</c>).
+	/// </summary>
+	internal bool IsSingle(bool isNegated)
+		=> isNegated
+			? (GetComplement(ExpectationGrammars.Nested) ?? this).IsSingle()
+			: IsSingle();
+
+	/// <summary>
 	///     Returns the quantifier that matches exactly when this one does not, or <see langword="null" /> when the
 	///     negation is written as <c>not</c> in front of this quantifier.
 	/// </summary>

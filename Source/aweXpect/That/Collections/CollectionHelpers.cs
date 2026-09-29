@@ -96,15 +96,18 @@ internal static class CollectionHelpers
 		=> quantifier.IsSingle() ? "item" : "items";
 
 	/// <summary>
-	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
-	///     <c>has lines that …</c>.
+	///     Appends the <paramref name="quantifier" /> of a nested collection expectation followed by the
+	///     <paramref name="expectationText" /> for the items, e.g. in <c>has lines of which at least one is …</c>.
 	/// </summary>
 	/// <remarks>
 	///     The parent renders the separator <c>" that "</c> before it knows that a quantifier follows, and
 	///     <c>that at least 2 are …</c> is not grammatical, so the separator is replaced with <c>" of which "</c>.
+	///     <para />
+	///     The quantifier carries the negation and is the subject of the item expectation, so the item expectation is
+	///     not negated and its verb agrees with the number of the quantifier.
 	/// </remarks>
 	internal static void AppendNestedQuantifier(this StringBuilder stringBuilder, EnumerableQuantifier quantifier,
-		bool isNegated)
+		bool isNegated, ExpectationGrammars grammars, Func<ExpectationGrammars, string> expectationText)
 	{
 		const string that = " that ";
 		if (stringBuilder.Length >= that.Length &&
@@ -123,7 +126,11 @@ internal static class CollectionHelpers
 			stringBuilder.Append(quantifier);
 		}
 
-		stringBuilder.Append(' ');
+		ExpectationGrammars itemGrammars = grammars & ~ExpectationGrammars.Negated;
+		itemGrammars = quantifier.IsSingle(isNegated)
+			? itemGrammars & ~ExpectationGrammars.Plural
+			: itemGrammars | ExpectationGrammars.Plural;
+		stringBuilder.Append(' ').Append(expectationText(itemGrammars));
 	}
 
 	/// <summary>

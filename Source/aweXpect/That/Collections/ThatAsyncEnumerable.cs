@@ -116,8 +116,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false);
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
 			}
 			else
 			{
@@ -136,8 +135,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true);
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
+				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
 			}
 			else
 			{
@@ -262,8 +260,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false);
-				stringBuilder.Append(_expectationText(_grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, false, _grammars, _expectationText);
 			}
 			else
 			{
@@ -283,8 +280,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true);
-				stringBuilder.Append(_expectationText(_grammars));
+				stringBuilder.AppendNestedQuantifier(_quantifier, true, _grammars, _expectationText);
 			}
 			else
 			{

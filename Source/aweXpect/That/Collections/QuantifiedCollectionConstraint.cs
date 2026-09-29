@@ -92,16 +92,14 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 
 	private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 	{
-		// The quantifier carries the negation, so the item expectation is not negated.
-		string itemExpectation = expectationText(isNegated ? Grammars.Negate() : Grammars);
 		if (Grammars.HasFlag(ExpectationGrammars.Nested))
 		{
-			stringBuilder.AppendNestedQuantifier(quantifier, isNegated);
-			stringBuilder.Append(itemExpectation);
+			stringBuilder.AppendNestedQuantifier(quantifier, isNegated, Grammars, expectationText);
 		}
 		else
 		{
-			stringBuilder.Append(itemExpectation);
+			// The quantifier carries the negation, so the item expectation is not negated.
+			stringBuilder.Append(expectationText(isNegated ? Grammars.Negate() : Grammars));
 			if (isNegated)
 			{
 				quantifier.AppendNegated(stringBuilder);

@@ -168,7 +168,7 @@ public sealed class NegatedQuantifier
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has lines of which at least one are equal to "a",
+				             has lines of which at least one is equal to "a",
 				             but none of 2 were
 
 				             Collection:
@@ -180,18 +180,51 @@ public sealed class NegatedQuantifier
 		}
 
 		[Theory]
-		[InlineData("All", "a,a", "not all", "all 2 did", null, "")]
-		[InlineData("None", "b,b", "at least one", "none of 2 did", null, "")]
-		[InlineData("AtLeast(1)", "a,b", "none", "1 of 2 did", null, "")]
-		[InlineData("AtLeast(2)", "a,a", "fewer than 2", "2 of 2 did", null, "")]
-		[InlineData("AtMost(0)", "b,b", "at least one", "none of 2 did", null, "")]
-		[InlineData("AtMost(1)", "a,b", "more than one", "1 of 2 did", "Not matching items", "b")]
-		[InlineData("Between(1, 2)", "a,b", "not between 1 and 2", "1 of 2 did", null, "")]
-		[InlineData("Exactly(1)", "a,b", "not exactly one", "1 of 2 did", null, "")]
-		[InlineData("LessThan(1)", "b,b", "at least one", "none of 2 did", null, "")]
-		[InlineData("LessThan(2)", "a,b", "at least 2", "1 of 2 did", "Not matching items", "b")]
-		[InlineData("MoreThan(0)", "a,b", "none", "1 of 2 did", "Matching items", "a")]
-		[InlineData("MoreThan(1)", "a,a", "at most one", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("All", "a,b", "all satisfy", "only 1 of 2 did", "Not matching items", "b")]
+		[InlineData("None", "a,a", "none satisfy", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("AtLeast(1)", "b,b", "at least one satisfies", "none of 2 did", null, "")]
+		[InlineData("AtLeast(2)", "a,b", "at least 2 satisfy", "only 1 of 2 did", null, "")]
+		[InlineData("AtMost(0)", "a,a", "at most 0 satisfy", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("AtMost(1)", "a,a", "at most one satisfies", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("Between(1, 2)", "b,b", "between 1 and 2 satisfy", "none of 2 did", null, "")]
+		[InlineData("Exactly(1)", "a,a", "exactly one satisfies", "2 of 2 did", null, "")]
+		[InlineData("LessThan(1)", "a,a", "fewer than one satisfies", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("LessThan(2)", "a,a", "fewer than 2 satisfy", "2 of 2 did", "Matching items", "a,a")]
+		[InlineData("MoreThan(0)", "b,b", "more than 0 satisfy", "none of 2 did", "Not matching items", "b,b")]
+		[InlineData("MoreThan(1)", "a,b", "more than one satisfies", "only 1 of 2 did", "Not matching items", "b")]
+		public async Task NestedSatisfy_ShouldUseTheVerbNumberOfTheQuantifier(
+			string quantifier, string lines, string expectedQuantifier, string expectedResult,
+			string? expectedContextTitle, string expectedContextItems)
+		{
+			string subject = lines.Replace(',', '\n');
+
+			async Task Act()
+				=> await That(subject).HasLines(l => Quantify(l, quantifier).Satisfy(s => s == "a"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has lines of which {expectedQuantifier} s => s == "a",
+				              but {expectedResult}{Context(expectedContextTitle, expectedContextItems)}
+
+				              Collection:
+				              {Items(lines)}
+				              """);
+		}
+
+		[Theory]
+		[InlineData("All", "a,a", "not all satisfy", "all 2 did", null, "")]
+		[InlineData("None", "b,b", "at least one satisfies", "none of 2 did", null, "")]
+		[InlineData("AtLeast(1)", "a,b", "none satisfy", "1 of 2 did", null, "")]
+		[InlineData("AtLeast(2)", "a,a", "fewer than 2 satisfy", "2 of 2 did", null, "")]
+		[InlineData("AtMost(0)", "b,b", "at least one satisfies", "none of 2 did", null, "")]
+		[InlineData("AtMost(1)", "a,b", "more than one satisfies", "1 of 2 did", "Not matching items", "b")]
+		[InlineData("Between(1, 2)", "a,b", "not between 1 and 2 satisfy", "1 of 2 did", null, "")]
+		[InlineData("Exactly(1)", "a,b", "not exactly one satisfies", "1 of 2 did", null, "")]
+		[InlineData("LessThan(1)", "b,b", "at least one satisfies", "none of 2 did", null, "")]
+		[InlineData("LessThan(2)", "a,b", "at least 2 satisfy", "1 of 2 did", "Not matching items", "b")]
+		[InlineData("MoreThan(0)", "a,b", "none satisfy", "1 of 2 did", "Matching items", "a")]
+		[InlineData("MoreThan(1)", "a,a", "at most one satisfies", "2 of 2 did", "Matching items", "a,a")]
 		public async Task NestedSatisfy_WhenNegated_ShouldNegateTheQuantifierOnceAndShowTheItemsThatExplainTheFailure(
 			string quantifier, string lines, string expectedQuantifier, string expectedResult,
 			string? expectedContextTitle, string expectedContextItems)
@@ -205,7 +238,7 @@ public sealed class NegatedQuantifier
 			await That(Act).Throws<XunitException>()
 				.WithMessage($"""
 				              Expected that subject
-				              has lines of which {expectedQuantifier} satisfy s => s == "a",
+				              has lines of which {expectedQuantifier} s => s == "a",
 				              but {expectedResult}{Context(expectedContextTitle, expectedContextItems)}
 
 				              Collection:
