@@ -9,11 +9,10 @@ namespace aweXpect.Customization;
 /// </summary>
 public partial class AwexpectCustomization : IAwexpectCustomization
 {
-	private const string GlobalTraceWriterKey = "aweXpect.TraceWriter";
+	private const string TraceWriterKey = "aweXpect.TraceWriter";
 	private readonly GlobalLayer _global;
 	private readonly bool _isGlobal;
 	private readonly AsyncLocal<CustomizationStore?> _store;
-	private readonly AsyncLocal<ITraceWriter?> _traceWriter;
 	private AwexpectCustomization? _globalCustomization;
 
 	/// <summary>
@@ -23,14 +22,12 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	{
 		_store = new AsyncLocal<CustomizationStore?>();
 		_global = new GlobalLayer();
-		_traceWriter = new AsyncLocal<ITraceWriter?>();
 	}
 
 	private AwexpectCustomization(AwexpectCustomization scoped)
 	{
 		_store = scoped._store;
 		_global = scoped._global;
-		_traceWriter = scoped._traceWriter;
 		_isGlobal = true;
 	}
 
@@ -97,19 +94,10 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	///     Enables capturing tracing information.
 	/// </summary>
 	public CustomizationLifetime EnableTracing(ITraceWriter traceWriter)
-	{
-		if (_isGlobal)
-		{
-			return _global.Set(GlobalTraceWriterKey, traceWriter, null);
-		}
-
-		ITraceWriter? previousTraceWriter = _traceWriter.Value;
-		_traceWriter.Value = traceWriter;
-		return new CustomizationLifetime(() => _traceWriter.Value = previousTraceWriter);
-	}
+		=> Set(TraceWriterKey, traceWriter, null);
 
 	internal ITraceWriter? TraceWriter
-		=> _traceWriter.Value ?? _global.Store?.Get<ITraceWriter?>(GlobalTraceWriterKey, null);
+		=> ((IAwexpectCustomization)this).Get<ITraceWriter?>(TraceWriterKey, null);
 
 	private sealed class CustomizationValue<TGroup, TValue>(
 		ICustomizationValueUpdater<TGroup> group,
