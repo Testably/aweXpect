@@ -8,6 +8,28 @@ namespace aweXpect.Analyzers.Tests;
 public class DelegateSubjectAnalyzerTests
 {
 	[Fact]
+	public async Task WhenUsingACustomHelperOnADelegateSubject_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect.Core;
+			using aweXpect.Delegates;
+
+			internal static class ExpectHelpers
+			{
+			    public static IExpectThat<T> Get<T>(this IThat<T> subject) => (IExpectThat<T>)subject;
+			}
+
+			public static class MyExtensions
+			{
+			    public static void Inspect(this ThatDelegate.WithValue<int> subject)
+			    {
+			        _ = subject.Get();
+			    }
+			}
+			"""
+		);
+
+	[Fact]
 	public async Task WhenUsingAnExtensionDeclaredForADelegateSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

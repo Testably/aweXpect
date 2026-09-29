@@ -62,6 +62,9 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 		{
 			switch (parent)
 			{
+				case IReturnOperation returnOperation when GetAwaitOfDeferringCall(returnOperation) is { } awaitOperation:
+					current = awaitOperation;
+					continue;
 				case IAwaitOperation:
 				case IReturnOperation:
 					return true;
@@ -90,6 +93,43 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 		}
 
 		return true;
+	}
+
+	/// <summary>
+	///     The <see langword="await" /> of a call like <c>Task.Run(() => Expect.That(…)…)</c> that only hands back the
+	///     expectation returned from the lambda: its delegate returns a type parameter of the method, and the method
+	///     returns a task of that type parameter, so awaiting it yields the expectation without evaluating it.
+	/// </summary>
+	private static IAwaitOperation? GetAwaitOfDeferringCall(IReturnOperation returnOperation)
+	{
+		IOperation? function = returnOperation.Parent;
+		while (function is not null and not IAnonymousFunctionOperation and not ILocalFunctionOperation)
+		{
+			function = function.Parent;
+		}
+
+		if (function is not IAnonymousFunctionOperation
+		    {
+			    Symbol.IsAsync: false,
+			    Parent: IDelegateCreationOperation
+			    {
+				    Parent: IArgumentOperation
+				    {
+					    Parameter: { } parameter, Parent: IInvocationOperation { Parent: IAwaitOperation awaitOperation, } invocation,
+				    },
+			    },
+		    } ||
+		    parameter.OriginalDefinition.Type is not INamedTypeSymbol
+		    {
+			    DelegateInvokeMethod.ReturnType: ITypeParameterSymbol { TypeParameterKind: TypeParameterKind.Method, } result,
+		    } ||
+		    invocation.TargetMethod.OriginalDefinition.ReturnType is not INamedTypeSymbol { TypeArguments.Length: 1, } task ||
+		    !SymbolEqualityComparer.Default.Equals(task.TypeArguments[0], result))
+		{
+			return null;
+		}
+
+		return awaitOperation;
 	}
 
 	/// <summary>

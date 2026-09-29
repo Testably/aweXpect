@@ -413,6 +413,88 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenReturnedFromLambda_AndAwaitedAgain_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await await Task.Run(() => Expect.That(subject).IsTrue());
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenReturnedFromLambda_AsDelegate_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        Func<bool, AndOrResult<bool, IThat<bool>>> check = subject => Expect.That(subject).IsTrue();
+			        await check(true);
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenReturnedFromLambda_ToTaskRun_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Task.Run(() => {|#0:Expect.That(subject)|}.IsTrue());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenReturnedFromLambda_WithReturnStatement_ToTaskRun_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Task.Run(() =>
+			        {
+			            return {|#0:Expect.That(subject)|}.IsTrue();
+			        });
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
 	public async Task WhenReturnedWithReturnStatement_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

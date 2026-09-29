@@ -34,9 +34,15 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 		"System.Collections.Generic.IDictionary<TKey, TValue>",
 		"System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>");
 
+	private static readonly ImmutableHashSet<string> UnorderedTypes = ImmutableHashSet.Create(
+		"System.Collections.Generic.Dictionary<TKey, TValue>.KeyCollection",
+		"System.Collections.Generic.Dictionary<TKey, TValue>.ValueCollection");
+
 	private static readonly ImmutableHashSet<string> SortedTypes = ImmutableHashSet.Create(
 		"System.Collections.Generic.SortedSet<T>",
 		"System.Collections.Generic.SortedDictionary<TKey, TValue>",
+		"System.Collections.Generic.SortedList<TKey, TValue>",
+		"System.Collections.Generic.OrderedDictionary<TKey, TValue>",
 		"System.Collections.Immutable.ImmutableSortedSet<T>",
 		"System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue>");
 
@@ -81,7 +87,8 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 
 		if (PositionalExpectations.Contains(method.Name) && HasParameterlessMethod(method.ReturnType, InAnyOrder))
 		{
-			if (!HasInAnyOrder(invocation) && GetUnorderedSubjectType(invocation) is { } type)
+			if (!HasInAnyOrder(invocation) &&
+			    (GetUnorderedSubjectType(invocation) ?? GetUnorderedExpectedType(invocation)) is { } type)
 			{
 				context.ReportDiagnostic(Diagnostic.Create(Rules.UnorderedCollectionRule,
 					GetLocation(invocation),
@@ -132,7 +139,7 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 	private static bool HasInAnyOrder(IInvocationOperation expectation)
 	{
 		IOperation current = expectation;
-		while (current.Parent is IInvocationOperation option && option.Instance == current)
+		while (GetChainedOption(current) is { } option)
 		{
 			if (option.TargetMethod.Name == InAnyOrder)
 			{
@@ -143,6 +150,31 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     The option that is chained on the <paramref name="result" />, either as an instance method or as an
+	///     extension method.
+	/// </summary>
+	private static IInvocationOperation? GetChainedOption(IOperation result)
+	{
+		if (result.Parent is IInvocationOperation option && option.Instance == result)
+		{
+			return option;
+		}
+
+		IOperation? parent = result.Parent;
+		while (parent is IConversionOperation)
+		{
+			parent = parent.Parent;
+		}
+
+		return parent is IArgumentOperation
+		{
+			Parameter.Ordinal: 0, Parent: IInvocationOperation { TargetMethod.IsExtensionMethod: true, } extension,
+		}
+			? extension
+			: null;
 	}
 
 	/// <summary>
@@ -173,12 +205,29 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 			receiver = GetReceiver(previous);
 		}
 
-		ITypeSymbol? subjectType = GetThatTypeArgument(receiver?.Type);
-		return subjectType is not null && IsUnordered(subjectType)
-			? subjectType.WithNullableAnnotation(NullableAnnotation.NotAnnotated)
-				.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)
-			: null;
+		return GetUnorderedDisplayString(GetThatTypeArgument(receiver?.Type));
 	}
+
+	/// <summary>
+	///     The display string of the static type of the collection that the <paramref name="expectation" /> expects, if
+	///     it has no defined order.
+	/// </summary>
+	private static string? GetUnorderedExpectedType(IInvocationOperation expectation)
+	{
+		IOperation? expected = expectation.Arguments.FirstOrDefault(argument => argument.Parameter?.Ordinal == 1)?.Value;
+		while (expected is IConversionOperation conversion)
+		{
+			expected = conversion.Operand;
+		}
+
+		return GetUnorderedDisplayString(expected?.Type);
+	}
+
+	private static string? GetUnorderedDisplayString(ITypeSymbol? type)
+		=> type is not null && IsUnordered(type)
+			? type.WithNullableAnnotation(NullableAnnotation.NotAnnotated)
+				.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
+			: null;
 
 	/// <summary>
 	///     The receiver of an extension method invocation, without the implicit conversion to the
@@ -221,7 +270,9 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 			}
 		}
 
-		return UnorderedInterfaces.Contains(type.OriginalDefinition.ToDisplayString()) ||
+		string definition = type.OriginalDefinition.ToDisplayString();
+		return UnorderedTypes.Contains(definition) ||
+		       UnorderedInterfaces.Contains(definition) ||
 		       type.AllInterfaces.Any(i => UnorderedInterfaces.Contains(i.OriginalDefinition.ToDisplayString()));
 	}
 

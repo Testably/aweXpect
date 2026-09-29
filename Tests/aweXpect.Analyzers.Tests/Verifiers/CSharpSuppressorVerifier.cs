@@ -13,7 +13,12 @@ public static class CSharpSuppressorVerifier<TSuppressor>
 	where TSuppressor : DiagnosticSuppressor, new()
 {
 	/// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.VerifyAnalyzerAsync(string, DiagnosticResult[])" />
-	public static async Task VerifySuppressorAsync([StringSyntax("c#-test")] string source,
+	public static Task VerifySuppressorAsync([StringSyntax("c#-test")] string source,
+		params DiagnosticResult[] expected)
+		=> VerifySuppressorAsync(OutputKind.DynamicallyLinkedLibrary, source, expected);
+
+	/// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.VerifyAnalyzerAsync(string, DiagnosticResult[])" />
+	public static async Task VerifySuppressorAsync(OutputKind outputKind, [StringSyntax("c#-test")] string source,
 		params DiagnosticResult[] expected)
 	{
 		Test test = new()
@@ -24,6 +29,7 @@ public static class CSharpSuppressorVerifier<TSuppressor>
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
 			TestState =
 			{
+				OutputKind = outputKind,
 				AdditionalReferences =
 				{
 					typeof(Expect).Assembly.Location,

@@ -170,6 +170,8 @@ public class UnorderedCollectionAnalyzerTests
 	[Theory]
 	[InlineData("SortedDictionary<string, int>")]
 	[InlineData("ImmutableSortedDictionary<string, int>")]
+	[InlineData("SortedList<string, int>")]
+	[InlineData("OrderedDictionary<string, int>")]
 	public async Task WhenComparingASortedDictionary_ShouldNotBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -180,13 +182,81 @@ public class UnorderedCollectionAnalyzerTests
 
 			  public class MyClass
 			  {
-			      public async Task MyTest({{type}} subject, Dictionary<string, int> other)
+			      public async Task MyTest({{type}} subject, KeyValuePair<string, int>[] other)
 			      {
 			          await Expect.That(subject).Contains(other).IgnoringInterspersedItems();
 			          await Expect.That(subject).IsContainedIn(other);
 			      }
 			  }
 			  """
+		);
+
+	[Fact]
+	public async Task WhenComparingDictionaryKeysOrValues_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(Dictionary<string, int> subject)
+			    {
+			        await Expect.That(subject.Keys).{|#0:IsEqualTo|}(new[] { "a", });
+			        await Expect.That(subject.Values).{|#1:IsEqualTo|}(new[] { 1, });
+			        await Expect.That(subject.Keys).IsEqualTo(new[] { "a", }).InAnyOrder();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0)
+				.WithArguments("Dictionary<string, int>.KeyCollection"),
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(1)
+				.WithArguments("Dictionary<string, int>.ValueCollection")
+		);
+
+	[Fact]
+	public async Task WhenComparingSortedDictionaryKeysOrValues_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(SortedDictionary<string, int> subject)
+			    {
+			        await Expect.That(subject.Keys).IsEqualTo(new[] { "a", });
+			        await Expect.That(subject.Values).IsEqualTo(new[] { 1, });
+			    }
+			}
+			"""
+		);
+
+	[Fact]
+	public async Task WhenComparingWithAnUnorderedExpectedCollection_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(List<int> subject, HashSet<int> expected, SortedSet<int> sorted)
+			    {
+			        await Expect.That(subject).{|#0:IsEqualTo|}(expected);
+			        await Expect.That(subject).{|#1:Contains|}(expected);
+			        await Expect.That(subject).{|#2:IsContainedIn|}(expected);
+			        await Expect.That(subject).IsEqualTo(expected).InAnyOrder();
+			        await Expect.That(subject).IsEqualTo(sorted);
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>"),
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(1).WithArguments("HashSet<int>"),
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(2).WithArguments("HashSet<int>")
 		);
 
 	[Fact]
@@ -231,6 +301,32 @@ public class UnorderedCollectionAnalyzerTests
 			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(1).WithArguments("HashSet<int>"),
 			Verifier.Diagnostic(Rules.UnorderedCollectionNoMeaningRule).WithLocation(2)
 				.WithArguments("IgnoringInterspersedItems", "HashSet<int>")
+		);
+
+	[Fact]
+	public async Task WhenUsingInAnyOrder_AfterAnExtensionMethodOption_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyOptions
+			{
+			    public static TResult WithLogging<TResult>(this TResult result)
+			        where TResult : Expectation
+			        => result;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject)
+			    {
+			        await Expect.That(subject).IsEqualTo(new[] { 1, 2, }).WithLogging().InAnyOrder();
+			    }
+			}
+			"""
 		);
 
 	[Fact]
