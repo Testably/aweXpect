@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Delegates;
@@ -72,10 +73,12 @@ public partial class ThatDelegateThrows<TException>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
 		Type type,
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(ExpectationBuilder
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception, Exception?>(
-					e => type.IsInstanceOfType(e.InnerException) ? e.InnerException : null,
+					e => e.InnerException.IsOfType(type) ? e.InnerException : null,
 					" that ",
 					false)
 				.Validate((it, grammars)
@@ -83,16 +86,20 @@ public partial class ThatDelegateThrows<TException>
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies that the thrown exception has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
 		Type type)
-		=> new(ExpectationBuilder
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new HasInnerExceptionValueConstraint(type, it, grammars)),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies that the thrown exception has no inner exception.
@@ -118,10 +125,13 @@ public partial class ThatDelegateThrows<TException>
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner(
 		Type type)
-		=> new(ExpectationBuilder
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new HasInnerExceptionValueConstraint(type, it, grammars).Invert()),
 			this);
+	}
 
 	private sealed class HasInnerExceptionValueConstraint(
 		Type innerExceptionType,
@@ -135,7 +145,7 @@ public partial class ThatDelegateThrows<TException>
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
+			Outcome = (actual?.InnerException).IsOfType(innerExceptionType)
 				? Outcome.Success
 				: Outcome.Failure;
 			// Expectations on a missing inner exception or one of another type could only repeat the mismatch.

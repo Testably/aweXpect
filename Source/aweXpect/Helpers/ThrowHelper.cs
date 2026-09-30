@@ -74,6 +74,34 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a negative position when the filter is built, because it could never address a parameter.
+	/// </summary>
+	public static void ThrowIfPositionIsNegative(int? position,
+		[CallerArgumentExpression(nameof(position))] string? paramName = null)
+	{
+		if (position < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				"The position must not be negative."));
+		}
+	}
+
+	/// <summary>
+	///     Rejects <paramref name="times" /> below one for an expectation of fewer occurrences, which no count could
+	///     meet.
+	/// </summary>
+	public static void ThrowIfTimesIsNotPositive(Times times)
+	{
+		if (times.Value < 1)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(times),
+				"The times must be greater than zero."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
 	///     only ever be unsatisfiable or vacuous.
 	/// </summary>
@@ -117,6 +145,22 @@ internal static class ThrowHelper
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
 				"The maximum must be greater than or equal to the minimum."));
+		}
+	}
+
+	/// <summary>
+	///     Rejects an inverted range of <see cref="DateTime" /> bounds, when their kinds can be compared.
+	/// </summary>
+	/// <remarks>
+	///     The ticks of a <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> bound do not tell
+	///     their order, so such a range is left to the expectation, which compares the subject with each bound on its
+	///     own.
+	/// </remarks>
+	public static void ThrowIfMaximumIsBelowMinimum(DateTime? minimum, DateTime? maximum)
+	{
+		if (EqualityHelpers.AreKindCompatible(minimum?.Kind, maximum?.Kind))
+		{
+			ThrowIfMaximumIsBelowMinimum<DateTime>(minimum, maximum);
 		}
 	}
 

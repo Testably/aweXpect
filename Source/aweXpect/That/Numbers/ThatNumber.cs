@@ -79,6 +79,14 @@ public static partial class ThatNumber
 			return;
 		}
 
+		if (typeof(TNumber) == typeof(char))
+		{
+			// A char difference is a distance between code points and would be unreadable as a character.
+			AppendDifference<int>(stringBuilder, int.CreateTruncating(actual.Value), int.CreateTruncating(expected.Value),
+				reference);
+			return;
+		}
+
 		try
 		{
 			checked

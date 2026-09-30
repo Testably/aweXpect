@@ -148,6 +148,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject,
 		Times times)
 	{
+		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
@@ -175,6 +176,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
+		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
@@ -297,13 +299,12 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
-			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(() =>
 				{
 					// Measured inside the task, so that a busy thread pool does not count as waited time.
 					Stopwatch stopwatch = Stopwatch.StartNew();
-					SignalerResult result = determinableAmount > 1
+					// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
+					SignalerResult result = determinableAmount > 0
 						? actual.Wait(determinableAmount.Times(), timeout, cancellationToken)
 						: actual.Wait(timeout, cancellationToken);
 					_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : stopwatch.Elapsed;
@@ -360,13 +361,12 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
-			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(() =>
 				{
 					// Measured inside the task, so that a busy thread pool does not count as waited time.
 					Stopwatch stopwatch = Stopwatch.StartNew();
-					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 1
+					// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
+					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 0
 						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
 						: actual.Wait(o.Matches, timeout, cancellationToken), "the predicate");
 					_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : stopwatch.Elapsed;

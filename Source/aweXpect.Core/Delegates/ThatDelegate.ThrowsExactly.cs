@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 
 namespace aweXpect.Delegates;
@@ -34,6 +33,7 @@ public abstract partial class ThatDelegate
 	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> ThrowsExactly(Type type)
 	{
+		type.ThrowIfNotAnExceptionType();
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<Exception>(ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -69,7 +69,7 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			bool isExpectedType = exceptionType == value?.GetType();
+			bool isExpectedType = value.IsExactlyOfType(exceptionType);
 			// Chained expectations on a missing exception or one of another type are irrelevant.
 			FurtherProcessingStrategy = isExpectedType
 				? FurtherProcessingStrategy.Continue
@@ -79,22 +79,7 @@ public abstract partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (!throwOptions.DoCheckThrow)
-			{
-				stringBuilder.Append("does not throw any exception");
-			}
-			else
-			{
-				stringBuilder.Append("throws exactly ").Append(Formatter.Format(exceptionType).PrependAOrAn());
-			}
-
-			if (throwOptions.ExecutionTimeOptions is not null)
-			{
-				stringBuilder.Append(' ');
-				throwOptions.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
-			}
-		}
+			=> AppendThrowsExpectation(stringBuilder, throwOptions, exceptionType, true);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -123,7 +108,8 @@ public abstract partial class ThatDelegate
 
 		public override ConstraintResult Negate()
 		{
-			throwOptions.DoCheckThrow = !throwOptions.DoCheckThrow;
+			throwOptions.IsNegated = !throwOptions.IsNegated;
+			Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			return this;
 		}
 	}

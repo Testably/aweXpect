@@ -49,6 +49,7 @@ public abstract partial class ThatDelegate
 	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> Throws(Type type)
 	{
+		type.ThrowIfNotAnExceptionType();
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<Exception>(ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -143,26 +144,7 @@ public abstract partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (!options.DoCheckThrow)
-			{
-				stringBuilder.Append("does not throw any exception");
-			}
-			else if (typeof(TException) == typeof(Exception))
-			{
-				stringBuilder.Append("throws an exception");
-			}
-			else
-			{
-				stringBuilder.Append("throws ").Append(Formatter.Format(typeof(TException)).PrependAOrAn());
-			}
-
-			if (options.ExecutionTimeOptions is not null)
-			{
-				stringBuilder.Append(' ');
-				options.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
-			}
-		}
+			=> AppendThrowsExpectation(stringBuilder, options, typeof(TException));
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -179,7 +161,7 @@ public abstract partial class ThatDelegate
 				stringBuilder.Append(it).Append(" took ");
 				options.ExecutionTimeOptions?.AppendFailureResult(stringBuilder, _actual.Duration);
 			}
-			else if (options.DoCheckThrow && _actual.Exception is null)
+			else if (_actual.Exception is null)
 			{
 				stringBuilder.Append(it).Append(" did not throw any exception");
 			}
@@ -202,9 +184,19 @@ public abstract partial class ThatDelegate
 			return typeof(TValue).IsAssignableFrom(typeof(TException));
 		}
 
+		/// <remarks>
+		///     A negating expectation, such as <c>DoesNotComplyWith</c>, negates the result after the evaluation, so
+		///     the outcome is updated as well. A delegate that is <see langword="null" /> or did not finish fails in both
+		///     cases.
+		/// </remarks>
 		public override ConstraintResult Negate()
 		{
-			options.DoCheckThrow = !options.DoCheckThrow;
+			options.IsNegated = !options.IsNegated;
+			if (_actual is { IsNull: false, ExceededTimeout: null, })
+			{
+				Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
+			}
+
 			return this;
 		}
 	}
@@ -234,7 +226,7 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			bool isExpectedType = value is not null && exceptionType.IsAssignableFrom(value.GetType());
+			bool isExpectedType = value.IsOfType(exceptionType);
 			// Chained expectations on a missing exception or one of another type are irrelevant.
 			FurtherProcessingStrategy = isExpectedType
 				? FurtherProcessingStrategy.Continue
@@ -244,26 +236,7 @@ public abstract partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (!throwOptions.DoCheckThrow)
-			{
-				stringBuilder.Append("does not throw any exception");
-			}
-			else if (exceptionType == typeof(Exception))
-			{
-				stringBuilder.Append("throws an exception");
-			}
-			else
-			{
-				stringBuilder.Append("throws ").Append(Formatter.Format(exceptionType).PrependAOrAn());
-			}
-
-			if (throwOptions.ExecutionTimeOptions is not null)
-			{
-				stringBuilder.Append(' ');
-				throwOptions.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
-			}
-		}
+			=> AppendThrowsExpectation(stringBuilder, throwOptions, exceptionType);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -292,7 +265,8 @@ public abstract partial class ThatDelegate
 
 		public override ConstraintResult Negate()
 		{
-			throwOptions.DoCheckThrow = !throwOptions.DoCheckThrow;
+			throwOptions.IsNegated = !throwOptions.IsNegated;
+			Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			return this;
 		}
 	}

@@ -49,6 +49,25 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Local);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Local);
+					DateTime? maximum = EarlierTime(2, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+						              but it had kind Local, which cannot be compared with Utc
+						              """)
+						.Because("the ticks of bounds with incompatible kinds cannot tell whether the range is inverted");
+				}
+
+				[Fact]
 				public async Task WhenMaximumIsNull_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();

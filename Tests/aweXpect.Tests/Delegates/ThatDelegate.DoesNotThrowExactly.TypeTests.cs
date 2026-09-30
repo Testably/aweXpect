@@ -37,6 +37,23 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenDelegateThrowsOpenGenericTypeException_ShouldFail()
+			{
+				Action @delegate = () => throw new GenericException<int>("foo");
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly(typeof(GenericException<>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw exactly a ThatDelegate.GenericException<>,
+					             but it did throw a ThatDelegate.GenericException<int>:
+					               foo
+					             """);
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
@@ -61,6 +78,18 @@ public sealed partial class ThatDelegate
 					=> await That(@delegate).DoesNotThrowExactly(typeof(CustomException));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsSubtypeOfOpenGenericType_ShouldSucceed()
+			{
+				Action @delegate = () => throw new SubGenericException();
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly(typeof(GenericException<>));
+
+				await That(Act).DoesNotThrow()
+					.Because("the subtype of GenericException<int> is not constructed directly from the open generic type");
 			}
 
 			[Theory]
@@ -90,6 +119,33 @@ public sealed partial class ThatDelegate
 					             does not throw exactly a ThatDelegate.CustomException,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly(typeof(string));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+					.Because("no exception could ever be a string");
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly((Type)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 		}
 
@@ -134,6 +190,23 @@ public sealed partial class ThatDelegate
 					              but it did throw a ThatDelegate.CustomException:
 					                {message}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsOpenGenericTypeException_ShouldFail()
+			{
+				Func<int> @delegate = () => throw new GenericException<int>("foo");
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly(typeof(GenericException<>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw exactly a ThatDelegate.GenericException<>,
+					             but it did throw a ThatDelegate.GenericException<int>:
+					               foo
+					             """);
 			}
 
 			[Theory]
@@ -189,6 +262,33 @@ public sealed partial class ThatDelegate
 					             does not throw exactly a ThatDelegate.CustomException,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+			{
+				Func<int> @delegate = () => 1;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly(typeof(string));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+					.Because("no exception could ever be a string");
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Func<int> @delegate = () => 1;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly((Type)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 		}
 #pragma warning restore CA2263

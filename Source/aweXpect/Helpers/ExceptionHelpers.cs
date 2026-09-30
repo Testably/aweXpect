@@ -19,6 +19,21 @@ internal static class ExceptionHelpers
 	public static void ThrowIfNull(this object? parameter, bool negated)
 		=> ThrowIfNullNamed(parameter, negated ? "unexpected" : "expected");
 
+	/// <summary>
+	///     Throws when the <paramref name="type" /> is null or not an exception type, as no exception could ever match it.
+	/// </summary>
+	public static void ThrowIfNotAnExceptionType(this Type? type,
+		[CallerArgumentExpression(nameof(type))] string? paramName = null)
+	{
+		ThrowIfNullNamed(type, paramName);
+		if (!typeof(Exception).IsAssignableFrom(type))
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{paramName}' must be an exception type, but {Formatter.Format(type)} is not.", paramName));
+		}
+	}
+
 	private static void ThrowIfNullNamed(object? parameter, string? paramName)
 	{
 		if (parameter is null)

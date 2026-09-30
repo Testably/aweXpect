@@ -149,7 +149,8 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
   .WithParameter<TrackStartedEventArgs>(1, e => e.Title == "Yesterday");
 ```
 
-An event whose parameter at that position is missing or of another type does not match.
+An event whose parameter at that position is missing or of another type does not match. A negative position throws an
+`ArgumentOutOfRangeException`.
 
 When you follow
 the [event best practices](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/best-practices-for-implementing-the-event-based-asynchronous-pattern),
@@ -216,4 +217,4 @@ satisfies `TriggeredPropertyChangedFor` for every property name and lets `DidNot
 fail for every property name. A whitespace-only name is a name like any other. Expecting the `null` or the empty
 property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches only the events that notify that all
 properties changed, but no named one, and without distinguishing the two spellings, which the contract allows
-interchangeably.
+interchangeably. The expectation then reads "for all properties".

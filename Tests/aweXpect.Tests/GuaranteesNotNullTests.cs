@@ -480,10 +480,16 @@ public sealed class GuaranteesNotNullTests
 		Type nonNullableSubjectType = Nullable.GetUnderlyingType(subjectType) ?? subjectType;
 		return isNullableSubject &&
 		       NamesNullable(method.ReturnType, GetNullableFlags(method.ReturnParameter, method), 0,
-			       nonNullableSubjectType);
+			       nonNullableSubjectType, []);
 	}
 
-	private static bool NamesNullable(Type type, byte[] flags, int slot, Type subjectType)
+	/// <remarks>
+	///     The base types are walked as well, because a result can fix the awaited type in its base class, like
+	///     <c>AndOrResult&lt;TType?, TThat, TSelf&gt;</c>. A base names the result again as <c>TSelf</c>, so each base
+	///     is walked only once. The flags of the declared type do not describe a base type, so only a nullable struct
+	///     is detected there.
+	/// </remarks>
+	private static bool NamesNullable(Type type, byte[] flags, int slot, Type subjectType, HashSet<Type> visited)
 	{
 		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IThat<>))
 		{
@@ -496,17 +502,26 @@ public sealed class GuaranteesNotNullTests
 			return true;
 		}
 
-		if (!type.IsGenericType)
+		if (type.IsGenericParameter)
 		{
 			return false;
 		}
 
+		return (type.IsGenericType && NamesNullableTypeArgument(type, flags, slot, subjectType, visited)) ||
+		       (visited.Add(type) && type.BaseType is { } baseType &&
+		        NamesNullable(baseType, [0,], 0, subjectType, visited));
+	}
+
+	private static bool NamesNullableTypeArgument(Type type, byte[] flags, int slot, Type subjectType,
+		HashSet<Type> visited)
+	{
 		int next = slot + (TakesASlot(type) ? 1 : 0);
 		Type[] parameters = type.GetGenericTypeDefinition().GetGenericArguments();
 		Type[] arguments = type.GetGenericArguments();
 		for (int index = 0; index < arguments.Length; index++)
 		{
-			if (!IsInputValue(type, parameters[index]) && NamesNullable(arguments[index], flags, next, subjectType))
+			if (!IsInputValue(type, parameters[index]) &&
+			    NamesNullable(arguments[index], flags, next, subjectType, visited))
 			{
 				return true;
 			}
@@ -771,6 +786,11 @@ public sealed class GuaranteesNotNullTests
 		if (type == typeof(Type))
 		{
 			return typeof(Exception);
+		}
+
+		if (type == typeof(Times))
+		{
+			return 1.Times();
 		}
 
 		if (parameter.IsOptional)

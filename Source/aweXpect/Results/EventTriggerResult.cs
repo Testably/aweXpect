@@ -29,11 +29,13 @@ public class EventTriggerResult<TSubject>(
 		int? position,
 		Func<TParameter, bool> predicate)
 	{
+		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
 			o => position == null
-				? o.Any(x => x is TParameter p && predicate(p))
-				: o.Length > position && o[position.Value] is TParameter m && predicate(m),
+				? o.Any(x => x is TParameter p && UserCode.Invoke(predicate, p, "the predicate"))
+				: o.Length > position && o[position.Value] is TParameter m &&
+				  UserCode.Invoke(predicate, m, "the predicate"),
 			expression);
 		return this;
 	}
@@ -54,7 +56,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Length > 0 && predicate(o[0]),
+			o => o.Length > 0 && UserCode.Invoke(predicate, o[0], "the predicate"),
 			$" with sender {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}
@@ -73,7 +75,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Length > 1 && o[1] is TEventArgs m && predicate(m),
+			o => o.Length > 1 && o[1] is TEventArgs m && UserCode.Invoke(predicate, m, "the predicate"),
 			$" with {Formatter.Format(typeof(TEventArgs))} {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}
@@ -91,7 +93,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Any(x => x is TParameter m && predicate(m)),
+			o => o.Any(x => x is TParameter m && UserCode.Invoke(predicate, m, "the predicate")),
 			$" with {Formatter.Format(typeof(TParameter))} parameter {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}
@@ -107,9 +109,10 @@ public class EventTriggerResult<TSubject>(
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
+		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Length > position && o[position] is TParameter m && predicate(m),
+			o => o.Length > position && o[position] is TParameter m && UserCode.Invoke(predicate, m, "the predicate"),
 			$" with {Formatter.Format(typeof(TParameter))} parameter [{position}] {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}

@@ -321,7 +321,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that recording
-					             has recorded the PropertyChanged event on sut for property  at least once,
+					             has recorded the PropertyChanged event on sut for all properties at least once,
 					             but it was never recorded in [
 					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
 					                   MyValue = 5

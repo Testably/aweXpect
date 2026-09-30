@@ -41,6 +41,18 @@ public class NumberToleranceTests
 	}
 
 	[Fact]
+	public async Task ToString_WhenToleranceIsAChar_ShouldFormatItAsNumber()
+	{
+		NumberTolerance<char> sut = new((_, _) => null);
+		sut.SetTolerance('\u0001');
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 1")
+			.Because("a tolerance formatted as char would be an unreadable character");
+	}
+
+	[Fact]
 	public async Task WhenDoubleToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<double> sut = new((_, _) => null);

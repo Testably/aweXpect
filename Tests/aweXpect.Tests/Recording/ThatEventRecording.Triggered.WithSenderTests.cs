@@ -65,6 +65,53 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, nameof(PropertyChangedClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
+						.WithSender(_ => throw exception);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut with sender _ => throw exception at least once,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, nameof(PropertyChangedClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(INotifyPropertyChanged.PropertyChanged))
+						.WithSender(_ => throw exception);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the PropertyChanged event on sut with sender _ => throw exception,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a predicate that threw answered nothing, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WithCustomEvent_WhenSenderIsTheOnlyParameter_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<EventArgs> sut = new();

@@ -36,7 +36,8 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	}
 
 	/// <summary>
-	///     Appends the result for a delegate that was <see langword="null" /> or returned a <see langword="null" /> task.
+	///     Appends the result for a delegate that was <see langword="null" /> or returned a <see langword="null" /> task,
+	///     or for a <see langword="null" /> task subject.
 	/// </summary>
 	internal static void AppendNullResult(StringBuilder stringBuilder, string it, DelegateValue? actual)
 	{
@@ -44,9 +45,38 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		{
 			stringBuilder.Append(it).Append(" returned <null> instead of a task");
 		}
+		else if (actual?.IsNullTaskSubject == true)
+		{
+			stringBuilder.Append(it).Append(" was a <null> task");
+		}
 		else
 		{
 			stringBuilder.ItWasNull(it);
+		}
+	}
+
+	private static void AppendThrowsExpectation(StringBuilder stringBuilder, ThrowsOption options,
+		Type exceptionType, bool exactly = false)
+	{
+		if (!options.DoCheckThrow)
+		{
+			stringBuilder.Append(options.IsNegated ? "throws an exception" : "does not throw any exception");
+		}
+		else if (!exactly && exceptionType == typeof(Exception))
+		{
+			stringBuilder.Append(options.IsNegated ? "does not throw any exception" : "throws an exception");
+		}
+		else
+		{
+			stringBuilder.Append(options.IsNegated ? "does not throw " : "throws ")
+				.Append(exactly ? "exactly " : "")
+				.Append(Formatter.Format(exceptionType).PrependAOrAn());
+		}
+
+		if (options.ExecutionTimeOptions is not null)
+		{
+			stringBuilder.Append(' ');
+			options.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
 		}
 	}
 
@@ -58,10 +88,22 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 			IValueConstraint<DelegateValue>
 	{
 		private DelegateValue? _actual;
+		private bool _tookTooLong;
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure && _actual?.ExceededTimeout is not null ? _actual.Exception : null;
+		{
+			get
+			{
+				if (options.IsNegated)
+				{
+					// The negated expectation only fails when the delegate met it, so the thrown exception is the cause.
+					return _actual?.Exception;
+				}
+
+				return Outcome == Outcome.Failure && _actual?.ExceededTimeout is not null ? _actual.Exception : null;
+			}
+		}
 
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
@@ -75,6 +117,7 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 			if (options.ExecutionTimeOptions is not null &&
 			    !options.ExecutionTimeOptions.IsWithinLimit(value.Duration))
 			{
+				_tookTooLong = true;
 				Outcome = Outcome.Failure;
 				return this;
 			}
@@ -98,10 +141,19 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 			{
 				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 			}
-			else if (options.ExecutionTimeOptions is not null)
+			else if (_tookTooLong)
 			{
 				stringBuilder.Append(it).Append(" took ");
-				options.ExecutionTimeOptions.AppendFailureResult(stringBuilder, _actual.Duration);
+				options.ExecutionTimeOptions?.AppendFailureResult(stringBuilder, _actual.Duration);
+			}
+			else if (_actual.Exception is null)
+			{
+				stringBuilder.Append(it).Append(" did not throw any exception");
+			}
+			else
+			{
+				stringBuilder.Append(it).Append(" did throw ");
+				stringBuilder.Append(FormatForMessage(_actual.Exception, indentation));
 			}
 		}
 
@@ -111,8 +163,16 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 			return false;
 		}
 
+		/// <remarks>
+		///     A negation applies to the whole expectation. The constraint on the exception reads it from the shared
+		///     options, and this result explains the failure, which under negation only occurs when the delegate met the
+		///     expectation.
+		/// </remarks>
 		public override ConstraintResult Negate()
-			=> this;
+		{
+			options.IsNegated = !options.IsNegated;
+			return this;
+		}
 	}
 
 	/// <summary>
@@ -132,6 +192,11 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		///     Options on the execution time to allow specifying a timeout.
 		/// </summary>
 		public ExecutionTimeOptions? ExecutionTimeOptions { get; set; }
+
+		/// <summary>
+		///     Flag indicating if the whole expectation on the thrown exception is negated.
+		/// </summary>
+		internal bool IsNegated { get; set; }
 
 		/// <summary>
 		///     Flag indicating if a duration was already specified with <c>Within(…)</c>, even an infinite one.

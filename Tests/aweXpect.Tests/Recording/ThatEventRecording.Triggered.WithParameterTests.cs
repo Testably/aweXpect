@@ -135,6 +135,119 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.WithParameter<string>(-1, _ => true);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("position").And
+					.WithMessage("The position must not be negative.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.WithParameter<string>(_ => throw exception);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut with string parameter _ => throw exception at least once,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.WithParameter<string>(_ => throw exception);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut with string parameter _ => throw exception,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a predicate that threw answered nothing, so the negation fails as well");
+			}
+
+			[Fact]
+			public async Task WhenPredicateWithPositionThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.WithParameter<string>(0, _ => throw exception)
+						.Within(10.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut with string parameter [0] _ => throw exception at least once within 0:10,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenPredicateWithPositionThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("predicate failed");
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(r => r
+						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.WithParameter<string>(0, _ => throw exception));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut with string parameter [0] _ => throw exception,
+					             but the predicate did throw an InvalidOperationException:
+					               predicate failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a predicate that threw answered nothing, so the negation fails as well");
+			}
+
+			[Fact]
 			public async Task WhenTypeIsNotUnique_ShouldCheckAllMatchingParameters()
 			{
 				CustomEventWithParametersClass<string, string> sut = new();
