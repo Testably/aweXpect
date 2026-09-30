@@ -39,7 +39,7 @@ public static partial class ThatEventRecording
 		RepeatedCheckOptions options = new();
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
-			$" for property {propertyName}");
+			DescribePropertyName(propertyName));
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
@@ -88,7 +88,7 @@ public static partial class ThatEventRecording
 		RepeatedCheckOptions options = new();
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
-			$" for property {propertyName}");
+			DescribePropertyName(propertyName));
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
@@ -121,6 +121,13 @@ public static partial class ThatEventRecording
 		return o => o.Length > 1 && o[1] is PropertyChangedEventArgs m &&
 		            (m.PropertyName == propertyName || string.IsNullOrEmpty(m.PropertyName));
 	}
+
+	/// <remarks>
+	///     A <see langword="null" /> or empty property name is the "all properties changed" notification of the
+	///     <see cref="INotifyPropertyChanged" /> contract.
+	/// </remarks>
+	private static string DescribePropertyName(string? propertyName)
+		=> string.IsNullOrEmpty(propertyName) ? " for all properties" : $" for property {propertyName}";
 
 	/// <summary>
 	///     Extracts the property name from the <paramref name="propertyExpression" />.

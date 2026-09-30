@@ -80,6 +80,19 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow()
 					.Because("the expectation must not leave the signaler in a state where signaling fails");
 			}
+
+			[Fact]
+			public async Task WhenSignalingAfterAnUnmetExpectationWithParameter_ShouldNotThrow()
+			{
+				Signaler<int> signaler = new();
+
+				await That(signaler).DidNotSignal().Within(20.Milliseconds());
+
+				void Act() => signaler.Signal(1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectation must not leave the signaler in a state where signaling fails");
+			}
 		}
 	}
 }

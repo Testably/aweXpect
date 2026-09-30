@@ -36,6 +36,38 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData(0)]
+			[InlineData(-1)]
+			public async Task WhenTimesIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal(times.Times()).Within(10.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("times").And
+					.WithMessage("The times must be greater than zero.").AsPrefix()
+					.Because("no signaler can be signaled fewer than zero times");
+			}
+
+			[Theory]
+			[InlineData(0)]
+			[InlineData(-1)]
+			public async Task WhenTimesWithParameterIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal(times.Times()).Within(10.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("times").And
+					.WithMessage("The times must be greater than zero.").AsPrefix()
+					.Because("no signaler can be signaled fewer than zero times");
+			}
+
 			[Fact]
 			public async Task WhenTriggeredMoreOften_ShouldFail()
 			{
