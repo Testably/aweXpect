@@ -42,6 +42,38 @@ public static class CSharpSuppressorVerifier<TSuppressor>
 		await test.RunAsync(CancellationToken.None);
 	}
 
+	/// <summary>
+	///     Verifies the suppressions in the <paramref name="source" />, which references a separate extension assembly
+	///     compiled from the <paramref name="extensionSource" />.
+	/// </summary>
+	public static async Task VerifySuppressorWithExtensionAsync([StringSyntax("c#-test")] string source,
+		[StringSyntax("c#-test")] string extensionSource, params DiagnosticResult[] expected)
+	{
+		Test test = new()
+		{
+			TestCode = source,
+			ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
+			TestState =
+			{
+				AdditionalReferences =
+				{
+					typeof(Expect).Assembly.Location,
+					typeof(ThatBool).Assembly.Location,
+				},
+				AdditionalProjectReferences =
+				{
+					"Extension",
+				},
+			},
+		};
+		test.TestState.AdditionalProjects["Extension"].Sources.Add(extensionSource);
+		test.TestState.AdditionalProjects["Extension"].AdditionalReferences.Add(typeof(Expect).Assembly.Location);
+		test.TestState.AdditionalProjects["Extension"].AdditionalReferences.Add(typeof(ThatBool).Assembly.Location);
+
+		test.ExpectedDiagnostics.AddRange(expected);
+		await test.RunAsync(CancellationToken.None);
+	}
+
 	public class Test : CSharpAnalyzerTest<TSuppressor, DefaultVerifier>
 	{
 		public Test()
@@ -50,23 +82,27 @@ public static class CSharpSuppressorVerifier<TSuppressor>
 			// diagnostics that are reported as errors.
 			CompilerDiagnostics = CompilerDiagnostics.Warnings;
 
-			SolutionTransforms.Add((solution, projectId) =>
+			// Also applied to the additional projects, e.g. the extension assembly of a test.
+			SolutionTransforms.Add((solution, _) =>
 			{
-				Project? project = solution.GetProject(projectId);
-
-				if (project?.CompilationOptions is not CSharpCompilationOptions compilationOptions ||
-				    project.ParseOptions is not CSharpParseOptions parseOptions)
+				foreach (Project project in solution.Projects)
 				{
-					return solution;
+					if (project.CompilationOptions is not CSharpCompilationOptions compilationOptions ||
+					    project.ParseOptions is not CSharpParseOptions parseOptions)
+					{
+						continue;
+					}
+
+					solution = solution
+						.WithProjectCompilationOptions(project.Id,
+							compilationOptions.WithNullableContextOptions(NullableContextOptions.Enable))
+						.WithProjectParseOptions(project.Id, parseOptions
+							.WithLanguageVersion(LanguageVersion.Preview)
+							// Missing XML comments (CS1591) are irrelevant for the test sources.
+							.WithDocumentationMode(DocumentationMode.Parse));
 				}
 
-				return solution
-					.WithProjectCompilationOptions(projectId,
-						compilationOptions.WithNullableContextOptions(NullableContextOptions.Enable))
-					.WithProjectParseOptions(projectId, parseOptions
-						.WithLanguageVersion(LanguageVersion.Preview)
-						// Missing XML comments (CS1591) are irrelevant for the test sources.
-						.WithDocumentationMode(DocumentationMode.Parse));
+				return solution;
 			});
 		}
 	}
