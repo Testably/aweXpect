@@ -16,6 +16,11 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.FieldHidingProperty), "aweXpect.Generators.Tests.Corpus.FieldHidingProperty"),
 		(typeof(Corpus.HidingPrivately), "aweXpect.Generators.Tests.Corpus.HidingPrivately"),
 		(typeof(Corpus.HidingPrivatelyDerived), "aweXpect.Generators.Tests.Corpus.HidingPrivatelyDerived"),
+		(typeof(Corpus.HidingWithNonPublicGetter), "aweXpect.Generators.Tests.Corpus.HidingWithNonPublicGetter"),
+		(typeof(Corpus.HidingWriteOnly), "aweXpect.Generators.Tests.Corpus.HidingWriteOnly"),
+		(typeof(Corpus.OverridingOnlyTheSetter), "aweXpect.Generators.Tests.Corpus.OverridingOnlyTheSetter"),
+		(typeof(Corpus.OverridingOnlyTheSetterDerived),
+			"aweXpect.Generators.Tests.Corpus.OverridingOnlyTheSetterDerived"),
 		(typeof(Corpus.HidingGenerically), "aweXpect.Generators.Tests.Corpus.HidingGenerically"),
 		(typeof(Corpus.HidingByReference), "aweXpect.Generators.Tests.Corpus.HidingByReference"),
 		(typeof(Corpus.WithDynamic), "aweXpect.Generators.Tests.Corpus.WithDynamic"),
@@ -141,18 +146,35 @@ public sealed partial class MemberParityTests
 	}
 
 	/// <remarks>
-	///     The oracle is what <c>IncludeMembersExtensions</c> reflects over: public instance fields and readable
-	///     public instance properties, without indexers, and one declaration per name.
+	///     The oracle is what <c>IncludeMembersExtensions</c> reflects over: public instance fields and public instance
+	///     properties without indexers, of which the most derived declaration per name is compared when its getter,
+	///     or for a setter-only override the inherited one, is public. The declaration is taken before the getter is
+	///     checked, so a hiding declaration without a public getter hides the base property.
 	/// </remarks>
 	private static IEnumerable<string> ReflectedMembers(Type type)
 	{
 		const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 		return type.GetFields(flags).Select(field => "F:" + field.Name)
 			.Concat(type.GetProperties(flags)
-				.Where(property => property.CanRead && property.GetIndexParameters().Length == 0 &&
-				                   property.GetMethod!.IsPublic)
+				.Where(property => property.GetIndexParameters().Length == 0)
+				.GroupBy(property => property.Name)
+				.Select(declarations => declarations.First(property
+					=> declarations.All(other => other.DeclaringType!.IsAssignableFrom(property.DeclaringType))))
+				.Where(property => InheritedGetter(property)?.IsPublic == true)
 				.Select(property => "P:" + property.Name))
 			.Distinct();
+	}
+
+	private static MethodInfo? InheritedGetter(PropertyInfo property)
+	{
+		MethodInfo? definition = property.SetMethod?.GetBaseDefinition();
+		if (property.GetMethod is null && definition is not null && definition.DeclaringType != property.DeclaringType)
+		{
+			return definition.DeclaringType!.GetProperty(property.Name,
+				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)?.GetMethod;
+		}
+
+		return property.GetMethod;
 	}
 
 #if DEBUG

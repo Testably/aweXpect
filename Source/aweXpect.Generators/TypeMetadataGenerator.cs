@@ -885,8 +885,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		/// <remarks>
-		///     The name sets record what was collected so far, so a member of the same name on a base type is
-		///     dropped, and the signatures record what hides a base property, whether collected or not.
+		///     The name sets record what reflection returns so far, so a member of the same name on a base type is
+		///     dropped, and the signatures record what hides a base property, whether collected or not. A public
+		///     property without a public getter is returned too, so it hides a base property of the same name without
+		///     being compared itself.
 		/// </remarks>
 		private static Member? ToMember(ISymbol symbol, HashSet<string> fieldNames, HashSet<string> propertyNames,
 			HashSet<string> propertySignatures)
@@ -894,9 +896,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
 					=> new Member(field, field.Name, field.Type, true),
-				IPropertySymbol { IsStatic: false, IsIndexer: false, } property
-					when !propertySignatures.Contains(Signature(property)) && IsComparedProperty(property) &&
-					     propertyNames.Add(property.Name)
+				IPropertySymbol
+					{
+						IsStatic: false, IsIndexer: false, DeclaredAccessibility: Accessibility.Public,
+					} property
+					when !propertySignatures.Contains(Signature(property)) && propertyNames.Add(property.Name) &&
+					     IsComparedProperty(property)
 					=> new Member(property, property.Name, property.Type, false),
 				_ => null,
 			};
@@ -1054,10 +1059,24 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			    field.ContainingType.OriginalDefinition.GetMembers(field.Name).OfType<IFieldSymbol>().Any());
 
 		private static bool IsComparedProperty(IPropertySymbol property)
-			=> property is
+			=> property is { IsStatic: false, IsIndexer: false, } &&
+			   Getter(property)?.DeclaredAccessibility == Accessibility.Public;
+
+		/// <remarks>
+		///     An override that declares only a setter inherits the getter of the property it overrides.
+		/// </remarks>
+		private static IMethodSymbol? Getter(IPropertySymbol property)
+		{
+			for (IPropertySymbol? current = property; current is not null; current = current.OverriddenProperty)
 			{
-				IsStatic: false, IsIndexer: false, GetMethod.DeclaredAccessibility: Accessibility.Public,
-			};
+				if (current.GetMethod is not null)
+				{
+					return current.GetMethod;
+				}
+			}
+
+			return null;
+		}
 
 		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members,
 			List<IPropertySymbol> explicitProperties)
@@ -1239,7 +1258,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private static bool IsUnreferenceable(Member member)
 			=> IsUnreferenceable(member.Symbol) ||
-			   (member.Symbol is IPropertySymbol { GetMethod: { } getter, } && IsUnreferenceable(getter));
+			   (member.Symbol is IPropertySymbol property && Getter(property) is { } getter &&
+			    IsUnreferenceable(getter));
 
 		/// <remarks>
 		///     An obsolete member reports under its own diagnostic id when one is declared, so the plain
@@ -1247,7 +1267,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		/// </remarks>
 		private static IEnumerable<string> DiagnosticIds(INamedTypeSymbol type, List<Member> members)
 			=> DiagnosticIds(members
-				.SelectMany(member => new[] { member.Symbol, (member.Symbol as IPropertySymbol)?.GetMethod, })
+				.SelectMany(member => new[]
+				{
+					member.Symbol, member.Symbol is IPropertySymbol property ? Getter(property) : null,
+				})
 				.Concat(members.SelectMany(member => TypeSymbols(member.Type)))
 				.Concat(members.SelectMany(member => TypeSymbols(member.Symbol.ContainingType)))
 				.Concat(TypeSymbols(type)));

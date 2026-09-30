@@ -44,6 +44,47 @@ public static class Corpus
 		public int More { get; set; }
 	}
 
+	public class HidingWithNonPublicGetter : Base
+	{
+		public int Own { get; set; }
+		public new string BaseProperty { private get; set; } = "";
+
+		public override string ToString() => BaseProperty;
+	}
+
+	public class HidingWriteOnly : Base
+	{
+		private string _value = "";
+		public int Own { get; set; }
+
+		public new string BaseProperty
+		{
+			set => _value = value;
+		}
+
+		public override string ToString() => _value;
+	}
+
+	public class VirtualBase
+	{
+		public virtual int Value { get; set; }
+	}
+
+	public class OverridingOnlyTheSetter : VirtualBase
+	{
+		public int Own { get; set; }
+
+		public override int Value
+		{
+			set => base.Value = value;
+		}
+	}
+
+	public class OverridingOnlyTheSetterDerived : OverridingOnlyTheSetter
+	{
+		public int More { get; set; }
+	}
+
 	public class HidingByReference : Base
 	{
 		private int _value;
