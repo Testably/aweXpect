@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-#if NET8_0_OR_GREATER
 using System.Collections.Immutable;
-#endif
+using System.Collections.ObjectModel;
 
 namespace aweXpect.Tests;
 
@@ -129,7 +127,6 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class KeyComparerTests
 		{
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task ForAnImmutableDictionary_ShouldUseTheKeyComparer()
 			{
@@ -142,7 +139,6 @@ public sealed partial class ThatReadOnlyDictionary
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
 
 			[Fact]
 			public async Task ForASortedDictionary_ShouldOrderByTheKeyComparer()

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
+#else
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Reflection;
 #endif
 using aweXpect.Core;
 
@@ -17,7 +21,8 @@ internal static class CollectionComparerHelpers
 	/// </summary>
 	/// <remarks>
 	///     The comparer is read through known dictionary types instead of reflection, so that it stays safe for trimming
-	///     and Native AOT. A set with the default equality is returned for any other dictionary.
+	///     and Native AOT. A set with the default equality is returned for any other dictionary. netstandard2.0 lacks some
+	///     of these types or their comparer, so they are matched by name there.
 	///     <para />
 	///     CS8714 is suppressed, because the <see langword="notnull" /> constraint of these types only concerns the
 	///     annotation of <typeparamref name="TKey" />, which a type test at runtime ignores.
@@ -34,6 +39,10 @@ internal static class CollectionComparerHelpers
 			ImmutableDictionary<TKey, TValue> d => new HashSet<TKey>(d.KeyComparer),
 			ImmutableSortedDictionary<TKey, TValue> d => new SortedSet<TKey>(d.KeyComparer),
 			FrozenDictionary<TKey, TValue> d => new HashSet<TKey>(d.Comparer),
+#else
+			_ when ReadKeyComparer<IEqualityComparer<TKey>>(dictionary) is { } comparer
+				=> new HashSet<TKey>(comparer),
+			_ when ReadKeyComparer<IComparer<TKey>>(dictionary) is { } comparer => new SortedSet<TKey>(comparer),
 #endif
 			_ => new HashSet<TKey>(),
 		};
@@ -59,10 +68,55 @@ internal static class CollectionComparerHelpers
 			ImmutableSortedDictionary<TKey, TValue> d when IsCustom(d.KeyComparer)
 				=> new SortedSet<TKey>(d.Keys, d.KeyComparer),
 			FrozenDictionary<TKey, TValue> d when IsCustom(d.Comparer) => new HashSet<TKey>(d.Keys, d.Comparer),
+#else
+			not null when ReadKeyComparer<IEqualityComparer<TKey>>(dictionary) is { } comparer && IsCustom(comparer)
+				=> new HashSet<TKey>(dictionary.Select(pair => pair.Key), comparer),
+			not null when ReadKeyComparer<IComparer<TKey>>(dictionary) is { } comparer && IsCustom(comparer)
+				=> new SortedSet<TKey>(dictionary.Select(pair => pair.Key), comparer),
 #endif
 			_ => keys,
 		};
 #pragma warning restore CS8714
+
+#if !NET8_0_OR_GREATER
+	private static readonly Dictionary<string, string> KeyComparerProperties = new()
+	{
+		["System.Collections.Concurrent.ConcurrentDictionary`2"] = "Comparer",
+		["System.Collections.Immutable.ImmutableDictionary`2"] = "KeyComparer",
+		["System.Collections.Immutable.ImmutableSortedDictionary`2"] = "KeyComparer",
+		["System.Collections.Frozen.FrozenDictionary`2"] = "Comparer",
+	};
+
+	/// <summary>
+	///     Reads the key comparer of a dictionary type that netstandard2.0 lacks or that exposes it only on newer runtimes,
+	///     when it is a <typeparamref name="TComparer" />.
+	/// </summary>
+	/// <remarks>
+	///     The types are matched by name and their comparer is read from its public property, which needs reflection,
+	///     so it is only attempted while the <see cref="ReflectionFallback" /> is supported. The
+	///     <see cref="ConcurrentDictionary{TKey,TValue}" /> of .NET Framework exposes no comparer at all.
+	/// </remarks>
+	private static TComparer? ReadKeyComparer<TComparer>(object dictionary)
+		where TComparer : class
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			return null;
+		}
+
+		for (Type? type = dictionary.GetType(); type is not null; type = type.BaseType)
+		{
+			if (type.IsGenericType && type.GetGenericTypeDefinition().FullName is { } name &&
+			    KeyComparerProperties.TryGetValue(name, out string? propertyName))
+			{
+				PropertyInfo? property = type.GetProperty(propertyName);
+				return property?.PropertyType == typeof(TComparer) ? property.GetValue(dictionary) as TComparer : null;
+			}
+		}
+
+		return null;
+	}
+#endif
 
 	/// <summary>
 	///     Returns the comparer of the <paramref name="collection" />, when it is a set that exposes a comparer other

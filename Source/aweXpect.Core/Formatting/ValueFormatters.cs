@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using aweXpect.Core;
+#else
+using System.Globalization;
 #endif
 using System.Net;
 using System.Reflection;
@@ -163,6 +165,11 @@ public static partial class ValueFormatters
 			Format(formatter, stringBuilder, asyncEnumerableType, options);
 			return;
 		}
+#else
+		if (TryFormatByName(stringBuilder, value, options))
+		{
+			return;
+		}
 #endif
 
 		FormatObject(stringBuilder, value,
@@ -290,6 +297,61 @@ public static partial class ValueFormatters
 			                                                    typeof(IAsyncEnumerable<>))
 			: null;
 		return asyncEnumerableType is not null;
+	}
+#else
+	/// <summary>
+	///     Formats a value of a type that netstandard2.0 lacks, but the runtime might have, like its typed overload does
+	///     on the other target frameworks, instead of by its <see cref="object.ToString()" />, which uses the current
+	///     culture.
+	/// </summary>
+	private static bool TryFormatByName(StringBuilder stringBuilder, object value, FormattingOptions? options)
+	{
+		string? formattedValue = (value as IFormattable, value.GetType().FullName) switch
+		{
+			({ } formattable, "System.DateOnly" or "System.TimeOnly")
+				=> formattable.ToString("o", CultureInfo.InvariantCulture),
+			({ } formattable, "System.Half" or "System.Runtime.InteropServices.NFloat")
+				=> FormatFloatingPointByName(formattable),
+			_ => null,
+		};
+		if (formattedValue is null)
+		{
+			return false;
+		}
+
+		if (options?.IncludeType == true)
+		{
+			stringBuilder.Append(value.GetType().Name).Append(' ');
+		}
+
+		stringBuilder.Append(formattedValue);
+		return true;
+	}
+
+	/// <remarks>
+	///     Unlike the typed overloads of <c>Half</c> and <c>NFloat</c>, their minimum and maximum values are not named, as
+	///     they cannot be recognized without the type.
+	/// </remarks>
+	private static string FormatFloatingPointByName(IFormattable value)
+	{
+		NumberFormatInfo numberFormat = NumberFormatInfo.InvariantInfo;
+		string formattedValue = value.ToString(null, numberFormat);
+		if (formattedValue == numberFormat.NegativeInfinitySymbol)
+		{
+			return "-∞";
+		}
+
+		if (formattedValue == numberFormat.PositiveInfinitySymbol)
+		{
+			return "+∞";
+		}
+
+		if (formattedValue != numberFormat.NaNSymbol && formattedValue.IndexOfAny(['.', 'E']) < 0)
+		{
+			formattedValue += ".0";
+		}
+
+		return formattedValue;
 	}
 #endif
 }

@@ -19,4 +19,9 @@
 						  SetTargetFramework="TargetFramework=netstandard2.0"/>
 	</ItemGroup>
 
+	<!-- .NET Framework gets the immutable and frozen dictionaries from a package, which is referenced so that their key comparers are tested there as well. -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Collections.Immutable"/>
+	</ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 #if NET8_0_OR_GREATER
 using System.Globalization;
-using System.Runtime.InteropServices;
 using aweXpect.Core.Tests.TestHelpers;
 #endif
 
@@ -205,7 +205,6 @@ public partial class ValueFormatters
 		}
 #endif
 
-#if NET8_0_OR_GREATER
 		[Theory]
 		[InlineData(2, "2.0")]
 		[InlineData(1.5, "1.5")]
@@ -224,9 +223,7 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_Half_ShouldReturnExpectedValue()
 		{
@@ -242,7 +239,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_Int16_ShouldReturnExpectedValue()
@@ -371,8 +367,8 @@ public partial class ValueFormatters
 		}
 #endif
 
-#if NET8_0_OR_GREATER
 		[Theory]
+		[InlineData(2, "2.0")]
 		[InlineData(11.3, "11.3")]
 		[InlineData(double.NegativeInfinity, "-∞")]
 		[InlineData(double.PositiveInfinity, "+∞")]
@@ -390,7 +386,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_Nint_ShouldReturnExpectedValue()
@@ -517,7 +512,6 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_NullableHalf_ShouldReturnExpectedValue()
 		{
@@ -533,9 +527,7 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_NullableHalf_WhenNull_ShouldUseDefaultNullString()
 		{
@@ -550,7 +542,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_NullableInt16_ShouldReturnExpectedValue()
@@ -646,7 +637,6 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_NullableNFloat_ShouldReturnExpectedValue()
 		{
@@ -662,9 +652,7 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_NullableNFloat_WhenNull_ShouldUseDefaultNullString()
 		{
@@ -679,7 +667,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_NullableNint_ShouldReturnExpectedValue()
@@ -1061,7 +1048,6 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-#if NET8_0_OR_GREATER
 		[Theory]
 		[InlineData(2, "Half 2.0")]
 		[InlineData(1.5, "Half 1.5")]
@@ -1079,9 +1065,7 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_WithType_Half_ShouldReturnExpectedValue()
 		{
@@ -1097,7 +1081,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_WithType_Int16_ShouldReturnExpectedValue()
@@ -1147,7 +1130,6 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-#if NET8_0_OR_GREATER
 		[Theory]
 		[InlineData(11.3, "NFloat 11.3")]
 		[InlineData(double.NegativeInfinity, "NFloat -∞")]
@@ -1166,7 +1148,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_WithType_Nint_ShouldReturnExpectedValue()
@@ -1248,7 +1229,6 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-#if NET8_0_OR_GREATER
 		[Fact]
 		public async Task Numbers_WithType_NullableHalf_ShouldReturnExpectedValue()
 		{
@@ -1264,7 +1244,6 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
-#endif
 
 		[Fact]
 		public async Task Numbers_WithType_NullableInt16_ShouldReturnExpectedValue()

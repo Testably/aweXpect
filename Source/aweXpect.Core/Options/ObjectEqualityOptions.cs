@@ -85,10 +85,10 @@ internal static class ObjectEqualityOptions
 #if NET8_0_OR_GREATER
 					Int128 or
 					UInt128 or
-					nint or
-					nuint or
 					Half or
 #endif
+					nint or
+					nuint or
 					int or
 					long or
 					float or
@@ -109,7 +109,8 @@ internal static class ObjectEqualityOptions
 		///     not fit into the target type throws instead of wrapping around, so it counts as not equal, as with
 		///     <see cref="Convert.ChangeType(object, Type, IFormatProvider)" /> on the other target frameworks. The caller
 		///     converts in both directions, so a value that loses precision in one direction never counts as equal on
-		///     its own.
+		///     its own. <see cref="Convert" /> cannot convert a native integer, so on the other target frameworks it is
+		///     converted as a 64-bit integer instead, which holds every native integer.
 		/// </remarks>
 		private static bool IsEqualWhenConverted(object source, object target)
 		{
@@ -137,9 +138,10 @@ internal static class ObjectEqualityOptions
 					_ => false,
 				};
 #else
-				object? convertedNumber =
-					Convert.ChangeType(source, target.GetType(), CultureInfo.InvariantCulture);
-				return target.Equals(convertedNumber);
+				object widenedTarget = WidenNativeInteger(target);
+				object? convertedNumber = Convert.ChangeType(WidenNativeInteger(source), widenedTarget.GetType(),
+					CultureInfo.InvariantCulture);
+				return widenedTarget.Equals(convertedNumber);
 #endif
 			}
 			catch
@@ -147,6 +149,16 @@ internal static class ObjectEqualityOptions
 				return false;
 			}
 		}
+
+#if !NET8_0_OR_GREATER
+		private static object WidenNativeInteger(object number)
+			=> number switch
+			{
+				IntPtr value => value.ToInt64(),
+				UIntPtr value => value.ToUInt64(),
+				_ => number,
+			};
+#endif
 
 #if NET8_0_OR_GREATER
 		private static bool IsEqualWhenConverted<TSource>(TSource source, object target)

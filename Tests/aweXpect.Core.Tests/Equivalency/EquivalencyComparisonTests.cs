@@ -4,9 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
-#if NET8_0_OR_GREATER
 using System.Runtime.InteropServices;
-#endif
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -3431,12 +3429,10 @@ public sealed class EquivalencyComparisonTests
 			{ new BigInteger(3), new BigInteger(5) },
 			{ new Complex(1, 2), new Complex(1, 3) },
 		};
-	#if NET8_0_OR_GREATER
 		theoryData.Add((Half)1, (Half)2);
 		theoryData.Add((NFloat)1, (NFloat)2);
 		theoryData.Add((Int128)1, (Int128)2);
 		theoryData.Add((UInt128)1, (UInt128)2);
-	#endif
 		return theoryData;
 	}
 
@@ -3447,12 +3443,10 @@ public sealed class EquivalencyComparisonTests
 			{ new BigInteger(3), new BigInteger(3) },
 			{ new Complex(1, 2), new Complex(1, 2) },
 		};
-	#if NET8_0_OR_GREATER
 		theoryData.Add((Half)1, (Half)1);
 		theoryData.Add((NFloat)1, (NFloat)1);
 		theoryData.Add((Int128)1, (Int128)1);
 		theoryData.Add((UInt128)1, (UInt128)1);
-	#endif
 		return theoryData;
 	}
 
