@@ -11,7 +11,33 @@ namespace aweXpect;
 ///     Base class for constraints that classify every item of a collection as matching or not matching and report
 ///     the outcome through an <see cref="EnumerableQuantifier" />.
 /// </summary>
-internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
+/// <remarks>
+///     Use it for an expectation on the elements of a collection, e.g. an extension method on
+///     <see cref="ThatEnumerable.Elements{TItem}" />, which exposes the <see cref="EnumerableQuantifier" /> and the
+///     subject through <see cref="ThatEnumerable.IElements{TItem}" />. Pass the quantifier to the constructor, set
+///     <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in <c>IsMetBy</c>, call <see cref="Record" /> for every
+///     item and <see cref="Complete" /> afterwards. For a <see langword="null" /> subject, only set the
+///     <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> and return, as the expectation fails for it.
+///     <para />
+///     The base class renders the expectation and the result for the normal, the negated and the nested case (e.g.
+///     "has values of which at least 2 are …") like the built-in expectations and adds the matching or not matching
+///     items as context, as far as the quantifier requires them.
+/// </remarks>
+/// <typeparam name="TValue">The type of the collection.</typeparam>
+/// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
+/// <param name="it">The name of the subject.</param>
+/// <param name="grammars">The grammars of the expectation.</param>
+/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="ThatEnumerable.IElements{TItem}" />.</param>
+/// <param name="expectationText">
+///     Returns the expectation for a single item for the given grammars, e.g. "is even", or "are even" when the
+///     grammars are <see cref="ExpectationGrammars.Plural" />. The quantifier carries the negation, so the text is not
+///     negated.
+/// </param>
+/// <param name="verb">
+///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
+/// </param>
+public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	ExpectationBuilder expectationBuilder,
 	string it,
 	ExpectationGrammars grammars,
@@ -78,15 +104,19 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 				: null);
 	}
 
+	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendExpectation(stringBuilder, false);
 
+	/// <inheritdoc />
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
 
+	/// <inheritdoc />
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendExpectation(stringBuilder, true);
 
+	/// <inheritdoc />
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
 
