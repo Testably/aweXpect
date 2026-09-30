@@ -14,8 +14,10 @@ public sealed class ReflectionFallbackTests
 
 		NotSupportedException exception = ReflectionFallback.NotSupported(anonymous.GetType(), "properties");
 
-		await That(exception.Message).Contains("Let the source generator see the type at a marked call site.")
-			.Because("an anonymous type cannot be named in an attribute");
+		await That(exception.Message)
+			.Contains(
+				"Let the source generator see the type as the static type of an argument at a marked call site, or of a member reached from one, in the assembly that creates it.")
+			.Because("an anonymous type cannot be named in an attribute, and the generator cannot see it through object or from another assembly");
 		await That(exception.Message).DoesNotContain("GenerateMetadata");
 	}
 

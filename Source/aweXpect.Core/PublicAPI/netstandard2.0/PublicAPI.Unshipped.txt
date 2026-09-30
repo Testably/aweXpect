@@ -209,3 +209,4 @@ static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializ
 aweXpect.Options.DayTolerance
 aweXpect.Options.DayTolerance.DayTolerance() -> void
 override aweXpect.Options.DayTolerance.SetTolerance(System.TimeSpan tolerance) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterBatch(System.Action! register) -> void

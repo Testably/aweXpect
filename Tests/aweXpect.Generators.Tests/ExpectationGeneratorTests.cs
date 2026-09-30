@@ -1,6 +1,7 @@
 using System.Linq;
 using aweXpect.SourceGenerators;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace aweXpect.Generators.Tests;
 
@@ -65,6 +66,43 @@ public sealed class ExpectationGeneratorTests
 
 		await That(result.Generated).Contains("internal static partial class ThatInt").Once()
 			.Because("the parts of a partial class must not declare conflicting accessibilities");
+	}
+
+	[Fact]
+	public async Task WhenClassIsNested_AndOnlyTouched_ShouldReuseTheCachedProblem()
+	{
+		CSharpCompilation compilation = GeneratorRunner.CreateCompilation([
+			"""
+			using aweXpect.SourceGenerators;
+
+			namespace Lib;
+
+			public static partial class Outer
+			{
+				[CreateExpectationOn<int>("IsZero", "{value} == 0", ExpectationText = "is zero")]
+				public static partial class ThatInt;
+			}
+			""",
+		], false);
+		GeneratorDriver driver = CSharpGeneratorDriver.Create([new ExpectationGenerator().AsSourceGenerator(),],
+			parseOptions: (CSharpParseOptions)compilation.SyntaxTrees[0].Options,
+			driverOptions: new GeneratorDriverOptions(IncrementalGeneratorOutputKind.None, true));
+		driver = driver.RunGenerators(compilation);
+		SyntaxTree tree = compilation.SyntaxTrees.Last();
+		Compilation touched = compilation.ReplaceSyntaxTree(tree,
+			CSharpSyntaxTree.ParseText(tree + Environment.NewLine + "// touched", (CSharpParseOptions)tree.Options));
+
+		driver = driver.RunGenerators(touched);
+
+		GeneratorRunResult result = driver.GetRunResult().Results[0];
+		IncrementalStepRunReason[] reasons = result.TrackedSteps["Expectations"]
+			.SelectMany(x => x.Outputs).Select(x => x.Reason).ToArray();
+		await That(result.Diagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3005" && x.Location.GetLineSpan().StartLinePosition.Line == 7);
+		await That(reasons).IsNotEmpty();
+		await That(reasons).All()
+			.Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
+			.Because("the problem keeps only the position of its location, not the syntax tree that every edit replaces");
 	}
 
 	[Fact]
