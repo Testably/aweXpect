@@ -310,6 +310,25 @@ Both ask the `TryGetValue<TValue>` method of the `ConstraintResult` for the valu
 converts the subject returns the converted value there. The helper classes return their `Actual` value. When
 `TryGetValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
 
+## Time tolerances
+
+A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you
+pass to it and to your constraint. For a date without a time of day, such as `DateOnly`, pass a `DayTolerance`
+instead, as the built-in expectations do: it rejects a tolerance that is not a whole number of days with an
+`ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
+
+```csharp no-compile
+public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
+    this IThat<DateOnly> subject, DateOnly expected)
+{
+    TimeTolerance tolerance = new DayTolerance();
+    return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
+        subject,
+        tolerance);
+}
+```
+
 ## Nested expectations
 
 An expectation that lets the caller continue with expectations on a part of the subject, like

@@ -91,4 +91,22 @@ internal static class ThrowHelper
 			ThrowIfDurationIsNegative(timeout, paramName: paramName);
 		}
 	}
+
+	/// <summary>
+	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
+	///     would silently drop it.
+	/// </summary>
+	/// <remarks>
+	///     aweXpect has its own copy for tolerances outside a <see cref="Options.DayTolerance" />; keep the message
+	///     identical.
+	/// </remarks>
+	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan tolerance)
+	{
+		if (tolerance.Ticks % TimeSpan.TicksPerDay != 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must be a whole number of days."));
+		}
+	}
 }

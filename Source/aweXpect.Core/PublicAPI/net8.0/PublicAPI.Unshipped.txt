@@ -195,3 +195,6 @@ static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializ
 *REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.EqualityContract.get -> System.Type!
 *REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? other) -> bool
 *REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+aweXpect.Options.DayTolerance
+aweXpect.Options.DayTolerance.DayTolerance() -> void
+override aweXpect.Options.DayTolerance.SetTolerance(System.TimeSpan tolerance) -> void
