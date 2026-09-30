@@ -21,8 +21,9 @@ function that is not `async` yet is made `async`: a `void` or `T` return type be
 `return` statements of a method that already returns a task are adjusted where needed. The fix is not offered where
 the result would not compile or would change a signature that other code depends on, e.g. in a lambda that is not
 `async` (such as one converted to an `Action`), in a constructor, a property, an iterator or a `lock` statement, in a
-method with `ref`, `out` or `in` parameters, or in an override, a virtual method or an interface implementation whose
-return type would have to change.
+method with `ref`, `out` or `in` parameters, or in a method or local function whose return type would have to change
+while other code depends on it: an override, a virtual method, an interface implementation, or one that is called or
+used as a method group elsewhere.
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
 [When you cannot await](./03-how-it-works/index.md#when-you-cannot-await).
