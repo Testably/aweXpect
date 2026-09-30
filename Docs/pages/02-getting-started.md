@@ -85,8 +85,8 @@ only available on .NET 8 or later:
 
 ## Next steps
 
-- [How aweXpect works](./03-how-it-works/01-anatomy.md) explains how expectations are evaluated, negated and combined,
+- [How aweXpect works](./03-how-it-works/index.md) explains how expectations are evaluated, negated and combined,
   how they treat `null`, and the options they share.
-- The pages for [values](./04-values/01-boolean.md), [collections](./05-collections/index.md),
+- The pages for [values](./04-values/index.md), [collections](./05-collections/index.md),
   [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and
   [equivalency](./04-values/13-equivalency.md) list the available expectations.

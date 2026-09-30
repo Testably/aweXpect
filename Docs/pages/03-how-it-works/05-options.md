@@ -5,7 +5,7 @@ pages describe the details:
 
 | Option                                                                | Configures                                      | Details                                                |
 |-----------------------------------------------------------------------|-------------------------------------------------|--------------------------------------------------------|
-| [`Because(reason)`](#because)                                         | the reason in the failure message               | [Anatomy](./01-anatomy.md)                             |
+| [`Because(reason)`](#because)                                         | the reason in the failure message               | [Anatomy](./index.md)                                  |
 | [`IgnoringCase()`, `IgnoringLeadingWhiteSpace()`, …](#string-options) | how strings are compared                        | [String](../04-values/03-string.md#string-options)     |
 | [`Using(comparer)`](#comparer)                                        | a custom equality comparer                      | [Object](../04-values/12-object.md#custom-comparer)    |
 | [`Equivalent()`](#equivalency)                                        | a comparison by equivalency instead of equality | [Equivalency](../04-values/13-equivalency.md)          |

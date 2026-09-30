@@ -28,7 +28,10 @@ A value you set is visible in the current async flow and in every flow that star
   that method returns, the caller continues with its own values. Set the value in the calling method, or return the
   lifetime from a synchronous helper method.
 - Disposing a lifetime restores only the value it set, so another value of the same group that was changed in the
-  meantime is kept. Disposing it a second time has no effect.
+  meantime is kept. Disposing it a second time has no effect. This holds for the built-in groups. A group of an
+  extension that stores its values with `IAwexpectCustomization.Set` is stored as a whole by every lifetime, so the
+  value of an earlier lifetime stays in effect when it is disposed while a later one is still active, see
+  [customization values](../11-extending/04-customization-values.md).
 - `Update(…)` replaces the whole group, so disposing its lifetime restores the whole group as it was before the update.
   The function you pass can run again later, e.g. when a lifetime of the same group that was created before is
   disposed first, so it must compute the new value only from its argument and must not have side effects.
@@ -123,6 +126,8 @@ Under `Customize.aweXpect.Settings()`:
   forwarded to the [delegates](../06-behaviour/01-delegates.md) after the given timeout.
 - `TestCancellation.FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`, which uses the returned
   `CancellationToken` internally and also forwards it to the [delegates](../06-behaviour/01-delegates.md).
+- `TestCancellation.None()`, which applies neither a timeout nor a `CancellationToken`, e.g. to switch off a global
+  `TestCancellation` in the current async flow.
 
 The interval must be positive, and the timeouts must not be negative. `Timeout.InfiniteTimeSpan` retries or waits
 without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for which expectations use the timeouts.

@@ -200,11 +200,22 @@ await Expect.That(Act).Throws().WithInner();
 await Expect.That(Act).Throws().WithInner<CustomException>();
 ```
 
-You can also verify that the thrown exception has no inner exception, or none of a given type:
+Pass expectations to continue with the inner exception as subject. They are only checked when the inner exception
+exists and is of the given type:
 
 ```csharp
 void Act() => throw new CustomException("outer", new CustomException("inner"));
 
+await Expect.That(Act).Throws().WithInner(inner => inner.HasMessage("inner"));
+await Expect.That(Act).Throws().WithInner<CustomException>(inner => inner.HasMessage("inner"));
+```
+
+You can also verify that the thrown exception has no inner exception, or none of a given type:
+
+```csharp
+void Act() => throw new CustomException("outer");
+
+await Expect.That(Act).Throws().WithoutInner();
 await Expect.That(Act).Throws().WithoutInner<ArgumentException>();
 ```
 

@@ -1,4 +1,4 @@
-# Your first expectation
+# Extending aweXpect
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Core?label=aweXpect.Core)](https://www.nuget.org/packages/aweXpect.Core)
 
@@ -7,7 +7,18 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
-The samples on this page use the following namespaces:
+| Page                                                       | Topics                                                                    |
+|------------------------------------------------------------|---------------------------------------------------------------------------|
+| [Constraints and results](./02-constraints-and-results.md) | constraints, negation, result types, nested and asynchronous expectations |
+| [Message conventions](./03-message-conventions.md)         | how the failure messages of an extension should read                      |
+| [Customization values](./04-customization-values.md)       | customization values of your own, with lifetimes                          |
+| [Initialization](./05-initialization.md)                   | value formatters and test framework adapters                              |
+| [Native AOT for extensions](./06-native-aot.md)            | the metadata your expectations need under Native AOT                      |
+| [Testing and packaging](./07-testing-and-packaging.md)     | testing an extension and referencing aweXpect.Core                        |
+
+## Your first expectation
+
+The samples in this section use the following namespaces:
 
 ```csharp
 using System.Diagnostics.CodeAnalysis;
@@ -15,7 +26,7 @@ using aweXpect.Core;
 using aweXpect.Results;
 ```
 
-## Expectations
+### Expectations
 
 You can extend the expectations for any types, by adding extension methods on `IThat<TType>`.
 
@@ -25,7 +36,7 @@ If you want to verify that a `string` is an absolute path, you specify the follo
 /// <summary>
 ///     Verifies that the <paramref name="subject"/> is an absolute path.
 /// </summary>
-public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<string> subject)
+public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
 {
     // ...
 }
@@ -34,7 +45,7 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<strin
 The result type decides how the expectation can continue: `AndOrResult` allows combining it with further expectations
 using `.And` and `.Or`.
 
-## ExpectationBuilder
+### ExpectationBuilder
 
 The next step is to extract the `ExpectationBuilder`. In order to keep the automatic code suggestions for developers
 clear, you have to cast the `IThat<TType>` interface to `IExpectThat<TType>`, which will then give access to the
@@ -57,7 +68,7 @@ internal static IExpectThat<T> Get<T>(this IThat<T> subject)
 You can then use the `ExpectationBuilder` to add an `IsAbsolutePathConstraint`:
 
 ```csharp
-public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<string> subject)
+public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars)),
         subject);

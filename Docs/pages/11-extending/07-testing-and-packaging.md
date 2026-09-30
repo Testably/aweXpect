@@ -1,0 +1,50 @@
+# Testing and packaging
+
+## Testing an extension
+
+Test your expectations with aweXpect itself. Pass a delegate that awaits the expectation, and verify the failure
+message with `Throws().WithMessage(…)`. The exception type depends on the test framework, which `Throws()` leaves open:
+
+```csharp
+string path = "album.txt";
+
+async Task Act() => await Expect.That(path).IsAbsolutePath();
+
+await Expect.That(Act).Throws()
+    .WithMessage("""
+                 Expected that path
+                 is an absolute path,
+                 but it was "album.txt"
+                 """);
+```
+
+Besides the success and the failure of the expectation, cover what a caller can combine it with:
+
+- Pin the complete failure message, so that a change of the expectation or the result text is noticed.
+- Verify the negated case with `DoesNotComplyWith(it => it.IsAbsolutePath())`, both its outcome and its message. It
+  shows whether the constraint [supports the negation](./02-constraints-and-results.md#results).
+- Verify a `null` subject for the expectation and for its negation, as described in
+  [`null` subjects](./02-constraints-and-results.md#null-subjects).
+- When the constraint calls [code of the caller](./02-constraints-and-results.md#code-of-the-caller), let that code
+  throw and verify that the failure has the exception as its `InnerException`.
+
+## Packaging
+
+- Reference the [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package in your extension, not
+  `aweXpect`. Core contains everything that an extension builds on and changes less often, so extensions that
+  reference it conflict less with each other.
+- Target `netstandard2.0`, so that the extension also works on .NET Framework, and add further target frameworks
+  only if you need their APIs. The samples on these pages also compile against the `netstandard2.0` build.
+- The test project that uses your extension also references the `aweXpect` package. It brings the built-in
+  expectations, the [test framework adapters](./05-initialization.md#test-framework-adapter) and the
+  [source generator](./06-native-aot.md) for Native AOT.
+
+## Versioning
+
+The `aweXpect` package depends on a minimum version of `aweXpect.Core`, and so does your extension. NuGet then uses
+the highest of these minimum versions in the test project. Therefore:
+
+- Reference the lowest version of `aweXpect.Core` that contains the API you need, so that your extension works
+  together with as many versions of `aweXpect` as possible.
+- A new major version of `aweXpect.Core` can contain breaking changes. Build and test your extension against it, and
+  release a new version if it needs changes.

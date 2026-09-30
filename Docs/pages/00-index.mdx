@@ -75,8 +75,8 @@ The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is i
 don't fight over versions. Add expectations for any type with extension methods on `IThat<TType>`:
 
 ```csharp
-public static AndOrResult<string, IThat<string>> IsAbsolutePath(
-    this IThat<string> subject)
+public static AndOrResult<string, IThat<string?>> IsAbsolutePath(
+    this IThat<string?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars)),
         subject);
@@ -85,7 +85,7 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(
 await Expect.That("/var/log").IsAbsolutePath();
 ```
 
-The full walkthrough is at [Extending aweXpect](./11-extending/01-your-first-expectation.md).
+The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
 
 </TabItem>
 <TabItem value="frameworks" label="Any runner">
@@ -119,7 +119,7 @@ Expectations for JSON, HTTP, reflection, mocks and more are provided by separate
 
 - **[Getting Started](./02-getting-started.md)**: install the package and write your first expectation.
 - **[Migration](/aweXpect/migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
-- **[How aweXpect works](./03-how-it-works/01-anatomy.md)**: awaiting, negation, combining, `null`, options, time and
+- **[How aweXpect works](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
   configuration.
-- **[Extending aweXpect](./11-extending/01-your-first-expectation.md)**: add expectations for your own types using
+- **[Extending aweXpect](./11-extending/index.md)**: add expectations for your own types using
   `aweXpect.Core`.

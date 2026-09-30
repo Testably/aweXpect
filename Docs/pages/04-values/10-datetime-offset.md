@@ -141,6 +141,9 @@ await Expect.That(releaseDate)
 </TabItem>
 </Tabs>
 
+Both bounds are included. A maximum below the minimum throws an `ArgumentOutOfRangeException` as soon as it is
+specified.
+
 ## Tolerance
 
 Every comparison on this page except the `Has…` properties accepts a tolerance with `Within`, which widens the
@@ -171,17 +174,18 @@ using aweXpect.Customization;
 IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```
 
-It also applies to the items of a collection of `DateTime`, `DateTimeOffset` or `TimeSpan` values (or their nullable
-counterparts) compared with `IsEqualTo`, `IsNotEqualTo` or `All().AreEqualTo`. An explicit `Within` always replaces the
-default tolerance. The applied default tolerance is part of the failure message, for example
-`is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero.
+It also applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan`
+values (or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
+`Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. An
+explicit `Within` always replaces the default tolerance. The applied default tolerance is part of the failure message,
+for example `is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero.
 
 For a `DateOnly` only the whole days of the default tolerance apply, so a default below one day has no effect there. An
 explicit `Within` on a `DateOnly` still has to be a whole number of days.
 
 The default tolerance is not used for:
 - property verifications like `HasOffset()`
-- other collection expectations, like `Contains`
+- collection expectations that don't compare items with expected items, like `IsInAscendingOrder` or `AreUnique`
 - members compared by `IsEquivalentTo`
 - values compared as `object`
 

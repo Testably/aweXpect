@@ -47,9 +47,11 @@ await Expect.That(titleSignaler).DidNotSignal();
 ```
 
 :::note
-Without a limit, `DidNotSignal()` would never return. So when no timeout is specified, it waits for the default
-timeout of 30 seconds, which the failure message shows (e.g. "within 0:30"). Use `Within(…)` to wait for a shorter
-time, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
+Without `Within(…)`, a signaler expectation waits for at most 30 seconds, the
+[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings), which the failure message shows (e.g.
+"within 0:30"). `Signaled()` completes as soon as the callback was signaled, but `DidNotSignal()` always waits for the
+whole timeout, because only then is it certain that no signal follows. Use `Within(…)` to wait for a shorter time, see
+[waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
 
 ### Amount
@@ -69,9 +71,10 @@ await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form. Only expectations without
-an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled, all others wait for the
-timeout. `DidNotSignal(times)` requires at least one time, because no callback can be signaled fewer than zero times.
+`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())`, and `DidNotSignal(3.Times())` expects the
+callback to be signaled fewer than three times. Only expectations without an upper bound (e.g. `AtLeast`) can complete
+as soon as enough callbacks were signaled, all others wait for the whole timeout. `DidNotSignal(times)` requires at
+least one time, because no callback can be signaled fewer than zero times.
 
 ### Parameters
 

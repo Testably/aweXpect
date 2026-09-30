@@ -39,14 +39,15 @@ events with the given names.
 Without a registration from the [source generator](../03-how-it-works/08-native-aot.md#events), the handler is bound
 reflectively. Such a handler must take at most four parameters, must return nothing and must take no parameter by
 reference. Recording all events skips an event whose handler does not fit, so that the other events of the subject are
-still recorded, and an expectation on the skipped event fails with the reason; recording it by name fails right away.
+still recorded, and an expectation on the skipped event throws a `NotSupportedException` with the reason; recording it
+by name throws right away.
 
 ### Stopping
 
 An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Every
 constraint of that one expectation still sees the recorded events, because `.And` and `.Or` combine into a single
-expectation. A further expectation on the same recording fails, so that it cannot silently answer from the events
-that were recorded until then:
+expectation. A further expectation on the same recording throws an `InvalidOperationException`, so that it cannot
+silently answer from the events that were recorded until then:
 
 ```csharp
 IEventRecording<Player> recording = player.Record().Events();
@@ -72,7 +73,7 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
 Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more and an
-expectation on the disposed recording fails as well.
+expectation on the disposed recording throws as well.
 
 ## Triggering
 

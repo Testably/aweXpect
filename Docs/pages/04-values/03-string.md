@@ -135,8 +135,10 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("(.*)Be").AsRegex();
 ```
 
-The pattern is matched like `Regex.IsMatch(subject, pattern)`, so `^` and `$` bind to the start and the end of the
-complete subject and not to every line. `IgnoreCase` and `CultureInvariant` are added when the `IgnoringCase` method is
+The pattern is matched like `Regex.IsMatch(subject, pattern)`, so unlike a wildcard it may match any part of the
+subject: `IsEqualTo("It").AsRegex()` succeeds for `"Let It Be"`. Enclose the pattern in `\A` and `\z` to match the
+complete subject. `^` and `$` bind to the start and the end of the subject and not to every line, but `$` also matches
+before a trailing newline. `IgnoreCase` and `CultureInvariant` are added when the `IgnoringCase` method is
 also used, so that the casing is ignored the same way as for every other expectation and never depends on the current
 culture. Every other
 [option](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions#fields)
@@ -271,6 +273,9 @@ await Expect.That(title).DoesNotStartWith("Road");
 await Expect.That(title).DoesNotEndWith("Abbey");
 ```
 
+In all four expectations, a `null` expected string throws an `ArgumentNullException` and an empty one an
+`ArgumentException`, because every string starts and ends with the empty string.
+
 ## Contains
 
 You can verify that the `string` contains a given substring, or that it does not, with the same
@@ -283,6 +288,9 @@ await Expect.That(title).Contains("Fields");
 await Expect.That(title).Contains("FIELDS").IgnoringCase();
 await Expect.That(title).DoesNotContain("Penny Lane");
 ```
+
+As for [`StartsWith`](#start--end), a `null` substring in `Contains` or `DoesNotContain` throws an
+`ArgumentNullException` and an empty one an `ArgumentException`.
 
 You can also specify how often the substring should be found:
 

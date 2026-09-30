@@ -86,6 +86,8 @@ await Expect.That(values).Contains([1, 3]).IgnoringInterspersedItems();
 
 Without `InAnyOrder` the values must appear in the subject in the same order and contiguous, i.e. without other
 items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
+`InAnyOrder` and `IgnoringInterspersedItems` exclude each other, here and for `IsContainedIn`: specifying the second one
+throws an `InvalidOperationException`.
 
 To check for a proper subset, append `.Properly()` (which would fail for equal collections). The negation is
 `DoesNotContain`.
@@ -126,6 +128,55 @@ await Expect.That(songs).DoesNotEndWith("Something");
 :::note
 `EndsWith` and `DoesNotEndWith` always enumerate the complete collection.
 :::
+
+## Predicates and expectations per item
+
+Instead of the expected items, `IsEqualTo`, `Contains` and `IsContainedIn` (and their negations) also accept one
+predicate or one expectation per item, with the same options for the order, duplicates and interspersed items:
+
+```csharp
+IEnumerable<string> songs = ["Come Together", "Something", "Let It Be"];
+
+await Expect.That(songs).IsEqualTo([x => x.Length > 10, x => x == "Something", x => x.EndsWith("Be")]);
+await Expect.That(songs).IsEqualTo([
+  x => x.IsEqualTo("Let It Be"),
+  x => x.StartsWith("Come"),
+  x => x.IsNotEmpty(),
+]).InAnyOrder();
+await Expect.That(songs).Contains([x => x == "Something", x => x.EndsWith("Be")]);
+```
+
+The failure message lists the predicates or expectations as the expected items:
+
+```csharp
+using System.Linq.Expressions;
+
+IEnumerable<string> subject = ["a", "b", "c"];
+IEnumerable<Expression<Func<string, bool>>> expected = [x => x == "a", x => x == "b", x => x == "c", x => x == "d"];
+
+await Expect.That(subject).IsEqualTo(expected);
+```
+
+```text title="Failure message"
+Expected that subject
+is equal to collection expected in order,
+but it lacked 1 of 4 expected items: x => (x == "d")
+
+Collection:
+[
+  "a",
+  "b",
+  "c"
+]
+
+Expected:
+[
+  x => (x == "a"),
+  x => (x == "b"),
+  x => (x == "c"),
+  x => (x == "d")
+]
+```
 
 ## Comparing items
 

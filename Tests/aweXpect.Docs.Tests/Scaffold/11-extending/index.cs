@@ -7,9 +7,9 @@ namespace Snippets;
 // The constraint is written on the "Constraints and results" page.
 internal sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
 	: ConstraintResult.WithNotNullValue<string>(it, grammars),
-		IValueConstraint<string>
+		IValueConstraint<string?>
 {
-	public ConstraintResult IsMetBy(string actual) => this;
+	public ConstraintResult IsMetBy(string? actual) => this;
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 

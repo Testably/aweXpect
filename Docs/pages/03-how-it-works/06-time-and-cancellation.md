@@ -47,6 +47,12 @@ Customize.aweXpect.Global.Settings().TestCancellation
 
 The setter again returns an `IDisposable` that removes the provider on `Dispose()`.
 
+:::note
+The global timeout and the global `CancellationToken` are the same setting, `Settings().TestCancellation`, which holds
+either a timeout or a provider: the second `Set` replaces the first. A `WithTimeout(…)` on an individual expectation
+still applies together with a global `CancellationToken`.
+:::
+
 You can also apply a `CancellationToken` on individual expectations, using the `WithCancellation(CancellationToken)`
 method:
 
@@ -97,6 +103,19 @@ List<Track> playlist = new();
 await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds());
 await Expect.That(playlist).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
 ```
+
+The condition is checked again every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`).
+Append `CheckEvery(…)` after `Within(…)` to change the interval for a single expectation:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+Track track = new();
+
+await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEvery(50.Milliseconds());
+```
+
+The interval must be positive, and `Within` and `CheckEvery` can each only be specified once.
 
 ### Eventually
 
@@ -244,6 +263,17 @@ events, or retries with `Within(…)` or [`Eventually()`](#eventually):
 - An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
   `CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
   OperationCanceledException".
+
+An inconclusive expectation throws the exception that your test framework uses for this outcome:
+
+| Test framework | Thrown exception                    | Reported as                      |
+|----------------|-------------------------------------|----------------------------------|
+| MSTest         | `AssertInconclusiveException`       | inconclusive                     |
+| NUnit          | `InconclusiveException`             | inconclusive                     |
+| TUnit          | `InconclusiveTestException`         | inconclusive                     |
+| xUnit v3       | an exception marked as test timeout | timed out                        |
+| xUnit v2       | `aweXpect.InconclusiveException`    | failed (no inconclusive outcome) |
+| none detected  | `aweXpect.InconclusiveException`    | depends on the runner            |
 
 ## Awaited tasks
 

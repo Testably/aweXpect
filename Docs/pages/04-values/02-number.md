@@ -17,6 +17,9 @@ Describes the possible expectations for numbers.
 | [`IsFinite`](#nan-and-infinity)                      | `IsNotFinite`               | neither infinite nor `NaN` (floating point numbers only)    |
 | [`IsInfinite`](#nan-and-infinity)                    | `IsNotInfinite`             | positive or negative infinity (floating point numbers only) |
 
+A `null` subject, e.g. an `int?`, fails every expectation on this page except equality and one of, as the
+[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotPositive()` fails for it.
+
 ## Equality
 
 You can verify that the number is equal to another one or not:
@@ -55,7 +58,7 @@ await Expect.That(playCount).IsNotLessThan(42);
 ```
 
 `NaN` is neither greater nor less than any number, so it satisfies `IsNotGreaterThan(5)` although it fails
-`IsLessThanOrEqualTo(5)`.
+`IsLessThanOrEqualTo(5)`. A `NaN` expected value throws an `ArgumentOutOfRangeException`.
 
 ## Between
 
@@ -68,7 +71,8 @@ await Expect.That(playCount).IsBetween(41).And(43);
 await Expect.That(playCount).IsNotBetween(43).And(50);
 ```
 
-Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`.
+Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`. A maximum below the minimum or a `NaN`
+bound throws an `ArgumentOutOfRangeException`.
 
 ## Positive / negative
 

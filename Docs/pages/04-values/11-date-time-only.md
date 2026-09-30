@@ -135,6 +135,9 @@ await Expect.That(startTime).IsNotBetween(new TimeOnly(18, 0)).And(new TimeOnly(
 </TabItem>
 </Tabs>
 
+Both bounds are included. For a `DateOnly`, a maximum below the minimum throws an `ArgumentOutOfRangeException` as soon
+as it is specified. For a `TimeOnly`, such a range runs across midnight instead, see [clock face](#clock-face).
+
 ## Tolerance
 
 Every comparison on this page except the `Has…` properties accepts a tolerance with `Within`, which widens the
