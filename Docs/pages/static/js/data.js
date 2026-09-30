@@ -4218,6 +4218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -4923,7 +4929,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -5632,7 +5639,8 @@ window.BENCHMARK_DATA = {
           328.3258736474173,
           347.981173324585,
           352.7635374069214,
-          334.3006128311157
+          334.3006128311157,
+          253.24656489690145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6344,6 +6352,7 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
+          928,
           928,
           928,
           928
@@ -7063,7 +7072,8 @@ window.BENCHMARK_DATA = {
           243.26174642244976,
           260.9272581100464,
           247.54009710947673,
-          255.76615813800268
+          255.76615813800268,
+          213.10201036135356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7256,6 +7266,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11547,6 +11558,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -12175,7 +12192,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -12807,7 +12825,8 @@ window.BENCHMARK_DATA = {
           449700.0759440104,
           408692.31403459824,
           418200.58443777903,
-          407618.6201497396
+          407618.6201497396,
+          295789.5810895647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13442,6 +13461,7 @@ window.BENCHMARK_DATA = {
           676856,
           676856,
           676856,
+          677056,
           677056,
           677056,
           677056
@@ -14084,7 +14104,8 @@ window.BENCHMARK_DATA = {
           2715198.849739583,
           2462868.2723214286,
           2553543.66796875,
-          2352396.5416666665
+          2352396.5416666665,
+          1596578.78828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14721,7 +14742,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18953,6 +18975,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -19658,7 +19686,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -20367,7 +20396,8 @@ window.BENCHMARK_DATA = {
           544.3072616713388,
           611.0081187566121,
           627.5784405390422,
-          561.9287270818438
+          561.9287270818438,
+          414.8395215670268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21079,6 +21109,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1584,
           1584,
           1584,
           1584
@@ -21798,7 +21829,8 @@ window.BENCHMARK_DATA = {
           474.20079441070556,
           516.7548759460449,
           495.29159579958235,
-          487.22537183761597
+          487.22537183761597,
+          416.025589688619
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21991,6 +22023,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26744,6 +26777,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -27449,7 +27488,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -28158,7 +28198,8 @@ window.BENCHMARK_DATA = {
           338.32508718050445,
           346.272525038038,
           352.8747487408774,
-          334.4416739463806
+          334.4416739463806,
+          280.34214941660565
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28870,6 +28911,7 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
+          1072,
           1072,
           1072,
           1072
@@ -29589,7 +29631,8 @@ window.BENCHMARK_DATA = {
           239.55810847649207,
           245.90422594547272,
           257.2361434936523,
-          243.79583528836568
+          243.79583528836568,
+          207.21679401397705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29782,6 +29825,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34535,6 +34579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -35240,7 +35290,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -35949,7 +36000,8 @@ window.BENCHMARK_DATA = {
           614.5234347025554,
           638.2788359778268,
           639.4461165110271,
-          612.5149683952332
+          612.5149683952332,
+          434.7332351366679
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36661,6 +36713,7 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
+          1608,
           1608,
           1608,
           1608
@@ -37380,7 +37433,8 @@ window.BENCHMARK_DATA = {
           1253.7681101481119,
           1239.2499777475994,
           1188.7313748677573,
-          1217.9464264551798
+          1217.9464264551798,
+          842.3408256530762
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37809,6 +37863,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42326,6 +42381,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -43031,7 +43092,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -43740,7 +43802,8 @@ window.BENCHMARK_DATA = {
           3087.047616413661,
           3213.690000661214,
           3228.9326716105143,
-          3189.8704935709634
+          3189.8704935709634,
+          1696.247242863973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44452,6 +44515,7 @@ window.BENCHMARK_DATA = {
           4328,
           4328,
           4328,
+          4376,
           4376,
           4376,
           4376
@@ -45171,7 +45235,8 @@ window.BENCHMARK_DATA = {
           1321.869647216797,
           1379.8720521291098,
           1327.537137545072,
-          1326.0868260065715
+          1326.0868260065715,
+          967.8624875386556
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45364,6 +45429,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50117,6 +50183,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 00:07:13 2026 \u002B0200",
         "message": "test: sort test methods alphabetically within their classes (#1477)"
+      },
+      {
+        "sha": "208ea2b1372e9ac120efb2e854ad276604cf2d72",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
+        "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
       }
     ],
     "labels": [
@@ -50822,7 +50894,8 @@ window.BENCHMARK_DATA = {
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
-      "3e1a18a4"
+      "3e1a18a4",
+      "208ea2b1"
     ],
     "datasets": [
       {
@@ -51531,7 +51604,8 @@ window.BENCHMARK_DATA = {
           3099.450386683146,
           3275.4314544677736,
           3207.185521443685,
-          3304.1568211873373
+          3304.1568211873373,
+          1721.8098628997802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52243,6 +52317,7 @@ window.BENCHMARK_DATA = {
           4272,
           4272,
           4272,
+          4280,
           4280,
           4280,
           4280
@@ -52962,7 +53037,8 @@ window.BENCHMARK_DATA = {
           27628.15655517578,
           20610.311613972983,
           26412.724094645182,
-          20735.989565022788
+          20735.989565022788,
+          12184.225337727865
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53676,7 +53752,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
