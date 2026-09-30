@@ -474,6 +474,216 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenExtensionExpectationFromReferencedAssemblyGuaranteesNotNull_ShouldSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorWithExtensionAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+				using MyExtension;
+
+				public class MyClass
+				{
+				    public async Task MyTest(string? subject)
+				    {
+				        await Expect.That(subject).IsAbsolutePath();
+				        _ = {|#0:subject|}.Length;
+				    }
+				}
+				""",
+				"""
+				using System;
+				using aweXpect.Core;
+				using aweXpect.Results;
+
+				namespace MyExtension;
+
+				public static class MyExpectations
+				{
+				    [GuaranteesNotNull]
+				    public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+				        => throw new NotSupportedException();
+				}
+				""",
+				SuppressedNullabilityWarning()
+			);
+
+	[Fact]
+	public async Task WhenExtensionExpectationGuaranteesNotNull_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public static class MyExpectations
+			{
+			    [GuaranteesNotNull]
+			    public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsAbsolutePath();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExtensionExpectationIsFollowedByOr_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public static class MyExpectations
+			{
+			    [GuaranteesNotNull]
+			    public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsAbsolutePath().Or.IsNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExtensionExpectationWithoutAttribute_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public static class MyExpectations
+			{
+			    public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsAbsolutePath();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExtensionKeepsSubjectBeforeAnd_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public static class MyExpectations
+			{
+			    public static AndOrResult<string?, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsAbsolutePath().And.IsNotNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExtensionReturnsThatOfSameTypeBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			// The returned `IThat<string?>` could be a member of the same type, e.g. the file name of a path.
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyExpectations
+			{
+			    public static IThat<string?> WhoseFileName(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).WhoseFileName().IsNotNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExtensionSwitchesSubjectBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			// The extension continues with a member of the subject, so `IsNotNull` verifies the member.
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class Album
+			{
+			    public string? Title { get; set; }
+			}
+
+			public static class MyExpectations
+			{
+			    public static IThat<string?> WhoseTitle(this IThat<Album?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(Album? subject)
+			    {
+			        await Expect.That(subject).WhoseTitle().IsNotNull();
+			        _ = {|#0:subject|}.Title;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenOtherSubjectIsExpectedNotNull_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""

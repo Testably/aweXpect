@@ -241,7 +241,9 @@ public partial class CollectionMatchOptions
 					_missingItems.Add(item);
 				}
 
-				if (CountDeviations() > 2 * maximumNumberOfCollectionItems)
+				// For the containment relation, all missing items are listed.
+				if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+				    CountDeviations() > 2 * maximumNumberOfCollectionItems)
 				{
 					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 				}
@@ -275,7 +277,7 @@ public partial class CollectionMatchOptions
 			}
 
 			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, true, formatItem,
-				options));
+				options, maximumNumber));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);

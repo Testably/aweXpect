@@ -124,6 +124,11 @@ public static partial class ThatEnumerable
 		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;

@@ -289,6 +289,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{

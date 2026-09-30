@@ -399,7 +399,8 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 					}
 
 					if (semanticModel.GetSymbolInfo(chained, cancellationToken).Symbol is not IMethodSymbol method ||
-					    !IsAweXpectAssembly(method.ContainingAssembly, semanticModel.Compilation))
+					    (!IsAweXpectAssembly(method.ContainingAssembly, semanticModel.Compilation) &&
+					     !KeepsSubject(method, semanticModel.Compilation)))
 					{
 						return null;
 					}
@@ -440,7 +441,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	}
 
 	/// <summary>
-	///     Checks if the method is an aweXpect expectation that a <see langword="null" /> subject cannot fulfil.
+	///     Checks if the method is an expectation that a <see langword="null" /> subject cannot fulfil.
 	/// </summary>
 	/// <remarks>
 	///     The expectations declare this themselves with the <c>aweXpect.Core.GuaranteesNotNullAttribute</c>, because
@@ -449,17 +450,62 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	///     with its not-nullable counterpart even for expectations that a <see langword="null" /> subject does fulfil,
 	///     e.g. <c>IsNotEmpty</c> on a string or <c>IsNotEqualTo</c> on a collection.
 	///     <para />
-	///     The receiver is deliberately not restricted to <c>IThat&lt;TSubject&gt;</c>: <c>aweXpect.Core</c> declares
-	///     expectations such as <c>Throws</c> or <c>IsExactly</c> as instance members of other types.
+	///     The receiver of an aweXpect method is deliberately not restricted to <c>IThat&lt;TSubject&gt;</c>:
+	///     <c>aweXpect.Core</c> declares expectations such as <c>Throws</c> or <c>IsExactly</c> as instance members of
+	///     other types. An expectation of an extension package must be an extension method on <c>IThat&lt;TSubject&gt;</c>.
 	/// </remarks>
 	private static bool GuaranteesNotNull(IMethodSymbol methodSymbol, Compilation compilation)
-		// The assembly check comes first: it is two string comparisons, while decoding the attributes
+		// The receiver check comes first: it is a few symbol comparisons, while decoding the attributes
 		// of an arbitrary metadata symbol is not, and this runs for every invocation in every preceding
 		// statement that is scanned.
-		=> IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation) &&
+		=> (IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation) ||
+		    IsThat(methodSymbol.ReceiverType, compilation)) &&
 		   (methodSymbol.ReducedFrom ?? methodSymbol).GetAttributes()
 		   .Any(attribute => attribute.AttributeClass is { Name: "GuaranteesNotNullAttribute", } attributeClass &&
 		                     IsAweXpectAssembly(attributeClass.ContainingAssembly, compilation));
+
+	/// <summary>
+	///     Checks if the extension method of another package continues on the same subject, because it returns an
+	///     aweXpect result for its receiver <c>IThat&lt;TSubject&gt;</c>, like
+	///     <c>AndOrResult&lt;TType, IThat&lt;TSubject&gt;&gt;</c>.
+	/// </summary>
+	/// <remarks>
+	///     An extension method that returns anything else, e.g. an <c>IThat&lt;TMember&gt;</c> of a member, might
+	///     switch to a different subject, so a later expectation in the chain cannot be attributed to the subject of
+	///     <c>Expect.That</c>. This also applies when it returns an <c>IThat&lt;TSubject&gt;</c>, because the member
+	///     can have the same type as the subject.
+	/// </remarks>
+	private static bool KeepsSubject(IMethodSymbol methodSymbol, Compilation compilation)
+	{
+		if (methodSymbol.ReducedFrom is null || !IsThat(methodSymbol.ReceiverType, compilation))
+		{
+			return false;
+		}
+
+		ITypeSymbol receiver = methodSymbol.ReceiverType!;
+		for (INamedTypeSymbol? type = methodSymbol.ReturnType as INamedTypeSymbol; type is not null;
+		     type = type.BaseType)
+		{
+			if (IsAweXpectAssembly(type.ContainingAssembly, compilation) &&
+			    type.TypeArguments.Any(argument => SymbolEqualityComparer.Default.Equals(argument, receiver)))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="type" /> is the <c>IThat&lt;TSubject&gt;</c> of aweXpect.
+	/// </summary>
+	private static bool IsThat(ITypeSymbol? type, Compilation compilation)
+		=> type is INamedTypeSymbol { Name: "IThat", Arity: 1, } namedType &&
+		   namedType.ContainingNamespace is
+		   {
+			   Name: "Core", ContainingNamespace: { Name: "aweXpect", ContainingNamespace.IsGlobalNamespace: true, },
+		   } &&
+		   IsAweXpectAssembly(namedType.ContainingAssembly, compilation);
 
 	/// <summary>
 	///     Checks that the symbol originates from a referenced aweXpect assembly and not from a look-alike that is

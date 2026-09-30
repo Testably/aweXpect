@@ -44,6 +44,23 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenKindsAreIncompatibleAndNegated_ShouldFail()
+			{
+				IEnumerable<DateTime> subject = [Local, Utc,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.IsNotInAscendingOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix()
+					.Because("the order of incompatible kinds cannot be verified, which also fails the negation");
+			}
+
+			[Fact]
 			public async Task WhenKindIsUnspecified_ShouldSucceed()
 			{
 				IEnumerable<DateTime> subject = [Utc.AddHours(2), Unspecified, Utc,];

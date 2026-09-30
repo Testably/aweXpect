@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 21 expected items
 
 					             Collection:
 					             [
@@ -1920,7 +1920,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
-					             but it had more than 20 deviations
+					             but it lacked all 21 expected items
 
 					             Collection:
 					             [

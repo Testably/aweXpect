@@ -328,8 +328,9 @@ set in a test still takes precedence. See [Global defaults](../03-how-it-works/0
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what
 they do, names the receiver parameter of every expectation `subject`, and moves a few types into more fitting
-namespaces. The new `[GuaranteesNotNull]` attribute marks an expectation that a `null` subject can never satisfy, and
-the [null rule](../11-extending/02-constraints-and-results.md#null-subjects) that an extension has to follow is
+namespaces. The new `[GuaranteesNotNull]` attribute marks an expectation that a `null` subject can never satisfy, also
+in an extension, to [suppress nullability warnings](../11-extending/02-constraints-and-results.md#nullability-warnings)
+after it, and the [null rule](../11-extending/02-constraints-and-results.md#null-subjects) that an extension has to follow is
 documented.
 
 `DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in

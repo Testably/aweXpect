@@ -109,6 +109,30 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNullItemIsNotSortedCorrectly_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["b", null, "a",];
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in descending order,
+					             but it had <null> before "a", which is not in descending order
+
+					             Collection:
+					             [
+					               "b",
+					               <null>,
+					               "a"
+					             ]
+					             """)
+					.Because("a null item sorts before any other item and must not be skipped");
+			}
 		}
 
 		public sealed class ImmutableArrayMemberTests
