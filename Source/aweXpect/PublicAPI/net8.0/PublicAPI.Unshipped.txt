@@ -2064,3 +2064,13 @@ static aweXpect.ThatNumber.IsNotGreaterThan<TNumber>(this aweXpect.Core.IThat<TN
 static aweXpect.ThatNumber.IsNotGreaterThanOrEqualTo<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject, TNumber? unexpected) -> aweXpect.Results.NumberToleranceResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
 static aweXpect.ThatNumber.IsNotLessThan<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject, TNumber? unexpected) -> aweXpect.Results.NumberToleranceResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
 static aweXpect.ThatNumber.IsNotLessThanOrEqualTo<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject, TNumber? unexpected) -> aweXpect.Results.NumberToleranceResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.Complete() -> void
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.QuantifiedCollectionConstraint(aweXpect.Core.ExpectationBuilder! expectationBuilder, string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string!>! expectationText, string! verb) -> void
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.Record(TItem item, bool isMatch) -> void
+override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.ItemType.get -> System.Type!

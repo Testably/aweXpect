@@ -338,6 +338,68 @@ public static AndOrResult<string, IThat<string?>> HasFileName(
 - An exception that the member selector throws fails the nested expectations with "… did throw …".
 - `ForAsyncMember` does the same for a member that has to be awaited.
 
+## Expectations on collection items
+
+An expectation on the items of a collection, i.e. an extension method on `ThatEnumerable.Elements<TItem>` that
+follows `All()`, `AtLeast(2)` and the other quantifiers, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
+`ThatEnumerable.IElements<TItem>` gives access to the quantifier and the subject:
+
+```csharp
+using aweXpect.Options;
+
+public static AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>> AreEven(
+    this ThatEnumerable.Elements<int> elements)
+{
+    ThatEnumerable.IElements<int> source = elements;
+    ExpectationBuilder expectationBuilder = source.Subject.Get().ExpectationBuilder;
+    return new(expectationBuilder.AddConstraint((it, grammars)
+            => new AreEvenConstraint(expectationBuilder, it, grammars, source.Quantifier)),
+        source.Subject);
+}
+
+private sealed class AreEvenConstraint(
+    ExpectationBuilder expectationBuilder,
+    string it,
+    ExpectationGrammars grammars,
+    EnumerableQuantifier quantifier)
+    : QuantifiedCollectionConstraint<IEnumerable<int>?, int>(expectationBuilder, it, grammars, quantifier,
+            g => g.IsPlural() ? "are even" : "is even", "were"),
+        IValueConstraint<IEnumerable<int>?>
+{
+    public ConstraintResult IsMetBy(IEnumerable<int>? actual)
+    {
+        Actual = actual;
+        if (actual is not null)
+        {
+            foreach (int item in actual)
+            {
+                Record(item, item % 2 == 0);
+            }
+
+            Complete();
+        }
+
+        return this;
+    }
+}
+```
+
+```csharp
+int[] values = [2, 4, 6];
+
+await Expect.That(values).All().AreEven();
+```
+
+- `Record` classifies an item as matching or not matching, and `Complete` decides the outcome from the quantifier.
+- The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
+  `Plural` grammar asks for the plural form, e.g. in "has values of which at least 2 are even".
+- The verb completes the result, e.g. "but only 1 of 3 were".
+
+The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
+or not matching items as context. `DoesNotComplyWith(v => v.AtLeast(2).AreEven())` then reads "is even for fewer than
+2 items, but 3 of 3 were", followed by the "Matching items". Unlike the built-in expectations, it does not add the
+"Collection" context.
+
 ## Asynchronous constraints
 
 An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, which is canceled when the timeout
