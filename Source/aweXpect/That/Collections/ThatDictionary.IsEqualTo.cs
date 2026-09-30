@@ -39,7 +39,7 @@ public static partial class ThatDictionary
 	{
 		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
-		ObjectEqualityOptions<TValue> options = new();
+		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)

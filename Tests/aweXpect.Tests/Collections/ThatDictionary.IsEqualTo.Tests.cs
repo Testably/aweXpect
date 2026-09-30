@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -231,6 +232,50 @@ public sealed partial class ThatDictionary
 					             Dictionary:
 					             {["a"] = 1}
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> expected = new() { [1] = value.AddMilliseconds(500), };
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the values fall back to the default tolerance, as the items of a collection do");
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldMentionIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> expected = new() { [1] = value.AddSeconds(2), };
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to dictionary expected ± 0:01,
+					              but it contained key 1 with value {Formatter.Format(value)} instead of {Formatter.Format(expected[1])}
+
+					              Dictionary:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Fact]

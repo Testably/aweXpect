@@ -250,7 +250,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		ObjectEqualityOptions<TItem> options = new();
+		ObjectEqualityOptions<TItem> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TItem>();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(

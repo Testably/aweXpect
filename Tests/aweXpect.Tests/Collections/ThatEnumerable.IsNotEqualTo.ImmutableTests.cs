@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using aweXpect.Core;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -191,6 +192,35 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithImmutableArrayOfTimes_WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				ImmutableArray<DateTime> subject = [value,];
+				ImmutableArray<DateTime> unexpected = [value.AddMilliseconds(500),];
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsNotEqualTo(unexpected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not equal to collection unexpected ± 0:01 in order,
+					              but it was
+
+					              Collection:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+
+					              Expected:
+					              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("an unexpected immutable array falls back to the default tolerance, as any other unexpected collection does");
 			}
 
 			[Fact]

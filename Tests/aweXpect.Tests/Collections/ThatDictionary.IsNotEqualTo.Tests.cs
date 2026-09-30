@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using aweXpect.Core;
+using aweXpect.Customization;
 #if NETFRAMEWORK
 using System.Collections.Concurrent;
 #endif
@@ -144,6 +146,32 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("both unexpected keys are matched by the key \"a\", so the key \"b\" is left over");
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> unexpected = new() { [1] = value.AddMilliseconds(500), };
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsNotEqualTo(unexpected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not equal to dictionary unexpected ± 0:01,
+					              but it was
+
+					              Dictionary:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("the values fall back to the default tolerance, as the items of a collection do");
 			}
 
 			[Fact]
