@@ -246,7 +246,7 @@ public static partial class ValueFormatters
 				break;
 			}
 
-			stringBuilder.Append(itemFormatter.Format(item, options).Indent("  ", false));
+			stringBuilder.Append(itemFormatter.FormatSingle(item, options).Indent("  ", false));
 		}
 
 		if (hasMoreValues)
@@ -304,7 +304,7 @@ public static partial class ValueFormatters
 	{
 		public FormattingContext Context { get; } = context;
 
-		public string Format(T item, FormattingOptions options)
+		public string FormatSingle(T item, FormattingOptions options)
 			=> formatItem(formatter, item, options, Context);
 	}
 
