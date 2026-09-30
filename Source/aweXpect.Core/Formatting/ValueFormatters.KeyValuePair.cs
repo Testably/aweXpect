@@ -56,8 +56,20 @@ public static partial class ValueFormatters
 		FormattingContext? context)
 	{
 		stringBuilder.Append('[');
-		Format(formatter, stringBuilder, key, options, context);
+		Format(formatter, stringBuilder, key, WithoutLineBreaksForString(key, options), context);
 		stringBuilder.Append("] = ");
-		Format(formatter, stringBuilder, value, options, context);
+		Format(formatter, stringBuilder, value, WithoutLineBreaksForString(value, options), context);
 	}
+
+	/// <remarks>
+	///     A string is only escaped and truncated on a single line, so a nested one is kept on a single line like a
+	///     collection item or an object member.
+	/// </remarks>
+	private static FormattingOptions? WithoutLineBreaksForString(object? value, FormattingOptions? options)
+		=> value is string && options?.UseLineBreaks == true
+			? options with
+			{
+				UseLineBreaks = false,
+			}
+			: options;
 }

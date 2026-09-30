@@ -94,6 +94,24 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WithLineBreaks_ShouldEscapeStringKeyAndValue()
+		{
+			string expectedResult = "[\"a\\nb\"] = \"say \\\"hi\\\"\"";
+			KeyValuePair<string, string> value = new("a\nb", "say \"hi\"");
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the key and value are escaped like collection items");
+			await That(objectResult).IsEqualTo(expectedResult)
+				.Because("a boxed pair is escaped like a typed one");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WithType_ShouldNotIncludeTypeInformation()
 		{
 			string expectedResult = "[\"foo\"] = 42";

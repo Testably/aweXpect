@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -166,6 +167,112 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(ValueFormatter.NullString);
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
+		}
+
+		[Fact]
+		public async Task WithLineBreaks_ShouldEscapeStringKeys()
+		{
+			string expectedResult = """
+			                        {
+			                          ["a\nb"] = 1
+			                        }
+			                        """;
+			Dictionary<string, int> value = new()
+			{
+				["a\nb"] = 1,
+			};
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a string key is escaped like a collection item, so its line break cannot break the indentation");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithLineBreaks_ShouldEscapeStringValues()
+		{
+			string expectedResult = """
+			                        {
+			                          ["a"] = "x\ny",
+			                          ["b"] = "say \"hi\""
+			                        }
+			                        """;
+			Dictionary<string, string> value = new()
+			{
+				["a"] = "x\ny",
+				["b"] = "say \"hi\"",
+			};
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a string value is escaped like a collection item, so line breaks and quotes stay unambiguous");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithLineBreaks_ShouldKeepNonStringValuesOnMultipleLines()
+		{
+			string expectedResult = """
+			                        {
+			                          ["a"] = [
+			                            1,
+			                            2
+			                          ]
+			                        }
+			                        """;
+			Dictionary<string, List<int>> value = new()
+			{
+				["a"] = [1, 2,],
+			};
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("only string keys and values are forced onto a single line");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithLineBreaks_ShouldTruncateLongStringValues()
+		{
+			string expectedResult = """
+			                        {
+			                          ["a"] = "abcde…"
+			                        }
+			                        """;
+			Dictionary<string, string> value = new()
+			{
+				["a"] = "abcdefgh",
+			};
+			StringBuilder sb = new();
+
+			string result;
+			string objectResult;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
+			{
+				result = Formatter.Format(value, FormattingOptions.MultipleLines);
+				objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+				Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+			}
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a string value is truncated like a collection item");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
 		[Fact]
