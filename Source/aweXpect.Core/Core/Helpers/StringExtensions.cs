@@ -198,16 +198,16 @@ internal static class StringExtensions
 	///     a <c>\r\n</c> line break.
 	/// </summary>
 	private static int GetIndexToCutAt(string value, int index)
-	{
-		if (index > 0 &&
-		    ((char.IsHighSurrogate(value[index - 1]) && char.IsLowSurrogate(value[index])) ||
-		     (value[index - 1] == '\r' && value[index] == '\n')))
-		{
-			return index - 1;
-		}
+		=> value.IsSplitAt(index) ? index - 1 : index;
 
-		return index;
-	}
+	/// <summary>
+	///     Checks if cutting the <paramref name="value" /> at the <paramref name="index" /> would split a surrogate pair
+	///     or a <c>\r\n</c> line break.
+	/// </summary>
+	public static bool IsSplitAt(this string value, int index)
+		=> index > 0 && index < value.Length &&
+		   ((char.IsHighSurrogate(value[index - 1]) && char.IsLowSurrogate(value[index])) ||
+		    (value[index - 1] == '\r' && value[index] == '\n'));
 
 	/// <summary>
 	///     Removes the leading whitespace that all lines after the first one have in common.

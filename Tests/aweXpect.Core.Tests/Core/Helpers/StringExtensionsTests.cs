@@ -158,6 +158,27 @@ public class StringExtensionsTests
 		}
 	}
 
+	public sealed class IsSplitAt
+	{
+		[Theory]
+		[InlineData("", 0, false)]
+		[InlineData("a\r\nb", 0, false)]
+		[InlineData("a\r\nb", 1, false)]
+		[InlineData("a\r\nb", 2, true)]
+		[InlineData("a\r\nb", 3, false)]
+		[InlineData("a\n\rb", 2, false)]
+		[InlineData("a😀b", 1, false)]
+		[InlineData("a😀b", 2, true)]
+		[InlineData("a😀b", 3, false)]
+		[InlineData("a😀", 3, false)]
+		public async Task ShouldReturnExpectedResult(string input, int index, bool expected)
+		{
+			bool result = input.IsSplitAt(index);
+
+			await That(result).IsEqualTo(expected);
+		}
+	}
+
 	public sealed class PrependAOrAn
 	{
 		[Theory]
