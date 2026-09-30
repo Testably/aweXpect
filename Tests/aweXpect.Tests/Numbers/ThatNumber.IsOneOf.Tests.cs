@@ -24,7 +24,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -32,9 +32,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)1, (byte)2, (byte)3)]
-			[InlineData((byte)1, (byte)0, (byte)3)]
-			public async Task ForByte_WhenValueIsDifferentToAllExpected_ShouldFail(byte subject,
+			[InlineData("-1", (byte)1, (byte)2, (byte)3)]
+			[InlineData("1", (byte)1, (byte)0, (byte)3)]
+			public async Task ForByte_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, byte subject,
 				params byte?[] expected)
 			{
 				async Task Act()
@@ -44,7 +44,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -72,7 +72,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -104,7 +104,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.0
+					             but it was 1.0, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.0, 3.0]
@@ -112,10 +112,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1, 3.1)]
-			[InlineData(1.1, 0.1, 3.1)]
+			[InlineData("-1.0", 1.1, 2.1, 3.1)]
+			[InlineData("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForDecimal_WhenValueIsDifferentToAllExpected_ShouldFail(
-				double subjectValue, params double[] expectedValues)
+				string differsBy, double subjectValue, params double[] expectedValues)
 			{
 				decimal subject = new(subjectValue);
 				decimal[] expected = expectedValues
@@ -129,7 +129,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 
 					              Expected values:
 					              {Formatter.Format(expected)}
@@ -165,7 +165,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.0
+					             but it was 1.0, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.0, <null>, 3.0]
@@ -197,7 +197,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.1
+					             but it was 1.1, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.1, 3.1]
@@ -227,9 +227,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(double.NaN, 0.0, 1.0)]
-			[InlineData(0.0, 1.0, double.NaN)]
-			public async Task ForDouble_WhenSubjectOrExpectedIsNaN_ShouldFail(double subject,
+			[InlineData("", double.NaN, 0.0, 1.0)]
+			[InlineData(", which differs by -1.0 from the closest value", 0.0, 1.0, double.NaN)]
+			public async Task ForDouble_WhenSubjectOrExpectedIsNaN_ShouldFail(string difference, double subject,
 				params double[] expected)
 			{
 				async Task Act() => await That(subject).IsOneOf(expected);
@@ -238,7 +238,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{difference}
 
 					              Expected values:
 					              {Formatter.Format(expected)}
@@ -246,10 +246,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1, 3.1)]
-			[InlineData(1.1, 0.1, 3.1)]
+			[InlineData("-1.0", 1.1, 2.1, 3.1)]
+			[InlineData("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForDouble_WhenValueIsDifferentToAllExpected_ShouldFail(
-				double subject, params double[] expected)
+				string differsBy, double subject, params double[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -258,7 +258,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 
 					              Expected values:
 					              {Formatter.Format(expected)}
@@ -289,7 +289,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.1
+					             but it was 1.1, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.1, <null>, 3.1]
@@ -321,7 +321,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.1
+					             but it was 1.1, which differs by -0.9999999 from the closest value
 
 					             Expected values:
 					             [2.1, 3.1]
@@ -340,9 +340,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(float.NaN, 0.0F, 1.0F)]
-			[InlineData(0.0F, 1.0F, float.NaN)]
-			public async Task ForFloat_WhenSubjectOrExpectedIsNaN_ShouldFail(float subject,
+			[InlineData("", float.NaN, 0.0F, 1.0F)]
+			[InlineData(", which differs by -1.0 from the closest value", 0.0F, 1.0F, float.NaN)]
+			public async Task ForFloat_WhenSubjectOrExpectedIsNaN_ShouldFail(string difference, float subject,
 				params float[] expected)
 			{
 				async Task Act() => await That(subject).IsOneOf(expected);
@@ -351,7 +351,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{difference}
 
 					              Expected values:
 					              {Formatter.Format(expected)}
@@ -359,10 +359,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)1.1, (float)2.1, (float)3.1)]
-			[InlineData((float)1.1, (float)0.1, (float)3.1)]
+			[InlineData("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
+			[InlineData("1.0", (float)1.1, (float)0.1, (float)3.1)]
 			public async Task ForFloat_WhenValueIsDifferentToAllExpected_ShouldFail(
-				float subject, params float[] expected)
+				string differsBy, float subject, params float[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -371,7 +371,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 
 					              Expected values:
 					              {Formatter.Format(expected)}
@@ -402,7 +402,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.1
+					             but it was 1.1, which differs by -0.9999999 from the closest value
 
 					             Expected values:
 					             [2.1, <null>, 3.1]
@@ -434,7 +434,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -454,7 +454,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -533,10 +533,27 @@ public sealed partial class ThatNumber
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
+			[Fact]
+			public async Task ForInt_WhenTheDistanceToAnExpectedValueOverflows_ShouldMeasureFromTheOtherValues()
+			{
+				int subject = int.MinValue + 1;
+
+				async Task Act()
+					=> await That(subject).IsOneOf(int.MaxValue, 0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of [2147483647, 0],
+					             but it was -2147483647, which differs by -2147483647 from the closest value
+					             """)
+					.Because("a distance that overflows the number type cannot be the smallest one");
+			}
+
 			[Theory]
-			[InlineData(1, 2, 3)]
-			[InlineData(2, 1, 3)]
-			public async Task ForInt_WhenValueIsDifferentToAllExpected_ShouldFail(int subject,
+			[InlineData("-1", 1, 2, 3)]
+			[InlineData("1", 2, 1, 3)]
+			public async Task ForInt_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, int subject,
 				params int?[] expected)
 			{
 				async Task Act()
@@ -546,7 +563,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -574,7 +591,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -606,7 +623,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -624,9 +641,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((long)1, (long)2, (long)3)]
-			[InlineData((long)1, (long)0, (long)3)]
-			public async Task ForLong_WhenValueIsDifferentToAllExpected_ShouldFail(long subject,
+			[InlineData("-1", (long)1, (long)2, (long)3)]
+			[InlineData("1", (long)1, (long)0, (long)3)]
+			public async Task ForLong_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, long subject,
 				params long?[] expected)
 			{
 				async Task Act()
@@ -636,7 +653,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -664,7 +681,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -696,7 +713,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -704,10 +721,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)1, (byte)2, (byte)3)]
-			[InlineData((byte)1, (byte)0, (byte)3)]
+			[InlineData("-1", (byte)1, (byte)2, (byte)3)]
+			[InlineData("1", (byte)1, (byte)0, (byte)3)]
 			public async Task ForNullableByte_WhenValueIsDifferentToAllExpected_ShouldFail(
-				byte? subject, params byte?[] expected)
+				string differsBy, byte? subject, params byte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -716,7 +733,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -762,7 +779,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.0
+					             but it was 1.0, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.0, 3.0]
@@ -770,10 +787,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1, 3.1)]
-			[InlineData(1.1, 0.1, 3.1)]
+			[InlineData("-1.0", 1.1, 2.1, 3.1)]
+			[InlineData("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForNullableDecimal_WhenValueIsDifferentToAllExpected_ShouldFail(
-				double? subjectValue, params double?[] expectedValues)
+				string differsBy, double? subjectValue, params double?[] expectedValues)
 			{
 				decimal? subject = subjectValue == null ? null : new decimal(subjectValue.Value);
 				decimal?[] expected = expectedValues
@@ -789,7 +806,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -824,7 +841,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.0
+					             but it was 1.0, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.0, 3.0]
@@ -832,10 +849,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1.1, 2.1, 3.1)]
-			[InlineData(1.1, 0.1, 3.1)]
+			[InlineData("-1.0", 1.1, 2.1, 3.1)]
+			[InlineData("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForNullableDouble_WhenValueIsDifferentToAllExpected_ShouldFail(
-				double? subject, params double?[] expected)
+				string differsBy, double? subject, params double?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -844,7 +861,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -872,7 +889,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1.0
+					             but it was 1.0, which differs by -1.0 from the closest value
 
 					             Expected values:
 					             [2.0, 3.0]
@@ -880,10 +897,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((float)1.1, (float)2.1, (float)3.1)]
-			[InlineData((float)1.1, (float)0.1, (float)3.1)]
+			[InlineData("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
+			[InlineData("1.0", (float)1.1, (float)0.1, (float)3.1)]
 			public async Task ForNullableFloat_WhenValueIsDifferentToAllExpected_ShouldFail(
-				float? subject, params float?[] expected)
+				string differsBy, float? subject, params float?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -892,7 +909,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -920,7 +937,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -986,10 +1003,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1, 2, 3)]
-			[InlineData(1, 0, 3)]
+			[InlineData("-1", 1, 2, 3)]
+			[InlineData("1", 1, 0, 3)]
 			public async Task ForNullableInt_WhenValueIsDifferentToAllExpected_ShouldFail(
-				int? subject, params int?[] expected)
+				string differsBy, int? subject, params int?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -998,7 +1015,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1044,7 +1061,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1052,10 +1069,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((long)1, (long)2, (long)3)]
-			[InlineData((long)1, (long)0, (long)3)]
+			[InlineData("-1", (long)1, (long)2, (long)3)]
+			[InlineData("1", (long)1, (long)0, (long)3)]
 			public async Task ForNullableLong_WhenValueIsDifferentToAllExpected_ShouldFail(
-				long? subject, params long?[] expected)
+				string differsBy, long? subject, params long?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1064,7 +1081,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1110,7 +1127,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1118,10 +1135,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)1, (sbyte)2, (sbyte)3)]
-			[InlineData((sbyte)1, (sbyte)0, (sbyte)3)]
+			[InlineData("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
+			[InlineData("1", (sbyte)1, (sbyte)0, (sbyte)3)]
 			public async Task ForNullableSbyte_WhenValueIsDifferentToAllExpected_ShouldFail(
-				sbyte? subject, params sbyte?[] expected)
+				string differsBy, sbyte? subject, params sbyte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1130,7 +1147,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1176,7 +1193,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1184,10 +1201,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((short)1, (short)2, (short)3)]
-			[InlineData((short)1, (short)0, (short)3)]
+			[InlineData("-1", (short)1, (short)2, (short)3)]
+			[InlineData("1", (short)1, (short)0, (short)3)]
 			public async Task ForNullableShort_WhenValueIsDifferentToAllExpected_ShouldFail(
-				short? subject, params short?[] expected)
+				string differsBy, short? subject, params short?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1196,7 +1213,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1242,7 +1259,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1250,10 +1267,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((uint)1, (uint)2, (uint)3)]
-			[InlineData((uint)1, (uint)0, (uint)3)]
+			[InlineData("-1", (uint)1, (uint)2, (uint)3)]
+			[InlineData("1", (uint)1, (uint)0, (uint)3)]
 			public async Task ForNullableUint_WhenValueIsDifferentToAllExpected_ShouldFail(
-				uint? subject, params uint?[] expected)
+				string differsBy, uint? subject, params uint?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1262,7 +1279,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1308,7 +1325,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1316,10 +1333,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ulong)1, (ulong)2, (ulong)3)]
-			[InlineData((ulong)1, (ulong)0, (ulong)3)]
+			[InlineData("-1", (ulong)1, (ulong)2, (ulong)3)]
+			[InlineData("1", (ulong)1, (ulong)0, (ulong)3)]
 			public async Task ForNullableUlong_WhenValueIsDifferentToAllExpected_ShouldFail(
-				ulong? subject, params ulong?[] expected)
+				string differsBy, ulong? subject, params ulong?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1328,7 +1345,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1374,7 +1391,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1382,10 +1399,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ushort)1, (ushort)2, (ushort)3)]
-			[InlineData((ushort)1, (ushort)0, (ushort)3)]
+			[InlineData("-1", (ushort)1, (ushort)2, (ushort)3)]
+			[InlineData("1", (ushort)1, (ushort)0, (ushort)3)]
 			public async Task ForNullableUshort_WhenValueIsDifferentToAllExpected_ShouldFail(
-				ushort? subject, params ushort?[] expected)
+				string differsBy, ushort? subject, params ushort?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -1394,7 +1411,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1440,7 +1457,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1465,9 +1482,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)1, (sbyte)2, (sbyte)3)]
-			[InlineData((sbyte)1, (sbyte)0, (sbyte)3)]
-			public async Task ForSbyte_WhenValueIsDifferentToAllExpected_ShouldFail(sbyte subject,
+			[InlineData("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
+			[InlineData("1", (sbyte)1, (sbyte)0, (sbyte)3)]
+			public async Task ForSbyte_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, sbyte subject,
 				params sbyte?[] expected)
 			{
 				async Task Act()
@@ -1477,7 +1494,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1505,7 +1522,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -1537,7 +1554,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1562,9 +1579,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((short)1, (short)2, (short)3)]
-			[InlineData((short)1, (short)0, (short)3)]
-			public async Task ForShort_WhenValueIsDifferentToAllExpected_ShouldFail(short subject,
+			[InlineData("-1", (short)1, (short)2, (short)3)]
+			[InlineData("1", (short)1, (short)0, (short)3)]
+			public async Task ForShort_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, short subject,
 				params short?[] expected)
 			{
 				async Task Act()
@@ -1574,7 +1591,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1602,7 +1619,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -1634,7 +1651,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1642,9 +1659,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((uint)1, (uint)2, (uint)3)]
-			[InlineData((uint)1, (uint)0, (uint)3)]
-			public async Task ForUint_WhenValueIsDifferentToAllExpected_ShouldFail(uint subject,
+			[InlineData("-1", (uint)1, (uint)2, (uint)3)]
+			[InlineData("1", (uint)1, (uint)0, (uint)3)]
+			public async Task ForUint_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, uint subject,
 				params uint?[] expected)
 			{
 				async Task Act()
@@ -1654,7 +1671,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1682,7 +1699,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -1714,7 +1731,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1722,9 +1739,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ulong)1, (ulong)2, (ulong)3)]
-			[InlineData((ulong)1, (ulong)0, (ulong)3)]
-			public async Task ForUlong_WhenValueIsDifferentToAllExpected_ShouldFail(ulong subject,
+			[InlineData("-1", (ulong)1, (ulong)2, (ulong)3)]
+			[InlineData("1", (ulong)1, (ulong)0, (ulong)3)]
+			public async Task ForUlong_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, ulong subject,
 				params ulong?[] expected)
 			{
 				async Task Act()
@@ -1734,7 +1751,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1762,7 +1779,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]
@@ -1794,7 +1811,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, 3]
@@ -1802,9 +1819,9 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ushort)1, (ushort)2, (ushort)3)]
-			[InlineData((ushort)1, (ushort)0, (ushort)3)]
-			public async Task ForUshort_WhenValueIsDifferentToAllExpected_ShouldFail(ushort subject,
+			[InlineData("-1", (ushort)1, (ushort)2, (ushort)3)]
+			[InlineData("1", (ushort)1, (ushort)0, (ushort)3)]
+			public async Task ForUshort_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, ushort subject,
 				params ushort?[] expected)
 			{
 				async Task Act()
@@ -1814,7 +1831,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}, which differs by {differsBy} from the closest value
 					              """);
 			}
 
@@ -1842,7 +1859,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
-					             but it was 1
+					             but it was 1, which differs by -1 from the closest value
 
 					             Expected values:
 					             [2, <null>, 3]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -179,6 +180,23 @@ public sealed partial class ThatDictionary
 					             contains values ["foo", "bar"],
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, [2] = value.AddMinutes(1), };
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).ContainsValues(value.AddMilliseconds(500), value.AddMinutes(1));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the values fall back to the default tolerance, as the items of a collection do");
 			}
 
 			[Fact]
