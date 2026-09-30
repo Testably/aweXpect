@@ -279,6 +279,19 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenUnexpectedIsNull_ShouldSucceed()
+				{
+					IEnumerable<double?> subject = [1.1, null, 2.1,];
+					IEnumerable<double>? unexpected = null;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected!).Within(0.2);
+
+					await That(Act).DoesNotThrow()
+						.Because("a collection is not equal to a null collection, whether its items are nullable or not");
+				}
 			}
 
 			public sealed class FloatTests

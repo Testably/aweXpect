@@ -327,6 +327,27 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					IEnumerable<double?> subject = [1.1, null, 2.1,];
+					IEnumerable<double>? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected!).Within(0.2);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection expected ± 0.2 in order,
+						             but the expected collection was <null>
+
+						             Collection:
+						             [1.1, <null>, 2.1]
+						             """)
+						.Because("a null collection of non-nullable items fails like any other null expected collection");
+				}
+
 				[Theory]
 				[InlineData(double.PositiveInfinity, 1.0)]
 				[InlineData(double.NegativeInfinity, 1.0)]

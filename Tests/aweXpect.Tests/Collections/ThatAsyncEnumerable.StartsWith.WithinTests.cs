@@ -459,6 +459,21 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.0, null, 2.0);
+					IEnumerable<double>? expected = null;
+
+					async Task Act()
+						=> await That(subject).StartsWith(expected!).Within(0.25);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' value cannot be null.").AsPrefix()
+						.Because("a null collection of non-nullable items is rejected like any other null expected collection");
+				}
+
+				[Fact]
 				public async Task WhenThePrefixLiesWithinTheTolerance_ShouldSucceed()
 				{
 					double?[] values = [1.0, null, 2.0, 3.0,];
