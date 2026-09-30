@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
@@ -130,14 +133,43 @@ internal static class IncludeMembersExtensions
 				: throw Tracing.WriteException(ReflectionFallback.NotSupported(key.Item1, "fields")));
 
 	/// <remarks>
-	///     An indexer is a property whose getter takes arguments, so its value cannot be read for the comparison.
+	///     An indexer is a property whose getter takes arguments, so its value cannot be read for the comparison.<br />
+	///     Readability is checked after the most derived declaration is taken, so that a declaration without a getter
+	///     hides a base property of the same name just like one with a non-public getter does.
 	/// </remarks>
 	private static PropertyInfo[] GetAllProperties(Type type, IncludeMembers includeMembers)
 		=> AllProperties.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
 			=> ReflectionFallback.IsSupported
 				? MostDerived(key.Item1.GetProperties(key.Item2)
-					.Where(property => property.CanRead && property.GetIndexParameters().Length == 0))
+						.Where(property => property.GetIndexParameters().Length == 0))
+					.Select(WithInheritedGetter)
+					.Where(property => property.CanRead)
+					.ToArray()
 				: throw Tracing.WriteException(ReflectionFallback.NotSupported(key.Item1, "properties")));
+
+	/// <remarks>
+	///     An override that declares only a setter still inherits the getter, but reflection returns the override
+	///     without it, so the property is read through the declaration whose setter it overrides.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	[RequiresUnreferencedCode("Reads the properties of a base type, which the trimmer may remove.")]
+#endif
+	private static PropertyInfo WithInheritedGetter(PropertyInfo property)
+	{
+		MethodInfo? definition = property.GetSetMethod(true)?.GetBaseDefinition();
+		if (property.CanRead || definition is null || definition.DeclaringType == property.DeclaringType)
+		{
+			return property;
+		}
+
+#pragma warning disable S3011 // https://rules.sonarsource.com/csharp/RSPEC-3011
+		return definition.DeclaringType!
+			.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+			               BindingFlags.DeclaredOnly)
+			.FirstOrDefault(declaration => declaration.Name == property.Name &&
+			                               declaration.GetIndexParameters().Length == 0) ?? property;
+#pragma warning restore S3011
+	}
 
 	/// <remarks>
 	///     A member is included when it has one of the requested visibilities. Requiring all of them at once would

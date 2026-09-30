@@ -2825,6 +2825,61 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenPropertyIsHiddenByAWriteOnlyProperty_ShouldNotCompareTheHiddenOne()
+	{
+		WriteOnlyHidingProperty actual = new(1, 3);
+		WriteOnlyHidingProperty expected = new(2, 3);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the write-only declaration hides the base property by name, like a declaration with a non-public getter does");
+	}
+
+	[Fact]
+	public async Task WhenPropertyIsOverriddenWithOnlyASetter_ShouldCompareItThroughTheInheritedGetter()
+	{
+		SetterOnlyOverride actual = new()
+		{
+			Value = 1,
+		};
+		SetterOnlyOverride expected = new()
+		{
+			Value = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("an override of the setter alone still inherits the getter, so the property stays readable");
+	}
+
+	[Fact]
+	public async Task WhenPropertyReturnsByReference_ShouldIgnoreItByTheReferencedType()
+	{
+		WithRefValue actual = new(1, "foo");
+		WithRefValue expected = new(2, "foo");
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByPredicate((_, type) => type == typeof(int), "int"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a ref-returning property is declared with the type it refers to, as a registration declares it");
+	}
+
+	[Fact]
 	public async Task WhenRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode actual = new(4);
@@ -3665,6 +3720,14 @@ public sealed class EquivalencyComparisonTests
 		public int PhantomValue() => phantom;
 	}
 
+	private sealed class SetterOnlyOverride : VirtualValue
+	{
+		public override int Value
+		{
+			set => base.Value = value;
+		}
+	}
+
 	private sealed class ValueLikeWithConstantText(int value)
 	{
 		private readonly int _value = value;
@@ -3692,6 +3755,11 @@ public sealed class EquivalencyComparisonTests
 	private sealed class ValueObject(int value)
 	{
 		public int Value => value;
+	}
+
+	private class VirtualValue
+	{
+		public virtual int Value { get; set; }
 	}
 
 	private sealed class WithIndexer
@@ -3744,6 +3812,13 @@ public sealed class EquivalencyComparisonTests
 		public int Value = value;
 	}
 
+	private sealed class WithRefValue(int value, string own)
+	{
+		private int _value = value;
+		public string Own { get; } = own;
+		public ref int Value => ref _value;
+	}
+
 	private sealed class WithThrowingEquals
 	{
 #pragma warning disable CA1822 // the comparison only reads instance members
@@ -3764,5 +3839,16 @@ public sealed class EquivalencyComparisonTests
 	{
 		public int Other = other;
 		public int Value = value;
+	}
+
+	private sealed class WriteOnlyHidingProperty(int property, int own) : WithProperty(property)
+	{
+		private string _value = "";
+		public int Own { get; } = own;
+
+		public new string Value
+		{
+			set => _value = value;
+		}
 	}
 }

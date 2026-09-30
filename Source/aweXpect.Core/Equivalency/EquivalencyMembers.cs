@@ -49,7 +49,7 @@ internal static class EquivalencyMembers
 		}
 
 		return type.GetProperties(includeMembers)
-			.Select(property => new EquivalencyMember(property.Name, property.PropertyType, Accessor(property)));
+			.Select(property => new EquivalencyMember(property.Name, DeclaredType(property), Accessor(property)));
 	}
 
 	/// <summary>
@@ -147,6 +147,13 @@ internal static class EquivalencyMembers
 		=> members.Values
 			.OrderBy(member => member.Order)
 			.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue));
+
+	/// <remarks>
+	///     Reflection declares a <see langword="ref" />-returning property with the by-ref type, while its value and a
+	///     registration of it have the type it refers to.
+	/// </remarks>
+	private static Type DeclaredType(PropertyInfo property)
+		=> property.PropertyType.IsByRef ? property.PropertyType.GetElementType()! : property.PropertyType;
 
 	private static Func<object, object?> Accessor(FieldInfo field)
 		=> subject => Read(() => field.GetValue(subject));

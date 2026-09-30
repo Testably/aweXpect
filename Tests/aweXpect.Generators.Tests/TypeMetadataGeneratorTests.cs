@@ -695,6 +695,43 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenInheritedGetterRequiresUnreferencedCode_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models
+			{
+				public class WithTrimmedGetter
+				{
+					public virtual string Name
+					{
+						[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("reflects")]
+						get => "";
+						set { }
+					}
+				}
+
+				public class OverridingTheSetter : WithTrimmedGetter
+				{
+					public int Id { get; set; }
+					public override string Name
+					{
+						set { }
+					}
+				}
+			}
+			""",
+			Call("Expect.That(new Models.OverridingTheSetter()).IsEquivalentTo(new Models.OverridingTheSetter());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).DoesNotContain("OverridingTheSetter")
+			.Because("an override of the setter alone is read through the inherited getter, which would make the registration a trimming warning on publish");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsABigTuple_ShouldRegisterRestInsteadOfTheVirtualItems()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
