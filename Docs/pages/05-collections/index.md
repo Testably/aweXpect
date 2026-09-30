@@ -27,7 +27,7 @@ later. With an older language version, such a call can bind to a different overl
 
 :::note[.NET 8 or later]
 Spans can only be passed to `Expect.That` on .NET 8 or later. On older targets, verify a property of the span, e.g.
-its `Length`, [synchronously](../03-how-it-works/01-anatomy.md#when-you-cannot-await).
+its `Length`, [synchronously](../03-how-it-works/index.md#when-you-cannot-await).
 :::
 
 You can pass a `Span<T>` or a `ReadOnlySpan<T>` directly to `Expect.That`. The items are copied into a
@@ -44,9 +44,10 @@ A span can't be kept across an `await`, so create it in the statement of the exp
 
 :::warning[A set or a dictionary has no defined order]
 `IsEqualTo`, `Contains` with a collection and `IsContainedIn` compare the items in the order in which the collection
-enumerates them unless `InAnyOrder()` is used, so for a `HashSet<T>` or a `Dictionary<TKey, TValue>` the result depends
-on an implementation detail. The analyzer rule [aweXpect0006](../07-analyzers.md#awexpect0006) warns about it and
-offers to append `.InAnyOrder()`. It also warns about `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()`, which
+enumerates them unless `InAnyOrder()` is used, so for a `HashSet<T>`, or for the entries, keys or values of a
+`Dictionary<TKey, TValue>`, the result depends on an implementation detail. `IsEqualTo` on a dictionary itself compares
+the entries [by key](./04-dictionaries.md#equality) instead. The analyzer rule
+[aweXpect0006](../07-analyzers.md#awexpect0006) warns about it and offers to append `.InAnyOrder()`. It also warns about `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()`, which
 have no meaning for such a collection. Sorted sets and dictionaries are not reported.
 :::
 
@@ -97,3 +98,6 @@ await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
 ```
 
 A tolerance takes precedence over the comparer of a set.
+
+Without `Within`, the items of the time types use the
+[default tolerance](../04-values/10-datetime-offset.md#default-tolerance), if one is set.

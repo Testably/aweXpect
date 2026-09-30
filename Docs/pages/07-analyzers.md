@@ -25,7 +25,7 @@ method with `ref`, `out` or `in` parameters, or in an override, a virtual method
 return type would have to change.
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
-[When you cannot await](./03-how-it-works/01-anatomy.md#when-you-cannot-await).
+[When you cannot await](./03-how-it-works/index.md#when-you-cannot-await).
 
 ## aweXpect0002
 
@@ -124,5 +124,25 @@ await Expect.That(() => Act()).DoesNotThrow();            // reported on .NET Fr
 await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
-Only these older targets are affected, as they use the .NET Standard 2.0 build of aweXpect. See
-[Delegates](./06-behaviour/01-delegates.md).
+These older targets are affected because they use the .NET Standard 2.0 build of aweXpect. On any target, the rule
+also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
+`Expect.That<ValueTask>(() => Act())`. See [Delegates](./06-behaviour/01-delegates.md).
+
+---
+
+**Nullability suppressor**: after an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
+`aweXpect` package suppresses the nullability warnings CS8600, CS8602, CS8604 and CS8629 for that subject, with the
+suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter, and the
+expectation has to be a preceding statement in the same method, local function or lambda, without a branch or a
+write to the subject in between. Only the warnings are suppressed; the null state of the compiler is unchanged.
+
+```csharp
+string? title = new Track().Title;
+
+await Expect.That(title).IsNotNull();
+int length = title.Length;   // no CS8602
+```
+
+**Metadata generator**: the source generator warns with `aweXpect2001` when a type named in
+`[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
+[Native AOT and trimming](./03-how-it-works/08-native-aot.md#equivalency).

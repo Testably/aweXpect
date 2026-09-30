@@ -2,17 +2,20 @@
 
 Describes the possible expectations for `TimeSpan`.
 
-| Expectation                                          | Negated                     | Summary                                  |
-|------------------------------------------------------|-----------------------------|------------------------------------------|
-| [`IsEqualTo`](#equality)                             | `IsNotEqualTo`              | equal to the expected value              |
-| [`IsOneOf`](#one-of)                                 | `IsNotOneOf`                | equal to one of the expected values      |
-| [`IsGreaterThan`](#greater-than--less-than)          | `IsNotGreaterThan`          | longer than the expected value           |
-| [`IsGreaterThanOrEqualTo`](#greater-than--less-than) | `IsNotGreaterThanOrEqualTo` | at least as long as the expected value   |
-| [`IsLessThan`](#greater-than--less-than)             | `IsNotLessThan`             | shorter than the expected value          |
-| [`IsLessThanOrEqualTo`](#greater-than--less-than)    | `IsNotLessThanOrEqualTo`    | at most as long as the expected value    |
-| [`IsBetween`](#between)                              | `IsNotBetween`              | between two values, both bounds included |
-| [`IsPositive`](#positive--negative)                  | `IsNotPositive`             | greater than zero                        |
-| [`IsNegative`](#positive--negative)                  | `IsNotNegative`             | less than zero                           |
+| Expectation                                          | Negated                     | Summary                                      |
+|------------------------------------------------------|-----------------------------|----------------------------------------------|
+| [`IsEqualTo`](#equality)                             | `IsNotEqualTo`              | equal to the expected value                  |
+| [`IsOneOf`](#one-of)                                 | `IsNotOneOf`                | equal to one of the expected values          |
+| [`IsGreaterThan`](#greater-than--less-than)          | `IsNotGreaterThan`          | greater than the expected value              |
+| [`IsGreaterThanOrEqualTo`](#greater-than--less-than) | `IsNotGreaterThanOrEqualTo` | greater than or equal to the expected value  |
+| [`IsLessThan`](#greater-than--less-than)             | `IsNotLessThan`             | less than the expected value                 |
+| [`IsLessThanOrEqualTo`](#greater-than--less-than)    | `IsNotLessThanOrEqualTo`    | less than or equal to the expected value     |
+| [`IsBetween`](#between)                              | `IsNotBetween`              | between two values, both bounds included     |
+| [`IsPositive`](#positive--negative)                  | `IsNotPositive`             | greater than zero                            |
+| [`IsNegative`](#positive--negative)                  | `IsNotNegative`             | less than zero                               |
+
+A `null` subject, e.g. a `TimeSpan?`, fails every expectation on this page except equality and one of, as the
+[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotNegative()` fails for it.
 
 ## Equality
 
@@ -49,6 +52,9 @@ await Expect.That(duration).IsLessThan(TimeSpan.FromSeconds(43));
 await Expect.That(duration).IsLessThanOrEqualTo(TimeSpan.FromSeconds(42));
 await Expect.That(duration).IsNotGreaterThan(TimeSpan.FromSeconds(42));
 ```
+
+The comparisons use the signed value and not the length, so `TimeSpan.FromSeconds(-1)` is greater than
+`TimeSpan.FromSeconds(-5)`.
 
 ## Between
 

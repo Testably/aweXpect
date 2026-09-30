@@ -61,8 +61,7 @@ evaluated, and every one of them throws an `ArgumentOutOfRangeException`:
   and `IsNotBetween(…)`,
 - a negative count in `AtLeast`, `AtMost`, `Exactly`, `LessThan`, `MoreThan` and `Between` on a collection, and in
   `HasCount(…)`,
-- a negative duration in `ExecutesWithin(…)` and in the `ExecutesIn()` family, of which only `Throws().Within(…)`
-  used to reject one,
+- a negative duration in the `ExecutesIn()` family, and in `Throws().Within(…)`, which already rejected one before,
 - a negative or `NaN` tolerance in `IsEqualTo(…).Within(…)` on a collection, and a negative
   `DefaultTimeComparisonTolerance`.
 
@@ -73,6 +72,16 @@ A reversed range on a `TimeOnly` is unaffected, because there it describes a ran
 `Between(…).And(…)` on an occurrence count, as in `Contains("a").Between(4).And(3)`, already threw for a reversed
 range; it now throws an `ArgumentOutOfRangeException` instead of a plain `ArgumentException`.
 
+## Exceptions from your code
+
+An exception thrown by your code while an expectation is evaluated fails the expectation, and its negation alike, with
+the exception as inner exception. This covers predicates such as in `All().Satisfy(…)`, `Contains(…)` or `HasItem(…)`,
+member selectors, comparers, a throwing `Equals`, a throwing property getter in equivalency and the enumeration of a
+collection subject. v2 threw some of these exceptions directly or wrapped them in an
+`InvalidOperationException("Error evaluating … constraint with value …")`, so a test that expected such an exception
+now gets a failed expectation instead. Exceptions of aweXpect itself, such as the argument validation above, are
+still thrown.
+
 ## Conflicting string options
 
 `IgnoringCase()` and `Using(comparer)` could be combined although only one of them ever took effect, and a comparer
@@ -80,6 +89,16 @@ set together with `AsRegex()` or `AsWildcard()` was ignored altogether, in both 
 message. Such a combination now throws an `InvalidOperationException` at the call that creates it, in either order.
 Pass a case-insensitive comparer instead of combining it with `IgnoringCase()`, and express the casing of a pattern
 with `IgnoringCase()` alone.
+
+## String patterns
+
+A wildcard pattern has to match the complete subject. v2 anchored it to a single line, so
+`Expect.That("xyz\nabc").IsEqualTo("abc").AsWildcard()` passed although the first line is not covered by the pattern.
+A regex pattern is matched with the default options, like `Regex.IsMatch(subject, pattern)`, instead of with
+`RegexOptions.Multiline`, so `^` and `$` anchor the complete value instead of any single line. Where you relied on the
+line anchors, pass the option explicitly with `AsRegex(RegexOptions.Multiline)` or use the inline `(?m)`. Counting
+occurrences with `Contains(…)` still finds a pattern anywhere in the subject. See
+[Match types](../04-values/03-string.md#match-types).
 
 ## Consistent vocabulary
 
@@ -99,6 +118,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `DoesNotHaveCount(n)`                                  | `HasCount().NotEqualTo(n)`                                   |
 | `DoesNotHaveValue(n)` on an enum                       | `HasValue().NotEqualTo(n)`                                   |
 | `ExecutesIn().Approximately(expected, tolerance)`      | `ExecutesIn(expected).Within(tolerance)`                     |
+| `ExecutesWithin(d)`                                    | `ExecutesIn().AtMost(d)`                                     |
 | `DoesNotExecuteWithin(d)`                              | `ExecutesIn().AtLeast(d)`                                    |
 | `DoesNotThrow().AndWhoseResult`                        | `DoesNotThrow().WhoseResult`                                 |
 | `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
@@ -112,6 +132,10 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 
 `HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard.
 
+`Values` on a dictionary subject is an extension property and needs C# 14. With an older language version, pass the
+values themselves, as in `Expect.That(dictionary.Values).All().AreUnique()`.
+
+`ExecutesIn().AtMost(d)` behaves like `ExecutesWithin(d)` did and reads `executes in at most …` in the failure message.
 `DoesNotExecuteWithin` read like the negation of `ExecutesWithin`, but both required the delegate to complete without
 throwing, so neither was the complement of the other. `ExecutesIn().AtLeast(d)` says the same thing without that trap;
 it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required strictly more. If you measured a
@@ -153,17 +177,23 @@ ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they
 `has item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
 need an update.
 
-## Timeouts on negative event expectations
+## Negative event expectations
 
 `Within(…)` used to be ignored on event expectations with an upper bound, such as `DidNotTrigger(…)` or
 `Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
-the full timeout. This is the one change that can make a passing test fail without touching its code.
+the full timeout.
+
+A count after `DidNotTriggerPropertyChanged()` or `DidNotTriggerPropertyChangedFor(…)` used to replace the implicit
+"never" without negating anything, so `DidNotTriggerPropertyChanged().AtLeast(2.Times())` passed for three events. The
+count is now negated and describes the unwanted occurrence: `AtLeast(2.Times())` expects fewer than two events and
+`Once()` anything but exactly one. Without a count the expectation still means "never". See
+[Events](../06-behaviour/03-events.md#triggering).
 
 ## Execution time as timeout
 
 An execution time expectation used to await the delegate to completion, so a delegate that never returns hung the
-test run instead of failing at the bound. The upper bound of `ExecutesWithin(d)`, `Throws().Within(d)`,
-`ExecutesIn().AtMost(d)`, `ExecutesIn().Between(a).And(b)` and `ExecutesIn(x).Within(t)` is now applied as timeout,
+test run instead of failing at the bound. The upper bound of `Throws().Within(d)`, `ExecutesIn().AtMost(d)`,
+`ExecutesIn().Between(a).And(b)` and `ExecutesIn(x).Within(t)` is now applied as timeout,
 so a delegate accepting a `CancellationToken` is cancelled once it elapsed and the expectation fails with
 "did not finish within …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. The task of an asynchronous
 delegate is abandoned at that point even if it ignores the token, and so is a `Task<T>` subject under `WithTimeout`
@@ -191,6 +221,13 @@ collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` f
 match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
 [DateTime / DateTimeOffset](../04-values/10-datetime-offset.md#kind).
 
+## Contained collections
+
+`Expect.That(values).IsContainedIn(expected)` without `InAnyOrder()` requires the items to appear in `expected` as an
+uninterrupted run, like `Expect.That(expected).Contains(values)` already did. v2 accepted items with other items in
+between, so `[1, 3]` was contained in `[1, 2, 3]`; append `IgnoringInterspersedItems()` to keep that meaning. See
+[Superset](../05-collections/01-equality.md#superset).
+
 ## Dictionary subjects
 
 `ContainsKey`, `ContainsKeys`, `ContainsValue`, `ContainsValues`, `Keys`, `Values` and their negated forms were
@@ -202,6 +239,11 @@ subject resolves to the `IDictionary<TKey, TValue>` overload. No call needs an e
 expectations as a static method.
 
 ## Equivalency
+
+A type that is compared by its members ignores its own `Equals`. v2 asked `Equals` first and took `true` as success,
+so a type whose `Equals` called more instances equal than its members do passed although its members differed. Such a
+comparison now fails; to let `Equals` decide, compare the type
+[by value](../04-values/13-equivalency.md#comparing-by-value-or-by-members).
 
 `IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public
 members are registered at compile time, so asking for internal members falls back to reflection, which is unavailable

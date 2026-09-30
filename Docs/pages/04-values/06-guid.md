@@ -9,6 +9,10 @@ Describes the possible expectations for `Guid` values.
 | [`IsEmpty`](#empty)       | `IsNotEmpty`       | `Guid.Empty`                          |
 | [`IsNullOrEmpty`](#empty) | `IsNotNullOrEmpty` | `null` or `Guid.Empty` (only `Guid?`) |
 
+A `null` subject, i.e. a `Guid?`, fails every expectation on this page except equality, one of and `IsNullOrEmpty`, as
+the [rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so both `IsEmpty()` and `IsNotEmpty()`
+fail for it.
+
 ## Equality
 
 You can verify that the `Guid` is equal to another one or not:

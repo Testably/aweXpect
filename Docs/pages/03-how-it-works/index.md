@@ -1,4 +1,18 @@
-# Anatomy of an expectation
+# How aweXpect works
+
+Describes the concepts that all expectations share.
+
+| Page                                                   | Topics                                                             |
+|--------------------------------------------------------|--------------------------------------------------------------------|
+| [Negation](./02-negation.md)                           | negated counterparts of expectations                               |
+| [Combining expectations](./03-combining.md)            | `And`, `Or`, members, new and different subjects, using the result |
+| [`null` subjects](./04-null-subjects.md)               | how expectations and their negations treat a `null` subject        |
+| [Options](./05-options.md)                             | `Because`, string options, comparers, equivalency, tolerance       |
+| [Time and cancellation](./06-time-and-cancellation.md) | timeouts, cancellation, waiting, execution time                    |
+| [Configuration](./07-configuration.md)                 | customization lifetimes, global defaults, formatting, settings     |
+| [Native AOT and trimming](./08-native-aot.md)          | equivalency and events under Native AOT and trimming               |
+
+## Anatomy of an expectation
 
 Every expectation starts with `Expect.That(subject)`, continues with what you expect and is awaited:
 
@@ -25,7 +39,7 @@ but it was "Let It Be", which differs at index 0:
 - The second line states the expectation, followed by the reason from `Because(…)`.
 - The line starting with "but" describes what was found instead.
 
-## Evaluated when awaited
+### Evaluated when awaited
 
 Every expectation is lazy: it is only evaluated when it is awaited. An expectation that is not awaited never fails,
 so only the second line can fail the test:
@@ -41,7 +55,7 @@ lambda, whose failure would be thrown after the test has completed.
 
 Awaiting an expectation also returns the value it verified, see [combining](./03-combining.md#using-the-result).
 
-## When you cannot await
+### When you cannot await
 
 [`ref struct`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct) values
 can't be used in an `async` method. For a property of such a value, or of a span on a target framework that

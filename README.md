@@ -38,10 +38,10 @@ By using async assertions per default, we have a consistent API and other perks:
 - The evaluation is only triggered after the complete fluent chain is loaded, which has some nice benefits:
 	- `Because` can be registered once as a general method that can be applied at the end of the expectation instead of
 	  cluttering all methods with the `because` and `becauseArgs` parameters
-	- `WithCancellation` can also be registered at the end an applies a `CancellationToken` to all async methods which
+	- `WithCancellation` can also be registered at the end and applies a `CancellationToken` to all async methods which
 	  allows cancellation of `IAsyncEnumerable` evaluations
-	- Expectations can be combined directly (via `Expect.ThatAll`) instead of relying on global state (
-	  e.g. [assertion scopes](https://fluentassertions.com/introduction#assertion-scopes))
+	- Expectations can be combined directly (via `Expect.ThatAll`) instead of relying on global state
+	  (e.g. [assertion scopes](https://fluentassertions.com/introduction#assertion-scopes))
 
 ### Performant
 
@@ -56,7 +56,7 @@ The [aweXpect.Core](https://www.nuget.org/packages/aweXpect.Core/) package is in
 extensions, so that the risk of version conflicts between different extensions can be reduced.
 
 You can extend the functionality for any types, by adding extension methods on `IThat<TType>`.
-More information can be found in the [extensibility guide](https://docs.testably.org/aweXpect/extending/your-first-expectation).
+More information can be found in the [extensibility guide](https://docs.testably.org/aweXpect/extending).
 
 **Extension projects**
 

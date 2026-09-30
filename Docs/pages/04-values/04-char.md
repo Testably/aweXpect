@@ -17,6 +17,10 @@ Describes the possible expectations for `char` values.
 | [`IsAControlCharacter`](#categories) | `IsNotAControlCharacter` | a control character                     |
 | [`IsWhiteSpace`](#categories)        | `IsNotWhiteSpace`        | whitespace                              |
 
+A `null` subject, i.e. a `char?`, fails every expectation on this page except equality and one of, as the
+[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so both `IsALetter()` and `IsNotALetter()` fail
+for it.
+
 ## Equality
 
 You can verify that the `char` is equal to another one or not:

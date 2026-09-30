@@ -364,8 +364,10 @@ await Expect.That(midnight).IsEquivalentTo(new
 `It.Is<T>()` (without `.That`) only asserts that the property has the given type.
 
 :::note
-Because the type cannot be inferred from `null`, an `It.Is<T>().That.IsNull()` check still works, but
-`It.Is<T>().That.IsNotNull()` requires the property to be non-null.
+The type of `null` cannot be determined, so for a `null` property the expectations are verified against `null` when
+`T` is a reference type or a nullable value type: `It.Is<string>().That.IsNull()` succeeds, while e.g.
+`It.Is<string>().That.IsEmpty()` fails. For a non-nullable value type `T`, such as `int`, a `null` property always
+fails.
 :::
 
 ## Failure messages

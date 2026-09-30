@@ -19,6 +19,12 @@ public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject
     => subject.Record().Events();
 ```
 
+The source generator that follows these markers ships in the `aweXpect` package, not in `aweXpect.Core`. It runs when
+the consumer's project is compiled, and only if that project gets the `aweXpect` package, is compiled with C# 9 or
+later and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` declaration). A consumer that
+only references `aweXpect.Core` and your extension gets no registrations, so the types stay on the reflection
+fallback.
+
 An extension that reflects over a subject itself should guard the reflection with `ReflectionFallback.IsSupported`
 and fail with a message that names the `aweXpect.ReflectionFallback.IsSupported` runtime switch otherwise, so that it
 behaves the same way as the built-in expectations.

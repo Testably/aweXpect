@@ -4,16 +4,22 @@ using aweXpect.Core.Constraints;
 
 namespace Snippets
 {
-	// The page declares the constraint privately next to each of its versions, and uses it from another sample.
-	internal sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
+	// The constraint that the sample for the code of the caller passes the source code to.
+	internal sealed class HasFileNameMatchingConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		Func<string, bool> predicate,
+		string predicateExpression)
 		: ConstraintResult.WithNotNullValue<string>(it, grammars),
 			IValueConstraint<string?>
 	{
 		public ConstraintResult IsMetBy(string? actual) => this;
 
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null) { }
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a file name matching ").Append(predicateExpression);
 
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null) { }
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> _ = predicate;
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 
@@ -28,11 +34,11 @@ namespace Snippets
 }
 
 // The page tells to declare this attribute on targets that miss it, and on the others it only causes a warning.
-namespace System.Diagnostics.CodeAnalysis
+namespace System.Runtime.CompilerServices
 {
 	[AttributeUsage(AttributeTargets.Parameter)]
-	internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute
+	internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
 	{
-		public bool ReturnValue { get; } = returnValue;
+		public string ParameterName { get; } = parameterName;
 	}
 }

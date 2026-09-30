@@ -35,10 +35,10 @@ the failure message:
 /// </summary>
 private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
     : ConstraintResult(grammars),
-        IValueConstraint<string>
+        IValueConstraint<string?>
 {
     private string? _actual;
-    public ConstraintResult IsMetBy(string actual)
+    public ConstraintResult IsMetBy(string? actual)
     {
         _actual = actual;
         Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
@@ -66,9 +66,14 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
         return typeof(TValue).IsAssignableFrom(typeof(string));
     }
 
-    public override ConstraintResult Negate() => this;
+    public override ConstraintResult Negate()
+        => throw new NotSupportedException("Negation of IsAbsolutePath is not supported.");
 }
 ```
+
+`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsAbsolutePath())`, and
+the caller relies on the returned result being negated. Returning `this` unchanged would silently check the
+non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
 
 :::note[Older target frameworks]
 `NotNullWhenAttribute` is missing in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package,
@@ -99,9 +104,9 @@ With these the above example could be written (with support for the negated case
 ```csharp
 private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
     : ConstraintResult.WithNotNullValue<string>(it, grammars),
-        IValueConstraint<string>
+        IValueConstraint<string?>
 {
-    public ConstraintResult IsMetBy(string actual)
+    public ConstraintResult IsMetBy(string? actual)
     {
         Actual = actual;
         Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
@@ -170,8 +175,8 @@ A constraint that supports the negated case also allows you to write an explicit
 /// <summary>
 ///     Verifies that the <paramref name="subject"/> is not an absolute path.
 /// </summary>
-public static AndOrResult<string, IThat<string>> IsNotAbsolutePath(
-    this IThat<string> subject)
+public static AndOrResult<string, IThat<string?>> IsNotAbsolutePath(
+    this IThat<string?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsAbsolutePathConstraint(it, grammars).Invert()),
         subject);
@@ -191,3 +196,80 @@ The optional last argument names the code in the failure message, e.g. "the pred
 InvalidOperationException"; without it, the subject is named ("it did throw …").
 
 An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
+
+## Continuing with the value
+
+The first type argument of the result, e.g. `string` in `AndOrResult<string, IThat<string?>>`, is the type of the value
+that the expectation passes on. Awaiting the expectation returns this value, and an `AndOrWhoseResult<TType, TThat>`
+also continues with `Whose` on a member of it:
+
+```csharp
+public static AndOrWhoseResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new IsAbsolutePathConstraint(it, grammars)),
+        subject);
+```
+
+```csharp
+string path = "/music/album.txt";
+
+string verifiedPath = await Expect.That(path).IsAbsolutePath();
+await Expect.That(path).IsAbsolutePath().Whose(p => p.Length, length => length.IsLessThan(260));
+```
+
+Both ask the `TryGetValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows or
+converts the subject returns the converted value there. The helper classes return their `Actual` value. When
+`TryGetValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
+
+## Nested expectations
+
+An expectation that lets the caller continue with expectations on a part of the subject, like
+`Throws().WithInner<T>(e => …)`, selects the part with `ForMember` and adds the caller's expectations to it:
+
+```csharp
+public static AndOrResult<string, IThat<string?>> HasFileName(
+    this IThat<string?> subject,
+    Action<IThatSubject<string?>> expectations)
+    => new(subject.Get().ExpectationBuilder
+            .ForMember(
+                MemberAccessor<string?, string?>.FromFunc(path => Path.GetFileName(path), "file name "),
+                (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
+            .AddExpectations(e => expectations(new ThatSubject<string?>(e)),
+                grammars => grammars | ExpectationGrammars.Nested),
+        subject);
+```
+
+`await Expect.That(path).HasFileName(name => name.EndsWith(".txt"))` then reads "has file name that ends with …".
+
+- The second argument of `ForMember` writes the text in front of the nested expectations.
+- The name of the member replaces `it` in their result texts ("file name was …"), unless you pass `replaceIt: false`.
+- The function passed to `AddExpectations` sets the grammars of the nested expectations.
+- `Validate(…)` before `AddExpectations` adds a constraint on the subject itself, e.g. based on
+  `ConstraintResult.WithNotNullValue<T>` to rule out a `null` subject, as `WithInner` does.
+- An exception that the member selector throws fails the nested expectations with "… did throw …".
+- `ForAsyncMember` does the same for a member that has to be awaited.
+
+## Asynchronous constraints
+
+An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, which is canceled when the timeout
+(`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
+
+```csharp no-compile
+public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+{
+    Actual = actual;
+    if (actual is not null)
+    {
+        Outcome = await ExistsAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
+    }
+
+    return this;
+}
+```
+
+- An `OperationCanceledException` from that token needs no handling: a timeout fails the expectation with "did not
+  finish within …", and a cancellation by the caller leaves it inconclusive.
+- A constraint that stops at the cancellation without throwing leaves its `Outcome` undecided. A timeout then fails the
+  expectation in the same way. After a cancellation, the helper classes write the result text with
+  `AppendUndecidedResult`, which you can override. By default it writes "it could not be verified, because the
+  evaluation was already canceled".

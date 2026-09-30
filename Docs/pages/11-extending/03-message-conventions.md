@@ -51,6 +51,30 @@ but Path was "album.txt"
 - Append the options after the expectation, e.g. ` ignoring case`, ` using MyComparer` or ` in any order`.
 - Describe the expected value, not the check: `is an absolute path` instead of `Path.IsPathRooted returns true`.
 
+### Code of the caller in the expectation text
+
+A predicate or another delegate of the caller has no value to format, so name it by its source code, like the built-in
+`Satisfies` does (`satisfies x => x.Length > 3`). Let the compiler fill in the source code with
+`[CallerArgumentExpression]` on an optional parameter, which the built-in expectations call `doNotPopulateThisValue`,
+and pass it to the constraint for its expectation text:
+
+```csharp
+using System.Runtime.CompilerServices;
+using aweXpect.Results;
+
+public static AndOrResult<string, IThat<string?>> HasFileNameMatching(
+    this IThat<string?> subject,
+    Func<string, bool> predicate,
+    [CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new HasFileNameMatchingConstraint(it, grammars, predicate, doNotPopulateThisValue)),
+        subject);
+```
+
+For `HasFileNameMatching(n => n.EndsWith(".txt"))`, the expectation text can then read
+`has a file name matching n => n.EndsWith(".txt")`. `CallerArgumentExpressionAttribute` requires C# 10 and is missing
+in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package there.
+
 ## Result text
 
 - Start with the name of the subject, the `it` parameter of the constraint (exposed as `It` by the helper classes),
@@ -135,9 +159,9 @@ when the grammars are plural, but keep the singular form in the result text as l
 ```csharp
 private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
     : ConstraintResult.WithNotNullValue<string>(it, grammars),
-        IValueConstraint<string>
+        IValueConstraint<string?>
 {
-    public ConstraintResult IsMetBy(string actual)
+    public ConstraintResult IsMetBy(string? actual)
     {
         Actual = actual;
         Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
