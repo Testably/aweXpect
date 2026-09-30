@@ -435,6 +435,30 @@ public sealed partial class ThatEnumerable
 			}
 			
 			[Fact]
+			public async Task WhenTypeDoesNotMatchNullabilityAndItemsDiffer_ShouldListTheExpectedItemsOnOneLine()
+			{
+				IEnumerable<double?> subject = [1.0, 2.0, 3.0,];
+				List<double> expected = [1.0, 2.0, 4.0,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 3.0 at index 2 instead of 4.0
+
+					             Collection:
+					             [1.0, 2.0, 3.0]
+
+					             Expected:
+					             [1.0, 2.0, 4.0]
+					             """)
+					.Because("casting the non-nullable expected items up keeps their count, which decides the layout");
+			}
+
+			[Fact]
 			public async Task WhenTypeDoesNotMatchNullability_ShouldStillWork()
 			{
 				IEnumerable<int?> subject = [1, 2, 3,];

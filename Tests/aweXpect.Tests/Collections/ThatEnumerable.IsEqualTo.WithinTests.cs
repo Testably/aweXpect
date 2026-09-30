@@ -124,9 +124,7 @@ public sealed partial class ThatEnumerable
 						             [decimal.MinValue]
 
 						             Expected:
-						             [
-						               decimal.MaxValue
-						             ]
+						             [decimal.MaxValue]
 						             """)
 						.Because("a difference beyond the range of decimal is larger than any tolerance");
 				}
@@ -366,9 +364,7 @@ public sealed partial class ThatEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [
-						                {Formatter.Format(expected)}
-						              ]
+						              [{Formatter.Format(expected)}]
 						              """);
 				}
 
@@ -548,9 +544,7 @@ public sealed partial class ThatEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [
-						                {Formatter.Format(expected)}
-						              ]
+						              [{Formatter.Format(expected)}]
 						              """);
 				}
 

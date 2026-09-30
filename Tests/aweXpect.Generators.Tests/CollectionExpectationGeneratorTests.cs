@@ -18,6 +18,17 @@ public sealed class CollectionExpectationGeneratorTests
 	                             	public sealed class GuaranteesNotNullAttribute : System.Attribute { }
 	                             }
 
+	                             namespace aweXpect.Helpers
+	                             {
+	                             	public sealed class CastingEnumerable<TSource, TResult>(
+	                             		System.Collections.Generic.IEnumerable<TSource> source)
+	                             		: System.Collections.Generic.IEnumerable<TResult>
+	                             	{
+	                             		public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => null!;
+	                             		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => null!;
+	                             	}
+	                             }
+
 	                             namespace aweXpect.Options
 	                             {
 	                             	public sealed class ObjectEqualityWithToleranceOptions<TItem, TTolerance> { }
@@ -441,7 +452,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the element is what the expected parameter carries once TNumber is bound");
 		await That(result.Generated).Contains("this global::aweXpect.Core.IThat<float?> subject").Exactly(2);
 		await That(result.Generated).Contains("global::Lib.Factory.CreateFloat()").Exactly(2);
-		await That(result.Generated).DoesNotContain("Enumerable.Cast")
+		await That(result.Generated).DoesNotContain("CastingEnumerable")
 			.Because("a non-nullable element has nothing to cast up");
 	}
 
@@ -473,7 +484,9 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).Contains("IsEqualTo(").Exactly(3);
 		await That(result.Generated).Contains("global::Lib.Factory.CreateNullableDouble()").Exactly(2);
-		await That(result.Generated).Contains("global::System.Linq.Enumerable.Cast<double?>(expected)").Once();
+		await That(result.Generated)
+			.Contains("new global::aweXpect.Helpers.CastingEnumerable<double, double?>(expected)").Once()
+			.Because("the cast-up keeps the count of the expected items, which decides their layout");
 		await That(result.Generated).Contains("IThat<double>").Once()
 			.Because("an unconstrained TItem? is the value type itself");
 		await That(result.Generated).Contains("IThat<double?>").Exactly(2);
@@ -548,7 +561,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.GeneratorDiagnostics).IsEmpty();
 		await That(result.Generated).Contains("params double?[] expected").Once()
 			.Because("a params array of the nullable element already accepts the non-nullable one");
-		await That(result.Generated).DoesNotContain("Enumerable.Cast");
+		await That(result.Generated).DoesNotContain("CastingEnumerable");
 	}
 
 	[Fact]
@@ -581,7 +594,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.GeneratorDiagnostics).IsEmpty();
 		await That(result.Generated).Contains("IsEqualTo(").Once()
 			.Because("a single nullable value already accepts the non-nullable one");
-		await That(result.Generated).DoesNotContain("Enumerable.Cast");
+		await That(result.Generated).DoesNotContain("CastingEnumerable");
 	}
 
 	[Fact]
