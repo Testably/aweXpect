@@ -6,11 +6,11 @@ on:
         branches: [ main ]
         tags: [ 'v[0-9]+.[0-9]+.[0-9]+*', 'core/v[0-9]+.[0-9]+.[0-9]+*' ]
 
-# A burst of merges would otherwise queue a full mutation run per commit, although only the last one reaches the
-# dashboard. Every tag has its own ref, so a release build is never superseded.
+# Builds of the same ref run one after another in push order, so a burst of merges does not run the mutation tests in
+# parallel. Every tag has its own ref, so a release build never waits behind a build of `main`.
 concurrency:
     group: build-${{ github.ref }}
-    cancel-in-progress: false
+    queue: max
 
 jobs:
     unit-tests:
