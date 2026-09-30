@@ -49,6 +49,14 @@ A focus on performance allows you to execute your tests as fast as possible.
 Special care is taken for the happy case (succeeding tests) to be as performant as possible. See
 the [benchmarks](https://docs.testably.org/aweXpect/benchmarks) for more details.
 
+### Native AOT and trimming
+
+`aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later, so your test project can be
+published with Native AOT. Equivalency and event recording work without reflection, because a source generator that
+ships with the `aweXpect` package registers the members and events they need when your project is compiled. A
+comparison or recording of a type the generator could not see fails with an error that tells you how to register it.
+More information can be found in the [Native AOT guide](https://docs.testably.org/aweXpect/how-it-works/native-aot).
+
 ### Extensible
 
 We added lots of extensibility points to allow you to build custom extensions.  

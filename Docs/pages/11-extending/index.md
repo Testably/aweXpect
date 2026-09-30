@@ -7,6 +7,9 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
+Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
+[Native AOT for extensions](./06-native-aot.md).
+
 | Page                                                       | Topics                                                                    |
 |------------------------------------------------------------|---------------------------------------------------------------------------|
 | [Constraints and results](./02-constraints-and-results.md) | constraints, negation, result types, nested and asynchronous expectations |

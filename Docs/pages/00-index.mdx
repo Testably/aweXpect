@@ -102,6 +102,25 @@ xUnit (v2 and v3), NUnit (v3 and v4), MSTest and TUnit are detected automaticall
 exception, so they integrate cleanly with each runner.
 
 </TabItem>
+<TabItem value="aot" label="Native AOT">
+
+`aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later, so a test project can be
+published with Native AOT:
+
+```xml title="Tests.csproj"
+<PropertyGroup>
+  <PublishAot>true</PublishAot>
+</PropertyGroup>
+```
+
+Equivalency and event recording need the members and events of your types. A source generator that ships with the
+`aweXpect` package registers them for each call site when your project is compiled, so they work without reflection. A
+comparison or recording of a type the generator could not see fails with an error that names the type and tells you
+how to register it, instead of silently verifying less.
+
+The details are in [Native AOT and trimming](./03-how-it-works/08-native-aot.md).
+
+</TabItem>
 </Tabs>
 
 ## Migrating from another assertion library?
@@ -121,5 +140,7 @@ Expectations for JSON, HTTP, reflection, mocks and more are provided by separate
 - **[Migration](/aweXpect/migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
 - **[How aweXpect works](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
   configuration.
+- **[Native AOT and trimming](./03-how-it-works/08-native-aot.md)**: how equivalency and event recording work in a
+  test project published with trimming or Native AOT.
 - **[Extending aweXpect](./11-extending/index.md)**: add expectations for your own types using
   `aweXpect.Core`.
