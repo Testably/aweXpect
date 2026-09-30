@@ -1213,65 +1213,84 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return type.ToDisplayString(TypeFormat);
 			}
 
-			switch (type)
+			return type switch
 			{
-				case IArrayTypeSymbol array:
-				{
-					StringBuilder ranks = new();
-					ITypeSymbol element = array;
-					while (element is IArrayTypeSymbol current)
-					{
-						ranks.Append('[').Append(',', current.Rank - 1).Append(']');
-						element = current.ElementType;
-					}
+				IArrayTypeSymbol array => SpellArrayWithTypeParameters(array, probes, helpers),
+				INamedTypeSymbol { IsAnonymousType: true, } => SpellAnonymousWithTypeParameter(type, probes, helpers),
+				INamedTypeSymbol named => SpellNamedWithTypeParameters(named.TupleUnderlyingType ?? named, probes,
+					helpers),
+				_ => null,
+			};
+		}
 
-					string? spelled = SpellWithTypeParameters(element, probes, helpers);
-					return spelled is null ? null : spelled + ranks;
-				}
-				case INamedTypeSymbol { IsAnonymousType: true, }:
-				{
-					string? probe = ProbeExpression(type, helpers);
-					if (probe is null)
-					{
-						return null;
-					}
-
-					probes.Add(probe);
-					return "T" + (probes.Count - 1);
-				}
-				case INamedTypeSymbol named:
-				{
-					named = named.TupleUnderlyingType ?? named;
-					string? prefix = named.ContainingType is not null
-						? SpellWithTypeParameters(named.ContainingType, probes, helpers) is { } container
-							? container + "."
-							: null
-						: named.ContainingNamespace.IsGlobalNamespace
-							? "global::"
-							: named.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + ".";
-					if (prefix is null)
-					{
-						return null;
-					}
-
-					List<string> arguments = [];
-					foreach (ITypeSymbol typeArgument in named.TypeArguments)
-					{
-						string? argument = SpellWithTypeParameters(typeArgument, probes, helpers);
-						if (argument is null)
-						{
-							return null;
-						}
-
-						arguments.Add(argument);
-					}
-
-					return prefix + Identifier(named.Name) +
-					       (arguments.Count == 0 ? "" : "<" + string.Join(", ", arguments) + ">");
-				}
-				default:
-					return null;
+		private static string? SpellArrayWithTypeParameters(IArrayTypeSymbol array, List<string> probes,
+			List<string> helpers)
+		{
+			StringBuilder ranks = new();
+			ITypeSymbol element = array;
+			while (element is IArrayTypeSymbol current)
+			{
+				ranks.Append('[').Append(',', current.Rank - 1).Append(']');
+				element = current.ElementType;
 			}
+
+			string? spelled = SpellWithTypeParameters(element, probes, helpers);
+			return spelled is null ? null : spelled + ranks;
+		}
+
+		private static string? SpellAnonymousWithTypeParameter(ITypeSymbol type, List<string> probes,
+			List<string> helpers)
+		{
+			string? probe = ProbeExpression(type, helpers);
+			if (probe is null)
+			{
+				return null;
+			}
+
+			probes.Add(probe);
+			return "T" + (probes.Count - 1);
+		}
+
+		private static string? SpellNamedWithTypeParameters(INamedTypeSymbol named, List<string> probes,
+			List<string> helpers)
+		{
+			string? prefix = SpellContainerWithTypeParameters(named, probes, helpers);
+			if (prefix is null)
+			{
+				return null;
+			}
+
+			List<string> arguments = [];
+			foreach (ITypeSymbol typeArgument in named.TypeArguments)
+			{
+				string? argument = SpellWithTypeParameters(typeArgument, probes, helpers);
+				if (argument is null)
+				{
+					return null;
+				}
+
+				arguments.Add(argument);
+			}
+
+			return prefix + Identifier(named.Name) +
+			       (arguments.Count == 0 ? "" : "<" + string.Join(", ", arguments) + ">");
+		}
+
+		private static string? SpellContainerWithTypeParameters(INamedTypeSymbol named, List<string> probes,
+			List<string> helpers)
+		{
+			if (named.ContainingType is not null)
+			{
+				string? container = SpellWithTypeParameters(named.ContainingType, probes, helpers);
+				return container is null ? null : container + ".";
+			}
+
+			if (named.ContainingNamespace.IsGlobalNamespace)
+			{
+				return "global::";
+			}
+
+			return named.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + ".";
 		}
 
 		/// <remarks>

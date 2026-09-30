@@ -98,7 +98,7 @@ public static class TypeMetadataRegistry
 	///     published. A nested call joins the outer one.
 	/// </remarks>
 	public static void RegisterBatch(Action register)
-		=> Instance.RegisterBatch(register);
+		=> Instance.Batch(register);
 
 	private static Func<object, object?> Wrap<T, TMember>(Func<T, TMember> getValue)
 		=> subject => getValue((T)subject);
@@ -136,7 +136,7 @@ public static class TypeMetadataRegistry
 		///     The registrations are collected per thread, because a module initializer that registers in a batch must
 		///     not capture the registrations another thread makes meanwhile.
 		/// </remarks>
-		public void RegisterBatch(Action register)
+		public void Batch(Action register)
 		{
 			if (_pending.Value is not null)
 			{
@@ -144,11 +144,12 @@ public static class TypeMetadataRegistry
 				return;
 			}
 
-			Dictionary<Type, TypeMetadata> pending = new();
-			_pending.Value = pending;
+			Dictionary<Type, TypeMetadata> pending;
+			_pending.Value = new Dictionary<Type, TypeMetadata>();
 			try
 			{
 				register();
+				pending = _pending.Value!;
 			}
 			finally
 			{

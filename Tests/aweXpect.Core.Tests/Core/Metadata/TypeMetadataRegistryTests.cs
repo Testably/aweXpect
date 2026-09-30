@@ -12,7 +12,7 @@ public sealed class TypeMetadataRegistryTests
 		TypeMetadataRegistry.Registration registration = new();
 		bool isVisibleWhilePending = false;
 
-		registration.RegisterBatch(() =>
+		registration.Batch(() =>
 		{
 			OnAnotherThread(() => registration.AddProperty(typeof(Other), "Value", typeof(int), _ => 1));
 			isVisibleWhilePending = registration.TryGet(typeof(Other), out _);
@@ -28,7 +28,7 @@ public sealed class TypeMetadataRegistryTests
 		TypeMetadataRegistry.Registration registration = new();
 		bool isVisibleWhilePending = true;
 
-		registration.RegisterBatch(() =>
+		registration.Batch(() =>
 		{
 			registration.AddEvent(typeof(Dummy), "Changed", _ => new Action(() => { }), (_, _) => { },
 				(_, _) => { });
@@ -49,7 +49,7 @@ public sealed class TypeMetadataRegistryTests
 		TypeMetadataRegistry.Registration registration = new();
 		bool isVisibleWhilePending = true;
 
-		registration.RegisterBatch(() =>
+		registration.Batch(() =>
 		{
 			registration.AddProperty(typeof(Dummy), "First", typeof(int), _ => 1);
 			isVisibleWhilePending = IsRegisteredOnAnotherThread(registration, typeof(Dummy));
@@ -71,9 +71,9 @@ public sealed class TypeMetadataRegistryTests
 		TypeMetadataRegistry.Registration registration = new();
 		bool isVisibleAfterInnerBatch = true;
 
-		registration.RegisterBatch(() =>
+		registration.Batch(() =>
 		{
-			registration.RegisterBatch(() => registration.AddProperty(typeof(Dummy), "First", typeof(int), _ => 1));
+			registration.Batch(() => registration.AddProperty(typeof(Dummy), "First", typeof(int), _ => 1));
 			isVisibleAfterInnerBatch = IsRegisteredOnAnotherThread(registration, typeof(Dummy));
 			registration.AddProperty(typeof(Dummy), "Second", typeof(int), _ => 2);
 		});
@@ -90,7 +90,7 @@ public sealed class TypeMetadataRegistryTests
 		TypeMetadataRegistry.Registration registration = new();
 
 		void Act()
-			=> registration.RegisterBatch(() =>
+			=> registration.Batch(() =>
 			{
 				registration.AddProperty(typeof(Dummy), "Value", typeof(int), _ => 1);
 				throw new InvalidOperationException("broken registration");
@@ -112,7 +112,7 @@ public sealed class TypeMetadataRegistryTests
 		registration.TryGet(typeof(Dummy), out TypeMetadataRegistry.TypeMetadata? before);
 		string[] namesWhilePending = [];
 
-		registration.RegisterBatch(() =>
+		registration.Batch(() =>
 		{
 			registration.AddProperty(typeof(Dummy), "Value", typeof(int), _ => 2);
 			registration.AddProperty(typeof(Dummy), "Other", typeof(int), _ => 3);
