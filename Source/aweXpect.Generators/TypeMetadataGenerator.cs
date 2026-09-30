@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace aweXpect.Generators;
 
@@ -74,6 +73,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(fromCallSites.Combine(fromAssembly).Combine(isSupported),
 			static (spc, source) => Emit(spc, source.Left.Left, source.Left.Right, source.Right));
+
+		context.RegisterSourceOutput(fromAssembly.Combine(isSupported).Combine(context.CompilationProvider),
+			static (spc, source) => ReportUnregistered(spc, source.Left.Left, source.Left.Right, source.Right));
 	}
 
 	private static EquatableArray<TypeRegistration> FromCallSite(GeneratorSyntaxContext context,
@@ -308,23 +310,24 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		CancellationToken cancellationToken)
 	{
 		MetadataWalker walker = new(compilation, cancellationToken);
-		List<(ITypeSymbol Type, AttributeData Attribute)> named = [];
-		foreach (AttributeData attribute in compilation.Assembly.GetAttributes())
+		List<(ITypeSymbol Type, int AttributeIndex)> named = [];
+		ImmutableArray<AttributeData> attributes = compilation.Assembly.GetAttributes();
+		for (int i = 0; i < attributes.Length; i++)
 		{
-			if (attribute.AttributeClass?.ToDisplayString() == GenerateAttribute &&
-			    attribute.ConstructorArguments.Length == 1 &&
-			    attribute.ConstructorArguments[0].Value is ITypeSymbol type)
+			if (attributes[i].AttributeClass?.ToDisplayString() == GenerateAttribute &&
+			    attributes[i].ConstructorArguments.Length == 1 &&
+			    attributes[i].ConstructorArguments[0].Value is ITypeSymbol type)
 			{
 				walker.Seed(type);
 				walker.SeedEvents(type);
-				named.Add((type, attribute));
+				named.Add((type, i));
 			}
 		}
 
 		ImmutableArray<TypeRegistration> registrations = walker.Registrations;
 		ImmutableArray<UnregisteredType> unregistered = named
 			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type) || r.Key == EventsKey(SeedKey(x.Type))))
-			.Select(x => UnregisteredType.Create(x.Type, x.Attribute))
+			.Select(x => new UnregisteredType(x.Type.ToDisplayString(), x.AttributeIndex))
 			.ToImmutableArray();
 		return new AssemblyRegistrations(new EquatableArray<TypeRegistration>(registrations),
 			new EquatableArray<UnregisteredType>(unregistered));
@@ -406,11 +409,6 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		if (!isSupported)
 		{
 			return;
-		}
-
-		foreach (UnregisteredType type in fromAssembly.Unregistered.Values)
-		{
-			context.ReportDiagnostic(Diagnostic.Create(NothingToRegister, type.GetLocation(), type.Name));
 		}
 
 		List<TypeRegistration> registrations = fromCallSites.Values.Concat(fromAssembly.Registrations.Values)
@@ -495,6 +493,27 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	}
 
 	/// <remarks>
+	///     The diagnostic is reported at the syntax of the attribute, because only a location in a syntax tree of the
+	///     compilation honours a <c>#pragma warning disable</c> around it.
+	/// </remarks>
+	private static void ReportUnregistered(SourceProductionContext context, AssemblyRegistrations fromAssembly,
+		bool isSupported, Compilation compilation)
+	{
+		if (!isSupported)
+		{
+			return;
+		}
+
+		ImmutableArray<AttributeData> attributes = compilation.Assembly.GetAttributes();
+		foreach (UnregisteredType type in fromAssembly.Unregistered.Values)
+		{
+			Location location = attributes[type.AttributeIndex].ApplicationSyntaxReference
+				?.GetSyntax(context.CancellationToken).GetLocation() ?? Location.None;
+			context.ReportDiagnostic(Diagnostic.Create(NothingToRegister, location, type.Name));
+		}
+	}
+
+	/// <remarks>
 	///     <paramref name="Suppressions" /> holds the comma-separated obsolete diagnostic ids the registration triggers.
 	/// </remarks>
 	/// <remarks>
@@ -509,25 +528,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		EquatableArray<UnregisteredType> Unregistered);
 
 	/// <remarks>
-	///     A <see cref="Location" /> holds a syntax tree and would defeat the caching of the pipeline, so only its
-	///     coordinates are kept.
+	///     A <see cref="Location" /> holds a syntax tree and would defeat the caching of the pipeline, so only the
+	///     index of the attribute among the assembly attributes is kept.
 	/// </remarks>
-	private readonly record struct UnregisteredType(
-		string Name,
-		string? Path,
-		TextSpan Span,
-		LinePositionSpan LineSpan)
-	{
-		public static UnregisteredType Create(ITypeSymbol type, AttributeData attribute)
-		{
-			Location? location = attribute.ApplicationSyntaxReference?.GetSyntax().GetLocation();
-			return new UnregisteredType(type.ToDisplayString(), location?.SourceTree?.FilePath,
-				location?.SourceSpan ?? default, location?.GetLineSpan().Span ?? default);
-		}
-
-		public Location GetLocation()
-			=> Path is null ? Location.None : Location.Create(Path, Span, LineSpan);
-	}
+	private readonly record struct UnregisteredType(string Name, int AttributeIndex);
 
 	private readonly record struct Member(ISymbol Symbol, string Name, ITypeSymbol Type, bool IsField);
 
