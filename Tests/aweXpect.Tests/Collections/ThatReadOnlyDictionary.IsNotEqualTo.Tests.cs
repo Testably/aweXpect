@@ -112,6 +112,34 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
+			public async Task WhenTheComparerCannotBeRead_WithADifferentlyCasedKey_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<string, int> subject =
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+				IReadOnlyDictionary<string, int> unexpected = ToDictionary(["A",], [1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("without the comparer of the subject, the key \"a\" matched no unexpected key");
+			}
+
+			[Fact]
+			public async Task WhenTheComparerCannotBeRead_WithTwoUnexpectedKeysForOneEntry_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<string, int> subject =
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+				IReadOnlyDictionary<string, int> unexpected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the key \"b\" matched no unexpected key");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);

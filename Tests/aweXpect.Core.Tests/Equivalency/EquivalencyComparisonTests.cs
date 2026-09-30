@@ -1603,6 +1603,29 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithADifferentlyCasedKey_ShouldReportItAsUnmatched()
+	{
+		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["A"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [A] matched no expected key
+		                                                """).IgnoringNewlineStyle()
+			.Because("without the comparer of the hashtable, the key \"A\" cannot be told apart from a superfluous key");
+	}
+
+	[Fact]
 	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
 	{
 		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1624,6 +1647,31 @@ public sealed class EquivalencyComparisonTests
 		                                                  It contained 1 key and matched 2 expected keys
 		                                                """).IgnoringNewlineStyle()
 			.Because("a hashtable does not expose its comparer, so naming the keys could overshoot");
+	}
+
+	[Fact]
+	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifiesAndAnAdditionalKey_ShouldReportTheUnmatchedKey()
+	{
+		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["a"] = 1,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [b] matched no expected key
+		                                                """).IgnoringNewlineStyle()
+			.Because("without the comparer of the hashtable, the two expected keys must not hide the key \"b\"");
 	}
 
 	[Fact]

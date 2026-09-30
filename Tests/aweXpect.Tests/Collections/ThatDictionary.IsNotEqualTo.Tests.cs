@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+#if NETFRAMEWORK
+using System.Collections.Concurrent;
+#endif
 
 namespace aweXpect.Tests;
 
@@ -69,6 +73,50 @@ public sealed partial class ThatDictionary
 					             Dictionary:
 					             {["a"] = 1, ["b"] = 2}
 					             """);
+			}
+
+#if NETFRAMEWORK
+			[Fact]
+			public async Task WhenSubjectIsAConcurrentDictionaryOnNetFramework_WithTwoUnexpectedKeysForOneEntry_ShouldSucceed()
+			{
+				IDictionary<string, int> subject =
+					new ConcurrentDictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["a"] = 1, ["b"] = 1, };
+				IDictionary<string, int> unexpected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the key \"b\" matched no unexpected key");
+			}
+
+#endif
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithADifferentlyCasedKey_ShouldSucceed()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
+				IDictionary<string, int> unexpected = ToDictionary(["a",], [1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("without the comparer of the wrapped dictionary, the key \"A\" matched no unexpected key");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithTwoUnexpectedKeysForOneEntry_ShouldSucceed()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+				IDictionary<string, int> unexpected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the key \"b\" matched no unexpected key");
 			}
 
 			[Fact]

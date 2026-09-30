@@ -147,8 +147,16 @@ public sealed partial class ThatReadOnlyDictionary
 					=> await (ObjectEqualityResult<IReadOnlyDictionary<string, int>,
 						IThat<IReadOnlyDictionary<string, int>?>, int>)That(subject).IsEqualTo(expected);
 
-				await That(Act).DoesNotThrow()
-					.Because("a type that implements no IDictionary is looked up through its own TryGetValue");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained key "a" that matched no expected key
+
+					             Dictionary:
+					             [["a"] = 1]
+					             """)
+					.Because("the expected key \"A\" is found through its own TryGetValue, but without its comparer the key \"a\" cannot be told apart from an additional key");
 			}
 
 			[Fact]
@@ -174,7 +182,7 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
-			public async Task WhenTheComparerCannotBeRead_WithTwoExpectedKeysForOneEntry_ShouldSucceed()
+			public async Task WhenTheComparerCannotBeRead_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
 					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
@@ -183,8 +191,16 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).DoesNotThrow()
-					.Because("without the comparer of the subject, the two expected keys count as two matched keys");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained key "b" that matched no expected key
+
+					             Dictionary:
+					             [["a"] = 1, ["b"] = 1]
+					             """)
+					.Because("without the comparer of the subject, the two expected keys must not hide the key \"b\"");
 			}
 		}
 	}

@@ -1,12 +1,11 @@
-﻿using System.Collections.Frozen;
+﻿using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Collections.Concurrent;
-#endif
 
 namespace aweXpect.Tests;
 
@@ -257,6 +256,93 @@ public sealed partial class ThatDictionary
 
 		public sealed class ComparerTests
 		{
+#if NETFRAMEWORK
+			[Fact]
+			public async Task WhenSubjectIsAConcurrentDictionaryOnNetFramework_WithTwoExpectedKeysForOneEntry_ShouldFail()
+			{
+				IDictionary<string, int> subject =
+					new ConcurrentDictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["a"] = 1, ["b"] = 1, };
+				IDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained key "b" that matched no expected key
+					             """).AsPrefix()
+					.Because("the concurrent dictionary of .NET Framework does not expose its comparer, so the two expected keys must not hide the key \"b\"");
+			}
+
+#endif
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithADifferentlyCasedKey_ShouldFail()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
+				IDictionary<string, int> expected = ToDictionary(["a",], [1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained key "A" that matched no expected key
+
+					             Dictionary:
+					             {["A"] = 1}
+					             """)
+					.Because("without the comparer of the wrapped dictionary, the key \"A\" cannot be told apart from an additional key");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithTwoDifferentlyCasedKeys_ShouldFail()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, { "B", 1 }, });
+				IDictionary<string, int> expected = ToDictionary(["a", "b",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained 2 keys that matched no expected key: ["A", "B"]
+
+					             Dictionary:
+					             {["A"] = 1, ["B"] = 1}
+					             """)
+					.Because("without the comparer of the wrapped dictionary, neither key can be told apart from an additional key");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithTwoExpectedKeysForOneEntry_ShouldFail()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+				IDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected,
+					             but it contained key "b" that matched no expected key
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 1}
+					             """)
+					.Because("without the comparer of the wrapped dictionary, the two expected keys must not hide the key \"b\"");
+			}
+
 			[Fact]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeysUpThroughIt()
 			{

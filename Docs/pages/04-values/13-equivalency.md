@@ -116,8 +116,9 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 The comparer is read from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
 `ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or when
 reflection is unavailable (by default when publishing with Native AOT), the matched keys are told apart by their own
-`Equals`, so two such keys are only noticed when the entry counts differ, and a type that only implements
-`IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys up by their own `Equals`.
+`Equals`, so an actual key that equals no expected key is reported, even when the comparer considers it the same as
+one, and a type that only implements `IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys
+up by their own `Equals`.
 
 </details>
 
