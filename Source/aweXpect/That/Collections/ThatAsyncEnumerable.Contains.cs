@@ -521,13 +521,7 @@ public static partial class ThatAsyncEnumerable
 
 				if (await predicate(item))
 				{
-					_count++;
-					if (_count == 1)
-					{
-						_firstFoundItem = item;
-					}
-
-					bool? check = quantifier.Check(_count, false);
+					bool? check = CountMatch(item);
 					isFailed |= check == false;
 					if (check == true)
 					{
@@ -553,14 +547,19 @@ public static partial class ThatAsyncEnumerable
 
 			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
 			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
+			Outcome = (quantifier.Check(_count, true) ?? _isNegated) ? Outcome.Success : Outcome.Failure;
+			return this;
+		}
+
+		private bool? CountMatch(TItem item)
+		{
+			_count++;
+			if (_count == 1)
 			{
-				Outcome = Outcome.Success;
-				return this;
+				_firstFoundItem = item;
 			}
 
-			Outcome = Outcome.Failure;
-			return this;
+			return quantifier.Check(_count, false);
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
