@@ -169,7 +169,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			_expectationBuilder.AddCollectionContext(materialized);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;

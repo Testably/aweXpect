@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 			_matchingCount = 0;
 			_notMatchingCount = 0;
 			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;

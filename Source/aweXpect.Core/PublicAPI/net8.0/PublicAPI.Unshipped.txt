@@ -107,3 +107,12 @@ aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Res
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 static aweXpect.Core.Constraints.ConstraintResult.AppendCanceledResult(System.Text.StringBuilder! stringBuilder, string! it) -> void
+aweXpect.Core.EvaluationContext.EvaluationContextExtensions
+aweXpect.Core.EvaluationContext.ICountable
+aweXpect.Core.EvaluationContext.ICountable.Count.get -> int?
+static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedEnumerable(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.IEnumerable? collection) -> System.Collections.IEnumerable?
+static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedEnumerable<TItem>(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.Generic.IEnumerable<TItem>! collection) -> System.Collections.Generic.IEnumerable<TItem>!
+aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>
+aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>.MaterializedItems.get -> System.Collections.Generic.IReadOnlyList<T>!
+aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>.MaterializeItems(int? numberOfItems) -> System.Threading.Tasks.Task<aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>!>!
+static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedAsyncEnumerable<TItem>(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.Generic.IAsyncEnumerable<TItem>! collection, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TItem>!

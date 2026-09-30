@@ -332,7 +332,7 @@ public static partial class ThatEnumerable
 			}
 
 			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			_index = 0;
 			foreach (TItem item in _materializedEnumerable)
 			{

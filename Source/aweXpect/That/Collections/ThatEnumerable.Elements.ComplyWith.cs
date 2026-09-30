@@ -69,7 +69,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 				bool cancelEarly = actual is not ICollection<TItem>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
@@ -211,7 +211,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				IEnumerable<string?> materialized = context.UseMaterializedEnumerable<string?, IEnumerable<string?>>(actual);
+				IEnumerable<string?> materialized = context.UseMaterializedEnumerable<string?>(actual);
 				bool cancelEarly = actual is not ICollection<string?>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
@@ -498,7 +498,7 @@ public static partial class ThatEnumerable
 					return this.AsNullSubject(It);
 				}
 
-				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 				bool cancelEarly = actual is not ICollection<TItem>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;

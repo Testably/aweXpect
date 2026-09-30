@@ -86,7 +86,7 @@ public static partial class ThatEnumerable
 			}
 
 			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			using IEnumerator<TItem> enumerator = _materializedEnumerable.GetEnumerator();
 			if (enumerator.MoveNext())
 			{

@@ -336,7 +336,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);
@@ -491,7 +491,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);

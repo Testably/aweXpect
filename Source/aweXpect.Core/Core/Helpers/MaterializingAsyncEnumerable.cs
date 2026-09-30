@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 
-namespace aweXpect.Helpers;
+namespace aweXpect.Core.Helpers;
 
-internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMaterializedEnumerable<T>
+internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumerable<T>
 {
 	private readonly CancellationToken _cancellationToken;
 	private readonly IAsyncEnumerable<T> _enumerable;
@@ -31,29 +31,36 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	///     The source is not advanced once the evaluation is canceled, and a pending <c>MoveNextAsync</c> is abandoned,
 	///     so that a source which ignores the cancellation cannot hang the evaluation. Instead of the next item that
 	///     was not received, the enumeration throws an <see cref="OperationCanceledException" />, so that the
-	///     cancellation is not mistaken for the end of the source.
+	///     cancellation is not mistaken for the end of the source.<br />
+	///     The items are replayed by index, so that an enumeration nested in another one continues where the other one
+	///     stopped, instead of cutting it short.
 	/// </remarks>
 	public async IAsyncEnumerator<T> GetAsyncEnumerator(
 		CancellationToken cancellationToken = default)
 	{
-		foreach (T materializedItem in _materializedItems)
+		for (int index = 0;; index++)
 		{
-			yield return materializedItem;
-		}
+			if (index < _materializedItems.Count)
+			{
+				yield return _materializedItems[index];
+				continue;
+			}
 
-		if (Count is not null)
-		{
-			yield break;
-		}
+			if (Count is not null)
+			{
+				yield break;
+			}
 
-		_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
-		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (await MoveNext(_enumerator))
-		{
-			T item = _enumerator.Current;
-			_materializedItems.Add(item);
+			_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
+			// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
+			if (!await MoveNext(_enumerator))
+			{
+				break;
+			}
+
+			_materializedItems.Add(_enumerator.Current);
 			cancellationToken.ThrowIfCancellationRequested();
-			yield return item;
+			yield return _materializedItems[index];
 		}
 
 		Count = _materializedItems.Count;
@@ -64,15 +71,15 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 	/// <inheritdoc cref="ICountable.Count" />
 	public int? Count { get; private set; }
 
-	/// <inheritdoc cref="IMaterializedEnumerable{T}.MaterializedItems" />
-	IReadOnlyList<T> IMaterializedEnumerable<T>.MaterializedItems => _materializedItems;
+	/// <inheritdoc cref="IMaterializedAsyncEnumerable{T}.MaterializedItems" />
+	IReadOnlyList<T> IMaterializedAsyncEnumerable<T>.MaterializedItems => _materializedItems;
 
-	/// <inheritdoc cref="IMaterializedEnumerable{T}.MaterializeItems(int?)" />
+	/// <inheritdoc cref="IMaterializedAsyncEnumerable{T}.MaterializeItems(int?)" />
 	/// <remarks>
 	///     A cancellation of the evaluation stops materializing and leaves the <see cref="Count" /> unknown, so that the
 	///     items received so far can still be listed.
 	/// </remarks>
-	public async Task<IMaterializedEnumerable<T>> MaterializeItems(int? numberOfItems)
+	public async Task<IMaterializedAsyncEnumerable<T>> MaterializeItems(int? numberOfItems)
 	{
 		int index = 0;
 		try

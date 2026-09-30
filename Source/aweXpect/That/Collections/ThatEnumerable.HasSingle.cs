@@ -103,7 +103,7 @@ public static partial class ThatEnumerable
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			_materialized = materialized;
 			_count = 0;
 			_isEmpty = true;

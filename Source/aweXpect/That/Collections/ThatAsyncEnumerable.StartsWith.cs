@@ -148,7 +148,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 			if (_expected.Length == 0)
 			{
 				int maximumNumberOfCollectionItems =
@@ -174,7 +174,7 @@ public static partial class ThatAsyncEnumerable
 					_firstMismatchItem = item;
 					_foundMismatch = true;
 					await _expectationBuilder.AddCollectionContext(
-						materializedEnumerable as IMaterializedEnumerable<TItem>);
+						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -187,7 +187,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			await _expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedEnumerable<TItem>);
+			await _expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			Outcome = Outcome.Failure;
 			return this;
 		}
