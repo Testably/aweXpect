@@ -330,11 +330,7 @@ public sealed partial class ThatEnumerable
 					             but it had item 1 at index 0 and had item 2 at index 1
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 		}

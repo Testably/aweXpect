@@ -86,6 +86,28 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
+			{
+				IEnumerable subject = new[] { null, "a", };
+
+				async Task Act()
+					=> await That(subject).HasItem(x => "a".Equals(x)).AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item matching x => "a".Equals(x) at index 0,
+					             but it had item <null> at index 0
+
+					             Collection:
+					             [
+					               <null>,
+					               "a"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				IEnumerable subject = Array.Empty<int>();
@@ -177,13 +199,7 @@ public sealed partial class ThatEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [
-					               0,
-					               1,
-					               2,
-					               3,
-					               4
-					             ]
+					             [0, 1, 2, 3, 4]
 					             """);
 			}
 
@@ -298,6 +314,28 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
+			{
+				IEnumerable subject = new[] { null, "a", };
+
+				async Task Act()
+					=> await That(subject).HasItem("a").AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item equal to "a" at index 0,
+					             but it had item <null> at index 0
+
+					             Collection:
+					             [
+					               <null>,
+					               "a"
+					             ]
+					             """);
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenEnumerableIsEmpty_ShouldFail(int expected)
@@ -367,13 +405,7 @@ public sealed partial class ThatEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [
-					               0,
-					               1,
-					               2,
-					               3,
-					               4
-					             ]
+					             [0, 1, 2, 3, 4]
 					             """);
 			}
 

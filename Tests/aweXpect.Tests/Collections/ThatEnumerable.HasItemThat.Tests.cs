@@ -105,6 +105,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEnumerableContainsNoMatchingItem_ShouldFail()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to 0,
+					             but it had no matching item
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				List<int> subject = [];
@@ -187,10 +206,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that has StringValue whose Length is equal to 5,
-					             but it had item MyClass {
-					               StringValue = "foo",
-					               Value = 1
-					             }
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -215,10 +231,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that has Value that is equal to 5,
-					             but it had item MyClass {
-					               StringValue = "",
-					               Value = 1
-					             }
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -244,7 +257,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that has an inner InvalidOperationException whose Message is equal to "x",
-					             but it had item Exception: a
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -267,10 +280,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that has Task.FromResult(o.Value) that is equal to 5,
-					             but it had item MyClass {
-					               StringValue = "",
-					               Value = 1
-					             }
+					             but it had no matching item
 
 					             Collection:
 					             [
@@ -296,7 +306,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             has an item that has an item that is not equal to 1 and is not equal to 2 for at least one item,
-					             but it had item []
+					             but it had no matching item
 
 					             Collection:
 					             [

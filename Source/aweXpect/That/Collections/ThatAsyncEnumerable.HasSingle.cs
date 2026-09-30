@@ -74,7 +74,7 @@ public static partial class ThatAsyncEnumerable
 			_count = 0;
 			_isEmpty = true;
 
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				_isEmpty = false;
 				if (!options.Matches(item))
@@ -87,6 +87,13 @@ public static partial class ThatAsyncEnumerable
 				{
 					break;
 				}
+			}
+
+			if (_count <= 1 && cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				await expectationBuilder.AddCollectionContext(_materialized, true);
+				return this;
 			}
 
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;

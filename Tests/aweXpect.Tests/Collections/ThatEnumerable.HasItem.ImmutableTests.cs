@@ -63,6 +63,28 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
+			{
+				ImmutableArray<string?> subject = [null, "a",];
+
+				async Task Act()
+					=> await That(subject).HasItem(x => x == "a").AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item matching x => x == "a" at index 0,
+					             but it had item <null> at index 0
+
+					             Collection:
+					             [
+					               <null>,
+					               "a"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<int> subject = [];
@@ -200,6 +222,25 @@ public sealed partial class ThatEnumerable
 
 					             Collection:
 					             [0, 1, 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
+			{
+				ImmutableArray<int?> subject = [null, 1,];
+
+				async Task Act()
+					=> await That(subject).HasItem(1).AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item equal to 1 at index 0,
+					             but it had item <null> at index 0
+
+					             Collection:
+					             [<null>, 1]
 					             """);
 			}
 

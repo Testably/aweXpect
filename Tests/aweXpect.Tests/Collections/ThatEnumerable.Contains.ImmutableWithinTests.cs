@@ -1708,7 +1708,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1 day,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -1781,7 +1781,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1 day,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -1854,7 +1854,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -1927,7 +1927,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2000,7 +2000,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2073,7 +2073,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2146,7 +2146,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2219,7 +2219,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2292,7 +2292,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2365,7 +2365,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2438,7 +2438,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2511,7 +2511,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values)}
@@ -2584,7 +2584,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2657,7 +2657,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2730,7 +2730,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
@@ -2803,7 +2803,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(unexpected)} at least once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
 						              {Formatter.Format(values, FormattingOptions.MultipleLines)}

@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreDeviationsThanTheCustomizedMaximum_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 				{
@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>());
@@ -93,9 +93,55 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task CollectionWithMoreThan20Deviations_WhenSubjectIsAnArray_ShouldNameTheRemainingItems()
+			{
+				int[] subject = Enumerable.Range(1, 21).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(Array.Empty<int>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection Array.Empty<int>() in order,
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
+
+					             Collection:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and 11 more)
+					             ]
+
+					             Expected:
+					             []
+					             """)
+					.Because("the number of items of an array is known, although the comparison stops early");
+			}
+
+			[Fact]
 			public async Task CollectionWithMoreThan20IncorrectItems_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 				int[] expected = Enumerable.Range(101, 21).ToArray();
 
 				async Task Act()
@@ -754,8 +800,16 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WithInfiniteSubject_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, int.MaxValue);
+				IEnumerable<int> subject = CountUp();
 				int[] expected = [1, 2, 3,];
+
+				static IEnumerable<int> CountUp()
+				{
+					for (int i = 1; i < int.MaxValue; i++)
+					{
+						yield return i;
+					}
+				}
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -1064,7 +1118,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).IgnoringDuplicates();
@@ -1578,7 +1632,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).InAnyOrder();
@@ -2098,7 +2152,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 21);
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).InAnyOrder().IgnoringDuplicates();

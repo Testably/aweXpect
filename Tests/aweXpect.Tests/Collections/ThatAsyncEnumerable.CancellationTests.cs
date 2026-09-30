@@ -57,6 +57,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             does not contain an item matching item => Cancel(cts, item == 3),
 				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, (… and maybe more)]
 				             """)
 				.Because("a cancellation between two items must not be mistaken for the end of the source");
 		}
@@ -75,6 +78,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item matching item => Cancel(cts, item == 3) at least once,
 				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, (… and maybe more)]
 				             """)
 				.Because("a cancellation between two items must not be reported as a missing item");
 		}
@@ -122,6 +128,86 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportContainsAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).Contains(3).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains an item equal to 3 at least once,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportDoesNotContainAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).DoesNotContain(item => item == 3).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not contain an item matching item => item == 3,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportEndsWithAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).EndsWith(2).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             ends with [2],
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasSingleAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1);
+
+			async Task Act()
+				=> await That(subject).HasSingle().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a single item,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldStopWaiting()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -136,6 +222,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item equal to 1 at least once,
 				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             []
 				             """)
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
 		}
@@ -295,6 +384,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item equal to 1 at least once,
 				             but it did not finish within 0:00.050
+
+				             Collection:
+				             []
 				             """);
 		}
 
@@ -304,15 +396,19 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(1, 2, 3);
 
 			async Task Act()
-				=> await That(subject).Contains(4).WithTimeout(50.Milliseconds());
+				=> await That(subject).Contains(4).WithTimeout(1.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 4 at least once,
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
+
+				             Collection:
+				             [1, 2, 3, (… and maybe more)]
 				             """).And
-				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
+				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
 		}
 
 		[Fact]
@@ -348,6 +444,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item equal to 1 at least once,
 				             but it did not finish within 0:00.050
+
+				             Collection:
+				             []
 				             """);
 		}
 
@@ -364,6 +463,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             does not contain an item equal to 1,
 				             but it did not finish within 0:00.050
+
+				             Collection:
+				             []
 				             """)
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
@@ -390,6 +492,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item equal to 1 at least once,
 				             but it did not finish within 0:00.050
+
+				             Collection:
+				             []
 				             """);
 			await That(sourceToken.IsCancellationRequested).IsTrue()
 				.Because("the token of the evaluation must reach the source");
@@ -413,13 +518,16 @@ public sealed partial class ThatAsyncEnumerable
 
 			async Task Act()
 				=> await That(subject).DoesNotContain(item => BlockUntilCancelled(item == 2, sourceToken))
-					.WithTimeout(50.Milliseconds());
+					.WithTimeout(1.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item matching item => BlockUntilCancelled(item == 2, sourceToken),
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
+
+				             Collection:
+				             [1, (… and maybe more)]
 				             """)
 				.Because("a timeout between two items must not be mistaken for the end of the source");
 		}
@@ -469,6 +577,9 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             contains an item equal to 1 at least once,
 				             but it did not finish within 0:00.050
+
+				             Collection:
+				             []
 				             """);
 			tcs.SetException(exception);
 		}

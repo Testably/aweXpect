@@ -232,9 +232,16 @@ public static partial class ThatEnumerable
 		{
 			if (_hasIndex)
 			{
-				stringBuilder.Append(_it).Append(" had item ");
-				Formatter.Format(stringBuilder, _actual);
-				stringBuilder.Append(_options.Match.GetDescription());
+				if (_options.Match.OnlySingleIndex())
+				{
+					stringBuilder.Append(_it).Append(" had item ");
+					Formatter.Format(stringBuilder, _actual);
+					stringBuilder.Append(_options.Match.GetDescription());
+				}
+				else
+				{
+					stringBuilder.Append(_it).Append(" had no matching item").Append(_options.Match.GetDescription());
+				}
 			}
 			else
 			{
@@ -364,9 +371,16 @@ public static partial class ThatEnumerable
 		{
 			if (_hasIndex)
 			{
-				stringBuilder.Append(_it).Append(" had item ");
-				Formatter.Format(stringBuilder, _actual);
-				stringBuilder.Append(_options.Match.GetDescription());
+				if (_options.Match.OnlySingleIndex())
+				{
+					stringBuilder.Append(_it).Append(" had item ");
+					Formatter.Format(stringBuilder, _actual);
+					stringBuilder.Append(_options.Match.GetDescription());
+				}
+				else
+				{
+					stringBuilder.Append(_it).Append(" had no matching item").Append(_options.Match.GetDescription());
+				}
 			}
 			else
 			{

@@ -38,13 +38,7 @@ public sealed partial class ThatEnumerable
 					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               1
-					             ]
+					             [1, 1, 2, 3, 1]
 					             """);
 			}
 

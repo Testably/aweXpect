@@ -83,6 +83,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEnumerableContainsNoMatchingItem_ShouldFail()
+			{
+				IEnumerable subject = new[] { 1, 2, 3, };
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to 0,
+					             but it had no matching item
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
 				IEnumerable subject = new[] { "a", null, };

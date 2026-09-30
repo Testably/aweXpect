@@ -573,7 +573,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" ignoring case,
-					             but it contained "A" once
+					             but it contained "a" once
 
 					             Collection:
 					             [

@@ -775,7 +775,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               (… and maybe more)
+					               (… and 11 more)
 					             ]
 
 					             Expected:

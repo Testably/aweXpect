@@ -411,7 +411,7 @@ internal static class CollectionHelpers
 		totalCount ??= value switch
 		{
 			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.Count,
+			ICountable countable => countable.CountUpToFormatterLimit(value),
 			_ => null,
 		};
 		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
@@ -423,10 +423,35 @@ internal static class CollectionHelpers
 		int? totalCount = value switch
 		{
 			ICollection coll => coll.Count,
-			ICountable countable => countable.Count,
+			ICountable countable => countable.CountUpToFormatterLimit(value),
 			_ => null,
 		};
 		return Formatter.Format(value, itemType.GetFormattingOption(totalCount, totalCount));
+	}
+
+	/// <summary>
+	///     The count of the materialized <paramref name="value" /> is only known once it is enumerated to its end, which an
+	///     expectation that stops early does not do. It is enumerated as far as the formatter lists its items, so that a
+	///     small collection is laid out like a complete one.
+	/// </summary>
+	/// <remarks>
+	///     An exception of the source is ignored here, as the formatter enumerates the same items and renders it.
+	/// </remarks>
+	private static int? CountUpToFormatterLimit(this ICountable countable, IEnumerable value)
+	{
+		if (countable.Count is null)
+		{
+			try
+			{
+				_ = value.ExceedsFormatterLimit();
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+		}
+
+		return countable.Count;
 	}
 
 	/// <summary>

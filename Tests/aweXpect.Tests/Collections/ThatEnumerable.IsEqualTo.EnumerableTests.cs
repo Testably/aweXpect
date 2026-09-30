@@ -285,10 +285,7 @@ public sealed partial class ThatEnumerable
 					             but the expected collection was <null>
 
 					             Collection:
-					             [
-					               1,
-					               2
-					             ]
+					             [1, 2]
 					             """)
 					.Because("a null literal binds to the string overload, but still expects no collection");
 			}
