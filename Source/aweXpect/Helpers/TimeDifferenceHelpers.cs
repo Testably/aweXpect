@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace aweXpect.Helpers;
@@ -47,7 +48,8 @@ internal static class TimeDifferenceHelpers
 			return stringBuilder;
 		}
 
-		stringBuilder.Append(", which differs by ").Append(differenceDays.Value)
+		stringBuilder.Append(", which differs by ")
+			.Append(differenceDays.Value.ToString(CultureInfo.InvariantCulture))
 			.Append(differenceDays.Value is 1 or -1 ? " day" : " days");
 		return stringBuilder.AppendReference(reference);
 	}

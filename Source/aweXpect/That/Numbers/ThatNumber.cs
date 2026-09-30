@@ -2,6 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
 #if !NET8_0_OR_GREATER
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -95,7 +98,7 @@ public static partial class ThatNumber
 				if (IsFinite(difference))
 				{
 					stringBuilder.Append(", which differs by ");
-					Formatter.Format(stringBuilder, difference);
+					AppendDifferenceValue(stringBuilder, difference);
 					AppendReference(stringBuilder, reference);
 					return;
 				}
@@ -114,7 +117,7 @@ public static partial class ThatNumber
 				if (IsFinite(magnitude))
 				{
 					stringBuilder.Append(actual > expected ? ", which differs by " : ", which differs by -");
-					Formatter.Format(stringBuilder, magnitude);
+					AppendDifferenceValue(stringBuilder, magnitude);
 					AppendReference(stringBuilder, reference);
 					return;
 				}
@@ -203,7 +206,7 @@ public static partial class ThatNumber
 		if (IsFinite(difference))
 		{
 			stringBuilder.Append(", which differs by ");
-			Formatter.Format(stringBuilder, difference);
+			AppendDifferenceValue(stringBuilder, difference);
 			AppendReference(stringBuilder, reference);
 			return;
 		}
@@ -216,7 +219,7 @@ public static partial class ThatNumber
 				stringBuilder.Append(actual.Value.CompareTo(expected.Value) >= 0
 					? ", which differs by "
 					: ", which differs by -");
-				Formatter.Format(stringBuilder, magnitude);
+				AppendDifferenceValue(stringBuilder, magnitude);
 				AppendReference(stringBuilder, reference);
 				return;
 			}
@@ -278,11 +281,34 @@ public static partial class ThatNumber
 				break;
 			case double floatingPointDifference when IsFinite<double>(floatingPointDifference):
 				stringBuilder.Append(", which differs by ");
-				Formatter.Format(stringBuilder, floatingPointDifference);
+				AppendDifferenceValue(stringBuilder, floatingPointDifference);
 				AppendReference(stringBuilder, reference);
 				break;
 		}
 	}
+
+	/// <remarks>
+	///     A floating-point difference is rounded to 15 significant digits (7 for a <see langword="float" />): the values
+	///     themselves are shown with all digits needed to tell them apart, so the difference only has to show how far
+	///     apart they are, and should read 0.9 instead of 0.8999999999999999 for 2.0 and 1.1.
+	/// </remarks>
+	private static void AppendDifferenceValue(StringBuilder stringBuilder, object? difference)
+		=> Formatter.Format(stringBuilder, difference switch
+		{
+			double value => RoundToSignificantDigits(value, 15),
+			float value => (float)RoundToSignificantDigits(value, 7),
+#if NET8_0_OR_GREATER
+			NFloat value => (NFloat)RoundToSignificantDigits(value.Value, 15),
+#endif
+			_ => difference,
+		});
+
+	private static double RoundToSignificantDigits(double value, int significantDigits)
+		=> double.TryParse(value.ToString($"G{significantDigits}", CultureInfo.InvariantCulture),
+			NumberStyles.Float, CultureInfo.InvariantCulture, out double roundedValue) &&
+		   !double.IsInfinity(roundedValue)
+			? roundedValue
+			: value;
 
 	private static void AppendReference(StringBuilder stringBuilder, string? reference)
 	{

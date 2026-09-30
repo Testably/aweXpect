@@ -56,6 +56,24 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
+			public async Task WhenTheCurrentCultureHasAnotherNegativeSign_ShouldUseTheInvariantOne()
+			{
+				using CultureOverride _ = new("sv-SE");
+				DateOnly subject = new(2024, 1, 1);
+				DateOnly expected = new(2024, 1, 3);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2024-01-03,
+					             but it was 2024-01-01, which differs by -2 days
+					             """).Because("the day difference must not depend on the current culture");
+			}
+
+			[Fact]
 			public async Task WhenTheDefaultToleranceIsAtLeastOneDay_ShouldMentionItsWholeDays()
 			{
 				DateOnly subject = EarlierTime(2);
