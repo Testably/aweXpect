@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using aweXpect.Customization;
 using aweXpect.Options;
 
@@ -95,24 +96,25 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 	///     can be chosen at compile time. Its name must not start with <c>Create</c>, as the generator would pick it up.
 	/// </remarks>
 	public static ObjectEqualityOptions<TItem> ForValuesOf<TItem>()
+		=> TimeOptionsFactories.TryGetValue(typeof(TItem), out Func<object>? create)
+			? (ObjectEqualityOptions<TItem>)create()
+			: new ObjectEqualityOptions<TItem>();
+
+	private static readonly Dictionary<Type, Func<object>> TimeOptionsFactories = new()
 	{
-		Type type = typeof(TItem);
-		object? options =
-			type == typeof(DateTime) ? CreateDateTime() :
-			type == typeof(DateTime?) ? CreateNullableDateTime() :
-			type == typeof(DateTimeOffset) ? CreateDateTimeOffset() :
-			type == typeof(DateTimeOffset?) ? CreateNullableDateTimeOffset() :
-			type == typeof(TimeSpan) ? CreateTimeSpan() :
-			type == typeof(TimeSpan?) ? CreateNullableTimeSpan() :
+		{ typeof(DateTime), CreateDateTime },
+		{ typeof(DateTime?), CreateNullableDateTime },
+		{ typeof(DateTimeOffset), CreateDateTimeOffset },
+		{ typeof(DateTimeOffset?), CreateNullableDateTimeOffset },
+		{ typeof(TimeSpan), CreateTimeSpan },
+		{ typeof(TimeSpan?), CreateNullableTimeSpan },
 #if NET8_0_OR_GREATER
-			type == typeof(DateOnly) ? CreateDateOnly() :
-			type == typeof(DateOnly?) ? CreateNullableDateOnly() :
-			type == typeof(TimeOnly) ? CreateTimeOnly() :
-			type == typeof(TimeOnly?) ? CreateNullableTimeOnly() :
+		{ typeof(DateOnly), CreateDateOnly },
+		{ typeof(DateOnly?), CreateNullableDateOnly },
+		{ typeof(TimeOnly), CreateTimeOnly },
+		{ typeof(TimeOnly?), CreateNullableTimeOnly },
 #endif
-			null;
-		return options as ObjectEqualityOptions<TItem> ?? new ObjectEqualityOptions<TItem>();
-	}
+	};
 
 	/// <summary>
 	///     Tells whether the tolerance <paramref name="options" /> created here still use their default match type.
