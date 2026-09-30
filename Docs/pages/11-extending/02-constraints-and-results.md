@@ -33,25 +33,26 @@ the failure message:
 /// <summary>
 ///     This example does NOT support the negated case!
 /// </summary>
-private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
+private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
     : ConstraintResult(grammars),
-        IValueConstraint<string?>
+        IValueConstraint<Track?>
 {
-    private string? _actual;
-    public ConstraintResult IsMetBy(string? actual)
+    private Track? _actual;
+    public ConstraintResult IsMetBy(Track? actual)
     {
         _actual = actual;
-        Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
         return this;
     }
 
     public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is an absolute path");
+        => stringBuilder.Append("is radio friendly");
 
     public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(it).Append(" was ");
-        Formatter.Format(stringBuilder, _actual);
+        Formatter.Format(stringBuilder, _actual?.Duration);
+        stringBuilder.Append(" long");
     }
 
     public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
@@ -63,15 +64,15 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
         }
 
         value = default;
-        return typeof(TValue).IsAssignableFrom(typeof(string));
+        return typeof(TValue).IsAssignableFrom(typeof(Track));
     }
 
     public override ConstraintResult Negate()
-        => throw new NotSupportedException("Negation of IsAbsolutePath is not supported.");
+        => throw new NotSupportedException("Negation of IsRadioFriendly is not supported.");
 }
 ```
 
-`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsAbsolutePath())`, and
+`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`, and
 the caller relies on the returned result being negated. Returning `this` unchanged would silently check the
 non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
 
@@ -102,33 +103,35 @@ inherited `It` property, which the default result texts use.
 With these the above example could be written (with support for the negated case):
 
 ```csharp
-private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
-    : ConstraintResult.WithNotNullValue<string>(it, grammars),
-        IValueConstraint<string?>
+private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IValueConstraint<Track?>
 {
-    public ConstraintResult IsMetBy(string? actual)
+    public ConstraintResult IsMetBy(Track? actual)
     {
         Actual = actual;
-        Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
         return this;
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is an absolute path");
+        => stringBuilder.Append("is radio friendly");
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(It).Append(" was ");
-        Formatter.Format(stringBuilder, Actual);
+        Formatter.Format(stringBuilder, Actual?.Duration);
+        stringBuilder.Append(" long");
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is not an absolute path");
+        => stringBuilder.Append("is not radio friendly");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(It).Append(" was ");
-        Formatter.Format(stringBuilder, Actual);
+        Formatter.Format(stringBuilder, Actual?.Duration);
+        stringBuilder.Append(" long");
     }
 }
 ```
@@ -175,23 +178,24 @@ subject after your expectation, as it does after `IsNotNull()`:
 
 ```csharp no-compile
 [GuaranteesNotNull]
-public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
     => // ...
 ```
 
 ```csharp
-string? path = "/music/album.txt";
+Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("Hey Jude", new TimeSpan(0, 7, 11))];
+Track? track = tracks.FirstOrDefault(t => t.Title == "Love Me Do");
 
-await Expect.That(path).IsAbsolutePath();
-int length = path.Length;   // no CS8602
+await Expect.That(track).IsRadioFriendly();
+string title = track.Title;   // no CS8602
 ```
 
 - Only mark an expectation that fails for a `null` subject regardless of its other arguments, e.g. one that uses
   `ConstraintResult.WithNotNullValue<T>`. A wrongly marked expectation hides real nullability warnings.
 - The expectation has to be an extension method on `IThat<TSubject>`.
-- An expectation of your package before `.And`, as in `Expect.That(path).IsAbsolutePath().And.IsNotNull()`, keeps the
-  subject for the suppressor only when it returns an aweXpect result for the same `IThat<TSubject>`, such as
-  `AndOrResult<string, IThat<string?>>`. An expectation that returns an `IThat<…>` itself could continue with a
+- An expectation of your package before `.And`, as in `Expect.That(track).IsRadioFriendly().And.IsNotNull()`, keeps
+  the subject for the suppressor only when it returns an aweXpect result for the same `IThat<TSubject>`, such as
+  `AndOrResult<Track, IThat<Track?>>`. An expectation that returns an `IThat<…>` itself could continue with a
   different subject, so the suppressor ignores the expectations after it.
 
 ## Negated expectations
@@ -201,12 +205,12 @@ A constraint that supports the negated case also allows you to write an explicit
 
 ```csharp
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is not an absolute path.
+///     Verifies that the <paramref name="subject"/> is not radio friendly.
 /// </summary>
-public static AndOrResult<string, IThat<string?>> IsNotAbsolutePath(
-    this IThat<string?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
+    this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsAbsolutePathConstraint(it, grammars).Invert()),
+            => new IsRadioFriendlyConstraint(it, grammars).Invert()),
         subject);
 ```
 
@@ -238,24 +242,25 @@ using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core.EvaluationContext;
 
-public static AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>> HasEvenItems(
-    this IThat<IEnumerable<int>?> subject, int expected)
+public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> HasRadioFriendlyTracks(
+    this IThat<IEnumerable<Track>?> subject, int expected)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new HasEvenItemsConstraint(it, grammars, expected)),
+            => new HasRadioFriendlyTracksConstraint(it, grammars, expected)),
         subject);
 
-private sealed class HasEvenItemsConstraint(string it, ExpectationGrammars grammars, int expected)
-    : ConstraintResult.WithNotNullValue<IEnumerable<int>>(it, grammars),
-        IContextConstraint<IEnumerable<int>?>
+private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGrammars grammars, int expected)
+    : ConstraintResult.WithNotNullValue<IEnumerable<Track>>(it, grammars),
+        IContextConstraint<IEnumerable<Track>?>
 {
     private int _count;
 
-    public ConstraintResult IsMetBy(IEnumerable<int>? actual, IEvaluationContext context)
+    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
     {
         Actual = actual;
         if (actual is not null)
         {
-            _count = context.UseMaterializedEnumerable(actual).Count(item => item % 2 == 0);
+            _count = context.UseMaterializedEnumerable(actual)
+                .Count(track => track.Duration <= TimeSpan.FromMinutes(3));
             Outcome = _count == expected ? Outcome.Success : Outcome.Failure;
         }
 
@@ -263,20 +268,20 @@ private sealed class HasEvenItemsConstraint(string it, ExpectationGrammars gramm
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("has ").Append(expected).Append(" even items");
+        => stringBuilder.Append("has ").Append(expected).Append(" radio friendly tracks");
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" had ").Append(_count).Append(" even items");
+        => stringBuilder.Append(It).Append(" had ").Append(_count).Append(" radio friendly tracks");
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("does not have ").Append(expected).Append(" even items");
+        => stringBuilder.Append("does not have ").Append(expected).Append(" radio friendly tracks");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" did");
 }
 ```
 
-`await Expect.That(numbers).Contains(2).And.HasEvenItems(3)` then enumerates `numbers` only once.
+`await Expect.That(tracks).IsNotEmpty().And.HasRadioFriendlyTracks(3)` then enumerates `tracks` only once.
 
 - Every call for the same subject in the same evaluation returns the same sequence. It reads the subject only as far
   as it is enumerated, and a further enumeration replays the items read so far before it continues the subject.
@@ -288,22 +293,22 @@ private sealed class HasEvenItemsConstraint(string it, ExpectationGrammars gramm
 
 ## Continuing with the value
 
-The first type argument of the result, e.g. `string` in `AndOrResult<string, IThat<string?>>`, is the type of the value
+The first type argument of the result, e.g. `Track` in `AndOrResult<Track, IThat<Track?>>`, is the type of the value
 that the expectation passes on. Awaiting the expectation returns this value, and an `AndOrWhoseResult<TType, TThat>`
 also continues with `Whose` on a member of it:
 
 ```csharp
-public static AndOrWhoseResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+public static AndOrWhoseResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsAbsolutePathConstraint(it, grammars)),
+            => new IsRadioFriendlyConstraint(it, grammars)),
         subject);
 ```
 
 ```csharp
-string path = "/music/album.txt";
+Track track = new("Love Me Do", new TimeSpan(0, 2, 22));
 
-string verifiedPath = await Expect.That(path).IsAbsolutePath();
-await Expect.That(path).IsAbsolutePath().Whose(p => p.Length, length => length.IsLessThan(260));
+Track verifiedTrack = await Expect.That(track).IsRadioFriendly();
+await Expect.That(track).IsRadioFriendly().Whose(t => t.Title, title => title.StartsWith("Love"));
 ```
 
 Both ask the `TryGetValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows or
@@ -313,9 +318,9 @@ converts the subject returns the converted value there. The helper classes retur
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you
-pass to it and to your constraint. For a date without a time of day, such as `DateOnly`, pass a `DayTolerance`
-instead, as the built-in expectations do: it rejects a tolerance that is not a whole number of days with an
-`ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
+pass to it and to your constraint. For a date without a time of day, such as the release date of an album as a
+`DateOnly`, pass a `DayTolerance` instead, as the built-in expectations do: it rejects a tolerance that is not a whole
+number of days with an `ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
 
 ```csharp no-compile
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
@@ -329,28 +334,36 @@ public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
 }
 ```
 
+The caller then allows a difference of whole days, e.g. for the release date of Abbey Road:
+
+```csharp no-compile
+DateOnly releaseDate = new(1969, 9, 26);
+
+await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
+```
+
 ## Nested expectations
 
 An expectation that lets the caller continue with expectations on a part of the subject, like
 `Throws().WithInner<T>(e => …)`, selects the part with `ForMember` and adds the caller's expectations to it:
 
 ```csharp
-public static AndOrResult<string, IThat<string?>> HasFileName(
-    this IThat<string?> subject,
+public static AndOrResult<Track, IThat<Track?>> HasTitle(
+    this IThat<Track?> subject,
     Action<IThatSubject<string?>> expectations)
     => new(subject.Get().ExpectationBuilder
             .ForMember(
-                MemberAccessor<string?, string?>.FromFunc(path => Path.GetFileName(path), "file name "),
+                MemberAccessor<Track?, string?>.FromFunc(track => track?.Title, "title "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
             .AddExpectations(e => expectations(new ThatSubject<string?>(e)),
                 grammars => grammars | ExpectationGrammars.Nested),
         subject);
 ```
 
-`await Expect.That(path).HasFileName(name => name.EndsWith(".txt"))` then reads "has file name that ends with …".
+`await Expect.That(track).HasTitle(title => title.StartsWith("Let"))` then reads "has title that starts with …".
 
 - The second argument of `ForMember` writes the text in front of the nested expectations.
-- The name of the member replaces `it` in their result texts ("file name was …"), unless you pass `replaceIt: false`.
+- The name of the member replaces `it` in their result texts ("title was …"), unless you pass `replaceIt: false`.
 - The function passed to `AddExpectations` sets the grammars of the nested expectations.
 - `Validate(…)` before `AddExpectations` adds a constraint on the subject itself, e.g. based on
   `ConstraintResult.WithNotNullValue<T>` to rule out a `null` subject, as `WithInner` does.
@@ -366,33 +379,33 @@ follows `All()`, `AtLeast(2)` and the other quantifiers, derives from `Quantifie
 ```csharp
 using aweXpect.Options;
 
-public static AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>> AreEven(
-    this ThatEnumerable.Elements<int> elements)
+public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
+    this ThatEnumerable.Elements<Track> elements)
 {
-    ThatEnumerable.IElements<int> source = elements;
+    ThatEnumerable.IElements<Track> source = elements;
     ExpectationBuilder expectationBuilder = source.Subject.Get().ExpectationBuilder;
     return new(expectationBuilder.AddConstraint((it, grammars)
-            => new AreEvenConstraint(expectationBuilder, it, grammars, source.Quantifier)),
+            => new AreRadioFriendlyConstraint(expectationBuilder, it, grammars, source.Quantifier)),
         source.Subject);
 }
 
-private sealed class AreEvenConstraint(
+private sealed class AreRadioFriendlyConstraint(
     ExpectationBuilder expectationBuilder,
     string it,
     ExpectationGrammars grammars,
     EnumerableQuantifier quantifier)
-    : QuantifiedCollectionConstraint<IEnumerable<int>?, int>(expectationBuilder, it, grammars, quantifier,
-            g => g.IsPlural() ? "are even" : "is even", "were"),
-        IValueConstraint<IEnumerable<int>?>
+    : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(expectationBuilder, it, grammars, quantifier,
+            g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
+        IValueConstraint<IEnumerable<Track>?>
 {
-    public ConstraintResult IsMetBy(IEnumerable<int>? actual)
+    public ConstraintResult IsMetBy(IEnumerable<Track>? actual)
     {
         Actual = actual;
         if (actual is not null)
         {
-            foreach (int item in actual)
+            foreach (Track track in actual)
             {
-                Record(item, item % 2 == 0);
+                Record(track, track.Duration <= TimeSpan.FromMinutes(3));
             }
 
             Complete();
@@ -404,20 +417,20 @@ private sealed class AreEvenConstraint(
 ```
 
 ```csharp
-int[] values = [2, 4, 6];
+Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
 
-await Expect.That(values).All().AreEven();
+await Expect.That(tracks).All().AreRadioFriendly();
 ```
 
 - `Record` classifies an item as matching or not matching, and `Complete` decides the outcome from the quantifier.
 - The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
-  `Plural` grammar asks for the plural form, e.g. in "has values of which at least 2 are even".
+  `Plural` grammar asks for the plural form, e.g. in "whose Tracks are radio friendly for at least 2 items".
 - The verb completes the result, e.g. "but only 1 of 3 were".
 
 The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
-or not matching items as context. `DoesNotComplyWith(v => v.AtLeast(2).AreEven())` then reads "is even for fewer than
-2 items, but 3 of 3 were", followed by the "Matching items". Unlike the built-in expectations, it does not add the
-"Collection" context.
+or not matching items as context. `DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio
+friendly for fewer than 2 items, but 3 of 3 were", followed by the "Matching items". Unlike the built-in expectations,
+it does not add the "Collection" context.
 
 ## Asynchronous constraints
 
@@ -425,12 +438,12 @@ An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, wh
 (`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
 
 ```csharp no-compile
-public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+public async Task<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
 {
     Actual = actual;
     if (actual is not null)
     {
-        Outcome = await ExistsAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
+        Outcome = await IsInCatalogAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
     }
 
     return this;
@@ -448,39 +461,49 @@ public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken ca
 
 An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with
 `.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same `RepeatedCheckOptions` to the
-result and to the constraint, and make the check with `CheckRepeatedly`, which honours the options:
+result and to the constraint, and make the check with `CheckRepeatedly`, which honours the options. For a player that
+starts playing asynchronously:
+
+```csharp
+public class Player
+{
+    public bool IsPlaying { get; private set; }
+
+    public void Play(string title) => IsPlaying = true;
+}
+```
 
 ```csharp
 using aweXpect.Options;
 
-public static RepeatedCheckResult<string, IThat<string?>> Exists(this IThat<string?> subject)
+public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
 {
     RepeatedCheckOptions options = new();
-    return new RepeatedCheckResult<string, IThat<string?>>(subject.Get().ExpectationBuilder
+    return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
             .AddConstraint((expectationBuilder, it, grammars)
-                => new ExistsConstraint(expectationBuilder, it, grammars, options)),
+                => new IsPlayingConstraint(expectationBuilder, it, grammars, options)),
         subject,
         options);
 }
 
-private sealed class ExistsConstraint(
+private sealed class IsPlayingConstraint(
     ExpectationBuilder expectationBuilder,
     string it,
     ExpectationGrammars grammars,
     RepeatedCheckOptions options)
-    : ConstraintResult.WithNotNullValue<string>(it, grammars),
-        IAsyncConstraint<string?>
+    : ConstraintResult.WithNotNullValue<Player>(it, grammars),
+        IAsyncConstraint<Player?>
 {
-    public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+    public async Task<ConstraintResult> IsMetBy(Player? actual, CancellationToken cancellationToken)
     {
         Actual = actual;
         if (actual is not null)
         {
             await options.CheckRepeatedly(() =>
             {
-                bool exists = File.Exists(actual);
-                Outcome = exists ? Outcome.Success : Outcome.Failure;
-                return Task.FromResult(exists != IsNegated);
+                bool isPlaying = actual.IsPlaying;
+                Outcome = isPlaying ? Outcome.Success : Outcome.Failure;
+                return Task.FromResult(isPlaying != IsNegated);
             }, expectationBuilder, cancellationToken);
         }
 
@@ -488,30 +511,31 @@ private sealed class ExistsConstraint(
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("exists").Append(options);
+        => stringBuilder.Append("is playing").Append(options);
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" did not exist");
+        => stringBuilder.Append(It).Append(" was not playing");
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("does not exist").Append(options);
+        => stringBuilder.Append("is not playing").Append(options);
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" did exist");
+        => stringBuilder.Append(It).Append(" was playing");
 }
 ```
 
 ```csharp
-string path = "/music/album.txt";
+Player player = new();
+_ = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => player.Play("Let It Be"));
 
-await Expect.That(path).Exists().Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
+await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
 ```
 
 - `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive
   or an infinite timeout, it repeats the check in the interval until it succeeds, and makes the last check at the
   timeout.
 - The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
-  `true` when the file does *not* exist. The helper class inverts the stored `Outcome` itself.
+  `true` when the player is *not* playing. The helper class inverts the stored `Outcome` itself.
 - Appending the options writes " within …" to the expectation text when `Within` was specified.
 - The cancellation token is only observed while waiting for the next check, so the first check is made even with a
   canceled token, and its result is returned when it succeeds or when `IsRepeated` is `false`. A cancellation at the
