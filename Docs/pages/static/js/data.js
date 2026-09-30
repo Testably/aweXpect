@@ -4224,6 +4224,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -4930,7 +4936,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -5640,7 +5647,8 @@ window.BENCHMARK_DATA = {
           347.981173324585,
           352.7635374069214,
           334.3006128311157,
-          253.24656489690145
+          253.24656489690145,
+          359.5707740102495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6352,6 +6360,7 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
+          928,
           928,
           928,
           928,
@@ -7073,7 +7082,8 @@ window.BENCHMARK_DATA = {
           260.9272581100464,
           247.54009710947673,
           255.76615813800268,
-          213.10201036135356
+          213.10201036135356,
+          255.9744202931722
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7266,6 +7276,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11564,6 +11575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -12193,7 +12210,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -12826,7 +12844,8 @@ window.BENCHMARK_DATA = {
           408692.31403459824,
           418200.58443777903,
           407618.6201497396,
-          295789.5810895647
+          295789.5810895647,
+          447523.8902669271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13464,7 +13483,8 @@ window.BENCHMARK_DATA = {
           677056,
           677056,
           677056,
-          677056
+          677056,
+          676888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14105,7 +14125,8 @@ window.BENCHMARK_DATA = {
           2462868.2723214286,
           2553543.66796875,
           2352396.5416666665,
-          1596578.78828125
+          1596578.78828125,
+          2652286.8286458333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14743,7 +14764,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841609
+          4841609,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18981,6 +19003,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -19687,7 +19715,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -20397,7 +20426,8 @@ window.BENCHMARK_DATA = {
           611.0081187566121,
           627.5784405390422,
           561.9287270818438,
-          414.8395215670268
+          414.8395215670268,
+          650.2563043594361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21109,6 +21139,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1584,
           1584,
           1584,
           1584,
@@ -21830,7 +21861,8 @@ window.BENCHMARK_DATA = {
           516.7548759460449,
           495.29159579958235,
           487.22537183761597,
-          416.025589688619
+          416.025589688619,
+          513.4385245641073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22023,6 +22055,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26783,6 +26816,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -27489,7 +27528,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -28199,7 +28239,8 @@ window.BENCHMARK_DATA = {
           346.272525038038,
           352.8747487408774,
           334.4416739463806,
-          280.34214941660565
+          280.34214941660565,
+          374.92349875768025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28911,6 +28952,7 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
+          1072,
           1072,
           1072,
           1072,
@@ -29632,7 +29674,8 @@ window.BENCHMARK_DATA = {
           245.90422594547272,
           257.2361434936523,
           243.79583528836568,
-          207.21679401397705
+          207.21679401397705,
+          278.54663734436036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29825,6 +29868,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34585,6 +34629,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -35291,7 +35341,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -36001,7 +36052,8 @@ window.BENCHMARK_DATA = {
           638.2788359778268,
           639.4461165110271,
           612.5149683952332,
-          434.7332351366679
+          434.7332351366679,
+          698.2153003056844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36713,6 +36765,7 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
+          1608,
           1608,
           1608,
           1608,
@@ -37434,7 +37487,8 @@ window.BENCHMARK_DATA = {
           1239.2499777475994,
           1188.7313748677573,
           1217.9464264551798,
-          842.3408256530762
+          842.3408256530762,
+          1220.229696146647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37863,6 +37917,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42387,6 +42442,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -43093,7 +43154,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -43803,7 +43865,8 @@ window.BENCHMARK_DATA = {
           3213.690000661214,
           3228.9326716105143,
           3189.8704935709634,
-          1696.247242863973
+          1696.247242863973,
+          3350.257386016846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44518,7 +44581,8 @@ window.BENCHMARK_DATA = {
           4376,
           4376,
           4376,
-          4376
+          4376,
+          4384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45236,7 +45300,8 @@ window.BENCHMARK_DATA = {
           1379.8720521291098,
           1327.537137545072,
           1326.0868260065715,
-          967.8624875386556
+          967.8624875386556,
+          1367.511067199707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45429,6 +45494,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50189,6 +50255,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 30 12:01:18 2026 \u002B0200",
         "message": "fix: keep forced outcomes and render the deciding result when negating after evaluation (#1482)"
+      },
+      {
+        "sha": "2cb8037e0b9515f3822790a7ce9559c164a7fe5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 30 22:11:02 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.14 (#1524)"
       }
     ],
     "labels": [
@@ -50895,7 +50967,8 @@ window.BENCHMARK_DATA = {
       "1506ce48",
       "1917fc4c",
       "3e1a18a4",
-      "208ea2b1"
+      "208ea2b1",
+      "2cb8037e"
     ],
     "datasets": [
       {
@@ -51605,7 +51678,8 @@ window.BENCHMARK_DATA = {
           3275.4314544677736,
           3207.185521443685,
           3304.1568211873373,
-          1721.8098628997802
+          1721.8098628997802,
+          3314.580428822835
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52320,7 +52394,8 @@ window.BENCHMARK_DATA = {
           4280,
           4280,
           4280,
-          4280
+          4280,
+          4288
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53038,7 +53113,8 @@ window.BENCHMARK_DATA = {
           20610.311613972983,
           26412.724094645182,
           20735.989565022788,
-          12184.225337727865
+          12184.225337727865,
+          27142.02975667318
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53753,7 +53829,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
