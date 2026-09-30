@@ -6,7 +6,11 @@ using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Sources;
 
-internal class DelegateAsyncSource(Func<CancellationToken, Task>? action)
+/// <remarks>
+///     A <see cref="Task" /> subject is wrapped in the <paramref name="action" /> with <paramref name="isTaskSubject" />
+///     set, so that a <see langword="null" /> task is named as a task instead of as a delegate.
+/// </remarks>
+internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool isTaskSubject = false)
 	: IValueSource<DelegateValue>
 {
 	#region IValueSource<DelegateValue> Members
@@ -16,7 +20,10 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action)
 	{
 		if (action is null)
 		{
-			return new DelegateValue(null, TimeSpan.Zero, true);
+			return new DelegateValue(null, TimeSpan.Zero, true)
+			{
+				IsNullTaskSubject = isTaskSubject,
+			};
 		}
 
 		IStopwatch sw = timeSystem.Stopwatch.New();

@@ -36,13 +36,18 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	}
 
 	/// <summary>
-	///     Appends the result for a delegate that was <see langword="null" /> or returned a <see langword="null" /> task.
+	///     Appends the result for a delegate that was <see langword="null" /> or returned a <see langword="null" /> task,
+	///     or for a <see langword="null" /> task subject.
 	/// </summary>
 	internal static void AppendNullResult(StringBuilder stringBuilder, string it, DelegateValue? actual)
 	{
 		if (actual?.IsNullTask == true)
 		{
 			stringBuilder.Append(it).Append(" returned <null> instead of a task");
+		}
+		else if (actual?.IsNullTaskSubject == true)
+		{
+			stringBuilder.Append(it).Append(" was a <null> task");
 		}
 		else
 		{

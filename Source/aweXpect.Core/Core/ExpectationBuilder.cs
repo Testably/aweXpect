@@ -771,7 +771,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
 				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
-			return NullSubjectResult.Create(expectation, default(TValue));
+			return NullSubjectResult.CreateForNullTaskSubject(expectation, default(TValue));
 		}
 
 		TValue data;

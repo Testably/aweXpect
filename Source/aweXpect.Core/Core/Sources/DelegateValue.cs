@@ -61,6 +61,12 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	internal bool IsNullTask { get; init; }
 
 	/// <summary>
+	///     Flag, indicating if the subject was a <see langword="null" /> task instead of a delegate, which is reported
+	///     like a <see langword="null" /> delegate (<see cref="IsNull" />), but named as a task.
+	/// </summary>
+	internal bool IsNullTaskSubject { get; init; }
+
+	/// <summary>
 	///     The exceptions of the faulted task besides the <see cref="Exception" />, which awaiting it threw, or
 	///     <see langword="null" /> when there are none.
 	/// </summary>

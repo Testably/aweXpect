@@ -129,7 +129,7 @@ public class ExpectTests
 			.WithMessage("""
 			             Expected that sut
 			             is equal to 1,
-			             but it was <null>
+			             but it was a <null> task
 			             """).And
 			.Whose(e => e.InnerException, i => i.IsNull())
 			.Because("a null task is no exception thrown by the subject, but a subject without a value");
@@ -147,10 +147,28 @@ public class ExpectTests
 			.WithMessage("""
 			             Expected that sut
 			             is not equal to 1,
-			             but it was <null>
+			             but it was a <null> task
 			             """).And
 			.Whose(e => e.InnerException, i => i.IsNull())
 			.Because("a null task has no value that could meet the negated expectation");
+	}
+
+	[Fact]
+	public async Task ShouldFailForNullGenericTaskSubject_WhenExpectingNull()
+	{
+		Task<string?>? sut = null;
+
+		async Task Act()
+			=> await That(sut!).IsNull();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is null,
+			             but it was a <null> task
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("a null task has no value, not a null value");
 	}
 
 	[Fact]
@@ -165,8 +183,46 @@ public class ExpectTests
 			.WithMessage("""
 			             Expected that sut
 			             does not throw any exception,
-			             but it was <null>
-			             """);
+			             but it was a <null> task
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("a null task subject is no null delegate and no exception thrown by the subject");
+	}
+
+	[Fact]
+	public async Task ShouldFailForNullTaskSubject_WhenExpectingAnException()
+	{
+		Task? sut = null;
+
+		async Task Act()
+			=> await That(sut!).Throws<InvalidOperationException>().WithMessage("foo");
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             throws an InvalidOperationException with message equal to "foo",
+			             but it was a <null> task
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("the expectation on the exception cannot be verified without a task");
+	}
+
+	[Fact]
+	public async Task ShouldFailForNullTaskSubject_WhenNegated()
+	{
+		Task? sut = null;
+
+		async Task Act()
+			=> await That(sut!).Throws().OnlyIf(false);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             does not throw any exception,
+			             but it was a <null> task
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("a null task neither throws nor completes successfully");
 	}
 
 	[Fact]

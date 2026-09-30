@@ -48,6 +48,13 @@ internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberRe
 	public static NullSubjectResult CreateForNullTask<T>(ConstraintResult inner, string member, T value)
 		=> new(inner, value, typeof(T), $"{member} returned <null> instead of a task");
 
+	/// <summary>
+	///     Creates a <see cref="NullSubjectResult" /> for a subject that is a <see langword="null" /> task, which uses the
+	///     <paramref name="inner" /> result for the expectation text.
+	/// </summary>
+	public static NullSubjectResult CreateForNullTaskSubject<T>(ConstraintResult inner, T value)
+		=> new(inner, value, typeof(T), "it was a <null> task");
+
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> _inner.AppendExpectation(stringBuilder, indentation);
