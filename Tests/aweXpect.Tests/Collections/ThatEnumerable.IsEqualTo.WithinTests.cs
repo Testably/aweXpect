@@ -14,6 +14,29 @@ public sealed partial class ThatEnumerable
 			public sealed class DecimalTests
 			{
 				[Fact]
+				public async Task WhenDifferenceIsNotRepresentable_ShouldFail()
+				{
+					IEnumerable<decimal> subject = [decimal.MaxValue,];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([decimal.MinValue,]).Within(1m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [decimal.MinValue,] ± 1.0 in order,
+						             but it contained item decimal.MaxValue at index 0 instead of decimal.MinValue
+
+						             Collection:
+						             [decimal.MaxValue]
+
+						             Expected:
+						             [decimal.MinValue]
+						             """)
+						.Because("a difference beyond the range of decimal is larger than any tolerance");
+				}
+
+				[Fact]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IEnumerable<decimal> subject = [1.1m, 2.1m, 3.1m,];
@@ -83,6 +106,31 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDecimalTests
 			{
+				[Fact]
+				public async Task WhenDifferenceIsNotRepresentable_ShouldFail()
+				{
+					IEnumerable<decimal?> subject = [decimal.MinValue,];
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([decimal.MaxValue,]).Within(1m);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [decimal.MaxValue,] ± 1.0 in order,
+						             but it contained item decimal.MinValue at index 0 instead of decimal.MaxValue
+
+						             Collection:
+						             [decimal.MinValue]
+
+						             Expected:
+						             [
+						               decimal.MaxValue
+						             ]
+						             """)
+						.Because("a difference beyond the range of decimal is larger than any tolerance");
+				}
+
 				[Fact]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{

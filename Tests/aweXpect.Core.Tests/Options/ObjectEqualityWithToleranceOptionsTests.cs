@@ -210,6 +210,28 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("the repetition is the misuse, whatever the second tolerance is");
 	}
 
+	[Fact]
+	public async Task Within_WithToleranceValidation_WhenToleranceWasRejected_ShouldAcceptALaterTolerance()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithToleranceValidation(t =>
+				{
+					if (t % 2 != 0)
+					{
+						throw new ArgumentOutOfRangeException(nameof(t), "The tolerance must be even.");
+					}
+				});
+		await That(() => sut.Within(3)).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("The tolerance must be even.").AsPrefix();
+
+		void Act() => sut.Within(2);
+
+		await That(Act).DoesNotThrow()
+			.Because("the rejected tolerance must leave the options unchanged");
+		await That(await sut.AreConsideredEqual(1, 3)).IsTrue();
+	}
+
 	private sealed class AllEqualComparer : IEqualityComparer<object>
 	{
 		public new bool Equals(object? x, object? y) => true;

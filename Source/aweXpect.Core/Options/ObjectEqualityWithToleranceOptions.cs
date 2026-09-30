@@ -26,9 +26,10 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
 	{
 		ThrowIfToleranceIsInvalid(tolerance);
+		ThrowIfMatchTypeIsSpecified(nameof(Within));
+		_validateTolerance?.Invoke(tolerance);
 		SetMatchType(new WithinMatchType(() => tolerance, false, isWithinTolerance,
 			toString ?? DefaultToleranceFormatter), nameof(Within));
-		_validateTolerance?.Invoke(tolerance);
 		return this;
 	}
 

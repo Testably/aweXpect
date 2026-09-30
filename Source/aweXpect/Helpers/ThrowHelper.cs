@@ -62,7 +62,7 @@ internal static class ThrowHelper
 	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
 	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
 	/// </remarks>
-	public static void ThrowIfCountIsNegative(int count, string? description = null,
+	public static void ThrowIfCountIsNegative(int? count, string? description = null,
 		[CallerArgumentExpression(nameof(count))] string? paramName = null)
 	{
 		if (count < 0)

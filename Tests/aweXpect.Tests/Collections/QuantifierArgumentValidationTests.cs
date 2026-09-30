@@ -96,6 +96,34 @@ public sealed class QuantifierArgumentValidation
 		}
 
 		[Fact]
+		public async Task HasCountBetween_WhenMaximumIsNegativeAndMinimumIsNull_ShouldThrowArgumentOutOfRangeException()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).HasCount().Between(null).And(-1);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must not be negative.").AsPrefix()
+				.Because("a negative bound is rejected even when the other bound is null");
+		}
+
+		[Fact]
+		public async Task HasCountBetween_WhenMinimumIsNegativeAndMaximumIsNull_ShouldThrowArgumentOutOfRangeException()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).HasCount().Between(-1).And(null);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("minimum").And
+				.WithMessage("The minimum must not be negative.").AsPrefix()
+				.Because("a negative bound is rejected even when the other bound is null");
+		}
+
+		[Fact]
 		public async Task HasCountEqualTo_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -106,6 +134,34 @@ public sealed class QuantifierArgumentValidation
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("expected").And
 				.WithMessage("The expected count must not be negative.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task HasCountNotBetween_WhenMaximumIsNegativeAndMinimumIsNull_ShouldThrowArgumentOutOfRangeException()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).HasCount().NotBetween(null).And(-1);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must not be negative.").AsPrefix()
+				.Because("a negative bound is rejected even when the other bound is null");
+		}
+
+		[Fact]
+		public async Task HasCountNotBetween_WhenMinimumIsNegativeAndMaximumIsNull_ShouldThrowArgumentOutOfRangeException()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).HasCount().NotBetween(-1).And(null);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("minimum").And
+				.WithMessage("The minimum must not be negative.").AsPrefix()
+				.Because("a negative bound is rejected even when the other bound is null");
 		}
 
 		[Fact]

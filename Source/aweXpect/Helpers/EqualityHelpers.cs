@@ -54,6 +54,9 @@ internal static class EqualityHelpers
 		}
 	}
 
+	/// <remarks>
+	///     A difference that exceeds the range of a <see cref="decimal" /> is larger than any tolerance.
+	/// </remarks>
 	public static bool IsConsideredEqualTo(this decimal actual, decimal? expected, decimal tolerance)
 	{
 		if (expected is null)
@@ -61,14 +64,19 @@ internal static class EqualityHelpers
 			return false;
 		}
 
-		checked
+		try
 		{
 			return actual > expected.Value
 				? actual - expected.Value <= tolerance
 				: expected.Value - actual <= tolerance;
 		}
+		catch (OverflowException)
+		{
+			return false;
+		}
 	}
 
+	/// <inheritdoc cref="IsConsideredEqualTo(decimal, decimal?, decimal)" />
 	public static bool IsConsideredEqualTo(this decimal? actual, decimal? expected, decimal tolerance)
 	{
 		if (actual is null && expected is null)
@@ -81,12 +89,7 @@ internal static class EqualityHelpers
 			return false;
 		}
 
-		checked
-		{
-			return actual > expected.Value
-				? actual - expected.Value <= tolerance
-				: expected.Value - actual <= tolerance;
-		}
+		return actual.Value.IsConsideredEqualTo(expected, tolerance);
 	}
 
 	public static bool IsConsideredEqualTo(this float actual, float? expected, float tolerance)
