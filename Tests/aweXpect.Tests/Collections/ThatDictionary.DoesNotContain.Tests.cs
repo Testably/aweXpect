@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core;
+using aweXpect.Customization;
 
 namespace aweXpect.Tests;
 
@@ -65,6 +67,32 @@ public sealed partial class ThatDictionary
 					             does not contain ["a"] = 1,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				DateTime unexpected = value.AddMilliseconds(500);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).DoesNotContain(1, unexpected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not contain [1] = {Formatter.Format(unexpected)} ± 0:01,
+					              but it did
+
+					              Dictionary:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("the value of the entry falls back to the default tolerance, as the items of a collection do");
 			}
 		}
 

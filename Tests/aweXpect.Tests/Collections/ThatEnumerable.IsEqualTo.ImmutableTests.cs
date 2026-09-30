@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -558,6 +559,53 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithImmutableArrayOfTimes_WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				ImmutableArray<DateTime> subject = [value,];
+				ImmutableArray<DateTime> expected = [value.AddMilliseconds(500),];
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("an expected immutable array falls back to the default tolerance, as any other expected collection does");
+			}
+
+			[Fact]
+			public async Task WithImmutableArrayOfTimes_WhenTheDefaultTimeToleranceIsSet_ShouldMentionIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				ImmutableArray<DateTime> subject = [value,];
+				ImmutableArray<DateTime> expected = [value.AddSeconds(2),];
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected ± 0:01 in order,
+					              but it contained item {Formatter.Format(value)} at index 0 instead of {Formatter.Format(expected[0])}
+
+					              Collection:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+
+					              Expected:
+					              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Fact]
