@@ -17,6 +17,7 @@ internal static class Prelude
 	public static Users _users = new();
 	public static Orders _orders = new();
 	public static Payments _payments = new();
+	public static Track track = new();
 
 	public static IExpectThat<T> Get<T>(this IThat<T> subject) => (IExpectThat<T>)subject;
 
@@ -50,11 +51,13 @@ internal static class Prelude
 	}
 }
 
-public sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
-	: ConstraintResult.WithNotNullValue<string>(it, grammars),
-		IValueConstraint<string?>
+public class Track;
+
+public sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
+	: ConstraintResult.WithNotNullValue<Track>(it, grammars),
+		IValueConstraint<Track?>
 {
-	public ConstraintResult IsMetBy(string? actual) => this;
+	public ConstraintResult IsMetBy(Track? actual) => this;
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 

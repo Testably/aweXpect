@@ -75,14 +75,14 @@ The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is i
 don't fight over versions. Add expectations for any type with extension methods on `IThat<TType>`:
 
 ```csharp
-public static AndOrResult<string, IThat<string?>> IsAbsolutePath(
-    this IThat<string?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsAbsolutePathConstraint(it, grammars)),
+            => new IsRadioFriendlyConstraint(it, grammars)),
         subject);
 
 // usage
-await Expect.That("/var/log").IsAbsolutePath();
+await Expect.That(track).IsRadioFriendly();
 ```
 
 The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
