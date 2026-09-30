@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" ignoring case,
-					             but it contained "A" at least once
+					             but it contained "a" at least once
 
 					             Collection:
 					             [

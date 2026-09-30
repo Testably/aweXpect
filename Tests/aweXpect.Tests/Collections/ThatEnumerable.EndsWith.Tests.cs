@@ -118,6 +118,38 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectHasMoreItemsThanTheFormatterLimit_ShouldNameTheRemainingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
+
+				async Task Act()
+					=> await That(subject).EndsWith(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with [2],
+					             but it contained item 20 at index 19 instead of 2
+
+					             Collection:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               (… and 10 more)
+					             ]
+					             """)
+					.Because("the subject is enumerated to its end, so the number of remaining items is known");
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IEnumerable<int> subject = ToEnumerable([2,]);

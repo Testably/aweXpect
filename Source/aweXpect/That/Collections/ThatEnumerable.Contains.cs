@@ -956,6 +956,7 @@ public static partial class ThatEnumerable
 	{
 		private IEnumerable<TItem>? _actual;
 		private int _count;
+		private TItem? _firstFoundItem;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable<TItem>? _materializedEnumerable;
@@ -974,6 +975,7 @@ public static partial class ThatEnumerable
 			if (lookup(actual) is { } isContained)
 			{
 				_count = isContained ? 1 : 0;
+				_firstFoundItem = expected;
 				return Finish(actual);
 			}
 
@@ -995,6 +997,11 @@ public static partial class ThatEnumerable
 				}
 
 				_count++;
+				if (_count == 1)
+				{
+					_firstFoundItem = item;
+				}
+
 				bool? check = quantifier.Check(_count, false);
 				switch (check)
 				{
@@ -1045,7 +1052,7 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, expected);
+				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
 				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{
@@ -1271,6 +1278,7 @@ public static partial class ThatEnumerable
 	{
 		private IEnumerable? _actual;
 		private int _count;
+		private TItem? _firstFoundItem;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable? _materializedEnumerable;
@@ -1306,6 +1314,11 @@ public static partial class ThatEnumerable
 				if (TryCastItem(item, out TItem typedItem) && await predicate(typedItem))
 				{
 					_count++;
+					if (_count == 1)
+					{
+						_firstFoundItem = typedItem;
+					}
+
 					bool? check = quantifier.Check(_count, false);
 					switch (check)
 					{
@@ -1352,7 +1365,7 @@ public static partial class ThatEnumerable
 			else
 			{
 				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, expected);
+				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
 				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{

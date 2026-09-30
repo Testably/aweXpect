@@ -168,9 +168,17 @@ public static partial class ThatAsyncEnumerable
 				return this;
 			}
 
-			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
+			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
 				_foundValues.Add(item);
+			}
+
+			if (cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				await _expectationBuilder.AddCollectionContext(
+					materializedEnumerable as IMaterializedAsyncEnumerable<TItem>, true);
+				return this;
 			}
 
 			_itemsCount = _foundValues.Count;

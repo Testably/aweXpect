@@ -498,6 +498,7 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable?
 	{
 		private object? _actual;
+		private bool _hasIndex;
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -517,6 +518,7 @@ public static partial class ThatEnumerable
 			useComparerOf?.Invoke(actual);
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			expectationBuilder.AddCollectionContext(materialized);
+			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
 			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
@@ -546,6 +548,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
+				_hasIndex = true;
 				_actual = item;
 				bool isMatch = await predicate(item);
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
@@ -564,7 +567,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is not null)
+			if (_hasIndex)
 			{
 				if (options.Match.OnlySingleIndex())
 				{
@@ -714,6 +717,7 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable?
 	{
 		private object? _actual;
+		private bool _hasIndex;
 
 		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -732,6 +736,7 @@ public static partial class ThatEnumerable
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			expectationBuilder.AddCollectionContext(materialized);
+			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
 			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
@@ -761,6 +766,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
+				_hasIndex = true;
 				_actual = item;
 				bool isMatch = UserCode.Invoke(predicate, item, "the predicate");
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
@@ -779,7 +785,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is not null)
+			if (_hasIndex)
 			{
 				if (options.Match.OnlySingleIndex())
 				{

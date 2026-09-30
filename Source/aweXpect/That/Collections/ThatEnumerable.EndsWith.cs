@@ -352,8 +352,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -497,8 +496,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}

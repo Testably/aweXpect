@@ -66,11 +66,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -317,11 +313,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -717,11 +709,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 

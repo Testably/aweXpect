@@ -107,8 +107,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
 			}
@@ -242,8 +241,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
 			}
@@ -387,8 +385,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
 			}
@@ -532,8 +529,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable,
-						materializedEnumerable.ExceedsFormatterLimit());
+					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
 			}
@@ -1254,9 +1250,7 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					// Also when met, because an enclosing negation can still show the collection, which is laid out
-					// on one line only when this enumerates it up to the formatter limit.
-					_expectationBuilder.AddCollectionContext(materialized, materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -1367,9 +1361,7 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					// Also when met, because an enclosing negation can still show the collection, which is laid out
-					// on one line only when this enumerates it up to the formatter limit.
-					_expectationBuilder.AddCollectionContext(materialized, materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 

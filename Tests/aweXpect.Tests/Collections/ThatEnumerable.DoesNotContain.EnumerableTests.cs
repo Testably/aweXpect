@@ -341,11 +341,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 3 at least once
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 
@@ -695,11 +691,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least once
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """);
 			}
 

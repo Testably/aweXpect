@@ -344,7 +344,7 @@ public static partial class ThatAsyncEnumerable
 			_isFinished = false;
 			bool isFailed = false;
 			int totalCount = 0;
-			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
+			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
 				totalCount++;
 				if (items.Count <= maximumNumberOfCollectionItems)
@@ -372,6 +372,13 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
+			if (cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				expectationBuilder.AddCollectionContext(items, true);
+				return this;
+			}
+
 			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
 			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
@@ -392,6 +399,10 @@ public static partial class ThatAsyncEnumerable
 			if (_actual == null)
 			{
 				stringBuilder.ItWasNull(it, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				AppendCanceledResult(stringBuilder, it);
 			}
 			else if (_isFinished)
 			{
@@ -477,6 +488,7 @@ public static partial class ThatAsyncEnumerable
 	{
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
+		private TItem? _firstFoundItem;
 		private bool _isFinished;
 		private bool _isNegated;
 
@@ -499,7 +511,7 @@ public static partial class ThatAsyncEnumerable
 			_isFinished = false;
 			bool isFailed = false;
 			int totalCount = 0;
-			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
+			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
 				totalCount++;
 				if (items.Count <= maximumNumberOfCollectionItems)
@@ -509,8 +521,7 @@ public static partial class ThatAsyncEnumerable
 
 				if (await predicate(item))
 				{
-					_count++;
-					bool? check = quantifier.Check(_count, false);
+					bool? check = CountMatch(item);
 					isFailed |= check == false;
 					if (check == true)
 					{
@@ -527,16 +538,28 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
+			if (cancellationToken.IsCancellationRequested)
 			{
-				Outcome = Outcome.Success;
+				Outcome = Outcome.Undecided;
+				expectationBuilder.AddCollectionContext(items, true);
 				return this;
 			}
 
-			Outcome = Outcome.Failure;
+			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
+			_isFinished = true;
+			Outcome = (quantifier.Check(_count, true) ?? _isNegated) ? Outcome.Success : Outcome.Failure;
 			return this;
+		}
+
+		private bool? CountMatch(TItem item)
+		{
+			_count++;
+			if (_count == 1)
+			{
+				_firstFoundItem = item;
+			}
+
+			return quantifier.Check(_count, false);
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -548,6 +571,10 @@ public static partial class ThatAsyncEnumerable
 			{
 				stringBuilder.ItWasNull(it, Grammars);
 			}
+			else if (Outcome == Outcome.Undecided)
+			{
+				AppendCanceledResult(stringBuilder, it);
+			}
 			else if (_isFinished && _count == 0)
 			{
 				stringBuilder.Append(it).Append(" did not contain it");
@@ -555,7 +582,7 @@ public static partial class ThatAsyncEnumerable
 			else
 			{
 				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, expected);
+				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
 				stringBuilder.Append(_isFinished ? " " : " at least ");
 				if (_count == 1)
 				{

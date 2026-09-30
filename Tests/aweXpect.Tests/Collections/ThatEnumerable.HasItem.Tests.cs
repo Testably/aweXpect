@@ -175,11 +175,7 @@ public sealed partial class ThatEnumerable
 					               predicate failed
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a predicate that throws fails the expectation instead of aborting its evaluation");
@@ -202,11 +198,7 @@ public sealed partial class ThatEnumerable
 					               predicate failed
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
+					             [1, 2, 3]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
