@@ -492,6 +492,23 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionIsNotOfTheOpenGenericType_ShouldFail()
+				{
+					Action action = () => throw new OuterException(innerException: new OtherException("foo"));
+
+					async Task Act()
+						=> await That(action).Throws().WithInner(typeof(GenericException<>));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with an inner ThatDelegate.GenericException<>,
+						             but it had an inner ThatDelegate.OtherException:
+						               foo
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -505,6 +522,17 @@ public sealed partial class ThatDelegate
 						             throws an exception with an inner exception,
 						             but it had no inner exception
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldSucceed()
+				{
+					Action action = () => throw new OuterException(innerException: new SubGenericException());
+
+					async Task Act()
+						=> await That(action).Throws().WithInner(typeof(GenericException<>));
+
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -544,6 +572,33 @@ public sealed partial class ThatDelegate
 						             throws an exception with an inner ThatDelegate.CustomException,
 						             but it had no inner exception
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithInner(typeof(string));
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+						.Because("no exception could ever be a string");
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithInner((Type)null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 			}
 
@@ -638,6 +693,18 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldApplyTheExpectations()
+				{
+					Action action = () => throw new OuterException(innerException: new GenericException<int>("foo"));
+
+					async Task Act()
+						=> await That(action).Throws()
+							.WithInner(typeof(GenericException<>), x => x.HasMessage("foo"));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNoExceptionIsThrown_ShouldFail()
 				{
 					Action action = () => { };
@@ -652,6 +719,33 @@ public sealed partial class ThatDelegate
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
 						             but it did not throw any exception
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithInner(typeof(string), x => x.HasMessage("foo"));
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+						.Because("no exception could ever be a string");
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithInner((Type)null!, x => x.HasMessage("foo"));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 			}
 #pragma warning restore CA2263

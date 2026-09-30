@@ -26,4 +26,14 @@ public sealed partial class ThatDelegate
 		[CallerMemberName] string message = "",
 		Exception? innerException = null)
 		: Exception(message, innerException);
+
+	public class GenericException<T>(
+		[CallerMemberName] string message = "",
+		Exception? innerException = null)
+		: Exception(message, innerException);
+
+	public class SubGenericException(
+		[CallerMemberName] string message = "",
+		Exception? innerException = null)
+		: GenericException<int>(message, innerException);
 }

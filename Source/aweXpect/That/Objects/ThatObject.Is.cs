@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -52,7 +51,7 @@ public static partial class ThatObject
 		public ConstraintResult IsMetBy(object? actual)
 		{
 			Actual = actual;
-			Outcome = IsOrImplements(type, actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = type.IsOrImplements(actual) ? Outcome.Success : Outcome.Failure;
 			if (Outcome == Outcome.Failure && actual is not null)
 			{
 				expectationBuilder.AddContext(new ResultContext.Fixed("Actual",
@@ -60,50 +59,6 @@ public static partial class ThatObject
 			}
 
 			return this;
-		}
-
-		private static bool IsOrImplements(Type type, object? actual)
-		{
-			if (type.IsInstanceOfType(actual))
-			{
-				return true;
-			}
-
-			Type? actualType = actual?.GetType();
-			if (!type.IsGenericTypeDefinition || actualType is null)
-			{
-				return false;
-			}
-
-			if (!type.IsInterface)
-			{
-				for (Type? baseType = actualType; baseType is not null; baseType = baseType.BaseType)
-				{
-					if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == type)
-					{
-						return true;
-					}
-				}
-
-				return false;
-			}
-
-			if (!ReflectionFallback.IsSupported)
-			{
-				throw Tracing.WriteException(
-					new NotSupportedException(
-						$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway."));
-			}
-
-			return actualType.GetInterfaces()
-				.Any(childInterface =>
-				{
-					Type currentInterface = childInterface.IsGenericType
-						? childInterface.GetGenericTypeDefinition()
-						: childInterface;
-
-					return currentInterface == type;
-				});
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -210,6 +210,23 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldFail()
+				{
+					Action action = () => throw new OuterException(innerException: new GenericException<int>("inner"));
+
+					async Task Act()
+						=> await That(action).Throws().WithoutInner(typeof(GenericException<>));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception without an inner ThatDelegate.GenericException<>,
+						             but it had an inner ThatDelegate.GenericException<int>:
+						               inner
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionIsOfTheType_ShouldFail()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException("inner"));
@@ -224,6 +241,33 @@ public sealed partial class ThatDelegate
 						             but it had an inner ThatDelegate.CustomException:
 						               inner
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithoutInner(typeof(string));
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+						.Because("no exception could ever be a string");
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+				{
+					Action action = () => throw new OuterException(innerException: new CustomException());
+
+					async Task Act()
+						=> await That(action).Throws().WithoutInner((Type)null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 			}
 #pragma warning restore CA2263

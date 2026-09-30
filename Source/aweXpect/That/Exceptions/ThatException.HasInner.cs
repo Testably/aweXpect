@@ -74,10 +74,12 @@ public static partial class ThatException
 		this IThat<Exception?> subject,
 		Type type,
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(subject.Get().ExpectationBuilder
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception?, Exception?>(
-					e => e?.InnerException is { } inner && type.IsInstanceOfType(inner) ? inner : null,
+					e => e?.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
 					" that ",
 					false)
 				.Validate((it, grammars)
@@ -85,6 +87,7 @@ public static partial class ThatException
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject has an inner exception of type <paramref name="type" />.
@@ -93,8 +96,11 @@ public static partial class ThatException
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject,
 		Type type)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasInnerExceptionValueConstraint(type, it, grammars)),
 			subject);
+	}
 }
 #pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

@@ -141,6 +141,24 @@ public partial class ValueFormatters
 		}
 
 		[Theory]
+		[InlineData(typeof(NestedGenericType<>), "ValueFormatters.TypeTests.NestedGenericType<>")]
+		[InlineData(typeof(NestedGenericType<>.InnerClass<,>), "ValueFormatters.TypeTests.NestedGenericType<>.InnerClass<,>")]
+		[InlineData(typeof(NestedGenericType<>.InnerRegularClass),
+			"ValueFormatters.TypeTests.NestedGenericType<>.InnerRegularClass")]
+		public async Task ShouldSupportNestedOpenGenericTypeDefinitions(Type value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Theory]
 		[InlineData(typeof(IDictionary<,>), 0, "TKey")]
 		[InlineData(typeof(IDictionary<,>), 1, "TValue")]
 		[InlineData(typeof(IEnumerable<>), 0, "T")]

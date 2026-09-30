@@ -37,8 +37,11 @@ public static partial class ThatException
 	public static AndOrResult<Exception, IThat<Exception?>> DoesNotHaveInner(
 		this IThat<Exception?> subject,
 		Type type)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	{
+		type.ThrowIfNotAnExceptionType();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasInnerExceptionValueConstraint(type, it, grammars).Invert()),
 			subject);
+	}
 }
 #pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

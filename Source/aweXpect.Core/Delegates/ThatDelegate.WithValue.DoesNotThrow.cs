@@ -44,8 +44,11 @@ public abstract partial class ThatDelegate
 		/// </remarks>
 		[GuaranteesNotNull]
 		public DelegateWithValueResult<T> DoesNotThrow(Type type)
-			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
+		{
+			type.ThrowIfNotAnExceptionType();
+			return new(ExpectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, type)));
+		}
 
 		private sealed class DoesNotThrowConstraint(
 			string it,
@@ -148,7 +151,7 @@ public abstract partial class ThatDelegate
 			private void UpdateOutcome(DelegateValue<T> value)
 				=> Outcome = value.IsNull || value.ExceededTimeout is not null ||
 				             _isNegated == (value.Exception is null ||
-				                            !exceptionType.IsAssignableFrom(value.Exception.GetType()))
+				                            !value.Exception.IsOfType(exceptionType))
 					? Outcome.Failure
 					: Outcome.Success;
 		}

@@ -33,6 +33,7 @@ public abstract partial class ThatDelegate
 	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> ThrowsExactly(Type type)
 	{
+		type.ThrowIfNotAnExceptionType();
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<Exception>(ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -68,7 +69,7 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			bool isExpectedType = exceptionType == value?.GetType();
+			bool isExpectedType = value.IsExactlyOfType(exceptionType);
 			// Chained expectations on a missing exception or one of another type are irrelevant.
 			FurtherProcessingStrategy = isExpectedType
 				? FurtherProcessingStrategy.Continue

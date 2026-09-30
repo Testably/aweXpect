@@ -29,8 +29,11 @@ public abstract partial class ThatDelegate
 		/// </summary>
 		[GuaranteesNotNull]
 		public DelegateWithValueResult<T> DoesNotThrowExactly(Type type)
-			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
+		{
+			type.ThrowIfNotAnExceptionType();
+			return new(ExpectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowExactlyConstraint(it, grammars, type)));
+		}
 
 		private sealed class DoesNotThrowExactlyConstraint(
 			string it,
@@ -118,7 +121,7 @@ public abstract partial class ThatDelegate
 
 			private void UpdateOutcome(DelegateValue<T> value)
 				=> Outcome = value.IsNull || value.ExceededTimeout is not null ||
-				             _isNegated == (exceptionType != value.Exception?.GetType())
+				             _isNegated == !value.Exception.IsExactlyOfType(exceptionType)
 					? Outcome.Failure
 					: Outcome.Success;
 		}

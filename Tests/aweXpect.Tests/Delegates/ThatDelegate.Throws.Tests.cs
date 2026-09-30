@@ -320,6 +320,46 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenOpenGenericTypeDoesNotMatch_ShouldFail()
+			{
+				Action action = () => throw new OtherException("foo");
+
+				async Task Act()
+					=> await That(action).Throws(typeof(GenericException<>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws a ThatDelegate.GenericException<>,
+					             but it did throw a ThatDelegate.OtherException:
+					               foo
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenOpenGenericTypeIsABaseType_ShouldSucceed()
+			{
+				Action action = () => throw new SubGenericException();
+
+				async Task Act()
+					=> await That(action).Throws(typeof(GenericException<>));
+
+				await That(Act).DoesNotThrow()
+					.Because("the base type GenericException<int> is constructed from the open generic type");
+			}
+
+			[Fact]
+			public async Task WhenOpenGenericTypeIsTheDefinition_ShouldSucceed()
+			{
+				Action action = () => throw new GenericException<int>();
+
+				async Task Act()
+					=> await That(action).Throws(typeof(GenericException<>));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
@@ -384,6 +424,33 @@ public sealed partial class ThatDelegate
 					              but it did throw a ThatDelegate.CustomException:
 					                {message}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+			{
+				Action action = () => throw new CustomException();
+
+				async Task Act()
+					=> await That(action).Throws(typeof(string));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+					.Because("no exception could ever be a string");
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Action action = () => throw new CustomException();
+
+				async Task Act()
+					=> await That(action).Throws((Type)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 		}
 #pragma warning restore CA2263

@@ -23,7 +23,7 @@ public static partial class ThatException
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
+			Outcome = innerExceptionType.IsOrImplements(actual?.InnerException)
 				? Outcome.Success
 				: Outcome.Failure;
 			// Expectations on a missing inner exception or one of another type could only repeat the mismatch.

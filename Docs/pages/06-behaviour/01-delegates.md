@@ -105,6 +105,10 @@ await Expect.That(Act).ThrowsExactly<CustomException>();
 await Expect.That(Act).ThrowsExactly(typeof(CustomException));
 ```
 
+A `Type` argument must be an exception type. Like `Is(typeof(List<>))` for objects, an open generic type such as
+`typeof(CustomException<>)` matches every exception whose type is constructed from it or derives from such a type, while
+`ThrowsExactly` only matches the constructed types themselves.
+
 ### Conditional throw
 
 You can verify that the delegate throws an exception only if a predicate is satisfied (otherwise it verifies that no
