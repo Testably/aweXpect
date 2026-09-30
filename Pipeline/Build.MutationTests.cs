@@ -46,10 +46,8 @@ partial class Build
 			"**/That/DateOnlys/*.cs", "**/That/DateTimeOffsets/*.cs", "**/That/DateTimes/*.cs",
 			"**/That/TimeOnlys/*.cs", "**/That/TimeSpans/*.cs",
 		]),
-		("infrastructure",
-		[
-			"**/Helpers/*.cs", "**/Results/*.cs", "**/Equivalency/*.cs", "**/Options/*.cs", "**/Polyfills/*.cs",
-		]),
+		("helpers", ["**/Helpers/*.cs",]),
+		("infrastructure", ["**/Results/*.cs", "**/Equivalency/*.cs", "**/Options/*.cs", "**/Polyfills/*.cs",]),
 		("rest", []),
 	];
 
@@ -58,14 +56,17 @@ partial class Build
 	///     <see cref="MainMutationSlices" />.
 	/// </summary>
 	/// <remarks>
-	///     The <c>Core</c> folder is the only one with nested folders, so it is matched twice - once flat and once
-	///     recursively - because the last slice would otherwise silently pick up everything below it.
+	///     The <c>Core</c> folder is the only one with nested folders, so its nested files get a recursive slice of their
+	///     own, because the last slice would otherwise silently pick up everything below it.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
 	[
-		("engine", ["**/Core/*.cs", "**/Core/**/*.cs",]),
+		("engine", ["**/Core/*.cs",]),
+		("engine-nested", ["**/Core/**/*.cs",]),
+		("options-strings", ["**/Options/StringEqualityOptions*.cs",]),
 		("options", ["**/Options/*.cs",]),
 		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
+		("recording", ["**/Recording/*.cs", "**/Signaling/*.cs",]),
 		("rest", []),
 	];
 
@@ -79,7 +80,6 @@ partial class Build
 		.DependsOn(Compile)
 		.OnlyWhenDynamic(() => !DisableMutationTests)
 		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
-		.OnlyWhenDynamic(() => Repository.Tags.Count == 0)
 		.Executes(() =>
 		{
 			ExecuteMutationTest(Solution.aweXpect_Core,
@@ -174,28 +174,27 @@ partial class Build
 		.Executes(async () =>
 		{
 			ArtifactsDirectory.CreateDirectory();
-			bool hasMainReport =
-				await DownloadSlicedMutationReport(Solution.aweXpect.Name, "MutationTestsMain", MainMutationSlices);
-
-			Dictionary<Project, Project[]> projects = new()
+			List<Project> projects = [];
+			List<Project> projectsWithoutReport = [];
+			foreach ((Project project, string artifactName, (string Name, string[] Patterns)[] slices) in
+			         new[]
+			         {
+				         (Solution.aweXpect, "MutationTestsMain", MainMutationSlices),
+				         (Solution.aweXpect_Core, "MutationTestsCore", CoreMutationSlices),
+			         })
 			{
+				bool? hasReport = await DownloadSlicedMutationReport(project.Name, artifactName, slices);
+				if (hasReport is null)
 				{
-					Solution.aweXpect, [Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]
-				},
-			};
-			List<Project> projectsWithoutReport = hasMainReport ? [] : [Solution.aweXpect,];
-
-			// `MutationTestsCore` does not run on a tag, so there is no report to collect or publish for it.
-			if (Repository.Tags.Count == 0)
-			{
-				if (!await DownloadSlicedMutationReport(Solution.aweXpect_Core.Name, "MutationTestsCore",
-					    CoreMutationSlices))
-				{
-					projectsWithoutReport.Add(Solution.aweXpect_Core);
+					// `build.yml` and `nightly.yml` each mutate only one of the projects.
+					continue;
 				}
 
-				projects.Add(Solution.aweXpect_Core,
-					[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,]);
+				projects.Add(project);
+				if (hasReport == false)
+				{
+					projectsWithoutReport.Add(project);
+				}
 			}
 
 			if (projectsWithoutReport.Count == projects.Count)
@@ -214,29 +213,29 @@ partial class Build
 			}
 
 			string apiKey = Environment.GetEnvironmentVariable("STRYKER_DASHBOARD_API_KEY");
-			foreach (KeyValuePair<Project, Project[]> project in projects)
+			foreach (Project project in projects)
 			{
-				string branchName = File.ReadAllText(ArtifactsDirectory / project.Key.Name / "BranchName.txt");
+				string branchName = File.ReadAllText(ArtifactsDirectory / project.Name / "BranchName.txt");
 				string reportComment =
-					File.ReadAllText(ArtifactsDirectory / project.Key.Name / "Stryker" / "reports" /
+					File.ReadAllText(ArtifactsDirectory / project.Name / "Stryker" / "reports" /
 					                 "mutation-report.json");
 				using HttpClient client = new();
 				client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 				// https://stryker-mutator.io/docs/General/dashboard/#send-a-report-via-curl
 				HttpResponseMessage response = await client.PutAsync(
-					$"https://dashboard.stryker-mutator.io/api/reports/github.com/Testably/aweXpect/{branchName}?module={project.Key.Name}",
+					$"https://dashboard.stryker-mutator.io/api/reports/github.com/Testably/aweXpect/{branchName}?module={project.Name}",
 					new StringContent(reportComment, new MediaTypeHeaderValue("application/json")));
 				string responseContent = await response.Content.ReadAsStringAsync();
 				if (response.IsSuccessStatusCode)
 				{
 					Log.Information("Uploaded the {Module} mutation report ({Size} bytes): {Response}",
-						project.Key.Name, reportComment.Length, responseContent);
+						project.Name, reportComment.Length, responseContent);
 				}
 				else
 				{
 					// Without this the job stays green while the dashboard keeps showing the previous score.
 					Assert.Fail(
-						$"Could not upload the {project.Key.Name} mutation report ({reportComment.Length} bytes), " +
+						$"Could not upload the {project.Name} mutation report ({reportComment.Length} bytes), " +
 						$"the dashboard answered {(int)response.StatusCode} {response.ReasonPhrase}: {responseContent}");
 				}
 			}
@@ -251,10 +250,10 @@ partial class Build
 	///     mutate only their own changes and stay unsliced, which is why a single artifact is still accepted.
 	/// </remarks>
 	/// <returns>
-	///     Whether a report was collected. An unsliced run whose mutation tests never executed uploads its artifact
-	///     without one.
+	///     Whether a report was collected, or <see langword="null" /> when the run did not mutate the project at all. An
+	///     unsliced run whose mutation tests never executed uploads its artifact without one.
 	/// </returns>
-	private async Task<bool> DownloadSlicedMutationReport(string projectName, string artifactName,
+	private async Task<bool?> DownloadSlicedMutationReport(string projectName, string artifactName,
 		(string Name, string[] Patterns)[] slices)
 	{
 		AbsolutePath projectDirectory = ArtifactsDirectory / projectName;
@@ -274,6 +273,11 @@ partial class Build
 		{
 			Log.Information("Found no mutation slices for {Project}, so the run was not sliced", projectName);
 			await artifactName.DownloadArtifactTo(projectDirectory, GithubToken);
+			if (!Directory.Exists(projectDirectory))
+			{
+				return null;
+			}
+
 			return File.Exists(projectDirectory / "Stryker" / "reports" / "mutation-report.json");
 		}
 

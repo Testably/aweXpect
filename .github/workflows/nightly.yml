@@ -1,0 +1,102 @@
+name: Nightly
+
+on:
+    workflow_dispatch:
+    schedule:
+        -   cron: '0 2 * * *'
+
+jobs:
+    changes:
+        name: "Check for changes"
+        runs-on: ubuntu-latest
+        outputs:
+            changed: ${{ steps.check.outputs.changed }}
+        steps:
+            -   name: Compare with the last successful nightly run
+                id: check
+                run: |
+                    last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow nightly.yml --branch main --status success --limit 1 --json headSha --jq '.[0].headSha // ""')
+                    if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || [ "$last" != "$GITHUB_SHA" ]; then
+                        echo "changed=true" >> "$GITHUB_OUTPUT"
+                    fi
+                env:
+                    GH_TOKEN: ${{ github.token }}
+
+    mutation-tests-core:
+        name: "Mutation tests (aweXpect.Core, ${{ matrix.slice }})"
+        needs: [ changes ]
+        if: needs.changes.outputs.changed == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 120
+        # `aweXpect.Core` is released on its own, so its score has to be measured on `main` too, but it takes too long
+        # to run on every push. The slices are disjoint and cover everything, so the dashboard job can merge their
+        # reports back into a single score.
+        strategy:
+            fail-fast: false
+            matrix:
+                slice: [ engine, engine-nested, options-strings, options, formatting, recording, rest ]
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+            # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
+            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
+            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
+            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
+            # more memory than the test host ever does.
+            MutationTestHeapHardLimit: "0x20000000"
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                # The sampler writes into the live job log, because a runner that runs out of memory is torn down
+                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
+                # before the step ends, because a surviving background process holds the step's stdout open, and
+                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
+                run: |
+                    while sleep 60; do
+                        echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
+                    done &
+                    sampler=$!
+                    status=0
+                    ./build.sh MutationTestsCore || status=$?
+                    pkill -P "$sampler" 2>/dev/null || true
+                    kill "$sampler" 2>/dev/null || true
+                    wait "$sampler" 2>/dev/null || true
+                    exit "$status"
+                env:
+                    MutationSlice: ${{ matrix.slice }}
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: MutationTestsCore-${{ matrix.slice }}
+                    path: |
+                        ./Artifacts/*
+
+    mutation-tests-dashboard:
+        name: "Mutation tests Dashboard"
+        needs: [ mutation-tests-core ]
+        runs-on: ubuntu-latest
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                run: ./build.sh MutationTestsDashboard
+                env:
+                    GithubToken: ${{ secrets.GITHUB_TOKEN }}
+                    WorkflowRunId: ${{ github.run_id }}
