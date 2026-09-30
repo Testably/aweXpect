@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-#if NET8_0_OR_GREATER
 using System.Collections.Immutable;
-#endif
 
 namespace aweXpect.Tests;
 
@@ -12,7 +10,6 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task ForAnImmutableSortedSet_ShouldUseTheComparerOfTheSet()
 			{
@@ -23,7 +20,6 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
 
 			[Fact]
 			public async Task ForAnUntypedSortedSet_ShouldUseTheDefaultOrder()

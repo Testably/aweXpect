@@ -51,8 +51,7 @@ the entries [by key](./04-dictionaries.md#equality) instead. The analyzer rule
 have no meaning for such a collection. Sorted sets and dictionaries are not reported.
 :::
 
-A set that was created with a custom comparer (a `HashSet<T>` or `SortedSet<T>`, and
-[on .NET 8 or later](../02-getting-started.md#target-frameworks) also an `ImmutableHashSet<T>`,
+A set that was created with a custom comparer (a `HashSet<T>`, `SortedSet<T>`, `ImmutableHashSet<T>`,
 `ImmutableSortedSet<T>` or `FrozenSet<T>`) compares its items with that comparer. Any other collection, including a set
 with the default comparer, is compared with the default equality. The comparer of such a set decides in every
 expectation that compares its items: `IsEqualTo`, `Contains` (with an item or a subset), `IsContainedIn`, `HasItem`,
