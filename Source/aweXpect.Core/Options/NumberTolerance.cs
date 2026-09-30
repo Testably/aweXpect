@@ -70,7 +70,9 @@ public class NumberTolerance<TNumber>(
 		}
 
 		const char plusMinus = '\u00b1';
-		return $" {plusMinus} {Formatter.Format(Tolerance)}";
+		object tolerance = Tolerance.Value;
+		// A char tolerance is a distance between code points and would be unreadable as a character.
+		return $" {plusMinus} {Formatter.Format(tolerance is char character ? (int)character : tolerance)}";
 	}
 
 	/// <summary>

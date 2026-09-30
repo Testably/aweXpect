@@ -36,6 +36,25 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForChar_WhenOutsideTolerance_ShouldShowTheToleranceAndDifferenceAsNumbers()
+			{
+				char subject = 'a';
+
+				async Task Act()
+					=> await That(subject).IsGreaterThanOrEqualTo('c').Within('\u0001');
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is greater than or equal to 'c' ± 1,
+					             but it was 'a', which differs by -2
+					             """)
+					.Because("a tolerance or difference formatted as char would be an unreadable character");
+			}
+#endif
+
 			[Theory]
 			[InlineData(12.4, 12.5)]
 			[InlineData(12.5, 12.5)]

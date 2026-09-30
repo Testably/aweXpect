@@ -565,6 +565,25 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNullableChar_WhenValueIsGreaterThanExpected_ShouldShowTheDifferenceAsNumber()
+			{
+				char? subject = 'z';
+
+				async Task Act()
+					=> await That(subject).IsLessThan('a');
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 'a',
+					             but it was 'z', which differs by 25
+					             """)
+					.Because("a difference formatted as char would be an unreadable character");
+			}
+#endif
+
 			[Theory]
 			[AutoData]
 			public async Task ForNullableDecimal_WhenExpectedIsNull_ShouldFail(decimal? subject)

@@ -43,13 +43,13 @@ public static partial class ThatNumber
 	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsBetween<TNumber>(
+	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsBetween<TNumber>(
 		this IThat<TNumber?> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
-			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
+			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options)),
 				subject,
@@ -86,13 +86,13 @@ public static partial class ThatNumber
 	///     well as its negation. A <c>NaN</c> subject is never between them.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
+	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber?> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
-			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
+			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
 				subject,
@@ -264,14 +264,14 @@ public static partial class ThatNumber
 
 	[CreateExpectationFamily("Is{Not}Between", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
 		Summary = IsBetweenSummary, NegatedSummary = IsNotBetweenSummary, Remarks = IsBetweenRemarks)]
-	internal static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?>
+	internal static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?>
 		IsBetweenForNullableCore<TNumber>(
 			IThat<TNumber?> subject,
 			TNumber? minimum,
 			NumberTolerance<TNumber> options,
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
-		=> new(maximum => new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
+		=> new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
 			subject,

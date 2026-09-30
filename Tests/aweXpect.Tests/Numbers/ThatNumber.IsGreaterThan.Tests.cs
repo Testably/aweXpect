@@ -56,6 +56,25 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForChar_WhenValueIsLessThanExpected_ShouldShowTheDifferenceAsNumber()
+			{
+				char subject = 'a';
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan('b');
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is greater than 'b',
+					             but it was 'a', which differs by -1
+					             """)
+					.Because("a difference formatted as char would be an unreadable character");
+			}
+#endif
+
 			[Fact]
 			public async Task ForDecimal_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference()
 			{

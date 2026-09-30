@@ -86,6 +86,76 @@ public sealed class AwaitedSubjectTests
 	}
 
 	[Fact]
+	public async Task ForNullableNumber_IsBetween_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsBetween(0).And(2);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsGreaterThan_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsGreaterThan(0);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsGreaterThanOrEqualTo_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsGreaterThanOrEqualTo(1);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsLessThan_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsLessThan(2);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsLessThanOrEqualTo_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsLessThanOrEqualTo(1);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsNotBetween_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsNotBetween(2).And(3);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ForNullableNumber_IsNotGreaterThan_ShouldReturnTheNotNullSubject()
+	{
+		int? subject = 1;
+
+		int result = await That(subject).IsNotGreaterThan(1).Within(0);
+
+		await That(result).IsEqualTo(1);
+	}
+
+	[Fact]
 	public async Task ForNullableNumber_IsPositive_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;

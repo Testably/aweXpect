@@ -47,6 +47,12 @@ As a result, many negated expectations such as `IsNotEmpty()`, `DoesNotContain(â
 `null` subject where they used to pass. In return, the analyzer knows every expectation that a `null` subject cannot
 satisfy, so you may be able to remove `!` operators after such an expectation.
 
+Awaiting such an expectation hands out the subject as not nullable, e.g.
+`int value = await Expect.That(nullableInt).IsGreaterThan(0);`. For this, the ordering and range expectations on a
+nullable number (`IsGreaterThan`, `IsGreaterThanOrEqualTo`, `IsLessThan`, `IsLessThanOrEqualTo`, `IsBetween` and their
+negations) return a `NumberToleranceResult<TNumber, IThat<TNumber?>>` instead of a
+`NullableNumberToleranceResult<TNumber, IThat<TNumber?>>`, so code that spells out this result type has to be adapted.
+
 ## Argument validation
 
 An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys()` without arguments, made an
