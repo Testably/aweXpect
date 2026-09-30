@@ -324,7 +324,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is less than -∞ ± 1,
+					             is less than -∞ ± 1.0,
 					             but it was -∞
 					             """)
 					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");

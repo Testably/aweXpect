@@ -1,7 +1,7 @@
+using System;
 using System.Globalization;
 using System.Text;
 #if NET8_0_OR_GREATER
-using System;
 using System.Runtime.InteropServices;
 #endif
 
@@ -608,12 +608,12 @@ public static partial class ValueFormatters
 				(true, float.PositiveInfinity) => "float +\u221e",
 				(true, float.MinValue) => "float.MinValue",
 				(true, float.MaxValue) => "float.MaxValue",
-				(true, _) => $"float {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
+				(true, _) => $"float {FormatRoundTrippable(value)}",
 				(_, float.NegativeInfinity) => "-\u221e",
 				(_, float.PositiveInfinity) => "+\u221e",
 				(_, float.MinValue) => "float.MinValue",
 				(_, float.MaxValue) => "float.MaxValue",
-				(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
+				(_, _) => FormatRoundTrippable(value),
 			};
 
 	/// <summary>
@@ -677,12 +677,12 @@ public static partial class ValueFormatters
 				(true, double.PositiveInfinity) => "double +\u221e",
 				(true, double.MinValue) => "double.MinValue",
 				(true, double.MaxValue) => "double.MaxValue",
-				(true, _) => $"double {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
+				(true, _) => $"double {FormatRoundTrippable(value)}",
 				(_, double.NegativeInfinity) => "-\u221e",
 				(_, double.PositiveInfinity) => "+\u221e",
 				(_, double.MinValue) => "double.MinValue",
 				(_, double.MaxValue) => "double.MaxValue",
-				(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
+				(_, _) => FormatRoundTrippable(value),
 			};
 
 	/// <summary>
@@ -857,12 +857,23 @@ public static partial class ValueFormatters
 			return options?.IncludeType == true ? "NFloat +∞" : "+∞";
 		}
 
-		if (options?.IncludeType == true)
+		if (value == NFloat.MinValue)
 		{
-			return $"NFloat {value.ToString(CultureInfo.InvariantCulture)}";
+			return "NFloat.MinValue";
 		}
 
-		return value.ToString(CultureInfo.InvariantCulture);
+		if (value == NFloat.MaxValue)
+		{
+			return "NFloat.MaxValue";
+		}
+
+		string formattedValue = FormatRoundTrippable(value.Value);
+		if (options?.IncludeType == true)
+		{
+			return $"NFloat {formattedValue}";
+		}
+
+		return formattedValue;
 	}
 #endif
 
@@ -1128,4 +1139,59 @@ public static partial class ValueFormatters
 
 		Format(formatter, stringBuilder, value.Value, options);
 	}
+
+	/// <summary>
+	///     Formats the <paramref name="value" /> with the fewest of 15 to 17 significant digits (7 to 9 for a float)
+	///     that parse back to it, so that different values are never rendered identically.
+	/// </summary>
+	/// <remarks>
+	///     The round trip is checked explicitly, because the "R" format of .NET Framework is not always round-trippable
+	///     and drops the sign of negative zero.
+	/// </remarks>
+	private static string FormatRoundTrippable(double value)
+	{
+		if (double.IsNaN(value) || value == 0)
+		{
+			return FormatNaNOrZero(value);
+		}
+
+		for (int precision = 15; precision < 17; precision++)
+		{
+			string formattedValue = value.ToString($"G{precision}", CultureInfo.InvariantCulture);
+			if (double.TryParse(formattedValue, NumberStyles.Float, CultureInfo.InvariantCulture,
+				    out double parsedValue) && parsedValue == value)
+			{
+				return WithDecimalDigit(formattedValue);
+			}
+		}
+
+		return WithDecimalDigit(value.ToString("G17", CultureInfo.InvariantCulture));
+	}
+
+	/// <inheritdoc cref="FormatRoundTrippable(double)" />
+	private static string FormatRoundTrippable(float value)
+	{
+		if (float.IsNaN(value) || value == 0)
+		{
+			return FormatNaNOrZero(value);
+		}
+
+		for (int precision = 7; precision < 9; precision++)
+		{
+			string formattedValue = value.ToString($"G{precision}", CultureInfo.InvariantCulture);
+			if (float.TryParse(formattedValue, NumberStyles.Float, CultureInfo.InvariantCulture,
+				    out float parsedValue) && parsedValue == value)
+			{
+				return WithDecimalDigit(formattedValue);
+			}
+		}
+
+		return WithDecimalDigit(value.ToString("G9", CultureInfo.InvariantCulture));
+	}
+
+	private static string FormatNaNOrZero(double value)
+		=> double.IsNaN(value) ? "NaN" : BitConverter.DoubleToInt64Bits(value) < 0 ? "-0.0" : "0.0";
+
+	private static string WithDecimalDigit(string formattedValue)
+		=> formattedValue.IndexOfAny(['.', 'E']) < 0 ? formattedValue + ".0" : formattedValue;
 }

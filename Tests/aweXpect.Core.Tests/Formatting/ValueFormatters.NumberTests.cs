@@ -63,6 +63,43 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Fact]
+		public async Task Numbers_Double_NegativeZero_ShouldKeepTheSign()
+		{
+			double value = -0.0;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string resultWithType = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo("-0.0").Because("negative zero keeps its sign on every runtime");
+			await That(resultWithType).IsEqualTo("double -0.0");
+			await That(sb.ToString()).IsEqualTo("-0.0");
+		}
+
+		[Theory]
+		[InlineData(0.1 + 0.2, "0.30000000000000004")]
+		[InlineData(1e-30, "1E-30")]
+		[InlineData(double.Epsilon, "4.94065645841247E-324")]
+		[InlineData(1e300, "1E+300")]
+		[InlineData(-2.5e-7, "-2.5E-07")]
+		[InlineData(123456789012.345, "123456789012.345")]
+		[InlineData(0.1 + 0.7, "0.7999999999999999")]
+		public async Task Numbers_Double_ShouldBeRoundTrippable(double value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("different values must never be rendered identically");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Theory]
 		[InlineData(2, "2.0")]
 		[InlineData(1.1, "1.1")]
@@ -94,6 +131,41 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value);
 
 			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task Numbers_Float_NegativeZero_ShouldKeepTheSign()
+		{
+			float value = -0.0F;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string resultWithType = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo("-0.0").Because("negative zero keeps its sign on every runtime");
+			await That(resultWithType).IsEqualTo("float -0.0");
+			await That(sb.ToString()).IsEqualTo("-0.0");
+		}
+
+		[Theory]
+		[InlineData(1.0000001F, "1.0000001")]
+		[InlineData(1e-30F, "1E-30")]
+		[InlineData(float.Epsilon, "1.401298E-45")]
+		[InlineData(1e30F, "1E+30")]
+		[InlineData(16777215F, "16777215.0")]
+		public async Task Numbers_Float_ShouldBeRoundTrippable(float value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("different values must never be rendered identically");
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
@@ -259,6 +331,43 @@ public partial class ValueFormatters
 				.Because("ICU renders negative numbers in sv-SE with the Unicode minus sign");
 			await That(string.Join(" ", results)).IsEqualTo("-1 -2 -3 -4 -5 int -6");
 			await That(sb.ToString()).IsEqualTo("-1-2-3-4-5int -6");
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task Numbers_NFloat_MinAndMaxValue_ShouldUseCSharpSyntax()
+		{
+			string maxValueResult = Formatter.Format(NFloat.MaxValue);
+			string minValueResult = Formatter.Format(NFloat.MinValue);
+			string maxValueWithTypeResult = Formatter.Format(NFloat.MaxValue, FormattingOptions.WithType);
+			string minValueObjectResult = Formatter.Format((object?)NFloat.MinValue);
+
+			await That(maxValueResult).IsEqualTo("NFloat.MaxValue");
+			await That(minValueResult).IsEqualTo("NFloat.MinValue");
+			await That(maxValueWithTypeResult).IsEqualTo("NFloat.MaxValue");
+			await That(minValueObjectResult).IsEqualTo("NFloat.MinValue");
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Theory]
+		[InlineData(2, "2.0")]
+		[InlineData(-0.0, "-0.0")]
+		[InlineData(0.1 + 0.2, "0.30000000000000004")]
+		[InlineData(1e-30, "1E-30")]
+		public async Task Numbers_NFloat_ShouldBeFormattedLikeDouble(double doubleValue, string expectedResult)
+		{
+			NFloat value = (NFloat)doubleValue;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult).And.IsEqualTo(Formatter.Format(doubleValue));
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 #endif
 
@@ -921,7 +1030,7 @@ public partial class ValueFormatters
 
 		[Theory]
 		[InlineData(2, "double 2.0")]
-		[InlineData(0.1 + 0.2, "double 0.3")]
+		[InlineData(0.1 + 0.2, "double 0.30000000000000004")]
 		public async Task Numbers_WithType_Double_ShouldHaveAtLeastOneDecimalDigit(double value, string expectedResult)
 		{
 			StringBuilder sb = new();

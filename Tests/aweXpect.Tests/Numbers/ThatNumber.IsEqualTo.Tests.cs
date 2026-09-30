@@ -190,6 +190,22 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenValuesDifferOnlyInTheLastDigit_ShouldShowAllDigits()
+			{
+				double subject = 0.1 + 0.2;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(0.3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 0.3,
+					             but it was 0.30000000000000004, which differs by 5.55111512312578E-17
+					             """).Because("different values must never be rendered identically");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task ForFloat_WhenExpectedIsNull_ShouldFail(float subject)
@@ -260,6 +276,22 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForFloat_WhenValuesDifferOnlyInTheLastDigit_ShouldShowAllDigits()
+			{
+				float subject = 1.0000001F;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(1F);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 1.0,
+					             but it was 1.0000001, which differs by 1.192093E-07
+					             """).Because("different values must never be rendered identically");
 			}
 
 			[Theory]
@@ -435,7 +467,7 @@ public sealed partial class ThatNumber
 					.WithMessage("""
 					             Expected that subject
 					             is equal to NaN,
-					             but it was 0
+					             but it was 0.0
 					             """)
 					.Because("a difference to NaN is meaningless");
 			}
@@ -451,7 +483,7 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 0,
+					             is equal to 0.0,
 					             but it was NaN
 					             """)
 					.Because("a difference to NaN is meaningless");
@@ -1464,6 +1496,22 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenDifferenceIsMaxValue_ShouldNotRoundItBeyondMaxValue()
+			{
+				double subject = double.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(0.0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 0.0,
+					             but it was double.MaxValue, which differs by double.MaxValue
+					             """).Because("rounding the difference to 15 significant digits would exceed double.MaxValue");
+			}
+
 			[Theory]
 			[InlineData(double.MinValue, double.MaxValue)]
 			[InlineData(double.MaxValue, double.MinValue)]
@@ -1493,10 +1541,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(float.MinValue, float.MaxValue, -6.805646932770577E+38)]
-			[InlineData(float.MaxValue, float.MinValue, 6.805646932770577E+38)]
+			[InlineData(float.MinValue, float.MaxValue, "-6.80564693277058E+38")]
+			[InlineData(float.MaxValue, float.MinValue, "6.80564693277058E+38")]
 			public async Task ForFloat_WhenDifferenceOverflows_ShouldIncludeTheDifference(
-				float subject, float expected, double expectedDifference)
+				float subject, float expected, string expectedDifference)
 			{
 				float? nullableSubject = subject;
 
@@ -1510,13 +1558,13 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(expectedDifference)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 				await That(ActNullable).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that nullableSubject
 					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}, which differs by {Formatter.Format(expectedDifference)}
+					              but it was {Formatter.Format(subject)}, which differs by {expectedDifference}
 					              """);
 			}
 
