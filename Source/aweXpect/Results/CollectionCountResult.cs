@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -81,13 +82,19 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 	///     Verifies that the collection has between <paramref name="minimum" />…
 	/// </summary>
 	public BetweenResult<TReturn, int?> Between(int? minimum)
-		=> new(maximum => factory(Range(minimum, maximum), false));
+	{
+		ThrowHelper.ThrowIfCountIsNegative(minimum ?? 0, paramName: nameof(minimum));
+		return new(maximum => factory(Range(minimum, maximum), false));
+	}
 
 	/// <summary>
 	///     Verifies that the collection does not have between <paramref name="minimum" />…
 	/// </summary>
 	public BetweenResult<TReturn, int?> NotBetween(int? minimum)
-		=> new(maximum => factory(Range(minimum, maximum), true));
+	{
+		ThrowHelper.ThrowIfCountIsNegative(minimum ?? 0, paramName: nameof(minimum));
+		return new(maximum => factory(Range(minimum, maximum), true));
+	}
 
 	private static EnumerableQuantifier Ordered(int? expected, Func<int, EnumerableQuantifier> quantifier,
 		string text)
@@ -96,8 +103,11 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 			: quantifier(expected.Value);
 
 	private static EnumerableQuantifier Range(int? minimum, int? maximum)
-		=> minimum is null || maximum is null
+	{
+		ThrowHelper.ThrowIfCountIsNegative(maximum ?? 0, paramName: nameof(maximum));
+		return minimum is null || maximum is null
 			? EnumerableQuantifier.OrderedAgainstNull(
 				$"between {minimum?.ToString() ?? "<null>"} and {maximum?.ToString() ?? "<null>"}")
 			: EnumerableQuantifier.Between(minimum.Value, maximum.Value);
+	}
 }

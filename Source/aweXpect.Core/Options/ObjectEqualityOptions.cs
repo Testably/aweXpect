@@ -227,10 +227,17 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </exception>
 	public void SetMatchType(IObjectMatchType matchType, string optionName)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
+		ThrowIfMatchTypeIsSpecified(optionName);
 		_matchTypeOption = optionName;
 		MatchType = matchType;
 	}
+
+	/// <summary>
+	///     Rejects the option named <paramref name="optionName" /> when an option already specified how two objects are
+	///     compared, so that a subclass can check this before it validates the value of the option.
+	/// </summary>
+	private protected void ThrowIfMatchTypeIsSpecified(string optionName)
+		=> ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
 
 	/// <summary>
 	///     Get an extended failure text.

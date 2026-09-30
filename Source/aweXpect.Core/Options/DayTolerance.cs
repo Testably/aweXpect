@@ -18,9 +18,17 @@ public sealed class DayTolerance : TimeTolerance
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="tolerance" /> is negative or not a whole number of days.
 	/// </exception>
+	/// <remarks>
+	///     A negative or repeated tolerance is left to the base class, so that its exception takes precedence, and a
+	///     rejected tolerance is never stored.
+	/// </remarks>
 	public override void SetTolerance(TimeSpan tolerance)
 	{
+		if (tolerance >= TimeSpan.Zero && Tolerance is null)
+		{
+			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance);
+		}
+
 		base.SetTolerance(tolerance);
-		ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance);
 	}
 }
