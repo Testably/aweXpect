@@ -210,6 +210,9 @@ internal static class ThrowHelper
 	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
 	///     would silently drop it.
 	/// </summary>
+	/// <remarks>
+	///     Mirrors the check of <see cref="Options.DayTolerance" /> in aweXpect.Core; keep the message identical.
+	/// </remarks>
 	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan tolerance)
 	{
 		if (tolerance.Ticks % TimeSpan.TicksPerDay != 0)

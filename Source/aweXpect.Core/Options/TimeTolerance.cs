@@ -8,6 +8,10 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Tolerance for time comparisons.
 /// </summary>
+/// <remarks>
+///     For date values without a time of day, such as <c>DateOnly</c>, use a <see cref="DayTolerance" /> instead,
+///     which rejects a tolerance that is not a whole number of days.
+/// </remarks>
 public class TimeTolerance
 {
 	/// <summary>
