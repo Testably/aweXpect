@@ -452,6 +452,78 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(-1);
 			await That(sut.ToString()).IsEqualTo("differs");
 		}
+
+		[Fact]
+		public async Task WhenWindowEndsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
+		{
+			StringDifference sut = new(
+				$"abcX{new string('d', 48)}\r\ntail",
+				$"abcY{new string('d', 48)}\r\ntail");
+
+			await That(sut.ToString()).IsEqualTo(
+					$"""
+					 differs on line 1 and column 4:
+					       ↓ (actual)
+					   "abcX{new string('d', 48)}\r\n…"
+					   "abcY{new string('d', 48)}\r\n…"
+					       ↑ (expected)
+					 """)
+				.Because("the window must not end between the \\r and the \\n of a line break");
+		}
+
+		[Fact]
+		public async Task WhenWindowEndsInsideSurrogatePair_ShouldIncludeTheWholePair()
+		{
+			StringDifference sut = new(
+				$"abcX{new string('d', 48)}😀tail",
+				$"abcY{new string('d', 48)}😀tail");
+
+			await That(sut.ToString()).IsEqualTo(
+					$"""
+					 differs at index 3:
+					       ↓ (actual)
+					   "abcX{new string('d', 48)}😀…"
+					   "abcY{new string('d', 48)}😀…"
+					       ↑ (expected)
+					 """)
+				.Because("the window must not end between the two halves of a surrogate pair");
+		}
+
+		[Fact]
+		public async Task WhenWindowStartsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
+		{
+			StringDifference sut = new(
+				$"{new string('a', 20)}\r\nbbbbbbbbbX",
+				$"{new string('a', 20)}\r\nbbbbbbbbbY");
+
+			await That(sut.ToString()).IsEqualTo(
+					"""
+					differs on line 2 and column 10:
+					                 ↓ (actual)
+					  "…\r\nbbbbbbbbbX"
+					  "…\r\nbbbbbbbbbY"
+					                 ↑ (expected)
+					""")
+				.Because("the window must not start between the \\r and the \\n of a line break");
+		}
+
+		[Fact]
+		public async Task WhenWindowStartsInsideSurrogatePair_ShouldIncludeTheWholePair()
+		{
+			StringDifference sut = new(
+				$"{new string('a', 20)}😀bbbbbbbbbX",
+				$"{new string('a', 20)}😀bbbbbbbbbY");
+
+			await That(sut.ToString()).IsEqualTo(
+					"""
+					differs at index 31:
+					               ↓ (actual)
+					  "…😀bbbbbbbbbX"
+					  "…😀bbbbbbbbbY"
+					               ↑ (expected)
+					""")
+				.Because("the window must not start between the two halves of a surrogate pair");
+		}
 	}
 
 	public sealed class SuffixTests
@@ -761,6 +833,82 @@ public class StringDifferenceTests
 
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(-1);
 			await That(sut.ToString()).IsEqualTo("differs");
+		}
+
+		[Fact]
+		public async Task WhenWindowEndsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
+		{
+			StringDifference sut = new("abXccccccccccccc\r\ndd", "abYccccccccccccc\r\ndd", null, Settings);
+
+			await That(sut.ToString()).IsEqualTo(
+					"""
+					differs on line 1 and column 3:
+					     ↓ (actual)
+					  "abXccccccccccccc\r\n…"
+					  "abYccccccccccccc\r\n…"
+					     ↑ (expected suffix)
+					""")
+				.Because("the window must not end between the \\r and the \\n of a line break");
+		}
+
+		[Fact]
+		public async Task WhenWindowEndsInsideSurrogatePair_ShouldIncludeTheWholePair()
+		{
+			StringDifference sut = new("abXccccccccccccc😀dd", "abYccccccccccccc😀dd", null, Settings);
+
+			await That(sut.ToString()).IsEqualTo(
+					"""
+					differs before index 2:
+					     ↓ (actual)
+					  "abXccccccccccccc😀…"
+					  "abYccccccccccccc😀…"
+					     ↑ (expected suffix)
+					""")
+				.Because("the window must not end between the two halves of a surrogate pair");
+		}
+
+		[Fact]
+		public async Task WhenWindowStartsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
+		{
+			StringDifference sut = new("x\r\naaaaaaaaaXtail", "x\r\naaaaaaaaaYtail", null, Settings);
+			string result;
+
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(5))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+					"""
+					differs on line 2 and column 10:
+					                 ↓ (actual)
+					  "…\r\naaaaaaaaaXtail"
+					  "…\r\naaaaaaaaaYtail"
+					                 ↑ (expected suffix)
+					""")
+				.Because("the window must not start between the \\r and the \\n of a line break");
+		}
+
+		[Fact]
+		public async Task WhenWindowStartsInsideSurrogatePair_ShouldIncludeTheWholePair()
+		{
+			StringDifference sut = new("x😀aaaaaaaaaXtail", "x😀aaaaaaaaaYtail", null, Settings);
+			string result;
+
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(5))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+					"""
+					differs before index 12:
+					               ↓ (actual)
+					  "…😀aaaaaaaaaXtail"
+					  "…😀aaaaaaaaaYtail"
+					               ↑ (expected suffix)
+					""")
+				.Because("the window must not start between the two halves of a surrogate pair");
 		}
 
 		private static readonly StringDifferenceSettings Settings = new(0, 0)

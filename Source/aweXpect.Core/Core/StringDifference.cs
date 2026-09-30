@@ -371,7 +371,8 @@ public sealed class StringDifference(
 	/// </summary>
 	/// <remarks>
 	///     If a word end is found between <paramref name="minLength" /> and 15 characters more, use this word end,
-	///     otherwise keep 5 characters more than <paramref name="minLength" />.
+	///     otherwise keep 5 characters more than <paramref name="minLength" />, or one more, so that a surrogate pair or a
+	///     <c>\r\n</c> line break is not split.
 	/// </remarks>
 	private static int GetLengthOfPhraseToShowOrDefaultLength(string value, int minLength)
 	{
@@ -387,7 +388,8 @@ public sealed class StringDifference(
 			return indexOfWordBoundary;
 		}
 
-		return Math.Min(defaultLength, value.Length);
+		int length = Math.Min(defaultLength, value.Length);
+		return value.IsSplitAt(length) ? length + 1 : length;
 	}
 
 	/// <summary>
@@ -396,7 +398,8 @@ public sealed class StringDifference(
 	/// </summary>
 	/// <remarks>
 	///     Either keep the last 10 characters before <paramref name="indexOfFirstMismatch" /> or a word begin (separated by
-	///     whitespace) between 15 and 5 characters before <paramref name="indexOfFirstMismatch" />.
+	///     whitespace) between 15 and 5 characters before <paramref name="indexOfFirstMismatch" />.<br />
+	///     One more character is kept, if the start would otherwise split a surrogate pair or a <c>\r\n</c> line break.
 	/// </remarks>
 	private static int GetStartIndexOfPhraseToShowBeforeTheMismatchingIndex(string value,
 		int indexOfFirstMismatch)
@@ -426,7 +429,8 @@ public sealed class StringDifference(
 			return indexToStartSearchingForWordBoundary + indexOfWordBoundary + lengthOfWhitespace;
 		}
 
-		return indexOfFirstMismatch - defaultCharactersToKeep;
+		int startIndex = indexOfFirstMismatch - defaultCharactersToKeep;
+		return value.IsSplitAt(startIndex) ? startIndex - 1 : startIndex;
 	}
 
 	/// <summary>
@@ -436,7 +440,8 @@ public sealed class StringDifference(
 	/// <remarks>
 	///     Either keep the last 10 characters before <paramref name="indexFromEnd" /> from the end or a word begin (separated
 	///     by
-	///     whitespace) between 15 and 5 characters before <paramref name="indexFromEnd" /> from the end.
+	///     whitespace) between 15 and 5 characters before <paramref name="indexFromEnd" /> from the end.<br />
+	///     One more character is kept, if the start would otherwise split a surrogate pair or a <c>\r\n</c> line break.
 	/// </remarks>
 	private static int GetStartIndexOfPhraseToShowBeforeTheMismatchingIndexFromEnd(string value,
 		int indexFromEnd)
@@ -468,7 +473,8 @@ public sealed class StringDifference(
 			return indexToStartSearchingForWordBoundary + indexOfWordBoundary + lengthOfWhitespace;
 		}
 
-		return indexOfFirstMismatch - defaultLength;
+		int startIndex = indexOfFirstMismatch - defaultLength;
+		return value.IsSplitAt(startIndex) ? startIndex - 1 : startIndex;
 	}
 
 	private static string GetExpected(MatchType? matchType)
