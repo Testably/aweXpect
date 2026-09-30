@@ -90,12 +90,8 @@ only available on .NET 8 or later:
 - the custom comparer of an `ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`
   ([sets](./05-collections/index.md#sets)).
 
-Before .NET 5, e.g. on .NET Framework, the key comparer of a `ConcurrentDictionary<TKey, TValue>` cannot be read. Its
-[keys](./05-collections/04-dictionaries.md#keys-and-values) are then compared by their own `Equals`, and so are the
-matched keys in [`IsEqualTo`](./05-collections/04-dictionaries.md#equality) and in
-[equivalency](./04-values/13-equivalency.md#collections-and-dictionaries), so two expected keys that the comparer
-considers the same are only noticed when the entry counts differ. The expected keys are still looked up through the
-dictionary.
+Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
+so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.
 
 ## Next steps
 
