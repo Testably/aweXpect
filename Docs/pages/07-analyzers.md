@@ -128,9 +128,9 @@ These older targets are affected because they use the .NET Standard 2.0 build of
 also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
 `Expect.That<ValueTask>(() => Act())`. See [Delegates](./06-behaviour/01-delegates.md).
 
----
+## Nullability suppressor
 
-**Nullability suppressor**: after an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
+After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
 `aweXpect` package suppresses the nullability warnings CS8600, CS8602, CS8604 and CS8629 for that subject, with the
 suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter, and the
 expectation has to be a preceding statement in the same method, local function or lambda, without a branch or a
@@ -145,6 +145,8 @@ await Expect.That(title).IsNotNull();
 int length = title.Length;   // no CS8602
 ```
 
-**Metadata generator**: the source generator warns with `aweXpect2001` when a type named in
+## Metadata generator
+
+The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
 [Native AOT and trimming](./03-how-it-works/08-native-aot.md#equivalency).
