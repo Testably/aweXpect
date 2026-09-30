@@ -532,6 +532,24 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenGenerateMetadataAttributeIsSurroundedByAPragma_ShouldSuppressTheDiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Generic<T> { public T Value { get; set; } = default!; } }",
+			"""
+			#pragma warning disable aweXpect2001
+			[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Generic<>))]
+			#pragma warning restore aweXpect2001
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics.Where(x => !x.IsSuppressed)).IsEmpty()
+			.Because("a warning on the attribute can be suppressed locally, like any other warning");
+	}
+
+	[Fact]
 	public async Task WhenGenerateMetadataAttributeNamesAnArray_ShouldRegisterTheElementWithoutADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using aweXpect.Analyzers.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -42,17 +43,24 @@ public class EqualsAnalyzer : DiagnosticAnalyzer
 	}
 
 	/// <summary>
-	///     The call binds to <see cref="object.Equals(object)" />, because the override in <c>Expectation</c> is not
-	///     a separate member, so the instance type decides.
+	///     The call binds to <see cref="object.Equals(object)" />, because neither the override in <c>Expectation</c>
+	///     nor the member of the implemented <c>IThat&lt;T&gt;</c> is found on a class, so the instance type decides.
 	/// </summary>
 	private static bool IsEqualsOnExpectation(IInvocationOperation invocation)
 	{
-		if (invocation.TargetMethod is not { IsStatic: false, Parameters.Length: 1, })
+		if (invocation.TargetMethod is not { IsStatic: false, Parameters.Length: 1, } ||
+		    invocation.Instance?.Type is not { } receiverType)
 		{
 			return false;
 		}
 
-		for (ITypeSymbol? current = invocation.Instance?.Type; current != null; current = current.BaseType)
+		// A delegate subject is no `Expectation`, but like every subject it implements `IThat<T>`.
+		if (receiverType.AllInterfaces.Any(IsIThat))
+		{
+			return true;
+		}
+
+		for (ITypeSymbol? current = receiverType; current != null; current = current.BaseType)
 		{
 			if (current is { Name: "Expectation", ContainingType: null, ContainingNamespace.Name: "Core", } &&
 			    current.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
@@ -64,4 +72,9 @@ public class EqualsAnalyzer : DiagnosticAnalyzer
 
 		return false;
 	}
+
+	private static bool IsIThat(INamedTypeSymbol type)
+		=> type is { Name: "IThat", Arity: 1, ContainingType: null, ContainingNamespace.Name: "Core", } &&
+		   type.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
+		   type.ContainingNamespace.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true;
 }

@@ -71,6 +71,44 @@ public class EqualsAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenUsingEqualsOnADelegateSubject_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public bool MyTest(Action act)
+			    {
+			        return {|#0:Expect.That(act).Equals(act)|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.EqualsRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
+	public async Task WhenUsingEqualsOnADelegateSubjectWithValue_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public bool MyTest(Func<int> act)
+			    {
+			        return {|#0:Expect.That(act).Equals(act)|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.EqualsRule)
+				.WithLocation(0)
+		);
+
+	[Fact]
 	public async Task WhenUsingEqualsOnAnAndOrResult_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
