@@ -104,9 +104,8 @@ public sealed partial class ThatAsyncEnumerable
 		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportACountAsNotVerified()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2);
 			using CancellationTokenSource cts = new();
-			cts.CancelAfter(50.Milliseconds());
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
 
 			async Task Act()
 				=> await That(subject).HasCount(3).WithCancellation(cts.Token);
@@ -322,17 +321,18 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
 
 			async Task Act()
-				=> await That(subject).IsInAscendingOrder().WithTimeout(50.Milliseconds());
+				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
 
 				             Collection:
 				             [1, 2, (… and maybe more)]
-				             """);
+				             """)
+				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
 		}
 
 		[Fact]
@@ -430,18 +430,18 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
 
 			async Task Act()
-				=> await That(subject).HasCount(3).WithTimeout(50.Milliseconds());
+				=> await That(subject).HasCount(3).WithTimeout(1.Seconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 3 items,
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
 
 				             Collection:
 				             [1, 2, (… and maybe more)]
 				             """).And
-				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
 				.Because("a timeout is reported the same way, whichever expectation was pending");
 		}
 
@@ -507,13 +507,21 @@ public sealed partial class ThatAsyncEnumerable
 			}
 		}
 
-		private static async IAsyncEnumerable<int> HangAfter(params int[] items)
+		private static IAsyncEnumerable<int> HangAfter(params int[] items)
+			=> HangAfter(() => { }, items);
+
+		/// <remarks>
+		///     The <paramref name="onHang" /> callback is invoked once all <paramref name="items" /> were delivered, so
+		///     that a cancellation it requests does not depend on the timing.
+		/// </remarks>
+		private static async IAsyncEnumerable<int> HangAfter(Action onHang, params int[] items)
 		{
 			foreach (int item in items)
 			{
 				yield return item;
 			}
 
+			onHang();
 			await Task.Delay(30.Seconds());
 		}
 
