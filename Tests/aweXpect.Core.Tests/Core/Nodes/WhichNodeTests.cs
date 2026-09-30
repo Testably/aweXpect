@@ -339,6 +339,43 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenAsyncMemberAccessorReturnsNullTask_ShouldFailWithoutAnException()
+	{
+		Func<string, Task<int>> memberAccessor = _ => null!;
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			memberAccessor, " whose value ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsNull()
+			.Because("a null task is not an exception thrown by the member accessor");
+		await That(sb.ToString()).IsEqualTo(" whose value e2");
+		await That(result.GetResultText()).IsEqualTo("it returned <null> instead of a task");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenAsyncMemberAccessorReturnsNullTask_WhenNegated_ShouldNegateExpectationAndStillFail()
+	{
+		Func<string, Task<int>> memberAccessor = _ => null!;
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			memberAccessor, " whose value ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("a null task has no value that could meet the negated expectation");
+		await That(negated.GetResultText()).IsEqualTo("it returned <null> instead of a task");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenMemberAccessorIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();

@@ -6,7 +6,8 @@ using aweXpect.Core.Constraints;
 namespace aweXpect.Core.Nodes;
 
 /// <summary>
-///     The result of a node whose member could not be accessed, because the subject was <see langword="null" />.
+///     The result of a node whose member could not be accessed, because the subject was <see langword="null" />, or
+///     whose value is missing, because the subject or the member was a <see langword="null" /> task.
 /// </summary>
 /// <remarks>
 ///     It fails the expectation and its negation alike, like <see cref="ConstraintResult.WithNotNullValue{T}" />: the
@@ -16,15 +17,17 @@ namespace aweXpect.Core.Nodes;
 internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberResult
 {
 	private readonly ConstraintResult _inner;
+	private readonly string _result;
 	private readonly object? _value;
 	private readonly Type _valueType;
 
-	private NullSubjectResult(ConstraintResult inner, object? value, Type valueType)
+	private NullSubjectResult(ConstraintResult inner, object? value, Type valueType, string result)
 		: base(inner.FurtherProcessingStrategy)
 	{
 		_inner = inner;
 		_value = value;
 		_valueType = valueType;
+		_result = result;
 		Outcome = Outcome.Failure;
 	}
 
@@ -36,7 +39,21 @@ internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberRe
 	///     text.
 	/// </summary>
 	public static NullSubjectResult Create<T>(ConstraintResult inner, T value)
-		=> new(inner, value, typeof(T));
+		=> new(inner, value, typeof(T), "it was <null>");
+
+	/// <summary>
+	///     Creates a <see cref="NullSubjectResult" /> for the <paramref name="member" /> that returned a
+	///     <see langword="null" /> task, which uses the <paramref name="inner" /> result for the expectation text.
+	/// </summary>
+	public static NullSubjectResult CreateForNullTask<T>(ConstraintResult inner, string member, T value)
+		=> new(inner, value, typeof(T), $"{member} returned <null> instead of a task");
+
+	/// <summary>
+	///     Creates a <see cref="NullSubjectResult" /> for a subject that is a <see langword="null" /> task, which uses the
+	///     <paramref name="inner" /> result for the expectation text.
+	/// </summary>
+	public static NullSubjectResult CreateForNullTaskSubject<T>(ConstraintResult inner, T value)
+		=> new(inner, value, typeof(T), "it was a <null> task");
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -44,7 +61,7 @@ internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberRe
 
 	/// <inheritdoc />
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append("it was <null>");
+		=> stringBuilder.Append(_result);
 
 	/// <inheritdoc />
 	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default

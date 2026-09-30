@@ -50,12 +50,15 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 
 		if (value is TSource typedValue)
 		{
-			TTarget matchingValue;
+			TTarget matchingValue = default!;
 			Task<TTarget>? member = null;
 			try
 			{
 				member = _memberAccessor.AccessMember(typedValue);
-				matchingValue = await member.AbandonOnCancellation(cancellationToken);
+				if (member is not null)
+				{
+					matchingValue = await member.AbandonOnCancellation(cancellationToken);
+				}
 			}
 			catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 			{
@@ -63,6 +66,12 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 					member?.GetOtherExceptions(exception));
 				ConstraintResult result = await GetExpectationResult(context, cancellationToken);
 				return MemberExceptionResult.Create(result, exception, _memberAccessor.ToString().Trim(), value);
+			}
+
+			if (member is null)
+			{
+				ConstraintResult result = await GetExpectationResult(context, cancellationToken);
+				return NullSubjectResult.CreateForNullTask(result, _memberAccessor.ToString().Trim(), value);
 			}
 
 			ConstraintResult memberResult = await IsMetByMember(matchingValue, context, cancellationToken);

@@ -126,10 +126,10 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 
 		TSource? source = ResolveSource(parentResult, value);
-		TMember? matchingValue;
+		(TMember? Value, bool IsNullTask) matching;
 		try
 		{
-			matchingValue = await ComputeMatchingValueAsync(source);
+			matching = await ComputeMatchingValueAsync(source);
 		}
 		catch (Exception exception)
 		{
@@ -147,9 +147,18 @@ internal class WhichNode<TSource, TMember> : Node
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}
 
-		ConstraintResult innerResult = await _inner.IsMetBy(matchingValue, context, cancellationToken);
+		if (matching.IsNullTask)
+		{
+			ConstraintResult nullTaskResult = NullSubjectResult.CreateForNullTask(
+				await _inner.IsMetBy<TMember>(default, ExpectationTextEvaluationContext.For(context),
+					cancellationToken), _memberName, default(TMember));
+			return CombineResults(parentResult, nullTaskResult, _separator ?? "",
+				FurtherProcessingStrategy.IgnoreResult, default);
+		}
+
+		ConstraintResult innerResult = await _inner.IsMetBy(matching.Value, context, cancellationToken);
 		return CombineResults(parentResult, innerResult, _separator ?? "", FurtherProcessingStrategy.IgnoreResult,
-			matchingValue);
+			matching.Value);
 	}
 
 	private static TSource? ResolveSource(ConstraintResult? parentResult, object value)
@@ -169,18 +178,22 @@ internal class WhichNode<TSource, TMember> : Node
 				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
-	private async Task<TMember?> ComputeMatchingValueAsync(TSource? source)
+	private async Task<(TMember? Value, bool IsNullTask)> ComputeMatchingValueAsync(TSource? source)
 	{
 #pragma warning disable S2583
 		if (source is null)
 		{
-			return default;
+			return (default, false);
 		}
 #pragma warning restore S2583
 
-		return _memberAccessor != null
-			? _memberAccessor(source)
-			: await _asyncMemberAccessor!.Invoke(source);
+		if (_memberAccessor != null)
+		{
+			return (_memberAccessor(source), false);
+		}
+
+		Task<TMember?>? task = _asyncMemberAccessor!.Invoke(source);
+		return task is null ? (default, true) : (await task, false);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

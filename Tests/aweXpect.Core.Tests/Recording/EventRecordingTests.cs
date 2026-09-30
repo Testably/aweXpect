@@ -10,6 +10,35 @@ namespace aweXpect.Core.Tests.Recording;
 public sealed class EventRecordingTests
 {
 	[Fact]
+	public async Task DuplicateEventName_ShouldNotAttachAnyHandler()
+	{
+		CustomEventClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(CustomEventClass.CustomEvent), nameof(CustomEventClass.CustomEvent));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithMessage("Event CustomEvent was requested more than once.*").AsWildcard()
+			.And.WithParamName("eventNames");
+		await That(sut.SubscriberCount()).IsEqualTo(0)
+			.Because("a recording that never completed leaves nothing behind that could ever detach the handler");
+	}
+
+	[Fact]
+	public async Task DuplicateEventName_ShouldThrowArgumentException()
+	{
+		CustomEventClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(CustomEventClass.CustomEvent), nameof(CustomEventClass.CustomEvent));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithMessage("Event CustomEvent was requested more than once.*").AsWildcard()
+			.And.WithParamName("eventNames")
+			.Because("a repeated name is most likely a mistake for another event, which would silently not be recorded");
+	}
+
+	[Fact]
 	public async Task MissingEventName_ShouldDetachTheAlreadyAttachedEvents()
 	{
 		CustomEventClass sut = new();
@@ -796,6 +825,8 @@ public sealed class EventRecordingTests
 		public event CustomEventDelegate? CustomEvent;
 
 		public bool HasSubscribers() => CustomEvent is not null;
+
+		public int SubscriberCount() => CustomEvent?.GetInvocationList().Length ?? 0;
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);

@@ -117,7 +117,7 @@ public static class Expect
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue>(
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateAsyncSource(subject is null ? null : _ => subject), doNotPopulateThisValue));
+			new DelegateAsyncSource(subject is null ? null : _ => subject, true), doNotPopulateThisValue));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
