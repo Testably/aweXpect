@@ -192,6 +192,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -338,6 +343,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -471,6 +481,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -906,6 +921,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return Task.FromResult(this.AsNullSubject(It));
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1056,6 +1076,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1310,6 +1335,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return Task.FromResult(this.AsNullSubject(It));
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1409,11 +1439,10 @@ public static partial class ThatEnumerable
 		CollectionOrderOptions<TMember> options,
 		string memberExpression,
 		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
+		: OrderingConstraint<IEnumerable<TItem>?>(it, grammars, false),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private string? _failureText;
-		private bool _hasIncompatibleItems;
 		private IComparer<TMember>? _subjectOrder;
 
 		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
@@ -1480,8 +1509,7 @@ public static partial class ThatEnumerable
 
 			// The order of incompatible items cannot be verified, so the negated check fails as well.
 			_failureText = $"{It} {incompatibility}";
-			_hasIncompatibleItems = true;
-			Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			IsIncomparable = true;
 			return true;
 		}
 
@@ -1514,7 +1542,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasIncompatibleItems)
+			if (IsIncomparable)
 			{
 				stringBuilder.Append(_failureText);
 			}
@@ -1539,18 +1567,22 @@ public static partial class ThatEnumerable
 		CollectionOrderOptions<TMember> options,
 		string memberExpression,
 		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
-		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
+		: OrderingConstraint<TEnumerable>(it, grammars, false),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private string? _failureText;
-		private bool _hasIncompatibleItems;
 		private IComparer<TMember>? _subjectOrder;
 
 		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return Task.FromResult(this.AsNullSubject(It));
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1574,7 +1606,7 @@ public static partial class ThatEnumerable
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (item is not TItem typedItem)
+				if (!TryCastItem(item, out TItem typedItem))
 				{
 					continue;
 				}
@@ -1615,8 +1647,7 @@ public static partial class ThatEnumerable
 
 			// The order of incompatible items cannot be verified, so the negated check fails as well.
 			_failureText = $"{It} {incompatibility}";
-			_hasIncompatibleItems = true;
-			Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			IsIncomparable = true;
 			return true;
 		}
 
@@ -1649,7 +1680,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasIncompatibleItems)
+			if (IsIncomparable)
 			{
 				stringBuilder.Append(_failureText);
 			}

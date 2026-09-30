@@ -1,4 +1,5 @@
-﻿using aweXpect.Options;
+﻿using System.Linq;
+using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -6,6 +7,42 @@ public class CollectionMatchOptionsTests
 {
 	public class FailureMessageTests
 	{
+		[Fact]
+		public async Task WhenAllOfManyExpectedItemsAreMissingInAnyOrder_ShouldCountThem()
+		{
+			int[] subject = Enumerable.Range(1, 5).ToArray();
+			int[] expected = Enumerable.Range(100, 30).ToArray();
+
+			async Task Act()
+				=> await That(subject).Contains(expected).InAnyOrder();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in any order,
+				             but it lacked all 30 expected items
+
+				             Collection:
+				             [1, 2, 3, 4, 5]
+
+				             Expected:
+				             [
+				               100,
+				               101,
+				               102,
+				               103,
+				               104,
+				               105,
+				               106,
+				               107,
+				               108,
+				               109,
+				               (… and 20 more)
+				             ]
+				             """)
+				.Because("the missing items are known completely, so they are listed like fewer missing items");
+		}
+
 		[Fact]
 		public async Task WhenAllOfOneExpectedItemIsMissing_ShouldUseSingular()
 		{
@@ -135,6 +172,194 @@ public class CollectionMatchOptionsTests
 				             ]
 				             """)
 				.Because("an item and the expected item that format identically are only told apart by their type");
+		}
+
+		[Fact]
+		public async Task WhenManyExpectedItemsAreMissing_ShouldListTheFirstOfThem()
+		{
+			int[] subject = Enumerable.Range(1, 5).ToArray();
+			int[] expected = Enumerable.Range(1, 30).ToArray();
+
+			async Task Act()
+				=> await That(subject).Contains(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in order and contiguous,
+				             but it lacked 25 of 30 expected items:
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               11,
+				               12,
+				               13,
+				               14,
+				               15,
+				               (… and 15 more)
+
+				             Collection:
+				             [1, 2, 3, 4, 5]
+
+				             Expected:
+				             [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and 20 more)
+				             ]
+				             """)
+				.Because("the missing items are known completely, so they are listed like fewer missing items");
+		}
+
+		[Fact]
+		public async Task WhenManyExpectedItemsAreMissingIgnoringDuplicates_ShouldListTheFirstOfThem()
+		{
+			int[] subject = Enumerable.Range(1, 5).ToArray();
+			int[] expected = Enumerable.Range(1, 30).ToArray();
+
+			async Task Act()
+				=> await That(subject).Contains(expected).IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in order and contiguous ignoring duplicates,
+				             but it lacked 25 of 30 expected items:
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               11,
+				               12,
+				               13,
+				               14,
+				               15,
+				               (… and 15 more)
+
+				             Collection:
+				             [1, 2, 3, 4, 5]
+
+				             Expected:
+				             [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and 20 more)
+				             ]
+				             """)
+				.Because("the missing items are known completely, so they are listed like fewer missing items");
+		}
+
+		[Fact]
+		public async Task WhenManyExpectedItemsAreMissingInAnyOrder_ShouldListTheFirstOfThem()
+		{
+			int[] subject = Enumerable.Range(1, 5).ToArray();
+			int[] expected = Enumerable.Range(1, 30).ToArray();
+
+			async Task Act()
+				=> await That(subject).Contains(expected).InAnyOrder();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in any order,
+				             but it lacked 25 of 30 expected items:
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               11,
+				               12,
+				               13,
+				               14,
+				               15,
+				               (… and 15 more)
+
+				             Collection:
+				             [1, 2, 3, 4, 5]
+
+				             Expected:
+				             [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and 20 more)
+				             ]
+				             """)
+				.Because("the missing items are known completely, so they are listed like fewer missing items");
+		}
+
+		[Fact]
+		public async Task WhenManyExpectedItemsAreMissingInAnyOrderIgnoringDuplicates_ShouldListTheFirstOfThem()
+		{
+			int[] subject = Enumerable.Range(1, 5).ToArray();
+			int[] expected = Enumerable.Range(1, 30).ToArray();
+
+			async Task Act()
+				=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in any order ignoring duplicates,
+				             but it lacked 25 of 30 expected items:
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               11,
+				               12,
+				               13,
+				               14,
+				               15,
+				               (… and 15 more)
+
+				             Collection:
+				             [1, 2, 3, 4, 5]
+
+				             Expected:
+				             [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and 20 more)
+				             ]
+				             """)
+				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 	}
 

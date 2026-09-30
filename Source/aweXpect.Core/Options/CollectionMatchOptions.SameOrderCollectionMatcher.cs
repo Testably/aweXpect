@@ -193,11 +193,9 @@ public partial class CollectionMatchOptions
 						_missingItems.Add(item);
 					}
 
-					// Additional items are no deviation for the containment relation.
-					int additionalItems = _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
-						? 0
-						: _additionalItems.Count;
-					if (additionalItems + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
+					// For the containment relation, additional items are no deviation, and all missing items are listed.
+					if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+					    _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
 					{
 						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 					}
@@ -229,7 +227,7 @@ public partial class CollectionMatchOptions
 			}
 
 			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem,
-				options));
+				options, maximumNumber));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -251,7 +249,7 @@ public partial class CollectionMatchOptions
 					_values, (item, expected) => AreConsideredEqual(item, expected, options));
 				if (edits is not null && edits.Count < positionalDeviations)
 				{
-					return await ReturnEditsError(it, edits, options);
+					return await ReturnEditsError(it, edits, options, maximumNumber);
 				}
 			}
 
@@ -265,7 +263,8 @@ public partial class CollectionMatchOptions
 				_missingItems.Add(_expectedItems[i]);
 			}
 
-			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems, options);
+			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems, options,
+				maximumNumber);
 		}
 
 		/// <summary>
@@ -274,7 +273,7 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask<(bool, string?)>
 			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
-				IOptionsEquality<T2> options)
+				IOptionsEquality<T2> options, int maximumNumber)
 		{
 			Dictionary<int, (T Item, T3 Expected)> incorrectItems = new();
 			Dictionary<int, T> additionalItems = new();
@@ -310,12 +309,13 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems, options);
+			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems, options,
+				maximumNumber);
 		}
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
 			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems,
-			IOptionsEquality<T2> options)
+			IOptionsEquality<T2> options, int maximumNumber)
 		{
 			Func<object?, string> formatItem =
 				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
@@ -324,7 +324,7 @@ public partial class CollectionMatchOptions
 			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
 			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
 			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem,
-				options));
+				options, maximumNumber));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);

@@ -442,6 +442,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;

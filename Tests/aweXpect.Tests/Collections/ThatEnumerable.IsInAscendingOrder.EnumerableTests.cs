@@ -45,6 +45,33 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNullItemIsNotSortedCorrectly_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList
+				{
+					"a", null, "b",
+				};
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in ascending order,
+					             but it had "a" before <null>, which is not in ascending order
+
+					             Collection:
+					             [
+					               "a",
+					               <null>,
+					               "b"
+					             ]
+					             """)
+					.Because("a null item sorts before any other item and must not be skipped");
+			}
 		}
 
 		public sealed class EnumerableMemberTests

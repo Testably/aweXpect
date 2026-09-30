@@ -1117,6 +1117,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return Task.FromResult(this.AsNullSubject(it));
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1274,6 +1279,11 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(it);
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
