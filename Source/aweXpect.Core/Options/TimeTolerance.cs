@@ -36,7 +36,7 @@ public class TimeTolerance
 	/// </summary>
 	/// <remarks>
 	///     Without an explicit <see cref="Tolerance" />, the whole days of the
-	///     <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance" /> are shown,
+	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> are shown,
 	///     unless there are none.
 	/// </remarks>
 	public string ToDayString()
@@ -54,7 +54,7 @@ public class TimeTolerance
 	/// <inheritdoc />
 	/// <remarks>
 	///     Without an explicit <see cref="Tolerance" />, the
-	///     <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance" /> is shown,
+	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> is shown,
 	///     unless it is zero.
 	/// </remarks>
 	public override string ToString()

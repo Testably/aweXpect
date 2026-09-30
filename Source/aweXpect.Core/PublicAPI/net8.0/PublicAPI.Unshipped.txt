@@ -116,3 +116,82 @@ aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>
 aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>.MaterializedItems.get -> System.Collections.Generic.IReadOnlyList<T>!
 aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>.MaterializeItems(int? numberOfItems) -> System.Threading.Tasks.Task<aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<T>!>!
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedAsyncEnumerable<TItem>(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.Generic.IAsyncEnumerable<TItem>! collection, System.Threading.CancellationToken cancellationToken) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.DefaultEquivalencyOptions.get -> aweXpect.Equivalency.EquivalencyOptions!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.DefaultEquivalencyOptions.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EquivalencyCustomizationValue() -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EquivalencyCustomizationValue(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue! original) -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.FormattingCustomizationValue() -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.FormattingCustomizationValue(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue! original) -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumNumberOfCollectionItems.get -> int
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumNumberOfCollectionItems.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumStringLength.get -> int
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumStringLength.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MinimumNumberOfCharactersAfterStringDifference.get -> int
+*REMOVED*aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MinimumNumberOfCharactersAfterStringDifference.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes.get -> string![]!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ReflectionCustomizationValue() -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ReflectionCustomizationValue(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue! original) -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultCheckInterval.get -> System.TimeSpan
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultCheckInterval.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultEventuallyTimeout.get -> System.TimeSpan
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultEventuallyTimeout.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout.get -> System.TimeSpan
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance.get -> System.TimeSpan
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance.init -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.SettingsCustomizationValue() -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.SettingsCustomizationValue(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue! original) -> void
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.TestCancellation.get -> aweXpect.Customization.TestCancellation?
+*REMOVED*aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.TestCancellation.init -> void
+*REMOVED*aweXpect.Customization.ICustomizationValueUpdater<TValue>
+*REMOVED*aweXpect.Customization.ICustomizationValueUpdater<TValue>.Get() -> TValue
+*REMOVED*aweXpect.Customization.ICustomizationValueUpdater<TValue>.Update(System.Func<TValue, TValue>! update) -> aweXpect.Customization.CustomizationLifetime!
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.Equals(object? obj) -> bool
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.GetHashCode() -> int
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.ToString() -> string!
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.Equals(object? obj) -> bool
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.GetHashCode() -> int
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.ToString() -> string!
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.Equals(object? obj) -> bool
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.GetHashCode() -> int
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ToString() -> string!
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.Equals(object? obj) -> bool
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.GetHashCode() -> int
+*REMOVED*override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.ToString() -> string!
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? right) -> bool
+*REMOVED*static aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? right) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EqualityContract.get -> System.Type!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? other) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.EqualityContract.get -> System.Type!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? other) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.EqualityContract.get -> System.Type!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? other) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.EqualityContract.get -> System.Type!
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? other) -> bool
+*REMOVED*virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool

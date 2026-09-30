@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 
@@ -59,7 +60,7 @@ public class AwexpectCustomizationTests
 		await That(valueAfterFirstDispose).IsSameAs(secondOptions)
 			.Because("disposing a lifetime must not undo a later value of the same property that is still active");
 		await That(customization.Equivalency().DefaultEquivalencyOptions.Get()).IsSameAs(globalOptions)
-			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
+			.Because("after all lifetimes of the value in the current flow are disposed, the global value applies again");
 	}
 
 	[Fact]
@@ -74,20 +75,25 @@ public class AwexpectCustomizationTests
 		using CustomizationLifetime globalLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
 
 		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(20)
-			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
+			.Because("after all lifetimes of the value in the current flow are disposed, the global value applies again");
 	}
 
 	[Fact]
-	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSameProperty()
+	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSamePropertyUntilItIsDisposed()
 	{
 		AwexpectCustomization customization = new();
 		CustomizationLifetime firstLifetime = customization.Formatting().MaximumStringLength.Set(5);
-		using CustomizationLifetime secondLifetime = customization.Formatting().MaximumStringLength.Set(7);
+		CustomizationLifetime secondLifetime = customization.Formatting().MaximumStringLength.Set(7);
 
 		firstLifetime.Dispose();
+		int valueAfterFirstDispose = customization.Formatting().MaximumStringLength.Get();
+		secondLifetime.Dispose();
+		int valueAfterSecondDispose = customization.Formatting().MaximumStringLength.Get();
 
-		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(7)
+		await That(valueAfterFirstDispose).IsEqualTo(7)
 			.Because("disposing a lifetime must not undo a later value of the same property that is still active");
+		await That(valueAfterSecondDispose).IsEqualTo(100)
+			.Because("disposing the last lifetime must not restore a value whose lifetime was already disposed");
 	}
 
 	[Fact]
@@ -98,18 +104,14 @@ public class AwexpectCustomizationTests
 		CustomizationLifetime lengthLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(20);
 
 		itemsLifetime.Dispose();
-		AwexpectCustomization.FormattingCustomizationValue afterFirstDispose = Customize.aweXpect.Formatting().Get();
+		string afterFirstDispose = FormatValues(Customize.aweXpect.Formatting());
 		lengthLifetime.Dispose();
-		AwexpectCustomization.FormattingCustomizationValue afterSecondDispose = Customize.aweXpect.Formatting().Get();
+		string afterSecondDispose = FormatValues(Customize.aweXpect.Formatting());
 
-		await That(afterFirstDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
-			.Because("disposing the lifetime restores its own property");
-		await That(afterFirstDispose.MaximumStringLength).IsEqualTo(20)
-			.Because("disposing a lifetime must not undo another property that is still active");
-		await That(afterSecondDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
-			.Because("disposing a lifetime must not bring back a property of an already disposed lifetime");
-		await That(afterSecondDispose.MaximumStringLength).IsEqualTo(100)
-			.Because("disposing the lifetime restores its own property");
+		await That(afterFirstDispose).IsEqualTo("10/20")
+			.Because("disposing a lifetime restores its own value and must not undo another value that is still active");
+		await That(afterSecondDispose).IsEqualTo("10/100")
+			.Because("disposing a lifetime must not bring back a value of an already disposed lifetime");
 	}
 
 	[Fact]
@@ -167,11 +169,9 @@ public class AwexpectCustomizationTests
 	[Fact]
 	public async Task Formatting_ShouldReturnTenAsDefaultMaximumNumberOfCollectionItems()
 	{
-		int defaultValue1 = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-		int defaultValue2 = Customize.aweXpect.Formatting().Get().MaximumNumberOfCollectionItems;
+		int defaultValue = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
-		await That(defaultValue1).IsEqualTo(10);
-		await That(defaultValue2).IsEqualTo(10);
+		await That(defaultValue).IsEqualTo(10);
 	}
 
 	[Fact]
@@ -182,52 +182,9 @@ public class AwexpectCustomizationTests
 		using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(value))
 		{
 			await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(value);
-			await That(Customize.aweXpect.Formatting().Get().MaximumNumberOfCollectionItems).IsEqualTo(value);
 		}
 
 		await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(defaultValue);
-		await That(Customize.aweXpect.Formatting().Get().MaximumNumberOfCollectionItems).IsEqualTo(defaultValue);
-	}
-
-	[Fact]
-	public async Task Formatting_ShouldUpdate2()
-	{
-		int defaultValue = 10;
-		int value = 42;
-		// ReSharper disable once WithExpressionModifiesAllMembers
-		using (Customize.aweXpect.Formatting().Update(p => p with
-		       {
-			       MaximumNumberOfCollectionItems = value,
-		       }))
-		{
-			await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(value);
-			await That(Customize.aweXpect.Formatting().Get().MaximumNumberOfCollectionItems).IsEqualTo(value);
-		}
-
-		await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(defaultValue);
-		await That(Customize.aweXpect.Formatting().Get().MaximumNumberOfCollectionItems).IsEqualTo(defaultValue);
-	}
-
-	[Fact]
-	public async Task Formatting_Update_DoubleDispose_ShouldNotResetLaterValue()
-	{
-		// ReSharper disable once WithExpressionModifiesAllMembers
-		CustomizationLifetime firstLifetime = Customize.aweXpect.Formatting().Update(p => p with
-		{
-			MaximumStringLength = 5,
-		});
-		firstLifetime.Dispose();
-		// ReSharper disable once WithExpressionModifiesAllMembers
-		using (Customize.aweXpect.Formatting().Update(p => p with
-		       {
-			       MaximumStringLength = 7,
-		       }))
-		{
-			firstLifetime.Dispose();
-
-			await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(7)
-				.Because("disposing a lifetime a second time must not reset a value that was set afterwards");
-		}
 	}
 
 	[Fact]
@@ -252,6 +209,25 @@ public class AwexpectCustomizationTests
 		await That(customization.MyConfiguration().Get()).IsEqualTo("global")
 			.Because("a value set on the global customization of the global customization is a global value");
 	}
+
+	[Fact]
+	public async Task Global_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSamePropertyUntilItIsDisposed()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime firstLifetime = customization.Global.Formatting().MaximumStringLength.Set(5);
+		CustomizationLifetime secondLifetime = customization.Global.Formatting().MaximumStringLength.Set(7);
+
+		firstLifetime.Dispose();
+		int valueAfterFirstDispose = customization.Formatting().MaximumStringLength.Get();
+		secondLifetime.Dispose();
+		int valueAfterSecondDispose = customization.Formatting().MaximumStringLength.Get();
+
+		await That(valueAfterFirstDispose).IsEqualTo(7)
+			.Because("disposing a global lifetime must not undo a later global value that is still active");
+		await That(valueAfterSecondDispose).IsEqualTo(100)
+			.Because("disposing the last global lifetime must not restore a value whose lifetime was already disposed");
+	}
+
 	[Fact]
 	public async Task Global_PropertyLifetime_Dispose_ShouldOnlyRestoreThatProperty()
 	{
@@ -261,18 +237,14 @@ public class AwexpectCustomizationTests
 		CustomizationLifetime lengthLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
 
 		itemsLifetime.Dispose();
-		AwexpectCustomization.FormattingCustomizationValue afterFirstDispose = customization.Formatting().Get();
+		string afterFirstDispose = FormatValues(customization.Formatting());
 		lengthLifetime.Dispose();
-		AwexpectCustomization.FormattingCustomizationValue afterSecondDispose = customization.Formatting().Get();
+		string afterSecondDispose = FormatValues(customization.Formatting());
 
-		await That(afterFirstDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
-			.Because("disposing the lifetime restores its own property");
-		await That(afterFirstDispose.MaximumStringLength).IsEqualTo(20)
-			.Because("disposing a lifetime must not undo another property that is still active");
-		await That(afterSecondDispose.MaximumNumberOfCollectionItems).IsEqualTo(10)
-			.Because("disposing a lifetime must not bring back a property of an already disposed lifetime");
-		await That(afterSecondDispose.MaximumStringLength).IsEqualTo(100)
-			.Because("disposing the lifetime restores its own property");
+		await That(afterFirstDispose).IsEqualTo("10/20")
+			.Because("disposing a lifetime restores its own value and must not undo another value that is still active");
+		await That(afterSecondDispose).IsEqualTo("10/100")
+			.Because("disposing a lifetime must not bring back a value of an already disposed lifetime");
 	}
 
 	[Fact]
@@ -285,7 +257,18 @@ public class AwexpectCustomizationTests
 		scopedLifetime.Dispose();
 
 		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(20)
-			.Because("disposing the scoped lifetime removes the group from the current flow again");
+			.Because("disposing the scoped lifetime removes the value from the current flow again");
+	}
+
+	[Fact]
+	public async Task Global_ScopedValue_ShouldNotHideGlobalChangeOfAnotherValue()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime scopedLifetime = customization.Formatting().MaximumNumberOfCollectionItems.Set(5);
+		using CustomizationLifetime globalLifetime = customization.Global.Formatting().MaximumStringLength.Set(20);
+
+		await That(FormatValues(customization.Formatting())).IsEqualTo("5/20")
+			.Because("a value set in the current flow must not freeze the other formatting values at their global values");
 	}
 
 	[Fact]
@@ -297,15 +280,35 @@ public class AwexpectCustomizationTests
 		using (customization.Formatting().MaximumNumberOfCollectionItems.Set(5))
 		using (customization.Formatting().MaximumStringLength.Set(30))
 		{
-			valueInScope = $"{customization.Formatting().MaximumNumberOfCollectionItems.Get()}/{customization.Formatting().MaximumStringLength.Get()}";
+			valueInScope = FormatValues(customization.Formatting());
 		}
 
-		string valueAfterScope = $"{customization.Formatting().MaximumNumberOfCollectionItems.Get()}/{customization.Formatting().MaximumStringLength.Get()}";
+		string valueAfterScope = FormatValues(customization.Formatting());
 
 		await That(valueInScope).IsEqualTo("5/30")
 			.Because("a value set in the current flow takes precedence over the global value");
 		await That(valueAfterScope).IsEqualTo("10/20")
 			.Because("after the scope the global value applies again");
+	}
+
+	[Fact]
+	public async Task Global_Set_InParallel_ShouldKeepAllValues()
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization global = customization.Global;
+		CustomizationLifetime[] lifetimes = new CustomizationLifetime[200];
+
+		Parallel.For(0, lifetimes.Length, i => lifetimes[i] = global.Set($"value-{i}", i));
+		int[] valuesWhileSet = Enumerable.Range(0, lifetimes.Length).Select(i => global.Get($"value-{i}", -1))
+			.ToArray();
+		Parallel.For(0, lifetimes.Length, i => lifetimes[i].Dispose());
+		int[] valuesAfterDispose = Enumerable.Range(0, lifetimes.Length).Select(i => global.Get($"value-{i}", -1))
+			.ToArray();
+
+		await That(valuesWhileSet).IsEqualTo(Enumerable.Range(0, lifetimes.Length))
+			.Because("concurrent global sets of different values must not lose one another");
+		await That(valuesAfterDispose).All().AreEqualTo(-1)
+			.Because("concurrent disposals of global lifetimes must each remove their own value");
 	}
 
 	[Fact]
@@ -326,32 +329,17 @@ public class AwexpectCustomizationTests
 	}
 
 	[Fact]
-	public async Task Global_Update_WhileAnotherUpdateIsComputed_ShouldApplyBothUpdates()
+	public async Task Global_Set_WhenInvalid_ShouldThrowArgumentOutOfRangeException()
 	{
 		AwexpectCustomization customization = new();
-		using ManualResetEventSlim concurrentUpdateDone = new();
-		Task<CustomizationLifetime>? concurrentUpdate = null;
 
-		using CustomizationLifetime lengthLifetime = customization.Global.Formatting().Update(p =>
-		{
-			concurrentUpdate ??= Task.Run(() =>
-			{
-				CustomizationLifetime lifetime =
-					customization.Global.Formatting().MaximumNumberOfCollectionItems.Set(5);
-				concurrentUpdateDone.Set();
-				return lifetime;
-			});
-			concurrentUpdateDone.Wait(TimeSpan.FromMilliseconds(200));
-			return p with
-			{
-				MaximumStringLength = 20,
-			};
-		});
-		using CustomizationLifetime itemsLifetime = await concurrentUpdate!;
+		void Act() => customization.Global.Settings().DefaultCheckInterval.Set(TimeSpan.Zero);
 
-		await That(customization.Global.Formatting().MaximumStringLength.Get()).IsEqualTo(20);
-		await That(customization.Global.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(5)
-			.Because("a global update that completes while another one computes its value must not be lost");
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("interval").And
+			.WithMessage("The interval must be positive.").AsPrefix()
+			.Because("a global value is validated like a value set in the current flow");
+		await That(customization.Settings().DefaultCheckInterval.Get()).IsEqualTo(TimeSpan.FromMilliseconds(100));
 	}
 
 	[Fact]
@@ -467,8 +455,11 @@ public class AwexpectCustomizationTests
 			customization.Global.Settings().DefaultCheckInterval.Set(TimeSpan.FromSeconds(3));
 
 		await That(customization.Settings().DefaultCheckInterval.Get()).IsEqualTo(TimeSpan.FromSeconds(3))
-			.Because("after all lifetimes of the group in the current flow are disposed, the global value applies again");
+			.Because("after all lifetimes of the value in the current flow are disposed, the global value applies again");
 	}
+
+	private static string FormatValues(AwexpectCustomization.FormattingCustomization formatting)
+		=> $"{formatting.MaximumNumberOfCollectionItems.Get()}/{formatting.MaximumStringLength.Get()}";
 }
 
 public static class DummyExtensions

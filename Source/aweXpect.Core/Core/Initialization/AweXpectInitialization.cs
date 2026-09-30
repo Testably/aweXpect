@@ -119,7 +119,7 @@ internal static class AweXpectInitialization
 	/// <summary>
 	///     Checks whether an assembly with the given <paramref name="assemblyName" /> (its simple name) should be scanned,
 	///     i.e. it is not excluded by any of the configured
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" />.
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" />.
 	/// </summary>
 	/// <remarks>
 	///     A prefix matches the assembly name only at a name-segment boundary, so that e.g. <c>System</c> excludes

@@ -2,9 +2,9 @@
 
 You can customize certain behavior or specify default values to use globally.
 
-All customizations are located in the static `Customize.aweXpect` class. Customization values are grouped and have a
-dedicated `Get` and `Set` method. The `Set` method always returns a lifetime scope, an `IDisposable` that reverts the
-customization value to its previous value upon disposal.
+All customizations are located in the static `Customize.aweXpect` class. Groups such as `Formatting()` bundle related
+customization values, and each value is stored on its own with a dedicated `Get` and `Set` method. The `Set` method
+always returns a lifetime scope, an `IDisposable` that removes the value it set upon disposal.
 
 The customization options are applied in an
 [async context](https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1), so they don't directly
@@ -27,16 +27,10 @@ A value you set is visible in the current async flow and in every flow that star
 - A value set in a synchronous method is visible to its caller. A value set in an awaited `async` method is not: once
   that method returns, the caller continues with its own values. Set the value in the calling method, or return the
   lifetime from a synchronous helper method.
-- Disposing a lifetime restores only the value it set, so another value of the same group that was changed in the
-  meantime is kept. Disposing it a second time has no effect. This holds for the built-in groups. A group of an
-  extension that stores its values with `IAwexpectCustomization.Set` is stored as a whole by every lifetime, so the
-  value of an earlier lifetime stays in effect when it is disposed while a later one is still active, see
-  [customization values](../11-extending/04-customization-values.md).
-- `Update(…)` replaces the whole group, so disposing its lifetime restores the whole group as it was before the update.
-  The function you pass can run again later, e.g. when a lifetime of the same group that was created before is
-  disposed first, so it must compute the new value only from its argument and must not have side effects.
-- Dispose lifetimes in the reverse order in which you created them, as nested `using` statements do, and in the same
-  flow: disposing a lifetime restores the value in the flow that disposes it.
+- Disposing a lifetime removes only the value it set, also when the lifetimes are disposed in a different order than
+  they were created: another value, or a later value of the same setting, stays in effect until its own lifetime is
+  disposed. Disposing a lifetime a second time has no effect.
+- Dispose a lifetime in the flow that created it: disposing a lifetime restores the value in the flow that disposes it.
 
 ## Global defaults
 
@@ -58,11 +52,10 @@ internal static class AwexpectDefaults
 }
 ```
 
-- A value set in the current async flow takes precedence over the global value, so a test can still use
+- A value set in the current async flow takes precedence over its global value, so a test can still use
   `using (Customize.aweXpect.Formatting().MaximumStringLength.Set(20))` without influencing tests that run in parallel.
-- While such a value is set in the current flow, its group is kept in this flow as a whole, with the other values
-  taken from the global values at the time of the `Set`: a global change to another value of the same group can be
-  hidden in this flow until all lifetimes of that group in this flow are disposed.
+  All other values keep following the global values, and once the lifetimes of the value in the current flow are
+  disposed, it follows the global value again.
 - Set global values once, before the tests run. They can be changed at any time and the change is visible to all
   running tests immediately.
 - `Customize.aweXpect.Global.EnableTracing(traceWriter)` enables a trace writer for all async flows. A trace writer
@@ -97,7 +90,7 @@ Under `Customize.aweXpect.Reflection()`:
 
 | Option                     | Type       | Default                                              | Description                                                                               |
 |----------------------------|------------|------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| `ExcludedAssemblyPrefixes` | `string[]` | `System`, `Microsoft`, `xunit` and other known names | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
+| `ExcludedAssemblyPrefixes` | `string[]` | `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `Castle`, `DynamicProxyGenAssembly2` | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
 
 A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
 assembly named `Systemics`.
