@@ -135,6 +135,8 @@ also reports a delegate whose `ValueTask` is given explicitly as the type argume
 suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter, and the
 expectation has to be a preceding statement in the same method, local function or lambda, without a branch or a
 write to the subject in between. Only the warnings are suppressed; the null state of the compiler is unchanged.
+Expectations of extension packages take part when they are marked with `[GuaranteesNotNull]`, see
+[nullability warnings](./11-extending/02-constraints-and-results.md#nullability-warnings).
 
 ```csharp
 string? title = new Track().Title;

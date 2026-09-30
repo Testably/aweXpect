@@ -166,6 +166,34 @@ so deciding the outcome with `Actual is null ? Outcome.Failure : ...` inside `Is
 is inverted into a success when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is
 applied.
 
+### Nullability warnings
+
+After an expectation that fails for a `null` subject, the subject can't be `null` any more. Mark such an expectation
+with the `[GuaranteesNotNull]` attribute from `aweXpect.Core`, so that the
+[nullability suppressor](../07-analyzers.md) of the `aweXpect` package suppresses the nullability warnings for the
+subject after your expectation, as it does after `IsNotNull()`:
+
+```csharp no-compile
+[GuaranteesNotNull]
+public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+    => // ...
+```
+
+```csharp
+string? path = "/music/album.txt";
+
+await Expect.That(path).IsAbsolutePath();
+int length = path.Length;   // no CS8602
+```
+
+- Only mark an expectation that fails for a `null` subject regardless of its other arguments, e.g. one that uses
+  `ConstraintResult.WithNotNullValue<T>`. A wrongly marked expectation hides real nullability warnings.
+- The expectation has to be an extension method on `IThat<TSubject>`.
+- An expectation of your package before `.And`, as in `Expect.That(path).IsAbsolutePath().And.IsNotNull()`, keeps the
+  subject for the suppressor only when it returns an aweXpect result for the same `IThat<TSubject>`, such as
+  `AndOrResult<string, IThat<string?>>`. An expectation that returns an `IThat<…>` itself could continue with a
+  different subject, so the suppressor ignores the expectations after it.
+
 ## Negated expectations
 
 A constraint that supports the negated case also allows you to write an explicit negated expectation with the
