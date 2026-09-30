@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
@@ -72,7 +71,8 @@ public static partial class ValueFormatters
 	///     do not describe the instance, and a static member of the type's own struct type (like
 	///     <c>CancellationToken.None</c>) boxes a new value on every read, so the recursion guard would never stop. A
 	///     property without a public getter is left out as well, as the registration does, because it cannot be read
-	///     from outside the type.
+	///     from outside the type. The members are selected like those of an equivalency comparison, so that the message
+	///     shows the members that were compared.
 	/// </remarks>
 	private static List<EquivalencyMember>? GetMembers(Type type)
 	{
@@ -89,10 +89,9 @@ public static partial class ValueFormatters
 			return null;
 		}
 
-		return type.GetFields(BindingFlags.Public | BindingFlags.Instance)
+		return type.GetFields(IncludeMembers.Public)
 			.Select(field => new EquivalencyMember(field.Name, field.FieldType, subject => field.GetValue(subject)))
-			.Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-				.Where(property => property.GetGetMethod() is not null && property.GetIndexParameters().Length == 0)
+			.Concat(type.GetProperties(IncludeMembers.Public)
 				.Select(property => new EquivalencyMember(property.Name, property.PropertyType,
 					subject => property.GetValue(subject))))
 			.ToList();
