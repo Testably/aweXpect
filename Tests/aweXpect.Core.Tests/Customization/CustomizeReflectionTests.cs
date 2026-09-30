@@ -12,10 +12,10 @@ public sealed class CustomizeReflectionTests
 		await That(Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get())
 			.DoesNotContain(additionalExcludedAssemblyNamespace);
 
-		using (IDisposable _ = Customize.aweXpect.Reflection().Update(p => p with
-		       {
-			       ExcludedAssemblyPrefixes = [..p.ExcludedAssemblyPrefixes, additionalExcludedAssemblyNamespace,],
-		       }))
+		using (IDisposable _ = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Set([
+			       ..Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get(),
+			       additionalExcludedAssemblyNamespace,
+		       ]))
 		{
 			await That(Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get())
 				.Contains(additionalExcludedAssemblyNamespace);

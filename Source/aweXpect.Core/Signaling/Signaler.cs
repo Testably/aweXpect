@@ -52,7 +52,7 @@ public class Signaler
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult Wait(
@@ -67,7 +67,7 @@ public class Signaler
 	/// </summary>
 	/// <remarks>
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
 	public SignalerResult Wait(Times amount, TimeSpan? timeout = null,
@@ -197,7 +197,7 @@ public class Signaler<TParameter>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.
@@ -218,7 +218,7 @@ public class Signaler<TParameter>
 	/// <remarks>
 	///     If no <paramref name="predicate" /> is provided, all signals are counted.
 	///     If no <paramref name="timeout" /> is specified (set to <see langword="null" />),
-	///     the <see cref="AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout" /> is used
+	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.

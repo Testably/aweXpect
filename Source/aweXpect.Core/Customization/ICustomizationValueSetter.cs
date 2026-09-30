@@ -3,9 +3,6 @@
 /// <summary>
 ///     A customization value of type <typeparamref name="TValue" /> that can be set.
 /// </summary>
-/// <remarks>
-///     This is primarily intended for primitive types.
-/// </remarks>
 public interface ICustomizationValueSetter<TValue>
 {
 	/// <summary>

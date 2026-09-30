@@ -18,19 +18,21 @@ You can add a simple customizable value (e.g. an `int`):
 public static class MyCustomizationExtensions
 {
     public static ICustomizationValueSetter<int> MyCustomization(this AwexpectCustomization awexpectCustomization)
-        => new CustomizationValue<int>(awexpectCustomization, nameof(MyCustomization), 42);
+        => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MyCustomization", 42);
+}
 
-    internal class CustomizationValue<TValue>(IAwexpectCustomization awexpectCustomization, string key, TValue defaultValue)
-        : ICustomizationValueSetter<TValue>
-    {
-        public TValue Get()
-            => awexpectCustomization.Get(key, defaultValue);
+internal sealed class CustomizationValue<TValue>(IAwexpectCustomization awexpectCustomization, string key, TValue defaultValue)
+    : ICustomizationValueSetter<TValue>
+{
+    public TValue Get()
+        => awexpectCustomization.Get(key, defaultValue);
 
-        public CustomizationLifetime Set(TValue value)
-            => awexpectCustomization.Set(key, value);
-    }
+    public CustomizationLifetime Set(TValue value)
+        => awexpectCustomization.Set(key, value);
 }
 ```
+
+The key identifies the value, so choose one that no other package uses, e.g. prefixed with the name of your package.
 
 This allows expectations to access the value:
 
@@ -56,7 +58,8 @@ property by property.
 
 ## Add a customization group
 
-You can also add a group of customization values that can be changed individually or as a whole:
+To offer several related values, add a group: a class that exposes one `ICustomizationValueSetter<TValue>` per value.
+Each value is stored under its own key, so it can be set and restored independently of the other values of the group:
 
 ```csharp
 public static class JsonAwexpectCustomizationExtensions
@@ -64,88 +67,44 @@ public static class JsonAwexpectCustomizationExtensions
     public static JsonCustomization Json(this AwexpectCustomization awexpectCustomization)
         => new(awexpectCustomization);
 
-    public class JsonCustomization : ICustomizationValueUpdater<JsonCustomizationValue>
+    public class JsonCustomization
     {
-        private readonly IAwexpectCustomization _awexpectCustomization;
-
         internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
         {
-            _awexpectCustomization = awexpectCustomization;
-            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(this,
-                p => p.DefaultJsonDocumentOptions,
-                (p, v) => p with { DefaultJsonDocumentOptions = v });
-            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(this,
-                p => p.DefaultJsonSerializerOptions,
-                (p, v) => p with { DefaultJsonSerializerOptions = v });
+            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
+                "MyExtension.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions { AllowTrailingCommas = true });
+            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
+                "MyExtension.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions { AllowTrailingCommas = true });
         }
 
         public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
         public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
-
-        public JsonCustomizationValue Get()
-            => _awexpectCustomization.Get(nameof(Json), new JsonCustomizationValue());
-
-        public CustomizationLifetime Update(Func<JsonCustomizationValue, JsonCustomizationValue> update)
-            => _awexpectCustomization.Set(nameof(Json), update(Get()));
-    }
-
-    public record JsonCustomizationValue
-    {
-        public JsonDocumentOptions DefaultJsonDocumentOptions { get; set; } = new()
-        {
-            AllowTrailingCommas = true
-        };
-        public JsonSerializerOptions DefaultJsonSerializerOptions { get; set; } = new()
-        {
-            AllowTrailingCommas = true
-        };
-    }
-
-    private sealed class CustomizationValue<TValue>(
-        JsonCustomization group,
-        Func<JsonCustomizationValue, TValue> getter,
-        Func<JsonCustomizationValue, TValue, JsonCustomizationValue> setter)
-        : ICustomizationValueSetter<TValue>
-    {
-        public TValue Get() => getter(group.Get());
-
-        public CustomizationLifetime Set(TValue value)
-            => group.Update(p => setter(p, value));
     }
 }
 ```
 
-Disposing the lifetime of a single value restores the group as it was before, so dispose the lifetimes in the reverse
-order in which you created them. Once all lifetimes of the group in an async flow are disposed, the flow uses the
-global values again.
-
-Both kinds of customizations work with [global defaults](../03-how-it-works/07-configuration.md#global-defaults)
-without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or `Customize.aweXpect.Global.Json().Update(…)` stores
-the value for all async flows, because `Global` is an `AwexpectCustomization` as well.
-
-This allows expectations to access values either individually or for the whole group:
+The group reuses the `CustomizationValue<TValue>` class of the simple value above. Expectations access each value on
+its own:
 
 ```csharp
- // both will return the default value 'true'
-bool myCustomization1 = Customize.aweXpect.Json().Get().DefaultJsonDocumentOptions.AllowTrailingCommas;
-bool myCustomization2 = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
+ // will return the default value 'true'
+bool allowTrailingCommas = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
 ```
 
-And users can customize either individual values or the whole group:
+And users customize each value on its own:
 
 ```csharp
-// update a single value (keeping the other values)
 JsonSerializerOptions mySerializerOptions = new();
 using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(mySerializerOptions))
 {
     // will use `mySerializerOptions` for the `JsonSerializerOptions`
     // but keep any configured `JsonDocumentOptions`
 }
-
-// ...or update the whole group
-JsonAwexpectCustomizationExtensions.JsonCustomizationValue myCustomization = new();
-using (Customize.aweXpect.Json().Update(_ => myCustomization))
-{
-    // will use all properties from `myCustomization`
-}
 ```
+
+Both kinds of customizations work with [global defaults](../03-how-it-works/07-configuration.md#global-defaults)
+without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or
+`Customize.aweXpect.Global.Json().DefaultJsonSerializerOptions.Set(…)` stores the value for all async flows, because
+`Global` is an `AwexpectCustomization` as well. Their
+[lifetimes](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
+values, also when they are disposed out of order.

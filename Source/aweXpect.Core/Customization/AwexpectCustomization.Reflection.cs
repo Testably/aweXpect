@@ -1,5 +1,3 @@
-using System;
-
 namespace aweXpect.Customization;
 
 public partial class AwexpectCustomization
@@ -18,41 +16,27 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the reflection settings.
 	/// </summary>
-	public class ReflectionCustomization : ICustomizationValueUpdater<ReflectionCustomizationValue>
+	public class ReflectionCustomization
 	{
-		private static readonly ReflectionCustomizationValue EmptyValue = new();
-		private readonly IAwexpectCustomization _awexpectCustomization;
+		private const string KeyPrefix = "aweXpect.Reflection.";
 
 		internal ReflectionCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			_awexpectCustomization = awexpectCustomization;
-			ExcludedAssemblyPrefixes = new CustomizationValue<ReflectionCustomizationValue, string[]>(this,
-				p => p.ExcludedAssemblyPrefixes,
-				// ReSharper disable once WithExpressionModifiesAllMembers
-				(p, v) => p with
-				{
-					ExcludedAssemblyPrefixes = v,
-				});
+			ExcludedAssemblyPrefixes = new CustomizationValue<string[]>(awexpectCustomization,
+				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
+				[
+					"mscorlib",
+					"System",
+					"Microsoft",
+					"netstandard",
+					"WindowsBase",
+					"JetBrains",
+					"xunit",
+					"Castle",
+					"DynamicProxyGenAssembly2",
+				]);
 		}
 
-		/// <inheritdoc cref="ReflectionCustomizationValue.ExcludedAssemblyPrefixes" />
-		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
-
-		/// <inheritdoc cref="ICustomizationValueUpdater{ReflectionCustomizationValue}.Get()" />
-		public ReflectionCustomizationValue Get()
-			=> _awexpectCustomization.Get(nameof(Reflection), EmptyValue);
-
-		/// <inheritdoc
-		///     cref="ICustomizationValueUpdater{ReflectionCustomizationValue}.Update(Func{ReflectionCustomizationValue,ReflectionCustomizationValue})" />
-		public CustomizationLifetime Update(Func<ReflectionCustomizationValue, ReflectionCustomizationValue> update)
-			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Reflection), EmptyValue, update);
-	}
-
-	/// <summary>
-	///     Customize the reflection settings.
-	/// </summary>
-	public record ReflectionCustomizationValue
-	{
 		/// <summary>
 		///     The assembly namespace prefixes that are excluded during reflection.
 		/// </summary>
@@ -68,17 +52,6 @@ public partial class AwexpectCustomization
 		///     - Castle<br />
 		///     - DynamicProxyGenAssembly2
 		/// </remarks>
-		public string[] ExcludedAssemblyPrefixes { get; init; } =
-		[
-			"mscorlib",
-			"System",
-			"Microsoft",
-			"netstandard",
-			"WindowsBase",
-			"JetBrains",
-			"xunit",
-			"Castle",
-			"DynamicProxyGenAssembly2",
-		];
+		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
 	}
 }

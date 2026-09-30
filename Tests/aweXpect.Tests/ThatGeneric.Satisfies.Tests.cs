@@ -298,11 +298,12 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Satisfies(_ => ++count > 3).Within(5.Seconds());
 
-				using (Customize.aweXpect.Settings().Update(s => s with
-				       {
-					       DefaultCheckInterval = TimeSpan.FromMilliseconds(-5),
-				       }))
+				using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
+					       TimeSpan.FromMilliseconds(-5)))
 				{
+					await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get())
+						.IsEqualTo(TimeSpan.FromMilliseconds(-5))
+						.Because("the interval must be stored under the key that the setting reads");
 					await That(Act).DoesNotThrow().WithTimeout(10.Seconds())
 						.Because("an interval that bypassed the validation is treated like Eventually() treats it");
 				}

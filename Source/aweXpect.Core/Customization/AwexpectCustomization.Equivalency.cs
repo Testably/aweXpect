@@ -1,4 +1,3 @@
-using System;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Customization;
@@ -19,43 +18,19 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the equivalency settings.
 	/// </summary>
-	public class EquivalencyCustomization : ICustomizationValueUpdater<EquivalencyCustomizationValue>
+	public class EquivalencyCustomization
 	{
-		private readonly IAwexpectCustomization _awexpectCustomization;
+		private const string KeyPrefix = "aweXpect.Equivalency.";
 
 		internal EquivalencyCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			_awexpectCustomization = awexpectCustomization;
-			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyCustomizationValue, EquivalencyOptions>(this,
-				p => p.DefaultEquivalencyOptions,
-				(p, v) => p with
-				{
-					DefaultEquivalencyOptions = v,
-				});
+			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyOptions>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultEquivalencyOptions), new EquivalencyOptions());
 		}
 
-		/// <inheritdoc cref="EquivalencyCustomizationValue.DefaultEquivalencyOptions" />
-		public ICustomizationValueSetter<EquivalencyOptions> DefaultEquivalencyOptions { get; }
-
-		/// <inheritdoc cref="ICustomizationValueUpdater{EquivalencyCustomizationValue}.Get()" />
-		public EquivalencyCustomizationValue Get()
-			=> _awexpectCustomization.Get(nameof(Equivalency), new EquivalencyCustomizationValue());
-
-		/// <inheritdoc
-		///     cref="ICustomizationValueUpdater{EquivalencyCustomizationValue}.Update(Func{EquivalencyCustomizationValue,EquivalencyCustomizationValue})" />
-		public CustomizationLifetime Update(Func<EquivalencyCustomizationValue, EquivalencyCustomizationValue> update)
-			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Equivalency),
-				new EquivalencyCustomizationValue(), update);
-	}
-
-	/// <summary>
-	///     Customize the equivalency settings.
-	/// </summary>
-	public record EquivalencyCustomizationValue
-	{
 		/// <summary>
 		///     The default <see cref="EquivalencyOptions" />.
 		/// </summary>
-		public EquivalencyOptions DefaultEquivalencyOptions { get; init; } = new();
+		public ICustomizationValueSetter<EquivalencyOptions> DefaultEquivalencyOptions { get; }
 	}
 }

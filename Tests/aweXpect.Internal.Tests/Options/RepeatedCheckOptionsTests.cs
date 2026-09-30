@@ -42,11 +42,11 @@ public class RepeatedCheckOptionsTests
 		using CancellationTokenSource cts = new();
 		cts.CancelAfter(5.Seconds());
 		Task<bool> result;
-		using (Customize.aweXpect.Settings().Update(s => s with
-		       {
-			       DefaultCheckInterval = TimeSpan.Zero,
-		       }))
+		using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
+			       TimeSpan.Zero))
 		{
+			await That(sut.Interval).IsEqualTo(TimeSpan.Zero)
+				.Because("the interval must be stored under the key that the setting reads");
 			result = sut.CheckRepeatedly(() => Task.FromResult(false), new ManualExpectationBuilder<int>(null),
 				cts.Token);
 		}

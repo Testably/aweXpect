@@ -21,20 +21,14 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the settings.
 	/// </summary>
-	public class SettingsCustomization : ICustomizationValueUpdater<SettingsCustomizationValue>
+	public class SettingsCustomization
 	{
-		private static readonly SettingsCustomizationValue EmptyValue = new();
-		private readonly IAwexpectCustomization _awexpectCustomization;
+		private const string KeyPrefix = "aweXpect.Settings.";
 
 		internal SettingsCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			_awexpectCustomization = awexpectCustomization;
-			DefaultCheckInterval = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
-				p => p.DefaultCheckInterval,
-				(p, v) => p with
-				{
-					DefaultCheckInterval = v,
-				},
+			DefaultCheckInterval = new CustomizationValue<TimeSpan>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultCheckInterval), TimeSpan.FromMilliseconds(100),
 				interval =>
 				{
 					if (interval <= TimeSpan.Zero)
@@ -44,26 +38,14 @@ public partial class AwexpectCustomization
 							new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 					}
 				});
-			DefaultEventuallyTimeout = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
-				p => p.DefaultEventuallyTimeout,
-				(p, v) => p with
-				{
-					DefaultEventuallyTimeout = v,
-				},
+			DefaultEventuallyTimeout = new CustomizationValue<TimeSpan>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultEventuallyTimeout), TimeSpan.FromSeconds(30),
 				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
-			DefaultSignalerTimeout = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
-				p => p.DefaultSignalerTimeout,
-				(p, v) => p with
-				{
-					DefaultSignalerTimeout = v,
-				},
+			DefaultSignalerTimeout = new CustomizationValue<TimeSpan>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultSignalerTimeout), TimeSpan.FromSeconds(30),
 				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
-			DefaultTimeComparisonTolerance = new CustomizationValue<SettingsCustomizationValue, TimeSpan>(this,
-				p => p.DefaultTimeComparisonTolerance,
-				(p, v) => p with
-				{
-					DefaultTimeComparisonTolerance = v,
-				},
+			DefaultTimeComparisonTolerance = new CustomizationValue<TimeSpan>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultTimeComparisonTolerance), TimeSpan.Zero,
 				tolerance =>
 				{
 					if (tolerance < TimeSpan.Zero)
@@ -73,63 +55,24 @@ public partial class AwexpectCustomization
 							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
 				});
-			TestCancellation = new CustomizationValue<SettingsCustomizationValue, TestCancellation?>(this,
-				p => p.TestCancellation,
-				(p, v) => p with
-				{
-					TestCancellation = v,
-				});
+			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
+				KeyPrefix + nameof(TestCancellation), null);
 		}
-
-		/// <inheritdoc cref="SettingsCustomizationValue.DefaultCheckInterval" />
-		public ICustomizationValueSetter<TimeSpan> DefaultCheckInterval { get; }
-
-		/// <inheritdoc cref="SettingsCustomizationValue.DefaultEventuallyTimeout" />
-		public ICustomizationValueSetter<TimeSpan> DefaultEventuallyTimeout { get; }
-
-		/// <inheritdoc cref="SettingsCustomizationValue.DefaultSignalerTimeout" />
-		public ICustomizationValueSetter<TimeSpan> DefaultSignalerTimeout { get; }
-
-		/// <inheritdoc cref="SettingsCustomizationValue.DefaultTimeComparisonTolerance" />
-		public ICustomizationValueSetter<TimeSpan> DefaultTimeComparisonTolerance { get; }
-
-		/// <inheritdoc cref="SettingsCustomizationValue.TestCancellation" />
-		public ICustomizationValueSetter<TestCancellation?> TestCancellation { get; }
-
-		/// <inheritdoc cref="ICustomizationValueUpdater{SettingsCustomizationValue}.Get()" />
-		public SettingsCustomizationValue Get()
-			=> _awexpectCustomization.Get(nameof(Settings), EmptyValue);
-
-		/// <inheritdoc
-		///     cref="ICustomizationValueUpdater{SettingsCustomizationValue}.Update(Func{SettingsCustomizationValue,SettingsCustomizationValue})" />
-		public CustomizationLifetime Update(Func<SettingsCustomizationValue, SettingsCustomizationValue> update)
-			=> ((AwexpectCustomization)_awexpectCustomization).Update(nameof(Settings), EmptyValue, update);
-	}
-
-	/// <summary>
-	///     Customize the settings.
-	/// </summary>
-	public record SettingsCustomizationValue
-	{
-		/// <summary>
-		///     If set, applies the cancellation logic for all tests.
-		/// </summary>
-		public TestCancellation? TestCancellation { get; init; }
 
 		/// <summary>
 		///     The default interval for repeatedly checking the condition on an object.
 		/// </summary>
-		public TimeSpan DefaultCheckInterval { get; init; } = TimeSpan.FromMilliseconds(100);
+		public ICustomizationValueSetter<TimeSpan> DefaultCheckInterval { get; }
 
 		/// <summary>
 		///     The default timeout until the expectations of <c>Eventually()</c> on a delegate must be met.
 		/// </summary>
-		public TimeSpan DefaultEventuallyTimeout { get; init; } = TimeSpan.FromSeconds(30);
+		public ICustomizationValueSetter<TimeSpan> DefaultEventuallyTimeout { get; }
 
 		/// <summary>
 		///     The default timeout for the <see cref="Signaler" />.
 		/// </summary>
-		public TimeSpan DefaultSignalerTimeout { get; init; } = TimeSpan.FromSeconds(30);
+		public ICustomizationValueSetter<TimeSpan> DefaultSignalerTimeout { get; }
 
 #if NET8_0_OR_GREATER
 		/// <summary>
@@ -164,6 +107,11 @@ public partial class AwexpectCustomization
 		///     or values compared as <see langword="object" />.
 		/// </remarks>
 #endif
-		public TimeSpan DefaultTimeComparisonTolerance { get; init; } = TimeSpan.Zero;
+		public ICustomizationValueSetter<TimeSpan> DefaultTimeComparisonTolerance { get; }
+
+		/// <summary>
+		///     If set, applies the cancellation logic for all tests.
+		/// </summary>
+		public ICustomizationValueSetter<TestCancellation?> TestCancellation { get; }
 	}
 }

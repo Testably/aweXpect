@@ -315,9 +315,18 @@ A value set with `Customize.aweXpect` stays in the async flow that set it and th
 parent flow had set any customization, for example in an assembly-level setup, all tests shared one store, so a value
 set in one test leaked into the tests running in parallel with it. As a consequence, a value set inside an awaited
 `async` helper method is no longer visible to its caller after the `await`; set it in the calling method or in a
-synchronous helper. Disposing the lifetime of a single value such as `MaximumStringLength` restores only that value
-and keeps the other values of the group, and disposing a lifetime a second time has no effect. See
+synchronous helper. Disposing the lifetime of a single value such as `MaximumStringLength` restores only that value,
+also when lifetimes are disposed out of order, and disposing a lifetime a second time has no effect. See
 [Configuration](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows).
+
+Each customization value is stored on its own. The whole-group `Get()` and `Update(…)` of `Formatting()`,
+`Settings()`, `Equivalency()` and `Reflection()` are gone, together with the `ICustomizationValueUpdater<T>` interface
+and the `FormattingCustomizationValue`, `SettingsCustomizationValue`, `EquivalencyCustomizationValue` and
+`ReflectionCustomizationValue` records: an update skipped the validation of the values, and a value set in a test
+hid global changes to the other values of its group. Set each value on its own instead, e.g. replace
+`Settings().Update(s => s with { DefaultCheckInterval = … })` with `Settings().DefaultCheckInterval.Set(…)`, with one
+`using` per value. A group of an extension stores each value under its own key, see
+[customization values](../11-extending/04-customization-values.md#add-a-customization-group).
 
 Whether a value set in an assembly-level setup reached the tests depended on the test framework and on whether the
 setup was asynchronous. Set such defaults on the new Customize.aweXpect.Global, e.g.
