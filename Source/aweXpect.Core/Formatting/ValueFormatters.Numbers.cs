@@ -1190,7 +1190,14 @@ public static partial class ValueFormatters
 	}
 
 	private static string FormatNaNOrZero(double value)
-		=> double.IsNaN(value) ? "NaN" : BitConverter.DoubleToInt64Bits(value) < 0 ? "-0.0" : "0.0";
+	{
+		if (double.IsNaN(value))
+		{
+			return "NaN";
+		}
+
+		return BitConverter.DoubleToInt64Bits(value) < 0 ? "-0.0" : "0.0";
+	}
 
 	private static string WithDecimalDigit(string formattedValue)
 		=> formattedValue.IndexOfAny(['.', 'E']) < 0 ? formattedValue + ".0" : formattedValue;
