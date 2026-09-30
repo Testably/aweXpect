@@ -66,13 +66,14 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		FormattingContext context = _registeredFormatterContext ?? new FormattingContext();
+		if (TryFormatWithRegistrations(stringBuilder, value, options, context))
 		{
 			return;
 		}
 
 		FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
-			new ItemFormatter<object?>(formatter, new FormattingContext(), FormatItem));
+			new ItemFormatter<object?>(formatter, context, FormatItem));
 	}
 
 	/// <summary>
@@ -91,13 +92,14 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		FormattingContext context = _registeredFormatterContext ?? new FormattingContext();
+		if (TryFormatWithRegistrations(stringBuilder, value, options, context))
 		{
 			return;
 		}
 
 		FormatItems(stringBuilder, value, value, GetCount(value), options,
-			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, new FormattingContext(), FormatKeyValuePair));
+			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, context, FormatKeyValuePair));
 	}
 
 	private static void FormatEnumerable(
@@ -113,12 +115,12 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		context ??= _registeredFormatterContext ?? new FormattingContext();
+		if (TryFormatWithRegistrations(stringBuilder, value, options, context))
 		{
 			return;
 		}
 
-		context ??= new FormattingContext();
 		if (value is IDictionary dictionary)
 		{
 			FormatItems(stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
@@ -284,7 +286,7 @@ public static partial class ValueFormatters
 			TotalItemCount = null,
 		};
 		StringBuilder stringBuilder = new();
-		if (!TryFormatWithRegistrations(stringBuilder, item, itemOptions))
+		if (!TryFormatWithRegistrations(stringBuilder, item, itemOptions, context))
 		{
 			AppendKeyValuePair(formatter, stringBuilder, item.Key, item.Value, itemOptions, context);
 		}

@@ -216,6 +216,38 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenItFormatsACyclicChildCollection_ShouldFormatTheCycleAsRecursive()
+	{
+		Node a = new("a");
+		Node b = new("b");
+		a.Children.Add(b);
+		b.Children.Add(a);
+		string result;
+		using (ValueFormatter.Register(new NodeFormatter()))
+		{
+			result = Formatter.Format(a, FormattingOptions.SingleLine);
+		}
+
+		await That(result).IsEqualTo("a with [b with [{ *recursive* }]]")
+			.Because("the formatting context is carried into the formatting calls of a registered formatter");
+	}
+
+	[Fact]
+	public async Task CustomFormatter_WhenItFormatsTheSameInstanceAsAChild_ShouldFormatItAsRecursive()
+	{
+		Node a = new("a");
+		a.Parent = a;
+		string result;
+		using (ValueFormatter.Register(new NodeFormatter()))
+		{
+			result = Formatter.Format(a, FormattingOptions.SingleLine);
+		}
+
+		await That(result).IsEqualTo("a in { *recursive* }")
+			.Because("a value is tracked while a registered formatter formats it");
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenItThrows_ShouldRenderAPlaceholderInTheFailureMessage()
 	{
 		MyThrowingFormattableClass subject = new();
@@ -270,6 +302,26 @@ public class ValueFormatterTests
 		string objectResult = Formatter.Format((object?)value);
 
 		await That(objectResult).IsEqualTo(ValueFormatter.NullString);
+	}
+
+	[Fact]
+	public async Task CustomFormatter_WhenSameInstanceIsContainedTwice_ShouldFormatBoth()
+	{
+		Node leaf = new("leaf");
+		Node root = new("root");
+		root.Children.Add(leaf);
+		root.Children.Add(new Node("x")
+		{
+			Parent = leaf,
+		});
+		string result;
+		using (ValueFormatter.Register(new NodeFormatter()))
+		{
+			result = Formatter.Format(root, FormattingOptions.SingleLine);
+		}
+
+		await That(result).IsEqualTo("root with [leaf, x in leaf]")
+			.Because("a value is only tracked while it is being formatted, not after");
 	}
 
 	[Fact]
@@ -382,4 +434,55 @@ public class ValueFormatterTests
 	}
 
 	private sealed class MyThrowingFormattableClass;
+
+	private sealed class Node(string name)
+	{
+		public List<Node> Children { get; } = [];
+		public string Name { get; } = name;
+		public Node? Parent { get; set; }
+	}
+
+	/// <remarks>
+	///     Throws instead of overflowing the stack when a cycle is not detected, so that a failing test does not
+	///     crash the test host.
+	/// </remarks>
+	private sealed class NodeFormatter : IValueFormatter
+	{
+		private int _depth;
+
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is not Node node)
+			{
+				return false;
+			}
+
+			try
+			{
+				if (++_depth > 10)
+				{
+					throw new InvalidOperationException("the cycle was not detected");
+				}
+
+				stringBuilder.Append(node.Name);
+				if (node.Parent is not null)
+				{
+					stringBuilder.Append(" in ");
+					Formatter.Format(stringBuilder, node.Parent, options);
+				}
+
+				if (node.Children.Count > 0)
+				{
+					stringBuilder.Append(" with ");
+					Formatter.Format(stringBuilder, node.Children, options);
+				}
+
+				return true;
+			}
+			finally
+			{
+				_depth--;
+			}
+		}
+	}
 }
