@@ -186,6 +186,42 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenMemberReturnsNullTask_ShouldFailWithoutEvaluatingMemberConstraints()
+	{
+		AsyncMappingNode<string, int> node =
+			new(MemberAccessor<string, Task<int>>.FromFunc(_ => null!, " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsNull()
+			.Because("a null task is not an exception thrown by the member");
+		await That(sb.ToString()).IsEqualTo("yeah!");
+		await That(result.GetResultText()).IsEqualTo("length returned <null> instead of a task");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberReturnsNullTask_WhenNegated_ShouldNegateExpectationAndStillFail()
+	{
+		AsyncMappingNode<string, int> node =
+			new(MemberAccessor<string, Task<int>>.FromFunc(_ => null!, " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("a null task has no value that could meet the negated expectation");
+		await That(sb.ToString()).IsEqualTo("not yeah!");
+		await That(negated.GetResultText()).IsEqualTo("length returned <null> instead of a task");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
 	{
 		AsyncMappingNode<string, int> node =

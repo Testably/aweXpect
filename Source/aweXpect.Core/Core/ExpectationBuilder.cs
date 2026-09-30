@@ -767,6 +767,13 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		using Cancellation cancellation = new(timeout, cancellationToken);
 		CancellationToken token = cancellation.Token;
 
+		if (_subjectSource is AsyncValueSource<TValue> { IsNullTask: true, })
+		{
+			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
+			return NullSubjectResult.Create(expectation, default(TValue));
+		}
+
 		TValue data;
 		try
 		{

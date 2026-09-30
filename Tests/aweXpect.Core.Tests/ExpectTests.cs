@@ -118,6 +118,42 @@ public class ExpectTests
 	}
 
 	[Fact]
+	public async Task ShouldFailForNullGenericTaskSubject()
+	{
+		Task<int>? sut = null;
+
+		async Task Act()
+			=> await That(sut!).IsEqualTo(1);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is equal to 1,
+			             but it was <null>
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("a null task is no exception thrown by the subject, but a subject without a value");
+	}
+
+	[Fact]
+	public async Task ShouldFailForNullGenericTaskSubject_WhenNegated()
+	{
+		Task<int>? sut = null;
+
+		async Task Act()
+			=> await That(sut!).DoesNotComplyWith(it => it.IsEqualTo(1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is not equal to 1,
+			             but it was <null>
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsNull())
+			.Because("a null task has no value that could meet the negated expectation");
+	}
+
+	[Fact]
 	public async Task ShouldFailForNullTaskSubject()
 	{
 		Task? sut = null;

@@ -62,6 +62,10 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		{
 			eventNames = events.Select(x => x.Name).ToArray();
 		}
+		else
+		{
+			ThrowIfRequestedMoreThanOnce(eventNames);
+		}
 
 		try
 		{
@@ -76,12 +80,16 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 				}
 
 				EventRecorder recorder = new(eventName, NotifyRecordedEvent);
+				// Stored before it is attached, so that the cleanup below also detaches it when anything later throws.
+				_recorders.Add(eventName, recorder);
 				string? unsupported = @event.TryAttach(recorder, subject);
 				if (unsupported is null)
 				{
-					_recorders.Add(eventName, recorder);
+					continue;
 				}
-				else if (recordAllEvents)
+
+				_recorders.Remove(eventName);
+				if (recordAllEvents)
 				{
 					_skipped.Add(eventName, unsupported);
 				}
@@ -98,6 +106,20 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			// stay on the subject for its lifetime with nothing left that could detach them.
 			Stop(null);
 			throw;
+		}
+	}
+
+	/// <remarks>
+	///     A repeated name is rejected instead of ignored, because it is most likely a mistake for another event, which
+	///     would otherwise silently not be recorded.
+	/// </remarks>
+	private static void ThrowIfRequestedMoreThanOnce(string[] eventNames)
+	{
+		string? duplicate = eventNames.GroupBy(x => x).FirstOrDefault(x => x.Count() > 1)?.Key;
+		if (duplicate is not null)
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"Event {duplicate} was requested more than once.", nameof(eventNames)));
 		}
 	}
 

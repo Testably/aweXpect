@@ -24,6 +24,25 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task Throws_Whose_WhenAsyncMemberReturnsNullTask_ShouldFail()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.GetNullTask(), v => v.IsEqualTo(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetNullTask() is equal to 1,
+				             but GetNullTask() returned <null> instead of a task
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("a null task is not an exception thrown by the member");
+		}
+
+		[Fact]
 		public async Task Throws_Whose_WithAsyncLambda_ShouldRenderMemberPath()
 		{
 			void Delegate() => throw new AsyncException(1);
@@ -112,6 +131,8 @@ public sealed partial class ThatDelegateTests
 				await Task.Yield();
 				throw new InvalidOperationException($"async member failed for {value}");
 			}
+
+			public Task<int> GetNullTask() => null!;
 
 			public Task<int> GetValueAsync() => Task.FromResult(value);
 		}

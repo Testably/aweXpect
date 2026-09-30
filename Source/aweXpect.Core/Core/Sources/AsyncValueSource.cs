@@ -8,6 +8,12 @@ namespace aweXpect.Core.Sources;
 
 internal class AsyncValueSource<TValue>(Task<TValue> value) : IValueSource<TValue>
 {
+	/// <summary>
+	///     Flag, indicating if the subject is a <see langword="null" /> task, which has no value to await.
+	/// </summary>
+	// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+	public bool IsNullTask => value is null;
+
 	#region IValueSource<TValue> Members
 
 	public Task<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
