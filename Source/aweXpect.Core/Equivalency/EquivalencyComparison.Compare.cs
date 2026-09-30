@@ -151,6 +151,13 @@ public static partial class EquivalencyComparison
 		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
 	}
 
+	private static void AppendUnmatchedElement(StringBuilder failureBuilder, string memberPath,
+		EquivalencyContext context)
+	{
+		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
+		failureBuilder.Append(" matched no expected key");
+	}
+
 	private static string ConcatMemberPath(string memberPath, string memberName)
 	{
 		if (string.IsNullOrEmpty(memberPath))
@@ -674,8 +681,10 @@ public static partial class EquivalencyComparison
 	///     second one is reported as lacking a distinct key. Without that comparer, an actual key only counts as matched
 	///     when it equals a matched expected key by its own <see cref="object.Equals(object)" />. The remaining keys are
 	///     therefore only named as superfluous when as many were found as the entry count asks for, because a comparer
-	///     that considers more keys equal than the default one lets that scan overshoot; otherwise only the counts are
-	///     reported.
+	///     that considers more keys equal than the default one lets that scan overshoot. When the entry count matches
+	///     although some remain, they are reported as matching no expected key, because such a key can be a superfluous
+	///     one hidden by two expected keys that the comparer considers the same, or merely spelled differently than the
+	///     expected key it stands for. Otherwise only the counts are reported.
 	/// </remarks>
 	private static async ValueTask<bool>
 		CompareDictionaries(
@@ -703,7 +712,7 @@ public static partial class EquivalencyComparison
 			index++;
 		}
 
-		if (actual.Count != matchedKeys.Count)
+		if (actual.Count != matchedKeys.Count || actualKeyComparer is null)
 		{
 			List<object> additionalKeys = [];
 			foreach (object? key in actual.Keys)
@@ -714,7 +723,8 @@ public static partial class EquivalencyComparison
 				}
 			}
 
-			if (additionalKeys.Count == actual.Count - matchedKeys.Count)
+			bool isUnmatched = additionalKeys.Count != actual.Count - matchedKeys.Count;
+			if (!isUnmatched || actual.Count == matchedKeys.Count)
 			{
 				foreach (object key in additionalKeys)
 				{
@@ -727,7 +737,15 @@ public static partial class EquivalencyComparison
 						continue;
 					}
 
-					AppendSuperfluousElement(failureBuilder, elementMemberPath, actualObject, context);
+					if (isUnmatched)
+					{
+						AppendUnmatchedElement(failureBuilder, elementMemberPath, context);
+					}
+					else
+					{
+						AppendSuperfluousElement(failureBuilder, elementMemberPath, actualObject, context);
+					}
+
 					result = false;
 				}
 			}

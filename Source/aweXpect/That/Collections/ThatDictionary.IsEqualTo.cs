@@ -24,7 +24,8 @@ public static partial class ThatDictionary
 		"comparer itself, which is only read from known dictionary types such as\n" +
 		"<see cref=\"System.Collections.Generic.Dictionary{TKey,TValue}\" /> or\n" +
 		"<see cref=\"System.Collections.Generic.SortedDictionary{TKey,TValue}\" />, not from a wrapper such as\n" +
-		"<see cref=\"System.Collections.ObjectModel.ReadOnlyDictionary{TKey,TValue}\" /> or a custom dictionary.";
+		"<see cref=\"System.Collections.ObjectModel.ReadOnlyDictionary{TKey,TValue}\" /> or a custom dictionary. Without it,\n" +
+		"a key of the dictionary that equals no expected key is reported, even when the comparer considers it the same as one.";
 
 	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
@@ -142,10 +143,15 @@ public static partial class ThatDictionary
 		}
 
 		/// <summary>
-		///     The names are only reported when as many were found as the entry count asks for, because for a subject whose
-		///     key comparer cannot be read, the <paramref name="matchedKeys" /> use the default equality, and a key comparer
-		///     that considers more keys equal than the default one lets the scan for names overshoot.
+		///     The names are only reported as additional when as many were found as the entry count asks for, because for a
+		///     subject whose key comparer cannot be read, the <paramref name="matchedKeys" /> use the default equality, and a
+		///     key comparer that considers more keys equal than the default one lets the scan for names overshoot.
 		/// </summary>
+		/// <remarks>
+		///     Without the comparer, a key that equals no expected key can be an additional key hidden by two expected keys
+		///     that the comparer considers the same, or merely spelled differently than the expected key it stands for. The
+		///     two cannot be told apart, so such a key is reported even when the entry count matches.
+		/// </remarks>
 		private static IEnumerable<string> AdditionalKeysError(TDictionary actual, ISet<TKey> matchedKeys)
 		{
 			int count = 0;
@@ -160,16 +166,19 @@ public static partial class ThatDictionary
 			}
 
 			int matchedCount = matchedKeys.Count;
-			if (count == matchedCount)
+			if (count == matchedCount && additionalKeys.Count == 0)
 			{
 				yield break;
 			}
 
-			yield return (additionalKeys.Count == count - matchedCount, additionalKeys.Count) switch
+			yield return (additionalKeys.Count == count - matchedCount, count == matchedCount, additionalKeys.Count) switch
 			{
-				(true, 1) => $"contained additional key {Formatter.Format(additionalKeys[0])}",
-				(true, _) =>
+				(true, _, 1) => $"contained additional key {Formatter.Format(additionalKeys[0])}",
+				(true, _, _) =>
 					$"contained {additionalKeys.Count} additional keys: {Formatter.Format(additionalKeys, FormattingOptions.SingleLine)}",
+				(false, true, 1) => $"contained key {Formatter.Format(additionalKeys[0])} that matched no expected key",
+				(false, true, _) =>
+					$"contained {additionalKeys.Count} keys that matched no expected key: {Formatter.Format(additionalKeys, FormattingOptions.SingleLine)}",
 				_ => $"contained {count} {KeyNoun(count)} and matched {matchedCount} expected {KeyNoun(matchedCount)}",
 			};
 		}
