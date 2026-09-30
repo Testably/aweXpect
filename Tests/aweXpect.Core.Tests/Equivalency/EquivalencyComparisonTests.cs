@@ -3849,11 +3849,12 @@ public sealed class EquivalencyComparisonTests
 
 	private sealed class WriteOnlyHidingProperty(int property, int own) : WithProperty(property)
 	{
+		private string _value = "";
 		public int Own { get; } = own;
 
 		public new string Value
 		{
-			set => _ = value;
+			set => _value = value;
 		}
 	}
 }
