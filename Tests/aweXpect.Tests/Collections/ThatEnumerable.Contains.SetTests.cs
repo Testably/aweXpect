@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 #if NET8_0_OR_GREATER
 using System.Collections;
-using System.Collections.Frozen;
-using System.Collections.Immutable;
 #endif
 using aweXpect.Core;
 using aweXpect.Equivalency;
@@ -227,7 +227,6 @@ public sealed partial class ThatEnumerable
 					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task ForAFrozenSet_ShouldUseTheComparerOfTheSet()
 			{
@@ -251,6 +250,27 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task ForAnImmutableHashSet_WhenItDoesNotContainTheItemAccordingToItsComparer_ShouldFail()
+			{
+				ImmutableHashSet<string> subject = ImmutableHashSet.Create(StringComparer.Ordinal, "Let It Be");
+
+				async Task Act()
+					=> await That(subject).Contains("LET IT BE");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "LET IT BE" using the subject's StringComparer.Ordinal at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "Let It Be"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task ForAnImmutableSortedSet_ShouldUseTheComparerOfTheSet()
 			{
 				ImmutableSortedSet<string> subject = ImmutableSortedSet.Create(StringComparer.OrdinalIgnoreCase, "a");
@@ -260,7 +280,6 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
 
 			[Fact]
 			public async Task ForAnUntypedSetOfIntegers_ShouldUseTheDefaultEquality()
@@ -507,7 +526,6 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-#if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WithDefaultComparer_ForAFrozenSet_ShouldCompareNumbersOfDifferentTypesByValue()
 			{
@@ -518,7 +536,6 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
 
 			[Fact]
 			public async Task WithDefaultComparer_ShouldCompareNumbersOfDifferentTypesByValue()

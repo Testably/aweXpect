@@ -86,9 +86,7 @@ only available on .NET 8 or later:
   another numeric type with the same value;
 - the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` in failure messages, which
   otherwise show the number;
-- [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`;
-- the custom comparer of an `ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`
-  ([sets](./05-collections/index.md#sets)).
+- [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`.
 
 Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
 so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.

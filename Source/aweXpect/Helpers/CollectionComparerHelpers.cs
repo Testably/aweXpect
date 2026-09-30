@@ -40,9 +40,10 @@ internal static class CollectionComparerHelpers
 			ImmutableSortedDictionary<TKey, TValue> d => new SortedSet<TKey>(d.KeyComparer),
 			FrozenDictionary<TKey, TValue> d => new HashSet<TKey>(d.Comparer),
 #else
-			_ when ReadKeyComparer<IEqualityComparer<TKey>>(dictionary) is { } comparer
+			_ when ReadComparer<IEqualityComparer<TKey>>(dictionary, KeyComparerProperties) is { } comparer
 				=> new HashSet<TKey>(comparer),
-			_ when ReadKeyComparer<IComparer<TKey>>(dictionary) is { } comparer => new SortedSet<TKey>(comparer),
+			_ when ReadComparer<IComparer<TKey>>(dictionary, KeyComparerProperties) is { } comparer
+				=> new SortedSet<TKey>(comparer),
 #endif
 			_ => new HashSet<TKey>(),
 		};
@@ -69,9 +70,11 @@ internal static class CollectionComparerHelpers
 				=> new SortedSet<TKey>(d.Keys, d.KeyComparer),
 			FrozenDictionary<TKey, TValue> d when IsCustom(d.Comparer) => new HashSet<TKey>(d.Keys, d.Comparer),
 #else
-			not null when ReadKeyComparer<IEqualityComparer<TKey>>(dictionary) is { } comparer && IsCustom(comparer)
+			not null when ReadComparer<IEqualityComparer<TKey>>(dictionary, KeyComparerProperties) is { } comparer &&
+			              IsCustom(comparer)
 				=> new HashSet<TKey>(dictionary.Select(pair => pair.Key), comparer),
-			not null when ReadKeyComparer<IComparer<TKey>>(dictionary) is { } comparer && IsCustom(comparer)
+			not null when ReadComparer<IComparer<TKey>>(dictionary, KeyComparerProperties) is { } comparer &&
+			              IsCustom(comparer)
 				=> new SortedSet<TKey>(dictionary.Select(pair => pair.Key), comparer),
 #endif
 			_ => keys,
@@ -87,8 +90,16 @@ internal static class CollectionComparerHelpers
 		["System.Collections.Frozen.FrozenDictionary`2"] = "Comparer",
 	};
 
+	private static readonly Dictionary<string, string> SetComparerProperties = new()
+	{
+		["System.Collections.Immutable.ImmutableHashSet`1"] = "KeyComparer",
+		["System.Collections.Immutable.ImmutableSortedSet`1"] = "KeyComparer",
+		["System.Collections.Frozen.FrozenSet`1"] = "Comparer",
+	};
+
 	/// <summary>
-	///     Reads the key comparer of a dictionary type that netstandard2.0 lacks or that exposes it only on newer runtimes,
+	///     Reads the comparer of a <paramref name="collection" /> of one of the types in
+	///     <paramref name="comparerProperties" />, which netstandard2.0 lacks or which expose it only on newer runtimes,
 	///     when it is a <typeparamref name="TComparer" />.
 	/// </summary>
 	/// <remarks>
@@ -96,7 +107,8 @@ internal static class CollectionComparerHelpers
 	///     so it is only attempted while the <see cref="ReflectionFallback" /> is supported. The
 	///     <see cref="ConcurrentDictionary{TKey,TValue}" /> of .NET Framework exposes no comparer at all.
 	/// </remarks>
-	private static TComparer? ReadKeyComparer<TComparer>(object dictionary)
+	private static TComparer? ReadComparer<TComparer>(object collection,
+		Dictionary<string, string> comparerProperties)
 		where TComparer : class
 	{
 		if (!ReflectionFallback.IsSupported)
@@ -104,13 +116,13 @@ internal static class CollectionComparerHelpers
 			return null;
 		}
 
-		for (Type? type = dictionary.GetType(); type is not null; type = type.BaseType)
+		for (Type? type = collection.GetType(); type is not null; type = type.BaseType)
 		{
 			if (type.IsGenericType && type.GetGenericTypeDefinition().FullName is { } name &&
-			    KeyComparerProperties.TryGetValue(name, out string? propertyName))
+			    comparerProperties.TryGetValue(name, out string? propertyName))
 			{
 				PropertyInfo? property = type.GetProperty(propertyName);
-				return property?.PropertyType == typeof(TComparer) ? property.GetValue(dictionary) as TComparer : null;
+				return property?.PropertyType == typeof(TComparer) ? property.GetValue(collection) as TComparer : null;
 			}
 		}
 
@@ -125,8 +137,9 @@ internal static class CollectionComparerHelpers
 	/// <remarks>
 	///     Only such a set is known to decide differently than the default equality, and a set that does not expose its
 	///     comparer cannot be told apart from one that uses the default. The known types are checked one by one, so
-	///     that no reflection is needed, which would not survive trimming. A sorted set considers two items the same
-	///     when its comparer orders neither before the other.
+	///     that no reflection is needed, which would not survive trimming. netstandard2.0 lacks some of these types, so
+	///     they are matched by name there. A sorted set considers two items the same when its comparer orders neither
+	///     before the other.
 	/// </remarks>
 	public static SubjectComparer<T>? GetSubjectComparer<T>(object? collection)
 		=> collection switch
@@ -140,6 +153,13 @@ internal static class CollectionComparerHelpers
 			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
 				=> new SubjectComparer<T>((x, y) => set.KeyComparer.Compare(x, y) == 0, set.KeyComparer),
 			FrozenSet<T> set when IsCustom(set.Comparer) => new SubjectComparer<T>(set.Comparer.Equals, set.Comparer),
+#else
+			not null when ReadComparer<IEqualityComparer<T>>(collection, SetComparerProperties) is { } comparer &&
+			              IsCustom(comparer)
+				=> new SubjectComparer<T>(comparer.Equals, comparer),
+			not null when ReadComparer<IComparer<T>>(collection, SetComparerProperties) is { } comparer &&
+			              IsCustom(comparer)
+				=> new SubjectComparer<T>((x, y) => comparer.Compare(x, y) == 0, comparer),
 #endif
 			_ => null,
 		};
@@ -155,6 +175,9 @@ internal static class CollectionComparerHelpers
 			SortedSet<T> set when IsCustom(set.Comparer) => set.Comparer,
 #if NET8_0_OR_GREATER
 			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => set.KeyComparer,
+#else
+			not null when ReadComparer<IComparer<T>>(collection, SetComparerProperties) is { } comparer &&
+			              IsCustom(comparer) => comparer,
 #endif
 			_ => null,
 		};
