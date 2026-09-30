@@ -74,7 +74,10 @@ public abstract partial class ConstraintResult
 
 		/// <inheritdoc cref="ConstraintResult.Negate()" />
 		public override ConstraintResult Negate()
-			=> _inner.Negate();
+		{
+			_inner.Negate();
+			return this;
+		}
 	}
 #pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance
 }

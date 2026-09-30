@@ -317,6 +317,14 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override ConstraintResult Negate()
 		{
+			if (_negateMemberOnly)
+			{
+				// The parent keeps its positive form, so a failed parent still fails the combination.
+				_right = _right.Negate();
+				Outcome = And(_left.Outcome, _right.Outcome);
+				return this;
+			}
+
 			if (_right is not IUnevaluatedMemberResult)
 			{
 				Outcome = Outcome switch
@@ -327,16 +335,8 @@ internal class WhichNode<TSource, TMember> : Node
 				};
 			}
 
-			if (_negateMemberOnly)
-			{
-				_right = _right.Negate();
-			}
-			else
-			{
-				_left = _left.Negate();
-				_isNegated = !_isNegated;
-			}
-
+			_left = _left.Negate();
+			_isNegated = !_isNegated;
 			return this;
 		}
 	}

@@ -100,6 +100,28 @@ public partial class ConstraintResultTests
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 		}
 
+		[Theory]
+		[InlineData(Outcome.Failure, false)]
+		[InlineData(Outcome.Failure, true)]
+		[InlineData(Outcome.Success, false)]
+		[InlineData(Outcome.Success, true)]
+		[InlineData(Outcome.Undecided, false)]
+		[InlineData(Outcome.Undecided, true)]
+		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
+		{
+			DummyConstraintResult inner = new(innerOutcome, "foo", "baz");
+			Exception exception = new("bar");
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
+
+			ConstraintResult negated = invert ? sut.Invert() : sut.Negate();
+
+			await That(negated).IsSameAs(sut)
+				.Because("callers continue with the returned result, which has to keep the forced failure");
+			await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+			await That(negated.FailureCause).IsSameAs(exception);
+			await That(negated.GetResultText()).IsEqualTo($"it did throw an Exception:{Environment.NewLine}  bar");
+		}
+
 		[Fact]
 		public async Task Outcome_ShouldBeFailure()
 		{

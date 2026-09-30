@@ -80,6 +80,26 @@ public sealed class ConstraintResultExtensionsTests
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
 		}
+
+		[Theory]
+		[InlineData(Outcome.Failure, false)]
+		[InlineData(Outcome.Failure, true)]
+		[InlineData(Outcome.Success, false)]
+		[InlineData(Outcome.Success, true)]
+		[InlineData(Outcome.Undecided, false)]
+		[InlineData(Outcome.Undecided, true)]
+		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
+		{
+			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo", "baz");
+			ConstraintResult sut = inner.Fail("bar", 1);
+
+			ConstraintResult negated = invert ? sut.Invert() : sut.Negate();
+
+			await That(negated).IsSameAs(sut)
+				.Because("callers continue with the returned result, which has to keep the forced failure");
+			await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+			await That(negated.GetResultText()).IsEqualTo("bar");
+		}
 	}
 
 	public sealed class UseValueTests

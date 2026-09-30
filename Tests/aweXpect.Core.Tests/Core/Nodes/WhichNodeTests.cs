@@ -582,6 +582,31 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("not r1");
 	}
 
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	public async Task Negate_WithNegateMemberOnly_ShouldCombineParentWithNegatedMember(Outcome parentOutcome,
+		Outcome memberOutcome, Outcome expectedOutcome)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(parentOutcome)),
+			s => s.Length, negateMemberOnly: true);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new DummyConstraintResult(memberOutcome)));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(expectedOutcome)
+			.Because("only the member is negated, so the parent keeps its outcome");
+	}
+
 	[Fact]
 	public async Task Negate_WithNegateMemberOnly_ShouldNegateTheContinuedExpectation()
 	{
@@ -599,6 +624,26 @@ public sealed class WhichNodeTests
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
 		await That(sb.ToString()).IsEqualTo("e1 which not e2");
 		await That(negated.GetResultText()).IsEqualTo("not r2");
+	}
+
+	[Fact]
+	public async Task Negate_WithNegateMemberOnlyAndFailedParent_ShouldRenderTheParent()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "r1")), s => s.Length,
+			" which ", true);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("e1 which not e2");
+		await That(negated.GetResultText()).IsEqualTo("r1")
+			.Because("the failed parent decides the outcome");
 	}
 
 	[Fact]
@@ -849,6 +894,26 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task WhichWithNegateMemberOnly_WhenParentFails_ShouldFailAlsoWhenNegated()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => new ThatSubject<int>(it.Get().ExpectationBuilder
+					.AddConstraint((i, g) => new StartsWithBarConstraint(i, g))
+					.ForWhich<string, int>(s => s.Length, " whose length ", negateMemberOnly: true))
+				.IsEqualTo(3));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             starts with "bar" whose length is not equal to 3,
+			             but it was "foo"
+			             """)
+			.Because("the negation only applies to the member, so the failed parent still fails the expectation");
+	}
+
+	[Fact]
 	public async Task WhichWithoutParent_ShouldKeepTheSeparator()
 	{
 		string subject = "foo";
@@ -931,6 +996,29 @@ public sealed class WhichNodeTests
 
 	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length)
 		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
+
+	private sealed class StartsWithBarConstraint(string it, ExpectationGrammars grammars)
+		: ConstraintResult.WithNotNullValue<string>(it, grammars), IValueConstraint<string>
+	{
+		public ConstraintResult IsMetBy(string actual)
+		{
+			Actual = actual;
+			Outcome = actual.StartsWith("bar", StringComparison.Ordinal) ? Outcome.Success : Outcome.Failure;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("starts with \"bar\"");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was ").Append(Formatter.Format(Actual));
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("does not start with \"bar\"");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalResult(stringBuilder, indentation);
+	}
 
 	private sealed class NegatableConstraintResult(Outcome outcome, string id = "2")
 		: ConstraintResult(FurtherProcessingStrategy.Continue)

@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 
 namespace aweXpect.Delegates;
@@ -79,22 +78,7 @@ public abstract partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (!throwOptions.DoCheckThrow)
-			{
-				stringBuilder.Append("does not throw any exception");
-			}
-			else
-			{
-				stringBuilder.Append("throws exactly ").Append(Formatter.Format(exceptionType).PrependAOrAn());
-			}
-
-			if (throwOptions.ExecutionTimeOptions is not null)
-			{
-				stringBuilder.Append(' ');
-				throwOptions.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
-			}
-		}
+			=> AppendThrowsExpectation(stringBuilder, throwOptions, exceptionType, true);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -123,7 +107,8 @@ public abstract partial class ThatDelegate
 
 		public override ConstraintResult Negate()
 		{
-			throwOptions.DoCheckThrow = !throwOptions.DoCheckThrow;
+			throwOptions.IsNegated = !throwOptions.IsNegated;
+			Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			return this;
 		}
 	}
