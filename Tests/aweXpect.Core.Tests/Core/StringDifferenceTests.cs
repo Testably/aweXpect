@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core.Helpers;
+using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -455,6 +456,29 @@ public class StringDifferenceTests
 				   "this is a long text that differs in between two…"
 				  "this is a long text which differs in between two…"
 				                           ↑ (expected suffix)
+				""");
+		}
+
+		[Fact]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsSmall_ShouldShowTheDifference()
+		{
+			const string actual = "abcdefghijkX";
+			const string expected = "aY";
+			string result;
+
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(5))
+			{
+				StringDifference sut = new(actual, expected, null, Settings);
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+				"""
+				differs before index 11:
+				              ↓ (actual)
+				  "…bcdefghijkX"
+				            "aY"
+				              ↑ (expected suffix)
 				""");
 		}
 

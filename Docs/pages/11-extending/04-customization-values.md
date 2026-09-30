@@ -33,6 +33,8 @@ internal sealed class CustomizationValue<TValue>(IAwexpectCustomization awexpect
 ```
 
 The key identifies the value, so choose one that no other package uses, e.g. prefixed with the name of your package.
+A `null` that was set is returned as `null`, not as the default value, so reject `null` in `Set` if your value must
+not be `null`.
 
 This allows expectations to access the value:
 

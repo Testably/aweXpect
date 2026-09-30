@@ -31,6 +31,20 @@ public sealed class CustomizeFormattingTests
 		await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, 4, 5, 6]");
 	}
 
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	public async Task MaximumNumberOfCollectionItems_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int count)
+	{
+		void Act() => Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(count);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("count").And
+			.WithMessage("The maximum number of collection items must be positive.").AsPrefix()
+			.Because("the maximum also bounds how many items some expectations read, so zero would read them all");
+		await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(10);
+	}
+
 	[Fact]
 	public async Task MaximumStringLength_ShouldBeUsedInFormatter()
 	{
@@ -48,6 +62,26 @@ public sealed class CustomizeFormattingTests
 		}
 
 		await That(Formatter.Format(stringWith100Chars)).IsEqualTo($"\"{stringWith100Chars}\"");
+	}
+
+	[Fact]
+	public async Task MaximumStringLength_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => Customize.aweXpect.Formatting().MaximumStringLength.Set(-1);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("length").And
+			.WithMessage("The maximum string length must not be negative.").AsPrefix();
+		await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(100);
+	}
+
+	[Fact]
+	public async Task MaximumStringLength_WhenZero_ShouldOnlyShowTheEllipsis()
+	{
+		using (IDisposable _ = Customize.aweXpect.Formatting().MaximumStringLength.Set(0))
+		{
+			await That(Formatter.Format("foo")).IsEqualTo("\"…\"");
+		}
 	}
 
 	[Fact]
@@ -95,5 +129,17 @@ public sealed class CustomizeFormattingTests
 			             Expected:
 			             this is another text with lots of words after the first difference to verify the customization setting
 			             """);
+	}
+
+	[Fact]
+	public async Task MinimumNumberOfCharactersAfterStringDifference_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(-1);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("count").And
+			.WithMessage("The minimum number of characters after the string difference must not be negative.")
+			.AsPrefix();
+		await That(Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get()).IsEqualTo(45);
 	}
 }

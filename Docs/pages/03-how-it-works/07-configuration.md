@@ -84,6 +84,8 @@ The items of a collection beyond the maximum are summarized at the end of the li
 number of items is known, and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation
 stopped enumerating early.
 
+The maximum number of collection items must be positive, and the other two values must not be negative.
+
 ## Reflection
 
 Under `Customize.aweXpect.Reflection()`:

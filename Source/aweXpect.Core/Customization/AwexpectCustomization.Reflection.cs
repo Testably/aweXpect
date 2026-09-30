@@ -1,3 +1,5 @@
+using aweXpect.Core.Helpers;
+
 namespace aweXpect.Customization;
 
 public partial class AwexpectCustomization
@@ -34,7 +36,8 @@ public partial class AwexpectCustomization
 					"xunit",
 					"Castle",
 					"DynamicProxyGenAssembly2",
-				]);
+				],
+				prefixes => prefixes.ThrowIfNull());
 		}
 
 		/// <summary>

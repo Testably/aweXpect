@@ -44,6 +44,17 @@ public sealed class CustomizeReflectionTests
 	}
 
 	[Fact]
+	public async Task ExcludedAssemblyPrefixes_WhenNull_ShouldThrowArgumentNullException()
+	{
+		void Act() => Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Set(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("prefixes").And
+			.WithMessage("The 'prefixes' cannot be null.").AsPrefix()
+			.Because("a stored null would be returned as null instead of the default prefixes");
+	}
+
+	[Fact]
 	public async Task Reflection_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.ReflectionCustomization reflection1 = Customize.aweXpect.Reflection();

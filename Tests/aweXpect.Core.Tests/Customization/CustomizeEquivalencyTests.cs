@@ -6,6 +6,17 @@ namespace aweXpect.Core.Tests.Customization;
 public sealed class CustomizeEquivalencyTests
 {
 	[Fact]
+	public async Task DefaultEquivalencyOptions_WhenNull_ShouldThrowArgumentNullException()
+	{
+		void Act() => Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Set(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("options").And
+			.WithMessage("The 'options' cannot be null.").AsPrefix()
+			.Because("a stored null would be returned as null instead of the default options");
+	}
+
+	[Fact]
 	public async Task SetDefaultEquivalencyDocumentOptions_ShouldApplyOptionsWithinScope()
 	{
 		int[] actual = [1, 2,];
