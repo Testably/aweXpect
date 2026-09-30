@@ -116,6 +116,17 @@ public sealed partial class ThatException
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldApplyTheExpectations()
+				{
+					Exception subject = new("outer", new GenericException<int>("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(GenericException<>), e => e.HasMessage("inner"));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenTypeIsANamedArgument_ShouldSucceed()
 				{
 					Exception subject = new("outer",
@@ -126,6 +137,33 @@ public sealed partial class ThatException
 							expectations: e => e.HasMessage("inner"));
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(string), e => e.HasMessage("inner"));
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+						.Because("no exception could ever be a string");
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner((System.Type)null!, e => e.HasMessage("inner"));
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 			}
 
@@ -149,6 +187,34 @@ public sealed partial class ThatException
 						             """);
 				}
 
+
+				[Fact]
+				public async Task WhenInnerExceptionIsNotOfTheOpenGenericType_ShouldFail()
+				{
+					Exception subject = new("outer", new Exception("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(GenericException<>));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.GenericException<>,
+						             but it had an inner Exception:
+						               inner
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldSucceed()
+				{
+					Exception subject = new("outer", new GenericException<int>("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(GenericException<>));
+
+					await That(Act).DoesNotThrow();
+				}
 
 				[Fact]
 				public async Task WhenInnerExceptionMeetsType_ShouldSucceed()
@@ -188,6 +254,33 @@ public sealed partial class ThatException
 						=> await That(subject).HasInner(type: typeof(CustomException));
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(string));
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+						.Because("no exception could ever be a string");
+				}
+
+				[Fact]
+				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner((System.Type)null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("type").And
+						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 			}
 

@@ -136,8 +136,10 @@ public static partial class ValueFormatters
 				if (value.IsGenericType)
 				{
 					int arity = GetArityOfGenericParameters(value.DeclaringType);
-					declaringTypeGenericArguments = [..value.GenericTypeArguments.Take(arity),];
-					genericArguments = [..(genericArguments ?? value.GenericTypeArguments).Skip(arity),];
+					// GenericTypeArguments is empty for an open generic type, which would drop its "<>".
+					Type[] allGenericArguments = value.GetGenericArguments();
+					declaringTypeGenericArguments = [..allGenericArguments.Take(arity),];
+					genericArguments = [..(genericArguments ?? allGenericArguments).Skip(arity),];
 				}
 
 				FormatType(value.DeclaringType, stringBuilder, declaringTypeGenericArguments);

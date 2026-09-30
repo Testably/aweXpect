@@ -185,6 +185,35 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenOpenGenericTypeIsABaseType_ShouldFail()
+			{
+				Action action = () => throw new SubGenericException("foo");
+
+				async Task Act()
+					=> await That(action).ThrowsExactly(typeof(GenericException<>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws exactly a ThatDelegate.GenericException<>,
+					             but it did throw a ThatDelegate.SubGenericException:
+					               foo
+					             """)
+					.Because("only an exception constructed directly from the open generic type is exactly of that type");
+			}
+
+			[Fact]
+			public async Task WhenOpenGenericTypeIsTheDefinition_ShouldSucceed()
+			{
+				Action action = () => throw new GenericException<int>();
+
+				async Task Act()
+					=> await That(action).ThrowsExactly(typeof(GenericException<>));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
@@ -237,6 +266,33 @@ public sealed partial class ThatDelegate
 					             throws exactly a ThatDelegate.CustomException,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
+			{
+				Action action = () => throw new CustomException();
+
+				async Task Act()
+					=> await That(action).ThrowsExactly(typeof(string));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' must be an exception type, but string is not.").AsPrefix()
+					.Because("no exception could ever be a string");
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Action action = () => throw new CustomException();
+
+				async Task Act()
+					=> await That(action).ThrowsExactly((Type)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 		}
 #pragma warning restore CA2263
