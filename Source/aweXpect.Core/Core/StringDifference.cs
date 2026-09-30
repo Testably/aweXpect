@@ -454,7 +454,8 @@ public sealed class StringDifference(
 
 		int indexOfWordBoundary = value
 			                          .IndexOf(' ', indexToStartSearchingForWordBoundary,
-				                          phraseLengthToCheckForWordBoundary) -
+				                          Math.Min(phraseLengthToCheckForWordBoundary,
+					                          value.Length - indexToStartSearchingForWordBoundary)) -
 		                          indexToStartSearchingForWordBoundary;
 
 		if (indexOfWordBoundary >= 0)

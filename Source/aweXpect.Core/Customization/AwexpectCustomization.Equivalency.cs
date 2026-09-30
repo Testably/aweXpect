@@ -1,3 +1,4 @@
+using aweXpect.Core.Helpers;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Customization;
@@ -25,7 +26,8 @@ public partial class AwexpectCustomization
 		internal EquivalencyCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyOptions>(awexpectCustomization,
-				KeyPrefix + nameof(DefaultEquivalencyOptions), new EquivalencyOptions());
+				KeyPrefix + nameof(DefaultEquivalencyOptions), new EquivalencyOptions(),
+				options => options.ThrowIfNull());
 		}
 
 		/// <summary>

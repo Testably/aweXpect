@@ -48,18 +48,30 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 			CustomizationStore? store = _store.Value;
 			if (store != null && store.TryGetValue(key, out object? value))
 			{
-				return value is TValue typedValue ? typedValue : defaultValue;
+				return AsValue(value, defaultValue);
 			}
 		}
 
 		CustomizationStore? globalStore = _global.Store;
-		if (globalStore == null)
+		if (globalStore != null && globalStore.TryGetValue(key, out object? globalValue))
 		{
-			return defaultValue;
+			return AsValue(globalValue, defaultValue);
 		}
 
-		return globalStore.Get(key, defaultValue);
+		return defaultValue;
 	}
+
+	/// <summary>
+	///     Returns a stored <see langword="null" /> as <see langword="null" />, unless <typeparamref name="TValue" /> cannot
+	///     hold it, and falls back to the <paramref name="defaultValue" /> for a value of another type.
+	/// </summary>
+	private static TValue AsValue<TValue>(object? value, TValue defaultValue)
+		=> value switch
+		{
+			TValue typedValue => typedValue,
+			null when default(TValue) is null => default!,
+			_ => defaultValue,
+		};
 
 	/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 	CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
@@ -142,16 +154,6 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		private CustomizationStore(Dictionary<string, Layer> values)
 		{
 			_values = values;
-		}
-
-		public TValue Get<TValue>(string key, TValue defaultValue)
-		{
-			if (_values.TryGetValue(key, out Layer? layer) && layer.Value is TValue typedValue)
-			{
-				return typedValue;
-			}
-
-			return defaultValue;
 		}
 
 		public bool TryGetValue(string key, out object? value)

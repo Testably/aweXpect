@@ -188,6 +188,34 @@ public class AwexpectCustomizationTests
 	}
 
 	[Fact]
+	public async Task Get_WhenNullIsStored_ShouldReturnNull()
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization flow = customization;
+		IAwexpectCustomization global = customization.Global;
+		using CustomizationLifetime globalLifetime = global.Set<string?>("my-key", "global");
+		using CustomizationLifetime scopedLifetime = flow.Set<string?>("my-key", null);
+
+		await That(flow.Get<string?>("my-key", "fallback")).IsNull()
+			.Because("a null stored in the current flow is a value, which takes precedence over the global value");
+	}
+
+	[Fact]
+	public async Task Get_WhenValueTypeCannotHoldTheStoredNull_ShouldReturnTheDefaultValue()
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization flow = customization;
+		IAwexpectCustomization global = customization.Global;
+		using CustomizationLifetime scopedLifetime = flow.Set<int?>("my-key", null);
+		using CustomizationLifetime globalLifetime = global.Set<int?>("my-key", null);
+
+		await That(flow.Get("my-key", 42)).IsEqualTo(42)
+			.Because("a non-nullable value type cannot hold the stored null");
+		await That(global.Get("my-key", 42)).IsEqualTo(42)
+			.Because("a non-nullable value type cannot hold the stored null");
+	}
+
+	[Fact]
 	public async Task Global_Get_ShouldIgnoreValueOfCurrentFlow()
 	{
 		AwexpectCustomization customization = new();
@@ -196,6 +224,20 @@ public class AwexpectCustomizationTests
 
 		await That(customization.Global.MyConfiguration().Get()).IsEqualTo("global")
 			.Because("the global customization only reads the global values");
+	}
+
+	[Fact]
+	public async Task Global_Get_WhenNullIsStored_ShouldReturnNull()
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization flow = customization;
+		IAwexpectCustomization global = customization.Global;
+		using CustomizationLifetime globalLifetime = global.Set<string?>("my-key", null);
+
+		await That(global.Get<string?>("my-key", "fallback")).IsNull()
+			.Because("a null stored globally is a value, not the absence of one");
+		await That(flow.Get<string?>("my-key", "fallback")).IsNull()
+			.Because("the current flow follows the global value when it stores none itself");
 	}
 
 	[Fact]

@@ -1,3 +1,7 @@
+using System;
+using aweXpect.Core;
+using aweXpect.Core.Helpers;
+
 namespace aweXpect.Customization;
 
 public partial class AwexpectCustomization
@@ -23,11 +27,23 @@ public partial class AwexpectCustomization
 		internal FormattingCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			MaximumNumberOfCollectionItems = new CustomizationValue<int>(awexpectCustomization,
-				KeyPrefix + nameof(MaximumNumberOfCollectionItems), 10);
+				KeyPrefix + nameof(MaximumNumberOfCollectionItems), 10,
+				count =>
+				{
+					if (count <= 0)
+					{
+						// ReSharper disable once LocalizableElement
+						throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(count),
+							"The maximum number of collection items must be positive."));
+					}
+				});
 			MaximumStringLength = new CustomizationValue<int>(awexpectCustomization,
-				KeyPrefix + nameof(MaximumStringLength), 100);
+				KeyPrefix + nameof(MaximumStringLength), 100,
+				length => ThrowHelper.ThrowIfCountIsNegative(length, "maximum string length"));
 			MinimumNumberOfCharactersAfterStringDifference = new CustomizationValue<int>(awexpectCustomization,
-				KeyPrefix + nameof(MinimumNumberOfCharactersAfterStringDifference), 45);
+				KeyPrefix + nameof(MinimumNumberOfCharactersAfterStringDifference), 45,
+				count => ThrowHelper.ThrowIfCountIsNegative(count,
+					"minimum number of characters after the string difference"));
 		}
 
 		/// <summary>

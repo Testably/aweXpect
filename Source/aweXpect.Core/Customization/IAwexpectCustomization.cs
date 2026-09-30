@@ -9,7 +9,9 @@ public interface IAwexpectCustomization
 	///     Get the customization <typeparamref name="TValue" /> stored under the given <paramref name="key" />.
 	/// </summary>
 	/// <remarks>
-	///     If no customization was stored, use the given <paramref name="defaultValue" />.
+	///     If no customization was stored, use the given <paramref name="defaultValue" />. A stored
+	///     <see langword="null" /> is returned as <see langword="null" />, unless <typeparamref name="TValue" /> is a
+	///     non-nullable value type.
 	/// </remarks>
 	TValue Get<TValue>(string key, TValue defaultValue);
 
