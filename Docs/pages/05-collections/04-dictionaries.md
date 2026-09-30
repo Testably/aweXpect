@@ -120,7 +120,8 @@ await Expect.That(playCounts).Values.All().AreUnique();
 ```
 
 The keys keep the key comparer of the dictionary, so e.g. `Keys.Contains("LET IT BE")` succeeds for a key
-`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase`.
+`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase` (for a
+`ConcurrentDictionary<TKey, TValue>` not [on .NET Framework](../02-getting-started.md#target-frameworks)).
 
 The keys of a dictionary are unique by design, so its entries are unique as well. To verify that its values are unique,
 use `Values.All().AreUnique()`.

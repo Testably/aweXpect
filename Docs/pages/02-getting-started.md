@@ -78,10 +78,20 @@ only available on .NET 8 or later:
 - [`Span<T>` and `ReadOnlySpan<T>`](./05-collections/index.md#spans) subjects;
 - [`IsParsableInto`](./04-values/03-string.md#parsing) for strings;
 - [`HasBufferSize`](./04-values/08-stream.md#buffer-size) for buffered streams;
+- [number expectations](./04-values/02-number.md) for `INumber<T>` types other than `byte`, `sbyte`, `short`,
+  `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double` and `decimal`, e.g. `nint`, `Half`, `Int128` or
+  `BigInteger`;
 - [`IsPositive` and `IsNegative`](./04-values/02-number.md#positive--negative) for unsigned numbers;
+- a `Half`, `Int128` or `UInt128` typed as `object` being [equal](./04-values/12-object.md#equality) to a number of
+  another numeric type with the same value;
+- the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` in failure messages, which
+  otherwise show the number;
 - [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`;
 - the custom comparer of an `ImmutableHashSet<T>`, `ImmutableSortedSet<T>` or `FrozenSet<T>`
   ([sets](./05-collections/index.md#sets)).
+
+Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
+so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.
 
 ## Next steps
 

@@ -122,12 +122,17 @@ public class RepeatedCheckOptions
 	///             succeeds or the <paramref name="cancellationToken" /> is canceled.
 	///         </item>
 	///         <item>
-	///             A cancellation of the <paramref name="cancellationToken" /> counts as the <see cref="Timeout" />
-	///             having elapsed, so that one last check decides the result, when it occurs at the
-	///             <see cref="Timeout" />, or when the <paramref name="expectationBuilder" /> has a timeout that is not
-	///             shorter than the <see cref="Timeout" /> and its cancellation token was not canceled. Any other
-	///             cancellation, e.g. by the caller, and every cancellation with an infinite <see cref="Timeout" /> is
-	///             thrown as <see cref="OperationCanceledException" />.
+	///             The <paramref name="cancellationToken" /> is only observed while waiting for the next check. The
+	///             first check is made even when it is already canceled, and when that check succeeds, or when
+	///             <see cref="IsRepeated" /> is <see langword="false" />, its result is returned without throwing.
+	///         </item>
+	///         <item>
+	///             A cancellation observed during a wait counts as the <see cref="Timeout" /> having elapsed, so that one
+	///             last check decides the result, when it occurs at the <see cref="Timeout" />, or when the
+	///             <paramref name="expectationBuilder" /> has a timeout that is not shorter than the
+	///             <see cref="Timeout" /> and its cancellation token was not canceled. Any other such cancellation, e.g.
+	///             by the caller, and every such cancellation with an infinite <see cref="Timeout" /> is thrown as
+	///             <see cref="OperationCanceledException" />.
 	///         </item>
 	///         <item>
 	///             An exception thrown by the <paramref name="check" /> is not caught.

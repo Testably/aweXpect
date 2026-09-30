@@ -20,6 +20,12 @@ Describes the possible expectations for numbers.
 A `null` subject, e.g. an `int?`, fails every expectation on this page except equality and one of, as the
 [rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotPositive()` fails for it.
 
+:::note[.NET 8 or later]
+Below .NET 8 these expectations only accept `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`,
+`float`, `double` and `decimal`. On .NET 8 or later they also accept other `INumber<T>` types, e.g. `nint`, `Half`,
+`Int128` or `BigInteger`.
+:::
+
 ## Equality
 
 You can verify that the number is equal to another one or not:

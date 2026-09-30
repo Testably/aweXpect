@@ -329,7 +329,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     Note:<br />
-	///     This affects the index of first mismatch, as the removed whitespace is also ignored for the index calculation!
+	///     The position of the first mismatch in the failure message (its index, or its line and column) refers to the
+	///     original subject, so it also counts the removed whitespace.
 	/// </remarks>
 	public StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
 	{
