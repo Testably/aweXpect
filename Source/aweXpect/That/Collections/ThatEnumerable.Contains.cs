@@ -815,7 +815,7 @@ public static partial class ThatEnumerable
 			}
 
 			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			_count = 0;
 			_isFinished = false;
 			foreach (TItem item in _materializedEnumerable)
@@ -978,7 +978,7 @@ public static partial class ThatEnumerable
 			}
 
 			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			_count = 0;
 			foreach (TItem item in _materializedEnumerable)
 			{

@@ -8,28 +8,11 @@ namespace aweXpect.Internal.Tests.Helpers;
 public class MaterializingEnumerableTests
 {
 	[Fact]
-	public async Task Untyped_WhenSourceThrows_ShouldDisposeTheSourceOnce()
-	{
-		DisposeTrackingEnumerable source = new(new InvalidOperationException("the source is broken"), 1);
-
-		IEnumerable materialized = MaterializingEnumerable.Wrap(source);
-
-		void Act() => _ = materialized.Cast<object?>().ToList();
-
-		await That(Act).Throws<Exception>()
-			.WithInner<InvalidOperationException>(inner => inner.HasMessage("the source is broken"));
-		await That(Act).Throws<Exception>()
-			.WithInner<InvalidOperationException>(inner => inner.HasMessage("the source is broken"));
-		await That(source.DisposeCount).IsEqualTo(1)
-			.Because("a source that threw is not advanced again, so it is released right away");
-	}
-
-	[Fact]
 	public async Task WhenCompletelyIterated_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
 
-		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(source);
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.WrapParameter(source);
 		_ = materialized.Any();
 		int disposeCountAfterFirstItem = source.DisposeCount;
 		List<int> result = materialized.ToList();
@@ -42,11 +25,32 @@ public class MaterializingEnumerableTests
 	}
 
 	[Fact]
+	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
+	{
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.WrapParameter(ToEnumerable([1, 1, 2,]));
+		List<int> outer = [];
+		List<int> inner = [];
+
+		foreach (int item in materialized)
+		{
+			outer.Add(item);
+			if (inner.Count == 0)
+			{
+				inner.AddRange(materialized);
+			}
+		}
+
+		await That(outer).IsEqualTo([1, 1, 2,])
+			.Because("the outer enumeration continues after the items that the inner one read");
+		await That(inner).IsEqualTo([1, 1, 2,]);
+	}
+
+	[Fact]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);
 
-		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(enumerable);
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.WrapParameter(enumerable);
 
 		List<int> result = materialized.ToList();
 
@@ -54,22 +58,22 @@ public class MaterializingEnumerableTests
 	}
 
 	[Fact]
-	public async Task Wrap_ForCollection_ShouldUseCollection()
+	public async Task WrapParameter_ForCollection_ShouldUseCollection()
 	{
 		List<int> collection = new();
 
-		IEnumerable<int> enumerable = MaterializingEnumerable<int>.Wrap(collection);
+		IEnumerable<int> enumerable = MaterializingEnumerable<int>.WrapParameter(collection);
 
 		await That(enumerable).IsSameAs(collection);
 	}
 
 	[Fact]
-	public async Task Wrap_Twice_ShouldUseSameInstance()
+	public async Task WrapParameter_Twice_ShouldUseSameInstance()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);
 
-		IEnumerable<int> materialized1 = MaterializingEnumerable<int>.Wrap(enumerable);
-		IEnumerable<int> materialized2 = MaterializingEnumerable<int>.Wrap(materialized1);
+		IEnumerable<int> materialized1 = MaterializingEnumerable<int>.WrapParameter(enumerable);
+		IEnumerable<int> materialized2 = MaterializingEnumerable<int>.WrapParameter(materialized1);
 
 		await That(enumerable).IsNotSameAs(materialized1);
 		await That(materialized1).IsSameAs(materialized2);

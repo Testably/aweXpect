@@ -69,7 +69,7 @@ public static partial class ThatEnumerable
 			{
 				Outcome = Outcome.Failure;
 				expectationBuilder.AddCollectionContext(
-					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
+					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
 
@@ -83,7 +83,7 @@ public static partial class ThatEnumerable
 					})),
 					-2));
 			IEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
@@ -207,12 +207,12 @@ public static partial class ThatEnumerable
 			{
 				Outcome = Outcome.Failure;
 				expectationBuilder.AddCollectionContext(
-					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
+					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
 
 			IEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			_expectations = expected.Select(expectation
 					=> new CollectionMatchOptions.ExpectationItem<TItem>(expectation,
 						Grammars & ~ExpectationGrammars.Negated,
@@ -358,7 +358,7 @@ public static partial class ThatEnumerable
 			{
 				Outcome = Outcome.Failure;
 				expectationBuilder.AddCollectionContext(
-					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
+					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
 
@@ -368,7 +368,7 @@ public static partial class ThatEnumerable
 					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			IEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
@@ -644,7 +644,7 @@ public static partial class ThatEnumerable
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			bool cancelEarly = actual is not ICollection<TItem>;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
@@ -786,7 +786,7 @@ public static partial class ThatEnumerable
 			}
 
 			_useComparerOf?.Invoke(actual);
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			bool cancelEarly = actual is not ICollection<TItem>;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
@@ -1245,7 +1245,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable<TItem> materialized =
-				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				context.UseMaterializedEnumerable<TItem>(actual);
 
 			foreach (TItem _ in materialized)
 			{
@@ -1456,7 +1456,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable<TItem> materialized = context
-				.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+				.UseMaterializedEnumerable<TItem>(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 
 			TMember previous = default!;

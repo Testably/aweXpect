@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 
-namespace aweXpect.Internal.Tests.Helpers;
+namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class MaterializingAsyncEnumerableTests
 {
@@ -72,6 +72,30 @@ public class MaterializingAsyncEnumerableTests
 
 		await That(items).IsEqualTo([1, 2, 3])
 			.Because("the end of the source was reached before the cancellation");
+	}
+
+	[Fact]
+	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
+	{
+		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 1, 2]), CancellationToken.None);
+		List<int> outer = [];
+		List<int> inner = [];
+
+		await foreach (int item in materialized)
+		{
+			outer.Add(item);
+			if (inner.Count == 0)
+			{
+				await foreach (int innerItem in materialized)
+				{
+					inner.Add(innerItem);
+				}
+			}
+		}
+
+		await That(outer).IsEqualTo([1, 1, 2])
+			.Because("the outer enumeration continues after the items that the inner one read");
+		await That(inner).IsEqualTo([1, 1, 2]);
 	}
 
 	[Fact]

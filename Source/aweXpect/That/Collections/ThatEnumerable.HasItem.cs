@@ -402,7 +402,7 @@ public static partial class ThatEnumerable
 			}
 
 			useComparerOf?.Invoke(actual);
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
@@ -619,7 +619,7 @@ public static partial class ThatEnumerable
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			expectationBuilder.AddCollectionContext(materialized);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;

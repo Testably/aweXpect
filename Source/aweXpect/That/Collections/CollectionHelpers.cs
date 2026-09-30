@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -272,7 +273,7 @@ internal static class CollectionHelpers
 #if NET8_0_OR_GREATER
 	internal static async Task<ExpectationBuilder> AddCollectionContext<TItem>(
 		this ExpectationBuilder expectationBuilder,
-		IMaterializedEnumerable<TItem>? value, bool isIncomplete = false)
+		IMaterializedAsyncEnumerable<TItem>? value, bool isIncomplete = false)
 	{
 		if (value is null)
 		{

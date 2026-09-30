@@ -56,7 +56,7 @@ public static partial class ThatAsyncEnumerable
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isEmpty;
-		private IMaterializedEnumerable<TItem>? _materialized;
+		private IMaterializedAsyncEnumerable<TItem>? _materialized;
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -69,8 +69,8 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
-			_materialized = materialized as IMaterializedEnumerable<TItem>;
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			_materialized = materialized as IMaterializedAsyncEnumerable<TItem>;
 			_count = 0;
 			_isEmpty = true;
 

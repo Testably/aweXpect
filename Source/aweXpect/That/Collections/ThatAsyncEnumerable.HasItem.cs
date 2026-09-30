@@ -163,15 +163,15 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
-			await expectationBuilder.AddCollectionContext(materialized as IMaterializedEnumerable<TItem>);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			await expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = (await (materialized as IMaterializedEnumerable<TItem>)!.MaterializeItems(null)).Count;
+				count = (await (materialized as IMaterializedAsyncEnumerable<TItem>)!.MaterializeItems(null)).Count;
 			}
 
 			int index = -1;
@@ -269,15 +269,15 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual, cancellationToken);
-			await expectationBuilder.AddCollectionContext(materialized as IMaterializedEnumerable<TItem>);
+				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			await expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
 			int? count = null;
 			if (options.Match is CollectionIndexOptions.IMatchFromEnd)
 			{
-				count = (await (materialized as IMaterializedEnumerable<TItem>)!.MaterializeItems(null)).Count;
+				count = (await (materialized as IMaterializedAsyncEnumerable<TItem>)!.MaterializeItems(null)).Count;
 			}
 
 			int index = -1;

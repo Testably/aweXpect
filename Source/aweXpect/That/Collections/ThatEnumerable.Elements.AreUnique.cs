@@ -631,7 +631,7 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
+			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			if (isUniqueBySubject?.Invoke(actual) == true)
 			{
 				foreach (TItem item in materialized)

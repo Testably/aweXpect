@@ -225,6 +225,67 @@ InvalidOperationException"; without it, the subject is named ("it did throw …"
 
 An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
 
+## Collection subjects
+
+A constraint that enumerates a collection subject gets it from the `IEvaluationContext` with
+`UseMaterializedEnumerable` instead of enumerating the subject itself. All expectations on the subject, including the
+built-in ones, then share one lazily materialized copy, so that a subject which can only be enumerated once, e.g. a
+query or an iterator with side effects, is enumerated at most once, also when the expectations are combined with
+`.And` or `.Or`. Implement `IContextConstraint<T>` to receive the context:
+
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using aweXpect.Core.EvaluationContext;
+
+public static AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>> HasEvenItems(
+    this IThat<IEnumerable<int>?> subject, int expected)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new HasEvenItemsConstraint(it, grammars, expected)),
+        subject);
+
+private sealed class HasEvenItemsConstraint(string it, ExpectationGrammars grammars, int expected)
+    : ConstraintResult.WithNotNullValue<IEnumerable<int>>(it, grammars),
+        IContextConstraint<IEnumerable<int>?>
+{
+    private int _count;
+
+    public ConstraintResult IsMetBy(IEnumerable<int>? actual, IEvaluationContext context)
+    {
+        Actual = actual;
+        if (actual is not null)
+        {
+            _count = context.UseMaterializedEnumerable(actual).Count(item => item % 2 == 0);
+            Outcome = _count == expected ? Outcome.Success : Outcome.Failure;
+        }
+
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("has ").Append(expected).Append(" even items");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" had ").Append(_count).Append(" even items");
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("does not have ").Append(expected).Append(" even items");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did");
+}
+```
+
+`await Expect.That(numbers).Contains(2).And.HasEvenItems(3)` then enumerates `numbers` only once.
+
+- Every call for the same subject in the same evaluation returns the same sequence. It reads the subject only as far
+  as it is enumerated, and a further enumeration replays the items read so far before it continues the subject.
+- A subject that already is a collection is returned unchanged. For any other subject, an exception while it is
+  enumerated fails the expectation like one of the [code of the caller](#code-of-the-caller).
+- For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `UseMaterializedAsyncEnumerable` with
+  its `CancellationToken`. The subject stays governed by the token of the first call. This method is only available
+  on .NET 8 or later.
+
 ## Continuing with the value
 
 The first type argument of the result, e.g. `string` in `AndOrResult<string, IThat<string?>>`, is the type of the value
