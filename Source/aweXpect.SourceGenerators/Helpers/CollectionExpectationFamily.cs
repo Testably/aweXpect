@@ -480,7 +480,7 @@ internal sealed record CollectionExpectationFamily(
 	private static string ExpectedArgument(Instantiation instantiation, string item, string parameterName)
 		=> instantiation.ExpectedItem == null
 			? parameterName
-			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
+			: $"new global::aweXpect.Helpers.CastingEnumerable<{instantiation.ExpectedItem}, {item}>({parameterName})";
 
 	private static string TypeParameterList(IEnumerable<string> names)
 	{

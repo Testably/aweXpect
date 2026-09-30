@@ -182,12 +182,7 @@ public sealed partial class ThatEnumerable
 						             [1.1, NaN, 2.1, 3.1]
 
 						             Expected:
-						             [
-						               1.0,
-						               NaN,
-						               2.0,
-						               3.0
-						             ]
+						             [1.0, NaN, 2.0, 3.0]
 						             """);
 				}
 
@@ -321,12 +316,7 @@ public sealed partial class ThatEnumerable
 						             [1.1, NaN, 2.1, 3.1]
 
 						             Expected:
-						             [
-						               1.0,
-						               NaN,
-						               2.0,
-						               3.0
-						             ]
+						             [1.0, NaN, 2.0, 3.0]
 						             """);
 				}
 

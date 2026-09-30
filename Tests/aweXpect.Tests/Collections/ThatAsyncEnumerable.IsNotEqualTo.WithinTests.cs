@@ -202,12 +202,7 @@ public sealed partial class ThatAsyncEnumerable
 						             [1.1, NaN, 2.1, 3.1]
 
 						             Expected:
-						             [
-						               1.0,
-						               NaN,
-						               2.0,
-						               3.0
-						             ]
+						             [1.0, NaN, 2.0, 3.0]
 						             """);
 				}
 
@@ -254,9 +249,7 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [
-						                {Formatter.Format(value)}
-						              ]
+						              [{Formatter.Format(value)}]
 						              """);
 				}
 
@@ -407,12 +400,7 @@ public sealed partial class ThatAsyncEnumerable
 						             [1.1, NaN, 2.1, 3.1]
 
 						             Expected:
-						             [
-						               1.0,
-						               NaN,
-						               2.0,
-						               3.0
-						             ]
+						             [1.0, NaN, 2.0, 3.0]
 						             """);
 				}
 
@@ -459,9 +447,7 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [
-						                {Formatter.Format(value)}
-						              ]
+						              [{Formatter.Format(value)}]
 						              """);
 				}
 
