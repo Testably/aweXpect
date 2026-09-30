@@ -28,9 +28,9 @@ public static partial class ValueFormatters
 		return (options.UseLineBreaks, options.IncludeType) switch
 		{
 			(true, true) => $"string \"{value}\"",
-			(false, true) => $"string \"{value.DisplayWhitespace().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"",
+			(false, true) => $"string \"{value.Escape().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"",
 			(true, false) => $"\"{value}\"",
-			(false, false) => $"\"{value.DisplayWhitespace().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"",
+			(false, false) => $"\"{value.Escape().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"",
 		};
 	}
 
@@ -64,7 +64,7 @@ public static partial class ValueFormatters
 		stringBuilder.Append('\"');
 		if (!options.UseLineBreaks)
 		{
-			stringBuilder.Append(value.DisplayWhitespace().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()));
+			stringBuilder.Append(value.Escape().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()));
 		}
 		else
 		{

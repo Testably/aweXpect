@@ -16,8 +16,8 @@ public static partial class ValueFormatters
 			? customValue
 			: options?.IncludeType switch
 			{
-				true => $"char '{value.ToString().DisplayWhitespace()}'",
-				_ => $"'{value.ToString().DisplayWhitespace()}'",
+				true => $"char '{value.ToString().Escape('\'')}'",
+				_ => $"'{value.ToString().Escape('\'')}'",
 			};
 
 	/// <summary>
@@ -41,7 +41,7 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append('\'');
-		stringBuilder.Append(value.ToString().DisplayWhitespace());
+		stringBuilder.Append(value.ToString().Escape('\''));
 		stringBuilder.Append('\'');
 	}
 

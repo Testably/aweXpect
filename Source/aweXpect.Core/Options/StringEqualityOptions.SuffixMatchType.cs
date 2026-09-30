@@ -54,7 +54,7 @@ public partial class StringEqualityOptions
 			}
 
 			string prefix =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}";
+				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			int minCommonLength = Math.Min(actual.Length, expected.Length);
 			StringDifference stringDifference = new(actual, expected, comparer,
 				settings.WithMatchType(StringDifference.MatchType.Suffix));
@@ -63,7 +63,7 @@ public partial class StringEqualityOptions
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix}, which misses some whitespace (\"{expected.Substring(0, GetIndexOfFirstMatch(expected, actual, comparer)).DisplayWhitespace().TruncateWithEllipsis(maxStringLength)}\" at the beginning)";
+					$"{prefix}, which misses some whitespace (\"{expected.Substring(0, GetIndexOfFirstMatch(expected, actual, comparer)).Escape().TruncateWithEllipsis(maxStringLength)}\" at the beginning)";
 			}
 
 			if (indexOfFirstMismatch == actual.Length)
@@ -74,7 +74,7 @@ public partial class StringEqualityOptions
 				{
 					int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 					return
-						$"{prefix}, which has unexpected whitespace (\"{actual.Substring(trimmedActual.Length).DisplayWhitespace().TruncateWithEllipsis(maxStringLength)}\" at the end)";
+						$"{prefix}, which has unexpected whitespace (\"{actual.Substring(trimmedActual.Length).Escape().TruncateWithEllipsis(maxStringLength)}\" at the end)";
 				}
 			}
 
@@ -82,14 +82,14 @@ public partial class StringEqualityOptions
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix}, which misses some whitespace (\"{expected.Substring(indexOfFirstMismatch).DisplayWhitespace().TruncateWithEllipsis(maxStringLength)}\" at the end)";
+					$"{prefix}, which misses some whitespace (\"{expected.Substring(indexOfFirstMismatch).Escape().TruncateWithEllipsis(maxStringLength)}\" at the end)";
 			}
 
 			if (actual.Length < expected.Length && indexOfFirstMismatch == actual.Length)
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix} with a length of {actual.Length}, which is shorter than the expected length of {expected.Length} and misses:{Environment.NewLine}  \"{expected.Substring(actual.Length).TruncateWithEllipsis(maxStringLength)}\"";
+					$"{prefix} with a length of {actual.Length}, which is shorter than the expected length of {expected.Length} and misses:{Environment.NewLine}  \"{expected.Substring(actual.Length).Escape().TruncateWithEllipsis(maxStringLength)}\"";
 			}
 
 			return $"{prefix}, which {stringDifference}";
@@ -124,13 +124,13 @@ public partial class StringEqualityOptions
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 			{
 				(true, false) =>
-					$"{grammars.Verb("ends", "end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("ends", "end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(false, false) =>
-					$"ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(true, true) =>
-					$"{grammars.Verb("does not end", "do not end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("does not end", "do not end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(false, true) =>
-					$"not ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"not ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 			};
 
 		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />

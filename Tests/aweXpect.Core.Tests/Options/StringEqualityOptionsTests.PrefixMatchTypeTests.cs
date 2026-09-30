@@ -244,6 +244,21 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an option that decides the outcome must not be invisible in the expectation");
 		}
 
+		[Fact]
+		public async Task GetExtendedFailure_WhenSubjectIsShorter_ShouldEscapeTheMissingText()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "foo\n\"bar\"");
+
+			await That(result).IsEqualTo("""
+			                             it was "foo" with a length of 3, which is shorter than the expected length of 9 and misses:
+			                               "\n\"bar\""
+			                             """).IgnoringNewlineStyle()
+				.Because("the missing text is escaped like the other values in the message");
+		}
+
 		[Theory]
 		[InlineData(false, false, " as prefix")]
 		[InlineData(true, false, " as prefix ignoring case")]

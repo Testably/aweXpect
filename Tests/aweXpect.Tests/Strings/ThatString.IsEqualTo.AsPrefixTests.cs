@@ -124,7 +124,7 @@ public sealed partial class ThatString
 					             Expected that subject
 					             starts with "some text \t ",
 					             but it was "some text" with a length of 9, which is shorter than the expected length of 12 and misses:
-					               " 	 "
+					               " \t "
 					             """);
 			}
 

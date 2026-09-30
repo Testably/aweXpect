@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core.Helpers;
+using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -252,6 +253,25 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenStringContainsEscapedCharacters_ShouldPositionArrowsCorrectly()
+		{
+			const string actual = "a\\b\"c\u00A0dX";
+			const string expected = "a\\b\"c\u00A0dY";
+
+			StringDifference sut = new(actual, expected);
+
+			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(7);
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 7:
+				                 ↓ (actual)
+				  "a\\b\"c\u00A0dX"
+				  "a\\b\"c\u00A0dY"
+				                 ↑ (expected)
+				""").Because("the arrows must point at the mismatch in the escaped text");
+		}
+
+		[Fact]
 		public async Task WhenStringContainsWhitespace_ShouldPositionArrowsCorrectly()
 		{
 			const string actual = "foo\r\tbar\nBAZ";
@@ -402,6 +422,24 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenActualValueIsShorterThanExpected_ShouldEscapeAndTruncateTheMissingPrefix()
+		{
+			const string actual = "tail";
+			const string expected = "\"a\\b\ncdefghijk tail";
+
+			StringDifference sut = new(actual, expected, null, Settings);
+
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(10))
+			{
+				await That(sut.ToString()).IsEqualTo(
+					"""
+					is shorter than the expected length of 19 and misses the prefix:
+					  "\"a\\b\ncd…"
+					""").Because("the missing prefix is shown like the other values in a message");
+			}
+		}
+
+		[Fact]
 		public async Task WhenExpectedValueIsNull_ShouldDifferAtIndex0()
 		{
 			const string actual = "This is a text";
@@ -497,6 +535,25 @@ public class StringDifferenceTests
 				  "…'_contains' a long word between 5 and 15 characters after the last mismatc…"
 				                                                               ↑ (expected suffix)
 				""");
+		}
+
+		[Fact]
+		public async Task WhenStringContainsEscapedCharacters_ShouldPositionArrowsCorrectly()
+		{
+			const string actual = "a\\b\"c\u00A0dXe";
+			const string expected = "a\\b\"c\u00A0dYe";
+
+			StringDifference sut = new(actual, expected, null, Settings);
+
+			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(7);
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs before index 7:
+				                 ↓ (actual)
+				  "a\\b\"c\u00A0dXe"
+				  "a\\b\"c\u00A0dYe"
+				                 ↑ (expected suffix)
+				""").Because("the arrows must point at the mismatch in the escaped text");
 		}
 
 		[Fact]

@@ -55,7 +55,7 @@ public partial class StringEqualityOptions
 			}
 
 			string contains =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}";
+				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			if (actual.Length < expected.Length)
 			{
 				contains +=
@@ -93,13 +93,13 @@ public partial class StringEqualityOptions
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 			{
 				(true, false) =>
-					$"{grammars.Verb("contains", "contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("contains", "contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(false, false) =>
-					$"containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(true, true) =>
-					$"{grammars.Verb("does not contain", "do not contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"{grammars.Verb("does not contain", "do not contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 				(false, true) =>
-					$"not containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}",
+					$"not containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 			};
 
 		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />

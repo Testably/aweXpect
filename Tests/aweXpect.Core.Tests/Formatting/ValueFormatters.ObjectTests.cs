@@ -214,6 +214,21 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task ShouldUseToStringWhenImplemented_WithSingleLine_ShouldEscapeLineBreaks()
+		{
+			ClassWithToString[] subject = [new("line1\r\nline2\0"),];
+			string expectedResult = @"[line1\r\nline2\0]";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(subject, FormattingOptions.SingleLine);
+			Formatter.Format(sb, subject, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a single-line rendering must not break the line, like a string in the same mode");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenAnonymousObject_ShouldFormatMembersWithTheirFormatters()
 		{
 			object value = new
@@ -373,6 +388,28 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value, FormattingOptions.SingleLine);
 
 			await That(result).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenMemberIsAStringWithLineBreaks_ShouldEscapeItLikeACollectionItem()
+		{
+			InnerDummy value = new()
+			{
+				InnerValue = "a\nb",
+			};
+			string expectedResult = """
+			                        ValueFormatters.ObjectTests.InnerDummy {
+			                          InnerValue = "a\nb"
+			                        }
+			                        """;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the indentation of the object must not be inserted into the string value");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 

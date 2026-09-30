@@ -135,7 +135,7 @@ public partial class StringEqualityOptions
 				return $"{it} was {Formatter.Format(actual)}";
 			}
 
-			return $"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())}";
+			return $"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
@@ -164,13 +164,13 @@ public partial class StringEqualityOptions
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 			{
 				(true, false) =>
-					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
 				(false, false) =>
-					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
 				(true, true) =>
-					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
 				(false, true) =>
-					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
 			};
 
 		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />

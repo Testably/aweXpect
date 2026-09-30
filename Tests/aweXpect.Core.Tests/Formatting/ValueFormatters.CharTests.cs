@@ -58,9 +58,13 @@ public partial class ValueFormatters
 		[InlineData('\n', "'\\n'")]
 		[InlineData('\r', "'\\r'")]
 		[InlineData('\t', "'\\t'")]
-		[InlineData('\'', "'''")]
+		[InlineData('\0', "'\\0'")]
+		[InlineData('\u00A0', "'\\u00A0'")]
+		[InlineData('\u200B', "'\\u200B'")]
+		[InlineData('\\', "'\\\\'")]
+		[InlineData('\'', "'\\''")]
 		[InlineData('"', "'\"'")]
-		public async Task Value_ShouldDisplayWhitespaceLikeSingleLineStrings(char value, string expectedResult)
+		public async Task Value_ShouldEscapeLikeCSharpCharLiterals(char value, string expectedResult)
 		{
 			StringBuilder sb = new();
 
@@ -70,7 +74,7 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value);
 
 			await That(result).IsEqualTo(expectedResult)
-				.Because("line breaks and tabs are escaped like in single-line strings, while quotes are not");
+				.Because("characters are escaped like in single-line strings, but the single quote instead of the double quote");
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(withTypeResult).IsEqualTo($"char {expectedResult}");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
