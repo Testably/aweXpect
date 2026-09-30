@@ -362,6 +362,54 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenClassHidesAField_ShouldDisplayOnlyTheMostDerivedOne()
+		{
+			object value = new ClassHidingField();
+			string expectedResult = "ValueFormatters.ObjectTests.ClassHidingField { Value = \"foo\" }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("equivalency only compares the most derived declaration of a hidden field");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenClassHidesAPropertyByAReadableOne_ShouldDisplayItOnce()
+		{
+			object value = new ClassHidingPropertyByReadableOne();
+			string expectedResult = "ValueFormatters.ObjectTests.ClassHidingPropertyByReadableOne { Value = \"foo\" }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("equivalency only compares the most derived declaration of a hidden property");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenClassHidesAPropertyByOneWithoutPublicGetter_ShouldNotDisplayTheBaseProperty()
+		{
+			object value = new ClassHidingPropertyByOneWithoutPublicGetter
+			{
+				Own = 2,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassHidingPropertyByOneWithoutPublicGetter { Own = 2 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the hiding declaration cannot be read publicly, so equivalency does not compare the property");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenClassIsEmpty_ShouldDisplayClassName()
 		{
 			object value = new EmptyClass();
@@ -388,6 +436,24 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value, FormattingOptions.SingleLine);
 
 			await That(result).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenClassOverridesOnlyTheSetter_ShouldDisplayTheInheritedGetter()
+		{
+			object value = new ClassOverridingOnlyTheSetter
+			{
+				Value = 1,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.ClassOverridingOnlyTheSetter { Value = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the override still inherits the getter, so equivalency compares the property");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
@@ -542,6 +608,52 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		private class BaseWithField
+		{
+			// ReSharper disable once NotAccessedField.Local
+			public int Value = 1;
+		}
+
+		private class BaseWithProperty
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; } = 1;
+		}
+
+		private class BaseWithVirtualProperty
+		{
+			public virtual int Value { get; set; }
+		}
+
+		private sealed class ClassHidingField : BaseWithField
+		{
+			// ReSharper disable once NotAccessedField.Local
+			public new string Value = "foo";
+		}
+
+		private sealed class ClassHidingPropertyByOneWithoutPublicGetter : BaseWithProperty
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public new string Value { private get; set; } = "";
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Own { get; set; }
+		}
+
+		private sealed class ClassHidingPropertyByReadableOne : BaseWithProperty
+		{
+			// ReSharper disable once UnusedMember.Local
+			public new string Value { get; } = "foo";
+		}
+
+		private sealed class ClassOverridingOnlyTheSetter : BaseWithVirtualProperty
+		{
+			public override int Value
+			{
+				set => base.Value = value;
+			}
 		}
 
 		private sealed class ClassWithExceptionProperty(Exception exception)
