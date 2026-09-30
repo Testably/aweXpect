@@ -63,7 +63,6 @@ public static partial class ThatVersion
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 				return this;
 			}
 

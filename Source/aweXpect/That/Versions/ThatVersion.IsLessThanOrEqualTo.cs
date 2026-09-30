@@ -42,7 +42,6 @@ public static partial class ThatVersion
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 				return this;
 			}
 
