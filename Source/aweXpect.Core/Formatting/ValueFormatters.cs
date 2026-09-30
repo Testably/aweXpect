@@ -227,8 +227,8 @@ public static partial class ValueFormatters
 	/// <remarks>
 	///     The <paramref name="value" /> is tracked and the <paramref name="context" /> is made ambient while the
 	///     registered formatters run, so that a value they format through <see cref="ValueFormatters" /> again joins
-	///     the recursion guard instead of overflowing the stack. A value that is already being formatted is therefore
-	///     a recursion, whether a registered formatter or the built-in formatting is writing it.
+	///     the recursion guard instead of overflowing the stack. A value that is already being formatted is left to the
+	///     built-in formatting, so that the recursion is written the same way whether any formatter is registered.
 	/// </remarks>
 	private static bool TryFormatWithRegistrations(
 		StringBuilder stringBuilder,
@@ -245,13 +245,7 @@ public static partial class ValueFormatters
 			trackingContext = context ??= new FormattingContext();
 			if (!trackingContext.FormattedObjects.Add(value))
 			{
-				stringBuilder.Append(value switch
-				{
-					IDictionary => "{*recursive*}",
-					IEnumerable => "[*recursive*]",
-					_ => "{ *recursive* }",
-				});
-				return true;
+				return false;
 			}
 		}
 

@@ -228,8 +228,42 @@ public class ValueFormatterTests
 			result = Formatter.Format(a, FormattingOptions.SingleLine);
 		}
 
-		await That(result).IsEqualTo("a with [b with [{ *recursive* }]]")
+		await That(result).IsEqualTo("a with [b with [ValueFormatterTests.Node { *recursive* }]]")
 			.Because("the formatting context is carried into the formatting calls of a registered formatter");
+	}
+
+	[Fact]
+	public async Task CustomFormatter_WhenItFormatsACyclicDictionary_ShouldFormatTheCycleAsRecursive()
+	{
+		Node a = new("a");
+		Node b = new("b");
+		a.Named.Add("b", b);
+		b.Named.Add("a", a);
+		string result;
+		using (ValueFormatter.Register(new NodeFormatter()))
+		{
+			result = Formatter.Format(a, FormattingOptions.SingleLine);
+		}
+
+		await That(result).IsEqualTo("a named {[\"b\"] = b named {[\"a\"] = ValueFormatterTests.Node { *recursive* }}}")
+			.Because("the formatting context is carried into the dictionary a registered formatter formats");
+	}
+
+	[Fact]
+	public async Task CustomFormatter_WhenItFormatsACyclicKeyValuePair_ShouldFormatTheCycleAsRecursive()
+	{
+		Node a = new("a");
+		Node b = new("b");
+		a.Link = new KeyValuePair<string, Node>("b", b);
+		b.Link = new KeyValuePair<string, Node>("a", a);
+		string result;
+		using (ValueFormatter.Register(new NodeFormatter()))
+		{
+			result = Formatter.Format(a, FormattingOptions.SingleLine);
+		}
+
+		await That(result).IsEqualTo("a linked [\"b\"] = b linked [\"a\"] = ValueFormatterTests.Node { *recursive* }")
+			.Because("the formatting context is carried into the key-value pair a registered formatter formats");
 	}
 
 	[Fact]
@@ -243,7 +277,7 @@ public class ValueFormatterTests
 			result = Formatter.Format(a, FormattingOptions.SingleLine);
 		}
 
-		await That(result).IsEqualTo("a in { *recursive* }")
+		await That(result).IsEqualTo("a in ValueFormatterTests.Node { *recursive* }")
 			.Because("a value is tracked while a registered formatter formats it");
 	}
 
@@ -438,7 +472,9 @@ public class ValueFormatterTests
 	private sealed class Node(string name)
 	{
 		public List<Node> Children { get; } = [];
+		public KeyValuePair<string, Node>? Link { get; set; }
 		public string Name { get; } = name;
+		public Dictionary<string, Node> Named { get; } = new();
 		public Node? Parent { get; set; }
 	}
 
@@ -475,6 +511,18 @@ public class ValueFormatterTests
 				{
 					stringBuilder.Append(" with ");
 					Formatter.Format(stringBuilder, node.Children, options);
+				}
+
+				if (node.Named.Count > 0)
+				{
+					stringBuilder.Append(" named ");
+					Formatter.Format(stringBuilder, node.Named, options);
+				}
+
+				if (node.Link is not null)
+				{
+					stringBuilder.Append(" linked ");
+					Formatter.Format(stringBuilder, node.Link.Value, options);
 				}
 
 				return true;
