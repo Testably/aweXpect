@@ -788,6 +788,11 @@ public sealed class GuaranteesNotNullTests
 			return typeof(Exception);
 		}
 
+		if (type == typeof(Times))
+		{
+			return 1.Times();
+		}
+
 		if (parameter.IsOptional)
 		{
 			return parameter.DefaultValue;

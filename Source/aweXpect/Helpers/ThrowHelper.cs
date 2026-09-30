@@ -74,6 +74,34 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a negative position when the filter is built, because it could never address a parameter.
+	/// </summary>
+	public static void ThrowIfPositionIsNegative(int? position,
+		[CallerArgumentExpression(nameof(position))] string? paramName = null)
+	{
+		if (position < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				"The position must not be negative."));
+		}
+	}
+
+	/// <summary>
+	///     Rejects <paramref name="times" /> below one for an expectation of fewer occurrences, which no count could
+	///     meet.
+	/// </summary>
+	public static void ThrowIfTimesIsNotPositive(Times times)
+	{
+		if (times.Value < 1)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(times),
+				"The times must be greater than zero."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
 	///     only ever be unsatisfiable or vacuous.
 	/// </summary>

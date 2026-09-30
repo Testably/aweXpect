@@ -71,7 +71,7 @@ await Expect.That(signaler).Signaled().Never();
 
 `Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form. Only expectations without
 an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled, all others wait for the
-timeout.
+timeout. `DidNotSignal(times)` requires at least one time, because no callback can be signaled fewer than zero times.
 
 ### Parameters
 

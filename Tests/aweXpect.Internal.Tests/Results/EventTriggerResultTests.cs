@@ -57,6 +57,48 @@ public sealed class EventTriggerResultTests
 	}
 
 	[Fact]
+	public async Task WhenCastingToICustomParameterFilter_WhenPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		CustomEventWithParametersClass<string> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent("foo");
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent)))
+				.WithParameter<string>(" with my parameter", -1, _ => true);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("position").And
+			.WithMessage("The position must not be negative.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task WhenCastingToICustomParameterFilter_WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
+	{
+		InvalidOperationException exception = new("predicate failed");
+		CustomEventWithParametersClass<string> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent("foo");
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent)))
+				.WithParameter<string>(" with my parameter", null, _ => throw exception);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut with my parameter at least once,
+			             but the predicate did throw an InvalidOperationException:
+			               predicate failed
+			             """).And
+			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+	}
+
+	[Fact]
 	public async Task WhenPredicateIsNull_ForEventArgs_ShouldThrowArgumentNullException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
