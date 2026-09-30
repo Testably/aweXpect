@@ -16,11 +16,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		byte value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"byte {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"byte {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -32,6 +34,11 @@ public static partial class ValueFormatters
 		byte value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("byte ");
@@ -82,11 +89,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		sbyte value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"sbyte {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"sbyte {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -98,6 +107,11 @@ public static partial class ValueFormatters
 		sbyte value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("sbyte ");
@@ -148,11 +162,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		short value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"short {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"short {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -164,6 +180,11 @@ public static partial class ValueFormatters
 		short value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("short ");
@@ -214,11 +235,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		ushort value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"ushort {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"ushort {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -230,6 +253,11 @@ public static partial class ValueFormatters
 		ushort value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("ushort ");
@@ -280,11 +308,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		int value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"int {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"int {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -296,6 +326,11 @@ public static partial class ValueFormatters
 		int value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("int ");
@@ -346,11 +381,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		uint value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"uint {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"uint {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -362,6 +399,11 @@ public static partial class ValueFormatters
 		uint value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("uint ");
@@ -412,11 +454,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		long value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"long {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"long {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -428,6 +472,11 @@ public static partial class ValueFormatters
 		long value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("long ");
@@ -478,11 +527,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		ulong value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"ulong {value.ToString(CultureInfo.InvariantCulture)}",
-			_ => value.ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"ulong {value.ToString(CultureInfo.InvariantCulture)}",
+				_ => value.ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -494,6 +545,11 @@ public static partial class ValueFormatters
 		ulong value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("ulong ");
@@ -544,19 +600,21 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		float value,
 		FormattingOptions? options = null)
-		=> (options?.IncludeType, value) switch
-		{
-			(true, float.NegativeInfinity) => "float -\u221e",
-			(true, float.PositiveInfinity) => "float +\u221e",
-			(true, float.MinValue) => "float.MinValue",
-			(true, float.MaxValue) => "float.MaxValue",
-			(true, _) => $"float {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
-			(_, float.NegativeInfinity) => "-\u221e",
-			(_, float.PositiveInfinity) => "+\u221e",
-			(_, float.MinValue) => "float.MinValue",
-			(_, float.MaxValue) => "float.MaxValue",
-			(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: (options?.IncludeType, value) switch
+			{
+				(true, float.NegativeInfinity) => "float -\u221e",
+				(true, float.PositiveInfinity) => "float +\u221e",
+				(true, float.MinValue) => "float.MinValue",
+				(true, float.MaxValue) => "float.MaxValue",
+				(true, _) => $"float {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
+				(_, float.NegativeInfinity) => "-\u221e",
+				(_, float.PositiveInfinity) => "+\u221e",
+				(_, float.MinValue) => "float.MinValue",
+				(_, float.MaxValue) => "float.MaxValue",
+				(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -611,19 +669,21 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		double value,
 		FormattingOptions? options = null)
-		=> (options?.IncludeType, value) switch
-		{
-			(true, double.NegativeInfinity) => "double -\u221e",
-			(true, double.PositiveInfinity) => "double +\u221e",
-			(true, double.MinValue) => "double.MinValue",
-			(true, double.MaxValue) => "double.MaxValue",
-			(true, _) => $"double {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
-			(_, double.NegativeInfinity) => "-\u221e",
-			(_, double.PositiveInfinity) => "+\u221e",
-			(_, double.MinValue) => "double.MinValue",
-			(_, double.MaxValue) => "double.MaxValue",
-			(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: (options?.IncludeType, value) switch
+			{
+				(true, double.NegativeInfinity) => "double -\u221e",
+				(true, double.PositiveInfinity) => "double +\u221e",
+				(true, double.MinValue) => "double.MinValue",
+				(true, double.MaxValue) => "double.MaxValue",
+				(true, _) => $"double {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
+				(_, double.NegativeInfinity) => "-\u221e",
+				(_, double.PositiveInfinity) => "+\u221e",
+				(_, double.MinValue) => "double.MinValue",
+				(_, double.MaxValue) => "double.MaxValue",
+				(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -680,6 +740,11 @@ public static partial class ValueFormatters
 		Half value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(value, options, out string? customValue))
+		{
+			return customValue;
+		}
+
 		if (Half.IsNegativeInfinity(value))
 		{
 			return options?.IncludeType == true ? "Half -\u221e" : "-\u221e";
@@ -777,6 +842,11 @@ public static partial class ValueFormatters
 		NFloat value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(value, options, out string? customValue))
+		{
+			return customValue;
+		}
+
 		if (NFloat.IsNegativeInfinity(value))
 		{
 			return options?.IncludeType == true ? "NFloat -∞" : "-∞";
@@ -855,15 +925,17 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		decimal value,
 		FormattingOptions? options = null)
-		=> (options?.IncludeType, value) switch
-		{
-			(true, decimal.MinValue) => "decimal.MinValue",
-			(true, decimal.MaxValue) => "decimal.MaxValue",
-			(true, _) => $"decimal {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
-			(_, decimal.MinValue) => "decimal.MinValue",
-			(_, decimal.MaxValue) => "decimal.MaxValue",
-			(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: (options?.IncludeType, value) switch
+			{
+				(true, decimal.MinValue) => "decimal.MinValue",
+				(true, decimal.MaxValue) => "decimal.MaxValue",
+				(true, _) => $"decimal {value.ToString("0.0###########################", CultureInfo.InvariantCulture)}",
+				(_, decimal.MinValue) => "decimal.MinValue",
+				(_, decimal.MaxValue) => "decimal.MaxValue",
+				(_, _) => value.ToString("0.0###########################", CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -918,11 +990,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		nint value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"nint {((long)value).ToString(CultureInfo.InvariantCulture)}",
-			_ => ((long)value).ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"nint {((long)value).ToString(CultureInfo.InvariantCulture)}",
+				_ => ((long)value).ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -934,6 +1008,11 @@ public static partial class ValueFormatters
 		nint value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("nint ");
@@ -984,11 +1063,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		nuint value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"nuint {((ulong)value).ToString(CultureInfo.InvariantCulture)}",
-			_ => ((ulong)value).ToString(CultureInfo.InvariantCulture),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"nuint {((ulong)value).ToString(CultureInfo.InvariantCulture)}",
+				_ => ((ulong)value).ToString(CultureInfo.InvariantCulture),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -1000,6 +1081,11 @@ public static partial class ValueFormatters
 		nuint value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("nuint ");

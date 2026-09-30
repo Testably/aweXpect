@@ -18,6 +18,11 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
+		if (TryFormatWithRegistrations(value, options, out string? customValue))
+		{
+			return customValue;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			return $"{Format(formatter, value.GetType())} {value}";
@@ -40,7 +45,7 @@ public static partial class ValueFormatters
 		{
 			stringBuilder.Append(ValueFormatter.NullString);
 		}
-		else
+		else if (!TryFormatWithRegistrations(stringBuilder, value, options))
 		{
 			if (options?.IncludeType == true)
 			{

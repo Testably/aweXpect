@@ -48,22 +48,7 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		IEnumerable? value,
 		FormattingOptions? options = null)
-	{
-		if (value == null)
-		{
-			stringBuilder.Append(ValueFormatter.NullString);
-		}
-		else if (value is IDictionary dictionary)
-		{
-			FormatItems(formatter, stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
-				FormatDictionaryEntry);
-		}
-		else
-		{
-			FormatItems(formatter, stringBuilder, value, value.Cast<object?>(), (value as ICollection)?.Count,
-				options, FormatItem);
-		}
-	}
+		=> FormatEnumerable(formatter, stringBuilder, value, options, null);
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -81,7 +66,13 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		FormatItems(formatter, stringBuilder, value, value.Cast<object?>(), GetCount(value), options, FormatItem);
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
+		FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
+			new ItemFormatter<object?>(formatter, new FormattingContext(), FormatItem));
 	}
 
 	/// <summary>
@@ -100,60 +91,116 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		FormatItems(formatter, stringBuilder, value, value, GetCount(value), options, FormatKeyValuePair);
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
+		FormatItems(stringBuilder, value, value, GetCount(value), options,
+			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, new FormattingContext(), FormatKeyValuePair));
+	}
+
+	private static void FormatEnumerable(
+		ValueFormatter formatter,
+		StringBuilder stringBuilder,
+		IEnumerable? value,
+		FormattingOptions? options,
+		FormattingContext? context)
+	{
+		if (value == null)
+		{
+			stringBuilder.Append(ValueFormatter.NullString);
+			return;
+		}
+
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
+		context ??= new FormattingContext();
+		if (value is IDictionary dictionary)
+		{
+			FormatItems(stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
+				new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
+		}
+		else
+		{
+			FormatItems(stringBuilder, value, value.Cast<object?>(), (value as ICollection)?.Count, options,
+				new ItemFormatter<object?>(formatter, context, FormatItem));
+		}
 	}
 
 	private static string FormatDictionaryEntry(
 		ValueFormatter formatter,
 		DictionaryEntry item,
-		FormattingOptions options)
-		=> Format(formatter, new KeyValuePair<object?, object?>(item.Key, item.Value), options with
+		FormattingOptions options,
+		FormattingContext context)
+	{
+		StringBuilder stringBuilder = new();
+		AppendKeyValuePair(formatter, stringBuilder, item.Key, item.Value, options with
 		{
 			IncludeType = false,
 			TotalItemCount = null,
-		});
+		}, context);
+		return stringBuilder.ToString();
+	}
 
 	private static string FormatItem(
 		ValueFormatter formatter,
 		object? item,
-		FormattingOptions options)
+		FormattingOptions options,
+		FormattingContext context)
 		=> Format(formatter, item, options with
 		{
 			IncludeType = false,
 			UseLineBreaks = options.UseLineBreaks && item?.GetType() != typeof(string),
 			TotalItemCount = null,
-		});
+		}, context);
 
+	/// <remarks>
+	///     The collection is only tracked while its own items are written, so that it is a recursion only within
+	///     itself, not when it appears a second time beside itself.
+	/// </remarks>
 	private static void FormatItems<T>(
-		ValueFormatter formatter,
 		StringBuilder stringBuilder,
 		IEnumerable value,
 		IEnumerable<T> items,
 		int? totalCount,
 		FormattingOptions? options,
-		Func<ValueFormatter, T, FormattingOptions, string> formatItem)
+		ItemFormatter<T> itemFormatter)
 	{
+		FormattingContext context = itemFormatter.Context;
+		if (!context.FormattedObjects.Add(value))
+		{
+			stringBuilder.Append(value is IDictionary ? "{*recursive*}" : "[*recursive*]");
+			return;
+		}
+
 		int length = stringBuilder.Length;
 		try
 		{
-			AppendItems(formatter, stringBuilder, value, items, totalCount, options, formatItem);
+			AppendItems(stringBuilder, value, items, totalCount, options, itemFormatter);
 		}
 		catch (Exception exception)
 		{
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the enumeration", exception));
 		}
+		finally
+		{
+			context.FormattedObjects.Remove(value);
+		}
 	}
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 	private static void AppendItems<T>(
-		ValueFormatter formatter,
 		StringBuilder stringBuilder,
 		IEnumerable value,
 		IEnumerable<T> items,
 		int? totalCount,
 		FormattingOptions? options,
-		Func<ValueFormatter, T, FormattingOptions, string> formatItem)
+		ItemFormatter<T> itemFormatter)
 	{
 		options ??= FormattingOptions.SingleLine;
 		totalCount = options.TotalItemCount ?? totalCount;
@@ -197,7 +244,7 @@ public static partial class ValueFormatters
 				break;
 			}
 
-			stringBuilder.Append(formatItem(formatter, item, options).Indent("  ", false));
+			stringBuilder.Append(itemFormatter.Format(item, options).Indent("  ", false));
 		}
 
 		if (hasMoreValues)
@@ -228,12 +275,36 @@ public static partial class ValueFormatters
 	private static string FormatKeyValuePair<TKey, TValue>(
 		ValueFormatter formatter,
 		KeyValuePair<TKey, TValue> item,
-		FormattingOptions options)
-		=> Format(formatter, item, options with
+		FormattingOptions options,
+		FormattingContext context)
+	{
+		FormattingOptions itemOptions = options with
 		{
 			IncludeType = false,
 			TotalItemCount = null,
-		});
+		};
+		StringBuilder stringBuilder = new();
+		if (!TryFormatWithRegistrations(stringBuilder, item, itemOptions))
+		{
+			AppendKeyValuePair(formatter, stringBuilder, item.Key, item.Value, itemOptions, context);
+		}
+
+		return stringBuilder.ToString();
+	}
+
+	/// <summary>
+	///     Formats a single item within the formatting context of its collection.
+	/// </summary>
+	private readonly struct ItemFormatter<T>(
+		ValueFormatter formatter,
+		FormattingContext context,
+		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem)
+	{
+		public FormattingContext Context { get; } = context;
+
+		public string Format(T item, FormattingOptions options)
+			=> formatItem(formatter, item, options, Context);
+	}
 
 	/// <summary>
 	///     Only reads a count the collection already knows, so that a lazy sequence is not enumerated twice.

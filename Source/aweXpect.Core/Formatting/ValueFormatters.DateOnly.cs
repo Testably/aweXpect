@@ -13,11 +13,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		DateOnly value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"DateOnly {value.ToString("o")}",
-			_ => value.ToString("o"),
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"DateOnly {value.ToString("o")}",
+				_ => value.ToString("o"),
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -29,6 +31,11 @@ public static partial class ValueFormatters
 		DateOnly value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("DateOnly ");

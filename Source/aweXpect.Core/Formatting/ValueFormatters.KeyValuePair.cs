@@ -31,6 +31,11 @@ public static partial class ValueFormatters
 		KeyValuePair<TKey, TValue> value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options is not null)
 		{
 			options = options with
@@ -39,9 +44,20 @@ public static partial class ValueFormatters
 			};
 		}
 
+		AppendKeyValuePair(formatter, stringBuilder, value.Key, value.Value, options, null);
+	}
+
+	private static void AppendKeyValuePair(
+		ValueFormatter formatter,
+		StringBuilder stringBuilder,
+		object? key,
+		object? value,
+		FormattingOptions? options,
+		FormattingContext? context)
+	{
 		stringBuilder.Append('[');
-		Format(formatter, stringBuilder, value.Key, options);
+		Format(formatter, stringBuilder, key, options, context);
 		stringBuilder.Append("] = ");
-		Format(formatter, stringBuilder, value.Value, options);
+		Format(formatter, stringBuilder, value, options, context);
 	}
 }

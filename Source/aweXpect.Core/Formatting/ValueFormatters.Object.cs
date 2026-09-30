@@ -26,11 +26,7 @@ public static partial class ValueFormatters
 			{
 				IncludeType = false,
 			};
-			context ??= new FormattingContext();
-			stringBuilder.Append('[');
-			Format(Formatter, stringBuilder, key, pairOptions, context);
-			stringBuilder.Append("] = ");
-			Format(Formatter, stringBuilder, pairValue, pairOptions, context);
+			AppendKeyValuePair(Formatter, stringBuilder, key, pairValue, pairOptions, context ?? new FormattingContext());
 		}
 		else
 		{
@@ -210,6 +206,10 @@ public static partial class ValueFormatters
 		WriteTypeValues(obj, stringBuilder, type, options, context);
 	}
 
+	/// <remarks>
+	///     The instance is only tracked while its own members are written, so that it is a recursion only within
+	///     itself, not when it appears a second time beside itself.
+	/// </remarks>
 	private static void WriteTypeValues(
 		object obj,
 		StringBuilder stringBuilder,
@@ -223,6 +223,23 @@ public static partial class ValueFormatters
 			return;
 		}
 
+		try
+		{
+			WriteMembers(obj, stringBuilder, type, options, context);
+		}
+		finally
+		{
+			context.FormattedObjects.Remove(obj);
+		}
+	}
+
+	private static void WriteMembers(
+		object obj,
+		StringBuilder stringBuilder,
+		Type type,
+		FormattingOptions options,
+		FormattingContext context)
+	{
 		List<EquivalencyMember>? members = GetMembers(type);
 		if (members is null)
 		{

@@ -153,6 +153,22 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Fact]
+		public async Task WhenCollectionContainsItself_ShouldDetectTheRecursion()
+		{
+			string expectedResult = "[[*recursive*]]";
+			SelfContainingCollection value = new();
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
 		[Theory]
 		[InlineData(10, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]")]
 		[InlineData(11, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 1 more)]")]
@@ -292,6 +308,24 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenSameInstanceIsContainedTwice_ShouldFormatBoth()
+		{
+			string expectedResult = "[[1, 2], [1, 2]]";
+			int[] inner = [1, 2,];
+			List<int[]> value = [inner, inner,];
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("an instance is only a recursion within its own items, not next to itself");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WithType_Array_ShouldIncludeTypeInformation()
 		{
 			string expectedResult = "int[] [1, 2, 3, 4]";
@@ -343,6 +377,28 @@ public partial class ValueFormatters
 
 			public IEnumerator<int> GetEnumerator()
 				=> ((IEnumerable<int>)items).GetEnumerator();
+
+			IEnumerator IEnumerable.GetEnumerator()
+				=> GetEnumerator();
+		}
+
+		/// <remarks>
+		///     Throws once it was enumerated too often, so that following the cycle fails the test instead of
+		///     overflowing the stack.
+		/// </remarks>
+		private sealed class SelfContainingCollection : IEnumerable<object>
+		{
+			private int _enumerations;
+
+			public IEnumerator<object> GetEnumerator()
+			{
+				if (++_enumerations > 100)
+				{
+					throw new InvalidOperationException("enumerated too often");
+				}
+
+				return ((IEnumerable<object>)new object[] { this, }).GetEnumerator();
+			}
 
 			IEnumerator IEnumerable.GetEnumerator()
 				=> GetEnumerator();

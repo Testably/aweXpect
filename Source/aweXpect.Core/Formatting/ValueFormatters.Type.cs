@@ -81,7 +81,7 @@ public static partial class ValueFormatters
 		}
 
 		StringBuilder stringBuilder = new();
-		FormatType(value, stringBuilder);
+		Format(formatter, stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -98,6 +98,11 @@ public static partial class ValueFormatters
 		if (value == null)
 		{
 			stringBuilder.Append(ValueFormatter.NullString);
+			return;
+		}
+
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
 			return;
 		}
 

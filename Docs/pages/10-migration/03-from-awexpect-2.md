@@ -183,6 +183,14 @@ ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they
 `has item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
 need an update.
 
+An object that contains itself through a collection, such as a tree node that lists itself among its children, and a
+collection that contains itself are rendered as `*recursive*` where they repeat, instead of overflowing the stack and
+aborting the test run. An instance that appears twice without containing itself, e.g. in two members of the same
+object, is written out both times instead of being marked as recursive the second time. A formatter registered with
+`ValueFormatter.Register` is asked for every value, also where the declared type picks a dedicated overload, so a
+formatter for `DateTime` now applies to the subject and the expected value of `IsEqualTo` as well, not only to the
+items of a collection or the members of an object.
+
 ## Negative event expectations
 
 `Within(…)` used to be ignored on event expectations with an upper bound, such as `DidNotTrigger(…)` or

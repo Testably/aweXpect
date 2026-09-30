@@ -1,9 +1,182 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+using System.Text;
+using System.Threading;
 
 namespace aweXpect.Core.Tests.Formatting;
 
 public class ValueFormatterTests
 {
+	[Fact]
+	public async Task CustomFormatter_InFailureMessage_ShouldBeUsedForTheSubjectAndTheExpectation()
+	{
+		DateTime subject = new(2020, 1, 2, 3, 4, 5);
+		using IDisposable lifetime = ValueFormatter.Register(new CurrentFlowFormatter<DateTime>());
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(subject.AddDays(1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to custom,
+			             but it was custom, which differs by -1.00:00:00
+			             """);
+	}
+
+	[Fact]
+	public async Task CustomFormatter_ShouldBeUsedByEveryTypedOverload()
+	{
+		string[] results;
+		using (ValueFormatter.Register(new CurrentFlowFormatter<object>()))
+		{
+			results =
+			[
+				Formatter.Format(true),
+				Formatter.Format((bool?)true),
+				Formatter.Format('a'),
+				Formatter.Format((char?)'a'),
+				Formatter.Format("text"),
+				Formatter.Format(typeof(int)),
+				Formatter.Format(new InvalidOperationException("message")),
+				Formatter.Format(MyEnum.Value),
+				Formatter.Format(HttpStatusCode.OK),
+				Formatter.Format(Guid.Empty),
+				Formatter.Format((Guid?)Guid.Empty),
+				Formatter.Format(new DateTime(2020, 1, 2)),
+				Formatter.Format((DateTime?)new DateTime(2020, 1, 2)),
+				Formatter.Format(new DateTimeOffset(2020, 1, 2, 3, 4, 5, TimeSpan.Zero)),
+				Formatter.Format((DateTimeOffset?)new DateTimeOffset(2020, 1, 2, 3, 4, 5, TimeSpan.Zero)),
+				Formatter.Format(TimeSpan.FromSeconds(1)),
+				Formatter.Format((TimeSpan?)TimeSpan.FromSeconds(1)),
+#if NET8_0_OR_GREATER
+				Formatter.Format(new DateOnly(2020, 1, 2)),
+				Formatter.Format((DateOnly?)new DateOnly(2020, 1, 2)),
+				Formatter.Format(new TimeOnly(3, 4, 5)),
+				Formatter.Format((TimeOnly?)new TimeOnly(3, 4, 5)),
+				Formatter.Format((Half)1),
+				Formatter.Format((Half?)1),
+				Formatter.Format((NFloat)1),
+				Formatter.Format((NFloat?)1),
+#endif
+				Formatter.Format((byte)1),
+				Formatter.Format((byte?)1),
+				Formatter.Format((sbyte)1),
+				Formatter.Format((sbyte?)1),
+				Formatter.Format((short)1),
+				Formatter.Format((short?)1),
+				Formatter.Format((ushort)1),
+				Formatter.Format((ushort?)1),
+				Formatter.Format(1),
+				Formatter.Format((int?)1),
+				Formatter.Format(1U),
+				Formatter.Format((uint?)1),
+				Formatter.Format(1L),
+				Formatter.Format((long?)1),
+				Formatter.Format(1UL),
+				Formatter.Format((ulong?)1),
+				Formatter.Format((nint)1),
+				Formatter.Format((nint?)1),
+				Formatter.Format((nuint)1),
+				Formatter.Format((nuint?)1),
+				Formatter.Format(1.5F),
+				Formatter.Format((float?)1.5F),
+				Formatter.Format(1.5),
+				Formatter.Format((double?)1.5),
+				Formatter.Format(1.5M),
+				Formatter.Format((decimal?)1.5M),
+				Formatter.Format(new[] { 1, 2, }),
+				Formatter.Format(new Dictionary<int, int> { [1] = 2, }),
+				Formatter.Format(new KeyValuePair<int, int>(1, 2)),
+			];
+		}
+
+		await That(results).All().AreEqualTo("custom");
+	}
+
+	[Fact]
+	public async Task CustomFormatter_ShouldBeUsedByEveryTypedOverloadWithStringBuilder()
+	{
+		string[] results;
+		using (ValueFormatter.Register(new CurrentFlowFormatter<object>()))
+		{
+			results =
+			[
+				Append(sb => Formatter.Format(sb, true)),
+				Append(sb => Formatter.Format(sb, (bool?)true)),
+				Append(sb => Formatter.Format(sb, 'a')),
+				Append(sb => Formatter.Format(sb, (char?)'a')),
+				Append(sb => Formatter.Format(sb, "text")),
+				Append(sb => Formatter.Format(sb, typeof(int))),
+				Append(sb => Formatter.Format(sb, new InvalidOperationException("message"))),
+				Append(sb => Formatter.Format(sb, MyEnum.Value)),
+				Append(sb => Formatter.Format(sb, HttpStatusCode.OK)),
+				Append(sb => Formatter.Format(sb, Guid.Empty)),
+				Append(sb => Formatter.Format(sb, (Guid?)Guid.Empty)),
+				Append(sb => Formatter.Format(sb, new DateTime(2020, 1, 2))),
+				Append(sb => Formatter.Format(sb, (DateTime?)new DateTime(2020, 1, 2))),
+				Append(sb => Formatter.Format(sb, new DateTimeOffset(2020, 1, 2, 3, 4, 5, TimeSpan.Zero))),
+				Append(sb => Formatter.Format(sb,
+					(DateTimeOffset?)new DateTimeOffset(2020, 1, 2, 3, 4, 5, TimeSpan.Zero))),
+				Append(sb => Formatter.Format(sb, TimeSpan.FromSeconds(1))),
+				Append(sb => Formatter.Format(sb, (TimeSpan?)TimeSpan.FromSeconds(1))),
+#if NET8_0_OR_GREATER
+				Append(sb => Formatter.Format(sb, new DateOnly(2020, 1, 2))),
+				Append(sb => Formatter.Format(sb, (DateOnly?)new DateOnly(2020, 1, 2))),
+				Append(sb => Formatter.Format(sb, new TimeOnly(3, 4, 5))),
+				Append(sb => Formatter.Format(sb, (TimeOnly?)new TimeOnly(3, 4, 5))),
+				Append(sb => Formatter.Format(sb, (Half)1)),
+				Append(sb => Formatter.Format(sb, (Half?)1)),
+				Append(sb => Formatter.Format(sb, (NFloat)1)),
+				Append(sb => Formatter.Format(sb, (NFloat?)1)),
+#endif
+				Append(sb => Formatter.Format(sb, (byte)1)),
+				Append(sb => Formatter.Format(sb, (byte?)1)),
+				Append(sb => Formatter.Format(sb, (sbyte)1)),
+				Append(sb => Formatter.Format(sb, (sbyte?)1)),
+				Append(sb => Formatter.Format(sb, (short)1)),
+				Append(sb => Formatter.Format(sb, (short?)1)),
+				Append(sb => Formatter.Format(sb, (ushort)1)),
+				Append(sb => Formatter.Format(sb, (ushort?)1)),
+				Append(sb => Formatter.Format(sb, 1)),
+				Append(sb => Formatter.Format(sb, (int?)1)),
+				Append(sb => Formatter.Format(sb, 1U)),
+				Append(sb => Formatter.Format(sb, (uint?)1)),
+				Append(sb => Formatter.Format(sb, 1L)),
+				Append(sb => Formatter.Format(sb, (long?)1)),
+				Append(sb => Formatter.Format(sb, 1UL)),
+				Append(sb => Formatter.Format(sb, (ulong?)1)),
+				Append(sb => Formatter.Format(sb, (nint)1)),
+				Append(sb => Formatter.Format(sb, (nint?)1)),
+				Append(sb => Formatter.Format(sb, (nuint)1)),
+				Append(sb => Formatter.Format(sb, (nuint?)1)),
+				Append(sb => Formatter.Format(sb, 1.5F)),
+				Append(sb => Formatter.Format(sb, (float?)1.5F)),
+				Append(sb => Formatter.Format(sb, 1.5)),
+				Append(sb => Formatter.Format(sb, (double?)1.5)),
+				Append(sb => Formatter.Format(sb, 1.5M)),
+				Append(sb => Formatter.Format(sb, (decimal?)1.5M)),
+				Append(sb => Formatter.Format(sb, (IEnumerable)new[] { 1, 2, })),
+				Append(sb => Formatter.Format(sb, new[] { 1, 2, })),
+				Append(sb => Formatter.Format(sb, new Dictionary<int, int> { [1] = 2, })),
+				Append(sb => Formatter.Format(sb, new KeyValuePair<int, int>(1, 2))),
+			];
+		}
+
+		await That(results).All().AreEqualTo("custom");
+
+		static string Append(Action<StringBuilder> format)
+		{
+			StringBuilder stringBuilder = new();
+			format(stringBuilder);
+			return stringBuilder.ToString();
+		}
+	}
+
 	[Fact]
 	public async Task CustomFormatter_ShouldBeUsedDuringLifetime()
 	{
@@ -62,6 +235,21 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenItThrowsForEveryValue_ShouldRenderAPlaceholder()
+	{
+		DateTime value = new(2020, 1, 2);
+		string result;
+		using (ValueFormatter.Register(
+			       new CurrentFlowThrowingFormatter(new InvalidOperationException("formatter failed"))))
+		{
+			result = Formatter.Format(value);
+		}
+
+		await That(result).IsEqualTo("[the formatter did throw an InvalidOperationException: formatter failed]")
+			.Because("the type of the exception in the placeholder is not passed to the formatter again");
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenMultipleAreRegistered_ShouldUseTheMostRecentOne()
 	{
 		MyFormattableClass value = new();
@@ -110,6 +298,51 @@ public class ValueFormatterTests
 		}
 	}
 
+	/// <remarks>
+	///     Registrations are process-wide, so it only formats values in the test that created it and leaves the
+	///     tests running in parallel alone.
+	/// </remarks>
+	private sealed class CurrentFlowFormatter<T> : IValueFormatter
+	{
+		private readonly AsyncLocal<bool> _isCurrentFlow = new()
+		{
+			Value = true,
+		};
+
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (_isCurrentFlow.Value && value is T)
+			{
+				stringBuilder.Append("custom");
+				return true;
+			}
+
+			return false;
+		}
+	}
+
+	/// <remarks>
+	///     Registrations are process-wide, so it only throws in the test that created it and leaves the tests
+	///     running in parallel alone.
+	/// </remarks>
+	private sealed class CurrentFlowThrowingFormatter(Exception exception) : IValueFormatter
+	{
+		private readonly AsyncLocal<bool> _isCurrentFlow = new()
+		{
+			Value = true,
+		};
+
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (_isCurrentFlow.Value)
+			{
+				throw exception;
+			}
+
+			return false;
+		}
+	}
+
 	private sealed class MyCustomFormatter(string formatString) : IValueFormatter
 	{
 		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
@@ -127,6 +360,11 @@ public class ValueFormatterTests
 	private sealed class MyFormattableClass
 	{
 		public int Value { get; set; }
+	}
+
+	private enum MyEnum
+	{
+		Value,
 	}
 
 	private sealed class MyThrowingCustomFormatter(Exception exception) : IValueFormatter

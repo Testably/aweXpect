@@ -9,7 +9,7 @@ namespace aweXpect.Formatting;
 public class FormattingContext
 {
 	/// <summary>
-	///     Tracks already formatted objects to catch recursions.
+	///     Tracks the objects and collections that are being formatted to catch recursions.
 	/// </summary>
 	public HashSet<object> FormattedObjects { get; } = new(ReferenceComparer.Instance);
 

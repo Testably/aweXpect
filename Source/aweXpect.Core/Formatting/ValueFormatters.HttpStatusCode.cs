@@ -18,6 +18,11 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
+		if (TryFormatWithRegistrations(value.Value, options, out string? customValue))
+		{
+			return customValue;
+		}
+
 		return options?.IncludeType switch
 		{
 			true => $"HttpStatusCode {(int)value} {value}",
@@ -38,6 +43,11 @@ public static partial class ValueFormatters
 		if (value == null)
 		{
 			stringBuilder.Append(ValueFormatter.NullString);
+			return;
+		}
+
+		if (TryFormatWithRegistrations(stringBuilder, value.Value, options))
+		{
 			return;
 		}
 

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using aweXpect.Core;
@@ -49,28 +49,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
-		if (registrations.Length > 0)
-		{
-			int length = stringBuilder.Length;
-			try
-			{
-				for (int i = registrations.Length - 1; i >= 0; i--)
-				{
-					if (registrations[i].Formatter.TryFormat(stringBuilder, value, options))
-					{
-						return;
-					}
-				}
-			}
-			catch (Exception exception)
-			{
-				stringBuilder.Length = length;
-				stringBuilder.Append(FormatThrownException("the formatter", exception));
-				return;
-			}
-		}
-
+		// Each typed overload consults the registered formatters itself.
 		switch (value)
 		{
 			case bool boolValue:
@@ -89,7 +68,7 @@ public static partial class ValueFormatters
 				Format(formatter, stringBuilder, exceptionValue, options);
 				return;
 			case IEnumerable enumerableValue:
-				Format(formatter, stringBuilder, enumerableValue, options);
+				FormatEnumerable(formatter, stringBuilder, enumerableValue, options, context);
 				return;
 			case HttpStatusCode httpStatusCodeValue:
 				Format(formatter, stringBuilder, httpStatusCodeValue, options);
@@ -166,6 +145,11 @@ public static partial class ValueFormatters
 				return;
 		}
 
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 #if NET8_0_OR_GREATER
 		if (TryGetAsyncEnumerableType(value.GetType(), out Type? asyncEnumerableType))
 		{
@@ -186,7 +170,76 @@ public static partial class ValueFormatters
 	{
 		exception = (exception as UserCodeException)?.Exception ?? exception;
 		exception = (exception as TargetInvocationException)?.InnerException ?? exception;
-		return $"[{thrower} did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: {exception.Message}]";
+		// The registered formatters are bypassed, as one of them might be the thrower.
+		StringBuilder exceptionType = new();
+		FormatType(exception.GetType(), exceptionType);
+		return $"[{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message}]";
+	}
+
+	/// <summary>
+	///     Appends the <paramref name="value" /> as formatted by the most recently registered formatter that accepts it.
+	/// </summary>
+	private static bool TryFormatWithRegistrations<T>(
+		StringBuilder stringBuilder,
+		T value,
+		FormattingOptions? options)
+		where T : notnull
+	{
+		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
+		return registrations.Length > 0 && TryFormatWithRegistrations(stringBuilder, value, options, registrations);
+	}
+
+	/// <summary>
+	///     Returns the <paramref name="value" /> as formatted by the most recently registered formatter that accepts it.
+	/// </summary>
+	private static bool TryFormatWithRegistrations<T>(
+		T value,
+		FormattingOptions? options,
+		[NotNullWhen(true)] out string? formattedValue)
+		where T : notnull
+	{
+		formattedValue = null;
+		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
+		if (registrations.Length == 0)
+		{
+			return false;
+		}
+
+		StringBuilder stringBuilder = new();
+		if (!TryFormatWithRegistrations(stringBuilder, value, options, registrations))
+		{
+			return false;
+		}
+
+		formattedValue = stringBuilder.ToString();
+		return true;
+	}
+
+	private static bool TryFormatWithRegistrations(
+		StringBuilder stringBuilder,
+		object value,
+		FormattingOptions? options,
+		ValueFormatter.Registration[] registrations)
+	{
+		int length = stringBuilder.Length;
+		try
+		{
+			for (int i = registrations.Length - 1; i >= 0; i--)
+			{
+				if (registrations[i].Formatter.TryFormat(stringBuilder, value, options))
+				{
+					return true;
+				}
+			}
+		}
+		catch (Exception exception)
+		{
+			stringBuilder.Length = length;
+			stringBuilder.Append(FormatThrownException("the formatter", exception));
+			return true;
+		}
+
+		return false;
 	}
 
 #if NET8_0_OR_GREATER

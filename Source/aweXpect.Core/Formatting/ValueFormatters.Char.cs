@@ -12,11 +12,13 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		char value,
 		FormattingOptions? options = null)
-		=> options?.IncludeType switch
-		{
-			true => $"char '{value.ToString().DisplayWhitespace()}'",
-			_ => $"'{value.ToString().DisplayWhitespace()}'",
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: options?.IncludeType switch
+			{
+				true => $"char '{value.ToString().DisplayWhitespace()}'",
+				_ => $"'{value.ToString().DisplayWhitespace()}'",
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -28,6 +30,11 @@ public static partial class ValueFormatters
 		char value,
 		FormattingOptions? options = null)
 	{
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("char ");
