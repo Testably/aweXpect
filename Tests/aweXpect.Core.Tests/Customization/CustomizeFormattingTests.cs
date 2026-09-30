@@ -101,8 +101,8 @@ public sealed class CustomizeFormattingTests
 				             is equal to "this is another text with…",
 				             but it was "this is some text with lots…", which differs at index 8:
 				                        ↓ (actual)
-				               "this is some text…"
-				               "this is another…"
+				               "this is some text with…"
+				               "this is another text with…"
 				                        ↑ (expected)
 
 				             Actual:
@@ -119,8 +119,8 @@ public sealed class CustomizeFormattingTests
 			             is equal to "this is another text with…",
 			             but it was "this is some text with lots…", which differs at index 8:
 			                        ↓ (actual)
-			               "this is some text with lots of words after the first…"
-			               "this is another text with lots of words after the first…"
+			               "this is some text with lots of words after the first difference to…"
+			               "this is another text with lots of words after the first difference…"
 			                        ↑ (expected)
 
 			             Actual:

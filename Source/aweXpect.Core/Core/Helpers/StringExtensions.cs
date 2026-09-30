@@ -172,7 +172,7 @@ internal static class StringExtensions
 		}
 
 		const char ellipsis = '\u2026';
-		return $"{value.Substring(0, maxLength)}{ellipsis}";
+		return $"{value.Substring(0, GetIndexToCutAt(value, maxLength))}{ellipsis}";
 	}
 
 	[return: NotNullIfNotNull(nameof(value))]
@@ -186,11 +186,27 @@ internal static class StringExtensions
 		int indexOfWordBoundary = value[..maxLength].LastIndexOf(' ');
 		if (indexOfWordBoundary < maxLength * 0.8)
 		{
-			indexOfWordBoundary = maxLength;
+			indexOfWordBoundary = GetIndexToCutAt(value, maxLength);
 		}
 
 		const char ellipsis = '\u2026';
 		return $"{value.Substring(0, indexOfWordBoundary)}{ellipsis}";
+	}
+
+	/// <summary>
+	///     Moves the <paramref name="index" /> one character back, if cutting there would split a surrogate pair or
+	///     a <c>\r\n</c> line break.
+	/// </summary>
+	private static int GetIndexToCutAt(string value, int index)
+	{
+		if (index > 0 &&
+		    ((char.IsHighSurrogate(value[index - 1]) && char.IsLowSurrogate(value[index])) ||
+		     (value[index - 1] == '\r' && value[index] == '\n')))
+		{
+			return index - 1;
+		}
+
+		return index;
 	}
 
 	/// <summary>

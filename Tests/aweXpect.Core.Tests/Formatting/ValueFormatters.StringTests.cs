@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -89,6 +90,54 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 			string objectResult = Formatter.Format((object?)value);
 			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task Strings_WhenTruncated_ShouldNotSplitEscapedWhitespace()
+		{
+			string value = "abcd\nefgh";
+			string expectedResult = """
+			                        "abcd\n…"
+			                        """;
+			StringBuilder sb = new();
+
+			string result;
+			string objectResult;
+			string typeResult;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
+			{
+				result = Formatter.Format(value);
+				objectResult = Formatter.Format((object?)value);
+				typeResult = Formatter.Format(value, FormattingOptions.WithType);
+				Formatter.Format(sb, value);
+			}
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the limit applies to the characters of the value, not to their escaped form");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(typeResult).IsEqualTo($"string {expectedResult}");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task Strings_WhenTruncated_ShouldNotSplitSurrogatePairs()
+		{
+			string value = "abcd\U0001F600efgh";
+			string expectedResult = "\"abcd…\"";
+			StringBuilder sb = new();
+
+			string result;
+			string objectResult;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
+			{
+				result = Formatter.Format(value);
+				objectResult = Formatter.Format((object?)value);
+				Formatter.Format(sb, value);
+			}
 
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);

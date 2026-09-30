@@ -130,6 +130,18 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenMessageIsTooLong_ShouldNotSplitEscapedWhitespace()
+		{
+			Exception value = new CustomException($"{new string('a', 99)}\nb");
+			string expectedResult = $@"ValueFormatters.ExceptionTests.CustomException: {new string('a', 99)}\n…";
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the limit applies to the characters of the message, not to their escaped form");
+		}
+
+		[Fact]
 		public async Task WhenMessageIsTooLong_ShouldTruncateMessage()
 		{
 			Exception value = new CustomException(new string('a', 101));

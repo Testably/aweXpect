@@ -69,6 +69,34 @@ public class StringDifferenceTests
 				   ↑ ({patternName})
 				 """);
 		}
+
+		[Theory]
+		[InlineData(StringDifference.MatchType.Wildcard, "wildcard pattern")]
+		[InlineData(StringDifference.MatchType.Regex, "regex pattern")]
+		public async Task WhenMaximumStringLengthIsIncreased_ShouldShowLongerValues(
+			StringDifference.MatchType matchType, string patternName)
+		{
+			string actual = new('a', 400);
+			string expected = new('b', 400);
+			StringDifference sut = new(actual, expected,
+				settings: new StringDifferenceSettings(0, 0).WithMatchType(matchType));
+
+			string result;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+					$"""
+					 differs:
+					   ↓ (actual)
+					   "{actual}"
+					   "{expected}"
+					   ↑ ({patternName})
+					 """)
+				.Because("the configured maximum string length limits the shown values");
+		}
 	}
 
 	public sealed class EqualityTests
@@ -212,6 +240,48 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsSmall_ShouldStillShowTheMismatch()
+		{
+			StringDifference sut = new("abcdefghijklmnopqrstuvwxyzX", "abcdefghijklmnopqrstuvwxyzY");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(5))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+					"""
+					differs at index 26:
+					              ↓ (actual)
+					  "…qrstuvwxyzX"
+					  "…qrstuvwxyzY"
+					              ↑ (expected)
+					""")
+				.Because("the arrows must point at a visible mismatching character");
+		}
+
+		[Fact]
+		public async Task WhenMismatchIsFarFromTheStart_ShouldShowTheMinimumNumberOfCharactersAfterTheMismatch()
+		{
+			StringDifference sut = new(
+				$"{new string('a', 100)}X{new string('b', 100)}",
+				$"{new string('a', 100)}Y{new string('b', 100)}");
+
+			string result = sut.ToString();
+
+			await That(result).IsEqualTo(
+					$"""
+					 differs at index 100:
+					               ↓ (actual)
+					   "…aaaaaaaaaaX{new string('b', 49)}…"
+					   "…aaaaaaaaaaY{new string('b', 49)}…"
+					               ↑ (expected)
+					 """)
+				.Because("at least 45 characters must follow the mismatch by default");
+		}
+
+		[Fact]
 		public async Task WhenNoLeadingWordBoundaryExistsBetween5And15Characters_ShouldFallbackTo10Characters()
 		{
 			const string actual =
@@ -226,18 +296,18 @@ public class StringDifferenceTests
 				"""
 				differs at index 26:
 				              ↓ (actual)
-				  "…ains' a long word between 5 and 15 characters before the…"
-				  "…ains' a loNg word between 5 and 15 characters before the…"
+				  "…ains' a long word between 5 and 15 characters before the first…"
+				  "…ains' a loNg word between 5 and 15 characters before the first…"
 				              ↑ (expected)
 				""");
 		}
 
 		[Fact]
-		public async Task WhenNoTrailingWordBoundaryExistsBetween45And60Characters_ShouldFallbackTo50Characters()
+		public async Task WhenNoTrailingWordBoundaryExistsBetween45And60CharactersAfterTheMismatch_ShouldFallbackTo50Characters()
 		{
 			const string actual = "This text contains lot of words and is used for testing the WordBoundaryAlgorithm";
 			const string expected =
-				"This text is used to verify when  between  45 and60characters_no word boundary exists";
+				"This text is used to verify when  between  45 and60characters_no_word_boundary exists";
 			StringDifference sut = new(actual, expected);
 
 			string result = sut.ToString();
@@ -247,7 +317,7 @@ public class StringDifferenceTests
 				differs at index 10:
 				             ↓ (actual)
 				  "This text contains lot of words and is used for testing the…"
-				  "This text is used to verify when  between  45 and6…"
+				  "This text is used to verify when  between  45 and60character…"
 				             ↑ (expected)
 				""");
 		}
@@ -366,8 +436,8 @@ public class StringDifferenceTests
 				$"""
 				 differs on line 4 and column 16:
 				              ↓ (actual)
-				   "…-> Bob : Another authentication Request{nl}Alice <-- Bob :…"
-				   "…-> Bob : Invalid authentication Request{nl}Alice <-- Bob :…"
+				   "…-> Bob : Another authentication Request{nl}Alice <-- Bob : Another…"
+				   "…-> Bob : Invalid authentication Request{nl}Alice <-- Bob : Another…"
 				              ↑ (expected)
 				 """);
 		}
@@ -434,8 +504,9 @@ public class StringDifferenceTests
 				await That(sut.ToString()).IsEqualTo(
 					"""
 					is shorter than the expected length of 19 and misses the prefix:
-					  "\"a\\b\ncd…"
-					""").Because("the missing prefix is shown like the other values in a message");
+					  "\"a\\b\ncdefg…"
+					""").Because(
+					"the missing prefix is shown like the other values in a message, whose limit counts the characters of the value and not their escapes");
 			}
 		}
 

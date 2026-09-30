@@ -97,7 +97,7 @@ public sealed class StringDifference(
 			sb.Append("  ").Append(arrowDown).AppendLine(ActualIndicator);
 			sb.AppendLine("  <null>");
 			AppendPrefixAndEscapedPhraseToShowWithEllipsisAndSuffix(sb, linePrefix, expected!,
-				0, suffix);
+				0, 0, suffix);
 			sb.Append("  ").Append(arrowUp).Append(GetExpected(settings?.MatchType));
 			return sb.ToString();
 		}
@@ -108,7 +108,7 @@ public sealed class StringDifference(
 			sb.Append(prefix).AppendLine(":");
 			sb.Append("  ").Append(arrowDown).AppendLine(ActualIndicator);
 			AppendPrefixAndEscapedPhraseToShowWithEllipsisAndSuffix(sb, linePrefix, actual!,
-				0, suffix);
+				0, 0, suffix);
 			sb.AppendLine("  <null>");
 			sb.Append("  ").Append(arrowUp).Append(GetExpected(settings?.MatchType));
 			return sb.ToString();
@@ -138,7 +138,7 @@ public sealed class StringDifference(
 			{
 				return
 					$"is shorter than the expected length of {expected.Length} and misses the prefix:{Environment.NewLine}" +
-					$"  \"{expected[..^actual.Length].Escape().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"";
+					$"  \"{expected[..^actual.Length].TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape()}\"";
 			}
 
 			return prefix;
@@ -207,9 +207,9 @@ public sealed class StringDifference(
 		{
 			sb.Append(' ', whiteSpaceCountBeforeArrow).Append(arrowDown).AppendLine(ActualIndicator);
 			AppendPrefixAndEscapedPhraseToShowWithEllipsisAndSuffix(sb, linePrefix, actual,
-				trimStart, suffix);
+				trimStart, indexOfFirstMismatch, suffix);
 			AppendPrefixAndEscapedPhraseToShowWithEllipsisAndSuffix(sb, linePrefix, expected,
-				trimStart, suffix);
+				trimStart, indexOfFirstMismatch, suffix);
 			sb.Append(' ', whiteSpaceCountBeforeArrow).Append(arrowUp).Append(GetExpected(settings?.MatchType));
 		}
 
@@ -238,16 +238,15 @@ public sealed class StringDifference(
 	{
 		const char arrowDown = '\u2193';
 		const char arrowUp = '\u2191';
-		const int longMaxLength = 300;
 
 		StringBuilder sb = new();
 		sb.Append(prefix).AppendLine(":");
 		sb.Append("  ").Append(arrowDown).AppendLine(ActualIndicator);
 		sb.Append("  ");
-		Formatter.Format(sb, actual.TruncateWithEllipsisOnWord(longMaxLength));
+		Formatter.Format(sb, actual);
 		sb.AppendLine();
 		sb.Append("  ");
-		Formatter.Format(sb, expected.TruncateWithEllipsisOnWord(longMaxLength));
+		Formatter.Format(sb, expected);
 		sb.AppendLine();
 		sb.Append("  ").Append(arrowUp).Append(GetExpected(matchType));
 		return sb.ToString();
@@ -259,13 +258,19 @@ public sealed class StringDifference(
 	/// </summary>
 	/// <remarks>
 	///     When text phrase starts at <paramref name="indexOfStartingPhrase" /> and with a calculated length omits text
-	///     on start or end, an ellipsis is added.
+	///     on start or end, an ellipsis is added.<br />
+	///     The length is calculated so that at least
+	///     <see cref="AwexpectCustomization.FormattingCustomization.MinimumNumberOfCharactersAfterStringDifference" />
+	///     characters follow the <paramref name="indexOfFirstMismatch" />.
 	/// </remarks>
 	private static void AppendPrefixAndEscapedPhraseToShowWithEllipsisAndSuffix(
 		StringBuilder stringBuilder,
-		string prefix, string text, int indexOfStartingPhrase, string suffix)
+		string prefix, string text, int indexOfStartingPhrase, int indexOfFirstMismatch, string suffix)
 	{
-		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text[indexOfStartingPhrase..]);
+		int minimumNumberOfCharactersAfterMismatch = Math.Max(0,
+			Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get());
+		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text[indexOfStartingPhrase..],
+			indexOfFirstMismatch - indexOfStartingPhrase + minimumNumberOfCharactersAfterMismatch);
 		const char ellipsis = '\u2026';
 
 		stringBuilder.Append(prefix);
@@ -365,13 +370,13 @@ public sealed class StringDifference(
 	///     Calculates how many characters to keep in <paramref name="value" />.
 	/// </summary>
 	/// <remarks>
-	///     If a word end is found between 45 and 60 characters, use this word end, otherwise keep 50 characters.
+	///     If a word end is found between <paramref name="minLength" /> and 15 characters more, use this word end,
+	///     otherwise keep 5 characters more than <paramref name="minLength" />.
 	/// </remarks>
-	private static int GetLengthOfPhraseToShowOrDefaultLength(string value, int? minLength = null)
+	private static int GetLengthOfPhraseToShowOrDefaultLength(string value, int minLength)
 	{
-		minLength ??= Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get();
-		int defaultLength = minLength.Value + 5;
-		int maxLength = minLength.Value + 15;
+		int defaultLength = minLength + 5;
+		int maxLength = minLength + 15;
 		const int lengthOfWhitespace = 1;
 
 		int indexOfWordBoundary = value

@@ -1,9 +1,46 @@
-﻿namespace aweXpect.Core.Tests.Options;
+﻿using aweXpect.Customization;
+using aweXpect.Options;
+
+namespace aweXpect.Core.Tests.Options;
 
 public sealed partial class StringEqualityOptionsTests
 {
 	public sealed class ExactMatchTypeTests
 	{
+		[Fact]
+		public async Task GetExpectation_WhenExpectedIsTruncated_ShouldNotSplitAnEscapeSequence()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
+			{
+				result = sut.GetExpectation("abcd\nefgh", ExpectationGrammars.None);
+			}
+
+			await That(result).IsEqualTo("""
+			                             equal to "abcd\n…"
+			                             """)
+				.Because("the limit applies to the characters of the expected value, not to their escaped form");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenWhitespaceIsTruncated_ShouldNotSplitAnEscapeSequence()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(4))
+			{
+				result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo \n\n\n\n", "foo");
+			}
+
+			await That(result).IsEqualTo("""
+			                             it was "foo …", which has unexpected whitespace (" \n\n\n…" at the end)
+			                             """)
+				.Because("the limit applies to the whitespace characters, not to their escaped form");
+		}
+
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
