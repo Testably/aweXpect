@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
 namespace aweXpect.SourceGenerators.Helpers;
 
@@ -57,7 +58,35 @@ internal static class CollectionExpectationDiagnostics
 /// <summary>
 ///     A diagnostic of a declaration, kept as data until the output step reports it.
 /// </summary>
-internal sealed record Problem(DiagnosticDescriptor Descriptor, Location Location, string Subject, string Reason = "")
+/// <remarks>
+///     A <see cref="Location" /> holds its syntax tree, which every edit replaces, so it would defeat the caching of the
+///     pipeline; only its position is kept, and the location is rebuilt from it when reporting.
+/// </remarks>
+internal sealed record Problem
 {
-	public Diagnostic ToDiagnostic() => Diagnostic.Create(Descriptor, Location, Subject, Reason);
+	private readonly string? _filePath;
+	private readonly LinePositionSpan _lineSpan;
+	private readonly TextSpan _span;
+
+	public Problem(DiagnosticDescriptor descriptor, Location location, string subject, string reason = "")
+	{
+		Descriptor = descriptor;
+		Subject = subject;
+		Reason = reason;
+		if (location.IsInSource)
+		{
+			_filePath = location.SourceTree!.FilePath;
+			_span = location.SourceSpan;
+			_lineSpan = location.GetLineSpan().Span;
+		}
+	}
+
+	public DiagnosticDescriptor Descriptor { get; }
+	public string Subject { get; }
+	public string Reason { get; }
+
+	public Diagnostic ToDiagnostic()
+		=> Diagnostic.Create(Descriptor,
+			_filePath is null ? Location.None : Location.Create(_filePath, _span, _lineSpan),
+			Subject, Reason);
 }

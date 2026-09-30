@@ -59,11 +59,12 @@ public static class ReflectionFallback
 	/// </summary>
 	/// <remarks>
 	///     A compiler-generated type, such as an anonymous one, cannot be named in an attribute, so the generator has
-	///     to see it at a marked call site instead.
+	///     to see it at a marked call site instead, which it cannot through a member typed as <see cref="object" /> or
+	///     in another assembly than the one creating it.
 	/// </remarks>
 	internal static NotSupportedException NotSupported(Type type, string members)
 		=> NotSupported($"The {members} of {Formatter.Format(type)}",
 			type.Name.Length > 0 && type.Name[0] == '<'
-				? "Let the source generator see the type at a marked call site."
+				? "Let the source generator see the type as the static type of an argument at a marked call site, or of a member reached from one, in the assembly that creates it."
 				: $"Register the type, for example with [assembly: GenerateMetadata(typeof({Formatter.Format(type)}))].");
 }

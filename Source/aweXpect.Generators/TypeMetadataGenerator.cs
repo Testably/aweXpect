@@ -59,6 +59,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		IncrementalValueProvider<bool> isSupported = context.CompilationProvider
 			.Select(static (c, _) => SupportsRegistration(c) && HasModuleInitializer(c) && HasLanguageVersion(c));
 
+		IncrementalValueProvider<bool> supportsBatch = context.CompilationProvider
+			.Select(static (c, _) => SupportsBatch(c));
+
 		IncrementalValueProvider<EquatableArray<TypeRegistration>> fromCallSites = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				static (node, _) => node is InvocationExpressionSyntax,
@@ -71,8 +74,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		IncrementalValueProvider<AssemblyRegistrations> fromAssembly = context.CompilationProvider
 			.Select(static (c, cancellationToken) => FromAssemblyAttributes(c, cancellationToken));
 
-		context.RegisterSourceOutput(fromCallSites.Combine(fromAssembly).Combine(isSupported),
-			static (spc, source) => Emit(spc, source.Left.Left, source.Left.Right, source.Right));
+		context.RegisterSourceOutput(fromCallSites.Combine(fromAssembly).Combine(isSupported).Combine(supportsBatch),
+			static (spc, source) => Emit(spc, source.Left.Left.Left, source.Left.Left.Right, source.Left.Right,
+				source.Right));
 
 		context.RegisterSourceOutput(fromAssembly.Combine(isSupported).Combine(context.CompilationProvider),
 			static (spc, source) => ReportUnregistered(spc, source.Left.Left, source.Left.Right, source.Right));
@@ -384,6 +388,17 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		   true;
 
 	/// <remarks>
+	///     An older aweXpect.Core cannot publish the registrations together, so there each is published as it is made.
+	/// </remarks>
+	private static bool SupportsBatch(Compilation compilation)
+		=> compilation
+			.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+			?.GetMembers("RegisterBatch")
+			.OfType<IMethodSymbol>()
+			.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 1) ==
+		   true;
+
+	/// <remarks>
 	///     The generated file needs nothing newer than C# 9, but a consumer pinned below that could not compile the
 	///     module initializer.
 	/// </remarks>
@@ -403,8 +418,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		         SymbolEqualityComparer.Default.Equals(attribute.ContainingAssembly, compilation.Assembly)));
 	}
 
+	/// <remarks>
+	///     The registrations run in one batch where aweXpect.Core supports it, so that a comparison on another thread,
+	///     which reaches a type of this assembly through its runtime type while the assembly is loaded, never sees the
+	///     type with only some of its members.
+	/// </remarks>
 	private static void Emit(SourceProductionContext context, EquatableArray<TypeRegistration> fromCallSites,
-		AssemblyRegistrations fromAssembly, bool isSupported)
+		AssemblyRegistrations fromAssembly, bool isSupported, bool supportsBatch)
 	{
 		if (!isSupported)
 		{
@@ -441,9 +461,21 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		                	internal static void Register()
 		                	{
 		                """);
+		string indent = supportsBatch ? "\t\t\t" : "\t\t";
+		if (supportsBatch)
+		{
+			body.Append("\t\t").Append(Registry).AppendLine(".RegisterBatch(static () =>");
+			body.AppendLine("\t\t{");
+		}
+
 		for (int i = 0; i < registrations.Count; i++)
 		{
-			body.Append("\t\tRegister").Append(i).AppendLine("();");
+			body.Append(indent).Append("Register").Append(i).AppendLine("();");
+		}
+
+		if (supportsBatch)
+		{
+			body.AppendLine("\t\t});");
 		}
 
 		body.AppendLine("\t}");
@@ -1087,7 +1119,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return sb.ToString();
 			}
 
-			string? probe = ProbeExpression(type);
+			List<string> helpers = [];
+			string? probe = ProbeExpression(type, helpers);
 			if (probe is null)
 			{
 				return null;
@@ -1101,15 +1134,22 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					.AppendLine(");");
 			}
 
+			foreach (string helper in helpers)
+			{
+				sb.Append("\t\t").AppendLine(helper);
+			}
+
 			return sb.ToString();
 		}
 
 		/// <remarks>
 		///     An anonymous type has no name that can be written in source, so the type argument is inferred from an
 		///     instance instead: two anonymous creation expressions with the same members unify to one type within an
-		///     assembly.
+		///     assembly. Any other type that cannot be named, such as a generic over an anonymous type, is produced by
+		///     one of the <paramref name="helpers" />, a generic local function that infers the anonymous types from
+		///     their probes.
 		/// </remarks>
-		private static string? ProbeExpression(ITypeSymbol type)
+		private static string? ProbeExpression(ITypeSymbol type, List<string> helpers)
 		{
 			if (IsNameable(type))
 			{
@@ -1120,7 +1160,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				case IArrayTypeSymbol { IsSZArray: true, } array:
 				{
-					string? element = ProbeExpression(array.ElementType);
+					string? element = ProbeExpression(array.ElementType, helpers);
 					return element is null ? null : $"new[] {{ {element}, }}";
 				}
 				case INamedTypeSymbol { IsAnonymousType: true, } anonymous:
@@ -1128,7 +1168,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					StringBuilder sb = new("new { ");
 					foreach (IPropertySymbol property in anonymous.GetMembers().OfType<IPropertySymbol>())
 					{
-						string? value = ProbeExpression(property.Type);
+						string? value = ProbeExpression(property.Type, helpers);
 						if (value is null)
 						{
 							return null;
@@ -1138,6 +1178,96 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					}
 
 					return sb.Append('}').ToString();
+				}
+				default:
+				{
+					List<string> probes = [];
+					string? spelled = SpellWithTypeParameters(type, probes, helpers);
+					if (spelled is null || probes.Count == 0)
+					{
+						return null;
+					}
+
+					string name = "Probe" + helpers.Count;
+					string[] typeParameters = probes.Select((_, i) => "T" + i).ToArray();
+					helpers.Add($"static {spelled} {name}<{string.Join(", ", typeParameters)}>(" +
+					            string.Join(", ", typeParameters.Select((x, i) => $"{x} p{i}")) + ")" +
+					            string.Concat(typeParameters.Select(x => $" where {x} : class")) + " => default;");
+					return $"{name}({string.Join(", ", probes)})";
+				}
+			}
+		}
+
+		/// <summary>
+		///     Spells the <paramref name="type" /> with a type parameter <c>T0</c>, <c>T1</c>, ... in place of each
+		///     anonymous type, whose probe expression is added to the <paramref name="probes" />.
+		/// </summary>
+		/// <remarks>
+		///     The type parameters are constrained to reference types, which every anonymous type satisfies, so that a
+		///     generic type that constrains its own parameter that way accepts them.
+		/// </remarks>
+		private static string? SpellWithTypeParameters(ITypeSymbol type, List<string> probes, List<string> helpers)
+		{
+			if (IsNameable(type))
+			{
+				return type.ToDisplayString(TypeFormat);
+			}
+
+			switch (type)
+			{
+				case IArrayTypeSymbol array:
+				{
+					StringBuilder ranks = new();
+					ITypeSymbol element = array;
+					while (element is IArrayTypeSymbol current)
+					{
+						ranks.Append('[').Append(',', current.Rank - 1).Append(']');
+						element = current.ElementType;
+					}
+
+					string? spelled = SpellWithTypeParameters(element, probes, helpers);
+					return spelled is null ? null : spelled + ranks;
+				}
+				case INamedTypeSymbol { IsAnonymousType: true, }:
+				{
+					string? probe = ProbeExpression(type, helpers);
+					if (probe is null)
+					{
+						return null;
+					}
+
+					probes.Add(probe);
+					return "T" + (probes.Count - 1);
+				}
+				case INamedTypeSymbol named:
+				{
+					named = named.TupleUnderlyingType ?? named;
+					string? prefix = named.ContainingType is not null
+						? SpellWithTypeParameters(named.ContainingType, probes, helpers) is { } container
+							? container + "."
+							: null
+						: named.ContainingNamespace.IsGlobalNamespace
+							? "global::"
+							: named.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + ".";
+					if (prefix is null)
+					{
+						return null;
+					}
+
+					List<string> arguments = [];
+					foreach (ITypeSymbol typeArgument in named.TypeArguments)
+					{
+						string? argument = SpellWithTypeParameters(typeArgument, probes, helpers);
+						if (argument is null)
+						{
+							return null;
+						}
+
+						arguments.Add(argument);
+					}
+
+					return prefix + Identifier(named.Name) +
+					       (arguments.Count == 0 ? "" : "<" + string.Join(", ", arguments) + ">");
 				}
 				default:
 					return null;

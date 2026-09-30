@@ -373,6 +373,40 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenTheHelperWithAProblemIsOnlyTouched_ShouldReuseTheCachedOutput()
+	{
+		const string helper = """
+		                      namespace Lib;
+
+		                      public static partial class ThatList
+		                      {
+		                      	[CreateExpectationFamily("HasItem")]
+		                      	internal static IThat<TItem> HasItemCore<TItem>(IThat<IEnumerable<TItem>?> subject, TItem expected)
+		                      		=> null!;
+		                      }
+		                      """;
+		CSharpCompilation compilation = GeneratorRunner.CreateCompilation([Stubs, Usings + helper,], false);
+		GeneratorDriver driver = CSharpGeneratorDriver.Create(
+			[new CollectionExpectationGenerator().AsSourceGenerator(),],
+			driverOptions: new GeneratorDriverOptions(IncrementalGeneratorOutputKind.None, true));
+		driver = driver.RunGenerators(compilation);
+		SyntaxTree tree = compilation.SyntaxTrees.Last();
+		Compilation touched = compilation.ReplaceSyntaxTree(tree,
+			CSharpSyntaxTree.ParseText(tree + Environment.NewLine + "// touched", (CSharpParseOptions)tree.Options));
+
+		driver = driver.RunGenerators(touched);
+
+		GeneratorRunResult result = driver.GetRunResult().Results[0];
+		IEnumerable<IncrementalStepRunReason> reasons = result.TrackedOutputSteps
+			.SelectMany(x => x.Value).SelectMany(x => x.Outputs).Select(x => x.Reason);
+		await That(result.Diagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect3003" && x.Location.GetLineSpan().StartLinePosition.Line == 9);
+		await That(reasons).IsNotEmpty();
+		await That(reasons).All().Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
+			.Because("the problem keeps only the position of its location, not the syntax tree that every edit replaces");
+	}
+
+	[Fact]
 	public async Task WithFactory_ShouldFillTheParameterOfTheReturnTypeAndBindWhatItNames()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

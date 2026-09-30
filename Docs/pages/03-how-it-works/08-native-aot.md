@@ -31,9 +31,7 @@ Some types cannot be seen by the generator, because it works from the types decl
 - a `private`, `protected` or `file`-local type cannot be referenced by generated code and is compared through
   reflection,
 - a value that reaches the comparison through your own extension method is only registered if the extension's
-  parameter or type parameter carries `[RequiresMemberMetadata]`,
-- an anonymous type with a member holding a collection of anonymous types, other than an array, cannot be written
-  as an instance and is compared through reflection; the element type itself is registered.
+  parameter or type parameter carries `[RequiresMemberMetadata]`.
 
 A type the generator merely did not see, such as the runtime type behind an `object` member or a value passed through
 an unmarked extension, can be named explicitly to register it anyway:

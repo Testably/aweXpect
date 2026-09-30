@@ -1,4 +1,5 @@
 #if NET8_0_OR_GREATER
+using System.Linq;
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.Core.Metadata;
@@ -12,6 +13,25 @@ namespace aweXpect.Core.Tests.Core.Metadata;
 public sealed class TypeMetadataRegistrationTests
 {
 #if DEBUG
+	[Fact]
+	public async Task AnonymousTypeWithAGenericMemberOverAnAnonymousType_ShouldBeRegisteredByTheGenerator()
+	{
+		var items = new[] { 1, 2, }.Select(i => new
+		{
+			Id = i,
+		});
+		var subject = new
+		{
+			Items = items.ToList(),
+			Map = items.ToDictionary(x => x.Id),
+		};
+
+		await That(subject).IsEquivalentTo(subject);
+
+		await That(TypeMetadataRegistry.Instance.TryGet(subject.GetType(), out _)).IsTrue()
+			.Because("the generated probe has to unify with the anonymous type of the call site");
+	}
+
 	[Fact]
 	public async Task GenerateMetadataAttribute_ShouldRegisterExplicitImplementations()
 	{

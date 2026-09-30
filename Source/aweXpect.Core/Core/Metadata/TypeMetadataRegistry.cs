@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 
 namespace aweXpect.Core.Metadata;
@@ -86,27 +88,43 @@ public static class TypeMetadataRegistry
 			(subject, handler) => addHandler((T)subject, handler),
 			(subject, handler) => removeHandler((T)subject, handler));
 
+	/// <summary>
+	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
+	///     it returns.
+	/// </summary>
+	/// <remarks>
+	///     A lookup on another thread sees a type either as it was before or with every member and event registered for
+	///     it, never with only some of them. When <paramref name="register" /> throws, none of its registrations are
+	///     published. A nested call joins the outer one.
+	/// </remarks>
+	public static void RegisterBatch(Action register)
+		=> Instance.RegisterBatch(register);
+
 	private static Func<object, object?> Wrap<T, TMember>(Func<T, TMember> getValue)
 		=> subject => getValue((T)subject);
 
 	internal sealed class Registration
 	{
 		private readonly ConcurrentDictionary<Type, TypeMetadata> _metadata = new();
+		private readonly ThreadLocal<Dictionary<Type, TypeMetadata>?> _pending = new();
 		private int _order;
 
 		public void AddField(Type type, string name, Type memberType, Func<object, object?> getValue)
-			=> GetOrAdd(type).Fields[name] = new RegisteredMember(name, memberType, getValue, NextOrder());
+			=> Add(type, metadata
+				=> metadata.Fields[name] = new RegisteredMember(name, memberType, getValue, NextOrder()));
 
 		public void AddProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
-			=> GetOrAdd(type).Properties[name] = new RegisteredMember(name, memberType, getValue, NextOrder());
+			=> Add(type, metadata
+				=> metadata.Properties[name] = new RegisteredMember(name, memberType, getValue, NextOrder()));
 
 		public void AddExplicitProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
-			=> GetOrAdd(type).ExplicitProperties[name] = new RegisteredMember(name, memberType, getValue, NextOrder());
+			=> Add(type, metadata
+				=> metadata.ExplicitProperties[name] = new RegisteredMember(name, memberType, getValue, NextOrder()));
 
 		public void AddEvent(Type type, string name, Func<Action<object?[]>, Delegate> createHandler,
 			Action<object, Delegate> addHandler, Action<object, Delegate> removeHandler)
-			=> GetOrAdd(type).Events[name] =
-				new RegisteredEvent(name, createHandler, addHandler, removeHandler, NextOrder());
+			=> Add(type, metadata => metadata.Events[name] =
+				new RegisteredEvent(name, createHandler, addHandler, removeHandler, NextOrder()));
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -114,7 +132,60 @@ public static class TypeMetadataRegistry
 		public bool TryGet(Type type, [NotNullWhen(true)] out TypeMetadata? metadata)
 			=> _metadata.TryGetValue(type, out metadata);
 
-		private TypeMetadata GetOrAdd(Type type) => _metadata.GetOrAdd(type, _ => new TypeMetadata());
+		/// <remarks>
+		///     The registrations are collected per thread, because a module initializer that registers in a batch must
+		///     not capture the registrations another thread makes meanwhile.
+		/// </remarks>
+		public void RegisterBatch(Action register)
+		{
+			if (_pending.Value is not null)
+			{
+				register();
+				return;
+			}
+
+			Dictionary<Type, TypeMetadata> pending = new();
+			_pending.Value = pending;
+			try
+			{
+				register();
+			}
+			finally
+			{
+				_pending.Value = null;
+			}
+
+			foreach (KeyValuePair<Type, TypeMetadata> entry in pending)
+			{
+				Publish(entry.Key, entry.Value);
+			}
+		}
+
+		private void Add(Type type, Action<TypeMetadata> add)
+		{
+			if (_pending.Value is { } pending)
+			{
+				if (!pending.TryGetValue(type, out TypeMetadata? metadata))
+				{
+					metadata = new TypeMetadata();
+					pending.Add(type, metadata);
+				}
+
+				add(metadata);
+				return;
+			}
+
+			TypeMetadata single = new();
+			add(single);
+			Publish(type, single);
+		}
+
+		/// <remarks>
+		///     A published entry is never changed, but replaced by a merged copy, so that a lookup that already holds it
+		///     keeps a consistent view.
+		/// </remarks>
+		private void Publish(Type type, TypeMetadata metadata)
+			=> _metadata.AddOrUpdate(type, metadata, (_, published) => published.MergedWith(metadata));
 
 		/// <remarks>
 		///     Registrations keep the order the generator emitted them in, so that a failure message lists the members of
@@ -133,6 +204,29 @@ public static class TypeMetadataRegistry
 			new(StringComparer.Ordinal);
 
 		public ConcurrentDictionary<string, RegisteredEvent> Events { get; } = new(StringComparer.Ordinal);
+
+		/// <summary>
+		///     A copy of this metadata in which the <paramref name="registered" /> members and events replace those of the
+		///     same name.
+		/// </summary>
+		public TypeMetadata MergedWith(TypeMetadata registered)
+		{
+			TypeMetadata merged = new();
+			Merge(merged.Fields, Fields, registered.Fields);
+			Merge(merged.Properties, Properties, registered.Properties);
+			Merge(merged.ExplicitProperties, ExplicitProperties, registered.ExplicitProperties);
+			Merge(merged.Events, Events, registered.Events);
+			return merged;
+		}
+
+		private static void Merge<T>(ConcurrentDictionary<string, T> merged,
+			ConcurrentDictionary<string, T> published, ConcurrentDictionary<string, T> registered)
+		{
+			foreach (KeyValuePair<string, T> entry in published.Concat(registered))
+			{
+				merged[entry.Key] = entry.Value;
+			}
+		}
 	}
 
 	internal sealed class RegisteredMember(string name, Type memberType, Func<object, object?> getValue, int order)

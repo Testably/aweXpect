@@ -41,6 +41,23 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task ShouldRegisterEverythingInOneBatch()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Subject());"),]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains(string.Join(Environment.NewLine,
+				"\t\t\tglobal::aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterBatch(static () =>",
+				"\t\t\t{",
+				"\t\t\t\tRegister0();",
+				"\t\t\t\tRegister1();",
+				"\t\t\t\tRegister2();",
+				"\t\t\t});"))
+			.Because("a comparison on another thread must not see a type with only some of its members");
+	}
+
+	[Fact]
 	public async Task WhenAnonymousTypeCarriesATypeParameter_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -57,6 +74,43 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("default(T)")
 			.Because("the type parameter of the enclosing method cannot be named in a module initializer");
+	}
+
+	[Fact]
+	public async Task WhenAnonymousTypeHasAGenericMemberOverAnAnonymousType_ShouldRegisterItThroughAProbe()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Call("""
+			     var item = new { Id = 1 };
+			     var items = System.Linq.Enumerable.Select(new[] { 1 }, i => new { Id = i });
+			     var expected = new
+			     {
+			     	Items = items,
+			     	List = System.Linq.Enumerable.ToList(items),
+			     	Map = System.Linq.Enumerable.ToDictionary(items, x => "k"),
+			     	Pair = (1, item),
+			     	Grid = new[,] { { item } },
+			     	Jagged = new[] { new[,] { { item } } },
+			     };
+			     Expect.That(expected).IsEquivalentTo(expected);
+			     """),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains(
+				"var probe = new { Items = Probe0(new { Id = default(int), }), List = Probe1(new { Id = default(int), }), Map = Probe2(new { Id = default(int), }), Pair = Probe3(new { Id = default(int), }), Grid = Probe4(new { Id = default(int), }), Jagged = new[] { Probe5(new { Id = default(int), }), }, };")
+			.Because("a generic over an anonymous type cannot be named either, so a helper infers it from the probe");
+		await That(result.Generated)
+			.Contains("static global::System.Collections.Generic.IEnumerable<T0> Probe0<T0>(T0 p0) where T0 : class => default;");
+		await That(result.Generated)
+			.Contains("static global::System.Collections.Generic.Dictionary<string, T0> Probe2<T0>(T0 p0) where T0 : class => default;");
+		await That(result.Generated)
+			.Contains("static global::System.ValueTuple<int, T0> Probe3<T0>(T0 p0) where T0 : class => default;");
+		await That(result.Generated).Contains("static T0[,] Probe4<T0>(T0 p0) where T0 : class => default;");
+		await That(result.Generated).Contains("RegisterProperty(probe, \"Map\", o => o.Map);");
+		await That(result.Generated).Contains("RegisterField(probe, \"Item2\", o => o.Item2);")
+			.Because("the tuple over the anonymous type gets its own registration through a helper as well");
 	}
 
 	[Fact]
@@ -402,6 +456,41 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated file must not use anything newer than the module initializer itself");
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
+	}
+
+	[Fact]
+	public async Task WhenCoreCannotRegisterABatch_ShouldRegisterEachTypeDirectly()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Plain { public int Own { get; set; } } }",
+			"""
+			namespace aweXpect.Core.Metadata
+			{
+				public sealed class GenerateMetadataAttribute(System.Type type) : System.Attribute
+				{
+					public System.Type Type { get; } = type;
+				}
+
+				public static class TypeMetadataRegistry
+				{
+					public static void RegisterField<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					public static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					public static void RegisterProperty<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+				}
+			}
+			""",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Plain))]",
+		], false);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains(string.Join(Environment.NewLine,
+			"\t\tinternal static void Register()",
+			"\t\t{",
+			"\t\t\tRegister0();",
+			"\t\t}"));
+		await That(result.Generated).DoesNotContain("RegisterBatch")
+			.Because("an aweXpect.Core without the batch would not compile it");
 	}
 
 	[Fact]
