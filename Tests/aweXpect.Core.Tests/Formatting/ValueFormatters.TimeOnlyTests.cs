@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text;
+﻿using System.Text;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -87,4 +86,3 @@ public partial class ValueFormatters
 		}
 	}
 }
-#endif

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Collections.Concurrent;
-using System.Collections.Frozen;
-using System.Collections.Immutable;
 #endif
 
 namespace aweXpect.Tests;
@@ -396,12 +396,12 @@ public sealed partial class ThatDictionary
 				TheoryData<IDictionary<string, int>> dictionaries = new(
 					new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
 					new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
-					new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase));
+					new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase),
+					entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase),
+					entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase));
 #if NET8_0_OR_GREATER
 				dictionaries.Add(new ConcurrentDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase));
-				dictionaries.Add(entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase));
-				dictionaries.Add(entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase));
-				dictionaries.Add(entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase));
 #endif
 				return dictionaries;
 			}

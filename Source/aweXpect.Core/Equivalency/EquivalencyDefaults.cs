@@ -41,6 +41,9 @@ public static class EquivalencyDefaults
 	/// <remarks>
 	///     The public members of a number either only describe it (<c>Sign</c>, <c>IsEven</c>) or do not exist at all
 	///     (<c>Int128</c>), so they cannot tell two values apart.
+	///     <para />
+	///     netstandard2.0 has no <c>Half</c>, <c>NFloat</c>, <c>Int128</c> or <c>UInt128</c>, but is served to runtimes
+	///     that have them, so they are matched by name there.
 	/// </remarks>
 	private static bool IsNumber(Type type)
 	{
@@ -49,6 +52,14 @@ public static class EquivalencyDefaults
 		    || type == typeof(NFloat)
 		    || type == typeof(Int128)
 		    || type == typeof(UInt128))
+		{
+			return true;
+		}
+#else
+		if (type.FullName is "System.Half"
+		    or "System.Runtime.InteropServices.NFloat"
+		    or "System.Int128"
+		    or "System.UInt128")
 		{
 			return true;
 		}

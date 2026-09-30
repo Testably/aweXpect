@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-#if NET8_0_OR_GREATER
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Collections.Immutable;
-#endif
 
 namespace aweXpect.Tests;
 
@@ -162,7 +161,18 @@ public sealed partial class ThatDictionary
 
 		public sealed class KeyComparerTests
 		{
-#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForAFrozenDictionary_ShouldUseTheKeyComparer()
+			{
+				IDictionary<string, int> subject = new Dictionary<string, int> { { "a", 1 }, }
+					.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+
+				async Task Act()
+					=> await That(subject).Keys.Contains("A");
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task ForAnImmutableDictionary_ShouldUseTheKeyComparer()
 			{
@@ -174,7 +184,19 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow();
 			}
-#endif
+
+			[Fact]
+			public async Task ForAnImmutableSortedDictionary_ShouldOrderByTheKeyComparer()
+			{
+				IDictionary<string, int> subject = ImmutableSortedDictionary.Create<string, int>(new ReverseComparer())
+					.Add("a", 1)
+					.Add("b", 2);
+
+				async Task Act()
+					=> await That(subject).Keys.IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
 
 			[Fact]
 			public async Task ForASortedDictionary_ShouldOrderByTheKeyComparer()

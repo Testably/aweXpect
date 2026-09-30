@@ -191,6 +191,12 @@ public class ObjectEqualityOptionsTests
 		{
 			double.PositiveInfinity, long.MaxValue
 		},
+		{
+			(nint)(-1), ulong.MaxValue
+		},
+		{
+			(nuint)1, 1.5
+		},
 #if NET8_0_OR_GREATER
 		{
 			(Int128)(-1), UInt128.MaxValue
@@ -224,10 +230,19 @@ public class ObjectEqualityOptionsTests
 		{
 			uint.MaxValue, (long)uint.MaxValue
 		},
-#if NET8_0_OR_GREATER
 		{
 			(nint)1, 1
 		},
+		{
+			(nint)(-2), -2.0
+		},
+		{
+			(nuint)3, (byte)3
+		},
+		{
+			(nint)4, (nuint)4
+		},
+#if NET8_0_OR_GREATER
 		{
 			(Half)10, 10
 		},
