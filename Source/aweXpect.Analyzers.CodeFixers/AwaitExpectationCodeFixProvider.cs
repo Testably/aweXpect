@@ -160,30 +160,19 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		}
 
 		Dictionary<SyntaxNode, SyntaxNode> replacements = new() { [target] = awaited, };
-		TypeSyntax? newReturnType = null;
 		switch (GetTaskKind(symbol.ReturnType))
 		{
-			case TaskKind.NonGeneric:
-				if (!TryReplaceCompletedTaskReturns(body, semanticModel, replacements, cancellationToken))
-				{
-					return null;
-				}
-
-				break;
-			case TaskKind.Generic:
-				if (!TryAwaitReturnedTasks(body, semanticModel, replacements, cancellationToken))
-				{
-					return null;
-				}
-
-				break;
-			default:
+			case TaskKind.NonGeneric
+				when !TryReplaceCompletedTaskReturns(body, semanticModel, replacements, cancellationToken):
+			case TaskKind.Generic when !TryAwaitReturnedTasks(body, semanticModel, replacements, cancellationToken):
+				return null;
+			case TaskKind.None:
 				if (await HasFixedSignatureAsync(symbol, modifiers, solution, cancellationToken).ConfigureAwait(false))
 				{
 					return null;
 				}
 
-				newReturnType = SyntaxFactory.ParseTypeName(symbol.ReturnsVoid
+				returnType = SyntaxFactory.ParseTypeName(symbol.ReturnsVoid
 						? "System.Threading.Tasks.Task"
 						: $"System.Threading.Tasks.Task<{returnType.WithoutTrivia()}>")
 					.WithTriviaFrom(returnType)
@@ -191,33 +180,41 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 				break;
 		}
 
-		SyntaxNode newFunction = function.ReplaceNodes(replacements.Keys, (original, _) => replacements[original]);
-		if (newFunction.GetAnnotatedNodes(RemovedReturnAnnotation).FirstOrDefault() is StatementSyntax
+		SyntaxNode newFunction = RemoveTrailingReturn(
+			function.ReplaceNodes(replacements.Keys, (original, _) => replacements[original]));
+		modifiers = AddAsync(modifiers, ref returnType);
+		newFunction = newFunction switch
+		{
+			MethodDeclarationSyntax method => method.WithModifiers(modifiers).WithReturnType(returnType),
+			LocalFunctionStatementSyntax localFunction => localFunction.WithModifiers(modifiers)
+				.WithReturnType(returnType),
+			_ => newFunction,
+		};
+		return (function, newFunction.WithAdditionalAnnotations(Formatter.Annotation));
+	}
+
+	/// <summary>
+	///     Drops the <c>return</c> statement marked for removal at the end of the body, keeping its comments.
+	/// </summary>
+	private static SyntaxNode RemoveTrailingReturn(SyntaxNode function)
+	{
+		if (function.GetAnnotatedNodes(RemovedReturnAnnotation).FirstOrDefault() is not StatementSyntax
 		    {
 			    Parent: BlockSyntax block,
 		    } removedReturn)
 		{
-			SyntaxTriviaList leading = removedReturn.GetLeadingTrivia();
-			IEnumerable<SyntaxTrivia> comments = leading.All(trivia =>
-				trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia))
-				? []
-				: leading.Reverse().SkipWhile(trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia)).Reverse();
-			newFunction = newFunction.ReplaceNode(block, block
-				.WithStatements(block.Statements.Remove(removedReturn))
-				.WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(
-					comments.Concat(block.CloseBraceToken.LeadingTrivia))));
+			return function;
 		}
 
-		newReturnType ??= returnType;
-		modifiers = AddAsync(modifiers, ref newReturnType);
-		newFunction = newFunction switch
-		{
-			MethodDeclarationSyntax method => method.WithModifiers(modifiers).WithReturnType(newReturnType),
-			LocalFunctionStatementSyntax localFunction => localFunction.WithModifiers(modifiers)
-				.WithReturnType(newReturnType),
-			_ => newFunction,
-		};
-		return (function, newFunction.WithAdditionalAnnotations(Formatter.Annotation));
+		SyntaxTriviaList leading = removedReturn.GetLeadingTrivia();
+		IEnumerable<SyntaxTrivia> comments = leading.All(trivia =>
+			trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+			? []
+			: leading.Reverse().SkipWhile(trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia)).Reverse();
+		return function.ReplaceNode(block, block
+			.WithStatements(block.Statements.Remove(removedReturn))
+			.WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(
+				comments.Concat(block.CloseBraceToken.LeadingTrivia))));
 	}
 
 	/// <summary>
