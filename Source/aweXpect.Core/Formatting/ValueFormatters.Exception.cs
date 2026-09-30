@@ -42,6 +42,11 @@ public static partial class ValueFormatters
 			return;
 		}
 
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
+			return;
+		}
+
 		FormatType(value.GetType(), stringBuilder);
 		string? message = value.Message;
 		if (string.IsNullOrEmpty(message))

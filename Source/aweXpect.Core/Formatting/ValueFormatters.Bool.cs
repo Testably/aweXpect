@@ -11,13 +11,15 @@ public static partial class ValueFormatters
 		this ValueFormatter formatter,
 		bool value,
 		FormattingOptions? options = null)
-		=> (value, options?.IncludeType) switch
-		{
-			(true, true) => "bool True",
-			(false, true) => "bool False",
-			(true, _) => "True",
-			(false, _) => "False",
-		};
+		=> TryFormatWithRegistrations(value, options, out string? customValue)
+			? customValue
+			: (value, options?.IncludeType) switch
+			{
+				(true, true) => "bool True",
+				(false, true) => "bool False",
+				(true, _) => "True",
+				(false, _) => "False",
+			};
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />

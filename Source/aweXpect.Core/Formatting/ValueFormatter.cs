@@ -30,11 +30,14 @@ public class ValueFormatter
 	internal static Registration[] Registrations => Volatile.Read(ref _registrations);
 
 	/// <summary>
-	///     Registers a custom <paramref name="formatter" /> to use for formatting <see cref="object" />s.
+	///     Registers a custom <paramref name="formatter" /> to use for formatting values.
 	/// </summary>
 	/// <remarks>
 	///     The registration is process-wide: it applies to all threads and async flows, including tests that run in
 	///     parallel, until the returned <see cref="IDisposable" /> is disposed.
+	///     <para />
+	///     It is consulted for every value that is not <see langword="null" />, whichever overload of
+	///     <see cref="ValueFormatters" /> formats it, so it must not format a value it accepts through them again.
 	///     <para />
 	///     When several registered formatters can format a value, the most recently registered one is used.
 	/// </remarks>

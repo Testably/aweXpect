@@ -19,6 +19,11 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
+		if (TryFormatWithRegistrations(value, options, out string? customValue))
+		{
+			return customValue;
+		}
+
 		options ??= FormattingOptions.SingleLine;
 		return (options.UseLineBreaks, options.IncludeType) switch
 		{
@@ -42,6 +47,11 @@ public static partial class ValueFormatters
 		if (value == null)
 		{
 			stringBuilder.Append(ValueFormatter.NullString);
+			return;
+		}
+
+		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		{
 			return;
 		}
 

@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Collections.Generic;
-#endif
+﻿using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core.Metadata;
 
@@ -46,6 +44,27 @@ public partial class ValueFormatters
 				               }
 				             """)
 				.Because("the getter of the member succeeded, only formatting its value failed");
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenObjectContainsItselfThroughACollection_ShouldDetectTheRecursion()
+		{
+			Node subject = new();
+			subject.Children.Add(subject);
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was ValueFormatters.ObjectTests.Node {
+				                 Children = [
+				                 ValueFormatters.ObjectTests.Node { *recursive* }
+				               ]
+				               }
+				             """);
 		}
 
 		[Fact]
@@ -451,6 +470,30 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenTwoMembersAreTheSameInstance_ShouldFormatBoth()
+		{
+			InnerDummy inner = new()
+			{
+				InnerValue = "foo",
+			};
+			object value = new
+			{
+				A = inner,
+				B = inner,
+			};
+			string expectedResult =
+				"{ A = ValueFormatters.ObjectTests.InnerDummy { InnerValue = \"foo\" }, B = ValueFormatters.ObjectTests.InnerDummy { InnerValue = \"foo\" } }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("an instance is only a recursion within its own members, not next to itself");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WithType_ShouldDisplayClassNameOnlyOnce()
 		{
 			object value = new EmptyClass();
@@ -553,6 +596,19 @@ public partial class ValueFormatters
 		{
 			public int NotRegistered { get; set; }
 			public int Registered { get; set; }
+		}
+
+		/// <remarks>
+		///     Throws once its children were read too often, so that following a cycle fails the test instead of
+		///     overflowing the stack.
+		/// </remarks>
+		private sealed class Node
+		{
+			private readonly List<Node> _children = [];
+			private int _reads;
+
+			public List<Node> Children
+				=> ++_reads > 100 ? throw new InvalidOperationException("read too often") : _children;
 		}
 
 		private sealed class RecursiveDummy

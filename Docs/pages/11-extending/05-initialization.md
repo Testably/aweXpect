@@ -21,7 +21,9 @@ namespace MyExtension
 ```
 
 A registered formatter applies process-wide, to all threads and async flows, until the returned `IDisposable` is
-disposed. When several registered formatters can format a value, the most recently registered one is used.
+disposed. It is asked for every value that is not `null`, including built-in types such as `DateTime` or `int`,
+whether the value is formatted on its own, as an item of a collection or as a member of an object. When several
+registered formatters can format a value, the most recently registered one is used.
 
 :::note[Older target frameworks]
 `ModuleInitializerAttribute` is a compiler feature requiring C# 9, not a specific target framework. Where it is missing

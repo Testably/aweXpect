@@ -85,6 +85,23 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenDictionaryContainsItself_ShouldDetectTheRecursion()
+		{
+			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = {*recursive*} }}";
+			Dictionary<string, Holder> value = new();
+			value["self"] = new Holder(value);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenNonGeneric_ShouldFormatEntries()
 		{
 			string expectedResult = "{[\"1\"] = 1}";
@@ -165,6 +182,18 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		/// <remarks>
+		///     Throws once its value was read too often, so that following a cycle fails the test instead of
+		///     overflowing the stack.
+		/// </remarks>
+		private sealed class Holder(object value)
+		{
+			private int _reads;
+
+			public object Value
+				=> ++_reads > 100 ? throw new InvalidOperationException("read too often") : value;
 		}
 	}
 }

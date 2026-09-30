@@ -62,15 +62,13 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (value == TimeSpan.MaxValue)
+		if (TryFormatWithRegistrations(stringBuilder, value.Value, options))
 		{
-			stringBuilder.Append("TimeSpan.MaxValue");
 			return;
 		}
 
-		if (value == TimeSpan.MinValue)
+		if (TryAppendLimit(stringBuilder, value.Value))
 		{
-			stringBuilder.Append("TimeSpan.MinValue");
 			return;
 		}
 
@@ -120,6 +118,23 @@ public static partial class ValueFormatters
 
 		stringBuilder.Append(absoluteValue.Seconds);
 		AppendFractionOfSecond(stringBuilder, absoluteValue);
+	}
+
+	private static bool TryAppendLimit(StringBuilder stringBuilder, TimeSpan value)
+	{
+		if (value == TimeSpan.MaxValue)
+		{
+			stringBuilder.Append("TimeSpan.MaxValue");
+			return true;
+		}
+
+		if (value == TimeSpan.MinValue)
+		{
+			stringBuilder.Append("TimeSpan.MinValue");
+			return true;
+		}
+
+		return false;
 	}
 
 	private static void AppendFractionOfSecond(StringBuilder stringBuilder, TimeSpan absoluteValue)
