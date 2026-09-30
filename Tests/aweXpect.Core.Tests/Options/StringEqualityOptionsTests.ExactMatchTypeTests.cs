@@ -128,6 +128,24 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenSubjectIsLonger_ShouldEscapeTheSuperfluousText()
+		{
+			string sut = "foo\r\nbar";
+
+			async Task Act()
+				=> await That(sut).IsEqualTo("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that sut
+				             is equal to "foo",
+				             but it was "foo\r\nbar" with a length of 8, which is longer than the expected length of 3 and has superfluous:
+				               "\r\nbar"
+				             """).IgnoringNewlineStyle()
+				.Because("the superfluous text is escaped like the other values in the message");
+		}
+
+		[Fact]
 		public async Task WhenSubjectIsNull_ShouldFail()
 		{
 			string? sut = null;
@@ -141,6 +159,24 @@ public sealed partial class StringEqualityOptionsTests
 				             is equal to "",
 				             but it was <null>
 				             """);
+		}
+
+		[Fact]
+		public async Task WhenSubjectIsShorter_ShouldEscapeTheMissingText()
+		{
+			string sut = "foo";
+
+			async Task Act()
+				=> await That(sut).IsEqualTo("foo\n\"bar\"");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that sut
+				             is equal to "foo\n\"bar\"",
+				             but it was "foo" with a length of 3, which is shorter than the expected length of 9 and misses:
+				               "\n\"bar\""
+				             """).IgnoringNewlineStyle()
+				.Because("the missing text is escaped like the other values in the message");
 		}
 	}
 }

@@ -6,6 +6,23 @@ public class StringExtensionsTests
 {
 	public sealed class DisplayWhitespace
 	{
+		[Theory]
+		[InlineData("a\0b", @"a\0b")]
+		[InlineData("\u0001\u001F", @"\u0001\u001F")]
+		[InlineData("\u007F\u0085", @"\u007F\u0085")]
+		[InlineData("a\u00A0b", @"a\u00A0b")]
+		[InlineData("a\u200Bb", @"a\u200Bb")]
+		[InlineData("\u00AD\u200D\u2060\uFEFF", @"\u00AD\u200D\u2060\uFEFF")]
+		[InlineData("\u2007\u202F\u3000", @"\u2007\u202F\u3000")]
+		[InlineData("\u2028\u2029", @"\u2028\u2029")]
+		public async Task ShouldEscapeControlAndInvisibleCharacters(string input, string expected)
+		{
+			string result = input.DisplayWhitespace();
+
+			await That(result).IsEqualTo(expected)
+				.Because("characters that are invisible or look like a plain space must be told apart in a message");
+		}
+
 		[Fact]
 		public async Task ShouldEscapeNewlines()
 		{
@@ -18,11 +35,79 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
+		public async Task ShouldKeepBackslashesQuotesAndVisibleCharacters()
+		{
+			string input = "C:\\temp \"a\" 'b' äß€😀";
+
+			string result = input.DisplayWhitespace();
+
+			await That(result).IsEqualTo(input)
+				.Because("unquoted text like an exception message is not a literal, so a path keeps its backslashes");
+		}
+
+		[Fact]
 		public async Task WhenNull_ShouldReturnNull()
 		{
 			string? input = null;
 
 			string? result = input.DisplayWhitespace();
+
+			await That(result).IsNull();
+		}
+	}
+
+	public sealed class Escape
+	{
+		[Fact]
+		public async Task ShouldEscapeBackslash()
+		{
+			string input = "a\\nb";
+			string expected = @"a\\nb";
+
+			string result = input.Escape();
+
+			await That(result).IsEqualTo(expected)
+				.Because("a backslash in the value must not be confused with an escaped newline");
+		}
+
+		[Fact]
+		public async Task ShouldEscapeControlAndInvisibleCharacters()
+		{
+			string input = "\r\n\t\0\u00A0\u200B";
+			string expected = @"\r\n\t\0\u00A0\u200B";
+
+			string result = input.Escape();
+
+			await That(result).IsEqualTo(expected);
+		}
+
+		[Theory]
+		[InlineData('"', "a\"b'c", "a\\\"b'c")]
+		[InlineData('\'', "a\"b'c", "a\"b\\'c")]
+		public async Task ShouldOnlyEscapeTheGivenQuote(char quote, string input, string expected)
+		{
+			string result = input.Escape(quote);
+
+			await That(result).IsEqualTo(expected)
+				.Because("only the quote that encloses the value can end it early, like in a C# literal");
+		}
+
+		[Fact]
+		public async Task WhenNothingToEscape_ShouldReturnSameInstance()
+		{
+			string input = "foo bar äß😀";
+
+			string result = input.Escape();
+
+			await That(result).IsSameAs(input);
+		}
+
+		[Fact]
+		public async Task WhenNull_ShouldReturnNull()
+		{
+			string? input = null;
+
+			string? result = input.Escape();
 
 			await That(result).IsNull();
 		}
@@ -159,30 +244,6 @@ public class StringExtensionsTests
 			string result = input.SubstringUntilFirst(',');
 
 			await That(result).IsEqualTo("a");
-		}
-	}
-
-	public sealed class ToSingleLine
-	{
-		[Fact]
-		public async Task ShouldEscapeNewlines()
-		{
-			string input = "\r,\n;\t ";
-			string expected = "\\r,\\n;\t ";
-
-			string result = input.ToSingleLine();
-
-			await That(result).IsEqualTo(expected);
-		}
-
-		[Fact]
-		public async Task WhenNull_ShouldReturnNull()
-		{
-			string? input = null;
-
-			string? result = input.ToSingleLine();
-
-			await That(result).IsNull();
 		}
 	}
 

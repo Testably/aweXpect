@@ -59,7 +59,7 @@ public static partial class ValueFormatters
 			}
 			else
 			{
-				stringBuilder.Append(toString);
+				stringBuilder.Append(toString.DisplayWhitespace());
 			}
 		}
 	}
@@ -174,7 +174,13 @@ public static partial class ValueFormatters
 
 		try
 		{
-			formattedValue = Formatter.Format(member.GetValue(value), options, context);
+			object? memberValue = member.GetValue(value);
+			formattedValue = Formatter.Format(memberValue, memberValue is string && options.UseLineBreaks
+				? options with
+				{
+					UseLineBreaks = false,
+				}
+				: options, context);
 		}
 		catch (Exception exception)
 		{

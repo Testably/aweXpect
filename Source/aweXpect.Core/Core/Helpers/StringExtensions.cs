@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -7,9 +8,76 @@ namespace aweXpect.Core.Helpers;
 
 internal static class StringExtensions
 {
+	/// <summary>
+	///     Makes line breaks, tabs, control characters and invisible characters in unquoted text visible as escape
+	///     sequences (<c>\n</c>, <c>\r</c>, <c>\t</c>, <c>\0</c> or <c>\uXXXX</c>).
+	/// </summary>
+	/// <remarks>
+	///     Invisible characters are format characters (like a zero-width space) and separators other than the plain
+	///     space (like a non-breaking space). Backslashes are kept, as unquoted text, like an exception message, is not
+	///     read as a literal and often holds a path.
+	/// </remarks>
 	[return: NotNullIfNotNull(nameof(value))]
-	public static string? DisplayWhitespace(this string? value) =>
-		value?.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
+	public static string? DisplayWhitespace(this string? value) => Escape(value, null);
+
+	/// <summary>
+	///     Escapes the <paramref name="value" /> like a C# literal enclosed in <paramref name="quote" /> characters, so
+	///     that a backslash, the <paramref name="quote" /> and every character the <see cref="DisplayWhitespace" />
+	///     escapes are unambiguous.
+	/// </summary>
+	/// <param name="value">The value to escape.</param>
+	/// <param name="quote">
+	///     The enclosing quote, or <see langword="null" /> for unquoted text, in which backslashes are kept.
+	/// </param>
+	[return: NotNullIfNotNull(nameof(value))]
+	public static string? Escape(this string? value, char? quote = '"')
+	{
+		if (value is null)
+		{
+			return null;
+		}
+
+		StringBuilder? sb = null;
+		for (int index = 0; index < value.Length; index++)
+		{
+			char c = value[index];
+			if (!NeedsEscaping(c, quote))
+			{
+				sb?.Append(c);
+				continue;
+			}
+
+			sb ??= new StringBuilder(value.Length + 8).Append(value, 0, index);
+			sb.Append(c switch
+			{
+				'\n' => "\\n",
+				'\r' => "\\r",
+				'\t' => "\\t",
+				'\0' => "\\0",
+				_ when c == '\\' || c == quote => "\\" + c,
+				_ => "\\u" + ((int)c).ToString("X4", CultureInfo.InvariantCulture),
+			});
+		}
+
+		return sb?.ToString() ?? value;
+
+		static bool NeedsEscaping(char c, char? quote)
+		{
+			if (c == ' ')
+			{
+				return false;
+			}
+
+			if (quote is not null && (c == '\\' || c == quote))
+			{
+				return true;
+			}
+
+			return CharUnicodeInfo.GetUnicodeCategory(c) is UnicodeCategory.Control or UnicodeCategory.Format
+				or UnicodeCategory.SpaceSeparator or UnicodeCategory.LineSeparator
+				or UnicodeCategory.ParagraphSeparator;
+		}
+	}
 
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? Indent(this string? value, string? indentation = "  ",
@@ -94,10 +162,6 @@ internal static class StringExtensions
 
 		return name;
 	}
-
-	[return: NotNullIfNotNull(nameof(value))]
-	public static string? ToSingleLine(this string? value)
-		=> value?.Replace("\n", "\\n").Replace("\r", "\\r");
 
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? TruncateWithEllipsis(this string? value, int maxLength)

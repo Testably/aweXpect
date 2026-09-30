@@ -138,7 +138,7 @@ public sealed class StringDifference(
 			{
 				return
 					$"is shorter than the expected length of {expected.Length} and misses the prefix:{Environment.NewLine}" +
-					$"  \"{expected[..^actual.Length].DisplayWhitespace()}\"";
+					$"  \"{expected[..^actual.Length].Escape().TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get())}\"";
 			}
 
 			return prefix;
@@ -158,7 +158,7 @@ public sealed class StringDifference(
 		}
 
 		string visibleText = actual[trimStart..indexOfFirstMismatch];
-		whiteSpaceCountBeforeArrow += visibleText.Count(c => c is '\r' or '\n' or '\t');
+		whiteSpaceCountBeforeArrow += visibleText.Escape().Length - visibleText.Length;
 
 		string matchingString = actual[..indexOfFirstMismatch];
 		int lineNumber = matchingString.Count(c => c == '\n');
@@ -244,10 +244,10 @@ public sealed class StringDifference(
 		sb.Append(prefix).AppendLine(":");
 		sb.Append("  ").Append(arrowDown).AppendLine(ActualIndicator);
 		sb.Append("  ");
-		Formatter.Format(sb, actual.DisplayWhitespace().TruncateWithEllipsisOnWord(longMaxLength));
+		Formatter.Format(sb, actual.TruncateWithEllipsisOnWord(longMaxLength));
 		sb.AppendLine();
 		sb.Append("  ");
-		Formatter.Format(sb, expected.DisplayWhitespace().TruncateWithEllipsisOnWord(longMaxLength));
+		Formatter.Format(sb, expected.TruncateWithEllipsisOnWord(longMaxLength));
 		sb.AppendLine();
 		sb.Append("  ").Append(arrowUp).Append(GetExpected(matchType));
 		return sb.ToString();
@@ -276,7 +276,7 @@ public sealed class StringDifference(
 		}
 
 		stringBuilder.Append(text
-			.Substring(indexOfStartingPhrase, subjectLength).DisplayWhitespace().ToSingleLine());
+			.Substring(indexOfStartingPhrase, subjectLength).Escape());
 
 		if (text.Length > indexOfStartingPhrase + subjectLength)
 		{
@@ -311,7 +311,7 @@ public sealed class StringDifference(
 		}
 
 		stringBuilder.Append(text
-			.Substring(indexOfStartingPhrase, subjectLength).DisplayWhitespace().ToSingleLine());
+			.Substring(indexOfStartingPhrase, subjectLength).Escape());
 
 		if (text.Length > indexOfStartingPhrase + subjectLength)
 		{

@@ -112,6 +112,12 @@ built-in messages and respects the [formatting settings](../03-how-it-works/07-c
 | collection    | `["Help!", "Revolver"]`, with `(… and 2 more)` after `MaximumNumberOfCollectionItems` items                   |
 | other objects | their `ToString()` if it is overridden, otherwise their public members, e.g. `Album { Title = "Abbey Road" }` |
 
+Chars and strings on a single line are escaped like C# literals, so that every character can be told apart: a
+backslash, the enclosing quote, line breaks, tabs, control characters and invisible characters (like a non-breaking or
+a zero-width space) are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or ` `. Exception
+messages and the `ToString()` of other objects are not quoted, so only their line breaks, control and invisible
+characters are escaped when they are written on a single line.
+
 The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
 `FormattingOptions.Indented(indentation)` indents the following lines. Register an `IValueFormatter` to format your
