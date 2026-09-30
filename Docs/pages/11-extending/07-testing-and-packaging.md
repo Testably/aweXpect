@@ -6,22 +6,22 @@ Test your expectations with aweXpect itself. Pass a delegate that awaits the exp
 message with `Throws().WithMessage(…)`. The exception type depends on the test framework, which `Throws()` leaves open:
 
 ```csharp
-string path = "album.txt";
+Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 
-async Task Act() => await Expect.That(path).IsAbsolutePath();
+async Task Act() => await Expect.That(track).IsRadioFriendly();
 
 await Expect.That(Act).Throws()
     .WithMessage("""
-                 Expected that path
-                 is an absolute path,
-                 but it was "album.txt"
+                 Expected that track
+                 is radio friendly,
+                 but it was 7:11 long
                  """);
 ```
 
 Besides the success and the failure of the expectation, cover what a caller can combine it with:
 
 - Pin the complete failure message, so that a change of the expectation or the result text is noticed.
-- Verify the negated case with `DoesNotComplyWith(it => it.IsAbsolutePath())`, both its outcome and its message. It
+- Verify the negated case with `DoesNotComplyWith(it => it.IsRadioFriendly())`, both its outcome and its message. It
   shows whether the constraint [supports the negation](./02-constraints-and-results.md#results).
 - Verify a `null` subject for the expectation and for its negation, as described in
   [`null` subjects](./02-constraints-and-results.md#null-subjects).

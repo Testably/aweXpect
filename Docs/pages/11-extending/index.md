@@ -29,17 +29,25 @@ using aweXpect.Core;
 using aweXpect.Results;
 ```
 
+The samples on this and the following pages verify tracks of the following type, such as "Love Me Do" (2:22) or
+"Hey Jude" (7:11):
+
+```csharp
+public record Track(string Title, TimeSpan Duration);
+```
+
 ### Expectations
 
 You can extend the expectations for any types, by adding extension methods on `IThat<TType>`.
 
-If you want to verify that a `string` is an absolute path, you specify the following method signature:
+If you want to verify that a `Track` is radio friendly, i.e. that it lasts at most three minutes, you specify the
+following method signature:
 
 ```csharp no-compile
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is an absolute path.
+///     Verifies that the <paramref name="subject"/> is radio friendly, i.e. that it lasts at most three minutes.
 /// </summary>
-public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
 {
     // ...
 }
@@ -68,15 +76,15 @@ internal static IExpectThat<T> Get<T>(this IThat<T> subject)
 }
 ```
 
-You can then use the `ExpectationBuilder` to add an `IsAbsolutePathConstraint`:
+You can then use the `ExpectationBuilder` to add an `IsRadioFriendlyConstraint`:
 
 ```csharp
-public static AndOrResult<string, IThat<string?>> IsAbsolutePath(this IThat<string?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsAbsolutePathConstraint(it, grammars)),
+            => new IsRadioFriendlyConstraint(it, grammars)),
         subject);
 ```
 
 The factory receives the name of the subject (`it`) and the `grammars` of the sentence, which the constraint uses to
 write its part of the failure message. [Constraints and results](./02-constraints-and-results.md) shows how to write
-the `IsAbsolutePathConstraint`, and [message conventions](./03-message-conventions.md) how its texts should read.
+the `IsRadioFriendlyConstraint`, and [message conventions](./03-message-conventions.md) how its texts should read.

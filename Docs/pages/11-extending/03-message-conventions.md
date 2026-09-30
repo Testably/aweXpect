@@ -25,31 +25,32 @@ but <result>
 ```
 
 Your constraint only writes its expectation text (`AppendExpectation`) and its result text (`AppendResult`); the rest
-is added around them. For the `IsAbsolutePath` expectation from
-[constraints and results](./02-constraints-and-results.md), `await Expect.That(path).IsAbsolutePath()` fails with:
+is added around them. For the `IsRadioFriendly` expectation from
+[constraints and results](./02-constraints-and-results.md), `await Expect.That(track).IsRadioFriendly()` fails for
+"Hey Jude" with:
 
 ```text title="Failure message"
-Expected that path
-is an absolute path,
-but it was "album.txt"
+Expected that track
+is radio friendly,
+but it was 7:11 long
 ```
 
 The same texts are reused when the expectation is combined or nested, e.g. inside `Whose`, where `it` is replaced by
 the name of the member:
 
 ```text title="Failure message"
-Expected that playlist
-whose Path is an absolute path,
-but Path was "album.txt"
+Expected that single
+whose ASide is radio friendly,
+but ASide was 7:11 long
 ```
 
 ## Expectation text
 
-- Start with the verb in the present tense, in lower case, and end without punctuation: `is an absolute path`,
+- Start with the verb in the present tense, in lower case, and end without punctuation: `is radio friendly`,
   `is equal to "Abbey Road"`, `starts with "Abbey"`, `has flag A`.
-- Write the negated text with `not`: `is not an absolute path`, `does not start with "Abbey"`.
+- Write the negated text with `not`: `is not radio friendly`, `does not start with "Abbey"`.
 - Append the options after the expectation, e.g. ` ignoring case`, ` using MyComparer` or ` in any order`.
-- Describe the expected value, not the check: `is an absolute path` instead of `Path.IsPathRooted returns true`.
+- Describe the expected value, not the check: `is radio friendly` instead of `Duration <= 3:00 returns true`.
 
 ### Code of the caller in the expectation text
 
@@ -62,23 +63,23 @@ and pass it to the constraint for its expectation text:
 using System.Runtime.CompilerServices;
 using aweXpect.Results;
 
-public static AndOrResult<string, IThat<string?>> HasFileNameMatching(
-    this IThat<string?> subject,
+public static AndOrResult<Track, IThat<Track?>> HasTitleMatching(
+    this IThat<Track?> subject,
     Func<string, bool> predicate,
     [CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new HasFileNameMatchingConstraint(it, grammars, predicate, doNotPopulateThisValue)),
+            => new HasTitleMatchingConstraint(it, grammars, predicate, doNotPopulateThisValue)),
         subject);
 ```
 
-For `HasFileNameMatching(n => n.EndsWith(".txt"))`, the expectation text can then read
-`has a file name matching n => n.EndsWith(".txt")`. `CallerArgumentExpressionAttribute` requires C# 10 and is missing
+For `HasTitleMatching(title => title.StartsWith("Let"))`, the expectation text can then read
+`has a title matching title => title.StartsWith("Let")`. `CallerArgumentExpressionAttribute` requires C# 10 and is missing
 in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package there.
 
 ## Result text
 
 - Start with the name of the subject, the `it` parameter of the constraint (exposed as `It` by the helper classes),
-  followed by a verb in the past tense: `it was "album.txt"`, `it had 3 items`, `Path was "album.txt"`. The name is
+  followed by a verb in the past tense: `it was 7:11 long`, `it had 3 items`, `ASide was 7:11 long`. The name is
   `it` or the name of a member, so never write the subject yourself.
 - Describe what was found instead, without repeating the expectation. A short elliptical result is normal:
   `it was`, `it did`, `it was not`.
@@ -129,7 +130,7 @@ Name the expectation methods like the built-in ones, so that the whole chain rea
 
 | Pattern                                    | Use it for                                                     | Examples                                            |
 |--------------------------------------------|----------------------------------------------------------------|-----------------------------------------------------|
-| `Is…`, `IsNot…`                            | a state or a comparison of the subject                         | `IsEmpty`, `IsNotEqualTo`, `IsAbsolutePath`         |
+| `Is…`, `IsNot…`                            | a state or a comparison of the subject                         | `IsEmpty`, `IsNotEqualTo`, `IsRadioFriendly`        |
 | `Has…`                                     | a property of the subject, optionally with a comparison        | `HasLength(3)`, `HasCount().GreaterThan(2)`         |
 | `DoesNot…`                                 | the negation of a verb                                         | `DoesNotContain`, `DoesNotStartWith`                |
 | `With…`                                    | a property of the result of the previous expectation           | `Throws<T>().WithMessage(…)`                        |
@@ -148,7 +149,7 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 | Flag         | Set when                                                                                                      |
 |--------------|---------------------------------------------------------------------------------------------------------------|
 | `Negated`    | the expectation is negated; the helper classes then call `AppendNegatedExpectation` and `AppendNegatedResult` |
-| `Plural`     | the subject of the sentence is plural, e.g. `whose Files are absolute paths for all items`                    |
+| `Plural`     | the subject of the sentence is plural, e.g. `whose Tracks are radio friendly for all items`                   |
 | `Nested`     | the expectation continues the sentence of another one, e.g. for a member or an item                           |
 | `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "bar"`          |
 | `Introduced` | the subject was already introduced by a connector like the `that` of `has item that`                          |
@@ -163,28 +164,29 @@ when the grammars are plural, but keep the singular form in the result text as l
 `it`:
 
 ```csharp
-private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
-    : ConstraintResult.WithNotNullValue<string>(it, grammars),
-        IValueConstraint<string?>
+private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IValueConstraint<Track?>
 {
-    public ConstraintResult IsMetBy(string? actual)
+    public ConstraintResult IsMetBy(Track? actual)
     {
         Actual = actual;
-        Outcome = Path.IsPathRooted(actual) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
         return this;
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(Grammars.IsPlural() ? "are absolute paths" : "is an absolute path");
+        => stringBuilder.Append(Grammars.IsPlural() ? "are radio friendly" : "is radio friendly");
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(It).Append(Grammars.IsPlural() && It != "it" ? " were " : " was ");
-        Formatter.Format(stringBuilder, Actual);
+        Formatter.Format(stringBuilder, Actual?.Duration);
+        stringBuilder.Append(" long");
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(Grammars.IsPlural() ? "are not absolute paths" : "is not an absolute path");
+        => stringBuilder.Append(Grammars.IsPlural() ? "are not radio friendly" : "is not radio friendly");
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
         => AppendNormalResult(stringBuilder, indentation);
@@ -199,7 +201,7 @@ value of a long comparison, belongs in a context. A context is shown below the m
 `ExpectationBuilder`, and add the context while the constraint is evaluated:
 
 ```csharp no-compile
-expectationBuilder.AddContext(new ResultContext.Fixed("Playlist", Formatter.Format(files, FormattingOptions.MultipleLines)));
+expectationBuilder.AddContext(new ResultContext.Fixed("Playlist", Formatter.Format(tracks, FormattingOptions.MultipleLines)));
 ```
 
 ## Exceptions
