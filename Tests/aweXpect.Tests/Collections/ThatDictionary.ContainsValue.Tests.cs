@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -87,6 +88,49 @@ public sealed partial class ThatDictionary
 					             contains value "foo",
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).ContainsValue(value.AddMilliseconds(500));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the values fall back to the default tolerance, as the items of a collection do");
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldMentionIt()
+			{
+				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				DateTime expected = value.AddSeconds(2);
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(1.Seconds());
+					await That(subject).ContainsValue(expected);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              contains value {Formatter.Format(expected)} ± 0:01,
+					              but it did not contain {Formatter.Format(expected)}
+
+					              Dictionary:
+					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
+					              """)
+					.Because("the applied default tolerance is part of the expectation");
 			}
 
 			[Fact]

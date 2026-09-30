@@ -176,8 +176,9 @@ IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolera
 
 It also applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan`
 values (or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
-`Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. An
-explicit `Within` always replaces the default tolerance. The applied default tolerance is part of the failure message,
+`Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. The same
+holds for the values of a dictionary in `ContainsValue` and `ContainsValues`. An explicit `Within` always replaces the
+default tolerance. The applied default tolerance is part of the failure message,
 for example `is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero.
 
 For a `DateOnly` only the whole days of the default tolerance apply, so a default below one day has no effect there. An

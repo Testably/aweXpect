@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
+using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Runtime.InteropServices;
 #endif
 #if !NET8_0_OR_GREATER
 using aweXpect.Helpers;
-using aweXpect.Options;
 #endif
 
 namespace aweXpect;
@@ -65,6 +66,29 @@ public static partial class ThatNumber
 		{
 			AppendDifference(stringBuilder, actual, maximum, "the maximum");
 		}
+	}
+
+	/// <summary>
+	///     Appends the difference to the closest of the <paramref name="expected" /> values, if any has a finite
+	///     distance to <paramref name="actual" />.
+	/// </summary>
+	private static void AppendDifferenceToClosest<TNumber>(StringBuilder stringBuilder, TNumber? actual,
+		IEnumerable<TNumber?> expected, NumberTolerance<TNumber> options)
+		where TNumber : struct, INumber<TNumber>
+	{
+		TNumber? closest = null;
+		TNumber? smallestDistance = null;
+		foreach (TNumber? value in expected)
+		{
+			if (options.CalculateDifference(actual, value) is { } distance && IsFinite<TNumber>(distance) &&
+			    (smallestDistance is null || distance < smallestDistance))
+			{
+				closest = value;
+				smallestDistance = distance;
+			}
+		}
+
+		AppendDifference(stringBuilder, actual, closest, "the closest value");
 	}
 
 	/// <remarks>
@@ -185,6 +209,39 @@ public static partial class ThatNumber
 		{
 			AppendDifference(stringBuilder, actual, maximum, options, "the maximum");
 		}
+	}
+
+	/// <summary>
+	///     Appends the difference to the closest of the <paramref name="expected" /> values, if any has a finite
+	///     distance to <paramref name="actual" />.
+	/// </summary>
+	private static void AppendDifferenceToClosest<TNumber>(StringBuilder stringBuilder, TNumber? actual,
+		IEnumerable<TNumber?> expected, NumberTolerance<TNumber> options)
+		where TNumber : struct, IComparable<TNumber>
+	{
+		TNumber? closest = null;
+		TNumber? smallestDistance = null;
+		foreach (TNumber? value in expected)
+		{
+			TNumber? distance;
+			try
+			{
+				distance = options.CalculateDifference(actual, value);
+			}
+			catch (OverflowException)
+			{
+				continue;
+			}
+
+			if (distance is { } finiteDistance && IsFinite(finiteDistance) &&
+			    (smallestDistance is null || finiteDistance.CompareTo(smallestDistance.Value) < 0))
+			{
+				closest = value;
+				smallestDistance = finiteDistance;
+			}
+		}
+
+		AppendDifference(stringBuilder, actual, closest, options, "the closest value");
 	}
 
 	/// <remarks>

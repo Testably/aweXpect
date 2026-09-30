@@ -103,7 +103,6 @@ public static partial class ThatNumber
 		IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
-		private readonly string _it;
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
@@ -124,7 +123,6 @@ public static partial class ThatNumber
 						"The maximum must be greater than or equal to the minimum."));
 			}
 
-			_it = it;
 			_minimum = minimum;
 			_maximum = maximum;
 			_options = options;
@@ -148,7 +146,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(_it).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum);
 		}
@@ -164,7 +162,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(_it).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}
@@ -281,7 +279,6 @@ public static partial class ThatNumber
 		IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
-		private readonly string _it;
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
 		private readonly NumberTolerance<TNumber> _options;
@@ -303,7 +300,6 @@ public static partial class ThatNumber
 						"The maximum must be greater than or equal to the minimum."));
 			}
 
-			_it = it;
 			_minimum = minimum;
 			_maximum = maximum;
 			_options = options;
@@ -327,7 +323,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(_it).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, _options);
 		}
@@ -343,7 +339,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(_it).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}

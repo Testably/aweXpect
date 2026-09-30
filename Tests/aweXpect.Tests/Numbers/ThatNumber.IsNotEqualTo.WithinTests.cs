@@ -7,10 +7,10 @@ public sealed partial class ThatNumber
 		public sealed class WithinTests
 		{
 			[Theory]
-			[InlineData((byte)5, (byte)6)]
-			[InlineData((byte)5, (byte)4)]
+			[InlineData("-1", (byte)5, (byte)6)]
+			[InlineData("1", (byte)5, (byte)4)]
 			public async Task ForByte_WhenInsideTolerance_ShouldFail(
-				byte subject, byte unexpected)
+				string differsBy, byte subject, byte unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -19,7 +19,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -36,10 +36,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5, 12.6)]
-			[InlineData(12.5, 12.4)]
+			[InlineData("-0.1", 12.5, 12.6)]
+			[InlineData("0.1", 12.5, 12.4)]
 			public async Task ForDecimal_WhenInsideTolerance_ShouldFail(
-				double subjectValue, double unexpectedValue)
+				string differsBy, double subjectValue, double unexpectedValue)
 			{
 				decimal subject = new(subjectValue);
 				decimal unexpected = new(unexpectedValue);
@@ -51,7 +51,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.1,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -85,10 +85,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5, 12.6)]
-			[InlineData(12.5, 12.4)]
+			[InlineData("-0.0999999999999996", 12.5, 12.6)]
+			[InlineData("0.0999999999999996", 12.5, 12.4)]
 			public async Task ForDouble_WhenInsideTolerance_ShouldFail(
-				double subject, double unexpected)
+				string differsBy, double subject, double unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(0.11);
@@ -97,7 +97,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.11,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -204,10 +204,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5F, 12.6F)]
-			[InlineData(12.5F, 12.4F)]
+			[InlineData("-0.1000004", 12.5F, 12.6F)]
+			[InlineData("0.1000004", 12.5F, 12.4F)]
 			public async Task ForFloat_WhenInsideTolerance_ShouldFail(
-				float subject, float unexpected)
+				string differsBy, float subject, float unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(0.11F);
@@ -216,7 +216,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.11,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -384,10 +384,10 @@ public sealed partial class ThatNumber
 #endif
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForInt_WhenInsideTolerance_ShouldFail(
-				int subject, int unexpected)
+				string differsBy, int subject, int unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -396,7 +396,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -427,10 +427,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5L, 6L)]
-			[InlineData(5L, 4L)]
+			[InlineData("-1", 5L, 6L)]
+			[InlineData("1", 5L, 4L)]
 			public async Task ForLong_WhenInsideTolerance_ShouldFail(
-				long subject, long unexpected)
+				string differsBy, long subject, long unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -439,7 +439,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -470,10 +470,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((byte)5, (byte)6)]
-			[InlineData((byte)5, (byte)4)]
+			[InlineData("-1", (byte)5, (byte)6)]
+			[InlineData("1", (byte)5, (byte)4)]
 			public async Task ForNullableByte_WhenInsideTolerance_ShouldFail(
-				byte? subject, byte? unexpected)
+				string differsBy, byte? subject, byte? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -482,7 +482,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -499,10 +499,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5, 12.6)]
-			[InlineData(12.5, 12.4)]
+			[InlineData("-0.1", 12.5, 12.6)]
+			[InlineData("0.1", 12.5, 12.4)]
 			public async Task ForNullableDecimal_WhenInsideTolerance_ShouldFail(
-				double subjectValue, double unexpectedValue)
+				string differsBy, double subjectValue, double unexpectedValue)
 			{
 				decimal? subject = new(subjectValue);
 				decimal unexpected = new(unexpectedValue);
@@ -514,7 +514,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.1,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -548,10 +548,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5, 12.6)]
-			[InlineData(12.5, 12.4)]
+			[InlineData("-0.0999999999999996", 12.5, 12.6)]
+			[InlineData("0.0999999999999996", 12.5, 12.4)]
 			public async Task ForNullableDouble_WhenInsideTolerance_ShouldFail(
-				double? subject, double? unexpected)
+				string differsBy, double? subject, double? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(0.11);
@@ -560,7 +560,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.11,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -591,10 +591,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(12.5F, 12.6F)]
-			[InlineData(12.5F, 12.4F)]
+			[InlineData("-0.1000004", 12.5F, 12.6F)]
+			[InlineData("0.1000004", 12.5F, 12.4F)]
 			public async Task ForNullableFloat_WhenInsideTolerance_ShouldFail(
-				float? subject, float? unexpected)
+				string differsBy, float? subject, float? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(0.11F);
@@ -603,7 +603,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0.11,
-					              but it was 12.5
+					              but it was 12.5, which differs by {differsBy}
 					              """);
 			}
 
@@ -634,10 +634,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForNullableInt_WhenInsideTolerance_ShouldFail(
-				int? subject, int? unexpected)
+				string differsBy, int? subject, int? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -646,7 +646,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -677,10 +677,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((long)5, (long)6)]
-			[InlineData((long)5, (long)4)]
+			[InlineData("-1", (long)5, (long)6)]
+			[InlineData("1", (long)5, (long)4)]
 			public async Task ForNullableLong_WhenInsideTolerance_ShouldFail(
-				long? subject, long? unexpected)
+				string differsBy, long? subject, long? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -689,7 +689,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -720,10 +720,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)5, (sbyte)6)]
-			[InlineData((sbyte)5, (sbyte)4)]
+			[InlineData("-1", (sbyte)5, (sbyte)6)]
+			[InlineData("1", (sbyte)5, (sbyte)4)]
 			public async Task ForNullableSbyte_WhenInsideTolerance_ShouldFail(
-				sbyte? subject, sbyte? unexpected)
+				string differsBy, sbyte? subject, sbyte? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -732,7 +732,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -763,10 +763,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((short)5, (short)6)]
-			[InlineData((short)5, (short)4)]
+			[InlineData("-1", (short)5, (short)6)]
+			[InlineData("1", (short)5, (short)4)]
 			public async Task ForNullableShort_WhenInsideTolerance_ShouldFail(
-				short? subject, short? unexpected)
+				string differsBy, short? subject, short? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -775,7 +775,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -806,10 +806,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((uint)5, (uint)6)]
-			[InlineData((uint)5, (uint)4)]
+			[InlineData("-1", (uint)5, (uint)6)]
+			[InlineData("1", (uint)5, (uint)4)]
 			public async Task ForNullableUint_WhenInsideTolerance_ShouldFail(
-				uint? subject, uint? unexpected)
+				string differsBy, uint? subject, uint? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -818,7 +818,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -835,10 +835,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ulong)5, (ulong)6)]
-			[InlineData((ulong)5, (ulong)4)]
+			[InlineData("-1", (ulong)5, (ulong)6)]
+			[InlineData("1", (ulong)5, (ulong)4)]
 			public async Task ForNullableUlong_WhenInsideTolerance_ShouldFail(
-				ulong? subject, ulong? unexpected)
+				string differsBy, ulong? subject, ulong? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -847,7 +847,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -864,10 +864,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((ushort)5, (ushort)6)]
-			[InlineData((ushort)5, (ushort)4)]
+			[InlineData("-1", (ushort)5, (ushort)6)]
+			[InlineData("1", (ushort)5, (ushort)4)]
 			public async Task ForNullableUshort_WhenInsideTolerance_ShouldFail(
-				ushort? subject, ushort? unexpected)
+				string differsBy, ushort? subject, ushort? unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -876,7 +876,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -893,10 +893,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForSbyte_WhenInsideTolerance_ShouldFail(
-				sbyte subject, sbyte unexpected)
+				string differsBy, sbyte subject, sbyte unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -905,7 +905,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -936,10 +936,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForShort_WhenInsideTolerance_ShouldFail(
-				short subject, short unexpected)
+				string differsBy, short subject, short unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -948,7 +948,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -979,10 +979,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForUint_WhenInsideTolerance_ShouldFail(
-				uint subject, uint unexpected)
+				string differsBy, uint subject, uint unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -991,7 +991,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -1008,10 +1008,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForUlong_WhenInsideTolerance_ShouldFail(
-				ulong subject, ulong unexpected)
+				string differsBy, ulong subject, ulong unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -1020,7 +1020,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 
@@ -1037,10 +1037,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(5, 6)]
-			[InlineData(5, 4)]
+			[InlineData("-1", 5, 6)]
+			[InlineData("1", 5, 4)]
 			public async Task ForUshort_WhenInsideTolerance_ShouldFail(
-				ushort subject, ushort unexpected)
+				string differsBy, ushort subject, ushort unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).Within(1);
@@ -1049,7 +1049,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 1,
-					              but it was 5
+					              but it was 5, which differs by {differsBy}
 					              """);
 			}
 

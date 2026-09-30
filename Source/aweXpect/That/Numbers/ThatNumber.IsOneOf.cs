@@ -280,6 +280,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -323,6 +324,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -366,6 +368,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -409,6 +412,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -548,6 +552,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -593,6 +598,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -638,6 +644,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -683,6 +690,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
