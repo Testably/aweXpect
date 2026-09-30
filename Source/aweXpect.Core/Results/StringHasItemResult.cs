@@ -86,10 +86,6 @@ public class StringHasItemResult<TCollection, TSelf>(
 	///     Ignores leading whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreLeadingWhiteSpace" /> parameter.
 	/// </summary>
-	/// <remarks>
-	///     Note:<br />
-	///     This affects the index of first mismatch, as the removed whitespace is also ignored for the index calculation!
-	/// </remarks>
 	public TSelf IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
 	{
 		options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);

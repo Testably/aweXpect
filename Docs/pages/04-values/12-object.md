@@ -33,7 +33,8 @@ This uses the `object.Equals(object?, object?)` method.
 :::note
 A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
-[equivalency](./13-equivalency.md).
+[equivalency](./13-equivalency.md). For `Half`, `Int128` and `UInt128` this only applies
+[on .NET 8 or later](../02-getting-started.md#target-frameworks).
 :::
 
 ### Reference equality

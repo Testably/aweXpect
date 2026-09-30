@@ -513,5 +513,7 @@ await Expect.That(path).Exists().Within(TimeSpan.FromSeconds(5)).CheckEvery(Time
 - The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
   `true` when the file does *not* exist. The helper class inverts the stored `Outcome` itself.
 - Appending the options writes " within …" to the expectation text when `Within` was specified.
-- A cancellation at the timeout lets the last check decide. Any other cancellation is thrown and needs no handling,
-  like in any asynchronous constraint.
+- The cancellation token is only observed while waiting for the next check, so the first check is made even with a
+  canceled token, and its result is returned when it succeeds or when `IsRepeated` is `false`. A cancellation at the
+  timeout lets the last check decide. Any other cancellation during a wait is thrown and needs no handling, like in
+  any asynchronous constraint.
