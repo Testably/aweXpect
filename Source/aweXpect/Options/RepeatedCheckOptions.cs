@@ -57,9 +57,13 @@ public class RepeatedCheckOptions
 	public TimeSpan Timeout { get; private set; } = TimeSpan.Zero;
 
 	/// <summary>
-	///     Whether the condition is checked again after the first check.
+	///     Whether <see cref="CheckRepeatedly" /> checks the condition again after the first check.
 	/// </summary>
-	internal bool IsRepeated => Timeout > TimeSpan.Zero || IsInfinite;
+	/// <remarks>
+	///     This is the case when <see cref="Within(TimeSpan)" /> set a positive timeout or
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" />.
+	/// </remarks>
+	public bool IsRepeated => Timeout > TimeSpan.Zero || IsInfinite;
 
 	private bool IsInfinite => Timeout == System.Threading.Timeout.InfiniteTimeSpan;
 
@@ -100,13 +104,46 @@ public class RepeatedCheckOptions
 	}
 
 	/// <summary>
-	///     Repeats the <paramref name="check" /> in the <see cref="Interval" /> until it succeeds or the
-	///     <see cref="Timeout" /> is used up, and returns whether it succeeded.
+	///     Makes the <paramref name="check" /> and repeats it in the <see cref="Interval" /> until it succeeds or the
+	///     <see cref="Timeout" /> has elapsed, and returns whether it succeeded.
 	/// </summary>
 	/// <remarks>
-	///     A wait is shortened to the remaining time, so the last check is made at the timeout and none after it.
+	///     <list type="bullet">
+	///         <item>
+	///             The first check is made immediately. When it succeeds, or when <see cref="IsRepeated" /> is
+	///             <see langword="false" />, no further check is made.
+	///         </item>
+	///         <item>
+	///             A wait is shortened to the remaining time, so the last check is made at the <see cref="Timeout" />
+	///             and none after it. The <see cref="Timeout" /> is measured from the start of each call.
+	///         </item>
+	///         <item>
+	///             With <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, the check is repeated until it
+	///             succeeds or the <paramref name="cancellationToken" /> is canceled.
+	///         </item>
+	///         <item>
+	///             A cancellation of the <paramref name="cancellationToken" /> counts as the <see cref="Timeout" />
+	///             having elapsed, so that one last check decides the result, when it occurs at the
+	///             <see cref="Timeout" />, or when the <paramref name="expectationBuilder" /> has a timeout that is not
+	///             shorter than the <see cref="Timeout" /> and its cancellation token was not canceled. Any other
+	///             cancellation, e.g. by the caller, and every cancellation with an infinite <see cref="Timeout" /> is
+	///             thrown as <see cref="OperationCanceledException" />.
+	///         </item>
+	///         <item>
+	///             An exception thrown by the <paramref name="check" /> is not caught.
+	///         </item>
+	///     </list>
 	/// </remarks>
-	internal async Task<bool> CheckRepeatedly(Func<Task<bool>> check,
+	/// <param name="check">
+	///     The check, which returns whether the expectation is met. For a negated constraint, it returns
+	///     <see langword="true" /> when the condition is not met.
+	/// </param>
+	/// <param name="expectationBuilder">
+	///     The expectation builder of the constraint, whose timeout and cancellation decide how a cancellation of the
+	///     <paramref name="cancellationToken" /> is treated.
+	/// </param>
+	/// <param name="cancellationToken">The cancellation token that the constraint received.</param>
+	public async Task<bool> CheckRepeatedly(Func<Task<bool>> check,
 		ExpectationBuilder expectationBuilder,
 		CancellationToken cancellationToken)
 	{

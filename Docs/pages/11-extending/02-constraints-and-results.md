@@ -443,3 +443,75 @@ public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken ca
   expectation in the same way. After a cancellation, the helper classes write the result text with
   `AppendUndecidedResult`, which you can override. By default it writes "it could not be verified, because the
   evaluation was already canceled".
+
+### Repeated checks
+
+An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with
+`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same `RepeatedCheckOptions` to the
+result and to the constraint, and make the check with `CheckRepeatedly`, which honours the options:
+
+```csharp
+using aweXpect.Options;
+
+public static RepeatedCheckResult<string, IThat<string?>> Exists(this IThat<string?> subject)
+{
+    RepeatedCheckOptions options = new();
+    return new RepeatedCheckResult<string, IThat<string?>>(subject.Get().ExpectationBuilder
+            .AddConstraint((expectationBuilder, it, grammars)
+                => new ExistsConstraint(expectationBuilder, it, grammars, options)),
+        subject,
+        options);
+}
+
+private sealed class ExistsConstraint(
+    ExpectationBuilder expectationBuilder,
+    string it,
+    ExpectationGrammars grammars,
+    RepeatedCheckOptions options)
+    : ConstraintResult.WithNotNullValue<string>(it, grammars),
+        IAsyncConstraint<string?>
+{
+    public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+    {
+        Actual = actual;
+        if (actual is not null)
+        {
+            await options.CheckRepeatedly(() =>
+            {
+                bool exists = File.Exists(actual);
+                Outcome = exists ? Outcome.Success : Outcome.Failure;
+                return Task.FromResult(exists != IsNegated);
+            }, expectationBuilder, cancellationToken);
+        }
+
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("exists").Append(options);
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did not exist");
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("does not exist").Append(options);
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did exist");
+}
+```
+
+```csharp
+string path = "/music/album.txt";
+
+await Expect.That(path).Exists().Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
+```
+
+- `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive
+  or an infinite timeout, it repeats the check in the interval until it succeeds, and makes the last check at the
+  timeout.
+- The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
+  `true` when the file does *not* exist. The helper class inverts the stored `Outcome` itself.
+- Appending the options writes " within …" to the expectation text when `Within` was specified.
+- A cancellation at the timeout lets the last check decide. Any other cancellation is thrown and needs no handling,
+  like in any asynchronous constraint.

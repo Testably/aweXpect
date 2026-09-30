@@ -2074,3 +2074,5 @@ override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNegatedRes
 override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 override aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 virtual aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.ItemType.get -> System.Type!
+aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.RepeatedCheckOptions.IsRepeated.get -> bool
