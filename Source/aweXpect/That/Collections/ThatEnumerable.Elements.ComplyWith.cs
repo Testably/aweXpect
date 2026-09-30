@@ -493,6 +493,10 @@ public static partial class ThatEnumerable
 			{
 				Actual = actual;
 				await _itemExpectations.PrepareExpectation(context, cancellationToken);
+				if (actual.IsDefaultImmutableArray())
+				{
+					return this.AsNullSubject(It);
+				}
 
 				IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 				bool cancelEarly = actual is not ICollection<TItem>;

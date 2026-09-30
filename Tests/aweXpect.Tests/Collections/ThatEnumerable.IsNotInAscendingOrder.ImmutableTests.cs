@@ -108,6 +108,18 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenNullItemIsNotSortedCorrectly_ShouldSucceed()
+			{
+				ImmutableArray<string?> subject = ["a", null, "b",];
+
+				async Task Act()
+					=> await That(subject).IsNotInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("a null item sorts before any other item and must not be skipped");
+			}
 		}
 
 		public sealed class ImmutableArrayMemberTests

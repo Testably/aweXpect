@@ -135,7 +135,9 @@ public partial class CollectionMatchOptions
 		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (CountMissingDeviations() + CountAdditionalDeviations() > 2 * maximumNumber)
+			// For the containment relation, all deviations are missing items, which are known completely here.
+			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			    CountMissingDeviations() + CountAdditionalDeviations() > 2 * maximumNumber)
 			{
 				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
 				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
@@ -155,7 +157,7 @@ public partial class CollectionMatchOptions
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
 				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true, formatItem,
-					options));
+					options, maximumNumber));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
@@ -178,13 +180,8 @@ public partial class CollectionMatchOptions
 		private int CountMissingDeviations()
 			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
 
-		/// <summary>
-		///     Additional items are no deviation for the containment relation, so they are left out.
-		/// </summary>
 		private IEnumerable<string> GetDeviations()
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
-				? []
-				: AdditionalItemsError(_additionalItems, CreateItemFormatter());
+			=> AdditionalItemsError(_additionalItems, CreateItemFormatter());
 
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.

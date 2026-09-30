@@ -378,7 +378,7 @@ public partial class CollectionMatchOptions(
 
 	private static IEnumerable<string> MissingItemsError<T>(int total, List<T> missingItems,
 		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates, Func<object?, string> formatItem,
-		object options)
+		object options, int maximumNumber)
 	{
 		if (total == 0)
 		{
@@ -410,15 +410,33 @@ public partial class CollectionMatchOptions(
 			StringBuilder sb = new();
 			sb.Append("lacked ").Append(missingItems.Count).Append(" of ")
 				.Append(total).Append(" expected items:");
-			foreach (T missingItem in missingItems)
-			{
-				sb.AppendLine().Append("  ");
-				sb.Append(DescribeExpected(formatItem(missingItem), options));
-				sb.Append(',');
-			}
-
-			sb.Length--;
+			AppendMissingItems(sb, missingItems, formatItem, options, maximumNumber);
 			yield return sb.ToString();
+		}
+	}
+
+	/// <remarks>
+	///     More than twice <paramref name="maximumNumber" /> missing items are truncated to the first
+	///     <paramref name="maximumNumber" /> ones, like the deviations when there are too many of them.
+	/// </remarks>
+	private static void AppendMissingItems<T>(StringBuilder sb, List<T> missingItems,
+		Func<object?, string> formatItem, object options, int maximumNumber)
+	{
+		bool isTruncated = missingItems.Count > 2 * maximumNumber;
+		foreach (T missingItem in isTruncated ? missingItems.Take(maximumNumber) : missingItems)
+		{
+			sb.AppendLine().Append("  ");
+			sb.Append(DescribeExpected(formatItem(missingItem), options));
+			sb.Append(',');
+		}
+
+		if (isTruncated)
+		{
+			sb.AppendLine().Append("  (… and ").Append(missingItems.Count - maximumNumber).Append(" more)");
+		}
+		else
+		{
+			sb.Length--;
 		}
 	}
 
