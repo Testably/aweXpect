@@ -73,6 +73,25 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Local);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Local);
+					DateTime? maximum = EarlierTime(2, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+						              but it had kind Local, which cannot be compared with Utc
+						              """)
+						.Because("the ticks of bounds with incompatible kinds cannot tell whether the range is inverted");
+				}
+
+				[Fact]
 				public async Task WhenMaximumIsNull_AndNegated_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -336,6 +355,25 @@ public sealed partial class ThatDateTime
 
 					await That(Act).DoesNotThrow()
 						.Because("only the subject is compared against each bound, and Unspecified matches anything");
+				}
+
+				[Fact]
+				public async Task WhenSubjectKindIsUnspecifiedAndTheMaximumHasAnIncompatibleKindAndFewerTicks_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Unspecified);
+					DateTime? minimum = LaterTime(1, DateTimeKind.Local);
+					DateTime? maximum = EarlierTime(1, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+						              but it was {Formatter.Format(subject)}, which differs by -0:01 from the minimum
+						              """)
+						.Because("an Unspecified subject is compared with the ticks of each bound, even when the bounds cannot be compared with each other");
 				}
 			}
 

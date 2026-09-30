@@ -121,6 +121,22 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects an inverted range of <see cref="DateTime" /> bounds, when their kinds can be compared.
+	/// </summary>
+	/// <remarks>
+	///     The ticks of a <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> bound do not tell
+	///     their order, so such a range is left to the expectation, which compares the subject with each bound on its
+	///     own.
+	/// </remarks>
+	public static void ThrowIfMaximumIsBelowMinimum(DateTime? minimum, DateTime? maximum)
+	{
+		if (EqualityHelpers.AreKindCompatible(minimum?.Kind, maximum?.Kind))
+		{
+			ThrowIfMaximumIsBelowMinimum<DateTime>(minimum, maximum);
+		}
+	}
+
+	/// <summary>
 	///     Rejects an inverted range of a reference type, so that a negated expectation cannot silently succeed.
 	/// </summary>
 	public static void ThrowIfMaximumIsBelowMinimum<T>(T? minimum, T? maximum)

@@ -55,6 +55,25 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForChar_WhenValueIsOutsideTheRange_ShouldShowTheDifferenceAsNumber()
+			{
+				char subject = 'A';
+
+				async Task Act()
+					=> await That(subject).IsBetween('a').And('z');
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is between 'a' and 'z',
+					             but it was 'A', which differs by -32 from the minimum
+					             """)
+					.Because("a difference formatted as char would be an unreadable character");
+			}
+#endif
+
 			[Theory]
 			[InlineData(null, 1.1, ", which differs by 0.9 from the maximum")]
 			[InlineData(1.1, null, "")]
