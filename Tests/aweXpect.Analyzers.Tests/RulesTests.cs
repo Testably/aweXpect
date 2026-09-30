@@ -16,7 +16,7 @@ public class RulesTests
 	public async Task AnalyzersPage_ShouldHaveASectionForEachRule()
 	{
 		string[] headings = File.ReadAllLines(Path.Combine(GetRepositoryDirectory(), "Docs", "pages", "07-analyzers.md"))
-			.Where(line => line.StartsWith("## "))
+			.Where(line => line.StartsWith("## aweXpect", StringComparison.Ordinal))
 			.Select(line => line.Substring(3).Trim())
 			.ToArray();
 
