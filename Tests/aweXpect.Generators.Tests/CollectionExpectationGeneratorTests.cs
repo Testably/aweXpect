@@ -485,8 +485,9 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("IsEqualTo(").Exactly(3);
 		await That(result.Generated).Contains("global::Lib.Factory.CreateNullableDouble()").Exactly(2);
 		await That(result.Generated)
-			.Contains("new global::aweXpect.Helpers.CastingEnumerable<double, double?>(expected)").Once()
-			.Because("the cast-up keeps the count of the expected items, which decides their layout");
+			.Contains("expected is null ? null! : new global::aweXpect.Helpers.CastingEnumerable<double, double?>(expected)")
+			.Once()
+			.Because("the cast-up keeps the count of the expected items, which decides their layout, and passes a null collection on");
 		await That(result.Generated).Contains("IThat<double>").Once()
 			.Because("an unconstrained TItem? is the value type itself");
 		await That(result.Generated).Contains("IThat<double?>").Exactly(2);

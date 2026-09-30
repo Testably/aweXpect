@@ -477,10 +477,14 @@ internal sealed record CollectionExpectationFamily(
 		return Substitute(expected.Type, substitutions);
 	}
 
+	/// <remarks>
+	///     A <see langword="null" /> expected collection is passed on, so that the helper reports it as for any other
+	///     overload.
+	/// </remarks>
 	private static string ExpectedArgument(Instantiation instantiation, string item, string parameterName)
 		=> instantiation.ExpectedItem == null
 			? parameterName
-			: $"new global::aweXpect.Helpers.CastingEnumerable<{instantiation.ExpectedItem}, {item}>({parameterName})";
+			: $"{parameterName} is null ? null! : new global::aweXpect.Helpers.CastingEnumerable<{instantiation.ExpectedItem}, {item}>({parameterName})";
 
 	private static string TypeParameterList(IEnumerable<string> names)
 	{
