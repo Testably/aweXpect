@@ -62,8 +62,8 @@ public static partial class ValueFormatters
 		}
 		else
 		{
-			stringBuilder.Append(message.DisplayWhitespace()
-				.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()));
+			stringBuilder.Append(message
+				.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).DisplayWhitespace());
 		}
 	}
 }

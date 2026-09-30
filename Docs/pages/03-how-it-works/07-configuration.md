@@ -80,6 +80,11 @@ Under `Customize.aweXpect.Formatting()`:
 | `MaximumStringLength`                            | `int` | `100`   | The maximum length of a shown `string` before it is truncated.               |
 | `MinimumNumberOfCharactersAfterStringDifference` | `int` | `45`    | The minimum number of characters shown after the first mismatch of a string. |
 
+`MaximumStringLength` applies to formatted values in general, e.g. a `string` item of a collection or the message of
+an exception. String expectations always shorten the expected and actual values in the first lines of their failure
+message to 30 characters, so that these lines stay readable. The difference below them shows the details, e.g. at
+least `MinimumNumberOfCharactersAfterStringDifference` characters after the first mismatch.
+
 The items of a collection beyond the maximum are summarized at the end of the list: `(… and 7 more)` when the total
 number of items is known, and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation
 stopped enumerating early.

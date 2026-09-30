@@ -250,6 +250,28 @@ public class StringExtensionsTests
 	public sealed class TruncateWithEllipsis
 	{
 		[Fact]
+		public async Task WhenCutWouldSplitALineBreak_ShouldCutBeforeTheLineBreak()
+		{
+			string input = "abcd\r\nefgh";
+
+			string result = input.TruncateWithEllipsis(5);
+
+			await That(result).IsEqualTo("abcd…")
+				.Because("a lone \\r would suggest that the value contains no \\n");
+		}
+
+		[Fact]
+		public async Task WhenCutWouldSplitASurrogatePair_ShouldCutBeforeThePair()
+		{
+			string input = "abcd\U0001F600efgh";
+
+			string result = input.TruncateWithEllipsis(5);
+
+			await That(result).IsEqualTo("abcd…")
+				.Because("a lone high surrogate is not a valid character");
+		}
+
+		[Fact]
 		public async Task WhenLonger_ShouldTruncateWithEllipsis()
 		{
 			string input = "12345678910";
@@ -284,6 +306,28 @@ public class StringExtensionsTests
 
 	public sealed class TruncateWithEllipsisOnWord
 	{
+		[Fact]
+		public async Task WhenCutWouldSplitALineBreak_ShouldCutBeforeTheLineBreak()
+		{
+			string input = $"{new string('a', 29)}\r\nb";
+
+			string result = input.TruncateWithEllipsisOnWord(30);
+
+			await That(result).IsEqualTo($"{new string('a', 29)}…")
+				.Because("a lone \\r would suggest that the value contains no \\n");
+		}
+
+		[Fact]
+		public async Task WhenCutWouldSplitASurrogatePair_ShouldCutBeforeThePair()
+		{
+			string input = $"{new string('a', 29)}\U0001F600b";
+
+			string result = input.TruncateWithEllipsisOnWord(30);
+
+			await That(result).IsEqualTo($"{new string('a', 29)}…")
+				.Because("a lone high surrogate is not a valid character");
+		}
+
 		[Fact]
 		public async Task WhenLongerWithoutWordBoundary_ShouldTruncateOnWordWithEllipsis()
 		{
