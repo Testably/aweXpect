@@ -91,6 +91,15 @@ only available on .NET 8 or later:
 Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
 so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.
 
+## Native AOT and trimming
+
+On .NET 8 and later, aweXpect needs no configuration when your test framework supports publishing a test project with
+trimming or Native AOT: a source generator that ships with the `aweXpect` package registers the members and events
+that equivalency and event recording need. You only have to act when a comparison or recording reaches a type the
+generator cannot see, for example the runtime type behind a member declared as `object`. The expectation then fails
+with an error that names the type and tells you how to register it, see
+[Native AOT and trimming](./03-how-it-works/08-native-aot.md).
+
 ## Next steps
 
 - [How aweXpect works](./03-how-it-works/index.md) explains how expectations are evaluated, negated and combined,
@@ -98,3 +107,5 @@ so its keys are compared with their own `Equals`, as for a dictionary whose comp
 - The pages for [values](./04-values/index.md), [collections](./05-collections/index.md),
   [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and
   [equivalency](./04-values/13-equivalency.md) list the available expectations.
+- [Native AOT and trimming](./03-how-it-works/08-native-aot.md) describes which types the source generator registers
+  and how to register the others.
