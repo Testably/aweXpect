@@ -37,7 +37,8 @@ public class ValueFormatter
 	///     parallel, until the returned <see cref="IDisposable" /> is disposed.
 	///     <para />
 	///     It is consulted for every value that is not <see langword="null" />, whichever overload of
-	///     <see cref="ValueFormatters" /> formats it, so it must not format a value it accepts through them again.
+	///     <see cref="ValueFormatters" /> formats it. It may format nested values through them, and a value that is
+	///     reached again while it is being formatted, including the value it accepted, is written as a recursion.
 	///     <para />
 	///     When several registered formatters can format a value, the most recently registered one is used.
 	/// </remarks>

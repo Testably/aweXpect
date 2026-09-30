@@ -19,6 +19,12 @@ namespace aweXpect.Formatting;
 /// </summary>
 public static partial class ValueFormatters
 {
+	/// <remarks>
+	///     Thread-static instead of async-local, because a registered formatter formats synchronously and the
+	///     <see cref="FormattingContext" /> must not be shared with another thread.
+	/// </remarks>
+	[ThreadStatic] private static FormattingContext? _registeredFormatterContext;
+
 	/// <summary>
 	///     Fallback for formatting arbitrary objects.
 	/// </summary>
@@ -49,6 +55,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
+		context ??= _registeredFormatterContext;
 		// Each typed overload consults the registered formatters itself.
 		switch (value)
 		{
@@ -145,7 +152,7 @@ public static partial class ValueFormatters
 				return;
 		}
 
-		if (TryFormatWithRegistrations(stringBuilder, value, options))
+		if (TryFormatWithRegistrations(stringBuilder, value, options, context))
 		{
 			return;
 		}
@@ -182,11 +189,13 @@ public static partial class ValueFormatters
 	private static bool TryFormatWithRegistrations<T>(
 		StringBuilder stringBuilder,
 		T value,
-		FormattingOptions? options)
+		FormattingOptions? options,
+		FormattingContext? context = null)
 		where T : notnull
 	{
 		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
-		return registrations.Length > 0 && TryFormatWithRegistrations(stringBuilder, value, options, registrations);
+		return registrations.Length > 0 &&
+		       TryFormatWithRegistrations(stringBuilder, value, options, registrations, context);
 	}
 
 	/// <summary>
@@ -206,7 +215,7 @@ public static partial class ValueFormatters
 		}
 
 		StringBuilder stringBuilder = new();
-		if (!TryFormatWithRegistrations(stringBuilder, value, options, registrations))
+		if (!TryFormatWithRegistrations(stringBuilder, value, options, registrations, null))
 		{
 			return false;
 		}
@@ -215,12 +224,32 @@ public static partial class ValueFormatters
 		return true;
 	}
 
+	/// <remarks>
+	///     The <paramref name="value" /> is tracked and the <paramref name="context" /> is made ambient while the
+	///     registered formatters run, so that a value they format through <see cref="ValueFormatters" /> again joins
+	///     the recursion guard instead of overflowing the stack. A value that is already being formatted is left to the
+	///     built-in formatting, so that the recursion is written the same way whether any formatter is registered.
+	/// </remarks>
 	private static bool TryFormatWithRegistrations(
 		StringBuilder stringBuilder,
 		object value,
 		FormattingOptions? options,
-		ValueFormatter.Registration[] registrations)
+		ValueFormatter.Registration[] registrations,
+		FormattingContext? context)
 	{
+		FormattingContext? previousContext = _registeredFormatterContext;
+		context ??= previousContext;
+		FormattingContext? trackingContext = null;
+		if (!value.GetType().IsValueType)
+		{
+			trackingContext = context ??= new FormattingContext();
+			if (!trackingContext.FormattedObjects.Add(value))
+			{
+				return false;
+			}
+		}
+
+		_registeredFormatterContext = context;
 		int length = stringBuilder.Length;
 		try
 		{
@@ -237,6 +266,11 @@ public static partial class ValueFormatters
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the formatter", exception));
 			return true;
+		}
+		finally
+		{
+			_registeredFormatterContext = previousContext;
+			trackingContext?.FormattedObjects.Remove(value);
 		}
 
 		return false;
