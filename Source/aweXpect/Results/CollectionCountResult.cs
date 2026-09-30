@@ -83,7 +83,7 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 	/// </summary>
 	public BetweenResult<TReturn, int?> Between(int? minimum)
 	{
-		ThrowHelper.ThrowIfCountIsNegative(minimum ?? 0, paramName: nameof(minimum));
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		return new(maximum => factory(Range(minimum, maximum), false));
 	}
 
@@ -92,7 +92,7 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 	/// </summary>
 	public BetweenResult<TReturn, int?> NotBetween(int? minimum)
 	{
-		ThrowHelper.ThrowIfCountIsNegative(minimum ?? 0, paramName: nameof(minimum));
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		return new(maximum => factory(Range(minimum, maximum), true));
 	}
 
@@ -104,7 +104,7 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 
 	private static EnumerableQuantifier Range(int? minimum, int? maximum)
 	{
-		ThrowHelper.ThrowIfCountIsNegative(maximum ?? 0, paramName: nameof(maximum));
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
 		return minimum is null || maximum is null
 			? EnumerableQuantifier.OrderedAgainstNull(
 				$"between {minimum?.ToString() ?? "<null>"} and {maximum?.ToString() ?? "<null>"}")
