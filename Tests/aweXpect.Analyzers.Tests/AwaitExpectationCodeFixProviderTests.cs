@@ -360,6 +360,48 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Fact]
+	public async Task ShouldMakeAReferencedTaskMethodAsync() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public Task MyTest()
+		    {
+		        Func<bool, Task> verify = Verify;
+		        return verify(true);
+		    }
+
+		    private static Task Verify(bool subject)
+		    {
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		        return Task.CompletedTask;
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public Task MyTest()
+		    {
+		        Func<bool, Task> verify = Verify;
+		        return verify(true);
+		    }
+
+		    private static async Task Verify(bool subject)
+		    {
+		        await Expect.That(subject).IsTrue();
+		    }
+		}
+		""");
+
+	[Fact]
 	public async Task ShouldMakeContainingMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -477,6 +519,158 @@ public class AwaitExpectationCodeFixProviderTests
 		        {
 		            await Expect.That(subject).IsTrue();
 		        };
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForACalledLocalFunction() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        Verify(true);
+
+		        static void Verify(bool value)
+		        {
+		            {|aweXpect0001:Expect.That(value)|}.IsTrue();
+		        }
+		    }
+		}
+		""",
+		"""
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        Verify(true);
+
+		        static void Verify(bool value)
+		        {
+		            {|aweXpect0001:Expect.That(value)|}.IsTrue();
+		        }
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForAMethodCalledInAnotherFile()
+	{
+		const string caller = """
+		                      public partial class MyClass
+		                      {
+		                          public void MyTest()
+		                          {
+		                              Verify(true);
+		                          }
+		                      }
+		                      """;
+		const string method = """
+		                      using aweXpect;
+
+		                      public partial class MyClass
+		                      {
+		                          private static void Verify(bool subject)
+		                          {
+		                              {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		                          }
+		                      }
+		                      """;
+		Verifier.Test test = new()
+		{
+			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+			TestState =
+			{
+				Sources = { caller, method, },
+				AdditionalReferences =
+				{
+					typeof(Expect).Assembly.Location,
+					typeof(ThatBool).Assembly.Location,
+				},
+			},
+			FixedState = { Sources = { caller, method, }, },
+		};
+
+		await test.RunAsync(CancellationToken.None);
+	}
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForAMethodCalledSynchronously() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool subject)
+		    {
+		        Verify(subject);
+		    }
+
+		    private static void Verify(bool subject)
+		    {
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool subject)
+		    {
+		        Verify(subject);
+		    }
+
+		    private static void Verify(bool subject)
+		    {
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForAMethodUsedAsAMethodGroup() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public event Action Changed;
+
+		    public void MyTest()
+		    {
+		        Changed += Verify;
+		    }
+
+		    public void Verify()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using System;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public event Action Changed;
+
+		    public void MyTest()
+		    {
+		        Changed += Verify;
+		    }
+
+		    public void Verify()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue();
 		    }
 		}
 		""");

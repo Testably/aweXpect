@@ -81,7 +81,58 @@ public class ValueTaskDelegateCodeFixProviderTests
 		""");
 
 	[Fact]
-	public async Task ShouldNotOfferAFixForABlockLambda() => await VerifyWithoutValueTaskOverloadsAsync(
+	public async Task ShouldAppendAsTaskToEachReturnOfABlockLambda() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool flag)
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|() =>
+		        {
+		            Func<int> nested = () => { return 1; };
+		            if (flag)
+		            {
+		                return Act();
+		            }
+
+		            return nested() > 0 ? Act() : default;
+		        }|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool flag)
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That(() =>
+		        {
+		            Func<int> nested = () => { return 1; };
+		            if (flag)
+		            {
+		                return Act().AsTask();
+		            }
+
+		            return (nested() > 0 ? Act() : default).AsTask();
+		        });
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldAppendAsTaskToEachReturnOfAnAnonymousMethod() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
 		using System.Threading.Tasks;
@@ -91,9 +142,9 @@ public class ValueTaskDelegateCodeFixProviderTests
 		{
 		    public void MyTest()
 		    {
-		        ValueTask Act() => default;
+		        ValueTask<int> Act() => new(1);
 
-		        Expect.That([|() => { return Act(); }|]);
+		        Expect.That([|delegate () { return Act(); }|]);
 		    }
 		}
 		""",
@@ -106,9 +157,44 @@ public class ValueTaskDelegateCodeFixProviderTests
 		{
 		    public void MyTest()
 		    {
+		        ValueTask<int> Act() => new(1);
+
+		        Expect.That(delegate () { return Act().AsTask(); });
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForAnAliasedReturnType() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+		using Deferred = System.Threading.Tasks.ValueTask;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
 		        ValueTask Act() => default;
 
-		        Expect.That([|() => { return Act(); }|]);
+		        Expect.That([|Deferred () => Act()|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+		using Deferred = System.Threading.Tasks.ValueTask;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|Deferred () => Act()|]);
 		    }
 		}
 		""");
@@ -146,6 +232,55 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""",
 		AsTaskKey);
+
+	[Fact]
+	public async Task ShouldNotOfferAFixWhenAReturnedValueHasNoValueTaskType() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool flag)
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|() =>
+		        {
+		            if (flag)
+		            {
+		                return Act();
+		            }
+
+		            return default;
+		        }|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest(bool flag)
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|() =>
+		        {
+		            if (flag)
+		            {
+		                return Act();
+		            }
+
+		            return default;
+		        }|]);
+		    }
+		}
+		""");
 
 	[Fact]
 	public async Task ShouldNotOfferAFixWhenTheParameterNameIsAlreadyUsed() => await VerifyWithoutValueTaskOverloadsAsync(
@@ -211,6 +346,105 @@ public class ValueTaskDelegateCodeFixProviderTests
 		        ValueTask Act() => default;
 
 		        Expect.That(() => (flag ? Act() : default).AsTask());
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldReplaceOnlyTheReturnTypeOfAnAsyncLambda() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|async ValueTask () => await Act()|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That(async Task () => await Act());
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldReplaceTheExplicitGenericReturnTypeOfALambda() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask<int> Act() => new(1);
+
+		        Expect.That([|ValueTask<int> () => { return Act(); }|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask<int> Act() => new(1);
+
+		        Expect.That(Task<int> () => { return Act().AsTask(); });
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldReplaceTheExplicitReturnTypeOfALambda() => await VerifyWithoutValueTaskOverloadsAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That([|System.Threading.Tasks.ValueTask () => Act()|]);
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        ValueTask Act() => default;
+
+		        Expect.That(Task () => Act().AsTask());
 		    }
 		}
 		""");

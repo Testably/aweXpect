@@ -6,6 +6,7 @@ namespace aweXpect.Core.Tests.Delegates;
 
 public sealed partial class ThatDelegateTests
 {
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 	public sealed class NegatedThrowsTests
 	{
 		[Fact]
@@ -299,4 +300,5 @@ public sealed partial class ThatDelegateTests
 		private static WithoutValue WithoutValue(IThat<DelegateValue> subject)
 			=> new(((IExpectThat<DelegateValue>)subject).ExpectationBuilder);
 	}
+#pragma warning restore CA2263
 }

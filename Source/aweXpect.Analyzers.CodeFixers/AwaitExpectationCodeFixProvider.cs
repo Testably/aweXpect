@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 
@@ -50,8 +51,8 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		{
 			if (root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is not ExpressionSyntax
 				    expectationStart ||
-			    CreateFix(GetExpectation(expectationStart), semanticModel, context.CancellationToken) is not
-				    var (node, replacement))
+			    await CreateFixAsync(GetExpectation(expectationStart), semanticModel, context.Document.Project.Solution,
+					    context.CancellationToken).ConfigureAwait(false) is not var (node, replacement))
 			{
 				continue;
 			}
@@ -78,8 +79,8 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		return expression;
 	}
 
-	private static (SyntaxNode Node, SyntaxNode Replacement)? CreateFix(ExpressionSyntax expectation,
-		SemanticModel semanticModel, CancellationToken cancellationToken)
+	private static async Task<(SyntaxNode Node, SyntaxNode Replacement)?> CreateFixAsync(ExpressionSyntax expectation,
+		SemanticModel semanticModel, Solution solution, CancellationToken cancellationToken)
 	{
 		if (AwaitExpectation(expectation) is not var (target, awaited))
 		{
@@ -93,8 +94,8 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		{
 			GlobalStatementSyntax or AnonymousFunctionExpressionSyntax { AsyncKeyword.RawKind: not 0, } =>
 				(target, awaited),
-			MethodDeclarationSyntax or LocalFunctionStatementSyntax => MakeAsync(function, target, awaited,
-				semanticModel, cancellationToken),
+			MethodDeclarationSyntax or LocalFunctionStatementSyntax => await MakeFunctionAsync(function, target,
+				awaited, semanticModel, solution, cancellationToken).ConfigureAwait(false),
 			_ => null,
 		};
 	}
@@ -132,8 +133,9 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		=> SyntaxFactory.AwaitExpression(expression.WithLeadingTrivia(SyntaxFactory.Space))
 			.WithLeadingTrivia(expression.GetLeadingTrivia());
 
-	private static (SyntaxNode Node, SyntaxNode Replacement)? MakeAsync(SyntaxNode function, SyntaxNode target,
-		SyntaxNode awaited, SemanticModel semanticModel, CancellationToken cancellationToken)
+	private static async Task<(SyntaxNode Node, SyntaxNode Replacement)?> MakeFunctionAsync(SyntaxNode function,
+		SyntaxNode target, SyntaxNode awaited, SemanticModel semanticModel, Solution solution,
+		CancellationToken cancellationToken)
 	{
 		(SyntaxTokenList modifiers, TypeSyntax returnType, SyntaxNode? body) = function switch
 		{
@@ -158,30 +160,19 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 		}
 
 		Dictionary<SyntaxNode, SyntaxNode> replacements = new() { [target] = awaited, };
-		TypeSyntax? newReturnType = null;
 		switch (GetTaskKind(symbol.ReturnType))
 		{
-			case TaskKind.NonGeneric:
-				if (!TryReplaceCompletedTaskReturns(body, semanticModel, replacements, cancellationToken))
+			case TaskKind.NonGeneric
+				when !TryReplaceCompletedTaskReturns(body, semanticModel, replacements, cancellationToken):
+			case TaskKind.Generic when !TryAwaitReturnedTasks(body, semanticModel, replacements, cancellationToken):
+				return null;
+			case TaskKind.None:
+				if (await HasFixedSignatureAsync(symbol, modifiers, solution, cancellationToken).ConfigureAwait(false))
 				{
 					return null;
 				}
 
-				break;
-			case TaskKind.Generic:
-				if (!TryAwaitReturnedTasks(body, semanticModel, replacements, cancellationToken))
-				{
-					return null;
-				}
-
-				break;
-			default:
-				if (HasFixedSignature(symbol, modifiers))
-				{
-					return null;
-				}
-
-				newReturnType = SyntaxFactory.ParseTypeName(symbol.ReturnsVoid
+				returnType = SyntaxFactory.ParseTypeName(symbol.ReturnsVoid
 						? "System.Threading.Tasks.Task"
 						: $"System.Threading.Tasks.Task<{returnType.WithoutTrivia()}>")
 					.WithTriviaFrom(returnType)
@@ -189,45 +180,68 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 				break;
 		}
 
-		SyntaxNode newFunction = function.ReplaceNodes(replacements.Keys, (original, _) => replacements[original]);
-		if (newFunction.GetAnnotatedNodes(RemovedReturnAnnotation).FirstOrDefault() is StatementSyntax
-		    {
-			    Parent: BlockSyntax block,
-		    } removedReturn)
-		{
-			SyntaxTriviaList leading = removedReturn.GetLeadingTrivia();
-			IEnumerable<SyntaxTrivia> comments = leading.All(trivia =>
-				trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia))
-				? []
-				: leading.Reverse().SkipWhile(trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia)).Reverse();
-			newFunction = newFunction.ReplaceNode(block, block
-				.WithStatements(block.Statements.Remove(removedReturn))
-				.WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(
-					comments.Concat(block.CloseBraceToken.LeadingTrivia))));
-		}
-
-		newReturnType ??= returnType;
-		modifiers = AddAsync(modifiers, ref newReturnType);
+		SyntaxNode newFunction = RemoveTrailingReturn(
+			function.ReplaceNodes(replacements.Keys, (original, _) => replacements[original]));
+		modifiers = AddAsync(modifiers, ref returnType);
 		newFunction = newFunction switch
 		{
-			MethodDeclarationSyntax method => method.WithModifiers(modifiers).WithReturnType(newReturnType),
+			MethodDeclarationSyntax method => method.WithModifiers(modifiers).WithReturnType(returnType),
 			LocalFunctionStatementSyntax localFunction => localFunction.WithModifiers(modifiers)
-				.WithReturnType(newReturnType),
+				.WithReturnType(returnType),
 			_ => newFunction,
 		};
 		return (function, newFunction.WithAdditionalAnnotations(Formatter.Annotation));
 	}
 
 	/// <summary>
-	///     Whether the return type can't change, because a base type, an interface, an overriding member or another
-	///     partial declaration depends on it.
+	///     Drops the <c>return</c> statement marked for removal at the end of the body, keeping its comments.
 	/// </summary>
-	private static bool HasFixedSignature(IMethodSymbol symbol, SyntaxTokenList modifiers)
-		=> modifiers.Any(SyntaxKind.PartialKeyword) || symbol.IsOverride || symbol.IsVirtual ||
-		   !symbol.ExplicitInterfaceImplementations.IsEmpty ||
-		   symbol.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()).Any(member =>
-			   SymbolEqualityComparer.Default.Equals(
-				   symbol.ContainingType.FindImplementationForInterfaceMember(member), symbol));
+	private static SyntaxNode RemoveTrailingReturn(SyntaxNode function)
+	{
+		if (function.GetAnnotatedNodes(RemovedReturnAnnotation).FirstOrDefault() is not StatementSyntax
+		    {
+			    Parent: BlockSyntax block,
+		    } removedReturn)
+		{
+			return function;
+		}
+
+		SyntaxTriviaList leading = removedReturn.GetLeadingTrivia();
+		IEnumerable<SyntaxTrivia> comments = leading.All(trivia =>
+			trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+			? []
+			: leading.Reverse().SkipWhile(trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia)).Reverse();
+		return function.ReplaceNode(block, block
+			.WithStatements(block.Statements.Remove(removedReturn))
+			.WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(
+				comments.Concat(block.CloseBraceToken.LeadingTrivia))));
+	}
+
+	/// <summary>
+	///     Whether the return type can't change, because a base type, an interface, an overriding member, another
+	///     partial declaration or a reference to the method depends on it.
+	/// </summary>
+	/// <remarks>
+	///     A reference is a method group conversion, which would no longer compile, or a call, which would discard the
+	///     returned task without a warning in a caller that is not <c>async</c>.
+	/// </remarks>
+	private static async Task<bool> HasFixedSignatureAsync(IMethodSymbol symbol, SyntaxTokenList modifiers,
+		Solution solution, CancellationToken cancellationToken)
+	{
+		if (modifiers.Any(SyntaxKind.PartialKeyword) || symbol.IsOverride || symbol.IsVirtual ||
+		    !symbol.ExplicitInterfaceImplementations.IsEmpty ||
+		    symbol.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()).Any(member =>
+			    SymbolEqualityComparer.Default.Equals(
+				    symbol.ContainingType.FindImplementationForInterfaceMember(member), symbol)))
+		{
+			return true;
+		}
+
+		IEnumerable<ReferencedSymbol> references = await SymbolFinder
+			.FindReferencesAsync(symbol, solution, cancellationToken)
+			.ConfigureAwait(false);
+		return references.Any(reference => reference.Locations.Any());
+	}
 
 	/// <summary>
 	///     <c>async</c> must precede <c>partial</c>, and takes over the leading trivia of the declaration when there are
