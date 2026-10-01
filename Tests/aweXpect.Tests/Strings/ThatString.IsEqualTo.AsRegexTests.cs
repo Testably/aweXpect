@@ -157,6 +157,21 @@ public sealed partial class ThatString
 					.Because("the given options are combined with the ignored casing");
 			}
 
+			[Theory]
+			[InlineData((RegexOptions)0x4000_0000)]
+			[InlineData(RegexOptions.ECMAScript | RegexOptions.Singleline)]
+			public async Task WhenOptionsAreInvalid_ShouldThrowArgumentOutOfRangeException(
+				RegexOptions regexOptions)
+			{
+				async Task Act()
+					=> await That("ABC").IsEqualTo("b").AsRegex(regexOptions);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage($"The regex options '{regexOptions}' are not a valid combination.").AsPrefix().And
+					.WithParamName("regexOptions")
+					.Because("invalid options used to name an internal parameter of the regex engine");
+			}
+
 			[Fact]
 			public async Task WhenOptionsContainIgnoreCase_ShouldIgnoreCaseAlthoughIgnoringCaseIsDisabled()
 			{

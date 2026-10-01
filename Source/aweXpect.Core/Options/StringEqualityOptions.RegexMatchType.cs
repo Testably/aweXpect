@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -9,8 +10,10 @@ namespace aweXpect.Options;
 public partial class StringEqualityOptions
 {
 	/// <remarks>
-	///     <see cref="RegexOptions.CultureInvariant" /> keeps the result independent of the current culture, so that
-	///     ignoring the casing means the same for a pattern as for all other match types.
+	///     <see cref="RegexOptions.CultureInvariant" /> keeps the result independent of the current culture. The regex
+	///     engine still applies its own case folding, which can differ from
+	///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> for a few characters, depending on the target
+	///     framework.
 	/// </remarks>
 	private const RegexOptions IgnoreCaseOptions = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
 
@@ -44,6 +47,9 @@ public partial class StringEqualityOptions
 	/// <exception cref="System.InvalidOperationException">
 	///     A custom comparer is already set, which the regex engine cannot honour.
 	/// </exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">
+	///     The <paramref name="regexOptions" /> are not a valid combination of <see cref="RegexOptions" />.
+	/// </exception>
 	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
 		if (_comparer is not null)
@@ -51,8 +57,30 @@ public partial class StringEqualityOptions
 			throw ComparerAndPatternConflict();
 		}
 
+		ThrowIfInvalidRegexOptions(regexOptions);
 		_matchType = new RegexMatchType(regexOptions);
 		return this;
+	}
+
+	/// <summary>
+	///     Verifies that the <paramref name="regexOptions" /> are a combination that the regex engine accepts.
+	/// </summary>
+	/// <remarks>
+	///     The regex engine decides which combinations it accepts, which differs between the target frameworks, so it is
+	///     asked directly instead of failing only when the pattern is matched.
+	/// </remarks>
+	private static void ThrowIfInvalidRegexOptions(RegexOptions regexOptions)
+	{
+		try
+		{
+			_ = new Regex(string.Empty, regexOptions, RegexTimeout);
+		}
+		catch (ArgumentOutOfRangeException)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(regexOptions),
+				$"The regex options '{regexOptions}' are not a valid combination."));
+		}
 	}
 
 	private sealed class RegexMatchType(RegexOptions regexOptions) : IStringMatchType
@@ -77,14 +105,6 @@ public partial class StringEqualityOptions
 		}
 
 		/// <summary>
-		///     Counts the non-overlapping matches of the <paramref name="expected" /> pattern in the
-		///     <paramref name="actual" /> value.
-		/// </summary>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase,
-			RegexOptions additionalOptions)
-			=> CountOccurrences(actual, new RegexMatchType(additionalOptions).CreateRegex(expected, ignoreCase));
-
-		/// <summary>
 		///     Counts the non-overlapping matches of the <paramref name="regex" /> in the <paramref name="actual" /> value.
 		/// </summary>
 		/// <remarks>
@@ -106,6 +126,9 @@ public partial class StringEqualityOptions
 		}
 
 		#region IMatchType Members
+
+		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
+		public bool InspectsSubject => true;
 
 		/// <inheritdoc
 		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />

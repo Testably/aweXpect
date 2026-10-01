@@ -75,6 +75,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "a b";
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(" ").IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("an empty needle never occurs, so the negated expectation could never fail");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -129,6 +143,20 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedWildcardIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "a b";
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(" ").AsWildcard().IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' wildcard pattern cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected")
+					.Because("an empty pattern never occurs, so the negated expectation could never fail");
 			}
 		}
 

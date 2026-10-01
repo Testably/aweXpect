@@ -207,6 +207,28 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Theory]
+			[InlineData(" a")]
+			[InlineData("  ")]
+			[InlineData("  ab")]
+			public async Task WhenTrimmedStringIsShorter_ShouldNotReportWhitespace(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo("abc").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              starts with "abc",
+					              but it was {Formatter.Format(subject)}, which differs at index 0:
+					                 ↓ (actual)
+					                {Formatter.Format(subject)}
+					                "abc"
+					                 ↑ (expected prefix)
+					              """)
+					.Because("removing the whitespace would not make the subject start with \"abc\"");
+			}
 		}
 
 		public sealed class AsPrefixNegatedTests

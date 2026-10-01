@@ -198,6 +198,21 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsSameAs(sut);
 		}
 
+		[Theory]
+		[InlineData((RegexOptions)0x4000_0000)]
+		[InlineData(RegexOptions.ECMAScript | RegexOptions.Singleline)]
+		public async Task AsRegex_WithInvalidOptions_ShouldThrowAtTheCall(RegexOptions regexOptions)
+		{
+			StringEqualityOptions sut = new("expected");
+
+			void Act() => sut.AsRegex(regexOptions);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithMessage($"The regex options '{regexOptions}' are not a valid combination.").AsPrefix().And
+				.WithParamName("regexOptions")
+				.Because("invalid options used to fail only when the pattern was matched");
+		}
+
 		[Fact]
 		public async Task AsRegex_WithOptions_ShouldReturnSameInstance()
 		{

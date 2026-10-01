@@ -139,8 +139,9 @@ The pattern is matched like `Regex.IsMatch(subject, pattern)`, so unlike a wildc
 subject: `IsEqualTo("It").AsRegex()` succeeds for `"Let It Be"`. Enclose the pattern in `\A` and `\z` to match the
 complete subject. `^` and `$` bind to the start and the end of the subject and not to every line, but `$` also matches
 before a trailing newline. `IgnoreCase` and `CultureInvariant` are added when the `IgnoringCase` method is
-also used, so that the casing is ignored the same way as for every other expectation and never depends on the current
-culture. Every other
+also used, so that ignoring the casing never depends on the current culture. The regex engine still applies its own
+case folding, which can differ from the other expectations for a few characters, e.g. the Kelvin sign (U+212A) on
+modern .NET. Every other
 [option](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions#fields)
 is opt-in:
 

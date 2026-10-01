@@ -221,3 +221,4 @@ override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetSto
 override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+aweXpect.Core.IStringMatchType.InspectsSubject.get -> bool

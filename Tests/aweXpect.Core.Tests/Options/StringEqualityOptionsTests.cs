@@ -180,14 +180,17 @@ public sealed partial class StringEqualityOptionsTests
 		[InlineData(" ")]
 		[InlineData("   ")]
 		[InlineData("\t")]
-		public async Task CountOccurrences_WhenExpectedNormalizesToEmpty_ShouldReturnZero(string expected)
+		public async Task CountOccurrences_WhenExpectedNormalizesToEmpty_ShouldThrowArgumentException(string expected)
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringIndentation();
 
-			int result = await sut.CountOccurrences("some text", expected);
+			async Task Act() => await sut.CountOccurrences("some text", expected);
 
-			await That(result).IsEqualTo(0);
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("an empty needle never occurs, so a negated expectation could never fail");
 		}
 
 		[Fact]

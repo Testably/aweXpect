@@ -118,7 +118,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with " \t some text",
-					             but it was "some text", which is shorter than the expected length of 12 and misses the prefix:
+					             but it was "some text" with a length of 9, which is shorter than the expected length of 12 and misses the prefix:
 					               " \t "
 					             """);
 			}
@@ -178,7 +178,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text without out",
-					             but it was "text without out", which is shorter than the expected length of 21 and misses the prefix:
+					             but it was "text without out" with a length of 16, which is shorter than the expected length of 21 and misses the prefix:
 					               "some "
 					             """);
 			}

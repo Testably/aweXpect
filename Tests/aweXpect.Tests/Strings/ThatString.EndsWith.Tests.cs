@@ -224,7 +224,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "more than text",
-					             but it was "text", which is shorter than the expected length of 14 and misses the prefix:
+					             but it was "text" with a length of 4, which is shorter than the expected length of 14 and misses the prefix:
 					               "more than "
 					             """);
 			}

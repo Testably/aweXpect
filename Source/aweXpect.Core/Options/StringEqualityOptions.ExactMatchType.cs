@@ -32,6 +32,9 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
+		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
+		public bool InspectsSubject => false;
+
 		/// <inheritdoc
 		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
 		public string GetExtendedFailure(string it, string? actual, string? expected,

@@ -175,15 +175,17 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldReturnZero()
+		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
-			int result = await sut.CountOccurrences("foo", "");
+			async Task Act() => await sut.CountOccurrences("foo", "");
 
-			await That(result).IsEqualTo(0)
-				.Because("an empty expected value never occurs, but it is still a valid wildcard pattern");
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' wildcard pattern cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("an empty pattern never occurs, so a negated expectation could never fail");
 		}
 
 		[Fact]
