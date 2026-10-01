@@ -194,6 +194,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsHaveReasonAndIndex_ShouldIncludeReasonAfterTheIndex()
+			{
+				int[] subject = [0, 1, 2,];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(1).Because("of reasons")).AtIndex(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has an item that is equal to 1 at index 2, because of reasons,
+					              but it had item 2 at index 2
+
+					              Collection:
+					              {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenItemsUseNestedWhose_ShouldRevertToWhoseForTheInnerMember()
 			{
 				MyClass[] subject = [new(1, "foo"),];

@@ -648,7 +648,7 @@ public class ExpectationBuilderTests
 			.WithMessage("""
 			             Expected that subject
 			             is not null,
-			             but it was
+			             but it was <null>
 			             """)
 			.Because("a null subject cannot describe itself, so the subject expression is used instead");
 	}

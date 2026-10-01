@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,8 @@ internal class ExpectationNode : Node
 	private IConstraint? _constraint;
 
 	private Node? _inner;
+
+	private List<IBecauseReason>? _reasons;
 
 	/// <inheritdoc />
 	public override void AddConstraint(IConstraint constraint)
@@ -164,12 +167,50 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult = await _inner.IsMetBy(value, context, cancellationToken);
 			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
-			return innerResult;
+			return await ApplyReasons(innerResult, context);
 		}
 
-		return result ?? throw Tracing.WriteException(
-			new InvalidOperationException(
-				$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
+		if (result is null)
+		{
+			throw Tracing.WriteException(
+				new InvalidOperationException(
+					$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
+		}
+
+		return await ApplyReasons(result, context);
+	}
+
+	/// <summary>
+	///     Adds the <paramref name="reasons" /> which were given for the expectations of this node.
+	/// </summary>
+	/// <remarks>
+	///     They follow the expectation of this node, e.g. of a member, instead of the whole expectation.
+	/// </remarks>
+	internal void AddReasons(IEnumerable<IBecauseReason> reasons)
+		=> (_reasons ??= []).AddRange(reasons);
+
+	/// <remarks>
+	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved, so that
+	///     <see cref="AppendExpectation" /> includes them.
+	/// </remarks>
+	private async Task<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
+	{
+		if (_reasons is null)
+		{
+			return result;
+		}
+
+		foreach (IBecauseReason reason in _reasons)
+		{
+			if (reason is AsyncBecauseReason asyncReason && context is ExpectationTextEvaluationContext)
+			{
+				await asyncReason.Resolve();
+			}
+
+			result = await reason.ApplyTo(result);
+		}
+
+		return result;
 	}
 
 	/// <summary>
@@ -191,6 +232,10 @@ internal class ExpectationNode : Node
 	{
 		_constraint?.AppendExpectation(stringBuilder, indentation);
 		_inner?.AppendExpectation(stringBuilder, indentation);
+		foreach (IBecauseReason reason in _reasons ?? [])
+		{
+			stringBuilder.Append(reason);
+		}
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

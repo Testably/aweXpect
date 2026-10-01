@@ -247,6 +247,7 @@ public abstract class ExpectationBuilder
 			ExpectationGrammars previousGrammars = ExpectationGrammars;
 			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
+			int outerReasonCount = _reasons?.Count ?? 0;
 			expectationBuilderCallback.Invoke(this);
 			ExpectationGrammars = previousGrammars;
 
@@ -254,6 +255,7 @@ public abstract class ExpectationBuilder
 			_pendingWhich = outerPendingWhich;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
+			MoveReasonsTo(mappingNode, outerReasonCount);
 			_node = root;
 			if (replaceIt)
 			{
@@ -301,6 +303,7 @@ public abstract class ExpectationBuilder
 			ExpectationGrammars previousGrammars = ExpectationGrammars;
 			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
+			int outerReasonCount = _reasons?.Count ?? 0;
 			expectationBuilderCallback.Invoke(this);
 			ExpectationGrammars = previousGrammars;
 
@@ -308,6 +311,7 @@ public abstract class ExpectationBuilder
 			_pendingWhich = outerPendingWhich;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
+			MoveReasonsTo(mappingNode, outerReasonCount);
 			_node = root;
 			if (replaceIt)
 			{
@@ -316,6 +320,24 @@ public abstract class ExpectationBuilder
 
 			return this;
 		});
+
+	/// <summary>
+	///     Moves the reasons that were added after the first <paramref name="outerReasonCount" /> ones, i.e. for the
+	///     expectations on a member, to the <paramref name="mappingNode" />, so that they follow the expectation on the
+	///     member instead of the whole expectation.
+	/// </summary>
+	private void MoveReasonsTo(Node mappingNode, int outerReasonCount)
+	{
+		if (_reasons is null || _reasons.Count == outerReasonCount ||
+		    mappingNode is not ExpectationNode expectationNode)
+		{
+			return;
+		}
+
+		int count = _reasons.Count - outerReasonCount;
+		expectationNode.AddReasons(_reasons.GetRange(outerReasonCount, count));
+		_reasons.RemoveRange(outerReasonCount, count);
+	}
 
 	// An empty member node cannot be evaluated, and silently skipping it would hide a forgotten expectation.
 	// The parameter name refers to the expectations callback of the public expectation, not to a parameter here.
@@ -383,19 +405,12 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Appends the reasons to the <paramref name="stringBuilder" />, except those that must be awaited and are not
-	///     resolved yet.
+	///     The reasons of the expectation.
 	/// </summary>
-	internal void AppendReasons(StringBuilder stringBuilder)
-	{
-		foreach (IBecauseReason reason in _reasons ?? [])
-		{
-			stringBuilder.Append(reason);
-		}
-	}
+	private protected IEnumerable<IBecauseReason> Reasons => _reasons ?? [];
 
 	/// <summary>
-	///     Resolves the reasons that must be awaited, so that <see cref="AppendReasons" /> includes them.
+	///     Resolves the reasons that must be awaited, so that their message is available.
 	/// </summary>
 	internal async Task ResolveReasons()
 	{

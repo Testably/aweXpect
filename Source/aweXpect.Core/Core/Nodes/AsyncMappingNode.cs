@@ -248,12 +248,13 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 			                    (!_isNegated || _rightFailsAlsoWhenNegated || !rendersLeft);
 			if (rendersLeft)
 			{
+				int leftStart = stringBuilder.Length;
 				_left.AppendResult(stringBuilder, indentation);
 				if (rendersRight &&
 				    _left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue &&
 				    !_left.HasSameResultTextAs(_right))
 				{
-					stringBuilder.Append(" and ");
+					stringBuilder.AppendAndSeparator(leftStart, indentation);
 					_right.AppendResult(stringBuilder, indentation);
 				}
 			}

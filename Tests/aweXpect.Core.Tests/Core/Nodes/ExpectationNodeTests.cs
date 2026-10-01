@@ -916,6 +916,27 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WithAsyncMapping_WhenConstraintFailureSpansMultipleLines_ShouldStartInnerFailureOnItsOwnLine()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(
+			new DummyValueConstraint<int>(v
+				=> new DummyConstraintResult<int>(Outcome.Failure, v, "foo", "outer\nfailure")));
+		node.AddAsyncMapping(MemberAccessor<int, Task<int>>.FromFunc(s => Task.FromResult(s), " with mapping "));
+		node.AddConstraint(new DummyValueConstraint<int>(v
+			=> new DummyConstraintResult<int>(Outcome.Failure, 2 * v, "bar", "inner failure")));
+
+		ConstraintResult result = await node.IsMetBy(42, null!, CancellationToken.None);
+
+		await That(result.GetResultText()).IsEqualTo("""
+		                                             outer
+		                                             failure
+		                                             and inner failure
+		                                             """).IgnoringNewlineStyle()
+			.Because("the inner failure must not be glued onto the last line of the outer failure");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithMapping_WhenConstraintAndInnerFail_ShouldCombineFailureMessage()
 	{
 		ExpectationNode node = new();
@@ -956,6 +977,27 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo(42);
 		await That(sb.ToString()).IsEqualTo("foo with mapping bar");
 		await That(result.GetResultText()).IsEqualTo("same failure");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithMapping_WhenConstraintFailureSpansMultipleLines_ShouldStartInnerFailureOnItsOwnLine()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(
+			new DummyValueConstraint<int>(v
+				=> new DummyConstraintResult<int>(Outcome.Failure, v, "foo", "outer\nfailure")));
+		node.AddMapping(MemberAccessor<int, int>.FromFunc(s => s, " with mapping "));
+		node.AddConstraint(new DummyValueConstraint<int>(v
+			=> new DummyConstraintResult<int>(Outcome.Failure, 2 * v, "bar", "inner failure")));
+
+		ConstraintResult result = await node.IsMetBy(42, null!, CancellationToken.None);
+
+		await That(result.GetResultText()).IsEqualTo("""
+		                                             outer
+		                                             failure
+		                                             and inner failure
+		                                             """).IgnoringNewlineStyle()
+			.Because("the inner failure must not be glued onto the last line of the outer failure");
 	}
 
 

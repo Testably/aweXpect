@@ -42,7 +42,7 @@ public sealed partial class ThatGuid
 						.WithMessage("""
 						             Expected that subject
 						             is not null,
-						             but it was
+						             but it was <null>
 						             """);
 				}
 			}

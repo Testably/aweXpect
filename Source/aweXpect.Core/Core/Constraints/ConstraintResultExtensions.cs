@@ -67,12 +67,46 @@ public static class ConstraintResultExtensions
 		   (operand.Outcome == Outcome.Undecided && combination.Outcome == Outcome.Undecided);
 
 	/// <summary>
-	///     Appends the result of <paramref name="right" /> and omits its subject, when the last part of the result of
-	///     <paramref name="left" /> starts with the same subject.
+	///     Appends the "and" which joins a further result to the result that was appended from
+	///     <paramref name="resultStart" /> on.
 	/// </summary>
-	internal static void AppendResultAfter(this StringBuilder stringBuilder, ConstraintResult left,
+	/// <remarks>
+	///     After a result that spans several lines (e.g. a diff), the "and" starts a new line, so that the further result
+	///     is not glued onto its last line.
+	/// </remarks>
+	/// <returns><see langword="true" />, when the further result starts on a new line.</returns>
+	internal static bool AppendAndSeparator(this StringBuilder stringBuilder, int resultStart, string? indentation)
+	{
+		for (int i = resultStart; i < stringBuilder.Length; i++)
+		{
+			if (stringBuilder[i] == '\n')
+			{
+				stringBuilder.AppendLine().Append(indentation).Append("and ");
+				return true;
+			}
+		}
+
+		stringBuilder.Append(" and ");
+		return false;
+	}
+
+	/// <summary>
+	///     Appends the "and" and the result of <paramref name="right" /> after the result of <paramref name="left" />,
+	///     which was appended from <paramref name="leftStart" /> on.
+	/// </summary>
+	/// <remarks>
+	///     The subject of <paramref name="right" /> is omitted, when it continues the same line and the last part of the
+	///     result of <paramref name="left" /> starts with the same subject.
+	/// </remarks>
+	internal static void AppendAndResult(this StringBuilder stringBuilder, int leftStart, ConstraintResult left,
 		ConstraintResult right, string? indentation)
 	{
+		if (stringBuilder.AppendAndSeparator(leftStart, indentation))
+		{
+			right.AppendResult(stringBuilder, indentation);
+			return;
+		}
+
 		string? subject = left.TrailingSubject;
 		if (subject is null || right.LeadingSubject != subject)
 		{
@@ -91,6 +125,43 @@ public static class ConstraintResultExtensions
 		StringBuilder sb = new();
 		result.AppendResult(sb, indentation);
 		return sb.ToString();
+	}
+
+	/// <summary>
+	///     Creates a new <see cref="ConstraintResult" /> which only contributes the expectation of the
+	///     <paramref name="inner" />, e.g. for an operand that was skipped and only evaluated for its expectation text.
+	/// </summary>
+	internal static ConstraintResult AsExpectationOnly(this ConstraintResult inner)
+		=> new ConstraintResultExpectationOnlyWrapper(inner);
+
+	private sealed class ConstraintResultExpectationOnlyWrapper : ConstraintResult
+	{
+		private readonly ConstraintResult _inner;
+
+		public ConstraintResultExpectationOnlyWrapper(ConstraintResult inner) : base(inner.FurtherProcessingStrategy)
+		{
+			_inner = inner;
+			Outcome = Outcome.Success;
+		}
+
+		internal override bool IsExpectationOnly => true;
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> _inner.AppendExpectation(stringBuilder, indentation);
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			// The operand was not evaluated, so there is no result.
+		}
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+			=> _inner.TryGetStoredValue(out value);
+
+		public override ConstraintResult Negate()
+		{
+			_inner.Negate();
+			return this;
+		}
 	}
 
 	private sealed class ConstraintResultValueWrapper<T> : ConstraintResult

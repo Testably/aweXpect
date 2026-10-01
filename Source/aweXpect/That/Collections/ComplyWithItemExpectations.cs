@@ -57,6 +57,7 @@ internal sealed class ComplyWithItemExpectations<TItem>
 				builder.AppendExpectation(itemExpectation, indentation);
 				return itemExpectation.ToString();
 			});
+			builder.AppendReasons(stringBuilder);
 			return;
 		}
 
@@ -69,6 +70,8 @@ internal sealed class ComplyWithItemExpectations<TItem>
 		{
 			stringBuilder.Append(" for ").Append(_quantifier).Append(' ').Append(_quantifier.GetItemString());
 		}
+
+		Builder.AppendReasons(stringBuilder);
 	}
 
 	private ManualExpectationBuilder<TItem> Create(bool isNegated, Action<IThatSubject<TItem>> expectations)

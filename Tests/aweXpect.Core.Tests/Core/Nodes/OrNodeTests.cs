@@ -267,6 +267,21 @@ public sealed class OrNodeTests
 			.Because("the negation of a succeeded branch already fails the combination");
 	}
 
+	[Fact]
+	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldOnlyIncludeItsResult()
+	{
+		async Task Act()
+			=> await That("a").DoesNotComplyWith(it => it.IsEqualTo("a").Or.StartsWith("b"));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that "a"
+			             is not equal to "a" and does not start with "b",
+			             but it was "a"
+			             """)
+			.Because("the second node was not evaluated, so it has no result");
+	}
+
 	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
@@ -322,7 +337,7 @@ public sealed class OrNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, "l and r")]
+	[InlineData(Outcome.Success, Outcome.Success, "l")]
 	[InlineData(Outcome.Failure, Outcome.Success, "r")]
 	[InlineData(Outcome.Success, Outcome.Failure, "l")]
 	[InlineData(Outcome.Success, Outcome.Undecided, "l")]
@@ -395,6 +410,24 @@ public sealed class OrNodeTests
 
 		await That(result.GetResultText()).IsEqualTo(expectedResultText)
 			.Because("an undecided operand explains why the combination is undecided");
+	}
+
+	[Fact]
+	public async Task ResultText_WhenLeftSpansMultipleLines_ShouldStartRightOnItsOwnLine()
+	{
+		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "l1\nl2")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "right", "r")));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.AppendResult(sb, "  ");
+
+		await That(sb.ToString()).IsEqualTo("""
+		                                    l1
+		                                    l2
+		                                      and r
+		                                    """).IgnoringNewlineStyle()
+			.Because("the right result must not be glued onto the last line of the left result");
 	}
 
 	[Fact]
@@ -527,30 +560,21 @@ public sealed class OrNodeTests
 	}
 
 	[Fact]
-	public async Task WhenLeftIsSuccessAndHasIgnoreResultFurtherProcessingStrategy_ShouldIncludeRightResultText()
+	public async Task WhenLeftIsSuccess_ShouldOnlyUseTheExpectationOfTheRightOperand()
 	{
 		OrNode node = new(new DummyNode("",
-			() => new DummyConstraintResult(Outcome.Success, "foo", null, FurtherProcessingStrategy.IgnoreResult)));
-		node.AddNode(new DummyNode("",
-			() => new DummyConstraintResult(Outcome.Failure, "bar", "r2", FurtherProcessingStrategy.IgnoreResult)));
+			() => new DummyConstraintResult(Outcome.Success, "foo", "r1")));
+		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "bar", "r2"), new Exception("baz"), "it")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
 
-		await That(result.GetResultText()).IsEqualTo("r2")
-			.Because("the strategy of the left operand only suppresses the right result after the left result");
-	}
-
-	[Fact]
-	public async Task WhenOnlyRightHasFailure_ShouldIncludeRightResultText()
-	{
-		OrNode node = new(new DummyNode("",
-			() => new DummyConstraintResult(Outcome.Success, "foo")));
-		node.AddNode(new DummyNode("",
-			() => new DummyConstraintResult(Outcome.Failure, "bar", "r2", FurtherProcessingStrategy.IgnoreResult)));
-
-		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-
-		await That(result.GetResultText()).IsEqualTo("r2");
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo and bar");
+		await That(result.GetResultText()).IsEqualTo("r1")
+			.Because("the right operand is not evaluated after a successful left operand, so it has no result");
+		await That(result.FailureCause).IsNull();
 	}
 
 	[Fact]
@@ -587,6 +611,29 @@ public sealed class OrNodeTests
 			=> await That(true).IsFalse().Or.IsTrue();
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WithMultiLineFailures_ShouldStartTheSecondResultOnItsOwnLine()
+	{
+		async Task Act()
+			=> await That("foo").StartsWith("b").Or.EndsWith("x");
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that "foo"
+			             starts with "b" or ends with "x",
+			             but it was "foo", which differs at index 0:
+			                ↓ (actual)
+			               "foo"
+			               "b"
+			                ↑ (expected prefix)
+			             and it was "foo", which differs before index 2:
+			                  ↓ (actual)
+			               "foo"
+			                 "x"
+			                  ↑ (expected suffix)
+			             """);
 	}
 
 	[Fact]

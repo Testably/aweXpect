@@ -574,6 +574,7 @@ public partial class CollectionMatchOptions(
 			StringBuilder sb = new();
 			sb.Append("an item that ");
 			ItemExpectationBuilder.AppendExpectation(sb);
+			ItemExpectationBuilder.AppendReasons(sb);
 			return sb.ToString();
 		}
 	}

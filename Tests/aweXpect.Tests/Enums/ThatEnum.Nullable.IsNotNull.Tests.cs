@@ -31,7 +31,7 @@ public sealed partial class ThatEnum
 						.WithMessage("""
 						             Expected that subject
 						             is not null,
-						             but it was
+						             but it was <null>
 						             """);
 				}
 			}
