@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatException
 {
@@ -18,6 +20,19 @@ public sealed partial class ThatException
 						.Whose(e => e.Message, it => it.IsEqualTo("inner")));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				Exception subject = new("outer", new CustomException("inner"));
+
+				async Task Act()
+					=> await That(subject).HasInner((Action<IThatSubject<Exception?>>)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

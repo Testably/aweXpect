@@ -63,7 +63,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				int maximumNumberOfCollectionItems =
 					Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-				_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
+				_items = new LimitedCollection<TItem>();
 				_items.Add(enumerator.Current);
 				while (await enumerator.MoveNextAsync())
 				{

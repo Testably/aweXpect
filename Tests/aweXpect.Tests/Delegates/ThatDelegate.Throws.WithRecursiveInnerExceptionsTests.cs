@@ -48,6 +48,19 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				Action action = () => throw new OuterException(innerException: new CustomException());
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenExpectingInnerExceptionsToBeEmpty_ShouldFail()
 			{
 				Action action = () => throw new OuterException(innerException: new CustomException());

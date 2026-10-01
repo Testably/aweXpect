@@ -23,7 +23,9 @@ public static partial class ThatDelegateThrows
 		this ThatDelegateThrows<TException> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		where TException : Exception?
-		=> new(subject.ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(subject.ExpectationBuilder
 				.ForMember(
 					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFunc(
 						e => e.GetInnerExceptions(),
@@ -35,4 +37,5 @@ public static partial class ThatDelegateThrows
 					grammars => grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested |
 					            ExpectationGrammars.Plural),
 			subject);
+	}
 }

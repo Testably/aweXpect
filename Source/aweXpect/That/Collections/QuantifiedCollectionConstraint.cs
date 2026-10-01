@@ -1,7 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 
@@ -70,9 +69,8 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	{
 		if (_matchingItems is null || _notMatchingItems is null)
 		{
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingItems = new LimitedCollection<TItem>(maxItems);
-			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+			_matchingItems = new LimitedCollection<TItem>();
+			_notMatchingItems = new LimitedCollection<TItem>();
 		}
 
 		if (isMatch)

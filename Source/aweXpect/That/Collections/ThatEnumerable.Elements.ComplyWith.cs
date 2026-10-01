@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -73,9 +72,8 @@ public static partial class ThatEnumerable
 				bool cancelEarly = actual is not ICollection<TItem>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
-				int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-				_matchingItems = new LimitedCollection<TItem>(maxItems);
-				_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+				_matchingItems = new LimitedCollection<TItem>();
+				_notMatchingItems = new LimitedCollection<TItem>();
 
 				foreach (TItem item in materialized)
 				{
@@ -215,9 +213,8 @@ public static partial class ThatEnumerable
 				bool cancelEarly = actual is not ICollection<string?>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
-				int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-				_matchingItems = new LimitedCollection<string?>(maxItems);
-				_notMatchingItems = new LimitedCollection<string?>(maxItems);
+				_matchingItems = new LimitedCollection<string?>();
+				_notMatchingItems = new LimitedCollection<string?>();
 
 				foreach (string? item in materialized)
 				{
@@ -358,9 +355,8 @@ public static partial class ThatEnumerable
 				bool cancelEarly = actual is not ICollection;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
-				int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-				_matchingItems = new LimitedCollection<object?>(maxItems);
-				_notMatchingItems = new LimitedCollection<object?>(maxItems);
+				_matchingItems = new LimitedCollection<object?>();
+				_notMatchingItems = new LimitedCollection<object?>();
 
 				foreach (object? item in materialized)
 				{
@@ -502,9 +498,8 @@ public static partial class ThatEnumerable
 				bool cancelEarly = actual is not ICollection<TItem>;
 				_matchingCount = 0;
 				_notMatchingCount = 0;
-				int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-				_matchingItems = new LimitedCollection<TItem>(maxItems);
-				_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+				_matchingItems = new LimitedCollection<TItem>();
+				_notMatchingItems = new LimitedCollection<TItem>();
 
 				foreach (TItem item in materialized)
 				{

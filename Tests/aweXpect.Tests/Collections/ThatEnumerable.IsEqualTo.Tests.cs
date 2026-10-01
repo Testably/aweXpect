@@ -394,7 +394,35 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """);
 			}
-			
+
+			[Fact]
+			public async Task WhenMaximumNumberOfCollectionItemsIsIntMaxValue_ShouldFailNormally()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(int.MaxValue))
+					{
+						await That(subject).IsEqualTo([1, 2, 4,]);
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection [1, 2, 4,] in order,
+					             but it contained item 3 at index 2 instead of 4
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 4]
+					             """)
+					.Because("int.MaxValue lists all items, so it must not overflow the limits derived from it");
+			}
+
 			[Fact]
 			public async Task WhenReferenceTypeDoesNotMatchNullability_ShouldStillWork()
 			{
@@ -1837,6 +1865,36 @@ public sealed partial class ThatEnumerable
 					               110
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMaximumNumberOfCollectionItemsIsIntMaxValue_ShouldFailNormally()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(int.MaxValue))
+					{
+						await That(subject).IsEqualTo([1, 2, 4,]).InAnyOrder();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection [1, 2, 4,] in any order,
+					             but it
+					               contained item 3 at index 2 that was not expected and
+					               lacked 1 of 3 expected items: 4
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 4]
+					             """)
+					.Because("int.MaxValue lists all items, so it must not overflow the limits derived from it");
 			}
 
 			[Fact]

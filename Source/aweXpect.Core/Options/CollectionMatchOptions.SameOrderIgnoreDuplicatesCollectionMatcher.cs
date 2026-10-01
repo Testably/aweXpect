@@ -168,7 +168,7 @@ public partial class CollectionMatchOptions
 #pragma warning restore S1871
 
 			_index++;
-			return CountDeviations() > 2 * maximumNumber
+			return CountDeviations() > 2L * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
 				: (false, null);
 		}
@@ -213,7 +213,7 @@ public partial class CollectionMatchOptions
 			}
 
 			_index++;
-			return _additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2 * maximumNumber
+			return _additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2L * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
 				: (false, null);
 		}
@@ -254,7 +254,7 @@ public partial class CollectionMatchOptions
 
 				// For the containment relation, all missing items are listed.
 				if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-				    CountDeviations() > 2 * maximumNumberOfCollectionItems)
+				    CountDeviations() > 2L * maximumNumberOfCollectionItems)
 				{
 					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 				}

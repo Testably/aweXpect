@@ -24,7 +24,7 @@ public partial class AwexpectCustomization
 
 		internal ReflectionCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			ExcludedAssemblyPrefixes = new CustomizationValue<string[]>(awexpectCustomization,
+			ExcludedAssemblyPrefixes = new CopiedOnGet(new CustomizationValue<string[]>(awexpectCustomization,
 				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
 				[
 					"mscorlib",
@@ -37,7 +37,7 @@ public partial class AwexpectCustomization
 					"Castle",
 					"DynamicProxyGenAssembly2",
 				],
-				prefixes => prefixes.ThrowIfNull());
+				prefixes => prefixes.ThrowIfNull()));
 		}
 
 		/// <summary>
@@ -56,5 +56,17 @@ public partial class AwexpectCustomization
 		///     - DynamicProxyGenAssembly2
 		/// </remarks>
 		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+
+		/// <summary>
+		///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.
+		/// </summary>
+		private sealed class CopiedOnGet(ICustomizationValueSetter<string[]> inner) : ICustomizationValueSetter<string[]>
+		{
+			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
+			public string[] Get() => (string[])inner.Get().Clone();
+
+			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
+			public CustomizationLifetime Set(string[] value) => inner.Set(value);
+		}
 	}
 }

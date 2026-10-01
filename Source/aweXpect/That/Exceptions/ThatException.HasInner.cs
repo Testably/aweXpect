@@ -15,7 +15,9 @@ public static partial class ThatException
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject,
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(subject.Get().ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" that ",
 					false)
@@ -24,6 +26,7 @@ public static partial class ThatException
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject has an inner exception.
@@ -44,7 +47,9 @@ public static partial class ThatException
 		this IThat<Exception?> subject,
 		Action<IThatSubject<TInnerException?>> expectations)
 		where TInnerException : Exception?
-		=> new(subject.Get().ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
 					" that ",
 					false)
@@ -53,6 +58,7 @@ public static partial class ThatException
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject has an inner exception of type <typeparamref name="TInnerException" />.
@@ -76,6 +82,7 @@ public static partial class ThatException
 		Action<IThatSubject<Exception?>> expectations)
 	{
 		type.ThrowIfNotAnExceptionType();
+		expectations.ThrowIfNull();
 		return new(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception?, Exception?>(

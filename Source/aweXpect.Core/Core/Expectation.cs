@@ -92,10 +92,18 @@ public abstract class Expectation
 		/// </summary>
 		protected Combination(Expectation[] expectations)
 		{
+			expectations.ThrowIfNull();
 			if (expectations.Length == 0)
 			{
 				throw Tracing.WriteException(
 					new ArgumentException("You must provide at least one expectation.", nameof(expectations)));
+			}
+
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+			if (expectations.Any(expectation => expectation is null))
+			{
+				throw Tracing.WriteException(
+					new ArgumentException("The 'expectations' cannot contain null.", nameof(expectations)));
 			}
 
 			_expectations = expectations;

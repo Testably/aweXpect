@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Delegates;
@@ -21,13 +22,17 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<TMember?>> expectations,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
-		=> new(ExpectationBuilder.ForMember(
+	{
+		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
+		return new(ExpectationBuilder.ForMember(
 					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars | ExpectationGrammars.Introduced),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
@@ -45,13 +50,17 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<TMember?>> expectations,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
-		=> new(ExpectationBuilder.ForAsyncMember(
+	{
+		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
+		return new(ExpectationBuilder.ForAsyncMember(
 					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars | ExpectationGrammars.Introduced),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the awaited result of the member selected by the
@@ -69,5 +78,8 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<TMember?>> expectations,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
-		=> Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+	{
+		memberAccessor.ThrowIfNull();
+		return Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+	}
 }

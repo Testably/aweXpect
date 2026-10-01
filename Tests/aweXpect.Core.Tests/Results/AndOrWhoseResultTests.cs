@@ -3,6 +3,36 @@
 public class AndOrWhoseResultTests
 {
 	[Fact]
+	public async Task AndWhose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose((Func<MyClass, Task<bool>>)null!, f => f.IsTrue());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose(f => f.GetValue1Async(), null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task AndWhose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
@@ -20,6 +50,51 @@ public class AndOrWhoseResultTests
 			               async member failed
 			             """)
 			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose(f => f.Value2, null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose((Func<MyClass, bool>)null!, f => f.IsFalse());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose((Func<MyClass, ValueTask<bool>>)null!, f => f.IsTrue());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
 	[Fact]
@@ -102,6 +177,34 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task Whose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose((Func<MyClass, Task<bool>>)null!, f => f.IsTrue());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task Whose_WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.GetValue1Async(), null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task Whose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
@@ -121,6 +224,34 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task Whose_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task Whose_WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose((Func<MyClass, bool>)null!, f => f.IsFalse());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task Whose_WhenMemberThrows_ShouldFail()
 	{
 		ThrowingClass sut = new("member failed");
@@ -137,6 +268,20 @@ public class AndOrWhoseResultTests
 			               member failed
 			             """)
 			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
+	}
+
+	[Fact]
+	public async Task Whose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose((Func<MyClass, ValueTask<bool>>)null!, f => f.IsTrue());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberAccessor").And
+			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
 	[Fact]

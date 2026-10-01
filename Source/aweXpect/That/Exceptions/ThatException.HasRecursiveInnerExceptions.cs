@@ -25,7 +25,9 @@ public static partial class ThatException
 		this IThat<TException?> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		where TException : Exception
-		=> new(subject.Get().ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, IEnumerable<Exception?>>(
 					e => e.GetInnerExceptions(),
 					" that ",
@@ -35,6 +37,7 @@ public static partial class ThatException
 						new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
 			subject);
+	}
 
 	internal class HasRecursiveInnerExceptionsConstraint(
 		string it,

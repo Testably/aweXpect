@@ -28,6 +28,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
@@ -59,6 +60,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder

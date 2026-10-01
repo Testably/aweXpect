@@ -429,6 +429,17 @@ public class ExpectTests
 	}
 
 	[Fact]
+	public async Task ThatAll_WhenAnExpectationIsNull_ShouldThrowArgumentException()
+	{
+		async Task Act()
+			=> await ThatAll(That(1).IsEqualTo(1), null!);
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot contain null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task ThatAll_WhenDeeplyNested_ShouldNumberTheContextsLikeTheResults()
 	{
 		async Task Act()
@@ -463,6 +474,17 @@ public class ExpectTests
 			             [04] title4:
 			             content4
 			             """);
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		async Task Act()
+			=> await ThatAll(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
 	[Fact]
@@ -531,6 +553,28 @@ public class ExpectTests
 			              [01] result1
 			              [02] result2
 			             """);
+	}
+
+	[Fact]
+	public async Task ThatAny_WhenAnExpectationIsNull_ShouldThrowArgumentException()
+	{
+		async Task Act()
+			=> await ThatAny(That(1).IsEqualTo(1), null!);
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot contain null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task ThatAny_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+	{
+		async Task Act()
+			=> await ThatAny(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectations").And
+			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
 	[Fact]

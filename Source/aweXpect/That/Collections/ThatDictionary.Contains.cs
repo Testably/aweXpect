@@ -142,6 +142,7 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		expected.Key.ThrowIfNull(negated);
 		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(

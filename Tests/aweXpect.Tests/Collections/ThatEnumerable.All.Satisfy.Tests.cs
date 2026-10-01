@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -155,6 +156,53 @@ public sealed partial class ThatEnumerable
 						.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 						.Because("a subject that cannot be enumerated fails the expectation instead of aborting its evaluation");
 				}
+
+				[Fact]
+				public async Task WhenMaximumNumberOfCollectionItemsIsIntMaxValue_ShouldFailNormally()
+				{
+					int[] subject = [1, 2, 3,];
+
+					async Task Act()
+					{
+						using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(int.MaxValue))
+						{
+							await That(subject).All().Satisfy(x => x > 1);
+						}
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x > 1 for all items,
+						             but only 2 of 3 did
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("int.MaxValue lists all items, so it must not overflow the limits derived from it");
+				}
+
+#if NET8_0_OR_GREATER
+				[Fact]
+				public async Task WhenMaximumNumberOfCollectionItemsIsLarge_ShouldNotAllocateProportionally()
+				{
+					int[] subject = [1, 2, 3,];
+					long allocated;
+
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(10_000_000))
+					{
+						long before = GC.GetTotalAllocatedBytes(true);
+						await That(subject).All().Satisfy(x => x > 0);
+						allocated = GC.GetTotalAllocatedBytes(true) - before;
+					}
+
+					await That(allocated).IsLessThan(16_000_000)
+						.Because("the buffers grow with the items instead of being sized to the maximum, which took about 160 MB");
+				}
+#endif
 
 				[Fact]
 				public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()

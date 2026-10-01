@@ -120,7 +120,7 @@ public partial class CollectionMatchOptions
 
 			// Resolving each item right away keeps the earlier items matched, so the later ones are reported.
 			await matching.ResolvePendingItems();
-			if (_additionalItems.Count > 2 * maximumNumber)
+			if (_additionalItems.Count > 2L * maximumNumber)
 			{
 				_missingItems = matching.UnmatchedExpectedItems();
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
@@ -138,7 +138,7 @@ public partial class CollectionMatchOptions
 
 			// For the containment relation, all deviations are missing items, which are known completely here.
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			    CountAdditionalDeviations() + CountMissingDeviations() > 2 * maximumNumber)
+			    CountAdditionalDeviations() + CountMissingDeviations() > 2L * maximumNumber)
 			{
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 			}

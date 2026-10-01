@@ -52,7 +52,7 @@ public partial class CollectionMatchOptions
 				_additionalItems.Add(index, value);
 			}
 
-			return CountAdditionalDeviations() > 2 * maximumNumber
+			return CountAdditionalDeviations() > 2L * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
 		}
@@ -64,7 +64,7 @@ public partial class CollectionMatchOptions
 
 			// For the containment relation, all deviations are missing items, which are known completely here.
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			    CountMissingDeviations() + CountAdditionalDeviations() > 2 * maximumNumber)
+			    CountMissingDeviations() + CountAdditionalDeviations() > 2L * maximumNumber)
 			{
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 			}
@@ -139,7 +139,7 @@ public partial class CollectionMatchOptions
 				}
 				else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) ||
 				         (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-				          ++stillMissing + CountAdditionalDeviations() > 2 * maximumNumber))
+				          ++stillMissing + CountAdditionalDeviations() > 2L * maximumNumber))
 				{
 					return;
 				}

@@ -36,6 +36,19 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "Starting up\nReady";
+
+				async Task Act()
+					=> await That(subject).HasLines(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenLineIsIndented_ShouldSucceedWhenIndentationIsIgnored()
 			{
 				string subject = "Starting up\n    Connected to database\n        Ready";

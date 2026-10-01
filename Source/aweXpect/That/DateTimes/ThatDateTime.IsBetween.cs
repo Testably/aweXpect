@@ -14,10 +14,11 @@ public static partial class ThatDateTime
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
 	/// <remarks>
-	///     Both bounds are inclusive. A maximum below a <paramref name="minimum" /> of a compatible kind throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound, or one whose
-	///     <see cref="DateTime.Kind" /> cannot be compared with the subject's, like <see cref="DateTimeKind.Utc" />
-	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
+	///     Both bounds are inclusive. A maximum with fewer ticks than the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" /> whatever their kinds, while a <see langword="null" /> bound, or
+	///     one whose <see cref="DateTime.Kind" /> cannot be compared with the subject's, like
+	///     <see cref="DateTimeKind.Utc" /> against <see cref="DateTimeKind.Local" />, fails the expectation as well as its
+	///     negation.
 	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime>>, DateTime?> IsBetween(
 		this IThat<DateTime> subject,
@@ -39,10 +40,11 @@ public static partial class ThatDateTime
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
 	/// <remarks>
-	///     Both bounds are inclusive. A maximum below a <paramref name="minimum" /> of a compatible kind throws an
-	///     <see cref="ArgumentOutOfRangeException" />, while a <see langword="null" /> bound, or one whose
-	///     <see cref="DateTime.Kind" /> cannot be compared with the subject's, like <see cref="DateTimeKind.Utc" />
-	///     against <see cref="DateTimeKind.Local" />, fails the expectation as well as its negation.
+	///     Both bounds are inclusive. A maximum with fewer ticks than the <paramref name="minimum" /> throws an
+	///     <see cref="ArgumentOutOfRangeException" /> whatever their kinds, while a <see langword="null" /> bound, or
+	///     one whose <see cref="DateTime.Kind" /> cannot be compared with the subject's, like
+	///     <see cref="DateTimeKind.Utc" /> against <see cref="DateTimeKind.Local" />, fails the expectation as well as its
+	///     negation.
 	/// </remarks>
 	public static BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime>>, DateTime?> IsNotBetween(
 		this IThat<DateTime> subject,

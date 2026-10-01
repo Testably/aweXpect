@@ -71,6 +71,19 @@ public sealed partial class ThatException
 				}
 
 				[Fact]
+				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner<CustomException>(null!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expectations").And
+						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionHasCorrectMessageButUnexpectedType_ShouldFail()
 				{
 					Exception subject = new("outer", new Exception("inner"));
