@@ -695,6 +695,65 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAfterAnd_AndOnlyTheLeftOperandFails_ShouldReportBoth()
+			{
+				IEnumerable<int> subject = ToEnumerable([3,]);
+
+				async Task Act()
+					=> await That(subject).Contains(1).And.HasSingle().Which.IsEqualTo(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to 1 at least once and has a single item that is equal to 2,
+					             but it did not contain it and it was 3, which differs by 1
+
+					             Collection:
+					             [3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAfterOr_AndNoOperandIsMet_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([2,]);
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.HasSingle().Which.IsEqualTo(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty or has a single item that is equal to 1,
+					             but it was [
+					               2
+					             ] and it was 2, which differs by 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.HasSingle().Which.IsEqualTo(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAfterOr_AndTheRightOperandIsMet_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.HasSingle().Which.IsEqualTo(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -730,6 +789,24 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEnumerableIsEmpty_ShouldNotEvaluateTheItemExpectation()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.Satisfies(i => 10 / i == 1);
+
+				XunitException exception = await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item that satisfies i => 10 / i == 1,
+					             but it was empty
+					             """);
+				await That(exception.InnerException).IsNull()
+					.Because("the predicate must not run on a default item that does not exist");
+			}
+
+			[Fact]
 			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
 			{
 				IEnumerable<object> subject = ToEnumerable<object>(1);
@@ -756,6 +833,22 @@ public sealed partial class ThatEnumerable
 
 					             Collection:
 					             [1]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedAfterOr_AndTheLeftOperandIsMet_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEmpty().Or.HasSingle().Which.IsEqualTo(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty and does not have a single item that is equal to 1,
+					             but it was empty
 					             """);
 			}
 

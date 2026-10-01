@@ -117,9 +117,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               0
 					             ]
 
-					             Collection:
-					             []
-
 					             Dictionary:
 					             {
 					               [1] = "foo",
@@ -463,18 +460,6 @@ public sealed partial class ThatReadOnlyDictionary
 					             contains keys [1, 0, 3] whose values all are equal to "bar",
 					             but it did not contain [
 					               0
-					             ]
-
-					             Not matching items:
-					             [
-					               [1] = "foo",
-					               [3] = "baz"
-					             ]
-
-					             Collection:
-					             [
-					               [1] = "foo",
-					               [3] = "baz"
 					             ]
 
 					             Dictionary:

@@ -9,6 +9,17 @@ public sealed partial class ThatDelegate
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenAfterOrInsideTheExpectationsOnTheResult_ShouldOnlyContinueTheRightOperand()
+				{
+					Func<int[]> @delegate = () => [];
+
+					async Task Act()
+						=> await That(@delegate).DoesNotThrow().WhoseResult.IsEmpty().Or.HasSingle().Which.IsEqualTo(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenDelegateThrows_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();

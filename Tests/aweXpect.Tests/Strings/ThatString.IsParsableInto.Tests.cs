@@ -108,6 +108,57 @@ public sealed partial class ThatString
 		public sealed class WhichTests
 		{
 			[Fact]
+			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.IsParsableInto<int>().Which.IsEqualTo(12);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAfterOrInsideTheExpectationsOnAnItem_ShouldOnlyContinueTheRightOperand()
+			{
+				string[] subject = ["",];
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.IsEmpty().Or.IsParsableInto<int>().Which.IsEqualTo(12);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAfterOrInsideWhose_ShouldOnlyContinueTheRightOperand()
+			{
+				TextClass subject = new("");
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Text,
+						t => t.IsEmpty().Or.IsParsableInto<int>().Which.IsEqualTo(12));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegatedAfterOr_AndTheLeftOperandIsMet_ShouldFail()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(x => x.IsEmpty().Or.IsParsableInto<int>().Which.IsEqualTo(12));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty and is not parsable into int that is equal to 12,
+					             but it was ""
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMemberOfWhose_ShouldReferToTheParsedValueAsIt()
 			{
 				TextClass subject = new("1");

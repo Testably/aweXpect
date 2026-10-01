@@ -253,6 +253,136 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForWhich_AfterAnd_WhenTheLeftOperandFails_ShouldStillEvaluateTheMember()
+	{
+		bool isMemberEvaluated = false;
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.And();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 3, "has length 3"));
+		sut.ForWhich<string, char>(s => s[0], " whose first char ");
+		sut.AddConstraint((_, _) => new DummyConstraint<char>(c =>
+		{
+			isMemberEvaluated = true;
+			return c == 'b';
+		}, "is 'b'"));
+
+		ConstraintResult result = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(isMemberEvaluated).IsTrue()
+			.Because("the member only continues the right operand, which was met");
+		await That(result.GetExpectationText()).IsEqualTo("is foo and has length 3 whose first char is 'b'");
+	}
+
+	[Fact]
+	public async Task ForWhich_AfterOr_WhenCalledTwice_ShouldOnlyContinueTheRightOperand()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+		sut.ForWhich<string, char>(s => s[0], " and whose first char ");
+		sut.AddConstraint((_, _) => new DummyConstraint<char>(c => c == 'f', "is 'f'"));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText())
+			.IsEqualTo("is empty or is foo whose length is 3 and whose first char is 'f'");
+	}
+
+	[Fact]
+	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
+	}
+
+	[Theory]
+	[InlineData("foo", Outcome.Success)]
+	[InlineData("bar", Outcome.Failure)]
+	[InlineData("fooo", Outcome.Failure)]
+	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsNotMet_ShouldDependOnTheRightOperand(
+		string subject, Outcome expectedOutcome)
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.StartsWith("foo"), "starts with foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy(subject, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Fact]
+	public async Task ForWhich_AfterOr_WithAMemberExpectationOnTheMember_ShouldOnlyContinueTheRightOperand()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.ForMember(MemberAccessor<int, int>.FromFunc(i => 2 * i, "doubled "))
+			.AddExpectations(e => e.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 6, "is 6")));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length doubled is 6");
+	}
+
+	[Fact]
+	public async Task ForWhich_AfterOrAndAnd_ShouldOnlyContinueTheRightMostOperand()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.StartsWith("f"), "starts with f"));
+		sut.And();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText())
+			.IsEqualTo("is empty or starts with f and is foo whose length is 3");
+	}
+
+	[Fact]
+	public async Task ForWhich_Async_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
+	{
+		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
+		ManualExpectationBuilder<string> sut = new(null);
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich(lengthAccessor, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
+	}
+
+	[Fact]
 	public async Task ForWhich_Async_CalledTwice_ShouldHonorConstraintsFromAllLevels()
 	{
 		Func<string, Task<string?>> upperAccessor = s => Task.FromResult<string?>(s.ToUpperInvariant());

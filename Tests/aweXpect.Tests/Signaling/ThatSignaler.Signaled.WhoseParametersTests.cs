@@ -24,9 +24,6 @@ public sealed partial class ThatSignaler
 					             Expected that signaler
 					             has recorded the callback at least twice with x => x > 0 within 0:00.050 with parameters of which all are unique,
 					             but it was never recorded within *
-
-					             Collection:
-					             []
 					             """).AsWildcard()
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
