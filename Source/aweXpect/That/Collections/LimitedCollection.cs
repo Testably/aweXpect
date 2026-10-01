@@ -24,11 +24,13 @@ internal class LimitedCollection<T> : IEnumerable<T>
 	/// </remarks>
 	public LimitedCollection(int? limit = null)
 	{
-		_limit = limit ?? Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() switch
+		if (limit is null)
 		{
-			int.MaxValue => int.MaxValue,
-			int maximum => maximum + 1,
-		};
+			int maximum = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+			limit = maximum == int.MaxValue ? maximum : maximum + 1;
+		}
+
+		_limit = limit.Value;
 	}
 
 	/// <summary>
