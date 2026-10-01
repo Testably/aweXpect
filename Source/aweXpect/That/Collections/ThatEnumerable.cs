@@ -27,6 +27,17 @@ public static partial class ThatEnumerable
 	private const string SortOrder = " order";
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
+	private static void AddExpectedContext<TItem>(ExpectationBuilder expectationBuilder, IEnumerable<TItem> expected,
+		ICollection<TItem> expectedItems)
+		=> expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
+			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			})),
+			-2));
+
 	/// <remarks>
 	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a set subject with a
 	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>, and the
@@ -74,14 +85,7 @@ public static partial class ThatEnumerable
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
-					-2));
+			AddExpectedContext(expectationBuilder, expected, expectedItems);
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
@@ -512,14 +516,7 @@ public static partial class ThatEnumerable
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
-					-2));
+			AddExpectedContext(expectationBuilder, expected, expectedItems);
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
 				matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>());
@@ -1422,7 +1419,7 @@ public static partial class ThatEnumerable
 	private static IComparer<TMember>? GetSubjectOrder<TMember>(object subject, string memberExpression,
 		CollectionOrderOptions<TMember> options)
 		=> memberExpression.Length == 0 && !options.HasComparer
-			? CollectionComparerHelpers.GetSubjectOrder<TMember>(subject)
+			? CollectionComparerHelpers.GetSubjectOrder(subject, options.GetComparer())
 			: null;
 
 	private static bool IsOutOfOrder(aweXpect.SortOrder sortOrder, int comparisonResult)
@@ -1431,8 +1428,8 @@ public static partial class ThatEnumerable
 
 	/// <remarks>
 	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set with a
-	///     custom comparer is ordered by that comparer, unless a comparer is specified in the <paramref name="options" />,
-	///     and the expectation names it.
+	///     comparer other than the default order is ordered by that comparer, unless a comparer is specified in the
+	///     <paramref name="options" />, and the expectation names it.
 	/// </remarks>
 	private sealed class IsInOrderConstraint<TItem, TMember>(
 		ExpectationBuilder expectationBuilder,
@@ -1559,8 +1556,8 @@ public static partial class ThatEnumerable
 
 	/// <remarks>
 	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set of
-	///     <typeparamref name="TMember" /> with a custom comparer is ordered by that comparer, unless a comparer is specified
-	///     in the <paramref name="options" />, and the expectation names it.
+	///     <typeparamref name="TMember" /> with a comparer other than the default order is ordered by that comparer, unless
+	///     a comparer is specified in the <paramref name="options" />, and the expectation names it.
 	/// </remarks>
 	private sealed class IsInOrderForEnumerableConstraint<TEnumerable, TItem, TMember>(
 		ExpectationBuilder expectationBuilder,

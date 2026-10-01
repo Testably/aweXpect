@@ -53,6 +53,29 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WithTheDefaultComparer_ShouldNameTheComparerOfTheSet()
+			{
+				SortedSet<string> subject = ["a", "b",];
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in descending order using the subject's GenericComparer<string>,
+					             but it had "a" before "b", which is not in descending order
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+					             """)
+					.Because("the default comparer of a string set differs from the ordinal default order");
+			}
 		}
 	}
 }

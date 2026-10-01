@@ -17,7 +17,9 @@ internal static class CollectionComparerHelpers
 	///     when that comparer is not the default one, so that expectations on the keys use it as well.
 	/// </summary>
 	/// <remarks>
-	///     The keys of a dictionary are unique for its comparer, so the set holds all of them, in the same order.
+	///     The keys of a dictionary are unique for its comparer, so the set holds all of them, in the same order. The keys
+	///     of a sorted dictionary with the default comparer keep that comparer as their order, see
+	///     <see cref="SortedKeys{TKey}" />.
 	/// </remarks>
 	public static IEnumerable<TKey>? GetKeys<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary,
 		IEnumerable<TKey>? keys)
@@ -30,7 +32,7 @@ internal static class CollectionComparerHelpers
 		ISet<TKey> set = KeyComparers.CreateKeySet(dictionary);
 		if (GetSubjectComparer<TKey>(set) is null)
 		{
-			return keys;
+			return set is SortedSet<TKey> sortedSet ? new SortedKeys<TKey>(keys, sortedSet.Comparer) : keys;
 		}
 
 		foreach (TKey key in keys)
@@ -116,19 +118,24 @@ internal static class CollectionComparerHelpers
 		};
 
 	/// <summary>
-	///     Returns the comparer that orders the items of the <paramref name="collection" />, when it is a sorted set
-	///     with a comparer other than the default one for <typeparamref name="T" />, or <see langword="null" />
-	///     otherwise.
+	///     Returns the comparer that orders the items of the <paramref name="collection" />, when it is a sorted set or
+	///     the <see cref="SortedKeys{TKey}" /> of a sorted dictionary with a comparer other than the
+	///     <paramref name="defaultOrder" />, or <see langword="null" /> otherwise.
 	/// </summary>
-	public static IComparer<T>? GetSubjectOrder<T>(object? collection)
+	/// <remarks>
+	///     The comparison is against the <paramref name="defaultOrder" /> rather than <see cref="Comparer{T}.Default" />,
+	///     because they differ for strings, so that a sorted set with the default comparer is also in its own order.
+	/// </remarks>
+	public static IComparer<T>? GetSubjectOrder<T>(object? collection, IComparer<T> defaultOrder)
 		=> collection switch
 		{
-			SortedSet<T> set when IsCustom(set.Comparer) => set.Comparer,
+			SortedSet<T> set when !Equals(set.Comparer, defaultOrder) => set.Comparer,
+			SortedKeys<T> keys when !Equals(keys.Comparer, defaultOrder) => keys.Comparer,
 #if NET8_0_OR_GREATER
-			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => set.KeyComparer,
+			ImmutableSortedSet<T> set when !Equals(set.KeyComparer, defaultOrder) => set.KeyComparer,
 #else
 			not null when ReadComparer<IComparer<T>>(collection, SetComparerProperties) is { } comparer &&
-			              IsCustom(comparer) => comparer,
+			              !Equals(comparer, defaultOrder) => comparer,
 #endif
 			_ => null,
 		};

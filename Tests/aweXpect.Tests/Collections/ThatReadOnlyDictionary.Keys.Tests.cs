@@ -169,6 +169,22 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
+			public async Task ForASortedDictionaryWithTheDefaultComparer_ShouldOrderByTheKeyComparer()
+			{
+				IReadOnlyDictionary<string, int> subject = new SortedDictionary<string, int>
+				{
+					{ "a", 1 },
+					{ "B", 2 },
+				};
+
+				async Task Act()
+					=> await That(subject).Keys.IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the keys of a sorted dictionary are always in its own order");
+			}
+
+			[Fact]
 			public async Task IsEqualTo_ShouldUseTheKeyComparer()
 			{
 				IReadOnlyDictionary<string, int> subject =

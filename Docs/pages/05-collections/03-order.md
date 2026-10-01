@@ -32,8 +32,8 @@ Album[] albums = //...
 await Expect.That(albums).IsInAscendingOrder(x => x.Title);
 ```
 
-A `SortedSet<T>` or `ImmutableSortedSet<T>` with a custom comparer is ordered by that comparer, unless a comparer or a
-member is specified.
+Strings are compared ordinally by default, also in an untyped collection. A `SortedSet<T>` or `ImmutableSortedSet<T>`,
+and the keys of a sorted dictionary, are ordered by their own comparer, unless a comparer or a member is specified.
 
 A collection of `DateTime` values (or a `DateTime` member) that contains both `DateTimeKind.Utc` and
 `DateTimeKind.Local` values fails the check, in its negated form as well, as the order of such values depends on the

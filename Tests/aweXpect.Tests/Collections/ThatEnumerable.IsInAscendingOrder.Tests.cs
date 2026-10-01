@@ -213,6 +213,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsAreTypedAsObjects_ShouldCompareThemOrdinally()
+			{
+				IEnumerable<object> subject = ToEnumerable<object>(["a", "B",]);
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in ascending order,
+					             but it had "a" before "B", which is not in ascending order
+
+					             Collection:
+					             [
+					               "a",
+					               "B"
+					             ]
+					             """)
+					.Because("strings are ordered ordinally, whatever the item type of the collection");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;

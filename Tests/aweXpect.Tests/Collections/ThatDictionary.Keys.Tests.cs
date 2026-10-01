@@ -213,6 +213,20 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task ForAnImmutableSortedDictionaryWithTheDefaultComparer_ShouldOrderByTheKeyComparer()
+			{
+				IDictionary<string, int> subject = ImmutableSortedDictionary.Create<string, int>()
+					.Add("a", 1)
+					.Add("B", 2);
+
+				async Task Act()
+					=> await That(subject).Keys.IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the keys of a sorted dictionary are always in its own order");
+			}
+
+			[Fact]
 			public async Task ForASortedDictionary_ShouldOrderByTheKeyComparer()
 			{
 				SortedDictionary<string, int> subject = new(new ReverseComparer())
@@ -228,6 +242,38 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task ForASortedDictionaryWithTheDefaultComparer_ShouldOrderByTheKeyComparer()
+			{
+				SortedDictionary<string, int> subject = new()
+				{
+					{ "a", 1 },
+					{ "B", 2 },
+				};
+
+				async Task Act()
+					=> await That(subject).Keys.IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the keys of a sorted dictionary are always in its own order");
+			}
+
+			[Fact]
+			public async Task ForASortedListWithTheDefaultComparer_ShouldOrderByTheKeyComparer()
+			{
+				SortedList<string, int> subject = new()
+				{
+					{ "a", 1 },
+					{ "B", 2 },
+				};
+
+				async Task Act()
+					=> await That(subject).Keys.IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the keys of a sorted list are always in its own order");
+			}
+
+			[Fact]
 			public async Task IsEqualTo_ShouldUseTheKeyComparer()
 			{
 				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 2 }, };
@@ -236,6 +282,33 @@ public sealed partial class ThatDictionary
 					=> await That(subject).Keys.IsEqualTo(["A", "B",]);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IsEquivalentTo_ForASortedDictionaryWithTheDefaultComparer_ShouldNotIgnoreTheOrder()
+			{
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
+
+				async Task Act()
+					=> await That(subject).Keys.IsEquivalentTo(new[] { "b", "a", });
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has keys that are equivalent to new[] { "b", "a", },
+					             but it was not:
+					               Element [0] differed:
+					                   Actual: "a"
+					                 Expected: "b"
+					             and
+					               Element [1] differed:
+					                   Actual: "b"
+					                 Expected: "a"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the keys of a sorted dictionary are an ordered sequence, not a set");
 			}
 
 			[Fact]
