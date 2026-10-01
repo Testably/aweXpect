@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
@@ -188,7 +187,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 	private static TSource? ResolveSource(ConstraintResult? parentResult, object value)
 	{
-		if (parentResult != null && parentResult.TryGetValue(out TSource? projectedValue))
+		if (parentResult != null && parentResult.TryGetStoredValue(out TSource? projectedValue))
 		{
 			return projectedValue;
 		}
@@ -367,12 +366,12 @@ internal class WhichNode<TSource, TMember> : Node
 			}
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
+		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default
 		{
 			if (_isMemberSkipped)
 			{
-				return _left.TryGetValue(out value);
+				return _left.TryGetStoredValue(out value);
 			}
 
 			if (_value is TValue typedValue)
@@ -381,13 +380,13 @@ internal class WhichNode<TSource, TMember> : Node
 				return true;
 			}
 
-			if (_left.TryGetValue(out TValue? leftValue))
+			if (_left.TryGetStoredValue(out TValue? leftValue))
 			{
 				value = leftValue;
 				return true;
 			}
 
-			if (_right.TryGetValue(out TValue? rightValue))
+			if (_right.TryGetStoredValue(out TValue? rightValue))
 			{
 				value = rightValue;
 				return true;
@@ -397,8 +396,7 @@ internal class WhichNode<TSource, TMember> : Node
 			// When neither this result nor its sub-chains carry a TValue, fall through to a
 			// type-compatibility check so chained WhichNodes can keep propagating projections
 			// even when the recorded matching value happens to be null (e.g. an outer
-			// `Which(p => p.Address)` projecting `null`). The caller is expected to guard
-			// against null `value` even though `[NotNullWhen(true)]` is annotated on the base.
+			// `Which(p => p.Address)` projecting `null`).
 			return typeof(TValue).IsAssignableFrom(typeof(TMember));
 		}
 

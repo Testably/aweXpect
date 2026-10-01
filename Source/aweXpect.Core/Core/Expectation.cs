@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -317,7 +316,7 @@ public abstract class Expectation
 				}
 			}
 
-			public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+			public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			{
 				value = default;
 				return false;

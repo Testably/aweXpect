@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core.Constraints;
 
@@ -64,7 +63,7 @@ internal sealed class NullSubjectResult : ConstraintResult
 		=> stringBuilder.Append(_result);
 
 	/// <inheritdoc />
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		if (_value is TValue typedValue)
 		{

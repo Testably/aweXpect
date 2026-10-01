@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core.Helpers;
 
@@ -121,7 +120,7 @@ public static class ConstraintResultExtensions
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendResult(stringBuilder, indentation);
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_value is TValue typedValue)
 			{
@@ -164,7 +163,7 @@ public static class ConstraintResultExtensions
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_failure.Indent(indentation));
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_value is TValue typedValue)
 			{
@@ -210,8 +209,8 @@ public static class ConstraintResultExtensions
 
 		internal override bool IsExpectationOnly => _inner.IsExpectationOnly;
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
-			=> _inner.TryGetValue(out value);
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+			=> _inner.TryGetStoredValue(out value);
 
 		public override ConstraintResult Negate()
 		{

@@ -95,9 +95,21 @@ public abstract partial class ConstraintResult
 	public abstract void AppendResult(StringBuilder stringBuilder, string? indentation = null);
 
 	/// <summary>
-	///     Tries to extract the <paramref name="value" /> that is stored in the constraint result.
+	///     Tries to extract the <paramref name="value" /> of type <typeparamref name="TValue" /> that is stored in the
+	///     constraint result, which can also be <see langword="null" />.
 	/// </summary>
-	public abstract bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value);
+	/// <remarks>
+	///     Returns <see langword="true" /> with a <see langword="null" /> <paramref name="value" />, when the result stores
+	///     a value of a type assignable to <typeparamref name="TValue" />, which is <see langword="null" />.
+	/// </remarks>
+	public abstract bool TryGetStoredValue<TValue>(out TValue? value);
+
+	/// <summary>
+	///     Tries to extract the non-<see langword="null" /> <paramref name="value" /> of type
+	///     <typeparamref name="TValue" /> that is stored in the constraint result.
+	/// </summary>
+	public bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
+		=> TryGetStoredValue(out value) && value is not null;
 
 	/// <summary>
 	///     Negate the current <see cref="ConstraintResult" />.

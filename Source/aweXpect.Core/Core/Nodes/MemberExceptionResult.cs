@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
@@ -60,7 +59,7 @@ internal sealed class MemberExceptionResult : ConstraintResult
 			.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 
 	/// <inheritdoc />
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		if (_value is TValue typedValue)
 		{

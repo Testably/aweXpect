@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
@@ -67,10 +66,10 @@ public abstract partial class ConstraintResult
 				.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default
-			=> _inner.TryGetValue(out value);
+			=> _inner.TryGetStoredValue(out value);
 
 		/// <inheritdoc cref="ConstraintResult.Negate()" />
 		public override ConstraintResult Negate()

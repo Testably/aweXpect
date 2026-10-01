@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using aweXpect.Core.Constraints;
 
 namespace aweXpect.Core.Tests.TestHelpers;
@@ -47,7 +46,7 @@ public sealed class DummyConstraintResult : ConstraintResult
 		}
 	}
 
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		if (_value is TValue typedValue)
 		{
@@ -106,7 +105,7 @@ public sealed class DummyConstraintResult<T> : ConstraintResult
 		}
 	}
 
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		if (_value is TValue typedValue)
 		{

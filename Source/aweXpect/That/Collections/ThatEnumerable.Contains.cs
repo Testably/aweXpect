@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -908,8 +907,8 @@ public static partial class ThatEnumerable
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{
@@ -1069,8 +1068,8 @@ public static partial class ThatEnumerable
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{
@@ -1226,8 +1225,8 @@ public static partial class ThatEnumerable
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{
@@ -1382,8 +1381,8 @@ public static partial class ThatEnumerable
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{

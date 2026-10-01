@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace aweXpect.Core.Constraints;
@@ -129,8 +128,8 @@ public abstract partial class ConstraintResult
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (Actual is TValue typedValue)
 			{

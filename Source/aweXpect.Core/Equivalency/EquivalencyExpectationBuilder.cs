@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,7 +88,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 			Formatter.Format(stringBuilder, _value?.GetType());
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_value is TValue typedValue)
 			{

@@ -8,6 +8,19 @@ public sealed class ConstraintResultExtensionsTests
 	public sealed class FailTests
 	{
 		[Fact]
+		public async Task Failure_TryGetStoredValue_WithNullValue_ShouldReturnTrue()
+		{
+			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
+			sut = sut.Fail<string?>("bar", null);
+
+			bool result = sut.TryGetStoredValue(out string? value);
+
+			await That(result).IsTrue()
+				.Because("the result stores a value of the requested type, even though it is null");
+			await That(value).IsNull();
+		}
+
+		[Fact]
 		public async Task Failure_TryGetValue_WhenTypeDoesNotMatch_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
@@ -42,7 +55,7 @@ public sealed class ConstraintResultExtensionsTests
 			bool result = sut.TryGetValue(out string? value);
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
-			await That(result).IsTrue();
+			await That(result).IsFalse();
 			await That(value).IsNull();
 		}
 
@@ -105,6 +118,19 @@ public sealed class ConstraintResultExtensionsTests
 	public sealed class UseValueTests
 	{
 		[Fact]
+		public async Task Failure_TryGetStoredValue_WithNullValue_ShouldReturnTrue()
+		{
+			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
+			sut = sut.UseValue<string?>(null);
+
+			bool result = sut.TryGetStoredValue(out string? value);
+
+			await That(result).IsTrue()
+				.Because("the result stores a value of the requested type, even though it is null");
+			await That(value).IsNull();
+		}
+
+		[Fact]
 		public async Task Failure_TryGetValue_WhenTypeDoesNotMatch_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
@@ -136,7 +162,7 @@ public sealed class ConstraintResultExtensionsTests
 
 			bool result = sut.TryGetValue(out string? value);
 
-			await That(result).IsTrue();
+			await That(result).IsFalse();
 			await That(value).IsNull();
 		}
 

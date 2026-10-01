@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 
 namespace aweXpect.Core.Constraints;
 
@@ -31,9 +30,9 @@ public abstract partial class ConstraintResult
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendCanceledResult(stringBuilder, "it");
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<T>([NotNullWhen(true)] out T? value) where T : default
-			=> inner.TryGetValue(out value);
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<T>(out T? value) where T : default
+			=> inner.TryGetStoredValue(out value);
 
 		/// <inheritdoc cref="ConstraintResult.Negate()" />
 		public override ConstraintResult Negate()

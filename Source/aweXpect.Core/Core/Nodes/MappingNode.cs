@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -252,16 +251,16 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 			}
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
+		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default
 		{
-			if (_left.TryGetValue(out TValue? leftValue))
+			if (_left.TryGetStoredValue(out TValue? leftValue))
 			{
 				value = leftValue;
 				return true;
 			}
 
-			if (_right.TryGetValue(out TValue? rightValue))
+			if (_right.TryGetStoredValue(out TValue? rightValue))
 			{
 				value = rightValue;
 				return true;

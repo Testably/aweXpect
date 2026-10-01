@@ -55,7 +55,7 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
         stringBuilder.Append(" long");
     }
 
-    public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+    public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
     {
         if (_actual is TValue typedValue)
         {
@@ -75,11 +75,6 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 `Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`, and
 the caller relies on the returned result being negated. Returning `this` unchanged would silently check the
 non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
-
-:::note[Older target frameworks]
-`NotNullWhenAttribute` is missing in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package,
-e.g. with the [Nullable](https://www.nuget.org/packages/Nullable) package.
-:::
 
 ## Results
 
@@ -311,9 +306,11 @@ Track verifiedTrack = await Expect.That(track).IsRadioFriendly();
 await Expect.That(track).IsRadioFriendly().Whose(t => t.Title, title => title.StartsWith("Love"));
 ```
 
-Both ask the `TryGetValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows or
-converts the subject returns the converted value there. The helper classes return their `Actual` value. When
-`TryGetValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
+Both ask the `TryGetStoredValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows
+or converts the subject returns the converted value there. The helper classes return their `Actual` value. A stored
+`null` value of a matching type still returns `true`, so that awaiting the expectation returns `null`. When
+`TryGetStoredValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
+`TryGetValue<TValue>` builds on it and only returns `true` for a value that is not `null`.
 
 ## Time tolerances
 
