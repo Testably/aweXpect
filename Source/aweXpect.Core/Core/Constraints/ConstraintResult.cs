@@ -70,6 +70,11 @@ public abstract partial class ConstraintResult
 	internal virtual string? TrailingSubject => null;
 
 	/// <summary>
+	///     Indicates that the result only contributes an expectation text, so that combinations ignore its outcome.
+	/// </summary>
+	internal virtual bool IsExpectationOnly => false;
+
+	/// <summary>
 	///     Returns <paramref name="it" />, when the result text starts with it, otherwise <see langword="null" />.
 	/// </summary>
 	private protected string? GetSubjectOfResult(string it)

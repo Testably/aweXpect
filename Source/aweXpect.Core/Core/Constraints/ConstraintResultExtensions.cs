@@ -113,6 +113,8 @@ public static class ConstraintResultExtensions
 
 		internal override string? TrailingSubject => _inner.TrailingSubject;
 
+		internal override bool IsExpectationOnly => _inner.IsExpectationOnly;
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);
 
@@ -205,6 +207,8 @@ public static class ConstraintResultExtensions
 		internal override string? LeadingSubject => _inner.LeadingSubject;
 
 		internal override string? TrailingSubject => _inner.TrailingSubject;
+
+		internal override bool IsExpectationOnly => _inner.IsExpectationOnly;
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 			=> _inner.TryGetValue(out value);

@@ -119,9 +119,54 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success)]
-	[InlineData(Outcome.Failure)]
-	public async Task AddAsyncMapping_WhenSubjectIsNull_NegatedResult_ShouldStillFail(Outcome node1)
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddAsyncMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
+		Outcome node1, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddAsyncMapping(MemberAccessor<string, Task<string?>>.FromFunc(_ => Task.FromResult<string?>(null), " inner: "))
+			.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		if (expectedOutcome == Outcome.Failure)
+		{
+			await That(result.GetResultText()).IsEqualTo("bar1 and it was <null>");
+		}
+	}
+
+	[Theory]
+	[InlineData(false, Outcome.Failure)]
+	[InlineData(true, Outcome.Success)]
+	public async Task AddAsyncMapping_WhenValueHasOtherType_ShouldOnlyUseTheConstraint(bool negate,
+		Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Failure, "foo1", "bar1")));
+		node.AddAsyncMapping(MemberAccessor<int, Task<int>>.FromFunc(i => Task.FromResult(i * 2), " doubled: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		if (negate)
+		{
+			result.Negate();
+		}
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		await That(result.GetExpectationText()).IsEqualTo("foo1 doubled: foo2");
+		await That(result.GetResultText()).IsEqualTo(negate ? "" : "bar1");
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddAsyncMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
+		Outcome node1, Outcome expectedOutcome)
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
@@ -131,7 +176,7 @@ public class ExpectationNodeTests
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
 		result.Negate();
 
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
 	[Fact]
@@ -362,9 +407,134 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success)]
-	[InlineData(Outcome.Failure)]
-	public async Task AddMapping_WhenSubjectIsNull_NegatedResult_ShouldStillFail(Outcome node1)
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
+		Outcome node1, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<string, string?>.FromFunc(_ => null, " inner: "))
+			.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		if (expectedOutcome == Outcome.Failure)
+		{
+			await That(result.GetResultText()).IsEqualTo("bar1 and it was <null>");
+		}
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddMapping_WithExpectationOnlyMember_NegatedResult_ShouldOnlyNegateTheConstraint(
+		Outcome node1, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new DummyValueConstraint<int>(_
+				=> new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.None, "foo2", "not foo2")));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		await That(result.GetExpectationText()).IsEqualTo("foo1 length: foo2");
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddMapping_WhenMemberResultIsAndWithOperandThatStaysFailed_NegatedResult_ShouldFollowTheAnd(
+		Outcome other, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Success, "foo1")));
+		AndNode andNode = new(new DummyNode("", () => NullSubjectResult.Create(
+			new DummyConstraintResult(Outcome.Success, "foo2"), "")));
+		andNode.AddNode(new DummyNode("", () => new DummyConstraintResult(other, "foo3")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: ")).AddNode(andNode);
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task
+		AddMapping_WhenMemberResultIsFailedOrWithOperandThatStaysFailed_NegatedResult_ShouldOnlySucceedIfConstraintFails(
+			Outcome left, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(left, "foo1")));
+		OrNode orNode = new(new DummyNode("", () => NullSubjectResult.Create(
+			new DummyConstraintResult(Outcome.Success, "foo2"), "")));
+		orNode.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo3")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: ")).AddNode(orNode);
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task
+		AddMapping_WhenUserCodeOfConstraintThrows_NegatedResult_ShouldOnlySucceedIfMemberExpectationFails(
+			Outcome member, Outcome expectedOutcome)
+	{
+		MyException exception = new();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<string>(() => throw exception, "foo1", "not foo1"));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(member, "foo2", "bar2")));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		if (expectedOutcome == Outcome.Failure)
+		{
+			await That(result.FailureCause).IsSameAs(exception);
+		}
+	}
+
+	[Theory]
+	[InlineData(false, Outcome.Failure)]
+	[InlineData(true, Outcome.Success)]
+	public async Task AddMapping_WhenValueHasOtherType_ShouldOnlyUseTheConstraint(bool negate, Outcome expectedOutcome)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Failure, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<int, int>.FromFunc(i => i * 2, " doubled: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		if (negate)
+		{
+			result.Negate();
+		}
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+		await That(result.GetExpectationText()).IsEqualTo("foo1 doubled: foo2");
+		await That(result.GetResultText()).IsEqualTo(negate ? "" : "bar1");
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task AddMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
+		Outcome node1, Outcome expectedOutcome)
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
@@ -374,7 +544,7 @@ public class ExpectationNodeTests
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
 		result.Negate();
 
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
 	[Fact]

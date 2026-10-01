@@ -449,6 +449,29 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenNestedMemberOfSingleInnerExceptionIsNull_ShouldFail()
+			{
+				Exception subject = new("outer", new Exception("inner"));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasRecursiveInnerExceptions(c => c.HasSingle().Which
+							.Whose(e => e.InnerException, ie => ie.Whose(z => z!.Message, m => m.IsEqualTo("x")))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have recursive inner exceptions that have a single item whose InnerException has z!.Message that is equal to "x",
+					             but it had and it was <null>
+
+					             Collection:
+					             [
+					               Exception: inner
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
