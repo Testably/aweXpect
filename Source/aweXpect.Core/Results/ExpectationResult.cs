@@ -303,7 +303,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		switch (result.Outcome)
 		{
 			case Outcome.Success
-				when result.TryGetValue(out TType? value):
+				when result.TryGetStoredValue(out TType? value):
 				ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
 				if (traceWriter != null)
 				{
@@ -317,7 +317,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 					traceWriter.WriteMessage(sb.ToString());
 				}
 
-				return value;
+				return value!;
 			case Outcome.Undecided:
 				Fail.Inconclusive(await expectationBuilder.FromFailure(result));
 				break;

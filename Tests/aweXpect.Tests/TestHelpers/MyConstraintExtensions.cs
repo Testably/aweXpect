@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Results;
@@ -34,7 +33,7 @@ public static class MyConstraintExtensions
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(failureMessage.Indent(indentation, false));
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			value = default;
 			return false;

@@ -113,6 +113,28 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task TryGetStoredValue_ShouldReturnTrueWhenTypeIsSubtypeAndValueIsNull()
+		{
+			ConstraintResult sut = new MyWithValueDummy<MyDerivedClass?>(null);
+
+			bool result = sut.TryGetStoredValue(out MyBaseClass? value);
+
+			await That(result).IsTrue();
+			await That(value).IsNull();
+		}
+
+		[Fact]
+		public async Task TryGetStoredValue_ShouldReturnTrueWhenTypeMatchesAndValueIsNull()
+		{
+			ConstraintResult sut = new MyWithValueDummy<MyDerivedClass?>(null);
+
+			bool result = sut.TryGetStoredValue(out MyDerivedClass? value);
+
+			await That(result).IsTrue();
+			await That(value).IsNull();
+		}
+
+		[Fact]
 		public async Task TryGetValue_ShouldExtractValueWhenTypeMatches()
 		{
 			ConstraintResult sut = new MyWithValueDummy<int>(42);
@@ -146,24 +168,13 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
-		public async Task TryGetValue_ShouldReturnTrueWhenTypeIsSubtypeAndValueIsNull()
-		{
-			ConstraintResult sut = new MyWithValueDummy<MyDerivedClass?>(null);
-
-			bool result = sut.TryGetValue(out MyBaseClass? value);
-
-			await That(result).IsTrue();
-			await That(value).IsNull();
-		}
-
-		[Fact]
-		public async Task TryGetValue_ShouldReturnTrueWhenTypeMatchesAndValueIsNull()
+		public async Task TryGetValue_ShouldReturnFalseWhenValueIsNull()
 		{
 			ConstraintResult sut = new MyWithValueDummy<MyDerivedClass?>(null);
 
 			bool result = sut.TryGetValue(out MyDerivedClass? value);
 
-			await That(result).IsTrue();
+			await That(result).IsFalse().Because("TryGetValue only returns true for a value that is not null");
 			await That(value).IsNull();
 		}
 

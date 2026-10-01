@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
+using aweXpect.Core.Sources;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Nodes;
@@ -779,6 +779,29 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenNoConstraintSupportsAFaultedDelegateValue_ShouldFailWithTheException()
+	{
+		MyException exception = new();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<string>(() => true, "yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(new DelegateValue(exception, TimeSpan.Zero), null!,
+			CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		sb.Append(", but ");
+		result.AppendResult(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("the subject threw instead of providing a value the constraint could verify");
+		await That(result.FailureCause).IsSameAs(exception);
+		await That(sb.ToString()).IsEqualTo("""
+		                                    yeah!, but it did throw a MyException:
+		                                      IsMetBy_WhenNoConstraintSupportsAFaultedDelegateValue_ShouldFailWithTheException
+		                                    """);
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenUserCodeIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();
@@ -1099,7 +1122,7 @@ public class ExpectationNodeTests
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null) { }
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			value = default;
 			return false;

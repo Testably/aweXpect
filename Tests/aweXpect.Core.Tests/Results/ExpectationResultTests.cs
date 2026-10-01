@@ -37,6 +37,19 @@ public class ExpectationResultTests
 	}
 
 	[Fact]
+	public async Task IsMet_WhenTheStoredValueIsNull_ShouldReturnNull()
+	{
+		MyExpectationBuilder myBuilder =
+			new("my-subject", () => new DummyConstraintResult(Outcome.Success, "SUCCESS").UseValue<string?>(null));
+		ExpectationResult<string?> sut = new(myBuilder);
+
+		string? result = await sut;
+
+		await That(result).IsNull()
+			.Because("a stored null value of the expected type is a valid result, not a type mismatch");
+	}
+
+	[Fact]
 	public async Task WithCancellation_ShouldForwardTokenToExpectationBuilder()
 	{
 		MyExpectationBuilder myBuilder = new("my-subject");

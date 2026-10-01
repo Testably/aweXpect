@@ -89,7 +89,7 @@ public abstract partial class ThatDelegate
 				}
 			}
 
-			public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+			public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			{
 				value = default;
 				return false;

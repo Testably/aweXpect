@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -131,8 +130,8 @@ public static partial class ThatEventRecording
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{

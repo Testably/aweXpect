@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Sources;
 
 namespace aweXpect.Core.Nodes;
 
@@ -144,6 +144,11 @@ internal class ExpectationNode : Node
 			{
 				result = await asyncContextConstraint.IsMetBy(value, context, cancellationToken);
 			}
+			else if (_constraint is not null && value is DelegateValue { Exception: { } exception, })
+			{
+				result = MemberExceptionResult.Create(await GetExpectationResult(_constraint, context, cancellationToken),
+					exception, "it", value);
+			}
 		}
 		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 		{
@@ -168,7 +173,8 @@ internal class ExpectationNode : Node
 	}
 
 	/// <summary>
-	///     The expectation of the <paramref name="constraint" />, for when its evaluation was aborted by code of the caller.
+	///     The expectation of the <paramref name="constraint" />, for when it could not be evaluated, because code of the
+	///     caller threw.
 	/// </summary>
 	private static async Task<ConstraintResult> GetExpectationResult(IConstraint constraint,
 		IEvaluationContext context, CancellationToken cancellationToken)
@@ -232,7 +238,7 @@ internal class ExpectationNode : Node
 			// The constraint was not evaluated, so there is no result.
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			value = default;
 			return false;

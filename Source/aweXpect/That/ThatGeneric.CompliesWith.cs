@@ -93,7 +93,7 @@ public static partial class ThatGeneric
 		///     result of <c>CompliesWith</c> is the subject.
 		/// </summary>
 		private static ConstraintResult KeepSubjectAsValue(ConstraintResult result, T actual)
-			=> result.TryGetValue(out T? _) ? result : result.UseValue(actual);
+			=> result.TryGetStoredValue(out T? _) ? result : result.UseValue(actual);
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -143,7 +143,7 @@ public static partial class ThatGeneric
 		{
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			value = default;
 			return false;

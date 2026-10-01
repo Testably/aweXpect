@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -307,16 +306,16 @@ internal class AndNode : Node
 			}
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
+		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default
 		{
-			if (_left.TryGetValue(out TValue? leftValue))
+			if (_left.TryGetStoredValue(out TValue? leftValue))
 			{
 				value = leftValue;
 				return true;
 			}
 
-			if (_right.TryGetValue(out TValue? rightValue))
+			if (_right.TryGetStoredValue(out TValue? rightValue))
 			{
 				value = rightValue;
 				return true;

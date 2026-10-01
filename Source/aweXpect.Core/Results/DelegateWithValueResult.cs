@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -81,7 +80,7 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 			}
 		}
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is { Value: TValue typedValue, })
 			{

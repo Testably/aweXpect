@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using aweXpect.Core.Constraints;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
@@ -58,8 +57,8 @@ internal static class ImmutableArrayHelpers
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was", " were")).Append(" <null>");
 
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
-			=> _inner.TryGetValue(out value);
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+			=> _inner.TryGetStoredValue(out value);
 
 		public override ConstraintResult Negate()
 		{

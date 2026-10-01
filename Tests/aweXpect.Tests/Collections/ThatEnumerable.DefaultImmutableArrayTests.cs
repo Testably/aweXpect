@@ -144,6 +144,24 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task DoesNotComplyWithHasSingleWhich_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(x => x.HasSingle().Which.IsEqualTo(1));
+
+			XunitException exception = await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have a single item that is equal to 1,
+				             but it was <null>
+				             """);
+			await That(exception.InnerException).IsNull()
+				.Because("a default ImmutableArray is not initialized, so the single item must not be accessed");
+		}
+
+		[Fact]
 		public async Task DoesNotComplyWithIsEmpty_ShouldFail()
 		{
 			ImmutableArray<int> subject = default;
@@ -379,6 +397,24 @@ public sealed partial class ThatEnumerable
 				             but it was <null>
 				             """)
 				.Because("a default ImmutableArray is not initialized, like a null collection");
+		}
+
+		[Fact]
+		public async Task HasSingleWhich_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).HasSingle().Which.IsEqualTo(1);
+
+			XunitException exception = await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a single item that is equal to 1,
+				             but it was <null>
+				             """);
+			await That(exception.InnerException).IsNull()
+				.Because("a default ImmutableArray is not initialized, so the single item must not be accessed");
 		}
 
 		[Fact]

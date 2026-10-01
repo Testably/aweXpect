@@ -7,6 +7,48 @@ public sealed partial class ThatObject
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenSubjectIsFaultedTask_ShouldFail()
+			{
+				Task subject = Task.FromException(new InvalidOperationException("boom"));
+
+#pragma warning disable aweXpect0004
+				async Task Act()
+					=> await That(subject).IsNotNull();
+#pragma warning restore aweXpect0004
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not null,
+					             but it did throw an InvalidOperationException:
+					               boom
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner.HasMessage("boom"))
+					.Because("a faulted task must be reported as a failed expectation, not as an internal exception");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsFaultedValueTask_ShouldFail()
+			{
+				ValueTask subject = new(Task.FromException(new InvalidOperationException("boom")));
+
+#pragma warning disable aweXpect0004
+				async Task Act()
+					=> await That(subject).IsNotNull();
+#pragma warning restore aweXpect0004
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not null,
+					             but it did throw an InvalidOperationException:
+					               boom
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner.HasMessage("boom"))
+					.Because("a faulted value task must be reported as a failed expectation, not as an internal exception");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;

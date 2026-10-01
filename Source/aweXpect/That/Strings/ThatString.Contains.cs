@@ -100,8 +100,8 @@ public static partial class ThatString
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}"));
 
-		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_actual is TValue typedValue)
 			{

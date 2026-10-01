@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core.Constraints;
 
@@ -25,8 +24,8 @@ internal sealed class NotApplicableConstraintResult(Action<StringBuilder, string
 	{
 	}
 
-	/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		value = default;
 		return false;

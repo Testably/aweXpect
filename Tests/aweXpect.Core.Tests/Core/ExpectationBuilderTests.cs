@@ -604,6 +604,22 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task WhenTypeImplementsIDescribableSubject_AndSubjectIsNull_ShouldUseTheSubjectExpression()
+	{
+		MyDescribableSubject? subject = null;
+
+		async Task Act() => await That(subject).IsNotNull();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not null,
+			             but it was
+			             """)
+			.Because("a null subject cannot describe itself, so the subject expression is used instead");
+	}
+
+	[Fact]
 	public async Task WhenTypeImplementsIDescribableSubject_ShouldUseToStringFromIt()
 	{
 		MyDescribableSubject subject = new("this long description for the subject");

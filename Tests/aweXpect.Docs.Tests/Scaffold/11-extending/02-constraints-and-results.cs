@@ -30,16 +30,6 @@ namespace Snippets
 	}
 }
 
-// The page tells to declare this attribute on targets that miss it, and on the others it only causes a warning.
-namespace System.Diagnostics.CodeAnalysis
-{
-	[AttributeUsage(AttributeTargets.Parameter)]
-	internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute
-	{
-		public bool ReturnValue { get; } = returnValue;
-	}
-}
-
 // The record needs this type, which is missing in netstandard2.0 and net48, and on the other targets it only causes a
 // warning.
 namespace System.Runtime.CompilerServices

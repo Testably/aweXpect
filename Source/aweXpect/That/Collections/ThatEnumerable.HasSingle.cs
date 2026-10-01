@@ -144,7 +144,7 @@ public static partial class ThatEnumerable
 		///     does not enumerate the source again. Only the exact collection type is served, as the collection itself can
 		///     also be an item (e.g. an <see langword="object" />).
 		/// </remarks>
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (typeof(TValue) == typeof(IEnumerable<TItem>) &&
 			    _materialized is TValue typedValue)
@@ -153,7 +153,7 @@ public static partial class ThatEnumerable
 				return true;
 			}
 
-			return base.TryGetValue(out value);
+			return base.TryGetStoredValue(out value);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -290,7 +290,7 @@ public static partial class ThatEnumerable
 		///     does not enumerate the source again. Only the exact collection type is served, as the collection itself can
 		///     also be an item (e.g. an <see langword="object" />).
 		/// </remarks>
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (typeof(TValue) == typeof(TEnumerable) &&
 			    _materialized is TValue typedValue)
@@ -299,7 +299,7 @@ public static partial class ThatEnumerable
 				return true;
 			}
 
-			return base.TryGetValue(out value);
+			return base.TryGetStoredValue(out value);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

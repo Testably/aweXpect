@@ -199,3 +199,14 @@ aweXpect.Options.DayTolerance
 aweXpect.Options.DayTolerance.DayTolerance() -> void
 override aweXpect.Options.DayTolerance.SetTolerance(System.TimeSpan tolerance) -> void
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterBatch(System.Action! register) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.TryGetValue<TValue>(out TValue? value) -> bool
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetValue<TValue>(out TValue? value) -> bool
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+abstract aweXpect.Core.Constraints.ConstraintResult.TryGetStoredValue<TValue>(out TValue? value) -> bool
+aweXpect.Core.Constraints.ConstraintResult.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
