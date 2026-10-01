@@ -638,9 +638,6 @@ public sealed partial class ThatDelegate
 						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
 						             but it did throw a ThatDelegate.OtherException:
 						               bar
-
-						             Message:
-						             bar
 						             """)
 						.Because("a message mismatch of an exception of another type does not explain the failure");
 				}
@@ -659,9 +656,6 @@ public sealed partial class ThatDelegate
 						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
 						             but it did throw a ThatDelegate.OtherException:
 						               bar
-
-						             Message:
-						             bar
 						             """)
 						.Because("a message mismatch of an exception of another type does not explain the failure");
 				}
@@ -680,9 +674,6 @@ public sealed partial class ThatDelegate
 						             throws a ThatDelegate.CustomException with message equal to "foo",
 						             but it did throw a ThatDelegate.OtherException:
 						               bar
-
-						             Message:
-						             bar
 						             """)
 						.Because("a message mismatch of an exception of another type does not explain the failure");
 				}
