@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
+using System.Threading.Tasks;
 using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Helpers;
 
-internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
+internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable, IMaterialization
 {
 	private readonly IEnumerator<T> _enumerator;
 	private readonly List<T> _materializedItems = new();
-	private bool _isMaterializedCompletely;
+	private bool _isSourceDisposed;
 	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable<T> enumerable)
@@ -45,7 +46,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 	{
 		int index = 0;
 		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (index < _materializedItems.Count || (!_isMaterializedCompletely && MoveNext()))
+		while (index < _materializedItems.Count || MoveNext())
 		{
 			if (index == _materializedItems.Count)
 			{
@@ -54,21 +55,21 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 
 			yield return _materializedItems[index++];
 		}
-
-		if (!_isMaterializedCompletely)
-		{
-			_isMaterializedCompletely = true;
-			_enumerator.Dispose();
-			Count = _materializedItems.Count;
-		}
 	}
 
 	#endregion
 
+	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
+	public Task ReleaseSource()
+	{
+		DisposeSource();
+		return Task.CompletedTask;
+	}
+
 	/// <remarks>
 	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
 	///     it cannot be mistaken for the end of the source. The source is disposed once it threw or is exhausted; a
-	///     source that is only read partially is not disposed, as a later enumeration continues it.
+	///     source that is only read partially is disposed when it is released.
 	/// </remarks>
 	private bool MoveNext()
 	{
@@ -77,24 +78,54 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 			ExceptionDispatchInfo.Capture(_sourceException).Throw();
 		}
 
+		if (_isSourceDisposed)
+		{
+			return false;
+		}
+
 		try
 		{
-			return UserCode.Invoke(_enumerator.MoveNext);
+			if (UserCode.Invoke(_enumerator.MoveNext))
+			{
+				return true;
+			}
 		}
 		catch (Exception exception)
 		{
 			_sourceException = exception;
-			_enumerator.Dispose();
+			DisposeSource();
 			throw;
+		}
+
+		Count = _materializedItems.Count;
+		DisposeSource();
+		return false;
+	}
+
+	private void DisposeSource()
+	{
+		if (_isSourceDisposed)
+		{
+			return;
+		}
+
+		_isSourceDisposed = true;
+		try
+		{
+			_enumerator.Dispose();
+		}
+		catch (Exception)
+		{
+			// The outcome is already decided, so an exception while disposing the source must not replace it.
 		}
 	}
 }
 
-internal sealed class MaterializingEnumerable : IEnumerable, ICountable
+internal sealed class MaterializingEnumerable : IEnumerable, ICountable, IMaterialization
 {
 	private readonly IEnumerator _enumerator;
 	private readonly List<object?> _materializedItems = new();
-	private bool _isMaterializedCompletely;
+	private bool _isSourceDisposed;
 	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable enumerable)
@@ -126,7 +157,7 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 	private IEnumerator GetEnumerator()
 	{
 		int index = 0;
-		while (index < _materializedItems.Count || (!_isMaterializedCompletely && MoveNext()))
+		while (index < _materializedItems.Count || MoveNext())
 		{
 			if (index == _materializedItems.Count)
 			{
@@ -135,16 +166,16 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 
 			yield return _materializedItems[index++];
 		}
-
-		if (!_isMaterializedCompletely)
-		{
-			_isMaterializedCompletely = true;
-			(_enumerator as IDisposable)?.Dispose();
-			Count = _materializedItems.Count;
-		}
 	}
 
 	#endregion
+
+	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
+	public Task ReleaseSource()
+	{
+		DisposeSource();
+		return Task.CompletedTask;
+	}
 
 	/// <inheritdoc cref="MaterializingEnumerable{T}.MoveNext()" />
 	private bool MoveNext()
@@ -154,15 +185,45 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable
 			ExceptionDispatchInfo.Capture(_sourceException).Throw();
 		}
 
+		if (_isSourceDisposed)
+		{
+			return false;
+		}
+
 		try
 		{
-			return UserCode.Invoke(_enumerator.MoveNext);
+			if (UserCode.Invoke(_enumerator.MoveNext))
+			{
+				return true;
+			}
 		}
 		catch (Exception exception)
 		{
 			_sourceException = exception;
-			(_enumerator as IDisposable)?.Dispose();
+			DisposeSource();
 			throw;
+		}
+
+		Count = _materializedItems.Count;
+		DisposeSource();
+		return false;
+	}
+
+	private void DisposeSource()
+	{
+		if (_isSourceDisposed)
+		{
+			return;
+		}
+
+		_isSourceDisposed = true;
+		try
+		{
+			(_enumerator as IDisposable)?.Dispose();
+		}
+		catch (Exception)
+		{
+			// The outcome is already decided, so an exception while disposing the source must not replace it.
 		}
 	}
 }

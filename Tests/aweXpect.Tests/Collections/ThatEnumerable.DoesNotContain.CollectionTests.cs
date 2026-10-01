@@ -1059,7 +1059,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               (… and 16 more)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1486,7 +1486,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               (… and 16 more)
+					               (… and maybe more)
 					             ]
 
 					             Expected:

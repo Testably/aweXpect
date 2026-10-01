@@ -113,8 +113,7 @@ public static partial class ThatAsyncEnumerable
 					_notMatchingItems.Add(item);
 				}
 
-				// items.IsReadOnly is set to true, once the limit is reached.
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount) && items.IsReadOnly)
+				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);

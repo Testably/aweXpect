@@ -145,7 +145,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it did
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, 3, (… and maybe more)]
 
 					             Expected:
 					             [2, 3]

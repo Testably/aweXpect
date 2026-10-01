@@ -8,12 +8,14 @@ using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Helpers;
 
-internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumerable<T>
+internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumerable<T>, IMaterialization
 {
 	private readonly CancellationToken _cancellationToken;
 	private readonly IAsyncEnumerable<T> _enumerable;
 	private readonly List<T> _materializedItems = new();
+	private Task<bool>? _abandonedMoveNext;
 	private IAsyncEnumerator<T>? _enumerator;
+	private bool _isSourceReleased;
 	private Exception? _sourceException;
 
 	private MaterializingAsyncEnumerable(IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken)
@@ -46,7 +48,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 				continue;
 			}
 
-			if (Count is not null)
+			if (Count is not null || _isSourceReleased)
 			{
 				yield break;
 			}
@@ -97,8 +99,47 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 			return this;
 		}
 
-		Count = _materializedItems.Count;
 		return this;
+	}
+
+	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
+	/// <remarks>
+	///     A <c>MoveNextAsync</c> that was abandoned at the cancellation is still running, and the source must not be
+	///     disposed concurrently, so it is disposed once the <c>MoveNextAsync</c> completed.
+	/// </remarks>
+	public Task ReleaseSource()
+	{
+		if (_isSourceReleased)
+		{
+			return Task.CompletedTask;
+		}
+
+		_isSourceReleased = true;
+		if (_enumerator is null)
+		{
+			return Task.CompletedTask;
+		}
+
+		if (_abandonedMoveNext is { IsCompleted: false, } abandonedMoveNext)
+		{
+			_ = abandonedMoveNext.ContinueWith(_ => DisposeSource(_enumerator), CancellationToken.None,
+				TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+			return Task.CompletedTask;
+		}
+
+		return DisposeSource(_enumerator);
+	}
+
+	private static async Task DisposeSource(IAsyncEnumerator<T> enumerator)
+	{
+		try
+		{
+			await enumerator.DisposeAsync();
+		}
+		catch (Exception)
+		{
+			// The outcome is already decided, so an exception while disposing the source must not replace it.
+		}
 	}
 
 	public static IAsyncEnumerable<T> Wrap(IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken)
@@ -160,6 +201,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 		}
 		catch (OperationCanceledException) when (_cancellationToken.IsCancellationRequested)
 		{
+			_abandonedMoveNext = moveNext;
 			_ = moveNext.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
 				TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);

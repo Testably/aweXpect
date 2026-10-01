@@ -71,7 +71,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had at least 1 item
 
 						              Collection:
-						              [1, 2, 3]
+						              [1, (… and maybe more)]
 						              """)
 						.Because("nothing can be ordered against a null bound");
 				}
@@ -133,7 +133,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had at least 1 item
 
 						              Collection:
-						              [1, 2, 3]
+						              [1, (… and maybe more)]
 						              """)
 						.Because("nothing can be ordered against a null bound, so the negation fails as well");
 				}

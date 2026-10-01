@@ -929,7 +929,11 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateOnly(2024, 1, 11))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -965,7 +969,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateOnly(2024, 1, 11))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1001,7 +1010,11 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1037,7 +1050,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1073,7 +1091,11 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1109,7 +1131,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1145,7 +1172,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0m)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1181,7 +1208,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0m)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1217,7 +1244,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1253,7 +1280,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1289,7 +1316,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0F)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1325,7 +1352,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(2.0F)}
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -1361,7 +1388,11 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new TimeOnly(14, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1397,7 +1428,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new TimeOnly(14, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1433,7 +1469,11 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new TimeSpan(2, 0, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1469,7 +1509,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it had item {Formatter.Format(new TimeSpan(2, 0, 0))}
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 

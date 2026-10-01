@@ -48,39 +48,6 @@ public sealed partial class ThatAsyncEnumerable
 					             is empty,
 					             but it was [
 					               0,
-					               1,
-					               2,
-					               3,
-					               4
-					             ]
-					             """);
-			}
-
-			[Fact]
-			public async Task ShouldDisplayUpToTenItems()
-			{
-				using CancellationTokenSource cts = new();
-				IAsyncEnumerable<int> subject =
-					GetCancellingAsyncEnumerable(16, cts, CancellationToken.None);
-
-				async Task Act()
-					=> await That(subject).IsEmpty();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is empty,
-					             but it was [
-					               0,
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6,
-					               7,
-					               8,
-					               9,
 					               (… and maybe more)
 					             ]
 					             """);
@@ -100,8 +67,7 @@ public sealed partial class ThatAsyncEnumerable
 					             is empty,
 					             but it was [
 					               1,
-					               1,
-					               2
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -115,6 +81,26 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsEmpty();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterTheFirstItem_ShouldListTheItem()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("src"), 1, 2);
+
+				async Task Act()
+					=> await That(subject).IsEmpty();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty,
+					             but it was [
+					               1,
+					               (… and maybe more)
+					             ]
+					             """)
+					.Because("the first item already decides the result, so the exception of the source must not replace it");
 			}
 
 			[Fact]

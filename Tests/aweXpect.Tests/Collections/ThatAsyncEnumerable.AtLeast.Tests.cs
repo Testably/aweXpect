@@ -21,13 +21,13 @@ public sealed partial class ThatAsyncEnumerable
 					GetCancellingAsyncEnumerable(6, cts, CancellationToken.None);
 
 				async Task Act()
-					=> await That(subject).AtLeast(6).Satisfy(y => y < 6)
+					=> await That(subject).AtLeast(7).Satisfy(y => y < 6)
 						.WithCancellation(token);
 
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that subject
-					             satisfies y => y < 6 for at least 6 items,
+					             satisfies y => y < 6 for at least 7 items,
 					             but it could not be verified, because the evaluation was already canceled
 
 					             Collection:
@@ -108,6 +108,18 @@ public sealed partial class ThatAsyncEnumerable
 					             Equivalency options:
 					              - include public fields and properties
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterEnoughItemsSatisfy_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 1);
+
+				async Task Act()
+					=> await That(subject).AtLeast(1).Satisfy(x => x == 1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the first item already decides that at least one item satisfies the predicate");
 			}
 
 			[Fact]
@@ -235,13 +247,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for fewer than 2 items,
-					             but 3 of 5 were
+					             but at least 2 of at least 4 were
 
 					             Matching items:
-					             [3, 4, 5]
+					             [3, 4, (… and maybe more)]
 
 					             Collection:
-					             [1, 2, 3, 4, 5]
+					             [1, 2, 3, 4, (… and maybe more)]
 					             """);
 			}
 		}

@@ -80,6 +80,22 @@ public partial class ThatAsyncEnumerable
 	}
 
 	/// <summary>
+	///     Returns an <see cref="IAsyncEnumerable{T}" /> with the <paramref name="items" />, which waits for the next
+	///     item until it is canceled.
+	/// </summary>
+	private static async IAsyncEnumerable<int> HangAfter(int[] items,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		foreach (int item in items)
+		{
+			await Task.Yield();
+			yield return item;
+		}
+
+		await Task.Delay(Timeout.Infinite, cancellationToken);
+	}
+
+	/// <summary>
 	///     Returns an <see cref="IAsyncEnumerable{T}" /> with the <paramref name="items" />, whose enumeration throws
 	///     the <paramref name="exception" /> afterwards.
 	/// </summary>

@@ -201,7 +201,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 				isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
 			}
 
-			currentContext = new EvaluationContext.EvaluationContext(this);
+			currentContext = await context.StartAttempt();
 			RestoreContexts(initialContexts);
 		}
 	}

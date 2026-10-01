@@ -87,10 +87,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for at most 2 items,
-						             but 4 of 5 were
+						             but at least 4 of at least 4 were
 
 						             Matching items:
-						             [1, 1, 2, 2]
+						             [1, 1, 2, 2, (… and maybe more)]
 
 						             Collection:
 						             [1, 1, 2, 2, 3]

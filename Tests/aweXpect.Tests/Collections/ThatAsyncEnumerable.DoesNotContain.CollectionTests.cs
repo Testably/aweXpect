@@ -109,7 +109,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -141,8 +141,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -186,7 +185,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -230,7 +230,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -274,7 +274,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -331,7 +332,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -359,7 +361,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it did
 
 					             Collection:
-					             [1, 1, 1, 2]
+					             [1, 1, 1, 2, (… and maybe more)]
 
 					             Expected:
 					             [1, 1, 2]
@@ -463,7 +465,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -495,8 +497,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -541,7 +542,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -573,7 +575,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -607,7 +610,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -639,7 +642,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -673,7 +677,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -728,7 +733,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -823,7 +829,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -855,8 +861,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -887,7 +892,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "c",
-					               "b"
+					               "b",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -919,7 +925,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -963,7 +969,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1007,7 +1013,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1046,7 +1053,7 @@ public sealed partial class ThatAsyncEnumerable
 					               107,
 					               108,
 					               109,
-					               (… and 16 more)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1098,7 +1105,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1205,7 +1213,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1237,8 +1245,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1269,7 +1276,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "c",
-					               "b"
+					               "b",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1302,7 +1310,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1334,7 +1342,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1368,7 +1377,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1400,7 +1409,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1434,7 +1444,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1473,7 +1484,7 @@ public sealed partial class ThatAsyncEnumerable
 					               107,
 					               108,
 					               109,
-					               (… and 16 more)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1524,7 +1535,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1619,7 +1631,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1652,7 +1665,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1696,7 +1709,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1740,7 +1754,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1784,7 +1799,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1928,7 +1944,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1961,7 +1978,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2164,7 +2181,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2197,7 +2215,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2241,7 +2259,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2285,7 +2304,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2329,7 +2349,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2480,7 +2501,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2514,7 +2536,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:

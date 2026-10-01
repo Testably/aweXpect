@@ -132,6 +132,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAllExpectedItemsWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([1, 2,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items already decide the result");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
@@ -783,6 +795,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAllExpectedItemsWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([1, 2,]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items already decide the result");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
@@ -1231,6 +1255,18 @@ public sealed partial class ThatAsyncEnumerable
 					               110
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAllExpectedItemsWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([2, 1,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items already decide the result");
 			}
 
 			[Fact]
@@ -1751,6 +1787,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAllExpectedItemsWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([2, 1,]).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items already decide the result");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
@@ -2198,6 +2246,18 @@ public sealed partial class ThatAsyncEnumerable
 					               110
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAllExpectedItemsAndAnAdditionalItemWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([1, 2,]).Properly();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items and an additional item already decide the result");
 			}
 
 			[Fact]
@@ -2701,6 +2761,18 @@ public sealed partial class ThatAsyncEnumerable
 					               110
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAllExpectedItemsAndAnAdditionalItemWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([1, 2,]).Properly().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items and an additional item already decide the result");
 			}
 
 			[Fact]
@@ -3230,6 +3302,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAllExpectedItemsAndAnAdditionalItemWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([2, 1,]).Properly().InAnyOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items and an additional item already decide the result");
+			}
+
+			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c", "d", "e",]);
@@ -3735,6 +3819,18 @@ public sealed partial class ThatAsyncEnumerable
 					               110
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAllExpectedItemsAndAnAdditionalItemWereFound_ShouldStopEnumerating()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).Contains([2, 1,]).Properly().InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("all expected items and an additional item already decide the result");
 			}
 
 			[Fact]

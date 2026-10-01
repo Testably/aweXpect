@@ -30,40 +30,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatAsyncEnumerable.All.AreExactly.MyClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
 						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -71,33 +45,7 @@ public sealed partial class ThatAsyncEnumerable
 						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -118,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatAsyncEnumerable.All.AreExactly.MyBaseClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
@@ -126,42 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -170,42 +83,7 @@ public sealed partial class ThatAsyncEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -245,40 +123,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatAsyncEnumerable.All.AreExactly.MyClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
 						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -286,33 +138,7 @@ public sealed partial class ThatAsyncEnumerable
 						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -347,7 +173,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatAsyncEnumerable.All.AreExactly.MyBaseClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
@@ -355,42 +181,7 @@ public sealed partial class ThatAsyncEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -399,42 +190,7 @@ public sealed partial class ThatAsyncEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.AreExactly.MyClass {
-						                 Bar = 0,
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}

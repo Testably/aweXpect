@@ -45,6 +45,11 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <summary>
+		///     Whether an item is assigned to every expected item, so that further items stay unmatched.
+		/// </summary>
+		public bool HasMatchedAllExpectedItems => _freeExpected.Count == 0;
+
+		/// <summary>
 		///     The expected items that no item is assigned to, in their original order.
 		/// </summary>
 		public List<TExpected> UnmatchedExpectedItems()

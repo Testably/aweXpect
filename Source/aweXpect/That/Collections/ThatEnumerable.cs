@@ -110,6 +110,11 @@ public static partial class ThatEnumerable
 					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, itemOptions, maximumNumber);
@@ -243,6 +248,11 @@ public static partial class ThatEnumerable
 					Outcome = Outcome.Failure;
 					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
+				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
 				}
 			}
 
@@ -388,6 +398,11 @@ public static partial class ThatEnumerable
 					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
@@ -532,6 +547,11 @@ public static partial class ThatEnumerable
 					expectationBuilder.AddCollectionContext(materializedEnumerable);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, untypedOptions, maximumNumber);
@@ -664,8 +684,7 @@ public static partial class ThatEnumerable
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -805,8 +824,7 @@ public static partial class ThatEnumerable
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return this;
 				}
 
@@ -955,8 +973,7 @@ public static partial class ThatEnumerable
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -1110,8 +1127,7 @@ public static partial class ThatEnumerable
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized,
-						Outcome == Outcome.Failure && materialized.ExceedsFormatterLimit());
+					_expectationBuilder.AddCollectionContext(materialized);
 					return this;
 				}
 

@@ -26,6 +26,33 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenADuplicateIsFoundBeforeTheSourceThrows_ShouldReportTheDuplicate()
+				{
+					IEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 1);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for all items,
+						             but none of at least 2 were
+
+						             Not matching items:
+						             [1, 1, (… and maybe more)]
+
+						             Collection:
+						             [
+						               1,
+						               1,
+						               (the enumeration did throw an InvalidOperationException: enumerated too far)
+						             ]
+						             """)
+						.Because("the duplicate already decides the result, so the exception of the source must not replace it");
+				}
+
+				[Fact]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -48,10 +75,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but only 2 of 4 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
-						             [1, 1]
+						             [1, 1, (… and maybe more)]
 
 						             Collection:
 						             [1, 2, 3, 1]
@@ -70,10 +97,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but only 2 of 6 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
-						             [1, 2, 1, 2]
+						             [1, 1, (… and maybe more)]
 
 						             Collection:
 						             [1, 2, 3, 1, 2, -1]
@@ -231,12 +258,13 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique ignoring case for all items,
-						             but none of 2 were
+						             but none of at least 2 were
 
 						             Not matching items:
 						             [
 						               "a",
-						               "A"
+						               "A",
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -259,12 +287,13 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but only 2 of 4 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
 						             [
 						               "a",
-						               "a"
+						               "a",
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -300,12 +329,13 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x! ignoring case for all items,
-						             but none of 2 were
+						             but none of at least 2 were
 
 						             Not matching items:
 						             [
 						               "a",
-						               "A"
+						               "A",
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -388,7 +418,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value for all items,
-						             but only 1 of 3 were
+						             but only 1 of at least 3 were
 
 						             Not matching items:
 						             [
@@ -399,7 +429,8 @@ public sealed partial class ThatEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -488,7 +519,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value ignoring case for all items,
-						             but none of 2 were
+						             but none of at least 2 were
 
 						             Not matching items:
 						             [
@@ -497,7 +528,8 @@ public sealed partial class ThatEnumerable
 						               },
 						               ThatEnumerable.All.AreUnique.StringMemberTests.MyStringClass {
 						                 Value = "A"
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 
 						             Collection:

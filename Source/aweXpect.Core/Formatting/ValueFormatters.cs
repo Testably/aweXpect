@@ -181,13 +181,16 @@ public static partial class ValueFormatters
 	///     <paramref name="exception" />, so that building a failure message does not throw and hide the failure.
 	/// </summary>
 	private static string FormatThrownException(string thrower, Exception exception)
+		=> $"[{DescribeThrownException(thrower, exception)}]";
+
+	private static string DescribeThrownException(string thrower, Exception exception)
 	{
 		exception = (exception as UserCodeException)?.Exception ?? exception;
 		exception = (exception as TargetInvocationException)?.InnerException ?? exception;
 		// The registered formatters are bypassed, as one of them might be the thrower.
 		StringBuilder exceptionType = new();
 		FormatType(exception.GetType(), exceptionType);
-		return $"[{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message}]";
+		return $"{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message}";
 	}
 
 	/// <summary>

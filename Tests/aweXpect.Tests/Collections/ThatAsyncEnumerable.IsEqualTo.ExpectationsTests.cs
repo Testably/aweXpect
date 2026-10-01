@@ -245,21 +245,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but the expected collection was <null>
-
-					             Collection:
-					             [
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6,
-					               7,
-					               8,
-					               9,
-					               10,
-					               (… and maybe more)
-					             ]
 					             """);
 			}
 

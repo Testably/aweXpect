@@ -73,6 +73,11 @@ public abstract class Expectation
 
 	internal abstract IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes);
 
+	/// <summary>
+	///     Ends the evaluation, once the failure message no longer reads the collections it materialized.
+	/// </summary>
+	internal abstract Task EndEvaluation();
+
 	internal struct Result(int index, string subjectLine, ConstraintResult result)
 	{
 		public int Index { get; } = index;
@@ -221,6 +226,15 @@ public abstract class Expectation
 			return index;
 		}
 
+		/// <inheritdoc />
+		internal override async Task EndEvaluation()
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				await expectation.EndEvaluation();
+			}
+		}
+
 		private static void RecordOutcome(Expectation expectation, int firstIndex, Result result,
 			Dictionary<int, Outcome> outcomes)
 		{
@@ -260,6 +274,18 @@ public abstract class Expectation
 		}
 
 		private async Task GetResultOrThrow(CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				await ThrowUnlessMet(cancellationToken);
+			}
+			finally
+			{
+				await EndEvaluation();
+			}
+		}
+
+		private async Task ThrowUnlessMet(CancellationToken cancellationToken)
 		{
 			Dictionary<int, Outcome> outcomes = new();
 			Result result = await GetResult(0, outcomes);

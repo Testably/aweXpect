@@ -9,6 +9,83 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 public class MaterializingAsyncEnumerableTests
 {
 	[Fact]
+	public async Task ReleaseSource_ShouldOnlyReplayTheItemsReadSoFar()
+	{
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), CancellationToken.None);
+		await materialized.MaterializeItems(0);
+
+		await materialized.ReleaseSource();
+		List<int> items = [];
+		await foreach (int item in materialized)
+		{
+			items.Add(item);
+		}
+
+		await That(items).IsEqualTo([1])
+			.Because("the released source must not be read any further");
+		await That(materialized.Count).IsNull()
+			.Because("it is unknown how many items the released source has");
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenDisposingTheSourceThrows_ShouldNotThrow()
+	{
+		DisposeTrackingAsyncEnumerable source = new(1, 2)
+		{
+			DisposeException = new InvalidOperationException("dispose failed"),
+		};
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, CancellationToken.None);
+		await materialized.MaterializeItems(0);
+
+		async Task Act() => await materialized.ReleaseSource();
+
+		await That(Act).DoesNotThrow()
+			.Because("the outcome is already decided when the source is released");
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenMoveNextWasAbandoned_ShouldDisposeTheSourceOnceItCompleted()
+	{
+		using CancellationTokenSource cts = new();
+		DisposeTrackingAsyncEnumerable source = new(1)
+		{
+			PendingMoveNext = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously),
+		};
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, cts.Token);
+		Task materializing = materialized.MaterializeItems(null);
+		await source.IsMoving.Task;
+		await cts.CancelAsync();
+		await materializing;
+
+		await materialized.ReleaseSource();
+		int disposeCountWhileMoving = source.DisposeCount;
+		source.PendingMoveNext.SetResult(false);
+		await source.Disposed.Task.WaitAsync(TimeSpan.FromSeconds(30));
+
+		await That(disposeCountWhileMoving).IsEqualTo(0)
+			.Because("the source must not be disposed while its MoveNextAsync is still running");
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
+	{
+		DisposeTrackingAsyncEnumerable source = new(1, 2);
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, CancellationToken.None);
+		await materialized.MaterializeItems(0);
+
+		await materialized.ReleaseSource();
+		await materialized.ReleaseSource();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
 	public async Task WhenCancelledBetweenItems_ShouldNotSetTheCount()
 	{
 		using CancellationTokenSource cts = new();
@@ -143,6 +220,58 @@ public class MaterializingAsyncEnumerableTests
 		await That(materialized1).IsSameAs(materialized2);
 	}
 
+	private sealed class DisposeTrackingAsyncEnumerable(params int[] values) : IAsyncEnumerable<int>
+	{
+		public int DisposeCount { get; private set; }
+
+		public TaskCompletionSource<bool> Disposed { get; } =
+			new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+		public Exception? DisposeException { get; set; }
+
+		public TaskCompletionSource<bool> IsMoving { get; } =
+			new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+		public TaskCompletionSource<bool>? PendingMoveNext { get; set; }
+
+		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+			=> new Enumerator(this, values);
+
+		private sealed class Enumerator(DisposeTrackingAsyncEnumerable owner, int[] values) : IAsyncEnumerator<int>
+		{
+			private int _index = -1;
+
+			public int Current => values[_index];
+
+			public async ValueTask<bool> MoveNextAsync()
+			{
+				if (++_index < values.Length)
+				{
+					return true;
+				}
+
+				if (owner.PendingMoveNext is null)
+				{
+					return false;
+				}
+
+				owner.IsMoving.TrySetResult(true);
+				return await owner.PendingMoveNext.Task;
+			}
+
+			public ValueTask DisposeAsync()
+			{
+				owner.DisposeCount++;
+				owner.Disposed.TrySetResult(true);
+				if (owner.DisposeException is not null)
+				{
+					throw owner.DisposeException;
+				}
+
+				return default;
+			}
+		}
+	}
 
 	private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(T[] items)
 	{

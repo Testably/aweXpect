@@ -120,6 +120,13 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
 
+		/// <inheritdoc />
+		/// <remarks>
+		///     Once the decision finds all expected items in the items so far, further items cannot change it for the
+		///     containment relation, and the proper containment only needs an additional item as well.
+		/// </remarks>
+		public bool IsDetermined { get; private set; }
+
 		private async ValueTask<(bool, string?)>
 			VerifyAlignment(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{

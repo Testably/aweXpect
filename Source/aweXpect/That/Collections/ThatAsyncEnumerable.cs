@@ -87,8 +87,7 @@ public static partial class ThatAsyncEnumerable
 
 				items.Add(item);
 
-				// items.IsReadOnly is set to true, once the limit is reached.
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount) && items.IsReadOnly)
+				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
@@ -230,8 +229,7 @@ public static partial class ThatAsyncEnumerable
 
 				items.Add(item);
 
-				// items.IsReadOnly is set to true, once the limit is reached.
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount) && items.IsReadOnly)
+				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 					AppendContexts(true);
@@ -363,7 +361,7 @@ public static partial class ThatAsyncEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					await _expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+					_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
 			}
@@ -371,13 +369,13 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCancellationRequested)
 			{
 				Outcome = Outcome.Undecided;
-				await _expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>, true);
+				_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>, true);
 				return this;
 			}
 
 			_totalCount = _matchingCount + _notMatchingCount;
 			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			await _expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 			return this;
 		}
 
@@ -458,7 +456,7 @@ public static partial class ThatAsyncEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				await expectationBuilder.AddCollectionContext(
+				expectationBuilder.AddCollectionContext(
 					context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken) as IMaterializedAsyncEnumerable<TItem>);
 				return this;
 			}
@@ -496,13 +494,18 @@ public static partial class ThatAsyncEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					await expectationBuilder.AddCollectionContext(
+					expectationBuilder.AddCollectionContext(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
-			await expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, itemOptions, maximumNumber);
 			if (completedResult)
 			{
@@ -597,7 +600,7 @@ public static partial class ThatAsyncEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				await expectationBuilder.AddCollectionContext(
+				expectationBuilder.AddCollectionContext(
 					context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken) as IMaterializedAsyncEnumerable<TItem>);
 				return this;
 			}
@@ -635,13 +638,18 @@ public static partial class ThatAsyncEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					await expectationBuilder.AddCollectionContext(
+					expectationBuilder.AddCollectionContext(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
-			await expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			if (cancellationToken.IsCancellationRequested)
 			{
 				Outcome = Outcome.Undecided;
@@ -751,7 +759,7 @@ public static partial class ThatAsyncEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				await expectationBuilder.AddCollectionContext(
+				expectationBuilder.AddCollectionContext(
 					context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken) as IMaterializedAsyncEnumerable<TItem>);
 				return this;
 			}
@@ -783,13 +791,18 @@ public static partial class ThatAsyncEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					await expectationBuilder.AddCollectionContext(
+					expectationBuilder.AddCollectionContext(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
+
+				if (matcher.IsDetermined)
+				{
+					break;
+				}
 			}
 
-			await expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
 			if (completedResult)
 			{
@@ -877,7 +890,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized = context
 				.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			await expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 
 			TMember previous = default!;
 			int index = 0;

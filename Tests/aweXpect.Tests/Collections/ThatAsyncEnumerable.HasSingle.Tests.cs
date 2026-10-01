@@ -36,7 +36,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -86,6 +86,26 @@ public sealed partial class ThatAsyncEnumerable
 				object result = await That(subject).HasSingle();
 
 				await That(result).IsEqualTo(1);
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterTwoItems_ShouldReportMoreThanOneItem()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("src"), 1, 2);
+
+				async Task Act()
+					=> await That(subject).HasSingle();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item,
+					             but it had more than one item
+
+					             Collection:
+					             [1, 2, (… and maybe more)]
+					             """)
+					.Because("the second item already decides the result, so the exception of the source must not replace it");
 			}
 
 			[Fact]
@@ -144,7 +164,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               MyBaseClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -226,19 +247,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -267,7 +276,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -367,7 +376,8 @@ public sealed partial class ThatAsyncEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -439,7 +449,8 @@ public sealed partial class ThatAsyncEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -663,7 +674,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 

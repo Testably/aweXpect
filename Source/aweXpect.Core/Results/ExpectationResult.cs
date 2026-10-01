@@ -124,6 +124,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
 		=> expectationBuilder.GetContexts();
 
+	/// <inheritdoc />
+	internal override Task EndEvaluation()
+		=> expectationBuilder.EndEvaluation();
+
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
@@ -157,10 +161,25 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 		if (result.Outcome == Outcome.Undecided)
 		{
-			Fail.Inconclusive(await expectationBuilder.FromFailure(result));
+			Fail.Inconclusive(await FromFailure(result));
 		}
 
-		Fail.Test(await expectationBuilder.FromFailure(result), result.FailureCause);
+		Fail.Test(await FromFailure(result), result.FailureCause);
+	}
+
+	/// <summary>
+	///     Creates the exception message from the <paramref name="failure" /> and ends the evaluation afterward.
+	/// </summary>
+	private async Task<string> FromFailure(ConstraintResult failure)
+	{
+		try
+		{
+			return await expectationBuilder.FromFailure(failure);
+		}
+		finally
+		{
+			await expectationBuilder.EndEvaluation();
+		}
 	}
 }
 
@@ -286,6 +305,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
 		=> expectationBuilder.GetContexts();
 
+	/// <inheritdoc />
+	internal override Task EndEvaluation()
+		=> expectationBuilder.EndEvaluation();
+
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
@@ -293,6 +316,19 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	{
 		expectationBuilder.UseTimeSystem(timeSystem);
 		return (TSelf)this;
+	}
+
+	/// <inheritdoc cref="ExpectationResult.FromFailure(ConstraintResult)" />
+	private async Task<string> FromFailure(ConstraintResult failure)
+	{
+		try
+		{
+			return await expectationBuilder.FromFailure(failure);
+		}
+		finally
+		{
+			await expectationBuilder.EndEvaluation();
+		}
 	}
 
 	[StackTraceHidden]
@@ -319,10 +355,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 
 				return value!;
 			case Outcome.Undecided:
-				Fail.Inconclusive(await expectationBuilder.FromFailure(result));
+				Fail.Inconclusive(await FromFailure(result));
 				break;
 			case Outcome.Failure:
-				Fail.Test(await expectationBuilder.FromFailure(result), result.FailureCause);
+				Fail.Test(await FromFailure(result), result.FailureCause);
 				break;
 		}
 

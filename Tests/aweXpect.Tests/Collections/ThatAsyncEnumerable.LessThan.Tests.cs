@@ -59,25 +59,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for fewer than 2 items,
-					             but at least 2 of at least 11 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [1, 1, (… and maybe more)]
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -104,13 +92,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for fewer than 4 items,
-					             but 4 of 7 were
+					             but at least 4 of at least 4 were
 
 					             Matching items:
-					             [1, 1, 1, 1]
+					             [1, 1, 1, 1, (… and maybe more)]
 
 					             Collection:
-					             [1, 1, 1, 1, 2, 2, 3]
+					             [1, 1, 1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -145,19 +133,20 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" ignoring case for fewer than 2 items,
-					             but 2 of 3 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [
 					               "foo",
-					               "FOO"
+					               "FOO",
+					               (… and maybe more)
 					             ]
 
 					             Collection:
 					             [
 					               "foo",
 					               "FOO",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -174,19 +163,20 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for fewer than 2 items,
-					             but 2 of 3 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [
 					               "foo",
-					               "foo"
+					               "foo",
+					               (… and maybe more)
 					             ]
 
 					             Collection:
 					             [
 					               "foo",
 					               "foo",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -203,19 +193,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for fewer than one item,
-					             but 2 of 3 were
+					             but at least 1 of at least 1 were
 
 					             Matching items:
 					             [
 					               "foo",
-					               "foo"
+					               (… and maybe more)
 					             ]
 
 					             Collection:
 					             [
 					               "foo",
-					               "foo",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

@@ -101,6 +101,16 @@ public partial class CollectionMatchOptions
 			_ignoringDuplicates = ignoringDuplicates;
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		///     Once an item is assigned to every expected item, the containment relation is met, and properly met as soon
+		///     as there is also an additional item.
+		/// </remarks>
+		public bool IsDetermined
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			   _matching?.HasMatchedAllExpectedItems == true &&
+			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
+
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{

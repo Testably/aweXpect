@@ -37,25 +37,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x <= 1 for all items,
-						             but only 2 of at least 11 did
+						             but only 2 of at least 3 did
 
 						             Not matching items:
-						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe more)]
+						             [2, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, 1, 2, (… and maybe more)]
 						             """);
 				}
 
@@ -71,37 +59,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x is > 4 and < 6 for all items,
-						             but only 1 of at least 11 did
+						             but none of at least 1 did
 
 						             Not matching items:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               89,
-						               (… and maybe more)
-						             ]
+						             [1, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, (… and maybe more)]
 						             """);
 				}
 
@@ -161,18 +125,18 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x?.StartsWith("ba") == true for all items,
-						             but only 2 of 3 did
+						             but none of at least 1 did
 
 						             Not matching items:
 						             [
-						               "foo"
+						               "foo",
+						               (… and maybe more)
 						             ]
 
 						             Collection:
 						             [
 						               "foo",
-						               "bar",
-						               "baz"
+						               (… and maybe more)
 						             ]
 						             """);
 				}

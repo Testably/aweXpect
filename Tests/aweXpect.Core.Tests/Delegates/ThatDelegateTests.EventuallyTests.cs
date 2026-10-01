@@ -561,6 +561,44 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachAttempt()
+		{
+			List<DisposeTrackingEnumerable> sources = [];
+
+			IEnumerable<int> Subject()
+			{
+				DisposeTrackingEnumerable source = new(null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+				sources.Add(source);
+				return source;
+			}
+
+			async Task Act()
+				=> await That(Subject).Eventually().Within(LowTimeout).IsEmpty();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Subject
+				             eventually is empty within 0:00.500,
+				             but it was [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and maybe more)
+				             ]
+				             """);
+			await That(sources).HasCount().GreaterThan(1);
+			await That(sources).All().Satisfy(source => source.DisposeCount == 1)
+				.Because("the source of each attempt is released, also the one of the last attempt");
+		}
+
+		[Fact]
 		public async Task WhenSubjectAlwaysThrows_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");

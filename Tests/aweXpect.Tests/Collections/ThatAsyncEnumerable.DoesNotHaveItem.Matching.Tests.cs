@@ -28,7 +28,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but it had item 2 at index 2
 
 						             Collection:
-						             [0, 1, 2]
+						             [0, 1, 2, (… and maybe more)]
 						             """);
 				}
 
@@ -100,7 +100,8 @@ public sealed partial class ThatAsyncEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -134,7 +135,8 @@ public sealed partial class ThatAsyncEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}

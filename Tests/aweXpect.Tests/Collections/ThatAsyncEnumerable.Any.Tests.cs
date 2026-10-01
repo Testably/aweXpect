@@ -40,6 +40,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenFirstItemCompliesAndSourceHangs_ShouldNotWaitForMoreItems()
+			{
+				IAsyncEnumerable<int> subject = HangAfter([1,]);
+
+				async Task Act()
+					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(1)).WithTimeout(30.Seconds());
+
+				await That(Act).ExecutesIn().AtMost(10.Seconds())
+					.Because("the first item already decides that at least one item complies");
+			}
+
+			[Fact]
+			public async Task WhenFirstItemSatisfiesAndSourceHangs_ShouldNotWaitForMoreItems()
+			{
+				IAsyncEnumerable<int> subject = HangAfter([1,]);
+
+				async Task Act()
+					=> await That(subject).Any().Satisfy(x => x == 1).WithTimeout(30.Seconds());
+
+				await That(Act).ExecutesIn().AtMost(10.Seconds())
+					.Because("the first item already decides that at least one item satisfies the predicate");
+			}
+
+			[Fact]
 			public async Task WhenItemsDoNotComplyWithAndSubjectIsNull_ShouldNegateExpectation()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -176,13 +200,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for no items,
-					             but 3 of 5 were
+					             but at least 1 of at least 3 were
 
 					             Matching items:
-					             [3, 4, 5]
+					             [3, (… and maybe more)]
 
 					             Collection:
-					             [1, 2, 3, 4, 5]
+					             [1, 2, 3, (… and maybe more)]
 					             """);
 			}
 		}

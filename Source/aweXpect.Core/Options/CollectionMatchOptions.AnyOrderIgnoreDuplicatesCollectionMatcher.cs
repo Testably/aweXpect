@@ -37,6 +37,16 @@ public partial class CollectionMatchOptions
 			_totalExpectedCount = _missingItems.Count;
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		///     Once all expected items are found, the containment relation is met, and properly met as soon as there is
+		///     also an additional item.
+		/// </remarks>
+		public bool IsDetermined
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			   _missingItems.Count == 0 &&
+			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
+
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{

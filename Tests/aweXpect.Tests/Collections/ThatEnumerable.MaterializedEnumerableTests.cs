@@ -14,6 +14,47 @@ public sealed partial class ThatEnumerable
 	public sealed class MaterializedEnumerableTests
 	{
 		[Fact]
+		public async Task Contains_WhenStoppingEarly_ShouldDisposeTheEnumerator()
+		{
+			DisposeTracker tracker = new();
+
+			await That(tracker.Items()).Contains(2);
+
+			await That(tracker.IsDisposed).IsTrue()
+				.Because("the source is released after the evaluation, although it was not read to its end");
+		}
+
+		[Fact]
+		public async Task IsEmpty_WhenFailing_ShouldDisposeTheEnumeratorAfterListingTheItems()
+		{
+			DisposeTracker tracker = new();
+
+			async Task Act()
+				=> await That(tracker.Items()).IsEmpty();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that tracker.Items()
+				             is empty,
+				             but it was [
+				               1,
+				               2,
+				               3,
+				               4,
+				               5,
+				               6,
+				               7,
+				               8,
+				               9,
+				               10,
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("the failure message reads further items before the source is released");
+			await That(tracker.IsDisposed).IsTrue();
+		}
+
+		[Fact]
 		public async Task WhenExtensionIsChainedWithBuiltInExpectation_ShouldEnumerateTheSubjectOnlyOnce()
 		{
 			OneShotEnumerable subject = new(2, 4, 6);
@@ -41,6 +82,26 @@ public sealed partial class ThatEnumerable
 				             but it had 2 even items
 				             """)
 				.Because("the extension sees all items of the subject, although the source yields them only once");
+		}
+	}
+
+	private sealed class DisposeTracker
+	{
+		public bool IsDisposed { get; private set; }
+
+		public IEnumerable<int> Items()
+		{
+			try
+			{
+				for (int i = 1; i <= 100; i++)
+				{
+					yield return i;
+				}
+			}
+			finally
+			{
+				IsDisposed = true;
+			}
 		}
 	}
 

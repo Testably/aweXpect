@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -535,6 +536,39 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task IsMet_WhenFailing_ShouldReleaseTheMaterializedSourceAfterTheFailureMessage()
+	{
+		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());
+		ReadsFirstItemConstraint constraint = new(source, Outcome.Failure);
+
+		async Task Act()
+			=> await ThatReadsFirstItem(source, constraint);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             reads the first item,
+			             but it was [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]
+			             """)
+			.Because("the failure message still reads from the source");
+		await That(constraint.DisposeCountWhenListed).IsEqualTo(0);
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the source is released once the failure message is created");
+	}
+
+	[Fact]
+	public async Task IsMet_WhenSucceeding_ShouldReleaseTheMaterializedSource()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
+		ReadsFirstItemConstraint constraint = new(source, Outcome.Success);
+
+		await ThatReadsFirstItem(source, constraint);
+
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the source that was only read partially is released after the evaluation");
+	}
+
+	[Fact]
 	public async Task UpdateContexts_WithADuplicateTitle_ShouldAddBoth()
 	{
 		ManualExpectationBuilder<string> sut = new(null);
@@ -727,6 +761,10 @@ public class ExpectationBuilderTests
 
 	private static ExpectationResult ThatAwaiting(int subject)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new AwaitingConstraint()));
+
+	private static ExpectationResult ThatReadsFirstItem(IEnumerable<int> subject,
+		ReadsFirstItemConstraint constraint)
+		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => constraint));
 
 	/// <remarks>
 	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the
