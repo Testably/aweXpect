@@ -213,6 +213,18 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task Throws_Type_WithOr_WhenDelegateThrowsOtherException_ShouldSucceed()
+		{
+			DelegateValue value = new(new ArgumentException("foo"), TimeSpan.Zero);
+
+			async Task Act()
+				=> await That(value).DoesNotComplyWith(it
+					=> WithoutValue(it).Throws(typeof(MyException)).WithMessage("bar").Or.WithMessage("foo"));
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
 		public async Task Throws_WhenDelegateThrows_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -279,6 +291,18 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task ThrowsExactly_Generic_WithOr_WhenDelegateThrowsSubtype_ShouldSucceed()
+		{
+			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
+
+			async Task Act()
+				=> await That(value).DoesNotComplyWith(it
+					=> WithoutValue(it).ThrowsExactly<Exception>().WithMessage("bar").Or.WithMessage("foo"));
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
 		public async Task ThrowsExactly_Type_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -295,6 +319,18 @@ public sealed partial class ThatDelegateTests
 				               foo
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task ThrowsExactly_Type_WithOr_WhenDelegateThrowsSubtype_ShouldSucceed()
+		{
+			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
+
+			async Task Act()
+				=> await That(value).DoesNotComplyWith(it
+					=> WithoutValue(it).ThrowsExactly(typeof(Exception)).WithMessage("bar").Or.WithMessage("foo"));
+
+			await That(Act).DoesNotThrow();
 		}
 
 		private static WithoutValue WithoutValue(IThat<DelegateValue> subject)

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 using aweXpect.Options;
@@ -56,7 +54,7 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	}
 
 	private static void AppendThrowsExpectation(StringBuilder stringBuilder, ThrowsOption options,
-		Type exceptionType, bool exactly = false)
+		Type exceptionType, bool exactly)
 	{
 		if (!options.DoCheckThrow)
 		{
@@ -77,101 +75,6 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		{
 			stringBuilder.Append(' ');
 			options.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
-		}
-	}
-
-	private sealed class DelegateIsNotNullWithinTimeoutConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		ThrowsOption options)
-		: ConstraintResult(grammars),
-			IValueConstraint<DelegateValue>
-	{
-		private DelegateValue? _actual;
-		private bool _tookTooLong;
-
-		/// <inheritdoc cref="ConstraintResult.FailureCause" />
-		public override Exception? FailureCause
-		{
-			get
-			{
-				if (options.IsNegated)
-				{
-					// The negated expectation only fails when the delegate met it, so the thrown exception is the cause.
-					return _actual?.Exception;
-				}
-
-				return Outcome == Outcome.Failure && _actual?.ExceededTimeout is not null ? _actual.Exception : null;
-			}
-		}
-
-		public ConstraintResult IsMetBy(DelegateValue value)
-		{
-			_actual = value;
-			if (value.IsNull || value.ExceededTimeout is not null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			if (options.ExecutionTimeOptions is not null &&
-			    !options.ExecutionTimeOptions.IsWithinLimit(value.Duration))
-			{
-				_tookTooLong = true;
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = Outcome.Success;
-			return this;
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			// Do nothing
-		}
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual?.IsNull != false)
-			{
-				AppendNullResult(stringBuilder, it, _actual);
-			}
-			else if (_actual.ExceededTimeout is { } exceededTimeout)
-			{
-				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
-			}
-			else if (_tookTooLong)
-			{
-				stringBuilder.Append(it).Append(" took ");
-				options.ExecutionTimeOptions?.AppendFailureResult(stringBuilder, _actual.Duration);
-			}
-			else if (_actual.Exception is null)
-			{
-				stringBuilder.Append(it).Append(" did not throw any exception");
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(FormatForMessage(_actual.Exception, indentation));
-			}
-		}
-
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
-		{
-			value = default;
-			return false;
-		}
-
-		/// <remarks>
-		///     A negation applies to the whole expectation. The constraint on the exception reads it from the shared
-		///     options, and this result explains the failure, which under negation only occurs when the delegate met the
-		///     expectation.
-		/// </remarks>
-		public override ConstraintResult Negate()
-		{
-			options.IsNegated = !options.IsNegated;
-			return this;
 		}
 	}
 

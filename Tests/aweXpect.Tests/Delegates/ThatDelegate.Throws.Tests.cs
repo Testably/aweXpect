@@ -80,6 +80,22 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenNoExceptionIsThrown_WithOr_ShouldFail()
+			{
+				Action action = () => { };
+
+				async Task<Exception> Act()
+					=> await That(action).Throws().WithMessage("x").Or.WithMessage("y");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with message equal to "x" or with message equal to "y",
+					             but it did not throw any exception
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -206,6 +222,44 @@ public sealed partial class ThatDelegate
 					=> await That(action).Throws<CustomException>();
 
 				await That(Act).Throws()
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenOtherExceptionIsThrown_WithOr_ShouldFail()
+			{
+				Exception exception = new OtherException("y");
+				Action action = () => throw exception;
+
+				async Task<CustomException> Act()
+					=> await That(action).Throws<CustomException>().WithMessage("x").Or.WithMessage("y");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws a ThatDelegate.CustomException with message equal to "x" or with message equal to "y",
+					             but it did throw a ThatDelegate.OtherException:
+					               y
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenOtherExceptionIsThrown_WithWhichAndOr_ShouldFail()
+			{
+				Exception exception = new OtherException("y");
+				Action action = () => throw exception;
+
+				async Task Act()
+					=> await That(action).Throws<CustomException>().Which.HasMessage("x").Or.HasMessage("y");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws a ThatDelegate.CustomException that has message equal to "x" or has message equal to "y",
+					             but it did throw a ThatDelegate.OtherException:
+					               y
+					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
@@ -377,6 +431,44 @@ public sealed partial class ThatDelegate
 					              but it did throw a ThatDelegate.OtherException:
 					                {message}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenOtherExceptionIsThrown_WithOr_ShouldFail()
+			{
+				Exception exception = new OtherException("y");
+				Action action = () => throw exception;
+
+				async Task<Exception> Act()
+					=> await That(action).Throws(typeof(CustomException)).WithMessage("x").Or.WithMessage("y");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws a ThatDelegate.CustomException with message equal to "x" or with message equal to "y",
+					             but it did throw a ThatDelegate.OtherException:
+					               y
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenOtherExceptionIsThrown_WithWhichAndOr_ShouldFail()
+			{
+				Exception exception = new OtherException("y");
+				Action action = () => throw exception;
+
+				async Task Act()
+					=> await That(action).Throws(typeof(CustomException)).Which.HasMessage("x").Or.HasMessage("y");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws a ThatDelegate.CustomException that has message equal to "x" or has message equal to "y",
+					             but it did throw a ThatDelegate.OtherException:
+					               y
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
 			[Fact]

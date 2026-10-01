@@ -15,16 +15,7 @@ public abstract partial class ThatDelegate
 	/// </summary>
 	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> Throws()
-	{
-		ThrowsOption throwOptions = new();
-		return new ThatDelegateThrows<Exception>(ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new DelegateIsNotNullWithinTimeoutConstraint(it, grammars, throwOptions))
-				.ForWhich<DelegateValue, Exception?>(d => d.Exception)
-				.AddConstraint((it, grammars) => new ThrowsConstraint(it, grammars, typeof(Exception), throwOptions))
-				.And(" "),
-			throwOptions);
-	}
+		=> ThrowsOfType<Exception>(typeof(Exception), false);
 
 	/// <summary>
 	///     Verifies that the delegate throws an exception of type <typeparamref name="TException" />.
@@ -32,16 +23,7 @@ public abstract partial class ThatDelegate
 	[GuaranteesNotNull]
 	public ThatDelegateThrows<TException> Throws<TException>()
 		where TException : Exception
-	{
-		ThrowsOption throwOptions = new();
-		return new ThatDelegateThrows<TException>(ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new DelegateThrowsWithinTimeoutConstraint<TException>(it, grammars, throwOptions))
-				.ForWhich<DelegateValue, TException?>(d => d.Exception as TException)
-				.AddConstraint((_, _) => new DoNothingConstraint<TException>())
-				.And(" "),
-			throwOptions);
-	}
+		=> ThrowsOfType<TException>(typeof(TException), false);
 
 	/// <summary>
 	///     Verifies that the delegate throws an exception of type <paramref name="type" />.
@@ -50,15 +32,29 @@ public abstract partial class ThatDelegate
 	public ThatDelegateThrows<Exception> Throws(Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
+		return ThrowsOfType<Exception>(type, false);
+	}
+
+	/// <remarks>
+	///     The type check belongs to the delegate, not to the exception, so that it stays in front of a later <c>Or</c>
+	///     and the further expectations only see an exception of the expected type.
+	/// </remarks>
+	private ThatDelegateThrows<TException> ThrowsOfType<TException>(Type exceptionType, bool exactly)
+		where TException : Exception
+	{
 		ThrowsOption throwOptions = new();
-		return new ThatDelegateThrows<Exception>(ExpectationBuilder
+		return new ThatDelegateThrows<TException>(ExpectationBuilder
 				.AddConstraint((it, grammars)
-					=> new DelegateIsNotNullWithinTimeoutConstraint(it, grammars, throwOptions))
-				.ForWhich<DelegateValue, Exception?>(d => d.Exception)
-				.AddConstraint((it, grammars) => new ThrowsConstraint(it, grammars, type, throwOptions))
+					=> new DelegateThrowsWithinTimeoutConstraint(it, grammars, exceptionType, exactly, throwOptions))
+				.ForWhich<DelegateValue, TException?>(d
+					=> IsExpectedException(d.Exception, exceptionType, exactly) ? d.Exception as TException : null)
+				.AddConstraint((_, _) => new DoNothingConstraint<TException>())
 				.And(" "),
 			throwOptions);
 	}
+
+	private static bool IsExpectedException(Exception? exception, Type exceptionType, bool exactly)
+		=> exactly ? exception.IsExactlyOfType(exceptionType) : exception.IsOfType(exceptionType);
 
 	private sealed class DoNothingConstraint<T>()
 		: ConstraintResult.WithValue<T>("it", ExpectationGrammars.None), IValueConstraint<T>
@@ -90,13 +86,14 @@ public abstract partial class ThatDelegate
 		}
 	}
 
-	private sealed class DelegateThrowsWithinTimeoutConstraint<TException>(
+	private sealed class DelegateThrowsWithinTimeoutConstraint(
 		string it,
 		ExpectationGrammars grammars,
+		Type exceptionType,
+		bool exactly,
 		ThrowsOption options)
 		: ConstraintResult(grammars),
 			IValueConstraint<DelegateValue>
-		where TException : Exception
 	{
 		private DelegateValue? _actual;
 		private bool _tookTooLong;
@@ -133,7 +130,7 @@ public abstract partial class ThatDelegate
 			{
 				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 			}
-			else if (typeof(TException).IsAssignableFrom(value.Exception.GetType()))
+			else if (IsExpectedException(value.Exception, exceptionType, exactly))
 			{
 				Outcome = Outcome.Success;
 				return this;
@@ -144,7 +141,7 @@ public abstract partial class ThatDelegate
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendThrowsExpectation(stringBuilder, options, typeof(TException));
+			=> AppendThrowsExpectation(stringBuilder, options, exceptionType, exactly);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -181,7 +178,7 @@ public abstract partial class ThatDelegate
 			}
 
 			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(TException));
+			return typeof(TValue).IsAssignableFrom(exceptionType);
 		}
 
 		/// <remarks>
@@ -197,76 +194,6 @@ public abstract partial class ThatDelegate
 				Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			}
 
-			return this;
-		}
-	}
-
-	private sealed class ThrowsConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Type exceptionType,
-		ThrowsOption throwOptions)
-		: ConstraintResult(grammars),
-			IValueConstraint<Exception?>
-	{
-		private Exception? _actual;
-
-		/// <inheritdoc cref="ConstraintResult.FailureCause" />
-		public override Exception? FailureCause => Outcome == Outcome.Failure ? _actual : null;
-
-		/// <inheritdoc />
-		public ConstraintResult IsMetBy(Exception? value)
-		{
-			_actual = value;
-
-			if (!throwOptions.DoCheckThrow)
-			{
-				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreCompletely;
-				Outcome = value is null ? Outcome.Success : Outcome.Failure;
-				return this;
-			}
-
-			bool isExpectedType = value.IsOfType(exceptionType);
-			// Chained expectations on a missing exception or one of another type are irrelevant.
-			FurtherProcessingStrategy = isExpectedType
-				? FurtherProcessingStrategy.Continue
-				: FurtherProcessingStrategy.IgnoreResult;
-			Outcome = isExpectedType ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendThrowsExpectation(stringBuilder, throwOptions, exceptionType);
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (throwOptions.DoCheckThrow && _actual is null)
-			{
-				stringBuilder.Append(it).Append(" did not throw any exception");
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(FormatForMessage(_actual, indentation));
-			}
-		}
-
-		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(exceptionType);
-		}
-
-		public override ConstraintResult Negate()
-		{
-			throwOptions.IsNegated = !throwOptions.IsNegated;
-			Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			return this;
 		}
 	}
