@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -36,51 +37,110 @@ public partial class CollectionMatchOptions
 		: AnyOrderCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(equivalenceRelation, expected)
 		where T : T2
 	{
+		private readonly CompiledPredicates<T> _predicates = new();
+
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> new ValueTask<bool>(UserCode.Invoke(expected.Compile(), value, "the predicate"));
+			=> _predicates.Invoke(expected, value);
 	}
 
+	private sealed class AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(
+		EquivalenceRelations equivalenceRelation,
+		IEnumerable<ExpectationItem<T>> expected)
+		: AnyOrderCollectionMatcherBase<T, T2, ExpectationItem<T>>(
+			equivalenceRelation,
+			expected.Distinct(new ExpectationItemEqualityComparer<T>()),
+			true)
+		where T : T2
+	{
+		protected override ValueTask<bool>
+			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
+			=> expected.IsMetBy(value);
+	}
+
+	private sealed class AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(
+		EquivalenceRelations equivalenceRelation,
+		IEnumerable<Expression<Func<T, bool>>> expected)
+		: AnyOrderCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(
+			equivalenceRelation,
+			expected.Distinct(new ExpressionEqualityComparer<T, bool>()),
+			true)
+		where T : T2
+	{
+		private readonly CompiledPredicates<T> _predicates = new();
+
+		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
+			IOptionsEquality<T2> options)
+			=> _predicates.Invoke(expected, value);
+	}
+
+	/// <summary>
+	///     Matches each subject item with a distinct expected item.
+	/// </summary>
+	/// <remarks>
+	///     When ignoring duplicates, an item that is equal to an earlier one is skipped, and the expected items are
+	///     distinct.
+	/// </remarks>
 	private abstract class AnyOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly List<T3> _missingItems;
-		private readonly int _totalExpectedCount;
+		private readonly List<T3> _expected;
+		private readonly bool _ignoringDuplicates;
+		private readonly HashSet<T> _uniqueItems = new();
 		private int _index;
+		private ItemMatching<T, T3>? _matching;
+		private List<T3> _missingItems = new();
 
-		protected AnyOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation, IEnumerable<T3> expected)
+		protected AnyOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation, IEnumerable<T3> expected,
+			bool ignoringDuplicates = false)
 		{
 			_equivalenceRelations = equivalenceRelation;
-			_missingItems = expected.ToList();
-			_totalExpectedCount = _missingItems.Count;
+			_expected = expected.ToList();
+			_ignoringDuplicates = ignoringDuplicates;
 		}
 
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (await All(_missingItems, e => AreConsideredEqual(value, e, options), true))
+			int index = _index++;
+			if (_ignoringDuplicates && !_uniqueItems.Add(value))
 			{
-				_additionalItems.Add(_index, value);
+				return (false, null);
 			}
 
-			await RemoveFirst(_missingItems, e => AreConsideredEqual(value, e, options));
-			_index++;
-			return CountAdditionalDeviations() > 2 * maximumNumber
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
-				: (false, null);
+			ItemMatching<T, T3> matching = GetMatching(options);
+			await matching.Add(index, value);
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
+			{
+				// Additional items are no deviations, so the reassignment is deferred until it decides the result.
+				return (false, null);
+			}
+
+			// Resolving each item right away keeps the earlier items matched, so the later ones are reported.
+			await matching.ResolvePendingItems();
+			if (_additionalItems.Count > 2 * maximumNumber)
+			{
+				_missingItems = matching.UnmatchedExpectedItems();
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+			}
+
+			return (false, null);
 		}
 
-		public ValueTask<(bool, string?)>
+		public async ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			ItemMatching<T, T3> matching = GetMatching(options);
+			await matching.ResolvePendingItems();
+			_missingItems = matching.UnmatchedExpectedItems();
+
 			// For the containment relation, all deviations are missing items, which are known completely here.
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
 			    CountAdditionalDeviations() + CountMissingDeviations() > 2 * maximumNumber)
 			{
-				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
-				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 			}
 
 			Func<object?, string> formatItem = CreateItemFormatter();
@@ -96,8 +156,8 @@ public partial class CollectionMatchOptions
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, false, formatItem,
-					options, maximumNumber));
+				errors.AddRange(MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations,
+					_ignoringDuplicates, formatItem, options, maximumNumber));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
@@ -105,8 +165,15 @@ public partial class CollectionMatchOptions
 			}
 
 			string? error = ReturnErrorString(it, errors);
-			return new ValueTask<(bool, string?)>((error != null, error));
+			return (error != null, error);
 		}
+
+		/// <summary>
+		///     The options are only known once the items are compared.
+		/// </summary>
+		private ItemMatching<T, T3> GetMatching(IOptionsEquality<T2> options)
+			=> _matching ??= new ItemMatching<T, T3>(_expected, (value, expected)
+				=> AreConsideredEqual(value, expected, options), _additionalItems);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are not counted.

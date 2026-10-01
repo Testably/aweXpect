@@ -180,11 +180,11 @@ public partial class CollectionMatchOptions
 				for (int i = consideredExpectedItems; i < _expectedItems.Length; i++)
 				{
 					T3 item = _expectedItems[i];
-					KeyValuePair<int, T> additionalItem = await FirstOrDefault(_additionalItems,
-						a => AreConsideredEqual(a.Value, item, options));
-					if (!additionalItem.IsDefault())
+					int? additionalIndex = await FindFirstKey(_additionalItems,
+						a => AreConsideredEqual(a, item, options));
+					if (additionalIndex is not null)
 					{
-						_additionalItems.Remove(additionalItem.Key);
+						_additionalItems.Remove(additionalIndex.Value);
 						_missingItems.Add(item);
 					}
 					else if (await All(_additionalItems.Values, x => AreConsideredEqual(x, item, options), true) &&
