@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using aweXpect.Options;
 
 namespace aweXpect;
 
@@ -13,6 +14,7 @@ internal sealed class OccurrenceCounter<TMember>(
 {
 	private readonly List<TMember> _distinctMembers = [];
 	private readonly List<int> _occurrences = [];
+	private int _notUniqueCount;
 
 	/// <summary>
 	///     Counts one occurrence of the <paramref name="member" /> and returns the index of its distinct member.
@@ -24,6 +26,7 @@ internal sealed class OccurrenceCounter<TMember>(
 			if (await areConsideredEqual(member, _distinctMembers[i]))
 			{
 				_occurrences[i]++;
+				_notUniqueCount += _occurrences[i] == 2 ? 2 : 1;
 				return i;
 			}
 		}
@@ -37,4 +40,16 @@ internal sealed class OccurrenceCounter<TMember>(
 	///     Whether the distinct member at <paramref name="index" /> occurred exactly once.
 	/// </summary>
 	public bool IsUnique(int index) => _occurrences[index] == 1;
+
+	/// <summary>
+	///     Whether the members counted so far determine the outcome of the <paramref name="quantifier" />.
+	/// </summary>
+	/// <remarks>
+	///     Only the members that occurred more than once are counted, as they stay not unique, while a member that
+	///     occurred once so far can still occur again.
+	/// </remarks>
+	public bool Determines(EnumerableQuantifier quantifier, bool expectUnique)
+		=> expectUnique
+			? quantifier.IsDeterminable(0, _notUniqueCount)
+			: quantifier.IsDeterminable(_notUniqueCount, 0);
 }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks.Sources;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 
@@ -288,6 +290,30 @@ public class ExpectTests
 			=> await That(sut).IsGreaterThan(41);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenAMemberFails_ShouldReleaseItsMaterializedSourceAfterTheFailureMessage()
+	{
+		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());
+		ReadsFirstItemConstraint constraint = new(source, Outcome.Failure);
+		IEnumerable<int> subject = source;
+
+		async Task Act()
+			=> await ThatAll(
+				new ExpectationResult(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => constraint)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject reads the first item
+			             but
+			              [01] it was [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]
+			             """)
+			.Because("the failure message still reads from the source");
+		await That(constraint.DisposeCountWhenListed).IsEqualTo(0);
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the source is released once the failure message is created");
 	}
 
 	[Fact]
@@ -680,5 +706,8 @@ public class ExpectTests
 
 		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
 			=> contexts;
+
+		internal override Task EndEvaluation()
+			=> Task.CompletedTask;
 	}
 }

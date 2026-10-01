@@ -8,6 +8,16 @@ namespace aweXpect.Core;
 public interface ICollectionMatcher<in T, out T2> where T : T2
 {
 	/// <summary>
+	///     Indicates that the values verified so far determine the result, so that the remaining values of the subject
+	///     need not be verified before calling <see cref="VerifyComplete" />.
+	/// </summary>
+	/// <remarks>
+	///     For the containment relation, this is the case once all expected items are found, as additional items cannot
+	///     change the result.
+	/// </remarks>
+	bool IsDetermined { get; }
+
+	/// <summary>
 	///     Verifies for each <paramref name="value" /> in the subject if it results in a failure.
 	/// </summary>
 	/// <remarks>

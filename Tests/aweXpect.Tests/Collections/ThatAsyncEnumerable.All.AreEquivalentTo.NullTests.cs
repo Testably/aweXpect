@@ -34,13 +34,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
-						             but none of 3 were
+						             but none of at least 1 were
 
 						             Not matching items:
-						             [1, 1, 1]
+						             [1, (… and maybe more)]
 
 						             Collection:
-						             [1, 1, 1]
+						             [1, (… and maybe more)]
 
 						             Equivalency options:
 						              - include public fields and properties

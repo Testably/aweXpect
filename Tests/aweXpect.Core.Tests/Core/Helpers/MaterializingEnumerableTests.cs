@@ -2,11 +2,90 @@
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class MaterializingEnumerableTests
 {
+	[Fact]
+	public async Task ReleaseSource_ShouldOnlyReplayTheItemsReadSoFar()
+	{
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(ToEnumerable([1, 2, 3,]));
+		_ = materialized.First();
+
+		await materialized.ReleaseSource();
+		List<int> result = materialized.ToList();
+
+		await That(result).IsEqualTo([1,])
+			.Because("the released source must not be read any further");
+		await That(materialized.Count).IsNull()
+			.Because("it is unknown how many items the released source has");
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenCompletelyIterated_ShouldNotDisposeTheSourceAgain()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(source);
+		_ = materialized.ToList();
+
+		await materialized.ReleaseSource();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenDisposingTheSourceThrows_ShouldNotThrow()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			DisposeException = new InvalidOperationException("dispose failed"),
+		};
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(source);
+		_ = materialized.First();
+
+		async Task Act() => await materialized.ReleaseSource();
+
+		await That(Act).DoesNotThrow()
+			.Because("the outcome is already decided when the source is released");
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(source);
+		_ = materialized.First();
+
+		await materialized.ReleaseSource();
+		await materialized.ReleaseSource();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task Untyped_ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		MaterializingEnumerable materialized =
+			(MaterializingEnumerable)MaterializingEnumerable.Wrap(new UntypedEnumerable(source));
+		_ = materialized.Cast<object?>().First();
+
+		await materialized.ReleaseSource();
+		await materialized.ReleaseSource();
+		List<object?> result = materialized.Cast<object?>().ToList();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+		await That(result).IsEqualTo([1,])
+			.Because("the released source must not be read any further");
+	}
+
 	[Fact]
 	public async Task Untyped_WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
@@ -155,44 +234,6 @@ public class MaterializingEnumerableTests
 
 		await That(enumerable).IsNotSameAs(materialized1);
 		await That(materialized1).IsSameAs(materialized2);
-	}
-
-	private sealed class DisposeTrackingEnumerable(Exception? exception, params int[] values) : IEnumerable<int>
-	{
-		public int DisposeCount { get; private set; }
-
-		public IEnumerator<int> GetEnumerator() => new Enumerator(this, exception, values);
-
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		private sealed class Enumerator(DisposeTrackingEnumerable owner, Exception? exception, int[] values)
-			: IEnumerator<int>
-		{
-			private int _index = -1;
-
-			public int Current => values[_index];
-
-			object IEnumerator.Current => Current;
-
-			public bool MoveNext()
-			{
-				if (++_index < values.Length)
-				{
-					return true;
-				}
-
-				if (exception is not null)
-				{
-					throw exception;
-				}
-
-				return false;
-			}
-
-			public void Reset() => _index = -1;
-
-			public void Dispose() => owner.DisposeCount++;
-		}
 	}
 
 	private sealed class UntypedEnumerable(IEnumerable inner) : IEnumerable

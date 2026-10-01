@@ -177,7 +177,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [0, 1, 2, 3, 4]
+					             [0, (… and maybe more)]
 					             """);
 			}
 
@@ -247,7 +247,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had item 2 at index 2
 
 					             Collection:
-					             [0, 1, 2, 3, 4, 5]
+					             [0, 1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -317,6 +317,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSourceHangsAfterTheItemAtGivenIndex_ShouldNotWaitForMoreItems()
+			{
+				IAsyncEnumerable<int> subject = HangAfter([1,]);
+
+				async Task Act()
+					=> await That(subject).HasItem(1).AtIndex(0).WithTimeout(30.Seconds());
+
+				await That(Act).ExecutesIn().AtMost(10.Seconds())
+					.Because("the item at the given index already decides the result");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
@@ -382,7 +394,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [0, 1, 2, 3, 4]
+					             [0, (… and maybe more)]
 					             """);
 			}
 
@@ -427,7 +439,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -461,7 +474,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -495,7 +509,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -529,7 +544,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -565,7 +581,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -590,7 +607,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a\n  b",
 					               "c\n  d",
-					               "e\n  f"
+					               "e\n  f",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -615,7 +633,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               " foo",
 					               "\tbar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -640,7 +659,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a\nb",
 					               "c\nd",
-					               "e\nf"
+					               "e\nf",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -666,7 +686,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo ",
 					               "bar\t",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -690,7 +711,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "bar",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -798,7 +820,8 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               "baz",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -831,8 +854,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Collection:
 					             [
 					               "foo",
-					               "bar",
-					               "baz"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

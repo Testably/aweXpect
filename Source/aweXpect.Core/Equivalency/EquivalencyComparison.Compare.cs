@@ -250,8 +250,18 @@ public static partial class EquivalencyComparison
 			    Options: EquivalencyExpectationBuilder equivalencyExpectationBuilder,
 		    })
 		{
-			ConstraintResult? result =
-				await equivalencyExpectationBuilder.IsMetBy(actual, new EvaluationContext(), CancellationToken.None);
+			EvaluationContext evaluationContext = new();
+			ConstraintResult? result;
+			try
+			{
+				result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext,
+					CancellationToken.None);
+			}
+			finally
+			{
+				await evaluationContext.ReleaseMaterializations();
+			}
+
 			if (result.Outcome == Outcome.Success)
 			{
 				return true;

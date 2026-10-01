@@ -117,6 +117,27 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSourceThrowsAfterTwoItems_ShouldListTheItemsBeforeTheException()
+			{
+				IEnumerable<int> subject = ThrowAfter(new InvalidOperationException("src"), 1, 2);
+
+				async Task Act()
+					=> await That(subject).IsEmpty();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty,
+					             but it was [
+					               1,
+					               2,
+					               (the enumeration did throw an InvalidOperationException: src)
+					             ]
+					             """)
+					.Because("the items that were read before the exception are listed as well");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;

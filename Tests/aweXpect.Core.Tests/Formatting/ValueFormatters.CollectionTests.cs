@@ -75,6 +75,27 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task InFailureMessage_WhenEnumerationThrowsAfterTheFirstItem_ShouldRenderAPlaceholderAfterTheItems()
+		{
+			object subject = Throwing(new InvalidOperationException("enumeration failed"), 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [
+				               1,
+				               2,
+				               (the enumeration did throw an InvalidOperationException: enumeration failed)
+				             ]
+				             """)
+				.Because("the items that were read before the exception are listed as well");
+		}
+
+		[Fact]
 		public async Task InFailureMessage_WhenLazySequenceWasFullyEnumerated_ShouldNameTheNumberOfRemainingItems()
 		{
 			IEnumerable<int> subject = Lazy(Enumerable.Range(1, 25));
@@ -365,9 +386,13 @@ public partial class ValueFormatters
 			}
 		}
 
-		private static IEnumerable<int> Throwing(Exception exception)
+		private static IEnumerable<int> Throwing(Exception exception, params int[] items)
 		{
-			yield return 1;
+			foreach (int item in items)
+			{
+				yield return item;
+			}
+
 			throw exception;
 		}
 

@@ -92,14 +92,14 @@ public static partial class ThatAsyncEnumerable
 			if (_count <= 1 && cancellationToken.IsCancellationRequested)
 			{
 				Outcome = Outcome.Undecided;
-				await expectationBuilder.AddCollectionContext(_materialized, true);
+				expectationBuilder.AddCollectionContext(_materialized, true);
 				return this;
 			}
 
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
 			if (_count > 1)
 			{
-				await expectationBuilder.AddCollectionContext(_materialized);
+				expectationBuilder.AddCollectionContext(_materialized);
 			}
 
 			return this;

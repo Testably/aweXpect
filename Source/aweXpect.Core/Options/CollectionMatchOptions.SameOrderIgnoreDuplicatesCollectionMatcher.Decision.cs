@@ -37,6 +37,11 @@ public partial class CollectionMatchOptions
 				              _outOfOrderItems.ContainsKey(index);
 			}
 
+			if (await CanStopEarly(options))
+			{
+				IsDetermined = true;
+			}
+
 			// Only an item that matches no expected item is a deviation that is known before the end. The alignment
 			// reports every such item, so only its deviations are compared with all expected items, until it gives up.
 			if (isNew && isDeviation && !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
@@ -53,6 +58,28 @@ public partial class CollectionMatchOptions
 			}
 
 			return (false, null);
+		}
+
+		/// <summary>
+		///     The containment relation is met for good, once the items so far contain the expected items, as further
+		///     items cannot remove them, and the proper containment once they also contain an additional item.
+		/// </summary>
+		/// <remarks>
+		///     The decision is only consulted, when the alignment found all expected items, so that it does not run for
+		///     every item.
+		/// </remarks>
+		private async ValueTask<bool> CanStopEarly(IOptionsEquality<T2> options)
+		{
+			bool isProperly = _equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly);
+			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) || IsDetermined ||
+			    _isAlignmentAborted || _matchIndex < _expectedDistinctItems.Length ||
+			    (isProperly && _additionalItems.Count + _incorrectItems.Count == 0))
+			{
+				return false;
+			}
+
+			DistinctItemsInOrder order = CreateOrder(options);
+			return await order.IsInOrder() && (!isProperly || await order.HasAdditionalItem());
 		}
 
 		/// <summary>

@@ -38,25 +38,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 1 for all items,
-						             but only 2 of at least 11 were
+						             but only 2 of at least 3 were
 
 						             Not matching items:
-						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe more)]
+						             [2, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, 1, 2, (… and maybe more)]
 
 						             Equivalency options:
 						              - include public fields and properties
@@ -97,37 +85,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 5 for all items,
-						             but only 1 of at least 11 were
+						             but none of at least 1 were
 
 						             Not matching items:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               89,
-						               (… and maybe more)
-						             ]
+						             [1, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, (… and maybe more)]
 
 						             Equivalency options:
 						              - include public fields and properties

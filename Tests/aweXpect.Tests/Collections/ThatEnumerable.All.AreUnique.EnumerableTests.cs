@@ -67,10 +67,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but only 2 of 4 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
-						             [1, 1]
+						             [1, 1, (… and maybe more)]
 
 						             Collection:
 						             [1, 2, 3, 1]
@@ -89,10 +89,10 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but only 2 of 6 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
-						             [1, 2, 1, 2]
+						             [1, 1, (… and maybe more)]
 
 						             Collection:
 						             [1, 2, 3, 1, 2, -1]
@@ -111,12 +111,13 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but none of 2 were
+						             but none of at least 2 were
 
 						             Not matching items:
 						             [
 						               <null>,
-						               <null>
+						               <null>,
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -213,7 +214,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => (x as MyClass)?.Value for all items,
-						             but only 2 of 4 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
 						             [
@@ -224,7 +225,8 @@ public sealed partial class ThatEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -262,7 +264,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => (x as MyClass)?.Value for all items,
-						             but only 2 of 6 were
+						             but only 2 of at least 4 were
 
 						             Not matching items:
 						             [
@@ -272,16 +274,9 @@ public sealed partial class ThatEnumerable
 						               },
 						               MyClass {
 						                 StringValue = "",
-						                 Value = 2
-						               },
-						               MyClass {
-						                 StringValue = "",
 						                 Value = 1
 						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 2
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:

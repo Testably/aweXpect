@@ -82,7 +82,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but it had at least 3 items
 
 						             Collection:
-						             [1, 2, 3]
+						             [1, 2, 3, (… and maybe more)]
 						             """);
 				}
 
@@ -101,7 +101,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but it had at least 1 item
 
 						             Collection:
-						             [1, 2, 3]
+						             [1, (… and maybe more)]
 						             """)
 						.Because("a count is never null, so the enumeration can stop at the first item");
 				}

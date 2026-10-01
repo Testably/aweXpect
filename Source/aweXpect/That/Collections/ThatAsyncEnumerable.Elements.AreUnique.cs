@@ -271,6 +271,13 @@ public static partial class ThatAsyncEnumerable
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
+				if (occurrences.Determines(Quantifier, expectUnique))
+				{
+					RecordAll(items, occurrences);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(items.ConvertAll(x => x.Item), true);
+					return this;
+				}
 			}
 
 			List<TItem> collection = items.ConvertAll(x => x.Item);
@@ -281,14 +288,18 @@ public static partial class ThatAsyncEnumerable
 				return this;
 			}
 
+			RecordAll(items, occurrences);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(collection);
+			return this;
+		}
+
+		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+		{
 			foreach ((TItem item, int memberIndex) in items)
 			{
 				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
 			}
-
-			Complete();
-			ExpectationBuilder.AddCollectionContext(collection);
-			return this;
 		}
 	}
 }

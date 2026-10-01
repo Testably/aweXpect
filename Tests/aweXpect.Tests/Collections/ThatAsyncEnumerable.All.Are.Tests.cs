@@ -30,40 +30,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is of type ThatAsyncEnumerable.All.Are.MyClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
 						               ThatAsyncEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -71,33 +45,7 @@ public sealed partial class ThatAsyncEnumerable
 						               ThatAsyncEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -152,40 +100,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is of type ThatAsyncEnumerable.All.Are.MyClass for all items,
-						             but none of 10 were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
 						               ThatAsyncEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -193,33 +115,7 @@ public sealed partial class ThatAsyncEnumerable
 						               ThatAsyncEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatAsyncEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}

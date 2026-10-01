@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for exactly 2 items,
-						             but 3 of 5 were
+						             but at least 3 of at least 3 were
 
 						             Collection:
 						             [1, 1, 1, 2, 3]

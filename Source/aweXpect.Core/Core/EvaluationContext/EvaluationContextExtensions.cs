@@ -27,7 +27,8 @@ public static class EvaluationContextExtensions
 	///     <paramref name="evaluationContext" /> returns the same sequence, also to the built-in collection expectations,
 	///     so that expectations combined on one subject (e.g. with <c>.And</c> or <c>.Or</c>) enumerate it at most once.
 	///     The items are read from the <paramref name="collection" /> only as far as a consumer enumerates, and every
-	///     further enumeration replays them before it continues the source where the previous one stopped.<br />
+	///     further enumeration replays them before it continues the source where the previous one stopped. The
+	///     enumerator of the source is disposed once the evaluation is completed, including its failure message.<br />
 	///     A <paramref name="collection" /> that is an <see cref="ICollection{T}" /> is returned unchanged. Otherwise, the
 	///     returned sequence implements <see cref="ICountable" />, and an exception of the source fails the expectation
 	///     like one of <see cref="UserCode" /> and is thrown again by every further enumeration.<br />
@@ -95,6 +96,34 @@ public static class EvaluationContextExtensions
 			() => MaterializingAsyncEnumerable<TItem>.Wrap(collection, cancellationToken));
 	}
 #endif
+
+	private static readonly string[] MaterializationKeys =
+	[
+		MaterializedEnumerableKey,
+#if NET8_0_OR_GREATER
+		MaterializedAsyncEnumerableKey,
+#endif
+	];
+
+	/// <summary>
+	///     The materializations of the source collections in the <paramref name="evaluationContext" />.
+	/// </summary>
+	internal static IEnumerable<IMaterialization> GetMaterializations(this IEvaluationContext evaluationContext)
+	{
+		foreach (string key in MaterializationKeys)
+		{
+			if (evaluationContext.TryReceive(key, out List<(object Source, object Materialized)>? cache))
+			{
+				foreach ((object _, object materialized) in cache)
+				{
+					if (materialized is IMaterialization materialization)
+					{
+						yield return materialization;
+					}
+				}
+			}
+		}
+	}
 
 	/// <summary>
 	///     Keeps one materialization per source collection, because nested expectations (e.g. <c>ComplyWith</c> on

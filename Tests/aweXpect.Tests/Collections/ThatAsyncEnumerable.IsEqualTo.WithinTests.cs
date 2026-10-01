@@ -274,9 +274,6 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected that subject
 						             is equal to collection expected ± 0.2 in order,
 						             but the expected collection was <null>
-
-						             Collection:
-						             [1.1, <null>, 2.1]
 						             """)
 						.Because("a null collection of non-nullable items fails like any other null expected collection");
 				}

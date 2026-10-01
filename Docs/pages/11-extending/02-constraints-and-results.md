@@ -280,6 +280,8 @@ private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGram
 
 - Every call for the same subject in the same evaluation returns the same sequence. It reads the subject only as far
   as it is enumerated, and a further enumeration replays the items read so far before it continues the subject.
+  Once the expectation and its failure message are complete, the enumerator of the subject is disposed, also when it
+  was not read to its end.
 - A subject that already is a collection is returned unchanged. For any other subject, an exception while it is
   enumerated fails the expectation like one of the [code of the caller](#code-of-the-caller).
 - For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `UseMaterializedAsyncEnumerable` with

@@ -90,7 +90,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			await _expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 

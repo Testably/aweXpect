@@ -85,6 +85,17 @@ public partial class CollectionMatchOptions
 			_totalExpectedItems = _expectedItems.Length;
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		///     Once all expected items are found, the containment relation is met, and properly met as soon as there is
+		///     also another item, as the deviations of abandoned partial matches become additional items.
+		/// </remarks>
+		public bool IsDetermined
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			   _matchIndex >= _expectedItems.Length &&
+			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
+			    _additionalItems.Count + _incorrectItems.Count > 0);
+
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{

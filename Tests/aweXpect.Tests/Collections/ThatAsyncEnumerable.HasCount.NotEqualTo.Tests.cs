@@ -157,7 +157,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but it had at least 1 item
 
 						             Collection:
-						             [1, 2, 3]
+						             [1, (… and maybe more)]
 						             """)
 						.Because("a count is never null");
 				}

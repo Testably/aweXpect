@@ -219,8 +219,11 @@ public static partial class ValueFormatters
 		stringBuilder.Append(isDictionary ? '{' : '[');
 		bool hasMoreValues = false;
 		bool isNotEmpty = false;
-		foreach (T item in items)
+		Exception? enumerationException = null;
+		using IEnumerator<T> enumerator = items.GetEnumerator();
+		while (TryMoveNext(enumerator, isNotEmpty, ref enumerationException))
 		{
+			T item = enumerator.Current;
 			isNotEmpty = true;
 			if (count < maxCount)
 			{
@@ -249,6 +252,13 @@ public static partial class ValueFormatters
 			stringBuilder.Append(itemFormatter.FormatSingle(item, options).Indent("  ", false));
 		}
 
+		if (enumerationException is not null)
+		{
+			stringBuilder.Append(options.UseLineBreaks ? $",{Environment.NewLine}  " : ", ");
+			stringBuilder.Append('(').Append(DescribeThrownException("the enumeration", enumerationException))
+				.Append(')');
+		}
+
 		if (hasMoreValues)
 		{
 			const char ellipsis = '\u2026';
@@ -273,6 +283,22 @@ public static partial class ValueFormatters
 		stringBuilder.Append(isDictionary ? '}' : ']');
 	}
 #pragma warning restore S3776
+
+	/// <summary>
+	///     An exception of the enumeration after the first item is caught, so that the items listed so far are kept.
+	/// </summary>
+	private static bool TryMoveNext<T>(IEnumerator<T> enumerator, bool isNotEmpty, ref Exception? exception)
+	{
+		try
+		{
+			return enumerator.MoveNext();
+		}
+		catch (Exception caughtException) when (isNotEmpty)
+		{
+			exception = caughtException;
+			return false;
+		}
+	}
 
 	private static string FormatKeyValuePair<TKey, TValue>(
 		ValueFormatter formatter,

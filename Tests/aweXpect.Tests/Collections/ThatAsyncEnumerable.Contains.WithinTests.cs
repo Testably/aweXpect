@@ -1701,7 +1701,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -1774,7 +1779,13 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                {Formatter.Format(values[3])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -1847,7 +1858,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -1920,7 +1936,13 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                {Formatter.Format(values[3])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -1993,7 +2015,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -2066,7 +2093,13 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                {Formatter.Format(values[3])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -2139,7 +2172,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2212,7 +2245,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2285,7 +2318,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2358,7 +2391,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2431,7 +2464,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2504,7 +2537,7 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0, (… and maybe more)]
 
 						              Expected:
 						              {Formatter.Format(unexpected)}
@@ -2577,7 +2610,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -2650,7 +2688,13 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                {Formatter.Format(values[3])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -2723,7 +2767,12 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}
@@ -2796,7 +2845,13 @@ public sealed partial class ThatAsyncEnumerable
 						              but it did
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                {Formatter.Format(values[0])},
+						                {Formatter.Format(values[1])},
+						                {Formatter.Format(values[2])},
+						                {Formatter.Format(values[3])},
+						                (… and maybe more)
+						              ]
 
 						              Expected:
 						              {Formatter.Format(unexpected, FormattingOptions.MultipleLines)}

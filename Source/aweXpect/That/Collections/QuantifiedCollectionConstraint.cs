@@ -58,6 +58,11 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
 
 	/// <summary>
+	///     The quantifier for the items.
+	/// </summary>
+	private protected EnumerableQuantifier Quantifier => quantifier;
+
+	/// <summary>
 	///     The type used to format the matching and not matching items.
 	/// </summary>
 	protected virtual Type ItemType => typeof(TItem);
@@ -89,16 +94,26 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	///     Determines the outcome from the recorded items and adds the contexts required by the quantifier.
 	/// </summary>
 	protected void Complete()
+		=> DetermineOutcome(false);
+
+	/// <summary>
+	///     Determines the outcome from the items recorded so far, when the remaining items of the collection are not
+	///     read, because they cannot change the outcome.
+	/// </summary>
+	private protected void CompleteEarly()
+		=> DetermineOutcome(true);
+
+	private void DetermineOutcome(bool isIncomplete)
 	{
-		_totalCount = _matchingCount + _notMatchingCount;
+		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
 		Outcome = quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
 		ExpectationBuilder.AddQuantifierContexts(this, quantifier,
 			_matchingItems is { Count: > 0 } matchingItems
-				? () => matchingItems.Format(Actual, ItemType, _matchingCount)
+				? () => matchingItems.Format(Actual, ItemType, _matchingCount).AppendIsIncomplete(isIncomplete)
 				: null,
 			_notMatchingItems is { Count: > 0 } notMatchingItems
-				? () => notMatchingItems.Format(Actual, ItemType, _notMatchingCount)
+				? () => notMatchingItems.Format(Actual, ItemType, _notMatchingCount).AppendIsIncomplete(isIncomplete)
 				: null);
 	}
 

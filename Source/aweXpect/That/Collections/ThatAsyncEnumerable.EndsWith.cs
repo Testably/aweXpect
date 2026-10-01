@@ -176,7 +176,7 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCancellationRequested)
 			{
 				Outcome = Outcome.Undecided;
-				await _expectationBuilder.AddCollectionContext(
+				_expectationBuilder.AddCollectionContext(
 					materializedEnumerable as IMaterializedAsyncEnumerable<TItem>, true);
 				return this;
 			}
@@ -188,7 +188,7 @@ public static partial class ThatAsyncEnumerable
 				if (_index + _offset < 0)
 				{
 					Outcome = Outcome.Failure;
-					await _expectationBuilder.AddCollectionContext(
+					_expectationBuilder.AddCollectionContext(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
@@ -199,7 +199,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					await _expectationBuilder.AddCollectionContext(
+					_expectationBuilder.AddCollectionContext(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					Outcome = Outcome.Failure;
 					return this;

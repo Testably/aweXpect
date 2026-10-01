@@ -20,6 +20,8 @@ public partial class CollectionMatchOptions
 		private const string Hint = "(but the items match in a different order)";
 		private readonly List<T> _values = new();
 
+		public bool IsDetermined => inOrderMatcher.IsDetermined;
+
 		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{

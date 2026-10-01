@@ -644,11 +644,20 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			bool cancelEarly = actual is not ICollection<TItem>;
 			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
 			List<(TItem Item, int MemberIndex)> items = [];
 			foreach (TItem item in materialized)
 			{
 				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
+				if (cancelEarly && occurrences.Determines(Quantifier, expectUnique))
+				{
+					RecordAll(items, occurrences);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
+					return this;
+				}
+
 				if (cancellationToken.IsCancellationRequested)
 				{
 					Outcome = Outcome.Undecided;
@@ -657,14 +666,18 @@ public static partial class ThatEnumerable
 				}
 			}
 
+			RecordAll(items, occurrences);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
+			return this;
+		}
+
+		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+		{
 			foreach ((TItem item, int memberIndex) in items)
 			{
 				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
 			}
-
-			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
-			return this;
 		}
 	}
 
@@ -722,12 +735,21 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
+			bool cancelEarly = actual is not ICollection;
 			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
 			List<(object? Item, int MemberIndex)> items = [];
 			foreach (object? item in materialized)
 			{
 				_itemType ??= item?.GetType();
 				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
+				if (cancelEarly && occurrences.Determines(Quantifier, expectUnique))
+				{
+					RecordAll(items, occurrences);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
+					return this;
+				}
+
 				if (cancellationToken.IsCancellationRequested)
 				{
 					Outcome = Outcome.Undecided;
@@ -736,14 +758,18 @@ public static partial class ThatEnumerable
 				}
 			}
 
+			RecordAll(items, occurrences);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
+			return this;
+		}
+
+		private void RecordAll(List<(object? Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+		{
 			foreach ((object? item, int memberIndex) in items)
 			{
 				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
 			}
-
-			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
-			return this;
 		}
 	}
 }

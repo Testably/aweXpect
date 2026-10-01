@@ -59,22 +59,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly one item,
-					             but at least 2 of at least 11 were
+					             but at least 2 of at least 2 were
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -120,10 +108,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly 3 items,
-					             but 4 of 7 were
+					             but at least 4 of at least 4 were
 
 					             Collection:
-					             [1, 1, 1, 1, 2, 2, 3]
+					             [1, 1, 1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -174,13 +162,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" ignoring case for exactly one item,
-					             but 2 of 3 were
+					             but at least 2 of at least 2 were
 
 					             Collection:
 					             [
 					               "foo",
 					               "FOO",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -232,13 +220,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for exactly one item,
-					             but 2 of 3 were
+					             but at least 2 of at least 2 were
 
 					             Collection:
 					             [
 					               "foo",
 					               "foo",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

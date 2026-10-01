@@ -450,13 +450,13 @@ public sealed class NegatedQuantifier
 				.WithMessage("""
 				             Expected that subject
 				             is equal to 1 for no items,
-				             but 1 of 2 were
+				             but at least 1 of at least 1 were
 
 				             Matching items:
-				             [1]
+				             [1, (… and maybe more)]
 
 				             Collection:
-				             [1, 2]
+				             [1, (… and maybe more)]
 				             """);
 		}
 
@@ -494,13 +494,13 @@ public sealed class NegatedQuantifier
 				.WithMessage("""
 				             Expected that subject
 				             is equal to 1 for no items,
-				             but 1 of 2 were
+				             but at least 1 of at least 1 were
 
 				             Matching items:
-				             [1]
+				             [1, (… and maybe more)]
 
 				             Collection:
-				             [1, 2]
+				             [1, (… and maybe more)]
 				             """);
 		}
 
@@ -516,13 +516,13 @@ public sealed class NegatedQuantifier
 				.WithMessage("""
 				             Expected that subject
 				             satisfies item => item == 1 for no items,
-				             but 1 of 2 did
+				             but at least 1 of at least 1 did
 
 				             Matching items:
-				             [1]
+				             [1, (… and maybe more)]
 
 				             Collection:
-				             [1, 2]
+				             [1, (… and maybe more)]
 				             """);
 		}
 	}

@@ -60,25 +60,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies item => item == 5 for no items,
-						             but at least 1 of at least 11 did
+						             but at least 1 of at least 5 did
 
 						             Matching items:
 						             [5, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, 1, 2, 3, 5, (… and maybe more)]
 						             """);
 				}
 
@@ -94,13 +82,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies item => item == 1 for no items,
-						             but 4 of 7 did
+						             but at least 1 of at least 1 did
 
 						             Matching items:
-						             [1, 1, 1, 1]
+						             [1, (… and maybe more)]
 
 						             Collection:
-						             [1, 1, 1, 1, 2, 2, 3]
+						             [1, (… and maybe more)]
 						             """);
 				}
 
@@ -124,6 +112,29 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).None().Satisfy(item => item == 42);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSourceThrowsAfterAMatchingItem_ShouldReportTheMatch()
+				{
+					IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1, 1);
+
+					async Task Act()
+						=> await That(subject).None().Satisfy(x => x == 1);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x == 1 for no items,
+						             but at least 1 of at least 1 did
+
+						             Matching items:
+						             [1, (… and maybe more)]
+
+						             Collection:
+						             [1, (… and maybe more)]
+						             """)
+						.Because("the first matching item already decides the result, so the exception of the source must not replace it");
 				}
 
 				[Fact]

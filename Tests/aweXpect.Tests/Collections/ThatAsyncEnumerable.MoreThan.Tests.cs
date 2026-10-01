@@ -253,13 +253,13 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for at most 2 items,
-					             but 3 of 5 were
+					             but at least 3 of at least 5 were
 
 					             Matching items:
-					             [3, 4, 5]
+					             [3, 4, 5, (… and maybe more)]
 
 					             Collection:
-					             [1, 2, 3, 4, 5]
+					             [1, 2, 3, 4, 5, (… and maybe more)]
 					             """);
 			}
 		}

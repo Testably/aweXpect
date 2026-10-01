@@ -39,6 +39,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSourceHangsAfterTheFirstItem_ShouldNotWaitForMoreItems()
+			{
+				IAsyncEnumerable<int> subject = HangAfter([1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEmpty().WithTimeout(30.Seconds());
+
+				await That(Act).ExecutesIn().AtMost(10.Seconds())
+					.Because("the first item already decides that the collection is not empty");
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterTheFirstItem_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1);
+
+				async Task Act()
+					=> await That(subject).IsNotEmpty();
+
+				await That(Act).DoesNotThrow()
+					.Because("the first item already decides that the collection is not empty");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;

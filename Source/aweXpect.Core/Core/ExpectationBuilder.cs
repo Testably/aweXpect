@@ -23,6 +23,8 @@ public abstract class ExpectationBuilder
 
 	private ResultContexts? _contexts;
 
+	private EvaluationContext.EvaluationContext? _evaluationContext;
+
 	/// <summary>
 	///     The current name for the subject (defaults to <see cref="DefaultCurrentSubject" />).
 	/// </summary>
@@ -620,19 +622,54 @@ public abstract class ExpectationBuilder
 		}
 	}
 
+	/// <remarks>
+	///     A failure keeps the collections materialized during the evaluation until <see cref="EndEvaluation" />, as the
+	///     failure message still reads them.
+	/// </remarks>
 	internal async Task<ConstraintResult> IsMet()
 	{
+		await EndEvaluation();
 		EvaluationContext.EvaluationContext context = new(this);
-		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
-		TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
-		CancellationToken cancellationToken = CancellationToken ??
-		                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
-		                                      System.Threading.CancellationToken.None;
-		TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
-		ConstraintResult result = await IsMet(GetRootNode(), context, timeSystem,
-			timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
-			cancellationToken);
-		return await ApplyReasons(result);
+		_evaluationContext = context;
+		ConstraintResult result;
+		try
+		{
+			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
+			TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
+			CancellationToken cancellationToken = CancellationToken ??
+			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
+			                                      System.Threading.CancellationToken.None;
+			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
+			result = await ApplyReasons(await IsMet(GetRootNode(), context, timeSystem,
+				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
+				cancellationToken));
+		}
+		catch
+		{
+			await EndEvaluation();
+			throw;
+		}
+
+		if (result.Outcome == Outcome.Success)
+		{
+			await EndEvaluation();
+		}
+
+		return result;
+	}
+
+	/// <summary>
+	///     Releases the sources of the collections materialized during the current evaluation, once the failure message
+	///     no longer reads them.
+	/// </summary>
+	internal async Task EndEvaluation()
+	{
+		if (_evaluationContext is not null)
+		{
+			EvaluationContext.EvaluationContext context = _evaluationContext;
+			_evaluationContext = null;
+			await context.ReleaseMaterializations();
+		}
 	}
 
 	internal abstract Task<ConstraintResult> IsMet(Node rootNode,

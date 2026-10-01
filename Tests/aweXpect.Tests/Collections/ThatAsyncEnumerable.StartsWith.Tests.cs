@@ -77,7 +77,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -186,7 +186,7 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -209,7 +209,7 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -245,7 +245,7 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -268,7 +268,7 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -291,7 +291,7 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

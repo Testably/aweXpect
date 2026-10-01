@@ -1,8 +1,10 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
+using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
 namespace aweXpect.Core.Tests.Core.EvaluationContext;
 
@@ -20,6 +22,36 @@ public class EvaluationContextTests
 		await That(fooResult).IsEqualTo("foo-value");
 		context.TryReceive("bar", out string? barResult);
 		await That(barResult).IsEqualTo("bar-value");
+	}
+
+	[Fact]
+	public async Task ReleaseMaterializations_ShouldAlsoReleaseTheSourcesOfTheCurrentAttempt()
+	{
+		Context context = new();
+		Context attempt = await context.StartAttempt();
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		_ = attempt.UseMaterializedEnumerable<int>(source).First();
+
+		await context.ReleaseMaterializations();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task StartAttempt_ShouldReleaseTheMaterializedSourcesAndReturnAnEmptyContext()
+	{
+		Context context = new();
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		_ = context.UseMaterializedEnumerable<int>(source).First();
+		context.Store("foo", "foo-value");
+
+		Context attempt = await context.StartAttempt();
+
+		await That(source.DisposeCount).IsEqualTo(1);
+		await That(attempt).IsNotSameAs(context)
+			.Because("each attempt is a separate evaluation");
+		await That(attempt.TryReceive("foo", out string? _)).IsFalse()
+			.Because("another attempt starts with an empty context");
 	}
 
 	[Fact]

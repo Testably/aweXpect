@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
@@ -41,7 +40,7 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private LimitedCollection<TItem> _items = new();
+		private IMaterializedAsyncEnumerable<TItem>? _materialized;
 
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
@@ -57,24 +56,11 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			_materialized = materializedEnumerable as IMaterializedAsyncEnumerable<TItem>;
 			await using IAsyncEnumerator<TItem> enumerator =
 				materializedEnumerable.UntilCancelled(cancellationToken).GetAsyncEnumerator(CancellationToken.None);
 			if (await enumerator.MoveNextAsync())
 			{
-				int maximumNumberOfCollectionItems =
-					Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-				_items = new LimitedCollection<TItem>();
-				_items.Add(enumerator.Current);
-				while (await enumerator.MoveNextAsync())
-				{
-					_items.Add(enumerator.Current);
-					if (_items.Count > maximumNumberOfCollectionItems)
-					{
-						break;
-					}
-				}
-
-
 				Outcome = Outcome.Failure;
 				return this;
 			}
@@ -95,7 +81,7 @@ public static partial class ThatAsyncEnumerable
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, _items, FormattingOptions.MultipleLines);
+			stringBuilder.Append(_materialized?.FormatMaterializedItems(FormattingOptions.MultipleLines));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

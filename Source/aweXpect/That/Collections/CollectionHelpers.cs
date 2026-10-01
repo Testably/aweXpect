@@ -251,12 +251,6 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		// Only the first items are listed, so an endless source of null items must not be searched to its end.
-		IEnumerable<object?> items = value is ICollection
-			? value.Cast<object?>()
-			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		Type type = items.FirstOrDefault(item => item is not null)?.GetType() ?? typeof(object);
-
 		return expectationBuilder.UpdateContexts(contexts
 			=>
 		{
@@ -264,14 +258,42 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => FormatCollection(value, type).AppendIsIncomplete(isIncomplete),
+						() => FormatCollection(value, GetItemTypeOfListedItems(value)).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
 	}
 
+	/// <remarks>
+	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
+	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
+	///     renders it.
+	/// </remarks>
+	private static Type GetItemTypeOfListedItems(IEnumerable value)
+	{
+		IEnumerable<object?> items = value is ICollection
+			? value.Cast<object?>()
+			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+		try
+		{
+			return items.GetItemType();
+		}
+		catch (Exception)
+		{
+			return typeof(object);
+		}
+	}
+
 #if NET8_0_OR_GREATER
-	internal static async Task<ExpectationBuilder> AddCollectionContext<TItem>(
+	/// <summary>
+	///     Adds the "Collection" context for the items of the <paramref name="value" /> that were received when the
+	///     failure message is created.
+	/// </summary>
+	/// <remarks>
+	///     No further items are received for the context, so that it can neither delay nor change the outcome. The
+	///     context is left out while nothing is known about the items.
+	/// </remarks>
+	internal static ExpectationBuilder AddCollectionContext<TItem>(
 		this ExpectationBuilder expectationBuilder,
 		IMaterializedAsyncEnumerable<TItem>? value, bool isIncomplete = false)
 	{
@@ -280,8 +302,6 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		await value.MaterializeItems(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-
 		return expectationBuilder.UpdateContexts(contexts
 			=>
 		{
@@ -289,13 +309,34 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => Formatter.Format(HideCount(value.MaterializedItems),
-								typeof(TItem).GetFormattingOption(value.Count ?? value.MaterializedItems.Count,
-									value.Count))
-							.AppendIsIncomplete(isIncomplete || value.Count is null),
+						() => value.MaterializedItems.Count == 0 && value.Count is null
+							? null
+							: value.FormatMaterializedItems(FormattingOptions.SingleLine)
+								.AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
+	}
+
+	/// <summary>
+	///     Formats the items of the <paramref name="value" /> that were received so far, and marks them as incomplete,
+	///     unless the end of the source was reached.
+	/// </summary>
+	internal static string FormatMaterializedItems<TItem>(this IMaterializedAsyncEnumerable<TItem> value,
+		FormattingOptions options)
+	{
+		int count = value.Count ?? value.MaterializedItems.Count;
+		FormattingOptions formattingOptions = typeof(TItem).GetFormattingOption(count, value.Count);
+		if (options.UseLineBreaks)
+		{
+			formattingOptions = formattingOptions with
+			{
+				UseLineBreaks = true,
+			};
+		}
+
+		return Formatter.Format(HideCount(value.MaterializedItems), formattingOptions)
+			.AppendIsIncomplete(value.Count is null);
 	}
 #endif
 
