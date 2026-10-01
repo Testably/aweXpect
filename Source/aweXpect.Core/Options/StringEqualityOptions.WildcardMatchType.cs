@@ -35,8 +35,17 @@ public partial class StringEqualityOptions
 		///     <paramref name="actual" /> value.
 		/// </summary>
 		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
-			=> RegexMatchType.CountOccurrences(actual, WildcardToUnanchoredRegularExpression(expected), ignoreCase,
-				RegexOptions.Singleline);
+			=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
+				new Regex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline,
+					RegexTimeout));
+
+		/// <remarks>
+		///     The casing is ignored by comparing the upper-case invariant values instead of with
+		///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by
+		///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> in the plain comparison.
+		/// </remarks>
+		private static string FoldCase(string value, bool ignoreCase)
+			=> ignoreCase ? value.ToUpperInvariant() : value;
 
 		/// <remarks>
 		///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
@@ -55,6 +64,9 @@ public partial class StringEqualityOptions
 				.Replace("\\*", ".*");
 
 		#region IStringMatchType Members
+
+		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
+		public bool InspectsSubject => true;
 
 		/// <inheritdoc
 		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
@@ -83,12 +95,8 @@ public partial class StringEqualityOptions
 				return new ValueTask<bool>(false);
 			}
 
-			RegexOptions options = ignoreCase
-				? RegexOptions.Singleline | IgnoreCaseOptions
-				: RegexOptions.Singleline;
-
-			return new ValueTask<bool>(Regex.IsMatch(actual, WildcardToRegularExpression(expected), options,
-				RegexTimeout));
+			return new ValueTask<bool>(Regex.IsMatch(FoldCase(actual, ignoreCase),
+				WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline, RegexTimeout));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

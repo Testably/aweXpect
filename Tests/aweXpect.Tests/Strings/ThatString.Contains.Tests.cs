@@ -27,6 +27,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "a b";
+
+				async Task Act()
+					=> await That(subject).Contains(" ").IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("an empty needle never occurs, so the failure would contradict the subject");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -510,6 +524,18 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).AsWildcard().IgnoringCase();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringCase_ShouldTreatTheKelvinSignLikeThePlainComparison()
+			{
+				string subject = "k and K";
+
+				async Task Act()
+					=> await That(subject).Contains("k").AsWildcard().IgnoringCase().Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("the casing is ignored like the plain comparison with OrdinalIgnoreCase, which does not consider the Kelvin sign equal to 'k'");
 			}
 
 			[Fact]

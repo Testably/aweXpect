@@ -200,6 +200,29 @@ public sealed partial class ThatString
 					.Because("ignoring the casing must not turn the anchors into line anchors");
 			}
 
+			[Theory]
+			[InlineData("k", "K")]
+			[InlineData("K", "k")]
+			[InlineData("xk", "*K")]
+			public async Task WhenIgnoringCase_ShouldTreatTheKelvinSignLikeThePlainComparison(
+				string subject, string pattern)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard().IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches {Formatter.Format(pattern)} ignoring case,
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                {Formatter.Format(pattern)}
+					                ↑ (wildcard pattern)
+					              """)
+					.Because("the casing is ignored like the plain comparison with OrdinalIgnoreCase, which does not consider the Kelvin sign equal to 'k'");
+			}
+
 			[Fact]
 			public async Task WhenIgnoringNewlineStyle_ShouldMatchAWindowsNewlineWithASingleQuestionMark()
 			{

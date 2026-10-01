@@ -41,6 +41,9 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
+		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
+		public bool InspectsSubject => true;
+
 		/// <inheritdoc
 		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
 		public string GetExtendedFailure(string it, string? actual, string? expected,
@@ -61,8 +64,8 @@ public partial class StringEqualityOptions
 			if (indexOfFirstMismatch == 0)
 			{
 				string? trimmedActual = actual.TrimStart();
-				int commonLength = Math.Min(trimmedActual.Length, expected.Length);
-				if (comparer.Equals(trimmedActual[..commonLength], expected[..commonLength]))
+				if (trimmedActual.Length >= expected.Length &&
+				    comparer.Equals(trimmedActual[..expected.Length], expected))
 				{
 					int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 					return

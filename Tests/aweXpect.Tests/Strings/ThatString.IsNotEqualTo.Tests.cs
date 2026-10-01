@@ -36,6 +36,34 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenCustomMatchTypeComparesByValue_AndBothAreNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(null).AsCaseFolded();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not case-folded equal to <null>,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCustomMatchTypeComparesByValue_AndOnlySubjectIsNull_ShouldSucceed()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("abc").AsCaseFolded();
+
+				await That(Act).DoesNotThrow()
+					.Because("a custom match type that does not inspect the subject compares a null subject as a value");
+			}
+
+			[Fact]
 			public async Task WhenStringHasMissingLeadingWhitespace_ShouldSucceed()
 			{
 				string subject = "some text";

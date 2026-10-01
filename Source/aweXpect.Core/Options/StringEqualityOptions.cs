@@ -42,7 +42,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     A <see langword="null" /> subject has no content to inspect, so an inspecting match type must fail for it in both
 	///     polarities, exactly like the dedicated <c>StartsWith</c> / <c>DoesNotStartWith</c> expectations do.
 	/// </remarks>
-	public bool InspectsSubject => _matchType is not ExactMatchType;
+	public bool InspectsSubject => _matchType.InspectsSubject;
 
 	/// <summary>
 	///     Indicates whether the options compare two <see langword="string" />s with plain ordinal equality, i.e. whether
@@ -102,17 +102,25 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     Both strings are normalized once before the comparison, so that the options which change the length of the
 	///     strings are applied to the complete strings and not to the individual substrings that are compared.<br />
-	///     Returns <c>0</c> when the <paramref name="expected" /> <see langword="string" /> is empty after the
-	///     normalization.<br />
+	///     An <paramref name="expected" /> <see langword="string" /> that is empty after the normalization is rejected
+	///     for every match type, because it never occurs, so that a negated expectation could never fail.<br />
 	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
 	///     instead of only when the returned task is awaited.
 	/// </remarks>
+	/// <exception cref="ArgumentException">
+	///     The <paramref name="expected" /> <see langword="string" /> is empty after the normalization.
+	/// </exception>
 	public ValueTask<int> CountOccurrences(string actual, string expected)
 	{
 		actual = Normalize(actual);
 		expected = Normalize(expected);
 		Regex? regex = ValidatePattern(expected);
-		int? count = expected.Length == 0 ? 0 : CountOccurrencesWithoutWindow(actual, expected, regex);
+		if (expected.Length == 0)
+		{
+			throw CreateEmptyPatternException(GetPatternKind() ?? "string");
+		}
+
+		int? count = CountOccurrencesWithoutWindow(actual, expected, regex);
 		if (count is not null)
 		{
 			return new ValueTask<int>(count.Value);
@@ -586,6 +594,28 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
+	///     Creates the exception for an expected value of the <paramref name="kind" /> that is empty.
+	/// </summary>
+	private ArgumentException CreateEmptyPatternException(string kind)
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new ArgumentException($"The '{_parameterName}' {kind} cannot be empty.",
+			_parameterName));
+
+	/// <summary>
+	///     Names the kind of pattern of the current match type, or returns <see langword="null" /> when the expected
+	///     value is not a pattern.
+	/// </summary>
+	private string? GetPatternKind()
+		=> _matchType switch
+		{
+			PrefixMatchType => "prefix",
+			SuffixMatchType => "suffix",
+			RegexMatchType => "regex pattern",
+			WildcardMatchType => "wildcard pattern",
+			_ => null,
+		};
+
+	/// <summary>
 	///     Verifies that the <paramref name="expected" /> value is a usable pattern for the current match type and
 	///     returns the parsed <see cref="Regex" /> for a regex pattern.
 	/// </summary>
@@ -596,14 +626,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </remarks>
 	private Regex? ValidatePattern(string? expected)
 	{
-		string? patternKind = _matchType switch
-		{
-			PrefixMatchType => "prefix",
-			SuffixMatchType => "suffix",
-			RegexMatchType => "regex pattern",
-			WildcardMatchType => "wildcard pattern",
-			_ => null,
-		};
+		string? patternKind = GetPatternKind();
 		if (patternKind is null)
 		{
 			return null;
@@ -618,9 +641,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		if (expected.Length == 0 && _matchType is not WildcardMatchType)
 		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException($"The '{_parameterName}' {patternKind} cannot be empty.",
-				_parameterName));
+			throw CreateEmptyPatternException(patternKind);
 		}
 
 		if (_matchType is not RegexMatchType regexMatchType)
