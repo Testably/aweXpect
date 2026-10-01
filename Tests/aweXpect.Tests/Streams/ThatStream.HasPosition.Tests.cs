@@ -52,6 +52,19 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
+			{
+				using BufferedStream subject = new(new MemoryStream(new byte[3]), 4096);
+
+				async Task Act()
+					=> await That(subject).HasPosition(0).And.HasBufferSize(4096);
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
 			[Fact]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{

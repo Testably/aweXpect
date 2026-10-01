@@ -244,20 +244,20 @@ static aweXpect.ThatObject.Is<T>(this aweXpect.Core.IThat<T?>! subject, System.T
 static aweXpect.ThatObject.IsExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
 static aweXpect.ThatObject.IsNot<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
 static aweXpect.ThatObject.IsNotExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatStream.HasLength(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.HasLength(this aweXpect.Core.IThat<System.IO.Stream?>! subject, long? expected) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.HasPosition(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.HasPosition(this aweXpect.Core.IThat<System.IO.Stream?>! subject, long? expected) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsNotReadable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsNotReadOnly(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsNotSeekable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsNotWritable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsNotWriteOnly(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsReadable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsReadOnly(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsSeekable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsWritable(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
-static aweXpect.ThatStream.IsWriteOnly(this aweXpect.Core.IThat<System.IO.Stream?>! subject) -> aweXpect.Results.AndOrResult<System.IO.Stream!, aweXpect.Core.IThat<System.IO.Stream?>!>!
+static aweXpect.ThatStream.HasLength<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.HasLength<TStream>(this aweXpect.Core.IThat<TStream?>! subject, long? expected) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.HasPosition<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.HasPosition<TStream>(this aweXpect.Core.IThat<TStream?>! subject, long? expected) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsNotReadable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsNotReadOnly<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsNotSeekable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsNotWritable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsNotWriteOnly<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsReadable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsReadOnly<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsSeekable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsWritable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
+static aweXpect.ThatStream.IsWriteOnly<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
 static aweXpect.ThatString.Contains(this aweXpect.Core.IThat<string?>! subject, string! expected) -> aweXpect.Results.StringEqualityTypeCountResult<string!, aweXpect.Core.IThat<string?>!>!
 static aweXpect.ThatString.DoesNotContain(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringEqualityTypeCountResult<string!, aweXpect.Core.IThat<string?>!>!
 static aweXpect.ThatString.DoesNotEndWith(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringEqualityResult<string!, aweXpect.Core.IThat<string?>!>!

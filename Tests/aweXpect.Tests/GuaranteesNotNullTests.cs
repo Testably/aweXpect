@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -111,7 +112,7 @@ public sealed class GuaranteesNotNullTests
 	[
 		typeof(object), typeof(string), typeof(Exception), typeof(ArgumentException), typeof(EquatableSubject),
 		typeof(NotifyingSubject), typeof(double), typeof(int), typeof(DayOfWeek), typeof(TimeSpan),
-		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>),
+		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>), typeof(Stream),
 	];
 
 	/// <summary>
