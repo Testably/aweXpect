@@ -73,7 +73,7 @@ public partial class StringEqualityOptions
 	{
 		try
 		{
-			_ = new Regex(string.Empty, regexOptions);
+			_ = new Regex(string.Empty, regexOptions, RegexTimeout);
 		}
 		catch (ArgumentOutOfRangeException)
 		{
