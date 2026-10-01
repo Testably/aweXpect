@@ -1,4 +1,6 @@
-﻿using aweXpect.Core.Constraints;
+﻿using System.Threading;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Constraints;
@@ -106,6 +108,94 @@ public partial class ConstraintResultTests
 			await That(expectationText).IsEmpty();
 			await That(resultText).IsEmpty();
 		}
+
+		[Fact]
+		public async Task InAnd_WhenNegatedAndOtherExpectationIsMet_ShouldFail()
+		{
+			async Task Act()
+				=> await That(1).DoesNotComplyWith(it =>
+				{
+					it.IsEqualTo(1);
+					AddNote(((IExpectThat<int>)it).ExpectationBuilder.And(" "));
+				});
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that 1
+				             is not equal to 1 (negated note),
+				             but it was 1
+				             """);
+		}
+
+		[Fact]
+		public async Task InAnd_WhenOtherExpectationIsNotMet_ShouldFail()
+		{
+			async Task Act()
+				=> await That(1).CompliesWith(it =>
+				{
+					it.IsEqualTo(2);
+					AddNote(((IExpectThat<int>)it).ExpectationBuilder.And(" "));
+				});
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that 1
+				             is equal to 2 (note),
+				             but it was 1, which differs by -1
+				             """);
+		}
+
+		[Fact]
+		public async Task InAnd_WithOutcomeSetByDerivedClass_ShouldTakePartInTheCombination()
+		{
+			MyExpectationOnlyConstraintResult<int> derived = new(ExpectationGrammars.None, "(note)");
+			derived.SetOutcome(Outcome.Failure);
+			AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)));
+			node.AddNode(new DummyNode("", () => derived));
+
+			ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+			await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		}
+
+		[Fact]
+		public async Task InOr_WhenNegatedAndOtherExpectationIsNotMet_ShouldSucceed()
+		{
+			async Task Act()
+				=> await That(1).DoesNotComplyWith(it =>
+				{
+					it.IsEqualTo(2);
+					ExpectationBuilder expectationBuilder = ((IExpectThat<int>)it).ExpectationBuilder;
+					expectationBuilder.Or();
+					AddNote(expectationBuilder);
+				});
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task InOr_WhenOtherExpectationIsNotMet_ShouldFail()
+		{
+			async Task Act()
+				=> await That(1).CompliesWith(it =>
+				{
+					it.IsEqualTo(2);
+					ExpectationBuilder expectationBuilder = ((IExpectThat<int>)it).ExpectationBuilder;
+					expectationBuilder.Or();
+					AddNote(expectationBuilder);
+				});
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that 1
+				             is equal to 2 or (note),
+				             but it was 1, which differs by -1
+				             """);
+		}
+
+		private static void AddNote(ExpectationBuilder expectationBuilder)
+			=> expectationBuilder.AddConstraint((_, grammars)
+				=> new ConstraintResult.ExpectationOnly<int>(grammars, "(note)", "(negated note)"));
 
 		private class MyExpectationOnlyConstraintResult<T>(
 			ExpectationGrammars grammars,

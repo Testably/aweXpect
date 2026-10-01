@@ -222,20 +222,17 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WithInvalidType_ShouldThrowInvalidOperationException()
+	public async Task IsMetBy_WithInvalidType_ShouldNotApplyTheMemberExpectations()
 	{
 		AsyncMappingNode<string, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
-		async Task Act() => await node.IsMetBy(42, null!, CancellationToken.None);
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("""
-			             The member type for the actual value in the mapping node did not match.
-			             Expected: string
-			                Found: int
-			             """);
+		ConstraintResult result = await node.IsMetBy(42, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Undecided);
+		await That(result.GetExpectationText()).IsEqualTo("yeah!");
+		await That(result.GetResultText()).IsEmpty();
 	}
 
 	[Fact]

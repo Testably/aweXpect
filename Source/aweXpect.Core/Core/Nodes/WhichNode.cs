@@ -273,6 +273,13 @@ internal class WhichNode<TSource, TMember> : Node
 		private bool _isNegated;
 		private ConstraintResult _left;
 		private ConstraintResult _right;
+		private bool _rightFailsAlsoWhenNegated;
+
+		/// <summary>
+		///     The positive expectation text of the member, which a negated result keeps, as only the left part renders
+		///     the negation.
+		/// </summary>
+		private string? _negatedRightExpectation;
 
 		public WhichConstraintResult(ConstraintResult left,
 			ConstraintResult right,
@@ -288,11 +295,29 @@ internal class WhichNode<TSource, TMember> : Node
 			_value = value;
 			_negateMemberOnly = negateMemberOnly;
 			_isMemberSkipped = isMemberSkipped;
-			Outcome = isMemberSkipped ? left.Outcome : And(left.Outcome, right.Outcome);
+			Outcome = isMemberSkipped ? left.Outcome : Combine(left.Outcome, right.Outcome, false);
 		}
 
 		public override Exception? FailureCause
 			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
+
+		/// <remarks>
+		///     An operand which only contributes an expectation text does not take part in the combination.
+		/// </remarks>
+		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
+		{
+			if (_left.IsExpectationOnly)
+			{
+				return right;
+			}
+
+			if (_right.IsExpectationOnly)
+			{
+				return left;
+			}
+
+			return isNegated ? Or(left, right) : And(left, right);
+		}
 
 		private static Outcome And(Outcome left, Outcome right)
 			=> (left, right) switch
@@ -303,18 +328,34 @@ internal class WhichNode<TSource, TMember> : Node
 				(_, _) => Outcome.Undecided,
 			};
 
+		private static Outcome Or(Outcome left, Outcome right)
+			=> (left, right) switch
+			{
+				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
+				(_, Outcome.Success) => Outcome.Success,
+				(Outcome.Success, _) => Outcome.Success,
+				(_, _) => Outcome.Undecided,
+			};
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
+			if (_negatedRightExpectation is not null)
+			{
+				stringBuilder.Append(_negatedRightExpectation);
+				return;
+			}
+
 			stringBuilder.AppendSeparatedExpectation(_separator, _right);
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_isNegated)
+			// Under negation both parts were met, so the left part explains the failure, unless the member failed in
+			// both cases.
+			if (_isNegated && _rightFailsAlsoWhenNegated)
 			{
-				// A negated whole phrase only fails when both parts were met, or when the member was not evaluated.
-				(_right is IUnevaluatedMemberResult ? _right : _left).AppendResult(stringBuilder, indentation);
+				_right.AppendResult(stringBuilder, indentation);
 			}
 			else if (_left.ExplainsOutcomeOf(this))
 			{
@@ -372,22 +413,18 @@ internal class WhichNode<TSource, TMember> : Node
 			{
 				// The parent keeps its positive form, so a failed parent still fails the combination.
 				_right = _right.Negate();
-				Outcome = And(_left.Outcome, _right.Outcome);
+				Outcome = Combine(_left.Outcome, _right.Outcome, false);
 				return this;
 			}
 
-			if (_right is not IUnevaluatedMemberResult)
-			{
-				Outcome = Outcome switch
-				{
-					Outcome.Failure => Outcome.Success,
-					Outcome.Success => Outcome.Failure,
-					_ => Outcome,
-				};
-			}
-
-			_left = _left.Negate();
 			_isNegated = !_isNegated;
+			_left = _left.Negate();
+			_negatedRightExpectation = _isNegated ? GetRightExpectation() : null;
+			Outcome rightOutcome = _right.Outcome;
+			_right = _right.Negate();
+			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && _right.Outcome == Outcome.Failure;
+			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
+			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
 			return this;
 		}
 
@@ -408,6 +445,13 @@ internal class WhichNode<TSource, TMember> : Node
 
 			Outcome = _left.Outcome;
 			return this;
+		}
+
+		private string GetRightExpectation()
+		{
+			StringBuilder stringBuilder = new();
+			stringBuilder.AppendSeparatedExpectation(_separator, _right);
+			return stringBuilder.ToString();
 		}
 	}
 }

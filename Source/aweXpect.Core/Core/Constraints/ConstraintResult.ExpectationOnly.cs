@@ -24,12 +24,25 @@ public abstract partial class ConstraintResult
 		string? negatedExpectation = null)
 		: ConstraintResult(grammars), IValueConstraint<T>
 	{
+		private bool _hasOutcome;
+		private Outcome _outcome = Outcome.Success;
+
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get;
-			protected set;
-		} = Outcome.Success;
+			get => _outcome;
+			protected set
+			{
+				_outcome = value;
+				_hasOutcome = true;
+			}
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A derived class which sets the <see cref="Outcome" /> takes part in combinations like any other result.
+		/// </remarks>
+		internal override bool IsExpectationOnly => !_hasOutcome;
 
 		/// <inheritdoc cref="IValueConstraint{TValue}.IsMetBy(TValue)" />
 		public ConstraintResult IsMetBy(T actual) => this;

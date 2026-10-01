@@ -12,9 +12,9 @@ namespace aweXpect.Core.Nodes;
 /// <remarks>
 ///     It fails the expectation and its negation alike, like <see cref="ConstraintResult.WithNotNullValue{T}" />: the
 ///     expectations on the member were never evaluated, so negating them does not make them true. The combined
-///     results of the nodes check for it, so that their negation does not flip the failure either.
+///     results of the nodes negate it like their other operands, so that their negation keeps the failure as well.
 /// </remarks>
-internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberResult
+internal sealed class NullSubjectResult : ConstraintResult
 {
 	private readonly ConstraintResult _inner;
 	private readonly string _result;

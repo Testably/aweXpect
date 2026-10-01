@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 using System.Diagnostics;
 using System.Threading;
 
@@ -26,6 +29,52 @@ public sealed partial class ThatGeneric
 						.Whose(d => d.Name, it => it.IsEqualTo("foo")));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AllowsNestedIs_WhenTypeDoesNotMatch_ShouldFail()
+			{
+				Outer subject = new()
+				{
+					Item = new OtherDerived(),
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Item, it => it.Is<Derived>()
+						.Whose(d => d.Name, it => it.IsEqualTo("foo")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Item is of type Derived whose Name is equal to "foo",
+					             but Item was OtherDerived
+
+					             Actual:
+					             OtherDerived { }
+					             """);
+			}
+
+			[Fact]
+			public async Task AllowsNestedIs_WithAsyncMember_WhenTypeDoesNotMatch_ShouldFail()
+			{
+				Outer subject = new()
+				{
+					Item = new OtherDerived(),
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Item, it => it.Is<Derived>()
+						.Whose(d => Task.FromResult(d.Name), it => it.IsEqualTo("foo")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Item is of type Derived whose Task.FromResult(d.Name) is equal to "foo",
+					             but Item was OtherDerived
+
+					             Actual:
+					             OtherDerived { }
+					             """);
 			}
 
 			[Theory]
@@ -1056,6 +1105,381 @@ public sealed partial class ThatGeneric
 			{
 				public bool A { get; set; }
 				public bool B { get; set; }
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenNestedMemberAfterIsIsNull_ShouldFail()
+			{
+				Container subject = new()
+				{
+					Name = "o",
+				};
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
+					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberIsNull_ShouldFail()
+			{
+				Container subject = new()
+				{
+					Name = "o",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it =>
+						it.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose In has Name that is not equal to "i",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberAfterIsThrows_ShouldFail()
+			{
+				Container subject = new()
+				{
+					In = new Inner(),
+				};
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(x => x.In, i => i.Whose(y => y.Next!.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Next!.Name that is equal to "i",
+					             but it was ThatGeneric.Whose.NegatedTests.Container and Next!.Name did throw an InvalidOperationException:
+					               next failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("next failed"));
+			}
+
+			[Fact]
+			public async Task WhenNestedAsyncMemberAfterIsIsNull_ShouldFail()
+			{
+				Container subject = new()
+				{
+					Name = "o",
+				};
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(x => Task.FromResult(x.In), i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Task.FromResult(x.In) has Name that is equal to "i",
+					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberAfterIsHasNullValue_ShouldFail()
+			{
+				Container subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(x => x.Name, n => n.StartsWith("a")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Name starts with "a",
+					             but it was ThatGeneric.Whose.NegatedTests.Container and Name was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberInAndAfterIsIsNull_ShouldFail()
+			{
+				Container subject = new()
+				{
+					In = new Inner
+					{
+						Name = "i",
+					},
+				};
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(x => x.In, i => i
+							.Whose(y => y.Other, o => o.Whose(z => z.Name, n => n.IsEqualTo("x")))
+							.And.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Other whose Name is equal to "x" and has Name that is equal to "i",
+					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null> and Name was "i"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSingleItemIsNull_ShouldFail()
+			{
+				Container?[] subject = [null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it =>
+						it.HasSingle().Which.Whose(y => y!.Name, n => n.IsEqualTo("i")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item whose y!.Name is equal to "i",
+					             but it was <null>
+
+					             Collection:
+					             [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberOfSingleItemIsNull_ShouldFail()
+			{
+				Container[] subject = [new Container(),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it =>
+						it.HasSingle().Which.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item whose In has Name that is equal to "i",
+					             but it was <null>
+
+					             Collection:
+					             [
+					               ThatGeneric.Whose.NegatedTests.Container {
+					                 In = <null>,
+					                 Name = <null>
+					               }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberOfSingleItemAfterAndIsNull_ShouldFail()
+			{
+				Container[] subject = [new Container(),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotEmpty().And.HasSingle().Which
+						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty or does not have a single item whose In has Name that is equal to "i",
+					             but it was [
+					               ThatGeneric.Whose.NegatedTests.Container {
+					                 In = <null>,
+					                 Name = <null>
+					               }
+					             ] and it was <null>
+
+					             Collection:
+					             [
+					               ThatGeneric.Whose.NegatedTests.Container {
+					                 In = <null>,
+					                 Name = <null>
+					               }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberOfSingleItemAfterOrIsNull_ShouldFail()
+			{
+				Container[] subject = [new Container(),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEmpty().Or.HasSingle().Which
+						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty and does not have a single item whose In has Name that is equal to "i",
+					             but it was <null>
+
+					             Collection:
+					             [
+					               ThatGeneric.Whose.NegatedTests.Container {
+					                 In = <null>,
+					                 Name = <null>
+					               }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeAfterIsDoesNotMatch_ShouldSucceed()
+			{
+				async Task Act()
+					=> await That((object)new Container()).DoesNotComplyWith(it =>
+						it.Is<Inner>().Whose(x => x.Name, n => n.IsEqualTo("i")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeAfterIsDoesNotMatch_WithAndWhose_ShouldSucceed()
+			{
+				async Task Act()
+					=> await That((object)new Container()).DoesNotComplyWith(it => it.Is<Inner>()
+						.Whose(x => x.Name, n => n.IsEqualTo("i"))
+						.AndWhose(x => Task.FromResult(x.Other), o => o.IsNull()));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNestedTypeAfterIsDoesNotMatch_ShouldSucceed()
+			{
+				Outer subject = new()
+				{
+					Item = new OtherDerived(),
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Whose(o => o.Item, i => i.Is<Derived>()
+						.Whose(d => Task.FromResult(d.Name), n => n.IsEqualTo("foo"))));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNestedMemberAfterIsIsNull_AndNegatedTwice_ShouldFail()
+			{
+				Container subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(x => x.DoesNotComplyWith(it => it.Is<Container>()
+						.Whose(c => c.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i")))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCollectionMemberAfterIsIsNull_ShouldFail()
+			{
+				Lists subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
+						.Whose(x => x.Items, i => i.Contains(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item equal to 1 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCollectionMemberAfterIsIsNull_WithPredicate_ShouldFail()
+			{
+				Lists subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
+						.Whose(x => x.Items, i => i.Contains(item => item > 0)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item matching item => item > 0 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenImmutableArrayMemberAfterIsIsDefault_ShouldFail()
+			{
+				Lists subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
+						.Whose(x => x.Array, a => a.Contains(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array contains an item equal to 1 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenImmutableArrayMemberAfterIsIsDefault_WithIsEqualTo_ShouldFail()
+			{
+				Lists subject = new();
+
+				async Task Act()
+					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
+						.Whose(x => x.Array, a => a.IsEqualTo([1,])));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that (object)subject
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array is equal to collection [1,] in order,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+					             """);
+			}
+#endif
+
+			private sealed class Container
+			{
+				public Inner? In { get; set; }
+				public string? Name { get; set; }
+			}
+
+			private sealed class Lists
+			{
+				public List<int>? Items { get; set; }
+#if NET8_0_OR_GREATER
+				public ImmutableArray<int> Array { get; set; }
+#endif
+			}
+
+			private sealed class Inner
+			{
+				public string? Name { get; set; }
+				public Inner? Other { get; set; }
+#pragma warning disable CA1822 // the tests access this member through the subject
+				public Inner Next => throw new InvalidOperationException("next failed");
+#pragma warning restore CA1822
 			}
 		}
 	}

@@ -189,11 +189,29 @@ internal class AndNode : Node
 			_right = right;
 			_separator = separator;
 			_furtherProcessingStrategy = furtherProcessingStrategy;
-			Outcome = And(left.Outcome, right.Outcome);
+			Outcome = Combine(left.Outcome, right.Outcome, false);
 		}
 
 		public override Exception? FailureCause
 			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
+
+		/// <remarks>
+		///     An operand which only contributes an expectation text does not take part in the combination.
+		/// </remarks>
+		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
+		{
+			if (_left.IsExpectationOnly)
+			{
+				return right;
+			}
+
+			if (_right.IsExpectationOnly)
+			{
+				return left;
+			}
+
+			return isNegated ? Or(left, right) : And(left, right);
+		}
 
 		private static Outcome And(Outcome left, Outcome right)
 			=> (left, right) switch
@@ -314,9 +332,7 @@ internal class AndNode : Node
 			_left.Negate();
 			_right.Negate();
 			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
-			Outcome = _isNegated
-				? Or(_left.Outcome, _right.Outcome)
-				: And(_left.Outcome, _right.Outcome);
+			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
 			return this;
 		}
 	}

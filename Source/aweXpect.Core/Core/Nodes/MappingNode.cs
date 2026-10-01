@@ -65,9 +65,9 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 			return memberResult.UseValue(value);
 		}
 
-		throw Tracing.WriteException(
-			new InvalidOperationException(
-				$"The member type for the actual value in the mapping node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
+		// The value only has another type after a failed type check (e.g. `Is<T>()`), which reports the mismatch.
+		ConstraintResult expectationResult = await GetExpectationResult(context, cancellationToken);
+		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
 	}
 
 	/// <inheritdoc />
@@ -149,6 +149,14 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		private readonly ConstraintResult _left;
 		private readonly MemberAccessor<TSource, TTarget> _memberAccessor;
 		private readonly ConstraintResult _right;
+		private bool _isNegated;
+		private bool _rightFailsAlsoWhenNegated;
+
+		/// <summary>
+		///     The positive expectation text of the member, which a negated result keeps, as only the left part renders
+		///     the negation.
+		/// </summary>
+		private string? _negatedRightExpectation;
 
 		public MappingConstraintResult(ConstraintResult left,
 			ConstraintResult right,
@@ -159,11 +167,29 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 			_right = right;
 			_expectationTextGenerator = expectationTextGenerator;
 			_memberAccessor = memberAccessor;
-			Outcome = And(left.Outcome, right.Outcome);
+			Outcome = Combine(left.Outcome, right.Outcome, false);
 		}
 
 		public override Exception? FailureCause
 			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
+
+		/// <remarks>
+		///     An operand which only contributes an expectation text does not take part in the combination.
+		/// </remarks>
+		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
+		{
+			if (_left.IsExpectationOnly)
+			{
+				return right;
+			}
+
+			if (_right.IsExpectationOnly)
+			{
+				return left;
+			}
+
+			return isNegated ? Or(left, right) : And(left, right);
+		}
 
 		private static Outcome And(Outcome left, Outcome right)
 			=> (left, right) switch
@@ -174,9 +200,29 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 				(_, _) => Outcome.Undecided,
 			};
 
+		private static Outcome Or(Outcome left, Outcome right)
+			=> (left, right) switch
+			{
+				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
+				(_, Outcome.Success) => Outcome.Success,
+				(Outcome.Success, _) => Outcome.Success,
+				(_, _) => Outcome.Undecided,
+			};
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
+			if (_negatedRightExpectation is not null)
+			{
+				stringBuilder.Append(_negatedRightExpectation);
+				return;
+			}
+
+			AppendRightExpectation(stringBuilder);
+		}
+
+		private void AppendRightExpectation(StringBuilder stringBuilder)
+		{
 			StringBuilder separator = new();
 			_expectationTextGenerator?.Invoke(_memberAccessor, separator);
 			stringBuilder.AppendSeparatedExpectation(separator.ToString(), _right);
@@ -184,10 +230,15 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_left.ExplainsOutcomeOf(this))
+			bool rendersLeft = _left.ExplainsOutcomeOf(this);
+			// Under negation both parts were met, so the left part explains the failure, unless the member failed in
+			// both cases.
+			bool rendersRight = _right.ExplainsOutcomeOf(this) &&
+			                    (!_isNegated || _rightFailsAlsoWhenNegated || !rendersLeft);
+			if (rendersLeft)
 			{
 				_left.AppendResult(stringBuilder, indentation);
-				if (_right.ExplainsOutcomeOf(this) &&
+				if (rendersRight &&
 				    _left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue &&
 				    !_left.HasSameResultTextAs(_right))
 				{
@@ -195,7 +246,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 					_right.AppendResult(stringBuilder, indentation);
 				}
 			}
-			else if (_right.ExplainsOutcomeOf(this))
+			else if (rendersRight)
 			{
 				_right.AppendResult(stringBuilder, indentation);
 			}
@@ -222,18 +273,22 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 
 		public override ConstraintResult Negate()
 		{
-			if (_right is not IUnevaluatedMemberResult)
-			{
-				Outcome = Outcome switch
-				{
-					Outcome.Failure => Outcome.Success,
-					Outcome.Success => Outcome.Failure,
-					_ => Outcome,
-				};
-			}
-
+			_isNegated = !_isNegated;
 			_left.Negate();
+			_negatedRightExpectation = _isNegated ? GetRightExpectation() : null;
+			Outcome rightOutcome = _right.Outcome;
+			_right.Negate();
+			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && _right.Outcome == Outcome.Failure;
+			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
+			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
 			return this;
+		}
+
+		private string GetRightExpectation()
+		{
+			StringBuilder stringBuilder = new();
+			AppendRightExpectation(stringBuilder);
+			return stringBuilder.ToString();
 		}
 	}
 }

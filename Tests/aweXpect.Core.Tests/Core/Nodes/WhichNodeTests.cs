@@ -573,9 +573,10 @@ public sealed class WhichNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success)]
-	[InlineData(Outcome.Failure)]
-	public async Task IsMetBy_WithNullValue_ShouldFailAlsoWhenNegated(Outcome parentOutcome)
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldOnlySucceedIfParentFails(Outcome parentOutcome,
+		Outcome expectedNegatedOutcome)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(parentOutcome)),
 			s => s.Length);
@@ -587,7 +588,7 @@ public sealed class WhichNodeTests
 		result.Negate();
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(expectedNegatedOutcome);
 	}
 
 	[Fact]
@@ -769,10 +770,44 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task Negate_WithExpectationOnlyMember_ShouldOnlyNegateTheParent()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("",
+			() => new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.None, "e2", "not e2")));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.GetExpectationText()).IsEqualTo("not e1 which e2");
+		await That(negated.GetResultText()).IsEqualTo("not r1");
+	}
+
+	[Fact]
+	public async Task Negate_WithNullMemberOfValue_ShouldNegateTheWholeExpectationAndStayFailed()
+	{
+		WhichNode<Dummy, Dummy.Nested> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), d => d.Inner, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddMapping(MemberAccessor<Dummy.Nested, int>.FromFunc(n => n.Field, "has field "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy(new Dummy(), null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.GetExpectationText()).IsEqualTo("not e1 which has field e2");
+		await That(negated.GetResultText()).IsEqualTo("it was <null>");
+	}
+
+	[Fact]
 	public async Task Negate_WithNullValue_ShouldNegateTheWholeExpectationAndStayFailed()
 	{
 		WhichNode<string, int> whichNode = new(
-			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), s => s.Length, " which ");
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();

@@ -14,7 +14,7 @@ namespace aweXpect.Core.Nodes;
 ///     Like <see cref="NullSubjectResult" />, it fails the expectation and its negation alike, as the member was never
 ///     evaluated.
 /// </remarks>
-internal sealed class MemberExceptionResult : ConstraintResult, IUnevaluatedMemberResult
+internal sealed class MemberExceptionResult : ConstraintResult
 {
 	private readonly Exception _exception;
 	private readonly ConstraintResult _inner;
