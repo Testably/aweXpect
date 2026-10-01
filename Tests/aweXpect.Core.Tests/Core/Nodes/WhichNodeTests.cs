@@ -148,7 +148,7 @@ public sealed class WhichNodeTests
 	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
 	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
 	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
+	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task CombinedResult_ShouldBeNegatable(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -471,6 +471,39 @@ public sealed class WhichNodeTests
 		await That(observed).IsEqualTo(4);
 	}
 
+	[Theory]
+	[InlineData(Outcome.Failure)]
+	[InlineData(Outcome.Undecided)]
+	public async Task IsMetBy_WhenParentIsNotMet_ShouldNeitherAccessNorEvaluateTheMember(Outcome parentOutcome)
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(parentOutcome, "e1", "r1")),
+			_ => throw new MyException("The member must not be accessed."), " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(parentOutcome);
+		await That(result.FailureCause).IsNull();
+		await That(result.GetExpectationText()).IsEqualTo("e1 which e2");
+		await That(result.GetResultText()).IsEqualTo("r1");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenParentIsNotMet_ShouldNotReturnTheDefaultMemberAsValue()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "r1")), s => s.Length);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		bool hasValue = result.TryGetValue(out int _);
+
+		await That(hasValue).IsFalse().Because("the member does not exist");
+	}
+
 	[Fact]
 	public async Task IsMetBy_WhenParentChainProjectsThroughThreeLevels_ShouldPropagateInnermostValue()
 	{
@@ -619,6 +652,39 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("not r1");
 	}
 
+	[Fact]
+	public async Task Negate_WhenParentFailed_ShouldOnlyNegateTheParent()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Success);
+		await That(sb.ToString()).IsEqualTo("not e1 which e2");
+	}
+
+	[Fact]
+	public async Task Negate_WhenParentFailedAndStaysFailedUnderNegation_ShouldFail()
+	{
+		// The negation of this parent keeps it failed, like for a subject that is null.
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraint<string>(_ => false, "e1").IsMetBy("foo")), s => s.Length,
+			" which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+	}
+
 	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
@@ -626,7 +692,7 @@ public sealed class WhichNodeTests
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Negate_WithNegateMemberOnly_ShouldCombineParentWithNegatedMember(Outcome parentOutcome,
@@ -670,7 +736,7 @@ public sealed class WhichNodeTests
 			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "r1")), s => s.Length,
 			" which ", true);
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
@@ -726,7 +792,7 @@ public sealed class WhichNodeTests
 	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -742,7 +808,6 @@ public sealed class WhichNodeTests
 
 	[Theory]
 	[InlineData(Outcome.Failure, Outcome.Undecided, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Failure, "r")]
 	[InlineData(Outcome.Success, Outcome.Undecided, "r")]
 	[InlineData(Outcome.Undecided, Outcome.Success, "l")]
 	[InlineData(Outcome.Undecided, Outcome.Undecided, "l")]

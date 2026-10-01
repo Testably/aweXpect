@@ -88,6 +88,22 @@ internal class WhichNode<TSource, TMember> : Node
 		=> _inner = node;
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     When the expectations on the member are combined with <c>And</c>/<c>Or</c>, a further continuation applies
+	///     to their right-most operand. Otherwise, it continues this node and projects from its member.
+	/// </remarks>
+	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
+	{
+		if (_inner is OrNode or AndNode)
+		{
+			_inner = _inner.ReplaceRightMostOperand(replace);
+			return this;
+		}
+
+		return replace(this);
+	}
+
+	/// <inheritdoc />
 	public override async Task<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
@@ -123,6 +139,15 @@ internal class WhichNode<TSource, TMember> : Node
 					cancellationToken), default(TMember));
 			return CombineResults(parentResult, nullResult, _separator ?? "",
 				FurtherProcessingStrategy.IgnoreResult, default);
+		}
+
+		if (parentResult is { Outcome: not Outcome.Success, })
+		{
+			// The member only exists when the parent was met (e.g. the single item or the parsed value).
+			ConstraintResult memberExpectation = await _inner.IsMetBy<TMember>(default,
+				ExpectationTextEvaluationContext.For(context), cancellationToken);
+			return new WhichConstraintResult(parentResult, memberExpectation, _separator ?? "",
+				FurtherProcessingStrategy.IgnoreResult, default, _negateMemberOnly, true);
 		}
 
 		TSource? source = ResolveSource(parentResult, value);
@@ -221,7 +246,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 		return new WhichConstraintResult(leftResult, rightResult, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue,
-			value, _negateMemberOnly);
+			value, _negateMemberOnly, false);
 	}
 
 	/// <inheritdoc />
@@ -238,6 +263,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 	private sealed class WhichConstraintResult : ConstraintResult
 	{
+		private readonly bool _isMemberSkipped;
 		private readonly bool _negateMemberOnly;
 		private readonly string _separator;
 
@@ -253,14 +279,16 @@ internal class WhichNode<TSource, TMember> : Node
 			string separator,
 			FurtherProcessingStrategy furtherProcessingStrategy,
 			TMember? value,
-			bool negateMemberOnly) : base(furtherProcessingStrategy)
+			bool negateMemberOnly,
+			bool isMemberSkipped) : base(furtherProcessingStrategy)
 		{
 			_left = left;
 			_right = right;
 			_separator = separator;
 			_value = value;
 			_negateMemberOnly = negateMemberOnly;
-			Outcome = And(left.Outcome, right.Outcome);
+			_isMemberSkipped = isMemberSkipped;
+			Outcome = isMemberSkipped ? left.Outcome : And(left.Outcome, right.Outcome);
 		}
 
 		public override Exception? FailureCause
@@ -301,6 +329,11 @@ internal class WhichNode<TSource, TMember> : Node
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value)
 			where TValue : default
 		{
+			if (_isMemberSkipped)
+			{
+				return _left.TryGetValue(out value);
+			}
+
 			if (_value is TValue typedValue)
 			{
 				value = typedValue;
@@ -330,6 +363,11 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override ConstraintResult Negate()
 		{
+			if (_isMemberSkipped)
+			{
+				return NegateWithoutMember();
+			}
+
 			if (_negateMemberOnly)
 			{
 				// The parent keeps its positive form, so a failed parent still fails the combination.
@@ -350,6 +388,25 @@ internal class WhichNode<TSource, TMember> : Node
 
 			_left = _left.Negate();
 			_isNegated = !_isNegated;
+			return this;
+		}
+
+		/// <remarks>
+		///     Without a member, the parent alone decides the outcome, also when it stays failed under negation.
+		/// </remarks>
+		private WhichConstraintResult NegateWithoutMember()
+		{
+			if (_negateMemberOnly)
+			{
+				_right = _right.Negate();
+			}
+			else
+			{
+				_left = _left.Negate();
+				_isNegated = !_isNegated;
+			}
+
+			Outcome = _left.Outcome;
 			return this;
 		}
 	}

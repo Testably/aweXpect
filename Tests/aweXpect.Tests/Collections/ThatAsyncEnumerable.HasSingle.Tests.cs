@@ -638,6 +638,17 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.HasSingle().Which.IsEqualTo(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenAsyncEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);

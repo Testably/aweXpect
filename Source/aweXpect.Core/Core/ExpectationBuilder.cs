@@ -34,7 +34,10 @@ public abstract class ExpectationBuilder
 
 	private ITimeSystem? _timeSystem;
 
-	private Node? _whichNode;
+	/// <summary>
+	///     The which node that still waits for the expectations on its member, and the root node that contains it.
+	/// </summary>
+	private (Node WhichNode, Node Root)? _pendingWhich;
 
 	/// <summary>
 	///     Initializes the <see cref="ExpectationBuilder" /> with the <paramref name="subjectExpression" />
@@ -236,8 +239,8 @@ public abstract class ExpectationBuilder
 				_it = memberAccessor.ToString().Trim();
 			}
 
-			Node? outerWhichNode = _whichNode;
-			_whichNode = null;
+			(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
+			_pendingWhich = null;
 
 			ExpectationGrammars previousGrammars = ExpectationGrammars;
 			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
@@ -246,7 +249,7 @@ public abstract class ExpectationBuilder
 			ExpectationGrammars = previousGrammars;
 
 			CompleteWhichNode();
-			_whichNode = outerWhichNode;
+			_pendingWhich = outerPendingWhich;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
 			_node = root;
@@ -290,8 +293,8 @@ public abstract class ExpectationBuilder
 				_it = memberAccessor.ToString().Trim();
 			}
 
-			Node? outerWhichNode = _whichNode;
-			_whichNode = null;
+			(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
+			_pendingWhich = null;
 
 			ExpectationGrammars previousGrammars = ExpectationGrammars;
 			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
@@ -300,7 +303,7 @@ public abstract class ExpectationBuilder
 			ExpectationGrammars = previousGrammars;
 
 			CompleteWhichNode();
-			_whichNode = outerWhichNode;
+			_pendingWhich = outerPendingWhich;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
 			_node = root;
@@ -429,6 +432,9 @@ public abstract class ExpectationBuilder
 	///     Specifies a mapping to add expectations on the member from the <paramref name="memberAccessor" />.
 	/// </summary>
 	/// <remarks>
+	///     The member continues only the expectation in front of it, also after <c>And</c>/<c>Or</c>, and is only
+	///     accessed when that expectation is met.
+	///     <para />
 	///     Set <paramref name="negateMemberOnly" /> when the previous expectation only navigates to the member, so that
 	///     a negation applies to the member expectation ("has keys that do not contain 0") instead of the whole
 	///     expectation ("does not have a single item that is equal to 3").
@@ -445,19 +451,8 @@ public abstract class ExpectationBuilder
 		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammar = null,
 		bool negateMemberOnly = false)
 	{
-		if (_whichNode != null)
-		{
-			_whichNode.AddNode(_node);
-			_node = _whichNode;
-			_whichNode = null;
-		}
-
-		Node? parentNode = null;
-		if (_node is not ExpectationNode e || !e.IsEmpty())
-		{
-			parentNode = _node;
-			_node = new ExpectationNode();
-		}
+		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator,
+			negateMemberOnly, replaceIt));
 
 		if (replaceIt != null)
 		{
@@ -466,9 +461,6 @@ public abstract class ExpectationBuilder
 
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 		ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
-
-		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator, negateMemberOnly,
-			replaceIt);
 		return this;
 	}
 
@@ -476,6 +468,9 @@ public abstract class ExpectationBuilder
 	///     Specifies a mapping to add expectations on the member from the <paramref name="asyncMemberAccessor" />.
 	/// </summary>
 	/// <remarks>
+	///     The member continues only the expectation in front of it, also after <c>And</c>/<c>Or</c>, and is only
+	///     accessed when that expectation is met.
+	///     <para />
 	///     The member is a single value, so its expectations are in singular form and refer to it as <c>it</c>, even
 	///     when the enclosing expectation named its subject (e.g. inside <c>Whose</c>).
 	///     <para />
@@ -488,24 +483,27 @@ public abstract class ExpectationBuilder
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
 		string? separator = null)
 	{
-		if (_whichNode != null)
-		{
-			_whichNode.AddNode(_node);
-			_node = _whichNode;
-			_whichNode = null;
-		}
-
-		Node? parentNode = null;
-		if (_node is not ExpectationNode e || !e.IsEmpty())
-		{
-			parentNode = _node;
-			_node = new ExpectationNode();
-		}
-
+		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator));
 		_it = DefaultCurrentSubject;
 		ExpectationGrammars &= ~(ExpectationGrammars.Introduced | ExpectationGrammars.Plural);
-		_whichNode = new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator);
 		return this;
+	}
+
+	/// <summary>
+	///     Replaces the right-most operand with the which node from <paramref name="createWhichNode" />, which continues
+	///     it, and collects the following expectations for the member until the which node is completed.
+	/// </summary>
+	private void AddWhichNode(Func<Node?, Node> createWhichNode)
+	{
+		CompleteWhichNode();
+		Node? whichNode = null;
+		Node root = _node.ReplaceRightMostOperand(operand =>
+		{
+			whichNode = createWhichNode(operand is ExpectationNode e && e.IsEmpty() ? null : operand);
+			return whichNode;
+		});
+		_pendingWhich = (whichNode!, root);
+		_node = new ExpectationNode();
 	}
 
 	/// <summary>
@@ -604,13 +602,7 @@ public abstract class ExpectationBuilder
 
 	internal Node GetRootNode()
 	{
-		if (_whichNode != null)
-		{
-			_whichNode.AddNode(_node);
-			_node = _whichNode;
-			_whichNode = null;
-		}
-
+		CompleteWhichNode();
 		return _node;
 	}
 
@@ -620,11 +612,11 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private void CompleteWhichNode()
 	{
-		if (_whichNode != null)
+		if (_pendingWhich is (var whichNode, var root))
 		{
-			_whichNode.AddNode(_node);
-			_node = _whichNode;
-			_whichNode = null;
+			whichNode.AddNode(_node);
+			_node = root;
+			_pendingWhich = null;
 		}
 	}
 

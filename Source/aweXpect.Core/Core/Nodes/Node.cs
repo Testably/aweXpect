@@ -7,7 +7,6 @@ using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Nodes;
 
-#pragma warning disable S1694 // https://rules.sonarsource.com/csharp/RSPEC-1694
 internal abstract class Node
 {
 	/// <summary>
@@ -63,5 +62,13 @@ internal abstract class Node
 	///     Appends the expectation to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public abstract void AppendExpectation(StringBuilder stringBuilder, string? indentation = null);
+
+	/// <summary>
+	///     Replaces the right-most operand of the expectation with the node returned by <paramref name="replace" />.
+	/// </summary>
+	/// <remarks>
+	///     A continuation such as <c>Which</c> applies only to the operand in front of it, so that <c>A or B which C</c>
+	///     is evaluated as <c>A or (B which C)</c>, like it reads.
+	/// </remarks>
+	public virtual Node ReplaceRightMostOperand(Func<Node, Node> replace) => replace(this);
 }
-#pragma warning restore S1694

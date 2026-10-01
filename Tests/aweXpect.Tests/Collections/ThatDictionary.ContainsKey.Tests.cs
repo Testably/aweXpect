@@ -93,6 +93,34 @@ public sealed partial class ThatDictionary
 		public sealed class WhoseValueTests
 		{
 			[Fact]
+			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
+			{
+				Dictionary<int, int> subject = new();
+
+				async Task Act()
+					=> await That(subject).IsEmpty().Or.ContainsKey(1).WhoseValue.IsEqualTo(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegatedAfterOr_AndTheLeftOperandIsMet_ShouldFail()
+			{
+				Dictionary<int, int> subject = new();
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(x => x.IsEmpty().Or.ContainsKey(1).WhoseValue.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty and does not contain key 1 whose value is equal to 2,
+					             but it was empty
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_ButValueDoesNotMatch_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);

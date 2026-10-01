@@ -69,6 +69,13 @@ internal class OrNode : Node
 	}
 
 	/// <inheritdoc />
+	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
+	{
+		Current = Current.ReplaceRightMostOperand(replace);
+		return this;
+	}
+
+	/// <inheritdoc />
 	public override async Task<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
