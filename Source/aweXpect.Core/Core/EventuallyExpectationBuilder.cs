@@ -117,11 +117,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 		if (result.Outcome == Outcome.Undecided && cancellationCts.IsCancellationRequested &&
 		    !cancellationToken.IsCancellationRequested)
 		{
-			return AppendTimeout(new ConstraintResult.FromException(result,
-					ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout.Value,
-						new OperationCanceledException(cancellationCts.Token)),
-					DefaultCurrentSubject, cancellationTimeout.Value),
-				retryTimeout);
+			return new ConstraintResult.FromException(result,
+				ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout.Value,
+					new OperationCanceledException(cancellationCts.Token)),
+				DefaultCurrentSubject, cancellationTimeout.Value);
 		}
 
 		return result;
@@ -188,7 +187,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return new ConstraintResult.FromCancellation(WithFailureCause(result, failure));
+				return AppendTimeout(new ConstraintResult.FromCancellation(WithFailureCause(result, failure)),
+					retryTimeout);
 			}
 
 			TimeSpan wait = NextInterval(interval, remaining);

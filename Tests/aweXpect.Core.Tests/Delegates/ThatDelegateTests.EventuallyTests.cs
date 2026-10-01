@@ -164,7 +164,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that Subject
-				             eventually is equal to 1,
+				             eventually is equal to 1 within 0:00.050,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
@@ -190,7 +190,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that Subject
-				             eventually is equal to 1,
+				             eventually is equal to 1 within 0:00.050,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
@@ -454,9 +454,10 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             eventually is equal to 1,
+				             eventually is equal to 1 within 0:30,
 				             but it could not be verified, because the evaluation was already canceled
-				             """);
+				             """)
+				.Because("a canceled evaluation names the retry budget like every other outcome of Eventually");
 			stopwatch.Stop();
 
 			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
@@ -477,7 +478,7 @@ public sealed partial class ThatDelegateTests
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
-					             eventually is equal to 1,
+					             eventually is equal to 1 within 0:05,
 					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
@@ -499,7 +500,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that subject
-				             eventually is equal to 1,
+				             eventually is equal to 1 within 1:00,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
 			stopwatch.Stop();

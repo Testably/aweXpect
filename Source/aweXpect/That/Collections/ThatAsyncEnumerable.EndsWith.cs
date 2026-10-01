@@ -173,7 +173,7 @@ public static partial class ThatAsyncEnumerable
 				_foundValues.Add(item);
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
 				_expectationBuilder.AddCollectionContext(

@@ -105,7 +105,7 @@ public static partial class ThatEnumerable
 						return this;
 					}
 
-					if (cancellationToken.IsCancellationRequested)
+					if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
@@ -245,7 +245,7 @@ public static partial class ThatEnumerable
 						return this;
 					}
 
-					if (cancellationToken.IsCancellationRequested)
+					if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
@@ -387,7 +387,7 @@ public static partial class ThatEnumerable
 						return this;
 					}
 
-					if (cancellationToken.IsCancellationRequested)
+					if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
@@ -528,7 +528,7 @@ public static partial class ThatEnumerable
 						return this;
 					}
 
-					if (cancellationToken.IsCancellationRequested)
+					if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);

@@ -371,7 +371,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
 				expectationBuilder.AddCollectionContext(items, true);
@@ -537,7 +537,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
 				expectationBuilder.AddCollectionContext(items, true);

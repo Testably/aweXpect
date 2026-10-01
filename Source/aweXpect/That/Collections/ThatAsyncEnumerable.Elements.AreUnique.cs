@@ -281,7 +281,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			List<TItem> collection = items.ConvertAll(x => x.Item);
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				ExpectationBuilder.AddCollectionContext(collection, true);

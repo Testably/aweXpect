@@ -99,7 +99,9 @@ public static partial class ThatAsyncEnumerable
 				// A canceled item expectation decides nothing, so the item must not count as not matching.
 				if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
 				{
-					break;
+					Outcome = Outcome.Undecided;
+					_expectationBuilder.AddCollectionContext(items, true);
+					return this;
 				}
 
 				if (isMatch.Outcome == Outcome.Success)
@@ -122,7 +124,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				_expectationBuilder.AddCollectionContext(items, true);

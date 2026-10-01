@@ -541,11 +541,18 @@ public partial class CollectionMatchOptions(
 		}
 
 		/// <summary>
+		///     Whether an evaluation in <see cref="IsMetBy(TItem)" /> could not be decided, e.g. because it was canceled,
+		///     so that its value was not reliably found not to meet the expectation.
+		/// </summary>
+		public bool IsUndecided { get; private set; }
+
+		/// <summary>
 		///     Verifies if the <paramref name="value" /> is met by the expectation.
 		/// </summary>
 		public async ValueTask<bool> IsMetBy(TItem value)
 		{
 			ConstraintResult result = await ItemExpectationBuilder.IsMetBy(value, _context, _cancellationToken);
+			IsUndecided |= result.Outcome == Outcome.Undecided;
 			return result.Outcome == Outcome.Success;
 		}
 

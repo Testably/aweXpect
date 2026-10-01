@@ -166,7 +166,7 @@ public static partial class ThatAsyncEnumerable
 				return this;
 			}
 
-			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
+			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
 				TItem expectedItem = _expected[_index++];
 				if (!await _options.AreConsideredEqual(item, expectedItem))
@@ -185,6 +185,14 @@ public static partial class ThatAsyncEnumerable
 					Outcome = Outcome.Success;
 					return this;
 				}
+			}
+
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
+			{
+				Outcome = Outcome.Undecided;
+				_expectationBuilder.AddCollectionContext(
+					materializedEnumerable as IMaterializedAsyncEnumerable<TItem>, true);
+				return this;
 			}
 
 			_expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);

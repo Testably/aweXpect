@@ -101,6 +101,9 @@ public sealed partial class ThatAsyncEnumerable
 				             is equal to collection [1, 2, 3] using ThatAsyncEnumerable.CancellationTests.CancellingComparer in order,
 				             but it could not be verified, because the evaluation was already canceled
 
+				             Collection:
+				             [1, (… and maybe more)]
+
 				             Expected:
 				             [1, 2, 3]
 				             """)
@@ -208,6 +211,105 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [1, 2, 3] in order,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+
+				             Expected:
+				             [1, 2, 3]
+				             """)
+				.Because("the items received before the cancellation explain where the evaluation stopped");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToExpectationsAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x.IsEqualTo(1), x => x.IsEqualTo(2), x => x.IsEqualTo(3),])
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x.IsEqualTo(1), x => x.IsEqualTo(2), x => x.IsEqualTo(3),] in order,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+
+				             Expected:
+				             [an item that is equal to 1, an item that is equal to 2, an item that is equal to 3]
+				             """)
+				.Because("the items received before the cancellation explain where the evaluation stopped");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToPredicatesAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == 1, x => x == 2, x => x == 3,])
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == 1, x => x == 2, x => x == 3,] in order,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+
+				             Expected:
+				             [
+				               x => (x == 1),
+				               x => (x == 2),
+				               x => (x == 3)
+				             ]
+				             """)
+				.Because("the items received before the cancellation explain where the evaluation stopped");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportStartsWithAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).StartsWith(1, 2, 3).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             starts with [1, 2, 3],
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """)
+				.Because("the items received before the cancellation explain where the evaluation stopped");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldStopWaiting()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -284,6 +386,24 @@ public sealed partial class ThatAsyncEnumerable
 				             contains collection expected in order and contiguous,
 				             but it could not be verified, because the evaluation was already canceled
 
+				             Collection:
+				             [
+				               [
+				                 0,
+				                 1,
+				                 2,
+				                 3,
+				                 4,
+				                 5,
+				                 6,
+				                 7,
+				                 8,
+				                 9,
+				                 (… and maybe more)
+				               ],
+				               (… and maybe more)
+				             ]
+
 				             Expected:
 				             [
 				               an item that contains an item equal to -1 at least once
@@ -311,6 +431,21 @@ public sealed partial class ThatAsyncEnumerable
 				             Expected that subject
 				             is equal to collection expected in order,
 				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               [],
+				               (… and maybe more)
+				             ]
 
 				             Expected:
 				             [
@@ -388,6 +523,20 @@ public sealed partial class ThatAsyncEnumerable
 				             Collection:
 				             []
 				             """);
+		}
+
+		[Fact]
+		public async Task WhenSourceEndedBeforeTheCancellation_ShouldJudgeHasSingle()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
+
+			async Task Act()
+				=> await That(subject).HasCount(1).And.HasSingle().Matching(item => Cancel(cts, item == 1))
+					.WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the source was read to its end before the cancellation, so all items are known");
 		}
 
 		[Fact]
@@ -551,6 +700,30 @@ public sealed partial class ThatAsyncEnumerable
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
 				.Because("a timeout is reported the same way, whichever expectation was pending");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailIsEqualTo()
+		{
+			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [1, 2, 3] in order,
+				             but it did not finish within 0:01
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+
+				             Expected:
+				             [1, 2, 3]
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
+				.Because("a timeout lists the items received so far, whichever expectation was pending");
 		}
 
 		/// <remarks>

@@ -819,7 +819,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (TItem item in _materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
@@ -983,7 +983,7 @@ public static partial class ThatEnumerable
 			_count = 0;
 			foreach (TItem item in _materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
@@ -1139,7 +1139,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);
@@ -1303,7 +1303,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(_materializedEnumerable, true);

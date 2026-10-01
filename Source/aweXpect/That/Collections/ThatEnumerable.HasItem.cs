@@ -416,7 +416,7 @@ public static partial class ThatEnumerable
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return this;
@@ -530,7 +530,7 @@ public static partial class ThatEnumerable
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return this;
@@ -636,7 +636,7 @@ public static partial class ThatEnumerable
 			int index = -1;
 			foreach (TItem item in materialized)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return Task.FromResult<ConstraintResult>(this);
@@ -748,7 +748,7 @@ public static partial class ThatEnumerable
 			int index = -1;
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return Task.FromResult<ConstraintResult>(this);
