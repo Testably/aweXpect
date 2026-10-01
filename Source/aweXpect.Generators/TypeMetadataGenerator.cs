@@ -604,6 +604,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
 
+		private bool? _supportsDictionaryRegistration;
+
 		private bool? _supportsExplicitRegistration;
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
@@ -638,6 +640,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			if (IsEnumerable(named))
 			{
 				SeedInterfaceRoot(named);
+				SeedDictionaries(named);
 				SeedElements(named);
 				return;
 			}
@@ -664,6 +667,40 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private static string InterfacesKey(string typeName)
 			=> "interfaces of " + typeName;
+
+		/// <remarks>
+		///     The comparison reads the key comparer of a dictionary for type arguments it only knows at runtime, which
+		///     needs a reader instantiated for them in advance. An aweXpect.Core without the registration reads the
+		///     comparer by reflection instead.
+		/// </remarks>
+		private void SeedDictionaries(INamedTypeSymbol type)
+		{
+			_supportsDictionaryRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterDictionary").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+			if (_supportsDictionaryRegistration != true)
+			{
+				return;
+			}
+
+			foreach (ImmutableArray<ITypeSymbol> typeArguments in type.AllInterfaces.Prepend(type).Where(x
+				         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.IDictionary<TKey, TValue>"
+					         or "System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>")
+				         .Select(dictionary => dictionary.TypeArguments))
+			{
+				if (!typeArguments.All(x => IsNameable(x) && IsReferenceable(x)))
+				{
+					continue;
+				}
+
+				string arguments = string.Join(", ",
+					typeArguments.Select(x => x.ToDisplayString(TypeFormat)));
+				_registrations.Add(new TypeRegistration("dictionary of " + arguments,
+					new StringBuilder().Append("\t\t").Append(Registry).Append(".RegisterDictionary<").Append(arguments)
+						.AppendLine(">();").ToString(), "", null));
+			}
+		}
 
 		private void SeedElements(INamedTypeSymbol enumerable)
 		{

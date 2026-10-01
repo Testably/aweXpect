@@ -141,6 +141,19 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
+			public async Task ForAReadOnlyDictionary_ShouldUseTheKeyComparerOfTheWrappedDictionary()
+			{
+				IReadOnlyDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+
+				async Task Act()
+					=> await That(subject).Keys.Contains("A");
+
+				await That(Act).DoesNotThrow()
+					.Because("ContainsKey(\"A\") on the same dictionary succeeds");
+			}
+
+			[Fact]
 			public async Task ForASortedDictionary_ShouldOrderByTheKeyComparer()
 			{
 				IReadOnlyDictionary<string, int> subject = new SortedDictionary<string, int>(new ReverseComparer())
@@ -300,6 +313,19 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that contain an item equal to 2 at least once,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenWrappedDictionaryUsesACaseInsensitiveComparer_ShouldUseIt()
+			{
+				ReadOnlyDictionary<string, int> subject = new(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["a"] = 1, });
+
+				async Task Act()
+					=> await That(subject).Keys.Contains("A");
+
+				await That(Act).DoesNotThrow()
+					.Because("ContainsKey(\"A\") on the same dictionary succeeds");
 			}
 		}
 	}

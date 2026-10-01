@@ -168,7 +168,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain keys [1, 2],
+					             does not contain all keys [1, 2],
 					             but it contained [
 					               1,
 					               2

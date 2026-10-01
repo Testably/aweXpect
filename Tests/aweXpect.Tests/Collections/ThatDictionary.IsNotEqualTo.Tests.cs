@@ -94,9 +94,9 @@ public sealed partial class ThatDictionary
 
 #endif
 			[Fact]
-			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithADifferentlyCasedKey_ShouldSucceed()
+			public async Task WhenSubjectIsACustomDictionaryWrapper_WithADifferentlyCasedKey_ShouldSucceed()
 			{
-				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
 					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
 				IDictionary<string, int> unexpected = ToDictionary(["a",], [1,]);
 
@@ -105,6 +105,28 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("without the comparer of the wrapped dictionary, the key \"A\" matched no unexpected key");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithADifferentlyCasedKey_ShouldFail()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
+				IDictionary<string, int> unexpected = ToDictionary(["a",], [1,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to dictionary unexpected,
+					             but it was
+
+					             Dictionary:
+					             {["A"] = 1}
+					             """)
+					.Because("the comparer of the wrapped dictionary matches the key \"A\" with the unexpected key \"a\"");
 			}
 
 			[Fact]
@@ -118,7 +140,7 @@ public sealed partial class ThatDictionary
 					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow()
-					.Because("the key \"b\" matched no unexpected key");
+					.Because("both unexpected keys are matched by the key \"a\", and the key \"b\" matched none");
 			}
 
 			[Fact]

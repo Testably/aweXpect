@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using aweXpect.Core.Metadata;
@@ -144,6 +145,21 @@ public sealed class TypeMetadataRegistryTests
 
 		await That(isRegistered).IsTrue();
 		await That(metadata!.Properties.Keys).IsEqualTo([nameof(Batched.Value),]);
+	}
+
+	[Theory]
+	[InlineData(typeof(IDictionary<string, Batched>))]
+	[InlineData(typeof(IReadOnlyDictionary<string, Batched>))]
+	public async Task RegisterDictionary_ShouldRegisterAReaderOfTheKeyComparer(Type dictionaryInterface)
+	{
+		Dictionary<string, Batched> dictionary = new(StringComparer.OrdinalIgnoreCase);
+
+		TypeMetadataRegistry.RegisterDictionary<string, Batched>();
+
+		TypeMetadataRegistry.Instance.TryGet(dictionaryInterface, out TypeMetadataRegistry.TypeMetadata? metadata);
+		IEqualityComparer<object>? keyComparer = metadata?.KeyComparer?.Read(dictionary) as IEqualityComparer<object>;
+		await That(keyComparer?.Equals("a", "A")).IsTrue()
+			.Because("the comparison finds the reader through the dictionary interface the runtime type implements");
 	}
 
 	private static bool IsRegisteredOnAnotherThread(TypeMetadataRegistry.Registration registration, Type type)

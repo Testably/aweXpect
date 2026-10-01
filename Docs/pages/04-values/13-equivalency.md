@@ -113,12 +113,13 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 <details>
 <summary>How the key comparer is found</summary>
 
-The comparer is read from the `Comparer` or `KeyComparer` property of the dictionary (or of the dictionary that a
-`ReadOnlyDictionary<TKey, TValue>` wraps), which needs reflection. For a dictionary without such a property, or when
-reflection is unavailable (by default when publishing with Native AOT), the matched keys are told apart by their own
-`Equals`, so an actual key that equals no expected key is reported, even when the comparer considers it the same as
-one, and a type that only implements `IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>` looks its keys
-up by their own `Equals`.
+The comparer is read from the same dictionaries as for [`IsEqualTo`](../05-collections/04-dictionaries.md#equality):
+the dictionary types of the framework and the dictionary that a `ReadOnlyDictionary<TKey, TValue>` wraps. Only the
+key and value types of the dictionary are known at runtime, so when publishing with trimming or Native AOT, the comparer
+is read for the dictionaries that the source generator sees. For any other dictionary, the matched keys are told apart
+by their own `Equals`, so an actual key that equals no expected key is reported, even when the comparer considers it
+the same as one, and a type that only implements `IReadOnlyDictionary<TKey, TValue>` or `IDictionary<TKey, TValue>`
+looks its keys up by their own `Equals`.
 
 </details>
 

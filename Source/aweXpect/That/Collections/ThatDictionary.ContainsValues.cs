@@ -44,7 +44,8 @@ public static partial class ThatDictionary
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainValuesConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options)
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
+						negated)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -70,19 +71,25 @@ public static partial class ThatDictionary
 		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainValuesConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options)
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
+						negated)
 					.InvertIf(negated)),
 			subject,
 			options);
 	}
 
+	/// <remarks>
+	///     <paramref name="isAny" /> selects at construction whether the constraint asks for any or for all of the
+	///     <paramref name="expected" /> values, so that a later negation inverts the same question its text describes.
+	/// </remarks>
 	private sealed class ContainValuesConstraint<TDictionary, TKey, TValue>(
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expectedExpression,
 		TValue[] expected,
-		IOptionsEquality<TValue> options)
+		IOptionsEquality<TValue> options,
+		bool isAny)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
@@ -110,7 +117,7 @@ public static partial class ThatDictionary
 				}
 			}
 
-			Outcome = (IsNegated, _missingKeys: _missingValues, _existingKeys: _existingValues) switch
+			Outcome = (isAny, _missingValues, _existingValues) switch
 			{
 				(true, _, []) => Outcome.Failure,
 				(true, _, _) => Outcome.Success,
@@ -123,7 +130,10 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("contains values ", "contain values ")).Append(expectedExpression);
+			stringBuilder.Append(isAny
+					? Grammars.Verb("contains any of values ", "contain any of values ")
+					: Grammars.Verb("contains values ", "contain values "))
+				.Append(expectedExpression);
 			stringBuilder.Append(options);
 		}
 
@@ -135,7 +145,9 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("does not contain values ", "do not contain values "))
+			stringBuilder.Append(isAny
+					? Grammars.Verb("does not contain values ", "do not contain values ")
+					: Grammars.Verb("does not contain all values ", "do not contain all values "))
 				.Append(expectedExpression);
 			stringBuilder.Append(options);
 		}

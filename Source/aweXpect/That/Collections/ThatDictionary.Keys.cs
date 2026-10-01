@@ -58,7 +58,11 @@ public static partial class ThatDictionary
 		/// <summary>
 		///     Expectations on the keys of the dictionary.
 		/// </summary>
+		/// <remarks>
+		///     The keys keep the key comparer of the wrapped dictionary, so that expectations on them use it as well.
+		/// </remarks>
 		public IThat<IEnumerable<TKey>?> Keys
-			=> subject.ForCollectionMember(dictionary => dictionary?.Keys, "keys");
+			=> subject.ForCollectionMember(
+				dictionary => CollectionComparerHelpers.GetKeys(dictionary, dictionary?.Keys), "keys");
 	}
 }
