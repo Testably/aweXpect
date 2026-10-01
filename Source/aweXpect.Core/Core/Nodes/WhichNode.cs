@@ -394,7 +394,7 @@ internal class WhichNode<TSource, TMember> : Node
 		/// <remarks>
 		///     Without a member, the parent alone decides the outcome, also when it stays failed under negation.
 		/// </remarks>
-		private ConstraintResult NegateWithoutMember()
+		private WhichConstraintResult NegateWithoutMember()
 		{
 			if (_negateMemberOnly)
 			{

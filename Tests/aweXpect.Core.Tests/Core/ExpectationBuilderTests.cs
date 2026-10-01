@@ -352,7 +352,7 @@ public class ExpectationBuilderTests
 		ManualExpectationBuilder<string> sut = new(null);
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.StartsWith("f"), "starts with f"));
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s is ['f', ..], "starts with f"));
 		sut.And();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
