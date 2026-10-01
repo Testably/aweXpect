@@ -80,10 +80,20 @@ internal class OrNode : Node
 		CancellationToken cancellationToken) where TValue : default
 	{
 		ConstraintResult? combinedResult = null;
-		IEvaluationContext currentContext = context;
+		bool isSkipped = false;
 		foreach ((string separator, Node node) in GetNodes())
 		{
-			ConstraintResult result = await node.IsMetBy(value, currentContext, cancellationToken);
+			ConstraintResult result;
+			if (isSkipped)
+			{
+				result = await node.IsMetBy(value, ExpectationTextEvaluationContext.For(context), cancellationToken);
+				result = result.AsExpectationOnly();
+			}
+			else
+			{
+				result = await node.IsMetBy(value, context, cancellationToken);
+			}
+
 			combinedResult = CombineResults(combinedResult, result, separator,
 				combinedResult?.FurtherProcessingStrategy);
 			if (result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreCompletely)
@@ -91,12 +101,9 @@ internal class OrNode : Node
 				return combinedResult;
 			}
 
-			if (combinedResult.Outcome == Outcome.Success)
-			{
-				// Short-circuit: the remaining nodes only contribute their expectation text, so that neither their
-				// constraints nor their member accessors are evaluated, but the expectation still names them all.
-				currentContext = ExpectationTextEvaluationContext.For(currentContext);
-			}
+			// Short-circuit: the remaining nodes only contribute their expectation text, so that neither their
+			// constraints nor their member accessors are evaluated, but the expectation still names them all.
+			isSkipped |= combinedResult.Outcome == Outcome.Success;
 		}
 
 		return combinedResult!;
@@ -283,6 +290,7 @@ internal class OrNode : Node
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			bool rendersLeft = RendersLeft;
+			int leftStart = stringBuilder.Length;
 			if (rendersLeft)
 			{
 				_left.AppendResult(stringBuilder, indentation);
@@ -295,8 +303,7 @@ internal class OrNode : Node
 
 			if (rendersLeft)
 			{
-				stringBuilder.Append(" and ");
-				stringBuilder.AppendResultAfter(_left, _right, indentation);
+				stringBuilder.AppendAndResult(leftStart, _left, _right, indentation);
 			}
 			else
 			{

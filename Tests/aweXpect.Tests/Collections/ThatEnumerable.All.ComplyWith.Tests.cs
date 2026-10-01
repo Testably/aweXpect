@@ -182,7 +182,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to 2, because of reasons for all items,
+						             is equal to 2 for all items, because of reasons,
 						             but none of 1 were
 
 						             Not matching items:
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to 2, because of reasons for all items,
+						             is equal to 2 for all items, because of reasons,
 						             but none of 1 were
 
 						             Not matching items:
@@ -525,7 +525,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to 1, because of reasons for all items,
+						             is not equal to 1 for all items, because of reasons,
 						             but only 1 of 2 were
 
 						             Not matching items:
@@ -701,7 +701,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to 1, because of reasons for all items,
+						             is not equal to 1 for all items, because of reasons,
 						             but only 1 of 2 were
 
 						             Not matching items:

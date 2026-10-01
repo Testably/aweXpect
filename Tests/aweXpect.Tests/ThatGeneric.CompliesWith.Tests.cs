@@ -219,6 +219,23 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheTimeout()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).CompliesWith(x => x.IsEqualTo(2).Because("of reasons"))
+						.Within(0.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2 within 0:00, because of reasons,
+					             but it was 1, which differs by -1
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenIntervalExceedsTheTimeout_ShouldCheckAgainAtTheTimeout()
 			{
 				int count = 0;

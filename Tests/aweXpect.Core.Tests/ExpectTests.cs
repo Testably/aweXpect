@@ -96,7 +96,7 @@ public class ExpectTests
 			.WithMessage("""
 			             Expected that sut
 			             is not null,
-			             but it was
+			             but it was <null>
 			             """)
 			.Because("the result of the ValueTask must become the subject, not the ValueTask itself");
 	}

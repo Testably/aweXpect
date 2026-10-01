@@ -85,7 +85,13 @@ public static partial class ThatGeneric
 				return isMatch.Outcome == Outcome.Success != _isNegated;
 			}, _expectationBuilder, cancellationToken);
 			return KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
-				.AppendExpectationText(sb => sb.Append(_options));
+				.AppendExpectationText(AppendSuffix);
+		}
+
+		private void AppendSuffix(StringBuilder stringBuilder)
+		{
+			stringBuilder.Append(_options);
+			_itemExpectationBuilder.AppendReasons(stringBuilder);
 		}
 
 		/// <summary>
@@ -100,7 +106,7 @@ public static partial class ThatGeneric
 		{
 			RevertPreviousNegation();
 			return NegateIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
-				.AppendExpectationText(sb => sb.Append(_options));
+				.AppendExpectationText(AppendSuffix);
 		}
 
 		/// <remarks>
@@ -112,10 +118,13 @@ public static partial class ThatGeneric
 			if (_negatedResult is not null)
 			{
 				_negatedResult.AppendExpectation(stringBuilder, indentation);
-				return;
+			}
+			else
+			{
+				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
 			}
 
-			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
+			_itemExpectationBuilder.AppendReasons(stringBuilder);
 		}
 
 		private ConstraintResult NegateIfNegated(ConstraintResult constraintResult)

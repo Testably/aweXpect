@@ -53,7 +53,8 @@ public sealed partial class ThatObject
 					             but it was not:
 					               Property Value differed:
 					                   Actual: <null>
-					                 Expected: "Foo" and was not:
+					                 Expected: "Foo"
+					             and it was not:
 					               Property Value differed:
 					                   Actual: <null>
 					                 Expected: "Bar"

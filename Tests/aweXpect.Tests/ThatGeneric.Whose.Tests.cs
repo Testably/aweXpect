@@ -347,7 +347,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             whose FaultedAsync() is not equal to 1 or whose Value is not equal to 0,
 					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed and Value was 0
+					               async member failed
+					             and Value was 0
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
@@ -388,7 +389,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             whose FaultedAsync() is equal to 1 or whose Value is equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
-					               async member failed and Value was 0, which differs by -1
+					               async member failed
+					             and Value was 0, which differs by -1
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
@@ -639,6 +641,65 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("memberAccessor").And
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasReason_InsideCompliesWith_ShouldFollowTheMember()
+			{
+				MyCombinationClass subject = new();
+
+				async Task Act()
+					=> await That(subject).CompliesWith(it => it
+						.Whose(o => o.A, v => v.IsTrue().Because("of a")).And
+						.Whose(o => o.B, v => v.IsTrue()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is True, because of a and whose B is True,
+					             but A was False and B was False
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasReason_ShouldFollowTheMember()
+			{
+				MyCombinationClass subject = new();
+
+				async Task Act()
+					=> await That(subject)
+						.Whose(o => o.A, v => v.IsTrue().Because("of a")).And
+						.Whose(o => o.B, v => v.IsTrue())
+						.Because("of all");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is True, because of a and whose B is True, because of all,
+					             but A was False and B was False
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasReason_WhenNegated_ShouldFollowTheMember()
+			{
+				MyCombinationClass subject = new()
+				{
+					A = true,
+					B = true,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.Whose(o => o.A, v => v.IsTrue().Because("of a")).And
+						.Whose(o => o.B, v => v.IsTrue()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is not True, because of a or whose B is not True,
+					             but A was True and B was True
+					             """);
 			}
 
 			[Fact]
@@ -1331,7 +1392,8 @@ public sealed partial class ThatGeneric
 					                 In = <null>,
 					                 Name = <null>
 					               }
-					             ] and it was <null>
+					             ]
+					             and it was <null>
 
 					             Collection:
 					             [

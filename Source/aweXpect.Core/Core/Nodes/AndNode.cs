@@ -80,6 +80,7 @@ internal class AndNode : Node
 		CancellationToken cancellationToken) where TValue : default
 	{
 		ConstraintResult? combinedResult = null;
+		bool isSkipped = false;
 		foreach ((string separator, Node node) in GetNodes())
 		{
 			if (node is ExpectationNode expectationNode && expectationNode.IsEmpty())
@@ -87,7 +88,21 @@ internal class AndNode : Node
 				continue;
 			}
 
-			ConstraintResult result = await node.IsMetBy(value, context, cancellationToken);
+			ConstraintResult result;
+			if (isSkipped)
+			{
+				result = await node.IsMetBy(value, ExpectationTextEvaluationContext.For(context), cancellationToken);
+				result = result.AsExpectationOnly();
+			}
+			else
+			{
+				result = await node.IsMetBy(value, context, cancellationToken);
+				// A failed operand which ignores the result of the following ones, e.g. a failed null check, decides the
+				// combination, so the following operands are only evaluated for their expectation text.
+				isSkipped = result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreResult &&
+				            result.Outcome == Outcome.Failure;
+			}
+
 			combinedResult = CombineResults(combinedResult, result, separator,
 				combinedResult?.FurtherProcessingStrategy);
 			if (result.FurtherProcessingStrategy ==
@@ -285,6 +300,7 @@ internal class AndNode : Node
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			bool rendersLeft = RendersLeft;
+			int leftStart = stringBuilder.Length;
 			if (rendersLeft)
 			{
 				_left.AppendResult(stringBuilder, indentation);
@@ -297,8 +313,7 @@ internal class AndNode : Node
 
 			if (rendersLeft)
 			{
-				stringBuilder.Append(" and ");
-				stringBuilder.AppendResultAfter(_left, _right, indentation);
+				stringBuilder.AppendAndResult(leftStart, _left, _right, indentation);
 			}
 			else
 			{

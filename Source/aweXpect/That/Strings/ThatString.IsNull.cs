@@ -34,6 +34,9 @@ public static partial class ThatString
 		{
 			Actual = actual;
 			Outcome = actual is null ? Outcome.Success : Outcome.Failure;
+			FurtherProcessingStrategy = actual is null && IsNegated
+				? FurtherProcessingStrategy.IgnoreResult
+				: FurtherProcessingStrategy.Continue;
 			return this;
 		}
 
@@ -50,6 +53,6 @@ public static partial class ThatString
 			=> stringBuilder.Append(Grammars.Verb("is not null", "are not null"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.ItWasNull(It, Grammars);
 	}
 }

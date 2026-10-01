@@ -727,7 +727,8 @@ public sealed partial class ThatEnumerable
 					             is empty or has a single item that is equal to 1,
 					             but it was [
 					               2
-					             ] and it was 2, which differs by 1
+					             ]
+					             and it was 2, which differs by 1
 					             """);
 			}
 

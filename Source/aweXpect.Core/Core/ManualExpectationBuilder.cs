@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.TimeSystem;
 
@@ -20,16 +21,30 @@ public class ManualExpectationBuilder<TValue>(
 		IEqualityComparer<ManualExpectationBuilder<TValue>>
 {
 	/// <summary>
-	///     Appends the expectation of the root node and its reasons to the <paramref name="stringBuilder" />.
+	///     Appends the expectation of the root node to the <paramref name="stringBuilder" />.
 	/// </summary>
 	/// <remarks>
+	///     The reasons are not included, so that they can follow the whole expectation they are nested in, see
+	///     <see cref="AppendReasons" />.
+	/// </remarks>
+	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
+
+	/// <summary>
+	///     Appends the reasons of the expectations to the <paramref name="stringBuilder" />.
+	/// </summary>
+	/// <remarks>
+	///     Append them after the whole expectation that the expectations are nested in (e.g. after a quantifier like
+	///     <c>for all items</c>).<br />
 	///     Reasons that must be awaited are omitted until they are resolved by <see cref="PrepareExpectation" /> or by a
 	///     failed evaluation.
 	/// </remarks>
-	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+	public void AppendReasons(StringBuilder stringBuilder)
 	{
-		GetRootNode().AppendExpectation(stringBuilder, indentation);
-		AppendReasons(stringBuilder);
+		foreach (IBecauseReason reason in Reasons)
+		{
+			stringBuilder.Append(reason);
+		}
 	}
 
 	/// <summary>
@@ -74,11 +89,22 @@ public class ManualExpectationBuilder<TValue>(
 	/// <summary>
 	///     Evaluate if the expectations are met by the <paramref name="value" />.
 	/// </summary>
+	/// <remarks>
+	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
+	/// </remarks>
 	public async Task<ConstraintResult> IsMetBy(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> await ApplyReasons(await GetRootNode().IsMetBy(value, context, cancellationToken));
+	{
+		ConstraintResult result = await GetRootNode().IsMetBy(value, context, cancellationToken);
+		if (result.Outcome != Outcome.Success)
+		{
+			await ResolveReasons();
+		}
+
+		return result;
+	}
 
 	/// <inheritdoc />
 	internal override Task<ConstraintResult> IsMet(Node rootNode,
@@ -111,6 +137,7 @@ public class ManualExpectationBuilder<TValue>(
 		StringBuilder sb = new();
 		sb.Append("it ");
 		AppendExpectation(sb);
+		AppendReasons(sb);
 		return sb.ToString();
 	}
 

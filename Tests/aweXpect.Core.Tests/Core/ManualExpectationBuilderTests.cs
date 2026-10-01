@@ -75,7 +75,21 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Fact]
-	public async Task AppendExpectation_ShouldAppendReasons()
+	public async Task AppendExpectation_ShouldNotAppendReasons()
+	{
+		ManualExpectationBuilder<int> sut = new(null);
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason("of a");
+		StringBuilder sb = new();
+
+		sut.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("is foo")
+			.Because("the reasons follow the whole expectation that the expectations are nested in");
+	}
+
+	[Fact]
+	public async Task AppendReasons_ShouldAppendAllReasons()
 	{
 		ManualExpectationBuilder<int> sut = new(null);
 		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
@@ -83,22 +97,22 @@ public class ManualExpectationBuilderTests
 		sut.AddReason("because of b");
 		StringBuilder sb = new();
 
-		sut.AppendExpectation(sb);
+		sut.AppendReasons(sb);
 
-		await That(sb.ToString()).IsEqualTo("is foo, because of a, because of b");
+		await That(sb.ToString()).IsEqualTo(", because of a, because of b");
 	}
 
 	[Fact]
-	public async Task AppendExpectation_ShouldOmitReasonsThatMustBeAwaited()
+	public async Task AppendReasons_ShouldOmitReasonsThatMustBeAwaited()
 	{
 		ManualExpectationBuilder<int> sut = new(null);
 		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
 		sut.AddReason(Task.FromResult<string?>("of a"));
 		StringBuilder sb = new();
 
-		sut.AppendExpectation(sb);
+		sut.AppendReasons(sb);
 
-		await That(sb.ToString()).IsEqualTo("is foo")
+		await That(sb.ToString()).IsEmpty()
 			.Because("an asynchronous reason is only included once it is resolved");
 	}
 
@@ -240,18 +254,21 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenReasonIsResolvedAndConstraintFails_ShouldApplyReasonOnce()
+	public async Task IsMetBy_WhenConstraintFails_ShouldNotApplyReasonButResolveIt()
 	{
 		ManualExpectationBuilder<int> sut = new(null);
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => false, "is foo"));
 		sut.AddReason(Task.FromResult<string?>("of a"));
-		await sut.PrepareExpectation(null!, CancellationToken.None);
-		StringBuilder sb = new();
+		StringBuilder expectation = new();
+		StringBuilder reasons = new();
 
 		ConstraintResult result = await sut.IsMetBy(1, null!, CancellationToken.None);
-		result.AppendExpectation(sb);
+		result.AppendExpectation(expectation);
+		sut.AppendReasons(reasons);
 
-		await That(sb.ToString()).IsEqualTo("is foo, because of a");
+		await That(expectation.ToString()).IsEqualTo("is foo")
+			.Because("the reasons follow the whole expectation that the expectations are nested in");
+		await That(reasons.ToString()).IsEqualTo(", because of a");
 	}
 
 	[Fact]
@@ -294,9 +311,9 @@ public class ManualExpectationBuilderTests
 		StringBuilder sb = new();
 
 		await sut.PrepareExpectation(null!, CancellationToken.None);
-		sut.AppendExpectation(sb);
+		sut.AppendReasons(sb);
 
-		await That(sb.ToString()).IsEqualTo("is foo, because of a");
+		await That(sb.ToString()).IsEqualTo(", because of a");
 	}
 
 	[Fact]

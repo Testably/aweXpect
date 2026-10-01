@@ -212,3 +212,4 @@ override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetSt
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
 aweXpect.Core.IStringMatchType.InspectsSubject.get -> bool
 aweXpect.Core.ICollectionMatcher<T, T2>.IsDetermined.get -> bool
+aweXpect.Core.ManualExpectationBuilder<TValue>.AppendReasons(System.Text.StringBuilder! stringBuilder) -> void

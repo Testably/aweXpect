@@ -361,6 +361,24 @@ public sealed class AndNodeTests
 	}
 
 	[Fact]
+	public async Task ResultText_WhenLeftSpansMultipleLines_ShouldStartRightOnItsOwnLine()
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "l1\nl2")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "right", "r")));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.AppendResult(sb, "  ");
+
+		await That(sb.ToString()).IsEqualTo("""
+		                                    l1
+		                                    l2
+		                                      and r
+		                                    """).IgnoringNewlineStyle()
+			.Because("the right result must not be glued onto the last line of the left result");
+	}
+
+	[Fact]
 	public async Task ShouldConsiderFurtherProcessingStrategy()
 	{
 		AndNode node = new(new DummyNode("",
@@ -466,6 +484,29 @@ public sealed class AndNodeTests
 	}
 
 	[Fact]
+	public async Task WithMultiLineFailures_ShouldStartTheSecondResultOnItsOwnLine()
+	{
+		async Task Act()
+			=> await That("foo").IsEqualTo("bar").And.IsEqualTo("baz");
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that "foo"
+			             is equal to "bar" and is equal to "baz",
+			             but it was "foo", which differs at index 0:
+			                ↓ (actual)
+			               "foo"
+			               "bar"
+			                ↑ (expected)
+			             and it was "foo", which differs at index 0:
+			                ↓ (actual)
+			               "foo"
+			               "baz"
+			                ↑ (expected)
+			             """);
+	}
+
+	[Fact]
 	public async Task WithMultipleFailedTests_ShouldIncludeAllFailuresInMessage()
 	{
 		async Task Act()
@@ -517,6 +558,36 @@ public sealed class AndNodeTests
 		result.AppendExpectation(sb);
 		await That(sb.ToString()).IsEqualTo("foo and bar");
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
+	}
+
+	[Fact]
+	public async Task WithProcessingStrategy_WhenFailedOperandIgnoresResult_ShouldOnlyUseExpectationOfFollowingOperands()
+	{
+		AndNode node = new(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Failure, "foo", "l", FurtherProcessingStrategy.IgnoreResult)));
+		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "bar", "r"), new Exception("baz"), "it")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo and bar");
+		await That(result.GetResultText()).IsEqualTo("l");
+		await That(result.FailureCause).IsNull()
+			.Because("the following operands are only evaluated for their expectation text");
+	}
+
+	[Fact]
+	public async Task WithProcessingStrategy_WhenSucceededOperandIgnoresResult_ShouldEvaluateFollowingOperands()
+	{
+		AndNode node = new(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Success, "foo", "l", FurtherProcessingStrategy.IgnoreResult)));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "bar", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetResultText()).IsEqualTo("r");
 	}
 
 	[Fact]
