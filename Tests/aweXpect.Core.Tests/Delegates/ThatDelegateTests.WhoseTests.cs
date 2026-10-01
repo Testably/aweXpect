@@ -5,6 +5,20 @@ public sealed partial class ThatDelegateTests
 	public sealed class WhoseTests
 	{
 		[Fact]
+		public async Task Throws_Whose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose((Func<AsyncException, Task<int>>)null!, v => v.IsEqualTo(1));
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("memberAccessor").And
+				.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task Throws_Whose_WhenAsyncMemberFaults_ShouldFail()
 		{
 			void Delegate() => throw new AsyncException(1);
@@ -40,6 +54,48 @@ public sealed partial class ThatDelegateTests
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsNull())
 				.Because("a null task is not an exception thrown by the member");
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.Message, null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectations").And
+				.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose((Func<AsyncException, string>)null!, m => m.IsNull());
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("memberAccessor").And
+				.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose((Func<AsyncException, ValueTask<int>>)null!, v => v.IsEqualTo(1));
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("memberAccessor").And
+				.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 		}
 
 		[Fact]
@@ -110,6 +166,20 @@ public sealed partial class ThatDelegateTests
 				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetValueAsync() is equal to 2,
 				             but GetValueAsync() was 1, which differs by -1
 				             """);
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WithAsyncMember_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.GetValueAsync(), null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectations").And
+				.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 		}
 
 		[Fact]

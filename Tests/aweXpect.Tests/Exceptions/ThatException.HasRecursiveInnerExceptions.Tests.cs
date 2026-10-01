@@ -237,6 +237,19 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				Exception subject = new("outer", new Exception("inner"));
+
+				async Task Act()
+					=> await That(subject).HasRecursiveInnerExceptions(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenInnerExceptionsDoNotMatchTheCondition_ForAll_ShouldFail()
 			{
 				Exception subject = new("outer",

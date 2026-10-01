@@ -127,7 +127,7 @@ public static partial class ThatEnumerable
 		}
 
 		private string TooManyDeviationsError()
-			=> $"{It} had more than {2 * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -276,7 +276,7 @@ public static partial class ThatEnumerable
 		}
 
 		private string TooManyDeviationsError()
-			=> $"{It} had more than {2 * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(matchOptions.GetExpectation(
@@ -405,7 +405,7 @@ public static partial class ThatEnumerable
 		}
 
 		private string TooManyDeviationsError()
-			=> $"{It} had more than {2 * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(matchOptions.GetExpectation(
@@ -549,7 +549,7 @@ public static partial class ThatEnumerable
 		}
 
 		private string TooManyDeviationsError()
-			=> $"{It} had more than {2 * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
 
 		/// <summary>
 		///     The subject can contain items of any type, so an item that is not a <typeparamref name="TMatch" /> never
@@ -644,9 +644,8 @@ public static partial class ThatEnumerable
 			bool cancelEarly = actual is not ICollection<TItem>;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingItems = new LimitedCollection<TItem>(maxItems);
-			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+			_matchingItems = new LimitedCollection<TItem>();
+			_notMatchingItems = new LimitedCollection<TItem>();
 
 			foreach (TItem item in materialized)
 			{
@@ -786,9 +785,8 @@ public static partial class ThatEnumerable
 			bool cancelEarly = actual is not ICollection<TItem>;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingItems = new LimitedCollection<TItem>(maxItems);
-			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+			_matchingItems = new LimitedCollection<TItem>();
+			_notMatchingItems = new LimitedCollection<TItem>();
 
 			foreach (TItem item in materialized)
 			{
@@ -932,9 +930,8 @@ public static partial class ThatEnumerable
 			bool cancelEarly = actual is not ICollection;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingItems = new LimitedCollection<object?>(maxItems);
-			_notMatchingItems = new LimitedCollection<object?>(maxItems);
+			_matchingItems = new LimitedCollection<object?>();
+			_notMatchingItems = new LimitedCollection<object?>();
 
 			foreach (object? item in materialized)
 			{
@@ -1088,9 +1085,8 @@ public static partial class ThatEnumerable
 			bool cancelEarly = actual is not ICollection;
 			_matchingCount = 0;
 			_notMatchingCount = 0;
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingItems = new LimitedCollection<object?>(maxItems);
-			_notMatchingItems = new LimitedCollection<object?>(maxItems);
+			_matchingItems = new LimitedCollection<object?>();
+			_notMatchingItems = new LimitedCollection<object?>();
 
 			foreach (object? item in materialized)
 			{

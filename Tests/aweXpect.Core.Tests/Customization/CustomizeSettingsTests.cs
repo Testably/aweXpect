@@ -252,6 +252,30 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Fact]
+	public async Task TestCancellation_FromTimeout_WhenInfinite_ShouldBeAccepted()
+	{
+		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
+			       .Set(TestCancellation.FromTimeout(Timeout.InfiniteTimeSpan)))
+		{
+			async Task Act()
+				=> await That(1).IsEqualTo(1);
+
+			await That(Act).DoesNotThrow()
+				.Because("the infinite timeout imposes no limit");
+		}
+	}
+
+	[Fact]
+	public async Task TestCancellation_FromTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => TestCancellation.FromTimeout(-5.Seconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
 		Exception? exception;

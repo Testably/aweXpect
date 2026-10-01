@@ -73,7 +73,7 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
-				public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldFail()
+				public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateTime? subject = CurrentTime(DateTimeKind.Local);
 					DateTime? minimum = EarlierTime(1, DateTimeKind.Local);
@@ -82,13 +82,10 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsBetween(minimum).And(maximum);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-						              but it had kind Local, which cannot be compared with Utc
-						              """)
-						.Because("the ticks of bounds with incompatible kinds cannot tell whether the range is inverted");
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("maximum").And
+						.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+						.Because("the subject is compared with the bounds in ticks, so a range inverted in ticks can never contain it");
 				}
 
 				[Fact]
@@ -358,7 +355,7 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
-				public async Task WhenSubjectKindIsUnspecifiedAndTheMaximumHasAnIncompatibleKindAndFewerTicks_ShouldFail()
+				public async Task WhenSubjectKindIsUnspecifiedAndTheMaximumHasAnIncompatibleKindAndFewerTicks_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateTime? subject = CurrentTime(DateTimeKind.Unspecified);
 					DateTime? minimum = LaterTime(1, DateTimeKind.Local);
@@ -367,13 +364,10 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsBetween(minimum).And(maximum);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-						              but it was {Formatter.Format(subject)}, which differs by -0:01 from the minimum
-						              """)
-						.Because("an Unspecified subject is compared with the ticks of each bound, even when the bounds cannot be compared with each other");
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("maximum").And
+						.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+						.Because("an Unspecified subject is compared with the ticks of each bound, so a range inverted in ticks can never contain it");
 				}
 			}
 

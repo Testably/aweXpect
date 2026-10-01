@@ -306,7 +306,7 @@ public partial class CollectionMatchOptions(
 	private static string TooManyDeviationsError(string it, int maximumNumber, IEnumerable<string> deviations)
 	{
 		StringBuilder sb = new();
-		sb.Append(it).Append(" had more than ").Append(2 * maximumNumber).Append(" deviations");
+		sb.Append(it).Append(" had more than ").Append(2L * maximumNumber).Append(" deviations");
 		List<string> listedDeviations = deviations.Take(maximumNumber).ToList();
 		if (listedDeviations.Count == 0)
 		{
@@ -422,7 +422,7 @@ public partial class CollectionMatchOptions(
 	private static void AppendMissingItems<T>(StringBuilder sb, List<T> missingItems,
 		Func<object?, string> formatItem, object options, int maximumNumber)
 	{
-		bool isTruncated = missingItems.Count > 2 * maximumNumber;
+		bool isTruncated = missingItems.Count > 2L * maximumNumber;
 		foreach (T missingItem in isTruncated ? missingItems.Take(maximumNumber) : missingItems)
 		{
 			sb.AppendLine().Append("  ");

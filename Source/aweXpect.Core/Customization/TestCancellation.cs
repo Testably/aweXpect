@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Customization;
 
@@ -20,8 +21,14 @@ public class TestCancellation
 	/// <summary>
 	///     Applies the <paramref name="timeout" /> to all tests.
 	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
+	/// </remarks>
 	public static TestCancellation FromTimeout(TimeSpan timeout)
-		=> new(timeout, null);
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		return new TestCancellation(timeout, null);
+	}
 
 	/// <summary>
 	///     Uses a <see cref="CancellationToken" /> from the <paramref name="cancellationTokenFactory" /> in all tests.

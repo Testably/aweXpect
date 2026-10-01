@@ -159,6 +159,19 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WithInner_Generic_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithInner<MyException>(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectations").And
+				.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task WithInner_Generic_WhenInnerExceptionHasWrongType_ShouldFail()
 		{
 			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
@@ -364,6 +377,19 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WithInner_Type_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithInner(typeof(MyException), null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectations").And
+				.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task WithInner_Type_WhenInnerExceptionHasWrongType_ShouldFail()
 		{
 			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
@@ -440,6 +466,19 @@ public sealed partial class ThatDelegateTests
 				             throws a MyException with an inner MyException that is null,
 				             but it was MyException: inner
 				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithInner((Action<IThatSubject<Exception?>>)null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectations").And
+				.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 		}
 
 		[Fact]

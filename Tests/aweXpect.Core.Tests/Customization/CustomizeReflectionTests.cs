@@ -26,6 +26,17 @@ public sealed class CustomizeReflectionTests
 	}
 
 	[Fact]
+	public async Task ExcludedAssemblyPrefixes_ChangingTheReturnedArray_ShouldNotChangeTheSetting()
+	{
+		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
+		string original = prefixes[0];
+		prefixes[0] = "CHANGED";
+
+		await That(Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get()[0]).IsEqualTo(original)
+			.Because("a change of the returned array would bypass the scoping of the setting");
+	}
+
+	[Fact]
 	public async Task ExcludedAssemblyPrefixes_ShouldBeInitializedCorrectly()
 	{
 		AwexpectCustomization.ReflectionCustomization reflection = Customize.aweXpect.Reflection();

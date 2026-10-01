@@ -127,7 +127,7 @@ public partial class CollectionMatchOptions
 			}
 
 			_index++;
-			int errorThreshold = 2 * maximumNumber;
+			long errorThreshold = 2L * maximumNumber;
 			int errorCount = _incorrectItems.Count + _outOfOrderItems.Count;
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
@@ -195,7 +195,7 @@ public partial class CollectionMatchOptions
 
 					// For the containment relation, additional items are no deviation, and all missing items are listed.
 					if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-					    _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2 * maximumNumber)
+					    _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2L * maximumNumber)
 					{
 						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 					}
@@ -253,7 +253,7 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			if (positionalDeviations > 2 * maximumNumber)
+			if (positionalDeviations > 2L * maximumNumber)
 			{
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 			}
@@ -576,7 +576,7 @@ public partial class CollectionMatchOptions
 			bool isAdditional = _index >= _expectedItems.Length;
 			if (isAdditional || !await AreConsideredEqual(value, _expectedItems[_index], options))
 			{
-				if (_positionalDeviations++ <= 2 * maximumNumber)
+				if (_positionalDeviations++ <= 2L * maximumNumber)
 				{
 					if (isAdditional)
 					{
@@ -588,7 +588,8 @@ public partial class CollectionMatchOptions
 					}
 				}
 
-				_editDistance ??= new BoundedEditDistance<T, T3>(_expectedItems, 2 * maximumNumber, _index);
+				_editDistance ??= new BoundedEditDistance<T, T3>(_expectedItems,
+					(int)Math.Min(2L * maximumNumber, int.MaxValue), _index);
 			}
 
 			_index++;

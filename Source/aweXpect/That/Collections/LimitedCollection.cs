@@ -10,15 +10,25 @@ namespace aweXpect;
 /// </summary>
 internal class LimitedCollection<T> : IEnumerable<T>
 {
-	private readonly List<T> _buffer;
-	private readonly List<int> _indices;
+	private readonly List<T> _buffer = new();
+	private readonly List<int> _indices = new();
 	private readonly int _limit;
 
+	/// <summary>
+	///     Buffers up to the <paramref name="limit" />, by default one more than the maximum number of collection items,
+	///     so that exceeding the maximum can be detected.
+	/// </summary>
+	/// <remarks>
+	///     The lists grow with the items and the default saturates, because the maximum can be
+	///     <see cref="int.MaxValue" />.
+	/// </remarks>
 	public LimitedCollection(int? limit = null)
 	{
-		_limit = limit ?? Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-		_buffer = new List<T>(_limit);
-		_indices = new List<int>(_limit);
+		_limit = limit ?? Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() switch
+		{
+			int.MaxValue => int.MaxValue,
+			int maximum => maximum + 1,
+		};
 	}
 
 	/// <summary>

@@ -803,6 +803,12 @@ public sealed class GuaranteesNotNullTests
 			return nullValues ? null : Activator.CreateInstance(underlyingType);
 		}
 
+		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+		{
+			Type[] arguments = type.GetGenericArguments();
+			return Activator.CreateInstance(type, CreateValue(arguments[0]), CreateValue(arguments[1]));
+		}
+
 		if (type.IsValueType)
 		{
 			return Activator.CreateInstance(type);
@@ -909,13 +915,14 @@ public sealed class GuaranteesNotNullTests
 	private static Array CreateSingleElementArray(Type elementType)
 	{
 		Array array = Array.CreateInstance(elementType, 1);
-		array.SetValue(
-			elementType == typeof(string) ? "a" :
-			elementType == typeof(object) ? new object() :
-			elementType.IsValueType ? Activator.CreateInstance(elementType) : null,
-			0);
+		array.SetValue(CreateValue(elementType), 0);
 		return array;
 	}
+
+	private static object? CreateValue(Type type)
+		=> type == typeof(string) ? "a" :
+			type == typeof(object) ? new object() :
+			type.IsValueType ? Activator.CreateInstance(type) : null;
 
 	private static object Complete(object expectation, int depth = 0)
 	{

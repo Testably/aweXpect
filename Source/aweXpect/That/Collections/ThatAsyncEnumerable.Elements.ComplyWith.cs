@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -89,10 +88,9 @@ public static partial class ThatAsyncEnumerable
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 			_matchingCount = 0;
 			_notMatchingCount = 0;
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			LimitedCollection<TItem> items = new(maxItems);
-			_matchingItems = new LimitedCollection<TItem>(maxItems);
-			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
+			LimitedCollection<TItem> items = new();
+			_matchingItems = new LimitedCollection<TItem>();
+			_notMatchingItems = new LimitedCollection<TItem>();
 
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{

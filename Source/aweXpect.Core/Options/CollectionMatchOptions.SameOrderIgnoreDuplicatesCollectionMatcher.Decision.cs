@@ -43,7 +43,7 @@ public partial class CollectionMatchOptions
 			    !IsEqualToAnExpectedItem(value) && !await MatchesAnyExpectedItem(subjectId, options))
 			{
 				_unexpectedItems.Add(index, value);
-				if (_unexpectedItems.Count > 2 * maximumNumber)
+				if (_unexpectedItems.Count > 2L * maximumNumber)
 				{
 					return (true, _isAlignmentAborted
 						? _alignmentError

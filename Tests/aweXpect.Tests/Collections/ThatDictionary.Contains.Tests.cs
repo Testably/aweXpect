@@ -189,6 +189,23 @@ public sealed partial class ThatDictionary
 					             {["a"] = 1}
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenKeyIsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["a"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Contains(null!, 1);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
+					.Because("a null key can never be contained, like for ContainsKey");
+			}
 		}
 
 		public sealed class OverloadTests

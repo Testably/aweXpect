@@ -238,6 +238,22 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenAsyncMemberFaults_AndExpectationIsNegated_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -591,6 +607,22 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
 					.And.WithParamName("expectations");
+			}
+
+			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value, null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
 			[Fact]

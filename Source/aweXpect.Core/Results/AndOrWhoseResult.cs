@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Results;
 
@@ -48,7 +49,10 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			Action<IThatSubject<TMember?>> expectations,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> new(
+	{
+		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
+		return new(
 			_expectationBuilder
 				.ForMember(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
@@ -56,6 +60,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars | ExpectationGrammars.Introduced),
 			_returnValue);
+	}
 
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
@@ -74,7 +79,10 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			Action<IThatSubject<TMember?>> expectations,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> new(
+	{
+		memberAccessor.ThrowIfNull();
+		expectations.ThrowIfNull();
+		return new(
 			_expectationBuilder
 				.ForAsyncMember(
 					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
@@ -83,6 +91,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars | ExpectationGrammars.Introduced),
 			_returnValue);
+	}
 
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
@@ -101,7 +110,10 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			Action<IThatSubject<TMember?>> expectations,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
-		=> Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+	{
+		memberAccessor.ThrowIfNull();
+		return Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+	}
 
 	/// <summary>
 	///     The result of an additional expectation for the underlying type.
@@ -133,6 +145,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
 		{
+			memberAccessor.ThrowIfNull();
+			expectations.ThrowIfNull();
 			_expectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
 				_expectationBuilder
@@ -164,6 +178,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
 		{
+			memberAccessor.ThrowIfNull();
+			expectations.ThrowIfNull();
 			_expectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
 				_expectationBuilder
@@ -194,6 +210,9 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				Action<IThatSubject<TMember?>> expectations,
 				[CallerArgumentExpression("memberAccessor")]
 				string doNotPopulateThisValue = "")
-			=> AndWhose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+		{
+			memberAccessor.ThrowIfNull();
+			return AndWhose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+		}
 	}
 }

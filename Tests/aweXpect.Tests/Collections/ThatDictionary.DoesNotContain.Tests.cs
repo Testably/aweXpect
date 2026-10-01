@@ -128,6 +128,23 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow()
 					.Because("the key and value overload looks the entry up like the pair overload");
 			}
+
+			[Fact]
+			public async Task WhenKeyIsNull_ShouldThrowArgumentNullException()
+			{
+				Dictionary<string, int> subject = new()
+				{
+					["a"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(null!, 1);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix()
+					.Because("a null key could never be contained, so the negation would succeed vacuously");
+			}
 		}
 
 		public sealed class ComparerTests

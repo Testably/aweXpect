@@ -15,7 +15,9 @@ public partial class ThatDelegateThrows<TException>
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(ExpectationBuilder
 				.ForMember(
 					MemberAccessor<Exception?, Exception?>.FromFunc(
 						e => e?.InnerException,
@@ -27,6 +29,7 @@ public partial class ThatDelegateThrows<TException>
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies that the thrown exception has an inner exception.
@@ -45,7 +48,9 @@ public partial class ThatDelegateThrows<TException>
 		WithInner<TInnerException>(
 			Action<IThatSubject<TInnerException?>> expectations)
 		where TInnerException : Exception
-		=> new(ExpectationBuilder
+	{
+		expectations.ThrowIfNull();
+		return new(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" that ",
 					false)
@@ -54,6 +59,7 @@ public partial class ThatDelegateThrows<TException>
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" />.
@@ -75,6 +81,7 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<Exception?>> expectations)
 	{
 		type.ThrowIfNotAnExceptionType();
+		expectations.ThrowIfNull();
 		return new(ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception, Exception?>(

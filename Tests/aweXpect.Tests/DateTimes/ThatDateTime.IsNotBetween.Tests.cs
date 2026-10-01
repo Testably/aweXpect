@@ -6,6 +6,22 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenBoundsWithMixedKindsAreInvertedInTicks_ShouldThrowArgumentOutOfRangeException()
+			{
+				DateTime subject = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+
+				async Task Act()
+					=> await That(subject)
+						.IsNotBetween(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+						.And(new DateTime(2019, 1, 1, 0, 0, 0, DateTimeKind.Local));
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("an unspecified subject is compared with both bounds in ticks, so the negation would succeed vacuously");
+			}
+
 			[Theory]
 			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
 			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Local)]
@@ -47,7 +63,7 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
-			public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldFail()
+			public async Task WhenMaximumHasAnIncompatibleKindAndFewerTicksThanTheMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateTime subject = CurrentTime(DateTimeKind.Local);
 				DateTime minimum = EarlierTime(1, DateTimeKind.Local);
@@ -56,13 +72,10 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it had kind Local, which cannot be compared with Utc
-					              """)
-					.Because("the ticks of bounds with incompatible kinds cannot tell whether the range is inverted");
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("the subject is compared with the bounds in ticks, so a range inverted in ticks can never contain it");
 			}
 
 			[Fact]
