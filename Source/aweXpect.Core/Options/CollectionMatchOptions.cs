@@ -483,30 +483,38 @@ public partial class CollectionMatchOptions(
 		return list;
 	}
 
-	private static async ValueTask<T?> FirstOrDefault<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate)
+	/// <summary>
+	///     The key tells whether an item was found, because the item itself can be the default value.
+	/// </summary>
+	private static async ValueTask<int?> FindFirstKey<T>(Dictionary<int, T> items, Func<T, ValueTask<bool>> predicate)
 	{
-		foreach (T item in items)
+		foreach (KeyValuePair<int, T> item in items)
 		{
-			if (await predicate(item))
+			if (await predicate(item.Value))
 			{
-				return item;
+				return item.Key;
 			}
 		}
 
-		return default;
+		return null;
 	}
 
-	private static async ValueTask RemoveFirst<T>(List<T> items, Func<T, ValueTask<bool>> predicate)
+	/// <summary>
+	///     Compiling a predicate costs far more than evaluating it, and matching can evaluate it for many items.
+	/// </summary>
+	private sealed class CompiledPredicates<T>
 	{
-		int index = -1;
-		foreach (T item in items)
+		private readonly Dictionary<Expression<Func<T, bool>>, Func<T, bool>> _predicates = new();
+
+		public ValueTask<bool> Invoke(Expression<Func<T, bool>> predicate, T value)
 		{
-			index++;
-			if (await predicate(item))
+			if (!_predicates.TryGetValue(predicate, out Func<T, bool>? compiled))
 			{
-				items.RemoveAt(index);
-				break;
+				compiled = predicate.Compile();
+				_predicates.Add(predicate, compiled);
 			}
+
+			return new ValueTask<bool>(UserCode.Invoke(compiled, value, "the predicate"));
 		}
 	}
 

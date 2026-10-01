@@ -74,11 +74,4 @@ internal static class ExceptionHelpers
 	/// </summary>
 	private static string Describe(string? paramName)
 		=> paramName is "expected" or "unexpected" ? $"'{paramName}' value" : $"'{paramName}'";
-
-	public static bool IsDefault<T>(this T value) where T : struct
-	{
-		bool isDefault = value.Equals(default(T));
-
-		return isDefault;
-	}
 }

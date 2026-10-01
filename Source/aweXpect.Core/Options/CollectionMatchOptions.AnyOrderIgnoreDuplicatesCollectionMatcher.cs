@@ -1,146 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
 public partial class CollectionMatchOptions
 {
-	private sealed class AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(
-		EquivalenceRelations equivalenceRelation,
-		IEnumerable<T> expected)
-		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(
-			equivalenceRelation,
-			expected.Distinct().ToList())
-		where T : T2
-	{
-		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
-
-		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
-			=> options.AreConsideredEqual(value, expected);
-	}
-
-	private sealed class AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(
-		EquivalenceRelations equivalenceRelation,
-		IEnumerable<ExpectationItem<T>> expected)
-		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, ExpectationItem<T>>(
-			equivalenceRelation,
-			expected.Distinct(new ExpectationItemEqualityComparer<T>()).ToList())
-		where T : T2
-	{
-		protected override ValueTask<bool>
-			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
-			=> expected.IsMetBy(value);
-	}
-
-	private sealed class AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(
-		EquivalenceRelations equivalenceRelation,
-		IEnumerable<Expression<Func<T, bool>>> expected)
-		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(
-			equivalenceRelation,
-			expected.Distinct(new ExpressionEqualityComparer<T, bool>()).ToList())
-		where T : T2
-	{
-		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
-			=> new ValueTask<bool>(UserCode.Invoke(expected.Compile(), value, "the predicate"));
-	}
-
-	private abstract class AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
+	/// <summary>
+	///     Ignoring duplicates compares the expected values as a set: each subject item has to match an expected value,
+	///     and each expected value has to be matched by a subject item.
+	/// </summary>
+	/// <remarks>
+	///     The equality options only ever compare a subject item with an expected value, so items that match the same
+	///     expected value are duplicates, e.g. "a" and "A" when ignoring the casing, and so are expected values that the
+	///     same item matches. This needs no comparison of two items of the same side, which the options cannot do for
+	///     untyped subjects or patterns.
+	/// </remarks>
+	private sealed class AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
+		private readonly List<T> _coveredItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly List<T3> _matchedExpectedItems = new();
-		private readonly List<T3> _missingItems;
+		private readonly List<T> _missingItems;
 		private readonly int _totalExpectedCount;
 		private readonly HashSet<T> _uniqueItems = new();
 		private int _index;
 
-		protected AnyOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
-			List<T3> expected)
+		public AnyOrderIgnoreDuplicatesCollectionMatcher(EquivalenceRelations equivalenceRelation,
+			IEnumerable<T> expected)
 		{
 			_equivalenceRelations = equivalenceRelation;
-			_missingItems = expected;
+			_missingItems = expected.Distinct().ToList();
 			_totalExpectedCount = _missingItems.Count;
 		}
-
-		/// <summary>
-		///     Only expected values are compared using the equality options, so an item that matches an expected value
-		///     that an earlier item already matched repeats it, e.g. when ignoring the casing; a predicate or an
-		///     expectation can also match unrelated items.
-		/// </summary>
-		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
 
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_uniqueItems.Contains(value))
+			int index = _index++;
+			if (!_uniqueItems.Add(value))
 			{
-				_index++;
 				return (false, null);
 			}
 
-			int missingIndex = await FindTheMissingItem(value, options);
-			if (missingIndex >= 0)
+			if (!await CoverAMissingItem(value, options) && IsAdditionalItemRelevant() &&
+			    !await Any(_coveredItems, expected => options.AreConsideredEqual(value, expected)))
 			{
-				if (RepeatingAMatchedExpectedItemIsADuplicate)
-				{
-					_matchedExpectedItems.Add(_missingItems[missingIndex]);
-				}
-
-				_missingItems.RemoveAt(missingIndex);
+				_additionalItems.Add(index, value);
 			}
-			else
-			{
-				// Only an item that would be a deviation is compared with every matched expected item.
-				if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-				    RepeatingAMatchedExpectedItemIsADuplicate &&
-				    await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options)))
-				{
-					_index++;
-					return (false, null);
-				}
-
-				_additionalItems.Add(_index, value);
-			}
-
-			_uniqueItems.Add(value);
-			_index++;
 
 			return CountAdditionalDeviations() > 2 * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
 				: (false, null);
 		}
 
-		/// <returns>The index of the first missing item that the <paramref name="value" /> matches, otherwise <c>-1</c>.</returns>
-		private async ValueTask<int>
-			FindTheMissingItem(T value, IOptionsEquality<T2> options)
-		{
-			for (int i = 0; i < _missingItems.Count; i++)
-			{
-				if (await AreConsideredEqual(value, _missingItems[i], options))
-				{
-					return i;
-				}
-			}
-
-			return -1;
-		}
-
-		public ValueTask<(bool, string?)>
+		public async ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			await CoverTheRemainingMissingItems(options, maximumNumber);
+
 			// For the containment relation, all deviations are missing items, which are known completely here.
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
 			    CountMissingDeviations() + CountAdditionalDeviations() > 2 * maximumNumber)
 			{
-				string tooManyDeviations = TooManyDeviationsError(it, maximumNumber, GetDeviations());
-				return new ValueTask<(bool, string?)>((true, tooManyDeviations));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 			}
 
 			Func<object?, string> formatItem = CreateItemFormatter();
@@ -156,8 +82,8 @@ public partial class CollectionMatchOptions
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true, formatItem,
-					options, maximumNumber));
+				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations, true,
+					formatItem, options, maximumNumber));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
@@ -165,8 +91,67 @@ public partial class CollectionMatchOptions
 			}
 
 			string? error = ReturnErrorString(it, errors);
-			return new ValueTask<(bool, string?)>((error != null, error));
+			return (error != null, error);
 		}
+
+		/// <summary>
+		///     Moves the first missing item that the <paramref name="value" /> matches to the covered items; other missing
+		///     items it matches are only searched for at the end, so that a successful comparison compares each item only
+		///     until its first match.
+		/// </summary>
+		/// <returns><see langword="true" />, when the <paramref name="value" /> matched a missing item.</returns>
+		private async ValueTask<bool> CoverAMissingItem(T value, IOptionsEquality<T2> options)
+		{
+			for (int i = 0; i < _missingItems.Count; i++)
+			{
+				if (await options.AreConsideredEqual(value, _missingItems[i]))
+				{
+					_coveredItems.Add(_missingItems[i]);
+					_missingItems.RemoveAt(i);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     A missing item can still be matched by an item that matched another expected item first.
+		/// </summary>
+		/// <remarks>
+		///     The search stops once the result no longer depends on it: the proper containment only needs one missing
+		///     item, and too many deviations only list the additional items.
+		/// </remarks>
+		private async ValueTask CoverTheRemainingMissingItems(IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (_equivalenceRelations == EquivalenceRelations.IsContainedIn)
+			{
+				return;
+			}
+
+			int stillMissing = 0;
+			for (int i = 0; i < _missingItems.Count; i++)
+			{
+				T expected = _missingItems[i];
+				if (await Any(_uniqueItems, value => options.AreConsideredEqual(value, expected)))
+				{
+					_missingItems.RemoveAt(i--);
+				}
+				else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) ||
+				         (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+				          ++stillMissing + CountAdditionalDeviations() > 2 * maximumNumber))
+				{
+					return;
+				}
+			}
+		}
+
+		/// <summary>
+		///     The containment relation only needs one additional item, for the proper containment.
+		/// </summary>
+		private bool IsAdditionalItemRelevant()
+			=> !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ||
+			   (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are not counted.
@@ -188,8 +173,5 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
 			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
-
-		protected abstract ValueTask<bool>
-			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
 	}
 }

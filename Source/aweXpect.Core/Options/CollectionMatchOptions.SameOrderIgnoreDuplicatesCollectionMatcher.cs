@@ -21,7 +21,11 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
+		private readonly HashSet<T> _expectedValues = new(expected);
+
 		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
+
+		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
 
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
@@ -54,12 +58,18 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
+		private readonly CompiledPredicates<T> _predicates = new();
+
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> new ValueTask<bool>(UserCode.Invoke(expected.Compile(), value, "the predicate"));
+			=> _predicates.Invoke(expected, value);
 	}
 
-	private abstract class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
+	/// <summary>
+	///     The alignment of the subject with the expected items, which describes the deviations; whether the items match
+	///     is decided by <see cref="DistinctItemsInOrder" />.
+	/// </summary>
+	private abstract partial class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
@@ -93,6 +103,7 @@ public partial class CollectionMatchOptions
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_expectedItems = expected.ToArray();
 			_expectedDistinctItems = _expectedItems.Distinct(comparer).ToArray();
+			_expectedIds = AssignIds(_expectedItems, comparer);
 			_totalExpectedItems = _expectedDistinctItems.Length;
 			_isRepeatedItem = new bool[_expectedItems.Length];
 			HashSet<T3> seenItems = new(comparer);
@@ -109,8 +120,8 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
 
-		public async ValueTask<(bool, string?)>
-			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		private async ValueTask<(bool, string?)>
+			VerifyAlignment(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
@@ -208,8 +219,8 @@ public partial class CollectionMatchOptions
 		}
 
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
-		public async ValueTask<(bool, string?)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+		private async ValueTask<(bool, string?)>
+			CompleteAlignment(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
@@ -222,11 +233,11 @@ public partial class CollectionMatchOptions
 				maximumNumber;
 			foreach (T3 item in _expectedDistinctItems.Skip(Math.Max(_expectationIndex - 1, _maxMatchIndex)))
 			{
-				KeyValuePair<int, T> additionalItem =
-					await FirstOrDefault(_additionalItems, a => AreConsideredEqual(a.Value, item, options));
-				if (!additionalItem.IsDefault())
+				int? additionalIndex =
+					await FindFirstKey(_additionalItems, a => AreConsideredEqual(a, item, options));
+				if (additionalIndex is not null)
 				{
-					_additionalItems.Remove(additionalItem.Key);
+					_additionalItems.Remove(additionalIndex.Value);
 					_missingItems.Add(item);
 				}
 
