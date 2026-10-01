@@ -112,18 +112,20 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
-		public async Task WithType_ShouldNotIncludeTypeInformation()
+		public async Task WithType_ShouldIncludeTypeInformation()
 		{
-			string expectedResult = "[\"foo\"] = 42";
+			string expectedResult = "KeyValuePair<string, int> [\"foo\"] = 42";
 			KeyValuePair<string, int> value = new("foo", 42);
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
 			Formatter.Format(sb, value, FormattingOptions.WithType);
 
-			await That(result).IsEqualTo(expectedResult).Because("the brackets already convey the pair structure");
-			await That(sb.ToString()).IsEqualTo(expectedResult)
-				.Because("the brackets already convey the pair structure");
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the brackets convey the pair structure, but not the types of its key and value");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
 		private sealed class Owner

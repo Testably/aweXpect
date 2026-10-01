@@ -108,7 +108,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it contained the key "a" with value 1
 
 					             Dictionary:
-					             [["a"] = 1]
+					             {["a"] = 1}
 					             """);
 			}
 

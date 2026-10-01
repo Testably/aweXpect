@@ -25,14 +25,22 @@ public sealed partial class QuantifiedCollectionResult
 				             
 				             Not matching items:
 				             [
-				               OtherClass { Value = 1 }
+				               QuantifiedCollectionResult.OtherClass {
+				                 Value = 1
+				               }
 				             ]
 				             
 				             Collection:
 				             [
-				               MyClass { Value = 1 },
-				               SubClass { Value = 1 },
-				               OtherClass { Value = 1 }
+				               QuantifiedCollectionResult.MyClass {
+				                 Value = 1
+				               },
+				               QuantifiedCollectionResult.SubClass {
+				                 Value = 1
+				               },
+				               QuantifiedCollectionResult.OtherClass {
+				                 Value = 1
+				               }
 				             ]
 				             """);
 		}

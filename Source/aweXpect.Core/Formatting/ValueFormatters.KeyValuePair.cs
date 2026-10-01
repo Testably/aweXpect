@@ -36,8 +36,10 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		if (options is not null)
+		if (options?.IncludeType == true)
 		{
+			Format(formatter, stringBuilder, typeof(KeyValuePair<TKey, TValue>));
+			stringBuilder.Append(' ');
 			options = options with
 			{
 				IncludeType = false,

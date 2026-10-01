@@ -3,9 +3,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using aweXpect.Core;
 #else
 using System.Globalization;
 #endif
@@ -294,11 +292,7 @@ public static partial class ValueFormatters
 	/// </remarks>
 	private static bool TryGetAsyncEnumerableType(Type type, [NotNullWhen(true)] out Type? asyncEnumerableType)
 	{
-		asyncEnumerableType = ReflectionFallback.IsSupported
-			? type.GetInterfaces().FirstOrDefault(@interface => @interface.IsGenericType &&
-			                                                    @interface.GetGenericTypeDefinition() ==
-			                                                    typeof(IAsyncEnumerable<>))
-			: null;
+		asyncEnumerableType = type.FindGenericInterface(definition => definition == typeof(IAsyncEnumerable<>));
 		return asyncEnumerableType is not null;
 	}
 #else

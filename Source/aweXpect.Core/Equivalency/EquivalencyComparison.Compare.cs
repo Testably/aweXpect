@@ -571,18 +571,8 @@ public static partial class EquivalencyComparison
 		   definition.FullName == "System.Collections.Generic.IReadOnlySet`1";
 #endif
 
-	/// <remarks>
-	///     The trimmer keeps the implementations of an interface it keeps, and every generic definition this is
-	///     matched against is referenced here, so the interfaces that decide the comparison survive trimming.
-	/// </remarks>
-#if NET8_0_OR_GREATER
-	[UnconditionalSuppressMessage("Trimming", "IL2075",
-		Justification = "The matched interfaces are referenced, so they are not trimmed away.")]
-#endif
 	private static bool ImplementsGenericInterface(object value, Func<Type, bool> matchesDefinition)
-		=> value.GetType().GetInterfaces()
-			.Any(interfaceType => interfaceType.IsGenericType &&
-			                      matchesDefinition(interfaceType.GetGenericTypeDefinition()));
+		=> value.GetType().FindGenericInterface(matchesDefinition) is not null;
 
 	/// <remarks>
 	///     Every expected key is looked up through the actual dictionary, so that its key comparer decides which keys

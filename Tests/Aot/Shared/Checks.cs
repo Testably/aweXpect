@@ -149,7 +149,31 @@ internal static class Checks
 				object boxed = new KeyValuePair<string, int>("k", 1);
 				await That(boxed).IsEqualTo(CreateOrder().Tags);
 			}, "[\"k\"] = 1", "[\"vip\"] = 1")),
+		// The interfaces that name an async iterator and mark a dictionary are found through reflection, so a
+		// rendering that silently degrades is only visible from the message. The iterator is enumerated first, like a
+		// consumer would, because the trimmer drops an interface implementation that is never used.
+		new("a failure message names an async iterator by its async enumerable type",
+			() => ShouldFail(async () =>
+			{
+				IAsyncEnumerable<int> numbers = CountAsync();
+				await foreach (int _ in numbers)
+				{
+				}
+
+				await That((object)numbers).IsNull();
+			}, "IAsyncEnumerable<int>")),
+		new("a failure message renders a dictionary that is only a generic one in braces",
+			() => ShouldFail(async () => await That((object)new ReadOnlyTags(CreateOrder().Tags)).IsNull(),
+				"but it was {", "[\"vip\"] = 1")),
+		new("a failure message renders a tuple positionally",
+			() => ShouldFail(async () => await That((object)(1.5, "a")).IsNull(), "(1.5, \"a\")")),
 	];
+
+	private static async IAsyncEnumerable<int> CountAsync()
+	{
+		await Task.Yield();
+		yield return 1;
+	}
 
 	/// <remarks>
 	///     Returns the interface on purpose: the generator registers the static type of a recorded subject, and the
