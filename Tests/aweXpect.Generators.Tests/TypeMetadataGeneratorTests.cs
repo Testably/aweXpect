@@ -36,7 +36,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Other());"),]);
 
 		await That(result.Errors).IsEmpty();
-		await That(result.Generated).Contains("[System.Runtime.CompilerServices.ModuleInitializer]")
+		await That(result.Generated).Contains("[global::System.Runtime.CompilerServices.ModuleInitializer]")
 			.Because("the metadata has to be registered before any code of the assembly compares anything");
 	}
 
@@ -427,6 +427,22 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(reasons).All()
 			.Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
 			.Because("an unchanged call site has to compare equal, so that the registrations are not collected again");
+	}
+
+	[Fact]
+	public async Task WhenConsumerDeclaresNamespacesThatShadowTheSystemNamespace_ShouldCompile()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace aweXpect.System { internal class Shadow { } }",
+			"namespace aweXpect.Generators.System { internal class Shadow { } }",
+			Models,
+			Call("Expect.That(new System.Collections.Generic.List<Models.Other>()).IsEquivalentTo(new Models.Other[0]);"),
+		]);
+
+		await That(result.Errors).IsEmpty()
+			.Because("an extension package could declare a namespace under `aweXpect.` that shadows the BCL");
+		await That(result.Generated).Contains("typeof(global::System.Collections.Generic.List<global::Models.Other>)");
 	}
 
 	[Fact]
@@ -1051,6 +1067,28 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the element type of the receiver is the subject of each element comparison");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsEnumerable_ShouldKeepItsInterfacesWithoutAWarningOfTheNet8AotCompiler()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Call("Expect.That(new System.Collections.Generic.List<string>()).IsEquivalentTo(new string[0]);"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains(string.Join(Environment.NewLine,
+				"\t\t// interfaces of global::System.Collections.Generic.List<string>",
+				"\t#if NET5_0_OR_GREATER",
+				"\t\t[global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.Interfaces, typeof(global::System.Collections.Generic.List<string>))]",
+				"\t#if !NET9_0_OR_GREATER",
+				"\t\t// ILC 8 cannot resolve interfaces from a dependency, but ILLink 8 honours it when trimming.",
+				"\t\t[global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage(\"Trimming\", \"IL2037\")]",
+				"\t#endif",
+				"\t#endif",
+				"\t\tprivate static void Register"))
+			.Because("ILC 8 reports IL2037 for the dependency, which fails a publish that treats warnings as errors");
 	}
 
 	[Fact]

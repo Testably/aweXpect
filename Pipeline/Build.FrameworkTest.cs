@@ -70,6 +70,7 @@ partial class Build
 		{
 			Project[] projects =
 			[
+				Solution.Tests.Frameworks.aweXpect_Frameworks_Tunit_Core_Tests,
 				Solution.Tests.Frameworks.aweXpect_Frameworks_Tunit_Tests,
 			];
 
