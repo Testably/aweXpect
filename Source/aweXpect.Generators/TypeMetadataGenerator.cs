@@ -457,7 +457,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		                	///     Without this registration, the members and events could only be found by reflection, which fails
 		                	///     when the application is published with trimming or Native AOT enabled.
 		                	/// </remarks>
-		                	[System.Runtime.CompilerServices.ModuleInitializer]
+		                	[global::System.Runtime.CompilerServices.ModuleInitializer]
 		                	internal static void Register()
 		                	{
 		                """);
@@ -490,8 +490,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				// and a dictionary into a sequence of pairs. Rooting them keeps the comparison the same as the JIT's.
 				body.AppendLine("#if NET5_0_OR_GREATER");
 				body.Append(
-						"\t[System.Diagnostics.CodeAnalysis.DynamicDependency(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.Interfaces, typeof(")
+						"\t[global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.Interfaces, typeof(")
 					.Append(nameable).AppendLine("))]");
+				body.AppendLine("#if !NET9_0_OR_GREATER");
+				body.AppendLine("\t// ILC 8 cannot resolve interfaces from a dependency, but ILLink 8 honours it when trimming.");
+				body.AppendLine(
+					"\t[global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage(\"Trimming\", \"IL2037\")]");
+				body.AppendLine("#endif");
 				body.AppendLine("#endif");
 			}
 

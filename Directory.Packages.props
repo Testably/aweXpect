@@ -42,6 +42,7 @@
 		<PackageVersion Include="TUnit" Version="1.70.1" />
 		<PackageVersion Include="TUnit.Assertions" Version="1.70.1" />
 		<PackageVersion Include="TUnit.Core" Version="1.70.1" />
+		<PackageVersion Include="TUnit.Engine" Version="1.70.1" />
 		<PackageVersion Include="xunit" Version="2.9.3" />
 		<PackageVersion Include="xunit.v3" Version="4.0.1" />
 		<PackageVersion Include="xunit.v3.assert" Version="4.0.1" />

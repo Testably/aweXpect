@@ -21,7 +21,8 @@ internal static class GeneratorRunner
 		CSharpParseOptions parseOptions = new(languageVersion);
 		List<SyntaxTree> trees = Parse(sources, parseOptions);
 		CSharpCompilation compilation = Compile("GeneratorTests", trees,
-			GetReferences(referenceCore).Concat(additionalReferences));
+			GetReferences(referenceCore).Concat(additionalReferences),
+			parseOptions.LanguageVersion >= LanguageVersion.CSharp8);
 
 		GeneratorDriver driver = CSharpGeneratorDriver.Create([generator.AsSourceGenerator(),],
 			parseOptions: parseOptions);
@@ -80,11 +81,16 @@ internal static class GeneratorRunner
 	private static List<SyntaxTree> Parse(string[] sources, CSharpParseOptions parseOptions)
 		=> sources.Select(source => CSharpSyntaxTree.ParseText(source, parseOptions)).ToList();
 
+	/// <remarks>
+	///     C# 7.3 rejects a nullable context, so it is only enabled where the language supports it.
+	/// </remarks>
 	private static CSharpCompilation Compile(string assemblyName, IEnumerable<SyntaxTree> trees,
-		IEnumerable<MetadataReference> references)
+		IEnumerable<MetadataReference> references, bool supportsNullable = true)
 		=> CSharpCompilation.Create(assemblyName, trees, references,
 			new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
-				nullableContextOptions: NullableContextOptions.Enable));
+				nullableContextOptions: supportsNullable
+					? NullableContextOptions.Enable
+					: NullableContextOptions.Disable));
 
 	/// <remarks>
 	///     The trusted platform assemblies include this test assembly, whose copy of the corpus would clash with the

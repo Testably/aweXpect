@@ -26,6 +26,7 @@
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.MsTest4.Tests/aweXpect.Frameworks.MsTest4.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.NUnit3.Tests/aweXpect.Frameworks.NUnit3.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.NUnit4.Tests/aweXpect.Frameworks.NUnit4.Tests.csproj" />
+    <Project Path="Tests/Frameworks/aweXpect.Frameworks.Tunit.Core.Tests/aweXpect.Frameworks.Tunit.Core.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.Tunit.Tests/aweXpect.Frameworks.Tunit.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.Xunit2.Tests/aweXpect.Frameworks.Xunit2.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.Xunit3.Core.Tests/aweXpect.Frameworks.Xunit3.Core.Tests.csproj" />
