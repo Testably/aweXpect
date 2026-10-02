@@ -19,7 +19,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is infinite.
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsInfinite<TNumber>(this IThat<TNumber> subject)
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsInfiniteConstraint<TNumber>(it, grammars)),
 			subject);
@@ -32,7 +32,7 @@ public static partial class ThatNumber
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber?>> IsInfinite<TNumber>(this IThat<TNumber?> subject)
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars)),
 			subject);
@@ -41,7 +41,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not infinite.
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNotInfinite<TNumber>(this IThat<TNumber> subject)
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsInfiniteConstraint<TNumber>(it, grammars).Invert()),
 			subject);
@@ -54,7 +54,7 @@ public static partial class ThatNumber
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> subject)
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars).Invert()),
 			subject);
@@ -62,7 +62,7 @@ public static partial class ThatNumber
 	private sealed class IsInfiniteConstraint<TNumber>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 	{
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
@@ -92,7 +92,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
-		where TNumber : struct, IFloatingPoint<TNumber>
+		where TNumber : struct, IFloatingPointIeee754<TNumber>
 	{
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
