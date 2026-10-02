@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it lacked 1 of 2 expected items: 2
+				             but it contained item 3 at index 2 in wrong order
 
 				             Collection:
 				             [1, 2, 3]

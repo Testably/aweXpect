@@ -1058,9 +1058,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x"
+					               contained item "d" at index 3 that was not expected
 					             and
-					               contained item "e" at index 4 instead of an item that is equal to "y"
+					               contained item "e" at index 4 that was not expected
 					             and
 					               lacked 3 of 6 expected items:
 					                 an item that is equal to "x",
@@ -1183,9 +1183,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of an item that is equal to "b" and
-					               contained item "b" at index 2 instead of an item that is equal to "c"
+					             but it contained item "b" at index 2 in wrong order
 					             (but the items match in a different order)
 
 					             Collection:

@@ -23,7 +23,7 @@ public partial class CollectionMatchOptions
 	{
 		private readonly HashSet<T> _expectedValues = new(expected);
 
-		protected override bool RepeatingAMatchedExpectedItemIsADuplicate => true;
+		protected override bool IsOneToOne => false;
 
 		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
 
@@ -66,33 +66,23 @@ public partial class CollectionMatchOptions
 	}
 
 	/// <summary>
-	///     The alignment of the subject with the expected items, which describes the deviations; whether the items match
-	///     is decided by <see cref="DistinctItemsInOrder" />.
+	///     Stores the distinct items, so that <see cref="DistinctItemsInOrder" /> decides whether they match and
+	///     <see cref="InOrderMismatch" /> describes why they do not.
 	/// </summary>
-	private abstract partial class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
+	private abstract class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedDistinctItems;
+		private readonly int[] _expectedIds;
 		private readonly T3[] _expectedItems;
+		private readonly List<int> _firstIndexOfSubjectItem = new();
 		private readonly bool _ignoreInterspersedItems;
-		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
-		private readonly bool[] _isRepeatedItem;
-		private readonly List<T3> _matchedExpectedItems = new();
-		private readonly List<(int Index, T Item)> _matchingItems = new();
-		private readonly List<T3> _missingItems = new();
-		private readonly Dictionary<int, T> _outOfOrderItems = new();
-		private readonly int _totalExpectedItems;
-		private readonly HashSet<T> _uniqueItems = new();
-		private List<(int Offset, int Cursor)> _candidates = new();
-		private int _alignment;
-		private int _distinctIndex;
-		private int _expectationIndex = -1;
-		private int _index;
-		private int _matchIndex;
-		private int _maxMatchIndex;
-		private bool _runIsBroken;
+		private readonly ItemIds<T> _subjectIds = new(null);
+		private readonly List<int> _subjectIdAt = new();
+		private int _followedExpectedItems;
+		private int _lastMatchedExpectedId = -1;
+		private int _subjectItemsMatchingNothing;
 
 		protected SameOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
@@ -102,509 +92,219 @@ public partial class CollectionMatchOptions
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_expectedItems = expected.ToArray();
-			_expectedDistinctItems = _expectedItems.Distinct(comparer).ToArray();
-			_expectedIds = AssignIds(_expectedItems, comparer);
-			_totalExpectedItems = _expectedDistinctItems.Length;
-			_isRepeatedItem = new bool[_expectedItems.Length];
-			HashSet<T3> seenItems = new(comparer);
-			for (int i = 0; i < _expectedItems.Length; i++)
-			{
-				_isRepeatedItem[i] = !seenItems.Add(_expectedItems[i]);
-			}
+			ItemIds<T3> expectedIds = new(comparer);
+			_expectedIds = _expectedItems.Select(item => expectedIds.GetOrAdd(item, out _)).ToArray();
+			_expectedDistinctItems = expectedIds.Items.ToArray();
 		}
 
 		/// <summary>
-		///     Only expected values are compared using the equality options, so an item that matches an expected value
-		///     that an earlier item already matched repeats it, e.g. when ignoring the casing; a predicate or an
-		///     expectation can also match unrelated items.
+		///     Predicates and expectations need one distinct item each; expected values form a set, so items that match the
+		///     same value are duplicates, e.g. when ignoring the casing.
 		/// </summary>
-		protected virtual bool RepeatingAMatchedExpectedItemIsADuplicate => false;
+		protected virtual bool IsOneToOne => true;
 
 		/// <inheritdoc />
 		/// <remarks>
-		///     Once the decision finds all expected items in the items so far, further items cannot change it for the
-		///     containment relation, and the proper containment only needs an additional item as well.
+		///     Once the items so far contain the expected items, further items cannot change the containment relation, and
+		///     the proper containment only needs an additional item as well.
 		/// </remarks>
 		public bool IsDetermined { get; private set; }
 
-		private async ValueTask<(bool, string?)>
-			VerifyAlignment(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		public async ValueTask<(bool, string?)>
+			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			int index = _subjectIdAt.Count;
+			int subjectId = _subjectIds.GetOrAdd(value, out bool isNew);
+			_subjectIdAt.Add(subjectId);
+			if (isNew)
 			{
-				return await VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
+				_firstIndexOfSubjectItem.Add(index);
 			}
 
-#pragma warning disable S1871 // The identical branches record the same outcome for distinct reasons and are kept apart to stay readable
-			if (_matchIndex >= _expectedDistinctItems.Length)
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
-				if (await IsDuplicate(value, options, !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains)))
-				{
-					_index++;
-					return (false, null);
-				}
-
-				// All expected items were found -> additional items
-				_additionalItems.Add(_index, value);
+				await CheckWhetherTheResultIsDetermined(subjectId, options);
+				return (false, null);
 			}
-			else if (await AreConsideredEqual(value, _expectedDistinctItems[_matchIndex], options))
+
+			if (isNew && !IsEqualToAnExpectedItem(value) && !await MatchesAnExpectedItem(subjectId, options))
 			{
-				await VerifyTheCurrentValueIsEqualToTheExpectedValue(value, options);
+				_subjectItemsMatchingNothing++;
 			}
-			else if (_ignoreInterspersedItems)
-			{
-				if (await IsDuplicate(value, options, !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains)))
-				{
-					_index++;
-					return (false, null);
-				}
 
-				_additionalItems.Add(_index, value);
-			}
-			else
-			{
-				if (await IsDuplicate(value, options,
-					    !_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) || _matchIndex > 0))
-				{
-					_index++;
-					return (false, null);
-				}
-
-				await VerifyTheCurrentValueIsDifferentFromTheExpectedValue(value, options);
-			}
-#pragma warning restore S1871
-
-			_index++;
-			return CountDeviations() > 2L * maximumNumber
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
+			return CountTheCertainlyUnexpectedItems() > 2L * maximumNumber
+				? (true, TooManyDeviationsError(it, maximumNumber,
+					(await FindTheDeviations(options)).ListDeviations(_equivalenceRelations, options)))
 				: (false, null);
 		}
 
-		/// <summary>
-		///     Additional items are no deviation for the containment relation, so they are not counted.
-		/// </summary>
-		private int CountDeviations()
-			=> _incorrectItems.Count + _missingItems.Count +
-			   (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count);
-
-		/// <summary>
-		///     Additional items are no deviation for the containment relation, so they are left out.
-		/// </summary>
-		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
+		public async ValueTask<(bool, string?)>
+			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems, options)
-				.Concat(OutOfOrderItemsError(_outOfOrderItems));
-			return _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
-				? deviations
-				: deviations.Concat(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
+			DistinctItemsInOrder order = CreateOrder(options);
+			bool requiresAdditionalItem = _equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
+			                              _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly);
+			if (await order.IsInOrder() && (!requiresAdditionalItem || await order.HasAdditionalItem()))
+			{
+				return (false, null);
+			}
+
+			InOrderDeviations<T, T3> deviations = await FindTheDeviations(options);
+			string? error = deviations.GetError(it, _equivalenceRelations, true, _expectedDistinctItems.Length,
+				options, maximumNumber);
+			if (_equivalenceRelations == EquivalenceRelations.Equivalent && deviations.MatchesInAnyOrder)
+			{
+				error += Environment.NewLine + ItemsMatchInADifferentOrderHint;
+			}
+
+			return (true, error);
 		}
 
 		/// <summary>
-		///     Only the unique items of the subject have to appear in the expected collection, so an item that repeats
-		///     an earlier one is skipped; the expected items it never consumes are no deviations for this relation.
-		/// </summary>
-		private async ValueTask<(bool, string?)>
-			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
-				int maximumNumber)
-		{
-			if (!_uniqueItems.Contains(value))
-			{
-				bool isDuplicate = _ignoreInterspersedItems
-					? await VerifyTheCurrentValueContinuesTheSubsequence(value, options)
-					: await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
-				if (!isDuplicate)
-				{
-					_uniqueItems.Add(value);
-					_distinctIndex++;
-				}
-			}
-
-			_index++;
-			return _additionalItems.Count + _incorrectItems.Count + _outOfOrderItems.Count > 2L * maximumNumber
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
-				: (false, null);
-		}
-
-#pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
-		private async ValueTask<(bool, string?)>
-			CompleteAlignment(string it, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
-			{
-				return _ignoreInterspersedItems
-					? VerifyCompleteForSubsequenceMatch(it)
-					: VerifyCompleteForContiguousMatch(it, options);
-			}
-
-			int maximumNumberOfCollectionItems =
-				maximumNumber;
-			foreach (T3 item in _expectedDistinctItems.Skip(Math.Max(_expectationIndex - 1, _maxMatchIndex)))
-			{
-				int? additionalIndex =
-					await FindFirstKey(_additionalItems, a => AreConsideredEqual(a, item, options));
-				if (additionalIndex is not null)
-				{
-					_additionalItems.Remove(additionalIndex.Value);
-					_missingItems.Add(item);
-				}
-
-				if (await Any(_uniqueItems, v => AreConsideredEqual(v, item, options)))
-				{
-					continue;
-				}
-
-				if (await All(_additionalItems, x => AreConsideredEqual(x.Value, item, options), true) &&
-				    await All(_incorrectItems, x => AreConsideredEqual(x.Value.Item, item, options), true))
-				{
-					_missingItems.Add(item);
-				}
-
-				// For the containment relation, all missing items are listed.
-				if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-				    CountDeviations() > 2L * maximumNumberOfCollectionItems)
-				{
-					return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
-				}
-			}
-
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			    _matchIndex >= _expectedDistinctItems.Length)
-			{
-				// A later complete match supersedes the deviations of abandoned partial matches.
-				foreach (KeyValuePair<int, (T Item, T3 Expected)> incorrectItem in _incorrectItems)
-				{
-					_additionalItems.Add(incorrectItem.Key, incorrectItem.Value.Item);
-				}
-
-				_incorrectItems.Clear();
-			}
-
-			Func<object?, string> formatItem = CreateItemFormatter();
-			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
-			{
-				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
-			}
-			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) &&
-			         !_additionalItems.Any() &&
-			         !await Any(_incorrectItems, i
-				         => All(_expectedDistinctItems, e => AreConsideredEqual(i.Value.Item, e, options), true)))
-			{
-				errors.Add("did not contain any additional items");
-			}
-
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, true, formatItem,
-				options, maximumNumber));
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-#pragma warning restore S3776
-
-		/// <summary>
-		///     The subject is contained in the expected collection, when its unique items appear there as an uninterrupted
-		///     run; once no run is left, the remaining items are compared against the abandoned run.
-		/// </summary>
-		private (bool, string?) VerifyCompleteForContiguousMatch(string it, IOptionsEquality<T2> options)
-		{
-			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
-			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
-			if (errors.Count == 0 &&
-			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
-			    _distinctIndex >= _expectedDistinctItems.Length)
-			{
-				errors.Add("contained all expected items");
-			}
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-
-		/// <summary>
-		///     The subject is contained in the expected collection, when its unique items appear there in the same relative
-		///     order; the expected items that are skipped in between are missing items.
-		/// </summary>
-		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it)
-		{
-			for (int i = _matchIndex; i < _expectedItems.Length; i++)
-			{
-				_missingItems.Add(_expectedItems[i]);
-			}
-
-			List<string> errors = new();
-			errors.AddRange(OutOfOrderItemsError(_outOfOrderItems));
-			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
-			if (errors.Count == 0 &&
-			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
-			    _distinctIndex >= _expectedDistinctItems.Length)
-			{
-				errors.Add("contained all expected items");
-			}
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-
-		/// <summary>
-		///     Keeps all offsets in the expected collection at which the subject could still start an uninterrupted run;
-		///     when the last candidate is abandoned, the <paramref name="value" /> and all later items are reported
-		///     against it, unless they still match the item they are aligned with.
-		/// </summary>
-		/// <returns>
-		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
-		///     otherwise be a deviation.
-		/// </returns>
-		private async ValueTask<bool>
-			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
-		{
-			int alignment = _alignment;
-			if (!_runIsBroken)
-			{
-				List<(int Offset, int Cursor)> candidates = await FindTheRemainingCandidates(value, options);
-				if (candidates.Count > 0)
-				{
-					_candidates = candidates;
-					RecordTheMatchedExpectedItem(_expectedItems[candidates[0].Cursor - 1]);
-					return false;
-				}
-
-				alignment = _candidates.Count > 0 ? _candidates[0].Cursor : 0;
-			}
-
-			bool isAdditional = alignment >= _expectedItems.Length;
-			bool isIncorrect = !isAdditional &&
-			                   !await AreConsideredEqual(value, _expectedItems[alignment], options);
-			if ((isAdditional || isIncorrect) && await RepeatsAMatchedExpectedItem(value, options))
-			{
-				return true;
-			}
-
-			if (isAdditional)
-			{
-				_additionalItems.Add(_index, value);
-			}
-			else if (isIncorrect)
-			{
-				_incorrectItems.Add(_index, (value, _expectedItems[alignment]));
-			}
-			else
-			{
-				RecordTheMatchedExpectedItem(_expectedItems[alignment]);
-			}
-
-			_runIsBroken = true;
-			_alignment = alignment + 1;
-			return false;
-		}
-
-		/// <summary>
-		///     The first unique item opens a candidate at every offset it matches, each later unique item keeps the
-		///     candidates whose next expected item it matches.
-		/// </summary>
-		/// <returns>
-		///     The offsets at which the run can still continue with the <paramref name="value" />, each with the cursor
-		///     behind the expected item it matched.
-		/// </returns>
-		private async ValueTask<List<(int Offset, int Cursor)>>
-			FindTheRemainingCandidates(T value, IOptionsEquality<T2> options)
-		{
-			List<(int Offset, int Cursor)> candidates = new();
-			if (_distinctIndex == 0)
-			{
-				for (int offset = 0; offset < _expectedItems.Length; offset++)
-				{
-					if (await AreConsideredEqual(value, _expectedItems[offset], options))
-					{
-						candidates.Add((offset, offset + 1));
-					}
-				}
-			}
-			else
-			{
-				foreach ((int offset, int cursor) in _candidates)
-				{
-					int match = await FindTheNextMatchingExpectedItem(cursor, value, options);
-					if (match >= 0)
-					{
-						candidates.Add((offset, match + 1));
-					}
-				}
-			}
-
-			return candidates;
-		}
-
-		/// <summary>
-		///     Expected items that repeat an earlier one do not interrupt the run, because duplicates are ignored.
-		/// </summary>
-		/// <returns>The index of the matching expected item, or <c>-1</c> when the run ends before it.</returns>
-		private async ValueTask<int>
-			FindTheNextMatchingExpectedItem(int cursor, T value, IOptionsEquality<T2> options)
-		{
-			while (cursor < _expectedItems.Length)
-			{
-				if (await AreConsideredEqual(value, _expectedItems[cursor], options))
-				{
-					return cursor;
-				}
-
-				if (!_isRepeatedItem[cursor])
-				{
-					break;
-				}
-
-				cursor++;
-			}
-
-			return -1;
-		}
-
-		/// <summary>
-		///     Consumes the expected items until the <paramref name="value" /> matches, so that gaps in the expected
-		///     collection are allowed, but the subject items must keep their relative order.
-		/// </summary>
-		/// <returns>
-		///     <see langword="true" />, when the <paramref name="value" /> is skipped as a duplicate, because it would
-		///     otherwise be a deviation.
-		/// </returns>
-		private async ValueTask<bool>
-			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
-		{
-			for (int i = _matchIndex; i < _expectedItems.Length; i++)
-			{
-				if (await AreConsideredEqual(value, _expectedItems[i], options))
-				{
-					for (int j = _matchIndex; j < i; j++)
-					{
-						_missingItems.Add(_expectedItems[j]);
-					}
-
-					RecordTheMatchedExpectedItem(_expectedItems[i]);
-					_matchIndex = i + 1;
-					return false;
-				}
-			}
-
-			if (await RepeatsAMatchedExpectedItem(value, options))
-			{
-				return true;
-			}
-
-			if (await Any(_missingItems, m => AreConsideredEqual(value, m, options)))
-			{
-				_outOfOrderItems.Add(_index, value);
-			}
-			else
-			{
-				_additionalItems.Add(_index, value);
-			}
-
-			return false;
-		}
-
-		private async ValueTask
-			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
-		{
-			if (_expectationIndex >= 0)
-			{
-				_expectationIndex++;
-			}
-
-			_matchIndex = 0;
-
-			if (await AreConsideredEqual(value, _expectedDistinctItems[_matchIndex], options))
-			{
-				foreach ((int index, T matchingItem) in _matchingItems)
-				{
-					_additionalItems.Add(index, matchingItem);
-				}
-
-				_matchingItems.Clear();
-				RecordTheMatchedExpectedItem(_expectedDistinctItems[_matchIndex]);
-				_matchIndex++;
-				_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
-				_expectationIndex = 0;
-				_matchingItems.Add((_index, value));
-			}
-			else if (_expectationIndex < 0 || _expectationIndex >= _expectedDistinctItems.Length)
-			{
-				_additionalItems.Add(_index, value);
-			}
-			else if (await AreConsideredEqual(value, _expectedDistinctItems[_expectationIndex], options))
-			{
-				// The value still matches the expected item it is aligned with, so it is no deviation,
-				// although the run that could have matched was abandoned.
-				RecordTheMatchedExpectedItem(_expectedDistinctItems[_expectationIndex]);
-				_maxMatchIndex = Math.Max(_expectationIndex + 1, _maxMatchIndex);
-			}
-			else
-			{
-				_incorrectItems.Add(_index, (value, _expectedDistinctItems[_expectationIndex]));
-			}
-		}
-
-		private async ValueTask
-			VerifyTheCurrentValueIsEqualToTheExpectedValue(T value, IOptionsEquality<T2> options)
-		{
-			RecordTheMatchedExpectedItem(_expectedDistinctItems[_matchIndex]);
-			_matchIndex++;
-			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
-			_expectationIndex++;
-			_matchingItems.Add((_index, value));
-			_uniqueItems.Add(value);
-			foreach (int key in await Filter(_additionalItems, item => options.AreConsideredEqual(item.Value, value),
-				         x => x.Key))
-			{
-				_additionalItems.Remove(key);
-			}
-		}
-
-		/// <summary>
-		///     Adds the <paramref name="value" /> to the unique items, unless it is a duplicate.
+		///     Avoids comparing each item with the expected items, when it is known to match one of them.
 		/// </summary>
 		/// <remarks>
-		///     Only a <paramref name="value" /> that would be a deviation is compared with the matched expected items,
-		///     because an item outside the matched run of the containment relation needs no such comparison.
+		///     This only decides, whether the comparison can abort early, so it may err towards a match.
 		/// </remarks>
-		private async ValueTask<bool>
-			IsDuplicate(T value, IOptionsEquality<T2> options, bool wouldBeADeviation)
+		protected virtual bool IsEqualToAnExpectedItem(T value) => false;
+
+		/// <summary>
+		///     The decision is only consulted, once the items so far followed all expected items in order, so that it does
+		///     not run for every item; a run or a placement of the expected items implies such a sequence.
+		/// </summary>
+		private async ValueTask CheckWhetherTheResultIsDetermined(int subjectId, IOptionsEquality<T2> options)
 		{
-			if (_uniqueItems.Contains(value) ||
-			    (wouldBeADeviation && await RepeatsAMatchedExpectedItem(value, options)))
+			while (_followedExpectedItems < _expectedDistinctItems.Length &&
+			       await IsMatch(subjectId, _followedExpectedItems, options))
 			{
-				return true;
+				_followedExpectedItems++;
 			}
 
-			_uniqueItems.Add(value);
-			return false;
+			if (IsDetermined || _followedExpectedItems < _expectedDistinctItems.Length)
+			{
+				return;
+			}
+
+			DistinctItemsInOrder order = CreateOrder(options);
+			IsDetermined = await order.IsInOrder() &&
+			               (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
+			                await order.HasAdditionalItem());
 		}
 
 		/// <summary>
-		///     As this compares the <paramref name="value" /> with every matched expected item, it is only checked for an
-		///     item that would otherwise be a deviation.
+		///     A subject item that matches no expected item is unexpected regardless of the other items; one-to-one, so
+		///     are the items beyond the number of expected items.
 		/// </summary>
-		private async ValueTask<bool>
-			RepeatsAMatchedExpectedItem(T value, IOptionsEquality<T2> options)
-			=> RepeatingAMatchedExpectedItemIsADuplicate &&
-			   await Any(_matchedExpectedItems, expected => AreConsideredEqual(value, expected, options));
-
-		private void RecordTheMatchedExpectedItem(T3 expected)
+		private long CountTheCertainlyUnexpectedItems()
 		{
-			if (RepeatingAMatchedExpectedItemIsADuplicate)
+			int beyondTheExpectedItems = _subjectIds.Items.Count - _subjectItemsMatchingNothing -
+			                             _expectedDistinctItems.Length;
+			return _subjectItemsMatchingNothing + (IsOneToOne ? Math.Max(0, beyondTheExpectedItems) : 0);
+		}
+
+		private async ValueTask<bool> MatchesAnExpectedItem(int subjectId, IOptionsEquality<T2> options)
+		{
+			int expectedId = await FindNear(_lastMatchedExpectedId, _expectedDistinctItems.Length,
+				id => IsMatch(subjectId, id, options));
+			if (expectedId < 0)
 			{
-				_matchedExpectedItems.Add(expected);
+				return false;
 			}
+
+			_lastMatchedExpectedId = expectedId;
+			return true;
 		}
 
 		/// <summary>
-		///     An unexpected and a missing item that format equally differ only in their runtime type.
+		///     The containment searches the subject in the expected items, the other relations search the expected items
+		///     in the subject.
 		/// </summary>
-		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
+		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
+		{
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(_expectedIds,
+					_expectedDistinctItems.Length, _subjectIds.Items.Count,
+					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch());
+				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
+					subjectId => (_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId]),
+					position => _expectedItems[position]);
+			}
+
+			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(_subjectIdAt.ToArray(),
+				_subjectIds.Items.Count, _expectedDistinctItems.Length,
+				(subjectId, expectedId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch());
+			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
+				position => (position, _subjectIds.Items[_subjectIdAt[position]]),
+				expectedId => _expectedDistinctItems[expectedId]);
+		}
+
+		/// <summary>
+		///     The containment searches the subject in the expected items, the other relations search the expected items
+		///     in the subject.
+		/// </summary>
+		private DistinctItemsInOrder CreateOrder(IOptionsEquality<T2> options)
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
+				? new DistinctItemsInOrder(_expectedIds, _expectedDistinctItems.Length, _subjectIds.Items.Count,
+					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch())
+				: new DistinctItemsInOrder(_subjectIdAt.ToArray(), _subjectIds.Items.Count,
+					_expectedDistinctItems.Length, (subjectId, expectedId) => IsMatch(subjectId, expectedId, options),
+					IsOneToOne, GetOrderMatch());
+
+		private OrderMatch GetOrderMatch()
+		{
+			if ((_equivalenceRelations & (EquivalenceRelations.Contains | EquivalenceRelations.IsContainedIn)) == 0)
+			{
+				return OrderMatch.Equal;
+			}
+
+			return _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
+		}
+
+		private ValueTask<bool> IsMatch(int subjectId, int expectedId, IOptionsEquality<T2> options)
+			=> AreConsideredEqual(_subjectIds.Items[subjectId], _expectedDistinctItems[expectedId], options);
 
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
+	}
+
+	/// <summary>
+	///     Numbers the distinct items in the order of their first occurrence.
+	/// </summary>
+	private sealed class ItemIds<TItem>(IEqualityComparer<TItem>? comparer)
+	{
+		private readonly Dictionary<Key, int> _ids = new(new KeyComparer(comparer ?? EqualityComparer<TItem>.Default));
+
+		public List<TItem> Items { get; } = new();
+
+		public int GetOrAdd(TItem item, out bool isNew)
+		{
+			isNew = !_ids.TryGetValue(new Key(item), out int id);
+			if (isNew)
+			{
+				id = Items.Count;
+				_ids.Add(new Key(item), id);
+				Items.Add(item);
+			}
+
+			return id;
+		}
+
+		/// <summary>
+		///     Wraps the item, because a dictionary key cannot be <see langword="null" />.
+		/// </summary>
+		private readonly struct Key(TItem item)
+		{
+			public TItem Item { get; } = item;
+		}
+
+		private sealed class KeyComparer(IEqualityComparer<TItem> comparer) : IEqualityComparer<Key>
+		{
+			public bool Equals(Key x, Key y)
+				=> x.Item is null ? y.Item is null : y.Item is not null && comparer.Equals(x.Item, y.Item);
+
+			public int GetHashCode(Key obj)
+				=> obj.Item is null ? 0 : comparer.GetHashCode(obj.Item);
+		}
 	}
 }

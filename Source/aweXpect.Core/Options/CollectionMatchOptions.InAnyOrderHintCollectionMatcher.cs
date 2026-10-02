@@ -17,7 +17,6 @@ public partial class CollectionMatchOptions
 		: ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private const string Hint = "(but the items match in a different order)";
 		private readonly List<T> _values = new();
 
 		public bool IsDetermined => inOrderMatcher.IsDetermined;
@@ -38,7 +37,7 @@ public partial class CollectionMatchOptions
 				return (isFailure, error);
 			}
 
-			return (isFailure, error + Environment.NewLine + Hint);
+			return (isFailure, error + Environment.NewLine + ItemsMatchInADifferentOrderHint);
 		}
 
 		private async ValueTask<bool>

@@ -30,9 +30,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of 4 and
-					               lacked 1 of 2 expected items: 4
+					             but it lacked 1 of 2 expected items: 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -56,9 +54,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of 4 and
-					               lacked 1 of 2 expected items: 4
+					             but it lacked 1 of 2 expected items: 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -86,9 +82,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of an item that is equal to 4 and
-					               lacked 1 of 2 expected items: an item that is equal to 4
+					             but it lacked 1 of 2 expected items: an item that is equal to 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -113,9 +107,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of 4 and
-					               lacked 1 of 2 expected items: 4
+					             but it lacked 1 of 2 expected items: 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -142,9 +134,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of an item that is equal to 4 and
-					               lacked 1 of 2 expected items: an item that is equal to 4
+					             but it lacked 1 of 2 expected items: an item that is equal to 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -171,9 +161,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of a => (a == 4) and
-					               lacked 1 of 2 expected items: a => (a == 4)
+					             but it lacked 1 of 2 expected items: a => (a == 4)
 
 					             Collection:
 					             [1, 2, 3]
@@ -202,9 +190,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 2 instead of "d" and
-					               lacked 1 of 2 expected items: "d"
+					             but it lacked 1 of 2 expected items: "d"
 
 					             Collection:
 					             [
@@ -237,9 +223,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected ± 0.25 in order and contiguous,
-					             but it
-					               contained item 3.0 at index 2 instead of 4.0 and
-					               lacked 1 of 2 expected items: 4.0
+					             but it lacked 1 of 2 expected items: 4.0
 
 					             Collection:
 					             [1.0, 2.0, 3.0]
@@ -265,9 +249,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of a => (a == 4) and
-					               lacked 1 of 2 expected items: a => (a == 4)
+					             but it lacked 1 of 2 expected items: a => (a == 4)
 
 					             Collection:
 					             [1, 2, 3]
@@ -294,9 +276,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 2 instead of "d" and
-					               lacked 1 of 2 expected items: "d"
+					             but it lacked 1 of 2 expected items: "d"
 
 					             Collection:
 					             [
@@ -327,9 +307,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 2 instead of "d" and
-					               lacked 1 of 2 expected items: "d"
+					             but it lacked 1 of 2 expected items: "d"
 
 					             Collection:
 					             [
@@ -383,9 +361,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 2 instead of 4 and
-					               lacked 1 of 2 expected items: 4
+					             but it lacked 1 of 2 expected items: 4
 
 					             Collection:
 					             [1, 2, 3]
@@ -471,9 +447,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected ± 0.25 in order and contiguous,
-					             but it
-					               contained item 3.0 at index 2 instead of 4.0 and
-					               lacked 1 of 2 expected items: 4.0
+					             but it lacked 1 of 2 expected items: 4.0
 
 					             Collection:
 					             [1.0, 2.0, 3.0]

@@ -40,17 +40,17 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
 					             but it
-					               contained item 1 at index 0 instead of 100 and
-					               contained item 2 at index 1 instead of 101 and
-					               contained item 3 at index 2 instead of 102 and
-					               contained item 4 at index 3 instead of 103 and
-					               contained item 5 at index 4 instead of 104 and
-					               contained item 6 at index 5 instead of 105 and
-					               contained item 7 at index 6 instead of 106 and
-					               contained item 8 at index 7 instead of 107 and
-					               contained item 9 at index 8 instead of 108 and
-					               contained item 10 at index 9 instead of 109 and
-					               contained item 11 at index 10 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -110,16 +110,16 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
 					             but it
-					               contained item 1 at index 0 instead of 101 and
-					               contained item 2 at index 1 instead of 102 and
-					               contained item 3 at index 2 instead of 103 and
-					               contained item 4 at index 3 instead of 104 and
-					               contained item 5 at index 4 instead of 105 and
-					               contained item 6 at index 5 instead of 106 and
-					               contained item 7 at index 6 instead of 107 and
-					               contained item 8 at index 7 instead of 108 and
-					               contained item 9 at index 8 instead of 109 and
-					               contained item 10 at index 9 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected
 
 					             Collection:
 					             [
@@ -195,8 +195,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
 					             but it
-					               contained item "d" at index 3 instead of "x" and
-					               contained item "e" at index 4 instead of "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -311,9 +311,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					             but it contained item "c" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -332,7 +330,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
+			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheUnexpectedItem()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
 				int[] expected = [1, 2, 3,];
@@ -344,7 +342,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it contained item 4 at index 1 instead of 2
+					             but it contained item 4 at index 1 that was not expected
 
 					             Collection:
 					             [1, 4, 3]
@@ -352,7 +350,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected:
 					             [1, 2, 3]
 					             """)
-					.Because("the item after the deviation still matches the expectation it is aligned with");
+					.Because("the other items are found in order");
 			}
 
 			[Fact]
@@ -368,10 +366,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it
-					               contained item "a" at index 1 that was not expected and
-					               contained item "b" at index 2 that was not expected and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "c" at index 0 that was not expected
 
 					             Collection:
 					             [
@@ -459,10 +454,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it
-					               contained item "a" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
-					               contained item "c" at index 3 that was not expected
+					             but it contained item "a" at index 1 that was not expected
 
 					             Collection:
 					             [
@@ -549,7 +541,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it contained item "a" at index 1 instead of "b"
+					             but it contained item "a" at index 1 that was not expected
 
 					             Collection:
 					             [
@@ -580,8 +572,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
 					             but it
-					               contained item "b" at index 1 that was not expected and
-					               contained item "a" at index 2 that was not expected
+					               contained item "c" at index 0 in wrong order and
+					               contained item "b" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -669,7 +661,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it contained item "a" at index 1 that was not expected
+					             but it contained item "b" at index 0 in wrong order
 
 					             Collection:
 					             [
@@ -699,16 +691,16 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
 					             but it had more than 20 deviations:
-					               contained item 1 at index 0 instead of 100,
-					               contained item 2 at index 1 instead of 101,
-					               contained item 3 at index 2 instead of 102,
-					               contained item 4 at index 3 instead of 103,
-					               contained item 5 at index 4 instead of 104,
-					               contained item 6 at index 5 instead of 105,
-					               contained item 7 at index 6 instead of 106,
-					               contained item 8 at index 7 instead of 107,
-					               contained item 9 at index 8 instead of 108,
-					               contained item 10 at index 9 instead of 109,
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
 					               (… and maybe more)
 
 					             Collection:
@@ -760,17 +752,17 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
 					             but it
-					               contained item 1 at index 0 instead of 100 and
-					               contained item 2 at index 1 instead of 101 and
-					               contained item 3 at index 2 instead of 102 and
-					               contained item 4 at index 3 instead of 103 and
-					               contained item 5 at index 4 instead of 104 and
-					               contained item 6 at index 5 instead of 105 and
-					               contained item 7 at index 6 instead of 106 and
-					               contained item 8 at index 7 instead of 107 and
-					               contained item 9 at index 8 instead of 108 and
-					               contained item 10 at index 9 instead of 109 and
-					               contained item 11 at index 10 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -842,16 +834,16 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
 					             but it
-					               contained item 1 at index 0 instead of 101 and
-					               contained item 2 at index 1 instead of 102 and
-					               contained item 3 at index 2 instead of 103 and
-					               contained item 4 at index 3 instead of 104 and
-					               contained item 5 at index 4 instead of 105 and
-					               contained item 6 at index 5 instead of 106 and
-					               contained item 7 at index 6 instead of 107 and
-					               contained item 8 at index 7 instead of 108 and
-					               contained item 9 at index 8 instead of 109 and
-					               contained item 10 at index 9 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected
 
 					             Collection:
 					             [
@@ -897,8 +889,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of "x" and
-					               contained item "e" at index 4 instead of "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -1013,9 +1005,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					             but it contained item "c" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -1046,9 +1036,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "a" at index 1 that was not expected and
-					               contained item "b" at index 2 that was not expected
+					             but it contained item "c" at index 0 in wrong order
 
 					             Collection:
 					             [
@@ -2111,17 +2099,17 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item 1 at index 0 instead of 100 and
-					               contained item 2 at index 1 instead of 101 and
-					               contained item 3 at index 2 instead of 102 and
-					               contained item 4 at index 3 instead of 103 and
-					               contained item 5 at index 4 instead of 104 and
-					               contained item 6 at index 5 instead of 105 and
-					               contained item 7 at index 6 instead of 106 and
-					               contained item 8 at index 7 instead of 107 and
-					               contained item 9 at index 8 instead of 108 and
-					               contained item 10 at index 9 instead of 109 and
-					               contained item 11 at index 10 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -2181,16 +2169,16 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item 1 at index 0 instead of 101 and
-					               contained item 2 at index 1 instead of 102 and
-					               contained item 3 at index 2 instead of 103 and
-					               contained item 4 at index 3 instead of 104 and
-					               contained item 5 at index 4 instead of 105 and
-					               contained item 6 at index 5 instead of 106 and
-					               contained item 7 at index 6 instead of 107 and
-					               contained item 8 at index 7 instead of 108 and
-					               contained item 9 at index 8 instead of 109 and
-					               contained item 10 at index 9 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected
 
 					             Collection:
 					             [
@@ -2236,8 +2224,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item "d" at index 3 instead of "x" and
-					               contained item "e" at index 4 instead of "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -2285,7 +2273,9 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
-					             but it contained item "d" at index 3 that was not expected
+					             but it
+					               contained item "d" at index 3 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2319,7 +2309,8 @@ public sealed partial class ThatAsyncEnumerable
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
 					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected
+					               contained item "e" at index 4 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2353,8 +2344,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					               contained item "c" at index 1 in wrong order and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2386,9 +2377,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item "a" at index 1 that was not expected and
-					               contained item "b" at index 2 that was not expected and
-					               contained item "c" at index 3 that was not expected
+					               contained item "c" at index 0 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2432,7 +2422,9 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
-					             but it contained item "c" at index 3 that was not expected
+					             but it
+					               contained item "c" at index 3 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2477,9 +2469,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
 					             but it
-					               contained item "a" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
-					               contained item "c" at index 3 that was not expected
+					               contained item "a" at index 1 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2570,17 +2561,17 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item 1 at index 0 instead of 100 and
-					               contained item 2 at index 1 instead of 101 and
-					               contained item 3 at index 2 instead of 102 and
-					               contained item 4 at index 3 instead of 103 and
-					               contained item 5 at index 4 instead of 104 and
-					               contained item 6 at index 5 instead of 105 and
-					               contained item 7 at index 6 instead of 106 and
-					               contained item 8 at index 7 instead of 107 and
-					               contained item 9 at index 8 instead of 108 and
-					               contained item 10 at index 9 instead of 109 and
-					               contained item 11 at index 10 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected and
+					               contained item 11 at index 10 that was not expected
 
 					             Collection:
 					             [
@@ -2652,16 +2643,16 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item 1 at index 0 instead of 101 and
-					               contained item 2 at index 1 instead of 102 and
-					               contained item 3 at index 2 instead of 103 and
-					               contained item 4 at index 3 instead of 104 and
-					               contained item 5 at index 4 instead of 105 and
-					               contained item 6 at index 5 instead of 106 and
-					               contained item 7 at index 6 instead of 107 and
-					               contained item 8 at index 7 instead of 108 and
-					               contained item 9 at index 8 instead of 109 and
-					               contained item 10 at index 9 instead of 110
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               contained item 3 at index 2 that was not expected and
+					               contained item 4 at index 3 that was not expected and
+					               contained item 5 at index 4 that was not expected and
+					               contained item 6 at index 5 that was not expected and
+					               contained item 7 at index 6 that was not expected and
+					               contained item 8 at index 7 that was not expected and
+					               contained item 9 at index 8 that was not expected and
+					               contained item 10 at index 9 that was not expected
 
 					             Collection:
 					             [
@@ -2707,8 +2698,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of "x" and
-					               contained item "e" at index 4 instead of "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -2756,7 +2747,9 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
-					             but it contained item "d" at index 3 that was not expected
+					             but it
+					               contained item "d" at index 3 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2790,7 +2783,8 @@ public sealed partial class ThatAsyncEnumerable
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
 					               contained item "d" at index 3 that was not expected and
-					               contained item "e" at index 4 that was not expected
+					               contained item "e" at index 4 that was not expected and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2824,8 +2818,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					               contained item "c" at index 1 in wrong order and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -2857,8 +2851,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "a" at index 1 that was not expected and
-					               contained item "b" at index 2 that was not expected
+					               contained item "c" at index 0 in wrong order and
+					               contained all expected items
 
 					             Collection:
 					             [
@@ -4147,7 +4141,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order ignoring interspersed items,
-					             but it contained item "a" at index 1 in wrong order
+					             but it contained item "c" at index 0 in wrong order
 
 					             Collection:
 					             [

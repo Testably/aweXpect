@@ -201,15 +201,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "d" at index 3 instead of "x"
-					             and
-					               contained item "e" at index 4 instead of "y"
-					             and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					             but it lacked 3 of 6 expected items:
+					               "x",
+					               "y",
+					               "z"
 
 					             Collection:
 					             [
@@ -245,7 +240,9 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it lacked all 6 expected items
+					             but it lacked 2 of 6 expected items:
+					               "a",
+					               "e"
 
 					             Collection:
 					             [
@@ -304,9 +301,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -325,7 +320,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
+			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheMissingItem()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
 				int[] expected = [1, 2, 3,];
@@ -337,7 +332,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it contained item 4 at index 1 instead of 2
+					             but it lacked 1 of 3 expected items: 2
 
 					             Collection:
 					             [1, 4, 3]
@@ -345,7 +340,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected:
 					             [1, 2, 3]
 					             """)
-					.Because("the item after the deviation still matches the expectation it is aligned with");
+					.Because("the other expected items are found in order");
 			}
 
 			[Fact]
@@ -417,10 +412,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "b" at index 1 instead of "a" and
-					               contained item "c" at index 2 instead of "b" and
-					               lacked 1 of 4 expected items: "a"
+					             but it lacked 1 of 4 expected items: "a"
 
 					             Collection:
 					             [
@@ -531,9 +523,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 2 at index 1 instead of 3 and
-					               lacked 1 of 2 expected items: 3
+					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
 					             [1, 2, 3]
@@ -569,6 +559,19 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithSubsetAfterMoreThan20ItemsThatBreakAPartialMatch_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject =
+					ToAsyncEnumerable(new[] { 1, }.Concat(Enumerable.Repeat(0, 21)).Concat(Enumerable.Range(1, 30)).ToArray());
+
+				async Task Act()
+					=> await That(subject).Contains(Enumerable.Range(1, 30));
+
+				await That(Act).DoesNotThrow()
+					.Because("the items after a broken partial match are no deviations, as later items can still contain the expected items");
+			}
+
+			[Fact]
 			public async Task WithSubsetMissingAfterAbandonedPartialMatch_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 4, 5,]);
@@ -581,9 +584,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 4 at index 2 instead of 3 and
-					               lacked 1 of 2 expected items: 3
+					             but it lacked 1 of 2 expected items: 3
 
 					             Collection:
 					             [1, 2, 4, 5]
@@ -594,7 +595,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WithSubsetMissingInsideTheAbandonedPartialMatch_ShouldReportTheDeviationOfTheRestartedMatch()
+			public async Task WithSubsetMissingInsideTheAbandonedPartialMatch_ShouldReportTheMissingItem()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 3,]);
 				int[] expected = [1, 1, 2,];
@@ -606,9 +607,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 3 instead of 2 and
-					               lacked 1 of 3 expected items: 2
+					             but it lacked 1 of 3 expected items: 2
 
 					             Collection:
 					             [1, 1, 1, 3]
@@ -616,7 +615,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected:
 					             [1, 1, 2]
 					             """)
-					.Because("the partial match that restarts inside the abandoned one is the longest");
+					.Because("the subject contains the expected 1s, but no 2");
 			}
 
 			[Fact]
@@ -847,15 +846,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "d" at index 3 instead of "x"
-					             and
-					               contained item "e" at index 4 instead of "y"
-					             and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					             but it lacked 3 of 6 expected items:
+					               "x",
+					               "y",
+					               "z"
 
 					             Collection:
 					             [
@@ -891,7 +885,9 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 5 unique expected items
+					             but it lacked 2 of 5 expected items:
+					               "a",
+					               "e"
 
 					             Collection:
 					             [
@@ -950,9 +946,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c"
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -983,9 +977,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item 4 at index 2 instead of 2 and
-					               lacked 1 of 2 expected items: 2
+					             but it contained item 4 at index 2 instead of 2
 
 					             Collection:
 					             [1, 1, 4, 2]
@@ -2273,17 +2265,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
-					             but it
-					               contained item "d" at index 3 instead of "x"
-					             and
-					               contained item "e" at index 4 instead of "y"
-					             and
-					               did not contain any additional items
-					             and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					             but it lacked 3 of 6 expected items:
+					               "x",
+					               "y",
+					               "z"
 
 					             Collection:
 					             [
@@ -2320,8 +2305,11 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               did not contain any additional items and
-					               lacked all 6 expected items
+					               did not contain any additional items
+					             and
+					               lacked 2 of 6 expected items:
+					                 "a",
+					                 "e"
 
 					             Collection:
 					             [
@@ -2381,8 +2369,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
+					               contained item "b" at index 2 in wrong order and
 					               did not contain any additional items
 
 					             Collection:
@@ -2473,8 +2460,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               contained item "b" at index 1 instead of "a" and
-					               contained item "c" at index 2 instead of "b" and
 					               did not contain any additional items and
 					               lacked 1 of 4 expected items: "a"
 
@@ -2788,15 +2773,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "d" at index 3 instead of "x"
-					             and
-					               contained item "e" at index 4 instead of "y"
-					             and
-					               lacked 3 of 6 expected items:
-					                 "x",
-					                 "y",
-					                 "z"
+					             but it lacked 3 of 6 expected items:
+					               "x",
+					               "y",
+					               "z"
 
 					             Collection:
 					             [
@@ -2833,8 +2813,11 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               did not contain any additional items and
-					               lacked all 5 unique expected items
+					               did not contain any additional items
+					             and
+					               lacked 2 of 5 expected items:
+					                 "a",
+					                 "e"
 
 					             Collection:
 					             [
@@ -2894,8 +2877,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "c" at index 1 instead of "b" and
-					               contained item "b" at index 2 instead of "c" and
+					               contained item "b" at index 2 in wrong order and
 					               did not contain any additional items
 
 					             Collection:

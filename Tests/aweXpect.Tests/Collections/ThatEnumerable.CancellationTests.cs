@@ -15,6 +15,54 @@ public sealed partial class ThatEnumerable
 	public sealed class CancellationTests
 	{
 		[Fact]
+		public async Task WhenCancellationIsRequestedDuringTheFinalCheck_ShouldAbortContainsExpectationsInAnyOrder()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<IEnumerable<int>> subject =
+				ToEnumerable<IEnumerable<int>>([GetCancellingEnumerable(5, cts), Array.Empty<int>(),]);
+			IEnumerable<Action<IThat<IEnumerable<int>?>>> expected =
+			[
+				a => a.IsNotNull(),
+				a => a.Contains(-1),
+			];
+
+			async Task Act()
+				=> await That(subject).Contains(expected).InAnyOrder().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in any order,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [
+				               [
+				                 0,
+				                 1,
+				                 2,
+				                 3,
+				                 4,
+				                 5,
+				                 6,
+				                 7,
+				                 8,
+				                 9,
+				                 (… and maybe more)
+				               ],
+				               []
+				             ]
+
+				             Expected:
+				             [
+				               an item that is not null,
+				               an item that contains an item equal to -1 at least once
+				             ]
+				             """)
+				.Because("the first item is only compared with the second expectation when the items are reassigned at the end, where its cancellation must not be reported as a missing item");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequested_ShouldAbortAllComplyWithWithinAnItem()
 		{
 			using CancellationTokenSource cts = new();

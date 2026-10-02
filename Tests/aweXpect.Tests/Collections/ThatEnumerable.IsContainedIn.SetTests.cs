@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace aweXpect.Tests;
 
@@ -104,8 +104,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection [1.25, 1.75, 3.0,] ± 0.125 in order and contiguous,
 					             but it
-					               contained item 1.0 at index 0 instead of 1.25 and
-					               contained item 2.0 at index 1 instead of 1.75
+					               contained item 1.0 at index 0 that was not expected and
+					               contained item 2.0 at index 1 that was not expected
 
 					             Collection:
 					             [1.0, 2.0]

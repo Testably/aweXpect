@@ -60,17 +60,36 @@ public partial class CollectionMatchOptions
 			=> _freeExpected.Select(expectedIndex => _expected[expectedIndex]).ToList();
 
 		/// <summary>
+		///     The pairs of the index of a matched item and the index of its expected item.
+		/// </summary>
+		public IEnumerable<(int Index, int ExpectedIndex)> MatchedPairs()
+			=> _items.Select((item, i) => (item.Index, _expectedOfItem[i]))
+				.Where(pair => pair.Item2 >= 0);
+
+		/// <summary>
 		///     Assigns the <paramref name="value" /> to the first free expected item it matches, otherwise it is pending.
 		/// </summary>
 		/// <remarks>
 		///     Without a free expected item, the <paramref name="value" /> is an additional item and is not compared.
+		///     The free expected items next to the <paramref name="preferredExpectedIndex" /> are tried first, so that items
+		///     in or against the expected order find their match right away; any free match keeps the matching maximum.
 		/// </remarks>
-		public async ValueTask Add(int index, TItem value)
+		/// <returns>The index of the assigned expected item, or <c>-1</c> when the item is not assigned yet.</returns>
+		public async ValueTask<int> Add(int index, TItem value, int preferredExpectedIndex = Unmatched)
 		{
 			if (_freeExpected.Count == 0)
 			{
 				_unmatchedItems.Add(index, value);
-				return;
+				return Unmatched;
+			}
+
+			if (preferredExpectedIndex != Unmatched)
+			{
+				int assigned = await AssignNextTo(preferredExpectedIndex, index, value);
+				if (assigned != Unmatched)
+				{
+					return assigned;
+				}
 			}
 
 			Exception? unanswered = null;
@@ -81,12 +100,8 @@ public partial class CollectionMatchOptions
 				unanswered ??= exception;
 				if (isMatch)
 				{
-					_items.Add((index, value));
-					_expectedOfItem.Add(expectedIndex);
-					_itemOfExpected[expectedIndex] = _items.Count - 1;
-					_freeExpected.RemoveAt(i);
-					DiscardPendingItemsWhenNothingIsFree();
-					return;
+					Assign(index, value, i);
+					return expectedIndex;
 				}
 			}
 
@@ -94,6 +109,38 @@ public partial class CollectionMatchOptions
 			_items.Add((index, value));
 			_expectedOfItem.Add(Unmatched);
 			_pendingItems.Add(_items.Count - 1);
+			return Unmatched;
+		}
+
+		/// <remarks>
+		///     An unanswered comparison is repeated with the other free expected items, which decide about it.
+		/// </remarks>
+		private async ValueTask<int> AssignNextTo(int preferredExpectedIndex, int index, TItem value)
+		{
+			for (int expectedIndex = preferredExpectedIndex + 1;
+			     expectedIndex >= preferredExpectedIndex - 1;
+			     expectedIndex -= 2)
+			{
+				if (expectedIndex >= 0 && expectedIndex < _expected.Length &&
+				    _itemOfExpected[expectedIndex] == Unmatched &&
+				    (await Compare(value, _expected[expectedIndex])).IsMatch)
+				{
+					Assign(index, value, _freeExpected.IndexOf(expectedIndex));
+					return expectedIndex;
+				}
+			}
+
+			return Unmatched;
+		}
+
+		private void Assign(int index, TItem value, int freeIndex)
+		{
+			int expectedIndex = _freeExpected[freeIndex];
+			_items.Add((index, value));
+			_expectedOfItem.Add(expectedIndex);
+			_itemOfExpected[expectedIndex] = _items.Count - 1;
+			_freeExpected.RemoveAt(freeIndex);
+			DiscardPendingItemsWhenNothingIsFree();
 		}
 
 		/// <summary>
