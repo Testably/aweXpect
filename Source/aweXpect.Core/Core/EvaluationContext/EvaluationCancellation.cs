@@ -97,4 +97,18 @@ public sealed class EvaluationCancellation
 	///     Only the evaluation that created the cancellation releases it, so it is not part of the public API.
 	/// </remarks>
 	internal void Release() => _timeoutCts?.Dispose();
+
+	/// <summary>
+	///     Returns a scope that releases the timer of the <see cref="Timeout" /> when it is disposed.
+	/// </summary>
+	internal ReleaseScope ReleaseAtTheEnd() => new(this);
+
+	/// <summary>
+	///     Releases the <see cref="EvaluationCancellation" /> at the end of a <see langword="using" /> block without
+	///     allocating.
+	/// </summary>
+	internal readonly struct ReleaseScope(EvaluationCancellation cancellation) : IDisposable
+	{
+		public void Dispose() => cancellation.Release();
+	}
 }

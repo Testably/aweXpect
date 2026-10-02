@@ -831,23 +831,8 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		CancellationToken cancellationToken)
 	{
 		EvaluationCancellation cancellation = new(timeout, cancellationToken);
+		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
 		context.Cancellation = cancellation;
-		try
-		{
-			return await IsMet(rootNode, context, timeSystem, timeout, cancellation);
-		}
-		finally
-		{
-			cancellation.Release();
-		}
-	}
-
-	private async Task<ConstraintResult> IsMet(Node rootNode,
-		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
-		TimeSpan? timeout,
-		EvaluationCancellation cancellation)
-	{
 		CancellationToken token = cancellation.Token;
 
 		if (_subjectSource is AsyncValueSource<TValue> { IsNullTask: true, })
