@@ -19,13 +19,7 @@ public sealed class DocsPagesTests
 	public static TheoryData<string> Pages()
 	{
 #if NETFRAMEWORK
-		TheoryData<string> extensionPages = new();
-		foreach (string page in AllPages().Where(page => page.StartsWith("11-extending/")))
-		{
-			extensionPages.Add(page);
-		}
-
-		return extensionPages;
+		return ExtensionPages();
 #else
 		TheoryData<string> pages = new();
 		foreach (string page in AllPages())
@@ -42,6 +36,29 @@ public sealed class DocsPagesTests
 	public void CodeBlocks_ShouldCompile(string page)
 	{
 		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page));
+
+		Fail.Unless(errors.Count == 0, string.Join(Environment.NewLine, errors));
+	}
+
+	/// <summary>
+	///     The pages for extension authors, which tell them to reference only aweXpect.Core.
+	/// </summary>
+	public static TheoryData<string> ExtensionPages()
+	{
+		TheoryData<string> pages = new();
+		foreach (string page in AllPages().Where(page => page.StartsWith("11-extending/")))
+		{
+			pages.Add(page);
+		}
+
+		return pages;
+	}
+
+	[Theory]
+	[MemberData(nameof(ExtensionPages))]
+	public void ExtensionCode_ShouldCompileAgainstCoreOnly(string page)
+	{
+		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page), true);
 
 		Fail.Unless(errors.Count == 0, string.Join(Environment.NewLine, errors));
 	}

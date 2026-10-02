@@ -15,7 +15,6 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	StringEqualityOptions options)
 	: StringCountResult<TType, TThat>(expectationBuilder, returnValue, quantifier, options)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly StringEqualityOptions _options = options;
 	private readonly Quantifier _quantifier = quantifier;
 	private readonly TThat _returnValue = returnValue;
@@ -33,7 +32,7 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	public StringBlockCountResult<TType, TThat> AsBlock()
 	{
 		_options.AsBlock();
-		return new StringBlockCountResult<TType, TThat>(_expectationBuilder, _returnValue, _quantifier, _options);
+		return new StringBlockCountResult<TType, TThat>(ExpectationBuilder, _returnValue, _quantifier, _options);
 	}
 
 	/// <summary>

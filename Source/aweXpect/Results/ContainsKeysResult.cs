@@ -13,7 +13,6 @@ namespace aweXpect.Results;
 public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	: AndOrResult<TCollection, TThat>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly TKey[] _keys;
 	private readonly Func<TCollection, IEnumerable<TValue>> _memberAccessor;
 
@@ -24,7 +23,6 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 		Func<TCollection, IEnumerable<TValue>> memberAccessor)
 		: base(expectationBuilder, returnValue)
 	{
-		_expectationBuilder = expectationBuilder;
 		_keys = keys;
 		_memberAccessor = memberAccessor;
 	}
@@ -33,7 +31,7 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	///     Further expectations on the selected values of the dictionary.
 	/// </summary>
 	public IThat<IEnumerable<TValue>> WhoseValues
-		=> new ThatSubject<IEnumerable<TValue>>(_expectationBuilder
+		=> new ThatSubject<IEnumerable<TValue>>(ExpectationBuilder
 			.ForWhich(_memberAccessor, " whose values ", $"values of keys {Formatter.Format(_keys)}",
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));

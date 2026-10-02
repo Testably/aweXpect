@@ -10,97 +10,9 @@ namespace aweXpect;
 public static partial class ThatEnumerable
 {
 	/// <summary>
-	///     Interface for <see cref="Elements" /> to get access to the <see cref="Quantifier" />
-	///     and the <see cref="Subject" />.
-	/// </summary>
-	public interface IElements
-	{
-		/// <summary>
-		///     The quantifier for the elements.
-		/// </summary>
-		public EnumerableQuantifier Quantifier { get; }
-
-		/// <summary>
-		///     The subject of the expectation.
-		/// </summary>
-		public IThat<IEnumerable<string?>?> Subject { get; }
-	}
-
-	/// <summary>
-	///     Interface for <see cref="Elements{TItem}" /> to get access to the <see cref="Quantifier" />
-	///     and the <see cref="Subject" />.
-	/// </summary>
-	public interface IElements<out TItem>
-	{
-		/// <summary>
-		///     The quantifier for the elements.
-		/// </summary>
-		public EnumerableQuantifier Quantifier { get; }
-
-		/// <summary>
-		///     The subject of the expectation.
-		/// </summary>
-		public IThat<IEnumerable<TItem>?> Subject { get; }
-	}
-
-	/// <summary>
-	///     Interface for <see cref="ElementsForEnumerable{TEnumerable}" /> to get access to the <see cref="Quantifier" />
-	///     and the <see cref="Subject" />.
-	/// </summary>
-	public interface IElementsForEnumerable<out TEnumerable>
-		where TEnumerable : IEnumerable?
-	{
-		/// <summary>
-		///     The quantifier for the elements.
-		/// </summary>
-		public EnumerableQuantifier Quantifier { get; }
-
-		/// <summary>
-		///     The subject of the expectation.
-		/// </summary>
-		public IThat<TEnumerable?> Subject { get; }
-	}
-
-	/// <summary>
-	///     Interface for <see cref="ElementsForStructEnumerable{TEnumerable,TItem}" /> to get access to the
-	///     <see cref="Quantifier" /> and the <see cref="Subject" />.
-	/// </summary>
-	public interface IElementsForStructEnumerable<out TEnumerable, TItem>
-		where TEnumerable : struct, IEnumerable<TItem>
-	{
-		/// <summary>
-		///     The quantifier for the elements.
-		/// </summary>
-		public EnumerableQuantifier Quantifier { get; }
-
-		/// <summary>
-		///     The subject of the expectation.
-		/// </summary>
-		public IThat<TEnumerable> Subject { get; }
-	}
-
-	/// <summary>
-	///     Interface for <see cref="ElementsForStructEnumerable{TEnumerable}" /> to get access to the
-	///     <see cref="Quantifier" /> and the <see cref="Subject" />.
-	/// </summary>
-	public interface IElementsForStructEnumerable<out TEnumerable>
-		where TEnumerable : struct, IEnumerable<string?>
-	{
-		/// <summary>
-		///     The quantifier for the elements.
-		/// </summary>
-		public EnumerableQuantifier Quantifier { get; }
-
-		/// <summary>
-		///     The subject of the expectation.
-		/// </summary>
-		public IThat<TEnumerable> Subject { get; }
-	}
-
-	/// <summary>
 	///     Result class for expectations on the elements of a <see cref="IEnumerable{T}" /> of <see langword="string" />.
 	/// </summary>
-	public partial class Elements : IElements
+	public partial class Elements : IEnumerableStringElements
 	{
 		private readonly EnumerableQuantifier _quantifier;
 		private readonly IThat<IEnumerable<string?>?> _subject;
@@ -111,15 +23,15 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
-		EnumerableQuantifier IElements.Quantifier => _quantifier;
-		IThat<IEnumerable<string?>?> IElements.Subject => _subject;
+		EnumerableQuantifier IEnumerableStringElements.Quantifier => _quantifier;
+		IThat<IEnumerable<string?>?> IEnumerableStringElements.Subject => _subject;
 	}
 
 	/// <summary>
 	///     Result class for expectations on the elements of a <see cref="IEnumerable{TItem}" /> of
 	///     <typeparamref name="TItem" />.
 	/// </summary>
-	public partial class Elements<TItem> : IElements<TItem>
+	public partial class Elements<TItem> : IEnumerableElements<TItem>
 	{
 		private readonly EnumerableQuantifier _quantifier;
 		private readonly IThat<IEnumerable<TItem>?> _subject;
@@ -130,8 +42,8 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
-		EnumerableQuantifier IElements<TItem>.Quantifier => _quantifier;
-		IThat<IEnumerable<TItem>?> IElements<TItem>.Subject => _subject;
+		EnumerableQuantifier IEnumerableElements<TItem>.Quantifier => _quantifier;
+		IThat<IEnumerable<TItem>?> IEnumerableElements<TItem>.Subject => _subject;
 	}
 
 	/// <summary>
@@ -139,7 +51,7 @@ public static partial class ThatEnumerable
 	///     <typeparamref name="TItem" />.
 	/// </summary>
 	public partial class
-		ElementsForStructEnumerable<TEnumerable, TItem> : IElementsForStructEnumerable<TEnumerable, TItem>
+		ElementsForStructEnumerable<TEnumerable, TItem> : IStructEnumerableElements<TEnumerable, TItem>
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
 		private readonly EnumerableQuantifier _quantifier;
@@ -151,15 +63,15 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
-		EnumerableQuantifier IElementsForStructEnumerable<TEnumerable, TItem>.Quantifier => _quantifier;
-		IThat<TEnumerable> IElementsForStructEnumerable<TEnumerable, TItem>.Subject => _subject;
+		EnumerableQuantifier IStructEnumerableElements<TEnumerable, TItem>.Quantifier => _quantifier;
+		IThat<TEnumerable> IStructEnumerableElements<TEnumerable, TItem>.Subject => _subject;
 	}
 
 	/// <summary>
 	///     Result class for expectations on the elements of a <see cref="IEnumerable{TItem}" />
 	///     of <see langword="string" />.
 	/// </summary>
-	public partial class ElementsForStructEnumerable<TEnumerable> : IElementsForStructEnumerable<TEnumerable>
+	public partial class ElementsForStructEnumerable<TEnumerable> : IStructEnumerableStringElements<TEnumerable>
 		where TEnumerable : struct, IEnumerable<string?>
 	{
 		private readonly EnumerableQuantifier _quantifier;
@@ -171,14 +83,14 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
-		EnumerableQuantifier IElementsForStructEnumerable<TEnumerable>.Quantifier => _quantifier;
-		IThat<TEnumerable> IElementsForStructEnumerable<TEnumerable>.Subject => _subject;
+		EnumerableQuantifier IStructEnumerableStringElements<TEnumerable>.Quantifier => _quantifier;
+		IThat<TEnumerable> IStructEnumerableStringElements<TEnumerable>.Subject => _subject;
 	}
 
 	/// <summary>
 	///     Result class for expectations on the elements of an <see cref="IEnumerable" />.
 	/// </summary>
-	public partial class ElementsForEnumerable<TEnumerable> : IElementsForEnumerable<TEnumerable>
+	public partial class ElementsForEnumerable<TEnumerable> : INonGenericEnumerableElements<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private readonly EnumerableQuantifier _quantifier;
@@ -190,7 +102,7 @@ public static partial class ThatEnumerable
 			_quantifier = quantifier;
 		}
 
-		EnumerableQuantifier IElementsForEnumerable<TEnumerable>.Quantifier => _quantifier;
-		IThat<TEnumerable?> IElementsForEnumerable<TEnumerable>.Subject => _subject;
+		EnumerableQuantifier INonGenericEnumerableElements<TEnumerable>.Quantifier => _quantifier;
+		IThat<TEnumerable?> INonGenericEnumerableElements<TEnumerable>.Subject => _subject;
 	}
 }

@@ -14,13 +14,12 @@ public class IsSpanParsableResult<TType>(
 	: AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>>(expectationBuilder, subject)
 	where TType : ISpanParsable<TType>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
 	public IThat<TType> Which
-		=> new ThatSubject<TType>(_expectationBuilder
+		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<SpanWrapper<char>, TType?>(d =>
 			{
 				if (TType.TryParse(d.AsSpan(), formatProvider, out TType? result))

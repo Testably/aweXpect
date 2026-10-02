@@ -25,7 +25,7 @@ public static partial class ThatDelegateThrows
 		where TException : Exception?
 	{
 		expectations.ThrowIfNull();
-		return new(subject.ExpectationBuilder
+		return new(subject.Get().ExpectationBuilder
 				.ForMember(
 					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFunc(
 						e => e.GetInnerExceptions(),

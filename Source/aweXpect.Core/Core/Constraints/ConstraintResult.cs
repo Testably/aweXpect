@@ -62,12 +62,18 @@ public abstract partial class ConstraintResult
 	/// <summary>
 	///     The subject that the result text starts with, or <see langword="null" /> when it is unknown.
 	/// </summary>
-	internal virtual string? LeadingSubject => null;
+	/// <remarks>
+	///     When two results are combined with <c>and</c> on the same line, the result on the right omits its subject if
+	///     it equals the <see cref="TrailingSubject" /> of the result on the left, e.g. "it was 2 and was not even".
+	///     Override both with <see cref="GetSubjectOfResult" />, unless a helper class like
+	///     <see cref="WithNotNullValue{T}" /> already does.
+	/// </remarks>
+	public virtual string? LeadingSubject => null;
 
 	/// <summary>
 	///     The subject that the last part of the result text starts with, or <see langword="null" /> when it is unknown.
 	/// </summary>
-	internal virtual string? TrailingSubject => null;
+	public virtual string? TrailingSubject => null;
 
 	/// <summary>
 	///     Indicates that the result only contributes an expectation text, so that combinations ignore its outcome.
@@ -77,7 +83,7 @@ public abstract partial class ConstraintResult
 	/// <summary>
 	///     Returns <paramref name="it" />, when the result text starts with it, otherwise <see langword="null" />.
 	/// </summary>
-	private protected string? GetSubjectOfResult(string it)
+	protected string? GetSubjectOfResult(string it)
 	{
 		StringBuilder sb = new();
 		AppendResult(sb);

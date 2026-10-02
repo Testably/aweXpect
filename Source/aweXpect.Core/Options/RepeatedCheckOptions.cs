@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Customization;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Options;

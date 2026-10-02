@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Customization;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -9,6 +10,18 @@ namespace aweXpect.Tests;
 
 public sealed class DayToleranceExtensionTests
 {
+	[Fact]
+	public async Task WhenDefaultToleranceIsCustomized_ShouldApplyItLikeTheBuiltInExpectation()
+	{
+		DateOnly subject = new(2020, 1, 10);
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		async Task Act() => await That(subject).IsOnSameDayAs(subject.AddDays(1));
+
+		await That(Act).DoesNotThrow()
+			.Because("an extension using GetToleranceOrDefault applies the whole days of the default tolerance");
+	}
+
 	[Fact]
 	public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowLikeTheBuiltInExpectation()
 	{
@@ -61,7 +74,7 @@ file static class DayToleranceExtensions
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
 			Actual = actual;
-			int days = (int)(tolerance.Tolerance ?? TimeSpan.Zero).TotalDays;
+			int days = (int)tolerance.GetToleranceOrDefault().TotalDays;
 			Outcome = Math.Abs(actual.DayNumber - expected.DayNumber) <= days ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

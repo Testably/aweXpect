@@ -9,15 +9,14 @@ namespace aweXpect.Tests;
 public static class AreEvenExtensions
 {
 	public static AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>> AreEven(
-		this aweXpect.ThatEnumerable.Elements<int> elements)
+		this IEnumerableElements<int> elements)
 	{
-		aweXpect.ThatEnumerable.IElements<int> source = elements;
 		ExpectationBuilder expectationBuilder =
-			((IExpectThat<IEnumerable<int>?>)source.Subject).ExpectationBuilder;
+			((IExpectThat<IEnumerable<int>?>)elements.Subject).ExpectationBuilder;
 		return new AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AreEvenConstraint(expectationBuilder, it, grammars, source.Quantifier)),
-			source.Subject);
+				=> new AreEvenConstraint(expectationBuilder, it, grammars, elements.Quantifier)),
+			elements.Subject);
 	}
 
 	private sealed class AreEvenConstraint(

@@ -2,7 +2,6 @@
 using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -67,8 +66,7 @@ public static partial class ThatTimeOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Tolerance ??
-				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 				Outcome = actual.IsConsideredEqualTo(expected, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;

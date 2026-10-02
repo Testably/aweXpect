@@ -14,13 +14,12 @@ public class IsParsableResult<TType>(
 	: AndOrResult<string?, IThat<string?>>(expectationBuilder, subject)
 	where TType : IParsable<TType>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
 	public IThat<TType> Which
-		=> new ThatSubject<TType>(_expectationBuilder
+		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<string, TType?>(d =>
 			{
 				if (TType.TryParse(d, formatProvider, out TType? result))

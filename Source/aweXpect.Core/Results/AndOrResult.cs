@@ -12,7 +12,6 @@ public class AndOrResult<TThat>(
 	TThat returnValue)
 	: ExpectationResult(expectationBuilder)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
@@ -21,7 +20,7 @@ public class AndOrResult<TThat>(
 	{
 		get
 		{
-			_expectationBuilder.And();
+			ExpectationBuilder.And();
 			return returnValue;
 		}
 	}
@@ -33,7 +32,7 @@ public class AndOrResult<TThat>(
 	{
 		get
 		{
-			_expectationBuilder.Or();
+			ExpectationBuilder.Or();
 			return returnValue;
 		}
 	}
@@ -63,7 +62,6 @@ public class AndOrResult<TType, TThat, TSelf>(
 	: ExpectationResult<TType, TSelf>(expectationBuilder)
 	where TSelf : AndOrResult<TType, TThat, TSelf>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
@@ -72,7 +70,7 @@ public class AndOrResult<TType, TThat, TSelf>(
 	{
 		get
 		{
-			_expectationBuilder.And();
+			ExpectationBuilder.And();
 			return returnValue;
 		}
 	}
@@ -84,7 +82,7 @@ public class AndOrResult<TType, TThat, TSelf>(
 	{
 		get
 		{
-			_expectationBuilder.Or();
+			ExpectationBuilder.Or();
 			return returnValue;
 		}
 	}

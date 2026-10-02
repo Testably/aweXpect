@@ -14,7 +14,6 @@ public class RepeatedCheckResult<TType, TThat>(
 	: AndOrResult<TType, TThat>(expectationBuilder, returnValue),
 		IOptionsProvider<RepeatedCheckOptions>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -26,7 +25,7 @@ public class RepeatedCheckResult<TType, TThat>(
 	public WithRepetition Within(TimeSpan timeout)
 	{
 		options.Within(timeout);
-		return new WithRepetition(_expectationBuilder, _returnValue, options);
+		return new WithRepetition(ExpectationBuilder, _returnValue, options);
 	}
 
 	/// <summary>

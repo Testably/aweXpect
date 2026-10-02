@@ -31,7 +31,6 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	: AndOrResult<TType, TThat, TSelf>(expectationBuilder, returnValue)
 	where TSelf : AndOrWhoseResult<TType, TThat, TSelf>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly TThat _returnValue = returnValue;
 
 	/// <summary>
@@ -53,7 +52,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
 		return new(
-			_expectationBuilder
+			ExpectationBuilder
 				.ForMember(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
@@ -83,7 +82,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
 		return new(
-			_expectationBuilder
+			ExpectationBuilder
 				.ForAsyncMember(
 					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
@@ -126,7 +125,6 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		TThat returnValue)
 		: AndOrResult<TType, TThat, TSelf>(expectationBuilder, returnValue)
 	{
-		private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 		private readonly TThat _returnValue = returnValue;
 
 		/// <summary>
@@ -147,9 +145,9 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		{
 			memberAccessor.ThrowIfNull();
 			expectations.ThrowIfNull();
-			_expectationBuilder.And(" and");
+			ExpectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
-				_expectationBuilder
+				ExpectationBuilder
 					.ForMember(
 						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),
@@ -180,9 +178,9 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		{
 			memberAccessor.ThrowIfNull();
 			expectations.ThrowIfNull();
-			_expectationBuilder.And(" and");
+			ExpectationBuilder.And(" and");
 			return new AdditionalAndOrWhoseResult(
-				_expectationBuilder
+				ExpectationBuilder
 					.ForAsyncMember(
 						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),

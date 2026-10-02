@@ -16,7 +16,6 @@ public class SingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, SingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly Func<TCollection, TItem?> _memberAccessor;
 	private readonly PredicateOptions<TItem> _options;
 
@@ -25,7 +24,6 @@ public class SingleItemResult<TCollection, TItem>
 		Func<TCollection, TItem?> memberAccessor)
 		: base(expectationBuilder)
 	{
-		_expectationBuilder = expectationBuilder;
 		_options = options;
 		_memberAccessor = memberAccessor;
 	}
@@ -34,7 +32,7 @@ public class SingleItemResult<TCollection, TItem>
 	///     Further expectations on the single <typeparamref name="TItem" />.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_memberAccessor, " that ", "it",
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_memberAccessor, " that ", "it",
 			grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -100,5 +98,5 @@ public class SingleItemResult<TCollection, TItem>
 	}
 
 	private SingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(_expectationBuilder, new PredicateOptions<T>(), x => memberAccessor(_memberAccessor(x)));
+		=> new(ExpectationBuilder, new PredicateOptions<T>(), x => memberAccessor(_memberAccessor(x)));
 }

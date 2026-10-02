@@ -15,6 +15,13 @@ namespace aweXpect.Options;
 public sealed class DayTolerance : TimeTolerance
 {
 	/// <inheritdoc />
+	/// <remarks>
+	///     Only the whole days of the default tolerance apply, as a date has no time of day.
+	/// </remarks>
+	public override TimeSpan GetToleranceOrDefault()
+		=> Tolerance ?? TimeSpan.FromDays((int)base.GetToleranceOrDefault().TotalDays);
+
+	/// <inheritdoc />
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="tolerance" /> is negative or not a whole number of days.
 	/// </exception>

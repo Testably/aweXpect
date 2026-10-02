@@ -26,7 +26,6 @@ public static class It
 		/// <inheritdoc cref="IsEquivalent{T}" />
 		private IsEquivalent(EquivalencyExpectationBuilder<T> expectationBuilder) : base(expectationBuilder)
 		{
-			ExpectationBuilder = expectationBuilder;
 		}
 
 		/// <summary>
@@ -35,7 +34,7 @@ public static class It
 		public IThat<T> That => this;
 
 		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-		public ExpectationBuilder ExpectationBuilder { get; }
+		ExpectationBuilder IExpectThat<T>.ExpectationBuilder => ExpectationBuilder;
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string? ToString() => ExpectationBuilder.ToString();

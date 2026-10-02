@@ -1,10 +1,35 @@
 ﻿using aweXpect.Chronology;
+using aweXpect.Customization;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
 public class DayToleranceTests
 {
+	[Fact]
+	public async Task GetToleranceOrDefault_WhenToleranceIsNotSet_ShouldReturnTheWholeDaysOfTheDefault()
+	{
+		DayTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		TimeSpan result = sut.GetToleranceOrDefault();
+
+		await That(result).IsEqualTo(1.Days())
+			.Because("only the whole days of the default tolerance apply to a date");
+	}
+
+	[Fact]
+	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
+	{
+		DayTolerance sut = new();
+		sut.SetTolerance(2.Days());
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		TimeSpan result = sut.GetToleranceOrDefault();
+
+		await That(result).IsEqualTo(2.Days());
+	}
+
 	[Fact]
 	public async Task WhenToleranceIsBelowZeroAndNotWholeDays_ShouldReportTheNegativeTolerance()
 	{

@@ -109,6 +109,13 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 /// </summary>
 public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 {
+	/// <remarks>
+	///     Only aweXpect.Core can derive, because the evaluation relies on members that are not public.
+	/// </remarks>
+	private protected EquivalencyExpectationBuilder()
+	{
+	}
+
 	/// <summary>
 	///     Appends the expectation of the root node to the <paramref name="stringBuilder" />.
 	/// </summary>

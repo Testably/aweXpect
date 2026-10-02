@@ -19,12 +19,17 @@ namespace aweXpect.Results;
 public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	: Expectation, IOptionsProvider<ExpectationBuilder>
 {
+	/// <summary>
+	///     The <see cref="Core.ExpectationBuilder" /> of the expectation.
+	/// </summary>
+	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+
 	/// <inheritdoc cref="IOptionsProvider{ExpectationBuilder}.Options" />
-	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => expectationBuilder;
+	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => ExpectationBuilder;
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string? ToString()
-		=> expectationBuilder.ToString();
+		=> ExpectationBuilder.ToString();
 
 	/// <summary>
 	///     Provide a <paramref name="reason" /> explaining why the constraint is needed.<br />
@@ -37,7 +42,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	{
 		if (!string.IsNullOrEmpty(reason))
 		{
-			expectationBuilder.AddReason(reason);
+			ExpectationBuilder.AddReason(reason);
 		}
 
 		return this;
@@ -52,7 +57,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// </remarks>
 	public ExpectationResult Because(Task<string?> reason)
 	{
-		expectationBuilder.AddReason(reason);
+		ExpectationBuilder.AddReason(reason);
 		return this;
 	}
 
@@ -74,7 +79,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// </remarks>
 	public ExpectationResult WithCancellation(CancellationToken cancellationToken)
 	{
-		expectationBuilder.WithCancellation(cancellationToken);
+		ExpectationBuilder.WithCancellation(cancellationToken);
 		return this;
 	}
 
@@ -100,7 +105,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public ExpectationResult WithTimeout(TimeSpan timeout)
 	{
-		expectationBuilder.WithTimeout(timeout);
+		ExpectationBuilder.WithTimeout(timeout);
 		return this;
 	}
 
@@ -117,29 +122,29 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
-		=> new(++index, $" [{index:00}] Expected that {expectationBuilder.Subject}",
-			await expectationBuilder.IsMet());
+		=> new(++index, $" [{index:00}] Expected that {ExpectationBuilder.Subject}",
+			await ExpectationBuilder.IsMet());
 
 	/// <inheritdoc />
 	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-		=> expectationBuilder.GetContexts();
+		=> ExpectationBuilder.GetContexts();
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
-		=> expectationBuilder.EndEvaluation();
+		=> ExpectationBuilder.EndEvaluation();
 
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
 	internal ExpectationResult UseTimeSystem(ITimeSystem timeSystem)
 	{
-		expectationBuilder.UseTimeSystem(timeSystem);
+		ExpectationBuilder.UseTimeSystem(timeSystem);
 		return this;
 	}
 
 	private async Task GetResultOrThrow()
 	{
-		ConstraintResult result = await expectationBuilder.IsMet();
+		ConstraintResult result = await ExpectationBuilder.IsMet();
 
 		if (result.Outcome == Outcome.Success)
 		{
@@ -150,7 +155,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 				sb.Append("  Successfully verified that ");
 				sb.Append(result.TryGetValue(out IDescribableSubject? describableSubject)
 					? describableSubject.GetDescription()
-					: expectationBuilder.Subject);
+					: ExpectationBuilder.Subject);
 				sb.Append(' ');
 				result.AppendExpectation(sb);
 				traceWriter.WriteMessage(sb.ToString());
@@ -174,11 +179,11 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	{
 		try
 		{
-			return await expectationBuilder.FromFailure(failure);
+			return await ExpectationBuilder.FromFailure(failure);
 		}
 		finally
 		{
-			await expectationBuilder.EndEvaluation();
+			await ExpectationBuilder.EndEvaluation();
 		}
 	}
 }
@@ -198,12 +203,17 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		IOptionsProvider<ExpectationBuilder>
 	where TSelf : ExpectationResult<TType, TSelf>
 {
+	/// <summary>
+	///     The <see cref="Core.ExpectationBuilder" /> of the expectation.
+	/// </summary>
+	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+
 	/// <inheritdoc cref="IOptionsProvider{ExpectationBuilder}.Options" />
-	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => expectationBuilder;
+	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => ExpectationBuilder;
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string? ToString()
-		=> expectationBuilder.ToString();
+		=> ExpectationBuilder.ToString();
 
 	/// <summary>
 	///     Provide a <paramref name="reason" /> explaining why the constraint is needed.<br />
@@ -216,7 +226,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	{
 		if (!string.IsNullOrEmpty(reason))
 		{
-			expectationBuilder.AddReason(reason);
+			ExpectationBuilder.AddReason(reason);
 		}
 
 		return (TSelf)this;
@@ -231,7 +241,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </remarks>
 	public TSelf Because(Task<string?> reason)
 	{
-		expectationBuilder.AddReason(reason);
+		ExpectationBuilder.AddReason(reason);
 		return (TSelf)this;
 	}
 
@@ -266,7 +276,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </remarks>
 	public TSelf WithCancellation(CancellationToken cancellationToken)
 	{
-		expectationBuilder.WithCancellation(cancellationToken);
+		ExpectationBuilder.WithCancellation(cancellationToken);
 		return (TSelf)this;
 	}
 
@@ -292,29 +302,29 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public TSelf WithTimeout(TimeSpan timeout)
 	{
-		expectationBuilder.WithTimeout(timeout);
+		ExpectationBuilder.WithTimeout(timeout);
 		return (TSelf)this;
 	}
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
-		=> new(++index, $" [{index:00}] Expected that {expectationBuilder.Subject}",
-			await expectationBuilder.IsMet());
+		=> new(++index, $" [{index:00}] Expected that {ExpectationBuilder.Subject}",
+			await ExpectationBuilder.IsMet());
 
 	/// <inheritdoc />
 	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-		=> expectationBuilder.GetContexts();
+		=> ExpectationBuilder.GetContexts();
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
-		=> expectationBuilder.EndEvaluation();
+		=> ExpectationBuilder.EndEvaluation();
 
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
 	internal TSelf UseTimeSystem(ITimeSystem timeSystem)
 	{
-		expectationBuilder.UseTimeSystem(timeSystem);
+		ExpectationBuilder.UseTimeSystem(timeSystem);
 		return (TSelf)this;
 	}
 
@@ -323,18 +333,18 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	{
 		try
 		{
-			return await expectationBuilder.FromFailure(failure);
+			return await ExpectationBuilder.FromFailure(failure);
 		}
 		finally
 		{
-			await expectationBuilder.EndEvaluation();
+			await ExpectationBuilder.EndEvaluation();
 		}
 	}
 
 	[StackTraceHidden]
 	private async Task<TType> GetResultOrThrow()
 	{
-		ConstraintResult result = await expectationBuilder.IsMet();
+		ConstraintResult result = await ExpectationBuilder.IsMet();
 
 		switch (result.Outcome)
 		{
@@ -347,7 +357,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 					sb.Append("  Successfully verified that ");
 					sb.Append(result.TryGetValue(out IDescribableSubject? describableSubject)
 						? describableSubject.GetDescription()
-						: expectationBuilder.Subject);
+						: ExpectationBuilder.Subject);
 					sb.Append(' ');
 					result.AppendExpectation(sb);
 					traceWriter.WriteMessage(sb.ToString());

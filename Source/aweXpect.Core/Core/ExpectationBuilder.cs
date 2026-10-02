@@ -45,7 +45,11 @@ public abstract class ExpectationBuilder
 	///     Initializes the <see cref="ExpectationBuilder" /> with the <paramref name="subjectExpression" />
 	///     for the statement builder.
 	/// </summary>
-	protected ExpectationBuilder(string subjectExpression, ExpectationGrammars grammars = ExpectationGrammars.None)
+	/// <remarks>
+	///     Only aweXpect.Core can derive, because the evaluation relies on members that are not public.
+	/// </remarks>
+	private protected ExpectationBuilder(string subjectExpression,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
 	{
 		AweXpectInitialization.EnsureInitialized();
 		Subject = subjectExpression.TrimCommonWhiteSpace();
@@ -693,17 +697,21 @@ public abstract class ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken);
 
-	internal void Or(string textSeparator = " or ")
+	/// <summary>
+	///     Supports chaining for alternative expectation constraints with the <paramref name="textSeparator" />.
+	/// </summary>
+	public ExpectationBuilder Or(string textSeparator = " or ")
 	{
 		if (_node is OrNode orNode)
 		{
 			orNode.AddNode(new ExpectationNode(), textSeparator);
-			return;
+			return this;
 		}
 
 		OrNode newNode = new(_node);
 		newNode.AddNode(new ExpectationNode(), textSeparator);
 		_node = newNode;
+		return this;
 	}
 
 	/// <summary>

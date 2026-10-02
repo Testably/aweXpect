@@ -20,7 +20,7 @@ public static partial class ThatAsyncEnumerable
 			TItem expected,
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 	{
-		IElements<TItem> iElements = elements;
+		IAsyncEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ToleranceEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
@@ -42,7 +42,7 @@ public static partial class ThatAsyncEnumerable
 			Elements<TItem> elements,
 			TItem expected)
 	{
-		IElements<TItem> iElements = elements;
+		IAsyncEnumerableElements<TItem> iElements = elements;
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -64,7 +64,7 @@ public static partial class ThatAsyncEnumerable
 			Elements elements,
 			string? expected)
 	{
-		IElements iElements = elements;
+		IAsyncEnumerableStringElements iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(

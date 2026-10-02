@@ -6,6 +6,29 @@ namespace aweXpect.Core.Tests.Options;
 
 public class TimeToleranceTests
 {
+	[Fact]
+	public async Task GetToleranceOrDefault_WhenToleranceIsNotSet_ShouldReturnTheDefault()
+	{
+		TimeTolerance sut = new();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		TimeSpan result = sut.GetToleranceOrDefault();
+
+		await That(result).IsEqualTo(36.Hours());
+	}
+
+	[Fact]
+	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
+	{
+		TimeTolerance sut = new();
+		sut.SetTolerance(3.Seconds());
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+
+		TimeSpan result = sut.GetToleranceOrDefault();
+
+		await That(result).IsEqualTo(3.Seconds());
+	}
+
 	[Theory]
 	[InlineData(0)]
 	[InlineData(2)]

@@ -14,7 +14,6 @@ namespace aweXpect.Results;
 public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	: ExpectationResult<T>(expectationBuilder)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Returns the result returned from the delegate.
@@ -23,10 +22,10 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	{
 		get
 		{
-			_expectationBuilder.And("")
+			ExpectationBuilder.And("")
 				.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
 				.ForWhich<DelegateValue<T>, T?>(d => d.Value, " and its result ", "it");
-			return new ThatSubject<T?>(_expectationBuilder);
+			return new ThatSubject<T?>(ExpectationBuilder);
 		}
 	}
 

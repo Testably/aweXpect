@@ -134,6 +134,10 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 Note that the `it` parameter is passed to the base class and the inherited `It` property is used in the body: capturing
 the parameter *and* passing it to the base stores it twice, which the compiler warns about (CS9107).
 
+The helper classes also let `.And` combine the result texts like the built-in expectations, e.g. "it was 2 and was
+not even" instead of "it was 2 and it was not even". A constraint that derives from `ConstraintResult` directly does
+the same by overriding `LeadingSubject` and `TrailingSubject` with `GetSubjectOfResult(it)`.
+
 ## `null` subjects
 
 Which of the three helper classes to pick is decided by how your expectation treats a `null` subject, and that follows
@@ -314,6 +318,9 @@ or converts the subject returns the converted value there. The helper classes re
 `TryGetStoredValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
 `TryGetValue<TValue>` builds on it and only returns `true` for a value that is not `null`.
 
+A result of your own that derives from `AndOrResult<TType, TThat>` reaches the `ExpectationBuilder` through the
+protected property of the same name, e.g. to continue with `ExpectationBuilder.And()` or `ExpectationBuilder.Or()`.
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you
@@ -340,6 +347,10 @@ DateOnly releaseDate = new(1969, 9, 26);
 
 await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
 ```
+
+In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
+`DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days, like
+the built-in expectations do.
 
 ## Nested expectations
 
@@ -371,21 +382,20 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 
 ## Expectations on collection items
 
-An expectation on the items of a collection, i.e. an extension method on `ThatEnumerable.Elements<TItem>` that
-follows `All()`, `AtLeast(2)` and the other quantifiers, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
-`ThatEnumerable.IElements<TItem>` gives access to the quantifier and the subject:
+An expectation on the items of a collection, i.e. an extension method on `IEnumerableElements<TItem>`, which
+`All()`, `AtLeast(2)` and the other quantifiers return, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
+`IEnumerableElements<TItem>` gives access to the quantifier and the subject:
 
 ```csharp
 using aweXpect.Options;
 
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
-    this ThatEnumerable.Elements<Track> elements)
+    this IEnumerableElements<Track> elements)
 {
-    ThatEnumerable.IElements<Track> source = elements;
-    ExpectationBuilder expectationBuilder = source.Subject.Get().ExpectationBuilder;
+    ExpectationBuilder expectationBuilder = elements.Subject.Get().ExpectationBuilder;
     return new(expectationBuilder.AddConstraint((it, grammars)
-            => new AreRadioFriendlyConstraint(expectationBuilder, it, grammars, source.Quantifier)),
-        source.Subject);
+            => new AreRadioFriendlyConstraint(expectationBuilder, it, grammars, elements.Quantifier)),
+        elements.Subject);
 }
 
 private sealed class AreRadioFriendlyConstraint(
@@ -430,6 +440,17 @@ The base class renders the quantifier like the built-in `Satisfy`, also when neg
 or not matching items as context. `DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio
 friendly for fewer than 2 items, but 3 of 3 were", followed by the "Matching items". Unlike the built-in expectations,
 it does not add the "Collection" context.
+
+- The other collections have their own interfaces: `IEnumerableStringElements` for strings,
+  `INonGenericEnumerableElements<TEnumerable>` for a non-generic `IEnumerable`,
+  `IStructEnumerableElements<TEnumerable, TItem>` and `IStructEnumerableStringElements<TEnumerable>` for an
+  `ImmutableArray`, and `IAsyncEnumerableElements<TItem>` and `IAsyncEnumerableStringElements` for an
+  `IAsyncEnumerable`.
+- Call `CompleteEarly()` instead of `Complete()` as soon as `IsDetermined`, to stop reading the items once they
+  decide the outcome.
+- When the item expectation or the verb are only known while the failure message is created, e.g. because they come
+  from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
+  `AppendItemExpectation` and `Verb` instead.
 
 ## Asynchronous constraints
 

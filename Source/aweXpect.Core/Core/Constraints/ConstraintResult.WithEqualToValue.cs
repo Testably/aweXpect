@@ -51,10 +51,10 @@ public abstract partial class ConstraintResult
 		protected string It { get; } = it;
 
 		/// <inheritdoc />
-		internal override string? LeadingSubject => GetSubjectOfResult(It);
+		public override string? LeadingSubject => GetSubjectOfResult(It);
 
 		/// <inheritdoc />
-		internal override string? TrailingSubject => GetSubjectOfResult(It);
+		public override string? TrailingSubject => GetSubjectOfResult(It);
 
 		/// <summary>
 		///     The actual value.

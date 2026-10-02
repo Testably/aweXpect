@@ -18,8 +18,6 @@ public partial class ThatDelegateThrows<TException>(
 	/// </summary>
 	public ThatDelegate.ThrowsOption ThrowOptions { get; } = throwOptions;
 
-	/// <summary>
-	///     The expectation builder.
-	/// </summary>
-	public ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+	/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
+	ExpectationBuilder IExpectThat<TException>.ExpectationBuilder => ExpectationBuilder;
 }

@@ -18,7 +18,6 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		IOptionsProvider<PredicateOptions<TItem>>
 {
 	private readonly Func<TCollection, Task<TItem?>> _asyncMemberAccessor;
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly PredicateOptions<TItem> _options;
 
 	internal AsyncSingleItemResult(ExpectationBuilder expectationBuilder,
@@ -26,7 +25,6 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		Func<TCollection, Task<TItem?>> asyncMemberAccessor)
 		: base(expectationBuilder)
 	{
-		_expectationBuilder = expectationBuilder;
 		_options = options;
 		_asyncMemberAccessor = asyncMemberAccessor;
 	}
@@ -35,7 +33,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	///     Further expectations on the single item.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
@@ -100,6 +98,6 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	}
 
 	private AsyncSingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(_expectationBuilder, new PredicateOptions<T>(),
+		=> new(ExpectationBuilder, new PredicateOptions<T>(),
 			async x => memberAccessor(await _asyncMemberAccessor(x)));
 }

@@ -20,7 +20,7 @@ public static partial class ThatEnumerable
 			TItem expected,
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 	{
-		IElements<TItem> iElements = elements;
+		IEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ToleranceEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -46,7 +46,7 @@ public static partial class ThatEnumerable
 			Elements<TItem> elements,
 			TItem expected)
 	{
-		IElements<TItem> iElements = elements;
+		IEnumerableElements<TItem> iElements = elements;
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
@@ -74,7 +74,7 @@ public static partial class ThatEnumerable
 			ElementsForEnumerable<IEnumerable> elements,
 			object? expected)
 	{
-		IElementsForEnumerable<IEnumerable> iElements = elements;
+		INonGenericEnumerableElements<IEnumerable> iElements = elements;
 		ItemEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
@@ -102,7 +102,7 @@ public static partial class ThatEnumerable
 			object? expected)
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
-		IElementsForStructEnumerable<TEnumerable, TItem> iElements = elements;
+		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
 		ObjectEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>(
@@ -127,7 +127,7 @@ public static partial class ThatEnumerable
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
-		IElementsForStructEnumerable<TEnumerable, TItem> iElements = elements;
+		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
@@ -148,7 +148,7 @@ public static partial class ThatEnumerable
 			Elements elements,
 			string? expected)
 	{
-		IElements iElements = elements;
+		IEnumerableStringElements iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -176,7 +176,7 @@ public static partial class ThatEnumerable
 			string? expected)
 		where TEnumerable : struct, IEnumerable<string?>
 	{
-		IElementsForStructEnumerable<TEnumerable> iElements = elements;
+		IStructEnumerableStringElements<TEnumerable> iElements = elements;
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>(

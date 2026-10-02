@@ -1,7 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -103,8 +102,7 @@ public static partial class ThatNullableDateTime
 
 		private bool IsWithinRange(DateTime actual, DateTime minimum, DateTime maximum)
 		{
-			TimeSpan timeTolerance = tolerance.Tolerance
-			                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 
