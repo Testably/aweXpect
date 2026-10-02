@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -11,32 +11,6 @@ using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 
 namespace aweXpect.Core;
-
-/// <summary>
-///     The retry constants of <see cref="EventuallyExpectationBuilder{TValue}" />.
-/// </summary>
-/// <remarks>
-///     They do not depend on the value type, so they are kept outside of the generic type to have a single instance
-///     instead of one per closed constructed type.
-/// </remarks>
-internal static class EventuallyExpectationBuilder
-{
-	/// <summary>
-	///     How close to the end of the retry budget a cancellation still counts as the budget having elapsed, and
-	///     how much of the budget may remain after a wait for that wait to still be the last one.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> truncates to whole milliseconds and its timer does
-	///     not share the clock of the stopwatch that measures the retry budget, so a wait that consumed the whole
-	///     budget can be canceled a fraction of a millisecond before the stopwatch agrees.
-	/// </remarks>
-	public static readonly TimeSpan CancellationTolerance = TimeSpan.FromMilliseconds(2);
-
-	/// <summary>
-	///     The largest interval that <see cref="Task.Delay(TimeSpan, CancellationToken)" /> accepts.
-	/// </summary>
-	public static readonly TimeSpan MaximumInterval = TimeSpan.FromMilliseconds(int.MaxValue);
-}
 
 /// <summary>
 ///     An <see cref="ExpectationBuilder" /> that repeatedly re-evaluates the <paramref name="subject" />
@@ -111,7 +85,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		try
 		{
 			ConstraintResult result =
-				await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellation.Token);
+				await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellation);
 			if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } cancellationTimeout &&
 			    cancellation.IsTimeoutElapsed)
 			{
@@ -144,30 +118,19 @@ internal class EventuallyExpectationBuilder<TValue>(
 		Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		TimeSpan retryTimeout,
-		CancellationToken cancellationToken)
+		EvaluationCancellation cancellation)
 	{
 		TimeSpan interval = _interval ?? Customize.aweXpect.Settings().DefaultCheckInterval.Get();
 		List<ResultContext> initialContexts = new(GetContexts());
 		EvaluationContext.EvaluationContext currentContext = context;
-		Stopwatch stopwatch = new();
-		stopwatch.Start();
-
-		TimeSpan? cancelledAt = null;
-		TaskCompletionSource<bool> cancellation = new(TaskCreationOptions.RunContinuationsAsynchronously);
-		using CancellationTokenRegistration registration = cancellationToken.Register(() =>
-		{
-			// The time has to be recorded before the wait is released, so that the attempt that continues after
-			// the cancellation always observes it.
-			cancelledAt ??= stopwatch.Elapsed;
-			cancellation.TrySetResult(true);
-		});
-		TimeSpan Elapsed() => cancelledAt ?? stopwatch.Elapsed;
+		CancellationToken cancellationToken = cancellation.Token;
+		using Polling polling = Polling.Start(Stopwatch.GetTimestamp(), retryTimeout, interval, cancellation);
 
 		bool isLastAttempt = false;
 		while (true)
 		{
 			(TValue? data, Exception? failure, bool hasTimedOut, bool isNullTask) = await EvaluateSubject(subject,
-				retryTimeout, retryTimeout - Elapsed(), interval, cancellationToken);
+				retryTimeout, polling.Remaining, interval, cancellationToken);
 
 			(ConstraintResult? result, failure) =
 				await CheckAttempt(rootNode, data, failure, isNullTask, currentContext, cancellationToken);
@@ -176,9 +139,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 				return result;
 			}
 
-			TimeSpan remaining = retryTimeout - Elapsed();
 			bool isCanceled = failure is OperationCanceledException && cancellationToken.IsCancellationRequested;
-			if (!isCanceled && (isLastAttempt || hasTimedOut || remaining <= TimeSpan.Zero))
+			if (!isCanceled && (isLastAttempt || hasTimedOut || polling.Remaining <= TimeSpan.Zero))
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
@@ -194,21 +156,13 @@ internal class EventuallyExpectationBuilder<TValue>(
 					retryTimeout);
 			}
 
-			TimeSpan wait = NextInterval(interval, remaining);
-			// The timer of the wait can complete a fraction of a millisecond before the stopwatch agrees, so an
-			// attempt that would only leave a sliver of the budget is the last one; otherwise the sliver becomes an
-			// additional wait and evaluation right at the deadline.
-			isLastAttempt = remaining - wait < EventuallyExpectationBuilder.CancellationTolerance;
-			if (await IsCancelledDuring(wait, cancellation.Task))
-			{
-				isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
-			}
-
+			// After a cancellation that decides nothing, one more attempt is made with the canceled token, so that
+			// it is reported as canceled unless that attempt meets the expectations.
+			isLastAttempt = await polling.WaitForNextCheck() is PollStep.LastCheck or PollStep.Elapsed;
 			currentContext = await context.StartAttempt();
 			RestoreContexts(initialContexts);
 		}
 	}
-
 	/// <summary>
 	///     Evaluates the <paramref name="subject" /> for one attempt, which
 	///     <see cref="CreateAttemptCancellation" /> bounds.
@@ -284,48 +238,6 @@ internal class EventuallyExpectationBuilder<TValue>(
 		{
 			return (null, exception);
 		}
-	}
-
-	/// <summary>
-	///     Waits for the <paramref name="wait" /> and returns whether the <paramref name="cancellation" /> cut it short.
-	/// </summary>
-	/// <remarks>
-	///     The wait is not canceled by the token itself: <see cref="Task.Delay(TimeSpan, CancellationToken)" /> would
-	///     register its own callback on it and the cancellation callbacks run in reverse order, so the wait could
-	///     continue before the callback in <see cref="IsMetRepeatedly" /> recorded when the cancellation was requested.
-	/// </remarks>
-	private static async Task<bool> IsCancelledDuring(TimeSpan wait, Task cancellation)
-	{
-		using CancellationTokenSource waitCts = new();
-		Task delay = Task.Delay(wait, waitCts.Token);
-		if (await Task.WhenAny(delay, cancellation) == delay)
-		{
-			return false;
-		}
-
-		waitCts.Cancel();
-		return true;
-	}
-
-	/// <summary>
-	///     Waits at most until the retry budget (<paramref name="remaining" />) is used up. A non-positive
-	///     <paramref name="interval" /> re-evaluates the subject as fast as possible.
-	/// </summary>
-	/// <remarks>
-	///     The result is capped at <see cref="EventuallyExpectationBuilder.MaximumInterval" />, because an unlimited
-	///     retry budget does not limit the interval and
-	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> rejects larger values.
-	/// </remarks>
-	private static TimeSpan NextInterval(TimeSpan interval, TimeSpan remaining)
-	{
-		if (interval <= TimeSpan.Zero)
-		{
-			return TimeSpan.Zero;
-		}
-
-		TimeSpan maximum = EventuallyExpectationBuilder.MaximumInterval;
-		TimeSpan next = interval < remaining ? interval : remaining;
-		return next < maximum ? next : maximum;
 	}
 
 	/// <summary>
