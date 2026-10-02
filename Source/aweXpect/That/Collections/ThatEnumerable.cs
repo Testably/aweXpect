@@ -27,17 +27,6 @@ public static partial class ThatEnumerable
 	private const string SortOrder = " order";
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
-	private static void AddExpectedContext<TItem>(ExpectationBuilder expectationBuilder, IEnumerable<TItem> expected,
-		ICollection<TItem> expectedItems)
-		=> expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-			{
-				ICollection<TItem> coll => coll.Count,
-				ICountable countable => countable.Count,
-				_ => null,
-			})),
-			-2));
-
 	/// <remarks>
 	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a set subject with a
 	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>, and the
@@ -85,7 +74,7 @@ public static partial class ThatEnumerable
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			AddExpectedContext(expectationBuilder, expected, expectedItems);
+			expectationBuilder.AddExpectedItemsContext(expected, expectedItems);
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
@@ -99,7 +88,7 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
@@ -237,7 +226,7 @@ public static partial class ThatEnumerable
 			NoOptions noOptions = new();
 			foreach (TItem item in materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
@@ -246,7 +235,7 @@ public static partial class ThatEnumerable
 
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
 				// A canceled item expectation does not match, which must not be reported as a mismatch.
-				if (result && !cancellationToken.IsCancellationRequested)
+				if (result && !IsAnItemExpectationCanceled(cancellationToken))
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
@@ -260,7 +249,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (IsAnItemExpectationCanceled(cancellationToken))
 			{
 				Outcome = Outcome.Undecided;
 				expectationBuilder.AddCollectionContext(materializedEnumerable);
@@ -288,6 +277,9 @@ public static partial class ThatEnumerable
 				await expectation.PrepareExpectation();
 			}
 		}
+
+		private bool IsAnItemExpectationCanceled(CancellationToken cancellationToken)
+			=> cancellationToken.IsCancellationRequested && _expectations.Any(expectation => expectation.IsUndecided);
 
 		private string TooManyDeviationsError()
 			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
@@ -387,7 +379,7 @@ public static partial class ThatEnumerable
 			NoOptions noOptions = new();
 			foreach (TItem item in materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
@@ -516,7 +508,7 @@ public static partial class ThatEnumerable
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			AddExpectedContext(expectationBuilder, expected, expectedItems);
+			expectationBuilder.AddExpectedItemsContext(expected, expectedItems);
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
 				matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>());
@@ -529,7 +521,7 @@ public static partial class ThatEnumerable
 
 			foreach (object? item in materializedEnumerable)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
@@ -685,7 +677,7 @@ public static partial class ThatEnumerable
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -825,7 +817,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -974,7 +966,7 @@ public static partial class ThatEnumerable
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -1128,7 +1120,7 @@ public static partial class ThatEnumerable
 					return this;
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -1263,7 +1255,7 @@ public static partial class ThatEnumerable
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -1374,7 +1366,7 @@ public static partial class ThatEnumerable
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					_expectationBuilder.AddCollectionContext(materialized, true);
@@ -1468,7 +1460,7 @@ public static partial class ThatEnumerable
 				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (TItem item in materialized)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return Task.FromResult<ConstraintResult>(this);
@@ -1601,7 +1593,7 @@ public static partial class ThatEnumerable
 				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 			foreach (object? item in materialized)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					return Task.FromResult<ConstraintResult>(this);

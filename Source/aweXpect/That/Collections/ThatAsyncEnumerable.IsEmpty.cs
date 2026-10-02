@@ -65,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 				return this;
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
 				return this;

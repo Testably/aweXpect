@@ -264,26 +264,6 @@ internal static class CollectionHelpers
 		});
 	}
 
-	/// <remarks>
-	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
-	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
-	///     renders it.
-	/// </remarks>
-	private static Type GetItemTypeOfListedItems(IEnumerable value)
-	{
-		IEnumerable<object?> items = value is ICollection
-			? value.Cast<object?>()
-			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		try
-		{
-			return items.GetItemType();
-		}
-		catch (Exception)
-		{
-			return typeof(object);
-		}
-	}
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Adds the "Collection" context for the items of the <paramref name="value" /> that were received when the
@@ -316,27 +296,6 @@ internal static class CollectionHelpers
 						-1));
 			}
 		});
-	}
-
-	/// <summary>
-	///     Formats the items of the <paramref name="value" /> that were received so far, and marks them as incomplete,
-	///     unless the end of the source was reached.
-	/// </summary>
-	internal static string FormatMaterializedItems<TItem>(this IMaterializedAsyncEnumerable<TItem> value,
-		FormattingOptions options)
-	{
-		int count = value.Count ?? value.MaterializedItems.Count;
-		FormattingOptions formattingOptions = typeof(TItem).GetFormattingOption(count, value.Count);
-		if (options.UseLineBreaks)
-		{
-			formattingOptions = formattingOptions with
-			{
-				UseLineBreaks = true,
-			};
-		}
-
-		return Formatter.Format(HideCount(value.MaterializedItems), formattingOptions)
-			.AppendIsIncomplete(value.Count is null);
 	}
 #endif
 
@@ -384,7 +343,63 @@ internal static class CollectionHelpers
 		});
 	}
 
+	/// <summary>
+	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
+	///     <paramref name="expected" /> collection.
+	/// </summary>
+	internal static void AddExpectedItemsContext<TItem>(this ExpectationBuilder expectationBuilder,
+		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
+		=> expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
+			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			})),
+			-2));
+
+	/// <remarks>
+	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
+	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
+	///     renders it.
+	/// </remarks>
+	private static Type GetItemTypeOfListedItems(IEnumerable value)
+	{
+		IEnumerable<object?> items = value is ICollection
+			? value.Cast<object?>()
+			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+		try
+		{
+			return items.GetItemType();
+		}
+		catch (Exception)
+		{
+			return typeof(object);
+		}
+	}
+
 #if NET8_0_OR_GREATER
+	/// <summary>
+	///     Formats the items of the <paramref name="value" /> that were received so far, and marks them as incomplete,
+	///     unless the end of the source was reached.
+	/// </summary>
+	internal static string FormatMaterializedItems<TItem>(this IMaterializedAsyncEnumerable<TItem> value,
+		FormattingOptions options)
+	{
+		int count = value.Count ?? value.MaterializedItems.Count;
+		FormattingOptions formattingOptions = typeof(TItem).GetFormattingOption(count, value.Count);
+		if (options.UseLineBreaks)
+		{
+			formattingOptions = formattingOptions with
+			{
+				UseLineBreaks = true,
+			};
+		}
+
+		return Formatter.Format(HideCount(value.MaterializedItems), formattingOptions)
+			.AppendIsIncomplete(value.Count is null);
+	}
+
 	/// <summary>
 	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
 	///     canceled, also while it waits for the next item.
@@ -418,6 +433,32 @@ internal static class CollectionHelpers
 #endif
 
 	/// <summary>
+	///     Whether the <paramref name="cancellationToken" /> is canceled before all items of the
+	///     <paramref name="materialized" /> collection are available.
+	/// </summary>
+	/// <remarks>
+	///     A cancellation only stops reading the items that still have to come from the source, so that a collection
+	///     which is already complete in memory is judged like any other value.
+	/// </remarks>
+	internal static bool IsCanceledBeforeTheEndOf<TItem>(this CancellationToken cancellationToken,
+		IEnumerable<TItem> materialized)
+		=> cancellationToken.IsCancellationRequested &&
+		   materialized is not (ICollection<TItem> or ICountable { Count: not null, });
+
+	/// <inheritdoc cref="IsCanceledBeforeTheEndOf{TItem}(CancellationToken, IEnumerable{TItem})" />
+	internal static bool IsCanceledBeforeTheEndOf(this CancellationToken cancellationToken,
+		IEnumerable materialized)
+		=> cancellationToken.IsCancellationRequested &&
+		   materialized is not (ICollection or ICountable { Count: not null, });
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="IsCanceledBeforeTheEndOf{TItem}(CancellationToken, IEnumerable{TItem})" />
+	internal static bool IsCanceledBeforeTheEndOf<TItem>(this CancellationToken cancellationToken,
+		IAsyncEnumerable<TItem> materialized)
+		=> cancellationToken.IsCancellationRequested && materialized is not ICountable { Count: not null, };
+#endif
+
+	/// <summary>
 	///     Counts the items of the <paramref name="source" />, or returns <see langword="null" /> when the
 	///     <paramref name="cancellationToken" /> is canceled before the <paramref name="source" /> ends.
 	/// </summary>
@@ -427,7 +468,7 @@ internal static class CollectionHelpers
 		int count = 0;
 		foreach (TItem _ in source)
 		{
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(source))
 			{
 				return null;
 			}

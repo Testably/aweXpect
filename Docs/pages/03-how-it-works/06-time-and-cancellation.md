@@ -291,3 +291,10 @@ After that, the enumerable is not advanced any further.
 An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
 regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
 `IsEmpty` list the items received so far.
+
+## Complete collections
+
+A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
+evaluated `IEnumerable<T>`. A collection that is already complete in memory, such as an array or a `List<T>`, is
+evaluated completely like any other value, even when the timeout elapsed while a delegate created it. The same applies
+to a collection whose items an earlier expectation on the same subject has already read to the end.

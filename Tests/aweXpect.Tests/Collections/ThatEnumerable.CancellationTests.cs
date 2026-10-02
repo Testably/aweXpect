@@ -1223,6 +1223,96 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task WhenInMemoryCollectionIsCanceled_ShouldBeJudgedCompletely()
+		{
+			using CancellationTokenSource cts = new();
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).All().Satisfy(x => Cancel(cts, x > 0)).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("a collection that is already complete in memory is judged like any other value");
+		}
+
+		[Fact]
+		public async Task WhenInMemoryCollectionIsCanceled_ShouldStillReportAMismatchedItemExpectation()
+		{
+			using CancellationTokenSource cts = new();
+			int[] subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x.Satisfies(v => Cancel(cts, v == 1)), x => x.IsEqualTo(3),])
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x.Satisfies(v => Cancel(cts, v == 1)), x => x.IsEqualTo(3),] in order,
+				             but it contained item 2 at index 1 instead of an item that is equal to 3
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [an item that satisfies v => Cancel(cts, v == 1), an item that is equal to 3]
+				             """)
+				.Because("only an item expectation that was not decided may be ignored, not a decided mismatch");
+		}
+
+		[Fact]
+		public async Task WhenSourceEndedBeforeTheCancellation_ShouldJudgeTheCollection()
+		{
+			using CancellationTokenSource cts = new();
+			IEnumerable<int> subject = Enumerable.Range(1, 3).Select(x => x);
+
+			async Task Act()
+				=> await That(subject).HasCount(3).And.All().Satisfy(x => Cancel(cts, x > 0))
+					.WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the source was read to its end before the cancellation, so all items are known");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldJudgeItLikeAScalar()
+		{
+			async Task Collection()
+				=> await That(WaitForTheTimeout(new[] { 1, 2, }))
+					.DoesNotThrow().WhoseResult.IsEqualTo([1, 2,]).WithTimeout(50.Milliseconds());
+
+			async Task Scalar()
+				=> await That(WaitForTheTimeout(5))
+					.DoesNotThrow().WhoseResult.IsEqualTo(5).WithTimeout(50.Milliseconds());
+
+			await That(Scalar).DoesNotThrow();
+			await That(Collection).DoesNotThrow()
+				.Because("the array is complete when the constraint runs, like the scalar");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldReportItsMismatch()
+		{
+			async Task Act()
+				=> await That(WaitForTheTimeout(new[] { 1, 2, }))
+					.DoesNotThrow().WhoseResult.IsEqualTo([1, 3,]).WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that WaitForTheTimeout(new[] { 1, 2, })
+				             does not throw any exception and its result is equal to collection [1, 3,] in order,
+				             but it contained item 2 at index 1 instead of 3
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [1, 3]
+				             """)
+				.Because("a complete array is judged normally instead of reporting that it did not finish");
+		}
+
+		[Fact]
 		public async Task WhenTimeoutElapses_ShouldFailANegatedContains()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1418,6 +1508,12 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
+		private static bool Cancel(CancellationTokenSource cts, bool result)
+		{
+			cts.Cancel();
+			return result;
+		}
+
 		/// <remarks>
 		///     Each number takes a millisecond, so that a short timeout elapses during the enumeration. The numbers end
 		///     after half a minute, so that a regression which ignores the timeout fails the test instead of hanging the
@@ -1433,5 +1529,16 @@ public sealed partial class ThatEnumerable
 				yield return number++;
 			}
 		}
+
+		/// <remarks>
+		///     The <paramref name="result" /> is only returned once the timeout elapsed, bounded by half a minute, so that
+		///     a regression fails the test instead of hanging the test run.
+		/// </remarks>
+		private static Func<CancellationToken, T> WaitForTheTimeout<T>(T result)
+			=> cancellationToken =>
+			{
+				cancellationToken.WaitHandle.WaitOne(30.Seconds());
+				return result;
+			};
 	}
 }

@@ -89,7 +89,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (_count <= 1 && cancellationToken.IsCancellationRequested)
+			if (_count <= 1 && cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				expectationBuilder.AddCollectionContext(_materialized, true);

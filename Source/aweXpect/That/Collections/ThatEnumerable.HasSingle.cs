@@ -110,7 +110,7 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materialized)
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materialized, true);
@@ -256,7 +256,7 @@ public static partial class ThatEnumerable
 
 			foreach (TItem item in materialized.Cast<TItem>())
 			{
-				if (cancellationToken.IsCancellationRequested)
+				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
 					expectationBuilder.AddCollectionContext(materialized, true);

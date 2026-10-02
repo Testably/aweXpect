@@ -96,7 +96,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				_expectationBuilder.AddCollectionContext(items, true);
@@ -238,7 +238,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				_expectationBuilder.AddCollectionContext(items, true);
@@ -366,7 +366,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			if (cancellationToken.IsCancellationRequested)
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
 				_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>, true);
@@ -474,14 +474,8 @@ public static partial class ThatAsyncEnumerable
 				_items = [];
 			}
 
-			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-					{
-						ICollection<TItem> coll => coll.Count,
-						ICountable countable => countable.Count,
-						_ => null,
-					})),
-					-2));
+			expectationBuilder.AddExpectedItemsContext(expected, expectedItems);
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
 				if (_items?.Count <= maximumNumber)
@@ -494,8 +488,6 @@ public static partial class ThatAsyncEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(
-						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
 
@@ -505,7 +497,6 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, itemOptions, maximumNumber);
 			if (completedResult)
 			{
@@ -625,6 +616,7 @@ public static partial class ThatAsyncEnumerable
 					() => Formatter.Format(_expectations, typeof(TItem).GetFormattingOption(_expectations.Length)),
 					-2));
 			NoOptions noOptions = new();
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
 				if (_items?.Count <= maximumNumber)
@@ -634,12 +626,10 @@ public static partial class ThatAsyncEnumerable
 
 				var (result, failure) = await matcher.Verify(It, item, noOptions, maximumNumber);
 				// A canceled item expectation does not match, which must not be reported as a mismatch.
-				if (result && !cancellationToken.IsCancellationRequested)
+				if (result && !IsAnItemExpectationCanceled(cancellationToken))
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(
-						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
 
@@ -649,8 +639,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
-			if (cancellationToken.IsCancellationRequested)
+			if (IsAnItemExpectationCanceled(cancellationToken))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
@@ -675,6 +664,9 @@ public static partial class ThatAsyncEnumerable
 				await expectation.PrepareExpectation();
 			}
 		}
+
+		private bool IsAnItemExpectationCanceled(CancellationToken cancellationToken)
+			=> cancellationToken.IsCancellationRequested && _expectations.Any(expectation => expectation.IsUndecided);
 
 		private string TooManyDeviationsError()
 		{
@@ -779,6 +771,7 @@ public static partial class ThatAsyncEnumerable
 					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
 					-2));
 			NoOptions noOptions = new();
+			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
 				if (_items?.Count <= maximumNumber)
@@ -791,8 +784,6 @@ public static partial class ThatAsyncEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(
-						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
 
@@ -802,7 +793,6 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
 			if (completedResult)
 			{

@@ -227,3 +227,4 @@ aweXpect.Core.ManualExpectationBuilder<TValue>.AppendReasons(System.Text.StringB
 aweXpect.Core.KeyComparers
 static aweXpect.Core.KeyComparers.CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! dictionary) -> System.Collections.Generic.ISet<TKey>!
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterDictionary<TKey, TValue>() -> void
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsUndecided.get -> bool
