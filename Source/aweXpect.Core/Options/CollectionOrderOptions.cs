@@ -31,7 +31,19 @@ public record CollectionOrderOptions<TItem>
 	}
 
 	private static IComparer<TItem> GetDefaultComparer()
-		=> typeof(TItem) == typeof(string) ? (IComparer<TItem>)StringComparer.Ordinal : Comparer<TItem>.Default;
+	{
+		if (typeof(TItem) == typeof(string))
+		{
+			return (IComparer<TItem>)StringComparer.Ordinal;
+		}
+
+		if (typeof(TItem) == typeof(object))
+		{
+			return (IComparer<TItem>)(object)ObjectComparer.Instance;
+		}
+
+		return Comparer<TItem>.Default;
+	}
 
 	/// <inheritdoc />
 	public override string ToString()
@@ -43,4 +55,17 @@ public record CollectionOrderOptions<TItem>
 
 		return $" using {Formatter.Format(_comparer.GetType())}";
 	}
+}
+
+/// <summary>
+///     Orders two strings ordinally, as for a collection of strings, and any other items with the default comparer.
+/// </summary>
+file sealed class ObjectComparer : IComparer<object>
+{
+	public static ObjectComparer Instance { get; } = new();
+
+	public int Compare(object? x, object? y)
+		=> x is string a && y is string b
+			? StringComparer.Ordinal.Compare(a, b)
+			: Comparer<object>.Default.Compare(x, y);
 }

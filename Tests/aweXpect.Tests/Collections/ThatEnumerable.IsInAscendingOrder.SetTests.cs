@@ -22,6 +22,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task ForAnImmutableSortedSetWithTheDefaultComparer_ShouldUseTheComparerOfTheSet()
+			{
+				ImmutableSortedSet<string> subject = ImmutableSortedSet.Create("a", "B");
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("a sorted set is always in its own order");
+			}
+
+			[Fact]
 			public async Task ForAnUntypedSortedSet_ShouldUseTheDefaultOrder()
 			{
 				IEnumerable subject = new SortedSet<string>(new ReverseComparer()) { "a", "b", "c", };
@@ -101,6 +113,18 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """)
 					.Because("the comparer of the set orders the items, not their members");
+			}
+
+			[Fact]
+			public async Task WithTheDefaultComparer_ShouldUseTheComparerOfTheSet()
+			{
+				SortedSet<string> subject = ["a", "B",];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("a sorted set is always in its own order");
 			}
 		}
 	}
