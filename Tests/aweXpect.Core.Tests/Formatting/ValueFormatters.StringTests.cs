@@ -8,6 +8,47 @@ public partial class ValueFormatters
 	public sealed class StringTests
 	{
 		[Fact]
+		public async Task InFailureMessage_WhenStringsDifferByACombiningMark_ShouldShowTheDifference()
+		{
+			string subject = "e\u0301x";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo("\u00E9x");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to "éx",
+				             but it was "e\u0301x", which differs at index 0:
+				                ↓ (actual)
+				               "e\u0301x"
+				               "éx"
+				                ↑ (expected)
+				             """);
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenStringContainsAnUnpairedSurrogate_ShouldEscapeIt()
+		{
+			string subject = "\uD83D";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo("x");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to "x",
+				             but it was "\uD83D", which differs at index 0:
+				                ↓ (actual)
+				               "\uD83D"
+				               "x"
+				                ↑ (expected)
+				             """)
+				.Because("an unpaired surrogate is no valid text and cannot be written by a strict encoder");
+		}
+
+		[Fact]
 		public async Task Strings_InCollection_ShouldKeepItemsApart()
 		{
 			string[] value = ["a\", \"b",];
@@ -43,6 +84,8 @@ public partial class ValueFormatters
 		[InlineData("a\0b", "\"a\\0b\"")]
 		[InlineData("a\u00A0b", "\"a\\u00A0b\"")]
 		[InlineData("a\u200Bb", "\"a\\u200Bb\"")]
+		[InlineData("e\u0301", "\"e\\u0301\"")]
+		[InlineData("\u0301e", "\"\\u0301e\"")]
 		public async Task Strings_ShouldEscapeBackslashesAndInvisibleCharacters(string value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -79,6 +122,23 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task Strings_ShouldEscapeUnpairedSurrogatesButKeepSurrogatePairs()
+		{
+			string value = "a\uD83Db\uDE00c\uD83D\uDE00d\uD83D";
+			string expectedResult = "\"a\\uD83Db\\uDE00c\uD83D\uDE00d\\uD83D\"";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("an unpaired surrogate is no valid text and cannot be written by a strict encoder");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task Strings_ShouldUseDoubleQuotationMarks()
 		{
 			string value = "foo";
@@ -94,6 +154,17 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Theory]
+		[InlineData("\u0928\u092E\u0938\u094D\u0924\u0947")]
+		[InlineData("\u2764\uFE0F")]
+		public async Task Strings_WhenNormalized_ShouldKeepCombiningMarks(string value)
+		{
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo($"\"{value}\"")
+				.Because("a combining mark in normalized text cannot be confused with a precomposed character");
 		}
 
 		[Fact]

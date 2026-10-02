@@ -58,7 +58,7 @@ public static partial class ValueFormatters
 		options ??= FormattingOptions.SingleLine;
 		if (options.UseLineBreaks)
 		{
-			stringBuilder.Append(message.Indent(indentFirstLine: false));
+			stringBuilder.Append(message.Indent(options.Indentation + "  ", false));
 		}
 		else
 		{

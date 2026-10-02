@@ -199,14 +199,21 @@ public static partial class ValueFormatters
 		bool isDictionary = IsDictionary(value);
 		if (!context.FormattedObjects.Add(value))
 		{
-			stringBuilder.Append(isDictionary ? "{*recursive*}" : "[*recursive*]");
+			stringBuilder.Append(isDictionary ? "{ *recursive* }" : "[ *recursive* ]");
 			return;
 		}
 
 		int length = stringBuilder.Length;
 		try
 		{
-			AppendItems(stringBuilder, value, isDictionary, items, totalCount, options, itemFormatter);
+			if (!EnterContent(context))
+			{
+				stringBuilder.Append(isDictionary ? "{ \u2026 }" : "[ \u2026 ]");
+			}
+			else
+			{
+				AppendItems(stringBuilder, value, isDictionary, items, totalCount, options, itemFormatter);
+			}
 		}
 		catch (Exception exception)
 		{
@@ -215,6 +222,7 @@ public static partial class ValueFormatters
 		}
 		finally
 		{
+			context.Depth--;
 			context.FormattedObjects.Remove(value);
 		}
 	}
@@ -239,6 +247,7 @@ public static partial class ValueFormatters
 
 		int maxCount = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		int count = maxCount;
+		string itemIndentation = options.Indentation + "  ";
 
 		stringBuilder.Append(isDictionary ? '{' : '[');
 		bool hasMoreValues = false;
@@ -254,7 +263,7 @@ public static partial class ValueFormatters
 				if (options.UseLineBreaks)
 				{
 					stringBuilder.AppendLine(",");
-					stringBuilder.Append("  ");
+					stringBuilder.Append(itemIndentation);
 				}
 				else
 				{
@@ -264,7 +273,7 @@ public static partial class ValueFormatters
 			else if (options.UseLineBreaks)
 			{
 				stringBuilder.AppendLine();
-				stringBuilder.Append("  ");
+				stringBuilder.Append(itemIndentation);
 			}
 
 			if (count-- <= 0)
@@ -278,7 +287,7 @@ public static partial class ValueFormatters
 
 		if (enumerationException is not null)
 		{
-			stringBuilder.Append(options.UseLineBreaks ? $",{Environment.NewLine}  " : ", ");
+			stringBuilder.Append(options.UseLineBreaks ? $",{Environment.NewLine}{itemIndentation}" : ", ");
 			stringBuilder.Append('(').Append(DescribeThrownException("the enumeration", enumerationException))
 				.Append(')');
 		}
@@ -301,7 +310,7 @@ public static partial class ValueFormatters
 
 		if (options.UseLineBreaks && isNotEmpty)
 		{
-			stringBuilder.AppendLine();
+			stringBuilder.AppendLine().Append(options.Indentation);
 		}
 
 		stringBuilder.Append(isDictionary ? '}' : ']');

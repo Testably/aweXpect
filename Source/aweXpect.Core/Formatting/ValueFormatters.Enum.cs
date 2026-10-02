@@ -25,10 +25,10 @@ public static partial class ValueFormatters
 
 		if (options?.IncludeType == true)
 		{
-			return $"{Format(formatter, value.GetType())} {value}";
+			return $"{Format(formatter, value.GetType())} {FormatEnumValue(value)}";
 		}
 
-		return value.ToString();
+		return FormatEnumValue(value);
 	}
 
 	/// <summary>
@@ -53,7 +53,14 @@ public static partial class ValueFormatters
 				stringBuilder.Append(' ');
 			}
 
-			stringBuilder.Append(value);
+			stringBuilder.Append(FormatEnumValue(value));
 		}
 	}
+
+	/// <remarks>
+	///     A combination of flags is joined like in C#, because the comma of <see cref="Enum.ToString()" /> reads like the
+	///     separator of collection items.
+	/// </remarks>
+	private static string FormatEnumValue(Enum value)
+		=> value.ToString().Replace(", ", " | ");
 }

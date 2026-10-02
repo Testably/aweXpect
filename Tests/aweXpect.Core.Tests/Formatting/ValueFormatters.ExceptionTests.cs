@@ -184,6 +184,20 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult).IgnoringNewlineStyle();
 		}
 
+		[Fact]
+		public async Task WithIndentation_ShouldIndentFollowingLinesOfTheMessageLikeMembers()
+		{
+			Exception value = new CustomException("a\nb");
+			string expectedResult = """
+			                        ValueFormatters.ExceptionTests.CustomException: a
+			                            b
+			                        """;
+
+			string result = Formatter.Format(value, FormattingOptions.Indented());
+
+			await That(result).IsEqualTo(expectedResult).IgnoringNewlineStyle();
+		}
+
 		private sealed class CustomException(string message) : Exception(message);
 
 		private sealed class GenericException<T>(string message) : Exception(message);

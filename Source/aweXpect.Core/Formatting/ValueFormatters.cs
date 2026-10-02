@@ -25,6 +25,9 @@ public static partial class ValueFormatters
 	/// </remarks>
 	[ThreadStatic] private static FormattingContext? _registeredFormatterContext;
 
+	private const int MaximumDepth = 20;
+	private const int MaximumNumberOfWrittenContents = 1000;
+
 	/// <summary>
 	///     Fallback for formatting arbitrary objects.
 	/// </summary>
@@ -172,6 +175,21 @@ public static partial class ValueFormatters
 
 		FormatObject(stringBuilder, value,
 			options ?? FormattingOptions.MultipleLines, context);
+	}
+
+	/// <summary>
+	///     Enters the content of an object, collection or tuple, and returns whether it is written instead of left out.
+	///     The caller leaves it by decreasing the <see cref="FormattingContext.Depth" />.
+	/// </summary>
+	/// <remarks>
+	///     A deep graph without a cycle, like a long linked list, would otherwise overflow the stack and end the whole
+	///     test run, and a graph that references the same node twice on every level doubles the written nodes per level.
+	/// </remarks>
+	private static bool EnterContent(FormattingContext context)
+	{
+		context.Depth++;
+		return context.Depth <= MaximumDepth &&
+		       ++context.NumberOfWrittenContents <= MaximumNumberOfWrittenContents;
 	}
 
 	/// <summary>
