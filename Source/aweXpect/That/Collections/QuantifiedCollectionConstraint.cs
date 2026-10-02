@@ -24,28 +24,13 @@ namespace aweXpect;
 /// </remarks>
 /// <typeparam name="TValue">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
-/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
-/// <param name="it">The name of the subject.</param>
-/// <param name="grammars">The grammars of the expectation.</param>
-/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="ThatEnumerable.IElements{TItem}" />.</param>
-/// <param name="expectationText">
-///     Returns the expectation for a single item for the given grammars, e.g. "is even", or "are even" when the
-///     grammars are <see cref="ExpectationGrammars.Plural" />. The quantifier carries the negation, so the text is not
-///     negated.
-/// </param>
-/// <param name="verb">
-///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
-/// </param>
-public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
-	ExpectationBuilder expectationBuilder,
-	string it,
-	ExpectationGrammars grammars,
-	EnumerableQuantifier quantifier,
-	Func<ExpectationGrammars, string> expectationText,
-	string verb)
-	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
+public abstract class QuantifiedCollectionConstraint<TValue, TItem>
+	: ConstraintResult.WithNotNullValue<TValue>
 {
-	private const string For = " for ";
+	private readonly Func<ExpectationGrammars, string>? _expectationText;
+	private readonly EnumerableQuantifier _quantifier;
+	private readonly string? _verb;
+	private bool _isCompleted;
 	private int _matchingCount;
 	private LimitedCollection<TItem>? _matchingItems;
 	private int _notMatchingCount;
@@ -53,14 +38,62 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	private int? _totalCount;
 
 	/// <summary>
+	///     Initializes the constraint.
+	/// </summary>
+	/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
+	/// <param name="it">The name of the subject.</param>
+	/// <param name="grammars">The grammars of the expectation.</param>
+	/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="ThatEnumerable.IElements{TItem}" />.</param>
+	/// <param name="expectationText">
+	///     Returns the expectation for a single item for the given grammars, e.g. "is even", or "are even" when the
+	///     grammars are <see cref="ExpectationGrammars.Plural" />. The quantifier carries the negation, so the text is not
+	///     negated.
+	/// </param>
+	/// <param name="verb">
+	///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
+	/// </param>
+	protected QuantifiedCollectionConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		string verb)
+		: this(expectationBuilder, it, grammars, quantifier)
+	{
+		_expectationText = expectationText;
+		_verb = verb;
+	}
+
+	/// <summary>
+	///     Initializes the constraint for a derived class that appends the expectation and overrides the
+	///     <see cref="Verb" />.
+	/// </summary>
+	private protected QuantifiedCollectionConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier)
+		: base(it, grammars)
+	{
+		ExpectationBuilder = expectationBuilder;
+		_quantifier = quantifier;
+	}
+
+	/// <summary>
 	///     The <see cref="ExpectationBuilder" /> of the expectation.
 	/// </summary>
-	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+	protected ExpectationBuilder ExpectationBuilder { get; }
 
 	/// <summary>
 	///     The quantifier for the items.
 	/// </summary>
-	private protected EnumerableQuantifier Quantifier => quantifier;
+	private protected EnumerableQuantifier Quantifier => _quantifier;
+
+	/// <summary>
+	///     Indicates that the items recorded so far determine the outcome, so the remaining items need not be read.
+	/// </summary>
+	private protected bool IsDetermined => _quantifier.IsDeterminable(_matchingCount, _notMatchingCount);
 
 	/// <summary>
 	///     The type used to format the matching and not matching items.
@@ -68,10 +101,24 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	protected virtual Type ItemType => typeof(TItem);
 
 	/// <summary>
+	///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
+	/// </summary>
+	private protected virtual string Verb => _verb!;
+
+	/// <summary>
 	///     Records whether the <paramref name="item" /> matches the expectation.
 	/// </summary>
+	/// <remarks>
+	///     The first item after a completed evaluation starts a new one, as the constraint can be evaluated again, e.g.
+	///     for each item of an outer collection.
+	/// </remarks>
 	protected void Record(TItem item, bool isMatch)
 	{
+		if (_isCompleted)
+		{
+			Reset();
+		}
+
 		if (_matchingItems is null || _notMatchingItems is null)
 		{
 			_matchingItems = new LimitedCollection<TItem>();
@@ -105,10 +152,17 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 
 	private void DetermineOutcome(bool isIncomplete)
 	{
-		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
-		Outcome = quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+		// Completed again without recording an item, the collection of this evaluation was empty.
+		if (_isCompleted)
+		{
+			Reset();
+		}
 
-		ExpectationBuilder.AddQuantifierContexts(this, quantifier,
+		_isCompleted = true;
+		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
+		Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+
+		ExpectationBuilder.AddQuantifierContexts(this, _quantifier,
 			_matchingItems is { Count: > 0 } matchingItems
 				? () => matchingItems.Format(Actual, ItemType, _matchingCount).AppendIsIncomplete(isIncomplete)
 				: null,
@@ -117,43 +171,28 @@ public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 				: null);
 	}
 
+	private void Reset()
+	{
+		_isCompleted = false;
+		_matchingCount = 0;
+		_notMatchingCount = 0;
+		_matchingItems = null;
+		_notMatchingItems = null;
+	}
+
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendExpectation(stringBuilder, false);
+		=> _quantifier.AppendExpectation(stringBuilder, Grammars, (sb, g) => sb.Append(_expectationText!(g)));
 
 	/// <inheritdoc />
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
+		=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, Verb);
 
 	/// <inheritdoc />
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendExpectation(stringBuilder, true);
+		=> _quantifier.AppendExpectation(stringBuilder, Grammars, (sb, g) => sb.Append(_expectationText!(g)));
 
 	/// <inheritdoc />
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		=> quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, verb);
-
-	private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
-	{
-		if (Grammars.HasFlag(ExpectationGrammars.Nested))
-		{
-			stringBuilder.AppendNestedQuantifier(quantifier, isNegated, Grammars, expectationText);
-		}
-		else
-		{
-			// The quantifier carries the negation, so the item expectation is not negated.
-			stringBuilder.Append(expectationText(isNegated ? Grammars.Negate() : Grammars));
-			if (isNegated)
-			{
-				quantifier.AppendNegated(stringBuilder);
-			}
-			else
-			{
-				stringBuilder.Append(For);
-				stringBuilder.Append(quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(quantifier.GetItemString());
-			}
-		}
-	}
+		=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, Verb);
 }

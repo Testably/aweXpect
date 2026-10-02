@@ -95,7 +95,7 @@ public sealed class EnumerableQuantifierTests
 			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(minimum);
 			StringBuilder sb = new();
 
-			sut.AppendNegated(sb);
+			sut.AppendExpectation(sb, ExpectationGrammars.Negated, (_, _) => { });
 
 			await That(sb.ToString()).IsEqualTo(expected)
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
@@ -157,7 +157,7 @@ public sealed class EnumerableQuantifierTests
 			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(maximum);
 			StringBuilder sb = new();
 
-			sut.AppendNegated(sb);
+			sut.AppendExpectation(sb, ExpectationGrammars.Negated, (_, _) => { });
 
 			await That(sb.ToString()).IsEqualTo(expected)
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
@@ -316,7 +316,7 @@ public sealed class EnumerableQuantifierTests
 			EnumerableQuantifier sut = EnumerableQuantifier.LessThan(maximum);
 			StringBuilder sb = new();
 
-			sut.AppendNegated(sb);
+			sut.AppendExpectation(sb, ExpectationGrammars.Negated, (_, _) => { });
 
 			await That(sb.ToString()).IsEqualTo(expected)
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
@@ -334,7 +334,7 @@ public sealed class EnumerableQuantifierTests
 			EnumerableQuantifier sut = EnumerableQuantifier.MoreThan(minimum);
 			StringBuilder sb = new();
 
-			sut.AppendNegated(sb);
+			sut.AppendExpectation(sb, ExpectationGrammars.Negated, (_, _) => { });
 
 			await That(sb.ToString()).IsEqualTo(expected)
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");

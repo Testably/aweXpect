@@ -21,21 +21,18 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatAsyncEnumerable
 {
-	private sealed class CollectionConstraint<TItem>
-		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
+	private sealed class CollectionConstraint<TItem>(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		Func<TItem, ValueTask<bool>> predicate,
+		string verb)
+		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+				expectationText, verb),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly Func<TItem, bool> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly string _verb;
-		private int _matchingCount;
-		private LimitedCollection<TItem>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<TItem>? _notMatchingItems;
-		private int? _totalCount;
-
 		public CollectionConstraint(
 			ExpectationBuilder expectationBuilder,
 			string it,
@@ -43,13 +40,10 @@ public static partial class ThatAsyncEnumerable
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
 			Func<TItem, bool> predicate,
-			string verb) : base(it, grammars)
+			string verb)
+			: this(expectationBuilder, it, grammars, quantifier, expectationText,
+				item => new ValueTask<bool>(UserCode.Invoke(predicate, item, "the predicate")), verb)
 		{
-			_expectationBuilder = expectationBuilder;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
 		}
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -60,38 +54,22 @@ public static partial class ThatAsyncEnumerable
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			_matchingCount = 0;
-			_notMatchingCount = 0;
 			LimitedCollection<TItem> items = new();
-			_matchingItems = new LimitedCollection<TItem>();
-			_notMatchingItems = new LimitedCollection<TItem>();
-
+			int count = 0;
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
-				if (UserCode.Invoke(_predicate, item, "the predicate"))
-				{
-					_matchingCount++;
-					_matchingItems.Add(item);
-				}
-				else
-				{
-					_notMatchingCount++;
-					_notMatchingItems.Add(item);
-				}
-
+				Record(item, await predicate(item));
 				items.Add(item);
-
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
+				count++;
+				if (IsDetermined)
 				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(items, true);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(items, true);
 					return this;
 				}
 			}
@@ -99,209 +77,13 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
-				_expectationBuilder.AddCollectionContext(items, true);
+				ExpectationBuilder.AddCollectionContext(items, true);
 				return this;
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(items, totalCount: _totalCount);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(items, totalCount: count);
 			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars));
-				stringBuilder.Append(" for ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems?.Count > 0
-					? () => Formatter.Format(_matchingItems,
-							typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems?.Count > 0
-					? () => Formatter.Format(_notMatchingItems,
-							typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null);
-		}
-	}
-
-	private sealed class AsyncCollectionConstraint<TItem>
-		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
-			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
-	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly ExpectationGrammars _grammars;
-		private readonly Func<TItem, ValueTask<bool>> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly string _verb;
-		private int _matchingCount;
-		private LimitedCollection<TItem>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<TItem>? _notMatchingItems;
-		private int? _totalCount;
-
-		public AsyncCollectionConstraint(
-			ExpectationBuilder expectationBuilder,
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier,
-			Func<ExpectationGrammars, string> expectationText,
-			Func<TItem, ValueTask<bool>> predicate,
-			string verb) : base(it, grammars)
-		{
-			_expectationBuilder = expectationBuilder;
-			_grammars = grammars;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
-		}
-
-		public async Task<ConstraintResult> IsMetBy(
-			IAsyncEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			LimitedCollection<TItem> items = new();
-			_matchingItems = new LimitedCollection<TItem>();
-			_notMatchingItems = new LimitedCollection<TItem>();
-
-			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
-			{
-				if (await _predicate(item))
-				{
-					_matchingCount++;
-					_matchingItems.Add(item);
-				}
-				else
-				{
-					_notMatchingCount++;
-					_notMatchingItems.Add(item);
-				}
-
-				items.Add(item);
-
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(items, true);
-					return this;
-				}
-			}
-
-			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-			{
-				Outcome = Outcome.Undecided;
-				_expectationBuilder.AddCollectionContext(items, true);
-				return this;
-			}
-
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(items, totalCount: _totalCount);
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, _grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(_grammars));
-				stringBuilder.Append(" for ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, _grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-				_verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, _grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(_grammars));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, _grammars.Negate(), It, _matchingCount, _notMatchingCount,
-				_totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems?.Count > 0
-					? () => Formatter.Format(_matchingItems,
-							typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems?.Count > 0
-					? () => Formatter.Format(_notMatchingItems,
-							typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null);
 		}
 	}
 

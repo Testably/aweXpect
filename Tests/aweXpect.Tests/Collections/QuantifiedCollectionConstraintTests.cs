@@ -16,6 +16,30 @@ public sealed class QuantifiedCollectionConstraintTests
 	}
 
 	[Fact]
+	public async Task WhenEvaluatedAgain_ShouldOnlyCountTheItemsOfTheCurrentCollection()
+	{
+		int[][] values = [[1,], [2,],];
+
+		async Task Act()
+			=> await That(values).Exactly(1).ComplyWith(v => v.All().AreEven());
+
+		await That(Act).DoesNotThrow()
+			.Because("the constraint is evaluated again for each collection and must not count the previous items");
+	}
+
+	[Fact]
+	public async Task WhenEvaluatedAgainForAnEmptyCollection_ShouldNotCountThePreviousItems()
+	{
+		int[][] values = [[1,], [],];
+
+		async Task Act()
+			=> await That(values).Exactly(1).ComplyWith(v => v.All().AreEven());
+
+		await That(Act).DoesNotThrow()
+			.Because("all items of an empty collection are even");
+	}
+
+	[Fact]
 	public async Task WhenNegated_ShouldNegateTheQuantifierAndShowTheMatchingItems()
 	{
 		int[] values = [2, 4, 6,];
