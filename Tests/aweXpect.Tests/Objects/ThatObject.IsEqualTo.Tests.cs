@@ -95,6 +95,33 @@ public sealed partial class ThatObject
 					.Because("the failure describes the options like IsEquivalentTo does");
 			}
 
+			[Fact]
+			public async Task WhenEquivalentIsSpecified_AndOnlyTheOtherPartFails_ShouldNotListTheEquivalencyOptions()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+				MyClass expected = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Equivalent().And.Satisfies(_ => false);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.MyClass {
+					                 Value = 1
+					               } and satisfies _ => false,
+					             but it was ThatObject.MyClass {
+					               Value = 1
+					             }
+					             """);
+			}
+
 			[Theory]
 			[InlineData(false)]
 			[InlineData(true)]

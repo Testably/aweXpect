@@ -53,7 +53,8 @@ public static partial class ThatAsyncEnumerable
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
 					a => options.AreConsideredEqual(a, expected),
-					"were")),
+					"were",
+					appendOptionsContexts: options.AppendContexts)),
 			iElements.Subject,
 			options);
 	}

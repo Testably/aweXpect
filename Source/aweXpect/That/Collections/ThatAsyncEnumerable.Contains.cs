@@ -64,7 +64,8 @@ public static partial class ThatAsyncEnumerable
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
-					quantifier).InvertIf(negated)),
+					quantifier,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			quantifier,
 			options);
@@ -90,7 +91,8 @@ public static partial class ThatAsyncEnumerable
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
-					quantifier).InvertIf(negated)),
+					quantifier,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			quantifier,
 			options);
@@ -485,7 +487,8 @@ public static partial class ThatAsyncEnumerable
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
 		TItem expected,
 		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier)
+		Quantifier quantifier,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
@@ -499,7 +502,10 @@ public static partial class ThatAsyncEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			appendOptionsContexts?.Invoke(contexts);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)

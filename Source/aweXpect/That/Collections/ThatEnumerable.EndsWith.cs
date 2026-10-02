@@ -288,7 +288,10 @@ public static partial class ThatEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
 
 		public EndsWithConstraint(
 			string it,
@@ -431,7 +434,10 @@ public static partial class ThatEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
 
 		public EndsWithForEnumerableConstraint(
 			string it,

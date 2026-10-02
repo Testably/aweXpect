@@ -88,7 +88,8 @@ public static partial class ThatAsyncEnumerable
 				=> new AsyncHasItemConstraint<TItem>(it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+					indexOptions,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
@@ -111,7 +112,8 @@ public static partial class ThatAsyncEnumerable
 				=> new AsyncHasItemConstraint<TItem>(it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+					indexOptions,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
@@ -255,7 +257,8 @@ public static partial class ThatAsyncEnumerable
 		ExpectationGrammars grammars,
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<string> predicateDescription,
-		CollectionIndexOptions options)
+		CollectionIndexOptions options,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
@@ -265,7 +268,10 @@ public static partial class ThatAsyncEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			appendOptionsContexts?.Invoke(contexts);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)

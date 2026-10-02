@@ -31,8 +31,6 @@ public static partial class ThatAsyncEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			expectationBuilder.AddEquivalencyContext(equivalencyOptions);
-
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -44,7 +42,8 @@ public static partial class ThatAsyncEnumerable
 						g => ElementExpectations.IsEquivalentTo(g,
 							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were")),
+						"were",
+						appendOptionsContexts: equalityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}

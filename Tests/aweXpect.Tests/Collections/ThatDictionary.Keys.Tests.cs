@@ -308,7 +308,7 @@ public sealed partial class ThatDictionary
 					                   Actual: "b"
 					                 Expected: "a"
 
-					             Equivalency options:
+					             Equivalency options (keys):
 					              - include public fields and properties
 					             """)
 					.Because("the keys of a sorted dictionary are an ordered sequence, not a set");

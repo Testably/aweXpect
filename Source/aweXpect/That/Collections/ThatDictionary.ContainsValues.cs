@@ -127,7 +127,10 @@ public static partial class ThatDictionary
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> AddDictionaryContext(contexts, Actual);
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
 		{

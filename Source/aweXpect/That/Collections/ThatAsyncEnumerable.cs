@@ -28,7 +28,8 @@ public static partial class ThatAsyncEnumerable
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, ValueTask<bool>> predicate,
-		string verb)
+		string verb,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
@@ -53,6 +54,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -247,6 +249,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				contexts.AddExpectedItemsContext(expected, _expectedItems);
 			}
+			contexts.AddOptionsContexts(options);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,

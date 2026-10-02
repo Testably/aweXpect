@@ -47,5 +47,9 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 	public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 		=> itemNoun is null ? $"equivalent to {expected}" : $"{itemNoun} equivalent to {expected}";
 
+	/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
+	public void AppendContexts(ResultContextCollector contexts)
+		=> contexts.AddEquivalencyContext(equivalencyOptions);
+
 	public override string ToString() => " using equivalency";
 }

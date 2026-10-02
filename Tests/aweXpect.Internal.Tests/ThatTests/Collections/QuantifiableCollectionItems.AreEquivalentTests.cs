@@ -68,6 +68,9 @@ public sealed partial class QuantifiableCollectionItems
 				                 Value = "Bar"
 				               }
 				             ]
+
+				             Equivalency options (item [3]):
+				              - include public fields and properties
 				             """);
 		}
 

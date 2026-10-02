@@ -94,7 +94,8 @@ public static partial class ThatEnumerable
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
 					      itemOptions.Comparer,
 					indexOptions,
-					itemOptions.UseComparerOf).InvertIf(negated);
+					itemOptions.UseComparerOf,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
 			indexOptions,
@@ -123,7 +124,8 @@ public static partial class ThatEnumerable
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
 					      itemOptions.Comparer,
 					indexOptions,
-					itemOptions.UseComparerOf).InvertIf(negated);
+					itemOptions.UseComparerOf,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
 			indexOptions,
@@ -220,7 +222,8 @@ public static partial class ThatEnumerable
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
 					      itemOptions.Comparer,
 					indexOptions,
-					itemOptions.UseComparerOf).InvertIf(negated);
+					itemOptions.UseComparerOf,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
 			indexOptions,
@@ -288,7 +291,8 @@ public static partial class ThatEnumerable
 					it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+					indexOptions,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
@@ -313,7 +317,8 @@ public static partial class ThatEnumerable
 					it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions).InvertIf(negated)),
+					indexOptions,
+					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
 			subject,
 			indexOptions,
 			options);
@@ -383,7 +388,8 @@ public static partial class ThatEnumerable
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<string> predicateDescription,
 		CollectionIndexOptions options,
-		Func<object?, bool>? useComparerOf = null)
+		Func<object?, bool>? useComparerOf = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -393,7 +399,10 @@ public static partial class ThatEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			appendOptionsContexts?.Invoke(contexts);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -496,7 +505,8 @@ public static partial class ThatEnumerable
 		Func<TItem, ValueTask<bool>> predicate,
 		Func<string> predicateDescription,
 		CollectionIndexOptions options,
-		Func<object?, bool>? useComparerOf = null)
+		Func<object?, bool>? useComparerOf = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
@@ -507,7 +517,10 @@ public static partial class ThatEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			appendOptionsContexts?.Invoke(contexts);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)

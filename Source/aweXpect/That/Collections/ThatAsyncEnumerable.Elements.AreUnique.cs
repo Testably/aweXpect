@@ -101,7 +101,8 @@ public static partial class ThatAsyncEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -192,7 +193,8 @@ public static partial class ThatAsyncEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -213,7 +215,8 @@ public static partial class ThatAsyncEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -247,7 +250,8 @@ public static partial class ThatAsyncEnumerable
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-		bool expectUnique)
+		bool expectUnique,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars,
 				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
@@ -302,6 +306,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)

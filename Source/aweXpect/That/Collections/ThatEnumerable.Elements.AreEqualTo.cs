@@ -61,7 +61,8 @@ public static partial class ThatEnumerable
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
 					a => itemOptions.AreConsideredEqual(a, expected),
 					"were",
-					itemOptions.UseComparerOf);
+					itemOptions.UseComparerOf,
+					appendOptionsContexts: options.AppendContexts);
 			}),
 			iElements.Subject,
 			options);
@@ -89,7 +90,8 @@ public static partial class ThatEnumerable
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
 					a => itemOptions.AreConsideredEqual(a, expected),
 					"were",
-					itemOptions.UseComparerOf);
+					itemOptions.UseComparerOf,
+					appendOptionsContexts: options.AppendContexts);
 			}),
 			iElements.Subject,
 			options);
@@ -113,7 +115,8 @@ public static partial class ThatEnumerable
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
 					a => options.AreConsideredEqual(a, expected),
-					"were")),
+					"were",
+					appendOptionsContexts: options.AppendContexts)),
 			iElements.Subject,
 			options);
 	}

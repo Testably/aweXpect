@@ -114,7 +114,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -214,7 +215,8 @@ public static partial class ThatEnumerable
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						itemOptions.UseComparerOf);
+						itemOptions.UseComparerOf,
+						appendOptionsContexts: options.AppendContexts);
 				}),
 				_subject,
 				options);
@@ -235,7 +237,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -337,7 +340,8 @@ public static partial class ThatEnumerable
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						itemOptions.UseComparerOf);
+						itemOptions.UseComparerOf,
+						appendOptionsContexts: options.AppendContexts);
 				}),
 				_subject,
 				options);
@@ -358,7 +362,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -446,7 +451,8 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => (TItem)a!,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -466,7 +472,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						a => memberAccessor((TItem)a!),
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -574,7 +581,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						a => memberAccessor((string?)a),
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -614,7 +622,8 @@ public static partial class ThatEnumerable
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
-		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null)
+		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
@@ -680,6 +689,7 @@ public static partial class ThatEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
@@ -704,7 +714,8 @@ public static partial class ThatEnumerable
 		Func<object?, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
-		Func<object?, bool>? isUniqueBySubject = null)
+		Func<object?, bool>? isUniqueBySubject = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<TEnumerable>
@@ -718,6 +729,7 @@ public static partial class ThatEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);

@@ -26,7 +26,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectEqualityResult<TType, TThat, TElement, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options), result);
+			EquivalencyOptionsExtensions.FromCallback(options));
 		return (TSelf)result;
 	}
 
@@ -39,7 +39,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectHasItemResult<TCollection, TItem, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TItem>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options), result);
+			EquivalencyOptionsExtensions.FromCallback(options));
 		return (TSelf)result;
 	}
 
@@ -52,7 +52,7 @@ public static class EquivalencyExtensions
 		where TSelf : ObjectCountResult<TType, TThat, TElement, TSelf>
 	{
 		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options), result);
+			EquivalencyOptionsExtensions.FromCallback(options));
 		return (TSelf)result;
 	}
 
@@ -70,17 +70,11 @@ public static class EquivalencyExtensions
 		return options;
 	}
 
-	private static void Equivalent<TSubject>(this ObjectEqualityOptions<TSubject> options,
-		EquivalencyOptions equivalencyOptions, IOptionsProvider<ExpectationBuilder> result)
-	{
-		options.Equivalent(equivalencyOptions);
-		result.Options.AddEquivalencyContext(equivalencyOptions);
-	}
-
-	internal static void AddEquivalencyContext(this ExpectationBuilder expectationBuilder,
+	/// <summary>
+	///     Adds the <paramref name="equivalencyOptions" /> as context.
+	/// </summary>
+	internal static void AddEquivalencyContext(this ResultContextCollector contexts,
 		EquivalencyOptions equivalencyOptions)
-		=> expectationBuilder.AddContext(
-			new ResultContext.SyncCallback("Equivalency options",
-				equivalencyOptions.ToString,
-				int.MinValue));
+		=> contexts.Add(new ResultContext.SyncCallback("Equivalency options", equivalencyOptions.ToString,
+			int.MinValue));
 }

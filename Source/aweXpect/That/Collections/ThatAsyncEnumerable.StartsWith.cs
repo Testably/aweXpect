@@ -124,7 +124,10 @@ public static partial class ThatAsyncEnumerable
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
 
 		public StartsWithConstraint(
 			string it,

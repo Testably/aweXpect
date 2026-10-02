@@ -70,7 +70,10 @@ public static partial class ThatObject
 	{
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+		{
+			contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			options.AppendContexts(contexts);
+		}
 
 		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{

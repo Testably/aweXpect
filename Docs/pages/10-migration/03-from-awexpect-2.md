@@ -398,6 +398,10 @@ that are not public.
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.
 
+A custom `IObjectMatchType` must implement the new `AppendContexts(ResultContextCollector)`, which adds the contexts
+that explain a failed comparison, e.g. the equivalency options. Leave its body empty when the match type adds no
+context.
+
 ## New expectations
 
 - **Dictionaries** navigate to their `Keys` and `Values` with the full collection vocabulary (needs C# 14).

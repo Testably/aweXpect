@@ -63,6 +63,7 @@ public static partial class ThatEnumerable
 			{
 				contexts.AddExpectedItemsContext(expected, _expectedItems);
 			}
+			contexts.AddOptionsContexts(options);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
@@ -532,6 +533,7 @@ public static partial class ThatEnumerable
 			{
 				contexts.AddExpectedItemsContext(expected, _expectedItems);
 			}
+			contexts.AddOptionsContexts(options);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
@@ -724,7 +726,8 @@ public static partial class ThatEnumerable
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, ValueTask<bool>> predicate,
 		string verb,
-		Func<object?, bool>? useComparerOf = null)
+		Func<object?, bool>? useComparerOf = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
@@ -736,6 +739,7 @@ public static partial class ThatEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(
@@ -861,7 +865,8 @@ public static partial class ThatEnumerable
 		Func<ExpectationGrammars, string> expectationText,
 		Func<object?, ValueTask<bool>> predicate,
 		string verb,
-		Func<object?, bool>? useComparerOf = null)
+		Func<object?, bool>? useComparerOf = null,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<TEnumerable>
@@ -875,6 +880,7 @@ public static partial class ThatEnumerable
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
