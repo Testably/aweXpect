@@ -19,8 +19,8 @@ public static partial class EquivalencyComparison
 	///     When only <paramref name="expected" /> is compared by value, its <see cref="object.Equals(object)" />
 	///     decides, because the type of <paramref name="actual" /> is compared by members, which ignores its
 	///     <see cref="object.Equals(object)" />.<br />
-	///     A <see cref="StringBuilder" /> stands for the text it contains, so it is compared as that text, which also
-	///     matches a <see langword="string" />.
+	///     A type that stands for its content, such as a <see cref="StringBuilder" /> for its text, is compared as that
+	///     content (see <see cref="EquivalencyContent" />).
 	/// </remarks>
 	private static bool CompareByValue<TActual, TExpected>(
 		[DisallowNull] TActual actual,
@@ -31,9 +31,12 @@ public static partial class EquivalencyComparison
 		MemberType memberType,
 		EquivalencyContext context)
 	{
-		if (actual is StringBuilder || expected is StringBuilder)
+		if (EquivalencyContent.IsComparedByContent(actual.GetType()) ||
+		    EquivalencyContent.IsComparedByContent(expected.GetType()))
 		{
-			return CompareByValue(ToText(actual), ToText(expected), isDecidedByExpected,
+			string? thrower = GetThrower(memberPath);
+			return CompareByValue(EquivalencyContent.GetContent(actual, thrower),
+				EquivalencyContent.GetContent(expected, thrower), isDecidedByExpected,
 				failureBuilder, memberPath, memberType, context);
 		}
 
@@ -54,8 +57,12 @@ public static partial class EquivalencyComparison
 		return true;
 	}
 
-	private static object ToText(object value)
-		=> value is StringBuilder stringBuilder ? stringBuilder.ToString() : value;
+	/// <summary>
+	///     Who threw in the failure message when code of the caller fails while the value at the
+	///     <paramref name="memberPath" /> is read: that member, or the subject itself at the root.
+	/// </summary>
+	private static string? GetThrower(string memberPath)
+		=> string.IsNullOrEmpty(memberPath) ? null : memberPath;
 
 	private static bool CompareNulls<TActual, TExpected>(TActual actual, TExpected expected,
 		StringBuilder failureBuilder, string memberPath, MemberType memberType, EquivalencyContext context)
@@ -319,14 +326,16 @@ public static partial class EquivalencyComparison
 				return false;
 			}
 
-			if (TryGetDictionary(actual, out IDictionary? actualDictionary, out object? actualKeyComparer) &&
-			    TryGetDictionary(expected, out IDictionary? expectedDictionary, out _))
+			if (TryGetDictionary(actual, memberPath, out IDictionary? actualDictionary,
+				    out object? actualKeyComparer) &&
+			    TryGetDictionary(expected, memberPath, out IDictionary? expectedDictionary, out _))
 			{
 				return await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
 					failureBuilder, memberType, memberPath, equivalencyOptions, typeOptions, context);
 			}
 
-			if (actual is IEnumerable actualEnumerable && expected is IEnumerable expectedEnumerable)
+			if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
+			    TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
 			{
 				return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, memberPath,
 					equivalencyOptions, typeOptions, context);
@@ -466,8 +475,8 @@ public static partial class EquivalencyComparison
 	///     the copy cannot represent - an entry that is not a <see cref="KeyValuePair{TKey,TValue}" /> the members of
 	///     which are readable, or a <see langword="null" /> key - keeps the comparison as a sequence instead of failing.
 	/// </remarks>
-	private static bool TryGetDictionary(object value, [NotNullWhen(true)] out IDictionary? dictionary,
-		out object? keyComparer)
+	private static bool TryGetDictionary(object value, string memberPath,
+		[NotNullWhen(true)] out IDictionary? dictionary, out object? keyComparer)
 	{
 		keyComparer = null;
 		if (value is IDictionary nonGenericDictionary)
@@ -489,7 +498,7 @@ public static partial class EquivalencyComparison
 		Dictionary<object, object?> entries = new(equalityComparer);
 		Func<object, object?>? getKey = null;
 		Func<object, object?>? getValue = null;
-		foreach (object? entry in (IEnumerable)value)
+		foreach (object? entry in UserCode.Invoke(ToArray, (IEnumerable)value, GetThrower(memberPath)))
 		{
 			if (entry is null)
 			{
@@ -604,7 +613,8 @@ public static partial class EquivalencyComparison
 		int index = 0;
 		foreach (object? key in expected.Keys)
 		{
-			if (actual.Contains(key) && !matchedKeys.Add(key))
+			if (UserCode.Invoke(static entry => entry.actual.Contains(entry.key), (actual, key),
+				    GetThrower(memberPath)) && !matchedKeys.Add(key))
 			{
 				collapsedKeyIndices.Add(index);
 			}
@@ -629,7 +639,7 @@ public static partial class EquivalencyComparison
 				foreach (object key in additionalKeys)
 				{
 					string elementMemberPath = $"{memberPath}[{key}]";
-					object? actualObject = actual[key];
+					object? actualObject = GetEntry(actual, key, elementMemberPath);
 					if (typeOptions.MembersToIgnore.Any(memberToIgnore
 						    => AppliesTo(memberToIgnore, MemberType.Element) &&
 						       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
@@ -666,7 +676,7 @@ public static partial class EquivalencyComparison
 			string elementMemberPath = $"{memberPath}[{key}]";
 			if (!matchedKeys.Contains(key))
 			{
-				object? expectedObject = expected[key];
+				object? expectedObject = GetEntry(expected, key, elementMemberPath);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
 					    => AppliesTo(memberToIgnore, MemberType.Element) &&
 					       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
@@ -679,7 +689,7 @@ public static partial class EquivalencyComparison
 				continue;
 			}
 
-			object? actualObject = actual[key];
+			object? actualObject = GetEntry(actual, key, elementMemberPath);
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
 				    => AppliesTo(memberToIgnore, MemberType.Element) &&
 				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
@@ -693,7 +703,7 @@ public static partial class EquivalencyComparison
 				result = false;
 			}
 
-			if (!await Compare(actualObject, expected[key],
+			if (!await Compare(actualObject, GetEntry(expected, key, elementMemberPath),
 				    options, typeOptions,
 				    failureBuilder, elementMemberPath, MemberType.Element, context))
 			{
@@ -703,6 +713,61 @@ public static partial class EquivalencyComparison
 
 		return result;
 	}
+
+	private static object? GetEntry(IDictionary dictionary, object key, string elementMemberPath)
+		=> UserCode.Invoke(static entry => entry.dictionary[entry.key], (dictionary, key), elementMemberPath);
+
+	private static object?[] ToArray(IEnumerable enumerable) => enumerable.Cast<object?>().ToArray();
+
+	/// <remarks>
+	///     A <c>Memory&lt;T&gt;</c> or <c>ReadOnlyMemory&lt;T&gt;</c> is a sequence like an array, but implements no
+	///     interface for it, and its <c>Span</c> cannot be read by reflection, so that only its length would be left to
+	///     compare. Its items are therefore copied into an array, which needs reflection, as the item type is only known
+	///     at runtime.
+	/// </remarks>
+	private static bool TryGetEnumerable(object value, [NotNullWhen(true)] out IEnumerable? enumerable)
+	{
+		if (value is IEnumerable valueEnumerable)
+		{
+			enumerable = valueEnumerable;
+			return true;
+		}
+
+		Type type = value.GetType();
+		if (!type.IsGenericType || !IsMemoryDefinition(type.GetGenericTypeDefinition()))
+		{
+			enumerable = null;
+			return false;
+		}
+
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw Tracing.WriteException(ReflectionFallback.NotSupported(
+				$"The items of {Formatter.Format(type)}", "Compare the result of its ToArray() instead."));
+		}
+
+		enumerable = CopyItems(value);
+		return true;
+	}
+
+	/// <remarks>
+	///     netstandard2.0 has no <c>Memory&lt;T&gt;</c>, but is served to runtimes that have it, so it is matched by name
+	///     there.
+	/// </remarks>
+	private static bool IsMemoryDefinition(Type definition)
+#if NET8_0_OR_GREATER
+		=> definition == typeof(Memory<>) || definition == typeof(ReadOnlyMemory<>);
+#else
+		=> definition.FullName is "System.Memory`1" or "System.ReadOnlyMemory`1";
+#endif
+
+#if NET8_0_OR_GREATER
+	[UnconditionalSuppressMessage("Trimming", "IL2075",
+		Justification = "Only called behind the reflection fallback guard.")]
+#endif
+	private static IEnumerable CopyItems(object memory)
+		=> (IEnumerable)memory.GetType().GetMethod("ToArray", Type.EmptyTypes)!.Invoke(memory, null)!;
+
 	private static async ValueTask<bool>
 		CompareEnumerables(
 			IEnumerable actual,
@@ -714,8 +779,8 @@ public static partial class EquivalencyComparison
 			EquivalencyContext context)
 	{
 		bool result = true;
-		object?[] actualObjects = actual.Cast<object?>().ToArray();
-		object?[] expectedObjects = expected.Cast<object?>().ToArray();
+		object?[] actualObjects = UserCode.Invoke(ToArray, actual, GetThrower(memberPath));
+		object?[] expectedObjects = UserCode.Invoke(ToArray, expected, GetThrower(memberPath));
 
 		if (typeOptions.IgnoreCollectionOrder || IsSet(actual) || IsSet(expected))
 		{

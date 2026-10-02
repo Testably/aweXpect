@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 
@@ -13,6 +18,26 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyComparisonTests
 {
+	[Fact]
+	public async Task WhenActualImplementsAByRefLikePropertyExplicitly_ShouldTreatItAsMissing()
+	{
+		ExplicitSpan actual = new(1);
+		var expected = new
+		{
+			Values = new[] { 1, },
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Values was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("a span cannot be boxed, so reflection cannot read the explicit implementation");
+	}
+
 	[Fact]
 	public async Task WhenActualImplementsAPropertyExplicitly_AndHasAPublicPropertyOfTheSameName_ShouldCompareThePublicOne()
 	{
@@ -1705,6 +1730,126 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenEncodingMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new UTF8Encoding(true),
+		};
+		var expected = new
+		{
+			Value = new UTF8Encoding(false),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the encodings differ in whether they emit a byte order mark, which their Equals compares");
+		await That(failureBuilder.ToString()).StartsWith("""
+
+		                                                   Property Value differed:
+		                                                 """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenEncodingMembersAreEqual_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = new UTF8Encoding(false),
+		};
+		var expected = new
+		{
+			Value = new UTF8Encoding(false),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an encoding is compared by its Equals, as its preamble is a span that reflection cannot read");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenEnumeratingAMemberThrows_ShouldFailWithTheException()
+	{
+		var actual = new
+		{
+			Items = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
+		};
+		var expected = new
+		{
+			Items = new[] { 1, },
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but Items did throw an InvalidOperationException:
+			               enumeration failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """)
+			.Because("enumerating a member runs code of the caller, just like its getter");
+	}
+
+	[Fact]
+	public async Task WhenEnumeratingAMemberThrows_WhenNegated_ShouldFailWithTheException()
+	{
+		var actual = new
+		{
+			Items = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
+		};
+		var unexpected = new
+		{
+			Items = new[] { 1, },
+		};
+
+		async Task Act()
+			=> await That(actual).IsNotEquivalentTo(unexpected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is not equivalent to unexpected,
+			             but Items did throw an InvalidOperationException:
+			               enumeration failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """)
+			.Because("an enumeration that threw answered nothing, so the negation fails as well");
+	}
+
+	[Fact]
+	public async Task WhenEnumeratingTheSubjectThrows_ShouldFailWithTheException()
+	{
+		object subject = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed"));
+		int[] expected = [1,];
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(expected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equivalent to expected,
+			             but it did throw an InvalidOperationException:
+			               enumeration failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Fact]
 	public async Task WhenEnumMembersOfDifferentTypesFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -2295,6 +2440,70 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenIPAddressMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = IPAddress.Parse("10.0.0.1"),
+		};
+		var expected = new
+		{
+			Value = IPAddress.Parse("10.0.0.2"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 10.0.0.1
+		                                                    Expected: 10.0.0.2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenIPAddressMemberDiffers_WhenNegated_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = IPAddress.Parse("10.0.0.1"),
+		};
+		var unexpected = new
+		{
+			Value = IPAddress.Loopback,
+		};
+
+		async Task Act()
+			=> await That(actual).IsNotEquivalentTo(unexpected);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Theory]
+	[InlineData("10.0.0.1")]
+	[InlineData("fe80::1%3")]
+	public async Task WhenIPAddressMembersAreEqual_ShouldSucceed(string address)
+	{
+		var actual = new
+		{
+			Value = IPAddress.Parse(address),
+		};
+		var expected = new
+		{
+			Value = IPAddress.Parse(address),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an IP address is compared by its Equals, as ScopeId throws for an IPv4 address and Address for an IPv6 address");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenItIsMemberDoesNotMatch_ShouldReportTheExpectationAsExpected()
 	{
 		var actual = new
@@ -2389,6 +2598,128 @@ public sealed class EquivalencyComparisonTests
 		                                                  Property Value differed:
 		                                                      Actual: <null>
 		                                                    Expected: is string that is empty
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenJsonElementMemberDiffers_ShouldReportTheJson()
+	{
+		var actual = new
+		{
+			Value = JsonDocument.Parse("""{ "a": 1 }""").RootElement,
+		};
+		var expected = new
+		{
+			Value = JsonDocument.Parse("""{ "a": 2 }""").RootElement,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the only public member of a JsonElement is its ValueKind, so its JSON is compared instead");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: "{\"a\":1}"
+		                                                    Expected: "{\"a\":2}"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenJsonElementMemberIsFromADisposedDocument_ShouldFailWithTheException()
+	{
+		JsonDocument document = JsonDocument.Parse("""{ "a": 1 }""");
+		var actual = new
+		{
+			Value = document.RootElement,
+		};
+		var expected = new
+		{
+			Value = JsonDocument.Parse("""{ "a": 1 }""").RootElement,
+		};
+		document.Dispose();
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but Value did throw an ObjectDisposedException:
+			               *
+			             """).AsWildcard()
+			.Because("reading the JSON of a disposed document runs into the document, just like reading its ValueKind did");
+	}
+
+	[Theory]
+	[InlineData("""{"a":[1,2]}""", """ { "a" : [ 1, 2 ] } """, true)]
+	[InlineData("{\n\t\"a\": 1\r\n}", """{"a":1}""", true)]
+	[InlineData("""{"a":"x y"}""", """{"a":"xy"}""", false)]
+	[InlineData("""{"a":"x\" y"}""", """{"a":"x\"y"}""", false)]
+	[InlineData("\"1\"", "1", false)]
+	[InlineData("""{"a":1,"b":2}""", """{"b":2,"a":1}""", false)]
+	public async Task WhenJsonElementMembersAreCompared_ShouldIgnoreOnlyTheWhitespaceBetweenTokens(
+		string actualJson, string expectedJson, bool isEquivalent)
+	{
+		var actual = new
+		{
+			Value = JsonDocument.Parse(actualJson).RootElement,
+		};
+		var expected = new
+		{
+			Value = JsonDocument.Parse(expectedJson).RootElement,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(),
+			new StringBuilder());
+
+		await That(result).IsEqualTo(isEquivalent);
+	}
+
+	[Fact]
+	public async Task WhenJsonElementMembersAreDefault_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = default(JsonElement),
+		};
+		var expected = new
+		{
+			Value = default(JsonElement),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a default JsonElement has no JSON, but is the same undefined value on both sides");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenJsonNodeMemberDiffers_ShouldReportTheJson()
+	{
+		var actual = new
+		{
+			Value = JsonNode.Parse("""{ "a": [1, 2] }"""),
+		};
+		var expected = new
+		{
+			Value = JsonNode.Parse("""{ "a": [1, 3] }"""),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the public members of a JsonNode only lead to its parent and root, so its JSON is compared instead");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: "{\"a\":[1,2]}"
+		                                                    Expected: "{\"a\":[1,3]}"
 		                                                """).IgnoringNewlineStyle();
 	}
 
@@ -2535,6 +2866,26 @@ public sealed class EquivalencyComparisonTests
 
 		await That(result).IsEqualTo(expectedResult)
 			.Because("only a name that covers whole segments of the member path may exclude Child.Name");
+	}
+
+	[Fact]
+	public async Task WhenMemoryMemberIsComparedWithAnArray_ShouldCompareTheItems()
+	{
+		var actual = new
+		{
+			Value = new Memory<int>([1, 2, 3,], 1, 2),
+		};
+		var expected = new
+		{
+			Value = new[] { 2, 3, },
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a memory is the sequence of its items, like an array");
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Fact]
@@ -2877,6 +3228,25 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenPropertyHasAByRefLikeType_ShouldIgnoreIt()
+	{
+		WithSpan actual = new(1);
+		WithSpan expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("a span cannot be boxed, so reflection cannot read it, and the source generator skips it as well");
+	}
+
+	[Fact]
 	public async Task WhenPropertyIsHiddenByAWriteOnlyProperty_ShouldNotCompareTheHiddenOne()
 	{
 		WriteOnlyHidingProperty actual = new(1, 3);
@@ -2932,6 +3302,65 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenReadingADictionaryEntryThrows_ShouldFailWithTheException()
+	{
+		var actual = new
+		{
+			Values = new ThrowingHashtable
+			{
+				["a"] = 1,
+			},
+		};
+		var expected = new
+		{
+			Values = new Dictionary<string, int>
+			{
+				["a"] = 1,
+			},
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but Values[a] did throw an InvalidOperationException:
+			               indexer failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """)
+			.Because("reading an entry of a dictionary runs code of the caller, just like a getter");
+	}
+
+	[Fact]
+	public async Task WhenReadOnlyMemoryMemberDiffers_ShouldReportTheElement()
+	{
+		var actual = new
+		{
+			Data = new ReadOnlyMemory<byte>([1, 2,]),
+		};
+		var expected = new
+		{
+			Data = new ReadOnlyMemory<byte>([1, 3,]),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element Data[1] differed:
+		                                                      Actual: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle()
+			.Because("without its span, only the length of a memory would be left to compare");
+	}
+
+	[Fact]
 	public async Task WhenRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode actual = new(4);
@@ -2984,6 +3413,58 @@ public sealed class EquivalencyComparisonTests
 			.Because("150 levels exceed the default limit of 100");
 		await That(withRaisedLimit).IsTrue()
 			.Because("the configured limit replaces the default");
+	}
+
+	[Fact]
+	public async Task WhenRegexDiffersInItsOptions_ShouldReportTheOptions()
+	{
+		Regex actual = new("^a$", RegexOptions.IgnoreCase);
+		Regex expected = new("^a$");
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the options change which texts a pattern matches");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It differed:
+		                                                      Actual: ("^a$", IgnoreCase)
+		                                                    Expected: ("^a$", None)
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenRegexDiffersInItsPattern_ShouldReportThePattern()
+	{
+		Regex actual = new("^a$");
+		Regex expected = new("^b$");
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the public members of a regex are only its options and its timeout, while it keeps the pattern to itself");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It differed:
+		                                                      Actual: ("^a$", None)
+		                                                    Expected: ("^b$", None)
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenRegexHasTheSamePatternAndOptions_ShouldSucceed()
+	{
+		Regex actual = new("^a$", RegexOptions.IgnoreCase);
+		Regex expected = new("^a$", RegexOptions.IgnoreCase);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("two separate instances with the same pattern and options match the same texts");
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Fact]
@@ -3637,6 +4118,11 @@ public sealed class EquivalencyComparisonTests
 		string IHasGenericValue<string>.Value => value;
 	}
 
+	private sealed class ExplicitSpan(int value) : IHasSpan
+	{
+		ReadOnlySpan<int> IHasSpan.Values => new[] { value, };
+	}
+
 	private class ExplicitValue(int value, int other) : IHasValue
 	{
 		public int Other => other;
@@ -3662,6 +4148,11 @@ public sealed class EquivalencyComparisonTests
 	private interface IHasOtherValue
 	{
 		int Value { get; }
+	}
+
+	private interface IHasSpan
+	{
+		ReadOnlySpan<int> Values { get; }
 	}
 
 	private interface IHasValue
@@ -3780,6 +4271,15 @@ public sealed class EquivalencyComparisonTests
 		}
 	}
 
+	private sealed class ThrowingHashtable : Hashtable
+	{
+		public override object? this[object key]
+		{
+			get => throw new InvalidOperationException("indexer failed");
+			set => base[key] = value;
+		}
+	}
+
 	private sealed class ValueLikeWithConstantText(int value)
 	{
 		private readonly int _value = value;
@@ -3869,6 +4369,12 @@ public sealed class EquivalencyComparisonTests
 		private int _value = value;
 		public string Own { get; } = own;
 		public ref int Value => ref _value;
+	}
+
+	private sealed class WithSpan(int value)
+	{
+		public ReadOnlySpan<int> Span => new[] { value, };
+		public int Value => value;
 	}
 
 	private sealed class WithThrowingEquals

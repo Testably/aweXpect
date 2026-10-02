@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 using System.Numerics;
 using System.Reflection;
 #if NET8_0_OR_GREATER
@@ -28,9 +29,9 @@ public static class EquivalencyDefaults
 		    || type == typeof(DateTimeOffset)
 		    || type == typeof(TimeSpan)
 		    || type == typeof(Guid)
-		    || type == typeof(StringBuilder)
 		    || IsNumber(type)
-		    || IsHandle(type))
+		    || IsHandle(type)
+		    || EquivalencyContent.IsComparedByContent(type))
 		{
 			return EquivalencyComparisonType.ByValue;
 		}
@@ -74,7 +75,11 @@ public static class EquivalencyDefaults
 	///     that can throw (<c>GenericParameterPosition</c> on a <see cref="Type" />, every component of a relative
 	///     <see cref="Uri" />) or expand into an unbounded graph, while its <see cref="object.Equals(object)" /> is
 	///     exactly the identity the caller means. The runtime type is always a derived type - a <c>RuntimeType</c> is
-	///     not <c>typeof(Type)</c> - so the match has to be by assignability.
+	///     not <c>typeof(Type)</c> - so the match has to be by assignability.<br />
+	///     An <see cref="IPAddress" /> and an <see cref="Encoding" /> are values, but their members fail the same way
+	///     (<c>ScopeId</c> throws for an IPv4 address, <c>Address</c> for an IPv6 one, and the <c>Preamble</c> of an
+	///     encoding is a span that reflection cannot read), while their <see cref="object.Equals(object)" /> compares
+	///     exactly what sets them apart.
 	/// </remarks>
 	private static bool IsHandle(Type type)
 		=> typeof(MemberInfo).IsAssignableFrom(type)
@@ -82,5 +87,7 @@ public static class EquivalencyDefaults
 		   || typeof(Module).IsAssignableFrom(type)
 		   || typeof(Delegate).IsAssignableFrom(type)
 		   || typeof(Uri).IsAssignableFrom(type)
-		   || typeof(CultureInfo).IsAssignableFrom(type);
+		   || typeof(CultureInfo).IsAssignableFrom(type)
+		   || typeof(IPAddress).IsAssignableFrom(type)
+		   || typeof(Encoding).IsAssignableFrom(type);
 }

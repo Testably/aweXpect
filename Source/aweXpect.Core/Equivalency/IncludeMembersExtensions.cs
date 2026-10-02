@@ -116,7 +116,8 @@ internal static class IncludeMembersExtensions
 #pragma warning restore S3011
 				{
 					if (property.Name.Contains('.', StringComparison.Ordinal) &&property.GetGetMethod(true) is { IsPrivate: true, } &&
-					    property.GetIndexParameters().Length == 0 && !byName.ContainsKey(property.Name))
+					    property.GetIndexParameters().Length == 0 && !IsByRefLike(property.PropertyType) &&
+					    !byName.ContainsKey(property.Name))
 					{
 						byName.Add(property.Name, property);
 					}
@@ -135,7 +136,8 @@ internal static class IncludeMembersExtensions
 	/// <remarks>
 	///     An indexer is a property whose getter takes arguments, so its value cannot be read for the comparison.<br />
 	///     Readability is checked after the most derived declaration is taken, so that a declaration without a getter
-	///     hides a base property of the same name just like one with a non-public getter does.
+	///     hides a base property of the same name just like one with a non-public getter does. A property of a
+	///     by-ref-like type, such as a span, cannot be read either, because its value cannot be boxed.
 	/// </remarks>
 	private static PropertyInfo[] GetAllProperties(Type type, IncludeMembers includeMembers)
 		=> AllProperties.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
@@ -143,9 +145,21 @@ internal static class IncludeMembersExtensions
 				? MostDerived(key.Item1.GetProperties(key.Item2)
 						.Where(property => property.GetIndexParameters().Length == 0))
 					.Select(WithInheritedGetter)
-					.Where(property => property.CanRead)
+					.Where(property => property.CanRead && !IsByRefLike(property.PropertyType))
 					.ToArray()
 				: throw Tracing.WriteException(ReflectionFallback.NotSupported(key.Item1, "properties")));
+
+	/// <remarks>
+	///     netstandard2.0 has no <c>Type.IsByRefLike</c>, but is served to runtimes that have by-ref-like types, which
+	///     the compiler marks with the <c>IsByRefLikeAttribute</c>.
+	/// </remarks>
+	private static bool IsByRefLike(Type type)
+#if NET8_0_OR_GREATER
+		=> type.IsByRefLike;
+#else
+		=> type.IsValueType && type.GetCustomAttributesData().Any(attribute
+			=> attribute.AttributeType.FullName == "System.Runtime.CompilerServices.IsByRefLikeAttribute");
+#endif
 
 	/// <remarks>
 	///     An override that declares only a setter still inherits the getter, but reflection returns the override
