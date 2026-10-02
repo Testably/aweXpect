@@ -46,8 +46,7 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [
 						               1,
-						               "a",
-						               2
+						               (… and maybe more)
 						             ]
 						             """);
 				}

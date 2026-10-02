@@ -199,7 +199,7 @@ public sealed partial class ThatEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [0, 1, 2, 3, 4]
+					             [0, (… and maybe more)]
 					             """);
 			}
 
@@ -405,7 +405,7 @@ public sealed partial class ThatEnumerable
 					             but it had no item with invalid match
 
 					             Collection:
-					             [0, 1, 2, 3, 4]
+					             [0, (… and maybe more)]
 					             """);
 			}
 

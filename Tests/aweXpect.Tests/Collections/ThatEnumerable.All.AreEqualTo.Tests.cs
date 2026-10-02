@@ -94,19 +94,7 @@ public sealed partial class ThatEnumerable
 						             [2, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               2,
-						               3,
-						               5,
-						               8,
-						               13,
-						               21,
-						               34,
-						               55,
-						               (… and maybe more)
-						             ]
+						             [1, 1, 2, (… and maybe more)]
 						             """);
 				}
 
@@ -374,13 +362,6 @@ public sealed partial class ThatEnumerable
 						               "item-1",
 						               "item-1",
 						               "item-2",
-						               "item-3",
-						               "item-5",
-						               "item-8",
-						               "item-13",
-						               "item-21",
-						               "item-34",
-						               "item-55",
 						               (… and maybe more)
 						             ]
 						             """);

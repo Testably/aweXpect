@@ -475,7 +475,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 					             """);
 			}

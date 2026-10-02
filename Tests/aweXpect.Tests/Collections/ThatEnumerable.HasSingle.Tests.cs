@@ -25,19 +25,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -66,7 +54,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -116,6 +104,36 @@ public sealed partial class ThatEnumerable
 				object result = await That(subject).HasSingle();
 
 				await That(result).IsEqualTo(1);
+			}
+
+			[Fact]
+			public async Task WhenSourceIsEndless_ShouldNotReadFurtherItemsForTheFailureMessage()
+			{
+				int readItems = 0;
+
+				IEnumerable<int> Source()
+				{
+					while (true)
+					{
+						readItems++;
+						yield return 5;
+					}
+				}
+
+				async Task Act()
+					=> await That(Source()).HasSingle();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that Source()
+					             has a single item,
+					             but it had more than one item
+
+					             Collection:
+					             [5, 5, (… and maybe more)]
+					             """);
+				await That(readItems).IsEqualTo(2)
+					.Because("the failure message must not read the source beyond the items that the evaluation needed");
 			}
 
 			[Fact]
@@ -174,7 +192,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               MyBaseClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -272,19 +291,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -313,7 +320,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -413,7 +420,8 @@ public sealed partial class ThatEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -485,7 +493,8 @@ public sealed partial class ThatEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -769,7 +778,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 

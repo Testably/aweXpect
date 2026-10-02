@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 						             but at least 3 of at least 3 were
 
 						             Collection:
-						             [1, 1, 1, 2, 3]
+						             [1, 1, 1, (… and maybe more)]
 						             """);
 				}
 			}

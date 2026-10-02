@@ -372,22 +372,7 @@ public sealed partial class ThatEnumerable
 						                 StringValue = "",
 						                 Value = 0
 						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 1
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 2
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 3
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 4
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -577,22 +562,7 @@ public sealed partial class ThatEnumerable
 						                 StringValue = "",
 						                 Value = 0
 						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 1
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 2
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 3
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 4
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}

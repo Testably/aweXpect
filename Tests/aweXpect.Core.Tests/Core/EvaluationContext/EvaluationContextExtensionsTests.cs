@@ -198,6 +198,19 @@ public class EvaluationContextExtensionsTests
 	}
 
 	[Fact]
+	public async Task UseMaterializedEnumerable_Untyped_WhenPartiallyEnumerated_ShouldKeepTheReadItems()
+	{
+		IEvaluationContext context = new Context();
+		IEnumerable untypedSource = new UntypedEnumerable(new OneShotEnumerable(2, 4, 6));
+
+		IEnumerable materialized = context.UseMaterializedEnumerable(untypedSource)!;
+		_ = materialized.Cast<object?>().Take(2).ToList();
+
+		await That(((IMaterializedEnumerable)materialized).MaterializedItems).IsEqualTo([2, 4,])
+			.Because("only the items that were read are kept, without reading further items");
+	}
+
+	[Fact]
 	public async Task UseMaterializedEnumerable_Untyped_WithOneShotSource_ShouldEnumerateTheSourceOnlyOnce()
 	{
 		IEvaluationContext context = new Context();
@@ -237,6 +250,21 @@ public class EvaluationContextExtensionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("collection").And
 			.WithMessage("The 'collection' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task UseMaterializedEnumerable_WhenPartiallyEnumerated_ShouldKeepTheReadItems()
+	{
+		IEvaluationContext context = new Context();
+		OneShotEnumerable source = new(2, 4, 6);
+
+		IEnumerable<int> materialized = context.UseMaterializedEnumerable(source);
+		_ = materialized.Take(2).ToList();
+
+		await That(((IMaterializedEnumerable<int>)materialized).MaterializedItems).IsEqualTo([2, 4,])
+			.Because("only the items that were read are kept, without reading further items");
+		await That(((IMaterializedEnumerable)materialized).MaterializedItems).IsEqualTo([2, 4,]);
+		await That(((ICountable)materialized).Count).IsNull();
 	}
 
 	[Fact]

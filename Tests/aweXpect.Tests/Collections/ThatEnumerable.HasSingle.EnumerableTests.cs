@@ -25,19 +25,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -66,7 +54,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -130,19 +118,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -171,7 +147,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one matching item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -271,7 +247,8 @@ public sealed partial class ThatEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -343,7 +320,8 @@ public sealed partial class ThatEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -497,7 +475,7 @@ public sealed partial class ThatEnumerable
 					             but it had more than one item
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 

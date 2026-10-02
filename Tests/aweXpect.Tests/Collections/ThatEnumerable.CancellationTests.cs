@@ -114,19 +114,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -147,19 +135,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -180,19 +156,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 
 				             Expected:
 				             [-1, -2]
@@ -216,19 +180,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 
 				             Expected:
 				             [-1, -2]
@@ -252,19 +204,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -285,19 +225,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -319,19 +247,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 
 				             Expected:
 				             [an item that is negative]
@@ -406,19 +322,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -451,10 +355,6 @@ public sealed partial class ThatEnumerable
 				               <null>,
 				               <null>,
 				               <null>,
-				               <null>,
-				               <null>,
-				               <null>,
-				               <null>,
 				               (… and maybe more)
 				             ]
 				             """)
@@ -480,19 +380,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 
 				             Expected:
 				             [
@@ -518,19 +406,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -551,19 +427,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -584,19 +448,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -617,19 +469,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -650,19 +490,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -683,19 +511,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -721,19 +537,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 			await That(enumeratedCount).IsLessThan(100)
@@ -756,19 +560,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -789,19 +581,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -827,19 +607,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 			await That(enumeratedCount).IsLessThan(100)
@@ -862,19 +630,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -895,19 +651,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -933,19 +677,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 			await That(enumeratedCount).IsLessThan(100)
@@ -968,19 +700,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -1001,19 +721,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -1034,19 +742,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be reported as a missing item");
 		}
@@ -1067,19 +763,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 
 				             Expected:
 				             [0, 1, 2, 3, 4, 5, 6, 7]
@@ -1154,19 +838,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -1187,19 +859,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -1220,19 +880,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
@@ -1253,19 +901,7 @@ public sealed partial class ThatEnumerable
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 				             """)
 				.Because("the met expectation cannot explain why the combination could not be verified");
 		}
@@ -1375,20 +1011,8 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """).And
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard().And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
@@ -1408,23 +1032,11 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
+				             [*0,*(… and maybe more)*]
 
 				             Expected:
 				             [-1]
-				             """)
+				             """).AsWildcard()
 				.Because("a timeout must not be reported as missing items");
 		}
 
@@ -1443,20 +1055,8 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """)
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard()
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
@@ -1475,20 +1075,8 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """)
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard()
 				.Because("a timeout must not be reported as a missing item");
 		}
 
@@ -1507,20 +1095,8 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """)
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard()
 				.Because("a timeout must not be reported as a missing item");
 		}
 
@@ -1539,20 +1115,8 @@ public sealed partial class ThatEnumerable
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [
-				               0,
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               (… and maybe more)
-				             ]
-				             """)
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard()
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 

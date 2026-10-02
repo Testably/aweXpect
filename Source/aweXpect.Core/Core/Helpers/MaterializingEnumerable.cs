@@ -8,7 +8,7 @@ using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Helpers;
 
-internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable, IMaterialization
+internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, IMaterialization
 {
 	private readonly IEnumerator<T> _enumerator;
 	private readonly List<T> _materializedItems = new();
@@ -21,6 +21,13 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable, I
 	}
 
 	public int? Count { get; private set; }
+
+	/// <inheritdoc />
+	public IReadOnlyList<T> MaterializedItems => _materializedItems;
+
+	/// <inheritdoc />
+	IReadOnlyList<object?> IMaterializedEnumerable.MaterializedItems
+		=> _materializedItems.ConvertAll(item => (object?)item);
 
 	public static IEnumerable<T> Wrap(IEnumerable<T> enumerable)
 	{
@@ -121,7 +128,7 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable, I
 	}
 }
 
-internal sealed class MaterializingEnumerable : IEnumerable, ICountable, IMaterialization
+internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMaterialization
 {
 	private readonly IEnumerator _enumerator;
 	private readonly List<object?> _materializedItems = new();
@@ -135,6 +142,9 @@ internal sealed class MaterializingEnumerable : IEnumerable, ICountable, IMateri
 	}
 
 	public int? Count { get; private set; }
+
+	/// <inheritdoc />
+	public IReadOnlyList<object?> MaterializedItems => _materializedItems;
 
 	[return: NotNullIfNotNull(nameof(enumerable))]
 	public static IEnumerable? Wrap(IEnumerable? enumerable)

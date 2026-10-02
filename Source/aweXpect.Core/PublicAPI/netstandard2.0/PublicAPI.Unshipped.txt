@@ -125,6 +125,10 @@ static aweXpect.Core.Constraints.ConstraintResult.AppendCanceledResult(System.Te
 aweXpect.Core.EvaluationContext.EvaluationContextExtensions
 aweXpect.Core.EvaluationContext.ICountable
 aweXpect.Core.EvaluationContext.ICountable.Count.get -> int?
+aweXpect.Core.EvaluationContext.IMaterializedEnumerable
+aweXpect.Core.EvaluationContext.IMaterializedEnumerable.MaterializedItems.get -> System.Collections.Generic.IReadOnlyList<object?>!
+aweXpect.Core.EvaluationContext.IMaterializedEnumerable<T>
+aweXpect.Core.EvaluationContext.IMaterializedEnumerable<T>.MaterializedItems.get -> System.Collections.Generic.IReadOnlyList<T>!
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedEnumerable(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.IEnumerable? collection) -> System.Collections.IEnumerable?
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.UseMaterializedEnumerable<TItem>(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, System.Collections.Generic.IEnumerable<TItem>! collection) -> System.Collections.Generic.IEnumerable<TItem>!
 *REMOVED*aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!

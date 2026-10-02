@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
-					             [3, 3, 2, 1, 3]
+					             [3, 3, 2, 1, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -264,7 +264,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsNotInDescendingOrder.MyIntClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

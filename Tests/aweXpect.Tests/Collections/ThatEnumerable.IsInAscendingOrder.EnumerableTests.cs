@@ -132,7 +132,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
 					                 Value = 1
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

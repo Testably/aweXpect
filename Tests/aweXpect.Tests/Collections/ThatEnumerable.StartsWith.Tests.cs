@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -139,19 +139,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 1 at index 0 instead of 2
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6,
-					               7,
-					               8,
-					               9,
-					               10,
-					               (… and maybe more)
-					             ]
+					             [1, (… and maybe more)]
 					             """)
 					.Because("the enumeration stops early, so the number of remaining items is unknown");
 			}
@@ -180,6 +168,36 @@ public sealed partial class ThatEnumerable
 					             [1]
 					             """)
 					.Because("the mismatch of the first attempt does not apply to the later ones");
+			}
+
+			[Fact]
+			public async Task WhenSourceIsEndless_ShouldNotReadFurtherItemsForTheFailureMessage()
+			{
+				int readItems = 0;
+
+				IEnumerable<int> Source()
+				{
+					while (true)
+					{
+						readItems++;
+						yield return 5;
+					}
+				}
+
+				async Task Act()
+					=> await That(Source()).StartsWith(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that Source()
+					             starts with [1],
+					             but it contained item 5 at index 0 instead of 1
+
+					             Collection:
+					             [5, (… and maybe more)]
+					             """);
+				await That(readItems).IsEqualTo(1)
+					.Because("the failure message must not read the source beyond the items that the evaluation needed");
 			}
 
 			[Fact]
@@ -272,7 +290,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -309,7 +327,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -345,7 +363,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -368,7 +386,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "# Title",
 					               "## Intro",
-					               "text"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -391,7 +409,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

@@ -35,11 +35,7 @@ public sealed partial class ThatEnumerable
 					               (… and maybe more)
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               (… and maybe more)
-					             ]
+					             [1, 2, (… and maybe more)]
 
 					             Expected:
 					             []

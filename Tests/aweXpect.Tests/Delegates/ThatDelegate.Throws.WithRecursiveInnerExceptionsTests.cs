@@ -130,7 +130,8 @@ public sealed partial class ThatDelegate
 
 					             Collection:
 					             [
-					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail
+					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
+					               (… and maybe more)
 					             ]
 					             """);
 			}

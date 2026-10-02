@@ -73,7 +73,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, (… and maybe more)]
 
 						             Collection:
-						             [1, 2, 3, 1]
+						             [1, 2, 3, 1, (… and maybe more)]
 						             """);
 				}
 
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, (… and maybe more)]
 
 						             Collection:
-						             [1, 2, 3, 1, 2, -1]
+						             [1, 2, 3, 1, (… and maybe more)]
 						             """);
 				}
 
@@ -123,7 +123,8 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [
 						               <null>,
-						               <null>
+						               <null>,
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -246,7 +247,8 @@ public sealed partial class ThatEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -297,14 +299,7 @@ public sealed partial class ThatEnumerable
 						                 StringValue = "",
 						                 Value = 1
 						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = 2
-						               },
-						               MyClass {
-						                 StringValue = "",
-						                 Value = -1
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}

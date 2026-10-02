@@ -426,7 +426,7 @@ public sealed partial class ThatEnumerable
 					             but it did
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, 3, (… and maybe more)]
 
 					             Expected:
 					             [2, 3]

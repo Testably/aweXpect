@@ -200,7 +200,8 @@ public sealed partial class ThatEnumerable
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 2
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 
 					             Equivalency options:

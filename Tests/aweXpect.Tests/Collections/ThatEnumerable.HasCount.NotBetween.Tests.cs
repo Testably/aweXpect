@@ -197,7 +197,7 @@ public sealed partial class ThatEnumerable
 						             but it had at least 7 items
 
 						             Collection:
-						             [1, 2, 3, 4, 5, 6, 7]
+						             [1, 2, 3, 4, 5, 6, 7, (… and maybe more)]
 						             """);
 				}
 

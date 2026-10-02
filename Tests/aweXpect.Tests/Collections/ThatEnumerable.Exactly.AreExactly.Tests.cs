@@ -80,7 +80,8 @@ public sealed partial class ThatEnumerable
 						             [
 						               1,
 						               "a",
-						               2
+						               2,
+						               (… and maybe more)
 						             ]
 						             """);
 				}

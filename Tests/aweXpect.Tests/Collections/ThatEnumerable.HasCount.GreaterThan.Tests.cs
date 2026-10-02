@@ -31,19 +31,7 @@ public sealed partial class ThatEnumerable
 						             but it could not be verified, because the evaluation was already canceled
 
 						             Collection:
-						             [
-						               0,
-						               1,
-						               2,
-						               3,
-						               4,
-						               5,
-						               6,
-						               7,
-						               8,
-						               9,
-						               (… and maybe more)
-						             ]
+						             [0, 1, 2, 3, 4, (… and maybe more)]
 						             """);
 				}
 
@@ -295,7 +283,7 @@ public sealed partial class ThatEnumerable
 						             but it had at least 3 items
 
 						             Collection:
-						             [1, 2, 3]
+						             [1, 2, 3, (… and maybe more)]
 						             """);
 				}
 

@@ -174,7 +174,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -211,8 +211,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -266,7 +265,8 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -321,7 +321,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -376,7 +376,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -451,7 +452,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -615,7 +617,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -652,8 +654,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -708,7 +709,8 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -746,7 +748,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -785,7 +788,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -823,7 +826,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -862,7 +866,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -935,7 +940,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1081,7 +1087,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1118,8 +1124,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1155,7 +1160,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "c",
-					               "b"
+					               "b",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1192,7 +1198,7 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1247,7 +1253,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1302,7 +1308,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1376,7 +1383,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1541,7 +1549,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1578,8 +1586,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1615,7 +1622,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "c",
-					               "b"
+					               "b",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1653,7 +1661,7 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1691,7 +1699,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1730,7 +1739,7 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1768,7 +1777,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1807,7 +1817,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1880,7 +1891,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2026,7 +2038,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2064,7 +2077,7 @@ public sealed partial class ThatEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2118,7 +2131,8 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2173,7 +2187,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2228,7 +2243,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2446,7 +2462,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2484,7 +2501,7 @@ public sealed partial class ThatEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2788,7 +2805,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2826,7 +2844,7 @@ public sealed partial class ThatEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2880,7 +2898,8 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2935,7 +2954,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -2990,7 +3010,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -3217,7 +3238,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "d"
+					               "d",
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -3256,7 +3278,7 @@ public sealed partial class ThatEnumerable
 					               "b",
 					               "c",
 					               "d",
-					               "e"
+					               (… and maybe more)
 					             ]
 
 					             Expected:

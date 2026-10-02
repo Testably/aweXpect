@@ -43,11 +43,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, (… and maybe more)]
 
 						             Collection:
-						             [
-						               1,
-						               1,
-						               (the enumeration did throw an InvalidOperationException: enumerated too far)
-						             ]
+						             [1, 1, (… and maybe more)]
 						             """)
 						.Because("the duplicate already decides the result, so the exception of the source must not replace it");
 				}
@@ -81,7 +77,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, (… and maybe more)]
 
 						             Collection:
-						             [1, 2, 3, 1]
+						             [1, 2, 3, 1, (… and maybe more)]
 						             """);
 				}
 
@@ -103,7 +99,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, (… and maybe more)]
 
 						             Collection:
-						             [1, 2, 3, 1, 2, -1]
+						             [1, 2, 3, 1, (… and maybe more)]
 						             """);
 				}
 
@@ -270,7 +266,8 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [
 						               "a",
-						               "A"
+						               "A",
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -301,7 +298,8 @@ public sealed partial class ThatEnumerable
 						               "a",
 						               "b",
 						               "c",
-						               "a"
+						               "a",
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -341,7 +339,8 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             [
 						               "a",
-						               "A"
+						               "A",
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -446,7 +445,8 @@ public sealed partial class ThatEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 1
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -539,7 +539,8 @@ public sealed partial class ThatEnumerable
 						               },
 						               ThatEnumerable.All.AreUnique.StringMemberTests.MyStringClass {
 						                 Value = "A"
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}

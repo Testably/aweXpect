@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
-					             [3, 3, 2, 1, 3]
+					             [3, 3, 2, 1, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -109,7 +109,8 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [
 					               "A",
-					               "a"
+					               "a",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -144,7 +145,8 @@ public sealed partial class ThatEnumerable
 					               "c",
 					               "b",
 					               "a",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -209,7 +211,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInDescendingOrder.MyIntClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -305,7 +308,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInDescendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "a"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -349,7 +353,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInDescendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "c"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

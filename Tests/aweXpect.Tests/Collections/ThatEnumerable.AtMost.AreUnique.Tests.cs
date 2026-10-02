@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, 2, 2, (… and maybe more)]
 
 						             Collection:
-						             [1, 1, 2, 2, 3]
+						             [1, 1, 2, 2, (… and maybe more)]
 						             """);
 				}
 			}

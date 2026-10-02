@@ -252,21 +252,6 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but the expected collection was <null>
-
-					             Collection:
-					             [
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6,
-					               7,
-					               8,
-					               9,
-					               10,
-					               (… and maybe more)
-					             ]
 					             """);
 			}
 
@@ -283,9 +268,6 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection null in order,
 					             but the expected collection was <null>
-
-					             Collection:
-					             [1, 2]
 					             """)
 					.Because("a null literal binds to the string overload, but still expects no collection");
 			}
