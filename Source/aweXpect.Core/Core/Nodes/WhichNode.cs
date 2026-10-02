@@ -93,7 +93,7 @@ internal class WhichNode<TSource, TMember> : Node
 	/// </remarks>
 	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
 	{
-		if (_inner is OrNode or AndNode)
+		if (_inner is JunctionNode)
 		{
 			_inner = _inner.ReplaceRightMostOperand(replace);
 			return this;
