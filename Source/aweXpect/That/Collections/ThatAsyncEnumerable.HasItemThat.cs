@@ -117,7 +117,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			int index = -1;
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				index++;
 				bool? isIndexInRange = _options.Match switch
@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					if (isIndexInRange == false)
 					{
-						break;
+						return this;
 					}
 
 					continue;
@@ -139,6 +139,12 @@ public static partial class ThatAsyncEnumerable
 				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				if (isMatch.FailsBothWays())
 				{
 					_unansweredItem = isMatch;
@@ -149,8 +155,13 @@ public static partial class ThatAsyncEnumerable
 				Outcome = isMatch.Outcome;
 				if (isMatch.Outcome == Outcome.Success)
 				{
-					break;
+					return this;
 				}
+			}
+
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+			{
+				Outcome = Outcome.Undecided;
 			}
 
 			return this;

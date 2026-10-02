@@ -220,6 +220,12 @@ public static partial class ThatEnumerable
 				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				if (isMatch.FailsBothWays())
 				{
 					_unansweredItem = isMatch;
@@ -396,6 +402,12 @@ public static partial class ThatEnumerable
 				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+				{
+					Outcome = Outcome.Undecided;
+					return this;
+				}
+
 				if (isMatch.FailsBothWays())
 				{
 					_unansweredItem = isMatch;

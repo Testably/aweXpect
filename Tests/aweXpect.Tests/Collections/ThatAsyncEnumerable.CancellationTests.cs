@@ -159,6 +159,19 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemThatDecide()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.IsEqualTo(3)).Or.Contains(1).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the received items already contain 1, so the undecided item search does not matter");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToIsInAscendingOrderDecide()
 		{
 			using CancellationTokenSource cts = new();
@@ -244,6 +257,26 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             ends with [2],
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemThatAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.IsEqualTo(3)).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is equal to 3,
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
@@ -494,6 +527,42 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation within an item must not be reported as a missing item");
 			await That(enumeratedCount).IsLessThan(100)
 				.Because("the item expectation must stop at the cancellation instead of enumerating the whole item");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortHasItemThat()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<IEnumerable<int>> subject = ToAsyncEnumerable<IEnumerable<int>>(CancellingItems(1, cts), [1, 2,]);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.HasCount(3)).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that has exactly 3 items,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [
+				               [
+				                 0,
+				                 1,
+				                 2,
+				                 3,
+				                 4,
+				                 5,
+				                 6,
+				                 7,
+				                 8,
+				                 9,
+				                 (… and maybe more)
+				               ],
+				               (… and maybe more)
+				             ]
+				             """)
+				.Because("the first item was canceled before its count was known");
 		}
 
 		[Fact]
