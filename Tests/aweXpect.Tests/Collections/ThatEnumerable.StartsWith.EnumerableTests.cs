@@ -224,6 +224,32 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
+			{
+				int attempts = 0;
+
+				IEnumerable GetSubject()
+					=> attempts++ == 0 ? new[] { 3, } : new[] { 1, };
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(500.Milliseconds()).CheckEvery(1.Milliseconds())
+						.StartsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually starts with [1, 2] within 0:00.500,
+					             but it contained only 1 item and lacked 1 item: [
+					               2
+					             ]
+
+					             Collection:
+					             [1]
+					             """)
+					.Because("the mismatch of the first attempt does not apply to the later ones");
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IEnumerable subject = ToEnumerable([1,]);
