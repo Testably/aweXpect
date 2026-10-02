@@ -138,7 +138,7 @@ public sealed partial class ThatVersion
 					             is not one of expected,
 					             but it was 1.2
 
-					             Expected values:
+					             Unexpected values:
 					             [1.3, 1.2]
 					             """);
 			}

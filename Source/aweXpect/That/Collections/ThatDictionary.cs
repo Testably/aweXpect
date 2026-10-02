@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.SourceGenerators;
 
 namespace aweXpect;
@@ -63,15 +64,16 @@ public static partial class ThatDictionary
 			: ((IReadOnlyDictionary<TKey, TValue>)dictionary).ContainsKey(key);
 
 	private static void AddDictionaryContext<TKey, TValue>(ExpectationBuilder expectationBuilder,
-		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary)
+		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, ConstraintResult? onlyOnFailureOf = null)
 	{
 		if (dictionary is IDictionary<TKey, TValue> mutableDictionary)
 		{
-			expectationBuilder.AddCollectionContext(mutableDictionary);
+			expectationBuilder.AddCollectionContext(mutableDictionary, onlyOnFailureOf: onlyOnFailureOf);
 		}
 		else
 		{
-			expectationBuilder.AddCollectionContext((IReadOnlyDictionary<TKey, TValue>?)dictionary);
+			expectationBuilder.AddCollectionContext((IReadOnlyDictionary<TKey, TValue>?)dictionary,
+				onlyOnFailureOf: onlyOnFailureOf);
 		}
 	}
 }

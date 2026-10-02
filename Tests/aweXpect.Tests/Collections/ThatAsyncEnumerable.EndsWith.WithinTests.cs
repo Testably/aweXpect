@@ -1,5 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -747,7 +748,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1 day,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -781,7 +782,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1 day,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -815,7 +816,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -849,7 +850,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -883,7 +884,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -917,7 +918,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -951,7 +952,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -985,7 +986,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1019,7 +1020,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1053,7 +1054,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1087,7 +1088,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1121,7 +1122,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 0.25,
-						              but it did end with {Formatter.Format(values, FormattingOptions.SingleLine)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.SingleLine)}
 						              """);
 				}
 			}
@@ -1155,7 +1156,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -1189,7 +1190,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -1223,7 +1224,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}
@@ -1257,7 +1258,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not end with {Formatter.Format(unexpected)} ± 1:00,
-						              but it did end with {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              but it did end with {Formatter.Format(values.Skip(values.Length - 2), FormattingOptions.MultipleLines)}
 						              """);
 				}
 			}

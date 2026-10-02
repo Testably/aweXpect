@@ -73,6 +73,9 @@ public sealed partial class ThatReadOnlyDictionary
 					             Expected that subject
 					             has keys that do not contain an item equal to 2,
 					             but it contained 2 at least once
+
+					             Collection:
+					             [1, 2, 3]
 					             """);
 			}
 

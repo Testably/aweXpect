@@ -100,8 +100,12 @@ internal static class CollectionHelpers
 	///     Adds the "Collection" context for the <paramref name="value" />, passing the <paramref name="totalCount" />
 	///     of items whenever the caller counted them while the <paramref name="value" /> kept only the first ones.
 	/// </summary>
+	/// <remarks>
+	///     With <paramref name="onlyOnFailureOf" />, the context is only shown when that result failed in the end.
+	/// </remarks>
 	internal static ExpectationBuilder AddCollectionContext<TItem>(this ExpectationBuilder expectationBuilder,
-		IEnumerable<TItem>? value, bool isIncomplete = false, int? totalCount = null)
+		IEnumerable<TItem>? value, bool isIncomplete = false, int? totalCount = null,
+		ConstraintResult? onlyOnFailureOf = null)
 	{
 		if (value is null)
 		{
@@ -115,14 +119,16 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => FormatCollection(value, totalCount).AppendIsIncomplete(isIncomplete),
+						() => IsHidden(onlyOnFailureOf)
+							? null
+							: FormatCollection(value, totalCount).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
 	}
 
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
-		IEnumerable? value, bool isIncomplete = false)
+		IEnumerable? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
 	{
 		if (value is null)
 		{
@@ -136,7 +142,9 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => FormatCollection(value, GetItemTypeOfListedItems(value)).AppendIsIncomplete(isIncomplete),
+						() => IsHidden(onlyOnFailureOf)
+							? null
+							: FormatCollection(value, GetItemTypeOfListedItems(value)).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
@@ -178,7 +186,7 @@ internal static class CollectionHelpers
 #endif
 
 	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
-		IDictionary<TKey, TValue>? value, bool isIncomplete = false)
+		IDictionary<TKey, TValue>? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
 	{
 		if (value is null)
 		{
@@ -192,15 +200,17 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Dictionary",
-						() => Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
-							.AppendIsIncomplete(isIncomplete),
+						() => IsHidden(onlyOnFailureOf)
+							? null
+							: Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
+								.AppendIsIncomplete(isIncomplete),
 						-2));
 			}
 		});
 	}
 
 	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
-		IReadOnlyDictionary<TKey, TValue>? value, bool isIncomplete = false)
+		IReadOnlyDictionary<TKey, TValue>? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
 	{
 		if (value is null)
 		{
@@ -214,12 +224,21 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Dictionary",
-						() => Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
-							.AppendIsIncomplete(isIncomplete),
+						() => IsHidden(onlyOnFailureOf)
+							? null
+							: Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
+								.AppendIsIncomplete(isIncomplete),
 						-2));
 			}
 		});
 	}
+
+	/// <remarks>
+	///     A negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the context of a success, which a
+	///     further negation can turn back into a success.
+	/// </remarks>
+	private static bool IsHidden(ConstraintResult? onlyOnFailureOf)
+		=> onlyOnFailureOf is not null && onlyOnFailureOf.Outcome != Outcome.Failure;
 
 	/// <summary>
 	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the

@@ -48,17 +48,47 @@ public static partial class ThatObject
 		: ConstraintResult.WithNotNullValue<object>(it, grammars),
 			IValueConstraint<object?>
 	{
+		private bool _addsContextWhenNegated;
+
 		public ConstraintResult IsMetBy(object? actual)
 		{
 			Actual = actual;
 			Outcome = type.IsOrImplements(actual) ? Outcome.Success : Outcome.Failure;
-			if (Outcome == Outcome.Failure && actual is not null)
+			_addsContextWhenNegated = Outcome == Outcome.Success;
+			if (Outcome == Outcome.Failure)
 			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual",
-					Formatter.Format(actual, FormattingOptions.MultipleLines)));
+				AddActualContext(false);
 			}
 
 			return this;
+		}
+
+		public override ConstraintResult Negate()
+		{
+			base.Negate();
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				AddActualContext(true);
+			}
+
+			return this;
+		}
+
+		/// <remarks>
+		///     A negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the context of a success, which a
+		///     further negation can turn back into a success, so it is then only shown when the outcome is a failure.
+		/// </remarks>
+		private void AddActualContext(bool onlyOnFailure)
+		{
+			if (Actual is not null)
+			{
+				string actual = Formatter.Format(Actual, FormattingOptions.MultipleLines);
+				expectationBuilder.AddContext(new ResultContext.SyncCallback("Actual",
+					() => onlyOnFailure && Outcome != Outcome.Failure ? null : actual));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

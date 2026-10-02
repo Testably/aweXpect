@@ -41,15 +41,32 @@ public static partial class ThatDictionary
 			IValueConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		private bool _addsContextWhenNegated;
+
 		public ConstraintResult IsMetBy(TDictionary? actual)
 		{
 			Actual = actual;
 			Outcome = actual is not null && UserCode.Invoke(() => ContainsKey(actual, expected))
 				? Outcome.Success
 				: Outcome.Failure;
+			_addsContextWhenNegated = Outcome == Outcome.Success;
 			if (Outcome != Outcome.Success)
 			{
 				AddDictionaryContext(expectationBuilder, actual);
+			}
+
+			return this;
+		}
+
+		public override ConstraintResult Negate()
+		{
+			base.Negate();
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				AddDictionaryContext(expectationBuilder, Actual, this);
 			}
 
 			return this;

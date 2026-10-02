@@ -15,7 +15,8 @@ public class HasRecursiveInnerExceptionsConstraintTests
 	[InlineData(ExpectationGrammars.Active | ExpectationGrammars.Negated, "without recursive inner exceptions")]
 	public async Task AppendExpectation_ShouldAppendExpectedText(ExpectationGrammars grammar, string expected)
 	{
-		ThatException.HasRecursiveInnerExceptionsConstraint sut = new("it", grammar);
+		ThatException.HasRecursiveInnerExceptionsConstraint sut = new(
+			new ManualExpectationBuilder<Exception>(null), "it", grammar);
 		StringBuilder sb = new();
 
 		sut.AppendExpectation(sb, "");
@@ -30,7 +31,8 @@ public class HasRecursiveInnerExceptionsConstraintTests
 	public async Task AppendResult_WhenExceptionHasNoInnerExceptions_ShouldAppendResultText(
 		ExpectationGrammars grammar)
 	{
-		ThatException.HasRecursiveInnerExceptionsConstraint sut = new("it", grammar);
+		ThatException.HasRecursiveInnerExceptionsConstraint sut = new(
+			new ManualExpectationBuilder<Exception>(null), "it", grammar);
 		StringBuilder sb = new();
 
 		sut.IsMetBy(new AggregateException());
@@ -44,7 +46,8 @@ public class HasRecursiveInnerExceptionsConstraintTests
 	[InlineData(true)]
 	public async Task IsMetBy_ShouldRequireAtLeastOneRecursiveInnerException(bool hasInnerException)
 	{
-		ThatException.HasRecursiveInnerExceptionsConstraint sut = new("it", ExpectationGrammars.None);
+		ThatException.HasRecursiveInnerExceptionsConstraint sut = new(
+			new ManualExpectationBuilder<Exception>(null), "it", ExpectationGrammars.None);
 		Exception subject = hasInnerException
 			? new AggregateException(new AggregateException(new Exception("inner")))
 			: new AggregateException();

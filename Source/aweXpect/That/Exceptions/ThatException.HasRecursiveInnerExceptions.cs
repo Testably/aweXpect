@@ -27,12 +27,14 @@ public static partial class ThatException
 		where TException : Exception
 	{
 		expectations.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new(expectationBuilder
 				.ForMember<Exception?, IEnumerable<Exception?>>(
 					e => e.GetInnerExceptions(),
 					" that ",
 					false)
-				.Validate((it, grammars) => new HasRecursiveInnerExceptionsConstraint(it, grammars))
+				.Validate((it, grammars)
+					=> new HasRecursiveInnerExceptionsConstraint(expectationBuilder, it, grammars))
 				.AddExpectations(e => expectations(
 						new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
@@ -40,17 +42,23 @@ public static partial class ThatException
 	}
 
 	internal class HasRecursiveInnerExceptionsConstraint(
+		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Exception>(it, grammars),
 			IValueConstraint<Exception?>
 	{
+		private List<Exception>? _innerExceptionsForNegation;
+
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
-			if (actual.GetInnerExceptions().Any())
+			_innerExceptionsForNegation = null;
+			List<Exception> innerExceptions = actual.GetInnerExceptions().ToList();
+			if (innerExceptions.Count > 0)
 			{
+				_innerExceptionsForNegation = innerExceptions;
 				Outcome = Outcome.Success;
 				return this;
 			}
@@ -98,6 +106,23 @@ public static partial class ThatException
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");
+
+		/// <remarks>
+		///     The negated result relies on the inner exceptions as context, which the expectations on them do not
+		///     always add. Only the first negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the
+		///     context, as the next one reverts it before a repeated evaluation.
+		/// </remarks>
+		public override ConstraintResult Negate()
+		{
+			base.Negate();
+			if (_innerExceptionsForNegation is not null)
+			{
+				expectationBuilder.AddCollectionContext(_innerExceptionsForNegation, onlyOnFailureOf: this);
+				_innerExceptionsForNegation = null;
+			}
+
+			return this;
+		}
 	}
 }
 #pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

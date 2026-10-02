@@ -12,12 +12,17 @@ internal static class StringContextHelpers
 	///     message of the <paramref name="result" /> already shows it completely.
 	/// </summary>
 	/// <remarks>
-	///     The check runs only when a failure message is built, because the message text is needed to decide it.
+	///     The check runs only when a failure message is built, because the message text is needed to decide it. With
+	///     <paramref name="onlyOnFailure" />, the context is also left out unless the <paramref name="result" /> failed
+	///     in the end, as a negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the context of a
+	///     success, which a further negation can turn back into a success.
 	/// </remarks>
 	public static void AddStringContext(this ExpectationBuilder expectationBuilder, string title, string value,
-		ConstraintResult result)
+		ConstraintResult result, bool onlyOnFailure = false)
 		=> expectationBuilder.AddContext(new ResultContext.SyncCallback(title,
-			() => IsShownCompletely(value, result) ? null : value));
+			() => (onlyOnFailure && result.Outcome != Outcome.Failure) || IsShownCompletely(value, result)
+				? null
+				: value));
 
 	private static bool IsShownCompletely(string value, ConstraintResult result)
 	{

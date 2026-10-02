@@ -1220,6 +1220,12 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
 					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Container {
+					               In = <null>,
+					               Name = "o"
+					             }
 					             """);
 			}
 
@@ -1261,6 +1267,16 @@ public sealed partial class ThatGeneric
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Next!.Name that is equal to "i",
 					             but it was ThatGeneric.Whose.NegatedTests.Container and Next!.Name did throw an InvalidOperationException:
 					               next failed
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Container {
+					               In = ThatGeneric.Whose.NegatedTests.Inner {
+					                 Name = <null>,
+					                 Next = [Next did throw an InvalidOperationException: next failed],
+					                 Other = <null>
+					               },
+					               Name = <null>
+					             }
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("next failed"));
 			}
@@ -1282,6 +1298,12 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Task.FromResult(x.In) has Name that is equal to "i",
 					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Container {
+					               In = <null>,
+					               Name = "o"
+					             }
 					             """);
 			}
 
@@ -1299,6 +1321,12 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Name starts with "a",
 					             but it was ThatGeneric.Whose.NegatedTests.Container and Name was <null>
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Container {
+					               In = <null>,
+					               Name = <null>
+					             }
 					             """);
 			}
 
@@ -1497,7 +1525,10 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item equal to 1 at least once,
 					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
-					             """);
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Lists {*}
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -1514,7 +1545,10 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item matching item => item > 0 at least once,
 					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
-					             """);
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Lists {*}
+					             """).AsWildcard();
 			}
 
 #if NET8_0_OR_GREATER
@@ -1532,6 +1566,12 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array contains an item equal to 1 at least once,
 					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Lists {
+					               Array = [Array did throw an InvalidOperationException: This operation cannot be performed on a default instance of ImmutableArray<T>.  Consider initializing the array, or checking the ImmutableArray<T>.IsDefault property.],
+					               Items = <null>
+					             }
 					             """);
 			}
 
@@ -1549,6 +1589,12 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array is equal to collection [1,] in order,
 					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Lists {
+					               Array = [Array did throw an InvalidOperationException: This operation cannot be performed on a default instance of ImmutableArray<T>.  Consider initializing the array, or checking the ImmutableArray<T>.IsDefault property.],
+					               Items = <null>
+					             }
 					             """);
 			}
 #endif

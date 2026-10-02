@@ -799,6 +799,7 @@ public static partial class ThatEnumerable
 	{
 		private IEnumerable<TItem>? _actual;
 		private int _count;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable<TItem>? _materializedEnumerable;
@@ -807,6 +808,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -841,6 +843,7 @@ public static partial class ThatEnumerable
 						return Task.FromResult<ConstraintResult>(this);
 					case true:
 						Outcome = Outcome.Success;
+						_addsContextWhenNegated = true;
 						return Task.FromResult<ConstraintResult>(this);
 				}
 			}
@@ -937,6 +940,14 @@ public static partial class ThatEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_materializedEnumerable, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}
@@ -956,6 +967,7 @@ public static partial class ThatEnumerable
 		private IEnumerable<TItem>? _actual;
 		private int _count;
 		private TItem? _firstFoundItem;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable<TItem>? _materializedEnumerable;
@@ -964,6 +976,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1010,6 +1023,7 @@ public static partial class ThatEnumerable
 						return this;
 					case true:
 						Outcome = Outcome.Success;
+						_addsContextWhenNegated = true;
 						return this;
 				}
 			}
@@ -1098,6 +1112,14 @@ public static partial class ThatEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_materializedEnumerable, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}
@@ -1115,6 +1137,7 @@ public static partial class ThatEnumerable
 	{
 		private IEnumerable? _actual;
 		private int _count;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable? _materializedEnumerable;
@@ -1123,6 +1146,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual.IsDefaultImmutableArray())
 			{
 				return Task.FromResult(this.AsNullSubject(it));
@@ -1158,6 +1182,7 @@ public static partial class ThatEnumerable
 							return Task.FromResult<ConstraintResult>(this);
 						case true:
 							Outcome = Outcome.Success;
+							_addsContextWhenNegated = true;
 							return Task.FromResult<ConstraintResult>(this);
 					}
 				}
@@ -1255,6 +1280,14 @@ public static partial class ThatEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_materializedEnumerable, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}
@@ -1278,6 +1311,7 @@ public static partial class ThatEnumerable
 		private IEnumerable? _actual;
 		private int _count;
 		private TItem? _firstFoundItem;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 		private IEnumerable? _materializedEnumerable;
@@ -1286,6 +1320,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual.IsDefaultImmutableArray())
 			{
 				return this.AsNullSubject(it);
@@ -1327,6 +1362,7 @@ public static partial class ThatEnumerable
 							return this;
 						case true:
 							Outcome = Outcome.Success;
+							_addsContextWhenNegated = true;
 							return this;
 					}
 				}
@@ -1411,6 +1447,14 @@ public static partial class ThatEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_materializedEnumerable, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}
