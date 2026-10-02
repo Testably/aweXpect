@@ -15,16 +15,15 @@ public static class AreEvenExtensions
 			((IExpectThat<IEnumerable<int>?>)elements.Subject).ExpectationBuilder;
 		return new AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AreEvenConstraint(expectationBuilder, it, grammars, elements.Quantifier)),
+				=> new AreEvenConstraint(it, grammars, elements.Quantifier)),
 			elements.Subject);
 	}
 
 	private sealed class AreEvenConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier)
-		: QuantifiedCollectionConstraint<IEnumerable<int>?, int>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<IEnumerable<int>?, int>(it, grammars, quantifier,
 				g => g.IsPlural() ? "are even" : "is even", "were"),
 			IValueConstraint<IEnumerable<int>?>
 	{

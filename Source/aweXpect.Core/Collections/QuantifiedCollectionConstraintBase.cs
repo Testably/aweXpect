@@ -46,25 +46,17 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// <summary>
 	///     Initializes the constraint.
 	/// </summary>
-	/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
 	/// <param name="it">The name of the subject.</param>
 	/// <param name="grammars">The grammars of the expectation.</param>
 	/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
 	protected QuantifiedCollectionConstraintBase(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier)
 		: base(it, grammars)
 	{
-		ExpectationBuilder = expectationBuilder;
 		Quantifier = quantifier;
 	}
-
-	/// <summary>
-	///     The <see cref="ExpectationBuilder" /> of the expectation.
-	/// </summary>
-	protected ExpectationBuilder ExpectationBuilder { get; }
 
 	/// <summary>
 	///     The quantifier for the items.

@@ -86,7 +86,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<string?, string?> itemOptions =
 						new(options, () => options.ComparesByOrdinalEquality);
 					return new AreUniqueConstraint<string?, string?>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
 						a => a,
@@ -108,7 +108,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -129,7 +129,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -209,7 +209,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 					return new AreUniqueConstraint<TItem, TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
 						a => a,
@@ -231,7 +231,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -252,7 +252,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -334,7 +334,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<object?, object?> itemOptions =
 						new(options, () => options.HasDefaultMatchType);
 					return new AreUniqueForEnumerableConstraint<TEnumerable, object?>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
 						a => a,
@@ -356,7 +356,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -377,7 +377,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -446,7 +446,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => (TItem)a!,
@@ -466,7 +466,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -487,7 +487,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -556,7 +556,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, string?>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => (string?)a,
@@ -575,7 +575,7 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -596,7 +596,7 @@ public static partial class ThatEnumerable
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -614,7 +614,6 @@ public static partial class ThatEnumerable
 	///     items that its comparer considers equal.
 	/// </remarks>
 	private sealed class AreUniqueConstraint<TItem, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -624,7 +623,7 @@ public static partial class ThatEnumerable
 		bool expectUnique,
 		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -706,7 +705,6 @@ public static partial class ThatEnumerable
 	///     as in <see cref="AreUniqueConstraint{TItem,TMember}" />.
 	/// </remarks>
 	private sealed class AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -716,7 +714,7 @@ public static partial class ThatEnumerable
 		bool expectUnique,
 		Func<object?, bool>? isUniqueBySubject = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?

@@ -27,7 +27,7 @@ public sealed partial class PropertyResultTests
 
 	private sealed class Dummy : IExpectThat<string>
 	{
-		public ExpectationBuilder ExpectationBuilder { get; } = new ManualExpectationBuilder<string>(null);
+		public ExpectationBuilder ExpectationBuilder { get; } = new ManualExpectationBuilder<string>();
 	}
 
 	private sealed class MyClass

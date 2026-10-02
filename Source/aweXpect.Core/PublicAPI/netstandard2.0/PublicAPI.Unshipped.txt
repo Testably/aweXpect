@@ -282,13 +282,10 @@ aweXpect.Options.RepeatedCheckOptions.RepeatedCheckOptions() -> void
 aweXpect.Options.RepeatedCheckOptions.Timeout.get -> System.TimeSpan
 aweXpect.Options.RepeatedCheckOptions.Within(System.TimeSpan timeout) -> void
 aweXpect.QuantifiedCollectionConstraint<TValue, TItem>
-aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.QuantifiedCollectionConstraint(aweXpect.Core.ExpectationBuilder! expectationBuilder, string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string!>! expectationText, string! verb) -> void
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Complete() -> void
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.CompleteEarly() -> void
-aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.IsDetermined.get -> bool
-aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.QuantifiedCollectionConstraintBase(aweXpect.Core.ExpectationBuilder! expectationBuilder, string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier) -> void
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Record(TItem item, bool isMatch) -> void
 aweXpect.Results.CollectionCountResult<TReturn>
@@ -386,3 +383,24 @@ override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendContex
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Record(TItem item, aweXpect.Core.Constraints.ConstraintResult! itemResult) -> void
 aweXpect.Core.IObjectMatchType.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
 aweXpect.Options.ObjectEqualityOptions<TSubject>.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
+*REMOVED*aweXpect.Core.ManualExpectationBuilder<TValue>.ManualExpectationBuilder(aweXpect.Core.ExpectationBuilder? inner, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+*REMOVED*aweXpect.Core.ResultContext.Title.set -> void
+*REMOVED*aweXpect.Core.ResultContexts
+*REMOVED*aweXpect.Core.ResultContexts.Add(aweXpect.Core.ResultContext! context) -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.Clear() -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.Close() -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.GetEnumerator() -> System.Collections.Generic.IEnumerator<aweXpect.Core.ResultContext!>!
+*REMOVED*aweXpect.Core.ResultContexts.Open() -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.Remove(System.Predicate<aweXpect.Core.ResultContext!>! predicate) -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.Remove(string! title, System.StringComparison stringComparison = System.StringComparison.OrdinalIgnoreCase) -> aweXpect.Core.ResultContexts!
+*REMOVED*aweXpect.Core.ResultContexts.ResultContexts() -> void
+*REMOVED*override aweXpect.Core.ManualExpectationBuilder<TValue>.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*override aweXpect.Core.ManualExpectationBuilder<TValue>.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*override aweXpect.Equivalency.EquivalencyExpectationBuilder.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*override aweXpect.Equivalency.EquivalencyExpectationBuilder.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*virtual aweXpect.Core.ExpectationBuilder.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*virtual aweXpect.Core.ExpectationBuilder.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*virtual aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(aweXpect.Core.ManualExpectationBuilder<TValue>! other) -> bool
+aweXpect.Core.ManualExpectationBuilder<TValue>.ManualExpectationBuilder(aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.QuantifiedCollectionConstraint(string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string!>! expectationText, string! verb) -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.QuantifiedCollectionConstraintBase(string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier) -> void

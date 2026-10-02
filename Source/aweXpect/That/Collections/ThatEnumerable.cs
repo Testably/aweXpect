@@ -660,14 +660,13 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class CollectionConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, bool> predicate,
 		string verb)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -719,7 +718,6 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class AsyncCollectionConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -728,7 +726,7 @@ public static partial class ThatEnumerable
 		string verb,
 		Func<object?, bool>? useComparerOf = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -786,14 +784,13 @@ public static partial class ThatEnumerable
 	///     <see langword="null" />.
 	/// </remarks>
 	private sealed class CollectionForEnumerableConstraint<TEnumerable>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<object?, bool> predicate,
 		string verb)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
@@ -858,7 +855,6 @@ public static partial class ThatEnumerable
 	///     The items are formatted as in <see cref="CollectionForEnumerableConstraint{TEnumerable}" />.
 	/// </remarks>
 	private sealed class AsyncCollectionForEnumerableConstraint<TEnumerable>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -867,7 +863,7 @@ public static partial class ThatEnumerable
 		string verb,
 		Func<object?, bool>? useComparerOf = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?

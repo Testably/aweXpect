@@ -22,8 +22,6 @@ public abstract class ExpectationBuilder
 {
 	private protected const string DefaultCurrentSubject = "it";
 
-	private ResultContexts? _contexts;
-
 	/// <summary>
 	///     The other exceptions of the faulted subject in the current evaluation.
 	/// </summary>
@@ -535,37 +533,6 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Update the list of <see cref="ResultContext" /> that is included in the failure message.
-	/// </summary>
-	public virtual ExpectationBuilder UpdateContexts(Action<ResultContexts> callback)
-	{
-		_contexts ??= new ResultContexts();
-		callback(_contexts);
-		return this;
-	}
-
-	/// <summary>
-	///     Adds the <paramref name="resultContext" /> to the context that is included in the failure message,
-	///     unless a context with the same <see cref="ResultContext.Title" /> was already added.
-	/// </summary>
-	/// <remarks>
-	///     A constraint adds its context while it is evaluated, so an expectation that inspects the same property
-	///     twice (<c>HasMessage().Containing("a").And.HasMessage().Containing("b")</c>) would otherwise repeat the
-	///     identical block. <see cref="UpdateContexts(Action{ResultContexts})" /> bypasses this and can add a
-	///     duplicate title deliberately.
-	/// </remarks>
-	public virtual ExpectationBuilder AddContext(ResultContext resultContext)
-	{
-		_contexts ??= new ResultContexts();
-		if (!_contexts.ContainsTitle(resultContext.Title))
-		{
-			_contexts.Add(resultContext);
-		}
-
-		return this;
-	}
-
-	/// <summary>
 	///     Lists the <paramref name="otherExceptions" /> of the faulted subject as context of a failure, unless they are
 	///     <see langword="null" />.
 	/// </summary>
@@ -583,15 +550,10 @@ public abstract class ExpectationBuilder
 	internal void ResetOtherExceptions() => _otherExceptions = null;
 
 	/// <summary>
-	///     Gets the list of <see cref="ResultContext" />.
-	/// </summary>
-	internal IEnumerable<ResultContext> GetContexts() => _contexts ?? [];
-
-	/// <summary>
 	///     Creates the exception message from the <paramref name="failure" />.
 	/// </summary>
 	internal Task<string> FromFailure(ConstraintResult failure)
-		=> FromFailure(Subject, failure, _contexts, CancellationToken ?? System.Threading.CancellationToken.None);
+		=> FromFailure(Subject, failure, CancellationToken ?? System.Threading.CancellationToken.None);
 
 	/// <summary>
 	///     Creates the exception message from the <paramref name="failure" />.
@@ -599,7 +561,6 @@ public abstract class ExpectationBuilder
 	private static async Task<string> FromFailure(
 		string subject,
 		ConstraintResult failure,
-		ResultContexts? contexts,
 		CancellationToken cancellationToken)
 	{
 		StringBuilder sb = new();
@@ -612,7 +573,7 @@ public abstract class ExpectationBuilder
 		sb.AppendLine(",");
 		sb.Append("but ");
 		failure.AppendResult(sb);
-		await ResultContextRenderer.AppendContexts(sb, failure, contexts ?? [], cancellationToken);
+		await ResultContextRenderer.AppendContexts(sb, failure, cancellationToken);
 		return sb.ToString();
 	}
 

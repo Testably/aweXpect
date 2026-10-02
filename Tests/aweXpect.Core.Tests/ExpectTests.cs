@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks.Sources;
 using aweXpect.Chronology;
@@ -701,13 +702,47 @@ public class ExpectTests
 
 	private sealed class MyExpectation(Expectation.Result result, params ResultContext[] contexts) : Expectation
 	{
-		internal override Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
-			=> Task.FromResult(result);
-
-		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-			=> contexts;
+		internal override Task<Result> GetResult(int index)
+			=> Task.FromResult(new Result(result.Index, result.SubjectLine,
+				new WithContexts(result.ConstraintResult, contexts)));
 
 		internal override Task EndEvaluation()
 			=> Task.CompletedTask;
+	}
+
+	/// <summary>
+	///     The <paramref name="inner" /> result, which adds the <paramref name="contexts" /> when it explains a failure.
+	/// </summary>
+	private sealed class WithContexts(ConstraintResult inner, ResultContext[] contexts)
+		: ConstraintResult(inner.FurtherProcessingStrategy)
+	{
+		public override Outcome Outcome
+		{
+			get => inner.Outcome;
+			protected set => _ = value;
+		}
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> inner.AppendExpectation(stringBuilder, indentation);
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+			=> inner.AppendResult(stringBuilder, indentation);
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+			=> inner.TryGetStoredValue(out value);
+
+		public override ConstraintResult Negate()
+		{
+			inner.Negate();
+			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector collector)
+		{
+			foreach (ResultContext context in contexts)
+			{
+				collector.Add(context);
+			}
+		}
 	}
 }

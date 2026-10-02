@@ -21,13 +21,12 @@ internal static class ResultContextRenderer
 	///     content is the same, and are numbered otherwise, e.g. <c>Expected #1:</c>.
 	/// </remarks>
 	public static async Task AppendContexts(StringBuilder stringBuilder, ConstraintResult failure,
-		IEnumerable<ResultContext> builderContexts, CancellationToken cancellationToken)
+		CancellationToken cancellationToken)
 	{
 		ResultContextCollector collector = new();
 		collector.Visit(failure);
 		IEnumerable<(ResultContext Context, string? Subject, string TitlePrefix)> candidates = collector.Entries
 			.Select(entry => (entry.Context, entry.GetSubjectLabel(), entry.TitlePrefix, entry.IsOfItem))
-			.Concat(builderContexts.Select(context => (context, (string?)null, "", false)))
 			.OrderBy(candidate => candidate.Item4)
 			.ThenByDescending(candidate => candidate.Item1.Priority)
 			.Select(candidate => (candidate.Item1, candidate.Item2, candidate.Item3));

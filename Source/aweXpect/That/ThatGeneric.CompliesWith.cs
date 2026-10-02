@@ -66,7 +66,7 @@ public static partial class ThatGeneric
 			: base(grammars)
 		{
 			_options = options;
-			_itemExpectationBuilder = new ManualExpectationBuilder<T>(expectationBuilder, grammars);
+			_itemExpectationBuilder = new ManualExpectationBuilder<T>(grammars);
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
 		}
 

@@ -35,7 +35,6 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
@@ -82,7 +81,6 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
@@ -129,7 +127,6 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,

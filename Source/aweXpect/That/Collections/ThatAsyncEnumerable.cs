@@ -22,7 +22,6 @@ namespace aweXpect;
 public static partial class ThatAsyncEnumerable
 {
 	private sealed class CollectionConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -30,21 +29,20 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, ValueTask<bool>> predicate,
 		string verb,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectationText, verb),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private CollectionContext _collectionContext;
 
 		public CollectionConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier,
 			Func<ExpectationGrammars, string> expectationText,
 			Func<TItem, bool> predicate,
 			string verb)
-			: this(expectationBuilder, it, grammars, quantifier, expectationText,
+			: this(it, grammars, quantifier, expectationText,
 				item => new ValueTask<bool>(UserCode.Invoke(predicate, item, "the predicate")), verb)
 		{
 		}

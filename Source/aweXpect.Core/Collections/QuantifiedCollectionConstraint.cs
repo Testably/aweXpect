@@ -24,7 +24,6 @@ namespace aweXpect;
 /// </remarks>
 /// <typeparam name="TValue">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
-/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
 /// <param name="it">The name of the subject.</param>
 /// <param name="grammars">The grammars of the expectation.</param>
 /// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
@@ -37,13 +36,12 @@ namespace aweXpect;
 ///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
 /// </param>
 public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
-	ExpectationBuilder expectationBuilder,
 	string it,
 	ExpectationGrammars grammars,
 	EnumerableQuantifier quantifier,
 	Func<ExpectationGrammars, string> expectationText,
 	string verb)
-	: QuantifiedCollectionConstraintBase<TValue, TItem>(expectationBuilder, it, grammars, quantifier)
+	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
 	/// <inheritdoc />
 	protected sealed override string Verb => verb;

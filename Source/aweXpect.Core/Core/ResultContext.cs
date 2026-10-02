@@ -23,7 +23,7 @@ public abstract class ResultContext
 	/// <summary>
 	///     The title of the context.
 	/// </summary>
-	public string Title { get; set; }
+	public string Title { get; }
 
 	/// <summary>
 	///     The priority of the context (determines the displayed order).

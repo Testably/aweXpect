@@ -28,7 +28,6 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
 				return new AsyncCollectionConstraint<TItem>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
@@ -55,7 +54,6 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<TItem, TItem> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
 				return new AsyncCollectionConstraint<TItem>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
@@ -84,7 +82,6 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<object?, object?> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
 				return new AsyncCollectionForEnumerableConstraint<IEnumerable>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), itemOptions),
@@ -110,7 +107,6 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
@@ -135,7 +131,6 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityWithToleranceResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
@@ -160,7 +155,6 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
 				return new AsyncCollectionConstraint<string?>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualToString(g, expected, options, itemOptions),
@@ -185,7 +179,6 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualToString(g, expected, options),

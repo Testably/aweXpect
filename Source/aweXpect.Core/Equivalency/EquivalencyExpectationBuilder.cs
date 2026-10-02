@@ -140,10 +140,4 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		CancellationToken cancellationToken)
 		=> throw Tracing.WriteException(
 			new NotSupportedException($"Use {nameof(IsMetBy)} for EquivalencyExpectationBuilder."));
-
-	/// <inheritdoc cref="ExpectationBuilder.UpdateContexts(Action{ResultContexts})" />
-	public override ExpectationBuilder UpdateContexts(Action<ResultContexts> callback) => this;
-
-	/// <inheritdoc cref="ExpectationBuilder.AddContext(ResultContext)" />
-	public override ExpectationBuilder AddContext(ResultContext resultContext) => this;
 }

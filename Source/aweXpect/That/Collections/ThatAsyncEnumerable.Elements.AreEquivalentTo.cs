@@ -36,7 +36,6 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,

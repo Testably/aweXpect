@@ -75,7 +75,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, string?>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
@@ -95,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -116,7 +116,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -188,7 +188,7 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
@@ -209,7 +209,7 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -230,7 +230,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -243,7 +243,6 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class AreUniqueConstraint<TItem, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -252,7 +251,7 @@ public static partial class ThatAsyncEnumerable
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars,
+		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars,
 				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{

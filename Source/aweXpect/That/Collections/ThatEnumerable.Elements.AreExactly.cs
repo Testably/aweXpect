@@ -20,7 +20,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
@@ -40,7 +39,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
@@ -62,7 +60,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
 						a => a?.GetType() == typeof(TType),
@@ -81,7 +79,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
 						a => a?.GetType() == type,
@@ -102,7 +100,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
 						a => a?.GetType() == typeof(TType),
@@ -121,7 +119,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
 						a => a?.GetType() == type,

@@ -14,45 +14,9 @@ namespace aweXpect.Core.Tests.Core;
 public class ExpectationBuilderTests
 {
 	[Fact]
-	public async Task AddContext_WhenTheTitleDiffersInCasing_ShouldAddBoth()
-	{
-		ManualExpectationBuilder<string> sut = new(null);
-
-		sut.AddContext(new ResultContext.Fixed("foo", "1"));
-		sut.AddContext(new ResultContext.Fixed("FOO", "2"));
-
-		await That(sut.GetContexts()).HasCount().EqualTo(2)
-			.Because("the title is compared ordinally, so a different spelling is a different block");
-	}
-
-	[Fact]
-	public async Task AddContext_WhenTheTitleIsAlreadyPresent_ShouldKeepTheFirstContext()
-	{
-		ManualExpectationBuilder<string> sut = new(null);
-
-		sut.AddContext(new ResultContext.Fixed("foo", "1"));
-		sut.AddContext(new ResultContext.Fixed("foo", "2"));
-
-		await That(sut.GetContexts()).HasCount().EqualTo(1)
-			.Because("a constraint appends its context whenever it is evaluated");
-		await That(await sut.GetContexts().Single().GetContent()).IsEqualTo("1");
-	}
-
-	[Fact]
-	public async Task AddContext_WithDifferentTitles_ShouldAddBoth()
-	{
-		ManualExpectationBuilder<string> sut = new(null);
-
-		sut.AddContext(new ResultContext.Fixed("foo", "1"));
-		sut.AddContext(new ResultContext.Fixed("bar", "1"));
-
-		await That(sut.GetContexts()).HasCount().EqualTo(2);
-	}
-
-	[Fact]
 	public async Task ForAsyncMember_ShouldUseAndResetExpectationGrammars()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
@@ -72,7 +36,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
 			.AddExpectations(inner => inner
@@ -90,7 +54,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder
@@ -107,7 +71,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
@@ -122,7 +86,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder =>
@@ -141,7 +105,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
@@ -156,7 +120,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForAsyncMember_WithValidation_ShouldIncludeValidation()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
 			.Validate((_, _) => new DummyConstraint<string>(_ => false, "validated and "))
@@ -172,7 +136,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_ShouldUseAndResetExpectationGrammars()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
@@ -192,7 +156,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
 			.AddExpectations(inner => inner
@@ -210,7 +174,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WhenTheSourceOfANestedPluralMemberIsNull_ShouldUseThePluralVerb()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "items "))
 			.AddExpectations(inner => inner
@@ -227,7 +191,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WhenTheSubjectIsNull_ShouldReferToTheSubjectAsIt()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.AddExpectations(length => length.AddConstraint((_, _)
@@ -241,7 +205,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder
@@ -258,7 +222,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
@@ -273,7 +237,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder =>
@@ -292,7 +256,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
@@ -307,7 +271,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForMember_WithValidation_ShouldIncludeValidation()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 
 		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
 			.Validate((_, _) => new DummyConstraint<string>(_ => false, "validated and "))
@@ -324,7 +288,7 @@ public class ExpectationBuilderTests
 	public async Task ForWhich_AfterAnd_WhenTheLeftOperandFails_ShouldStillEvaluateTheMember()
 	{
 		bool isMemberEvaluated = false;
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.And();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 3, "has length 3"));
@@ -346,7 +310,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_AfterOr_WhenCalledTwice_ShouldOnlyContinueTheRightOperand()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
@@ -365,7 +329,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
@@ -385,7 +349,7 @@ public class ExpectationBuilderTests
 	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsNotMet_ShouldDependOnTheRightOperand(
 		string subject, Outcome expectedOutcome)
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.StartsWith("foo"), "starts with foo"));
@@ -400,7 +364,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_AfterOr_WithAMemberExpectationOnTheMember_ShouldOnlyContinueTheRightOperand()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
@@ -417,7 +381,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_AfterOrAndAnd_ShouldOnlyContinueTheRightMostOperand()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s is ['f', ..], "starts with f"));
@@ -437,7 +401,7 @@ public class ExpectationBuilderTests
 	public async Task ForWhich_Async_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
 	{
 		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
@@ -455,7 +419,7 @@ public class ExpectationBuilderTests
 	{
 		Func<string, Task<string?>> upperAccessor = s => Task.FromResult<string?>(s.ToUpperInvariant());
 		Func<string, Task<string?>> doubledAccessor = s => Task.FromResult<string?>(s + s);
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich(upperAccessor, " whose upper ");
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "FOO", "is FOO"));
@@ -475,7 +439,7 @@ public class ExpectationBuilderTests
 		Func<int, Task<string?>> stringify = i =>
 			Task.FromResult<string?>(i.ToString(CultureInfo.InvariantCulture));
 		Func<string, Task<string?>> doubled = s => Task.FromResult<string?>(s + s);
-		ManualExpectationBuilder<int> sut = new(null);
+		ManualExpectationBuilder<int> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 12, "is 12"));
 		sut.ForWhich(stringify, " whose string ");
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "12", "is \"12\""));
@@ -493,7 +457,7 @@ public class ExpectationBuilderTests
 	public async Task ForWhich_Async_InsideAPluralMember_ShouldReferToTheSingularValueAsIt()
 	{
 		Func<string, Task<char>> firstChar = s => Task.FromResult(s[0]);
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		string? usedIt = null;
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 
@@ -517,7 +481,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_CalledThreeTimes_EachProjectionChainsFromPrevious_ShouldEvaluateDeeply()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, char>(s => s[0], " whose first char ");
 		sut.AddConstraint((_, _) => new DummyConstraint<char>(c => c == 'f', "is 'f'"));
@@ -536,7 +500,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_CalledTwice_OuterConstraintFails_ShouldStillEvaluateOuterConstraint()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
@@ -553,7 +517,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_CalledTwice_SecondProjectionFails_ShouldIncludeAllProjectionsInOrder()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
@@ -570,7 +534,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_CalledTwice_ShouldHonorConstraintsFromAllLevels()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
@@ -587,7 +551,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_CalledTwice_WhereSecondProjectsFromFirstResult_ShouldChainProjections()
 	{
-		ManualExpectationBuilder<int> sut = new(null);
+		ManualExpectationBuilder<int> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 123, "is 123"));
 		sut.ForWhich<int, string>(i => i.ToString(CultureInfo.InvariantCulture),
 			" whose string ");
@@ -605,7 +569,7 @@ public class ExpectationBuilderTests
 	[Fact]
 	public async Task ForWhich_WithSubjectNameAndExpectationGrammars_ShouldApplyThemToTheMember()
 	{
-		ManualExpectationBuilder<string> sut = new(null);
+		ManualExpectationBuilder<string> sut = new();
 		string? usedIt = null;
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
@@ -656,18 +620,6 @@ public class ExpectationBuilderTests
 
 		await That(source.DisposeCount).IsEqualTo(1)
 			.Because("the source that was only read partially is released after the evaluation");
-	}
-
-	[Fact]
-	public async Task UpdateContexts_WithADuplicateTitle_ShouldAddBoth()
-	{
-		ManualExpectationBuilder<string> sut = new(null);
-
-		sut.AddContext(new ResultContext.Fixed("foo", "1"));
-		sut.UpdateContexts(contexts => contexts.Add(new ResultContext.Fixed("foo", "2")));
-
-		await That(sut.GetContexts()).HasCount().EqualTo(2)
-			.Because("the explicit API is not subject to the duplicate check of AddContext");
 	}
 
 	[Fact]

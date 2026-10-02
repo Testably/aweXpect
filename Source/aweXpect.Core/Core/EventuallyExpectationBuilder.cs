@@ -121,7 +121,6 @@ internal class EventuallyExpectationBuilder<TValue>(
 		EvaluationCancellation cancellation)
 	{
 		TimeSpan interval = _interval ?? Customize.aweXpect.Settings().DefaultCheckInterval.Get();
-		List<ResultContext> initialContexts = new(GetContexts());
 		EvaluationContext.EvaluationContext currentContext = context;
 		CancellationToken cancellationToken = cancellation.Token;
 		using Polling polling = Polling.Start(Stopwatch.GetTimestamp(), retryTimeout, interval, cancellation);
@@ -160,7 +159,6 @@ internal class EventuallyExpectationBuilder<TValue>(
 			// it is reported as canceled unless that attempt meets the expectations.
 			isLastAttempt = await polling.WaitForNextCheck() is PollStep.LastCheck or PollStep.Elapsed;
 			currentContext = await context.StartAttempt();
-			RestoreContexts(initialContexts);
 			ResetOtherExceptions();
 		}
 	}
@@ -286,14 +284,4 @@ internal class EventuallyExpectationBuilder<TValue>(
 		=> failure is null
 			? result
 			: new ConstraintResult.FromException(result, failure, DefaultCurrentSubject, exceededTimeout);
-
-	private void RestoreContexts(List<ResultContext> initialContexts)
-		=> UpdateContexts(contexts =>
-		{
-			contexts.Clear();
-			foreach (ResultContext resultContext in initialContexts)
-			{
-				contexts.Add(resultContext);
-			}
-		});
 }

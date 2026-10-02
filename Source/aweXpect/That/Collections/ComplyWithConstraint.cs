@@ -30,9 +30,9 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	private ConstraintResult? _unansweredItem;
 	private int _unansweredItemIndex;
 
-	protected ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier, Action<IThatSubject<TItem>> expectations)
-		: base(expectationBuilder, it, grammars, quantifier)
+	protected ComplyWithConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+		Action<IThatSubject<TItem>> expectations)
+		: base(it, grammars, quantifier)
 	{
 		// Without a nested quantifier, the item expectations keep the number of the subject that a connector such as
 		// "whose values" introduced.
@@ -265,7 +265,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	private static ManualExpectationBuilder<TItem> Create(ExpectationGrammars itemGrammars,
 		Action<IThatSubject<TItem>> expectations)
 	{
-		ManualExpectationBuilder<TItem> builder = new(null, itemGrammars);
+		ManualExpectationBuilder<TItem> builder = new(itemGrammars);
 		expectations.Invoke(new ThatSubject<TItem>(builder));
 		return builder;
 	}
