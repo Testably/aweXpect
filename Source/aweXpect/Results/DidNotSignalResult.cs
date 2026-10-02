@@ -31,9 +31,11 @@ public class DidNotSignalResult(
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public DidNotSignalResult Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
 		options.Timeout = timeout;
 		return this;
 	}
@@ -64,9 +66,11 @@ public class DidNotSignalResult<TParameter>(
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public DidNotSignalResult<TParameter> Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
 		options.Timeout = timeout;
 		return this;
 	}

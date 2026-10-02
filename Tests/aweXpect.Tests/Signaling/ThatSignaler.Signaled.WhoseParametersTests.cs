@@ -11,6 +11,22 @@ public sealed partial class ThatSignaler
 		public sealed class WhoseParametersTests
 		{
 			[Fact]
+			public async Task WhenFilteredWith_ShouldOnlyContainTheMatchingParameters()
+			{
+				Signaler<int> signaler = new();
+				signaler.Signal(-1);
+				signaler.Signal(1);
+				signaler.Signal(2);
+
+				async Task Act() =>
+					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0)
+						.WhoseParameters.IsEqualTo([1, 2,]);
+
+				await That(Act).DoesNotThrow()
+					.Because("the parameters continue the signals that were counted, which excludes the filtered ones");
+			}
+
+			[Fact]
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler<int> signaler = new();

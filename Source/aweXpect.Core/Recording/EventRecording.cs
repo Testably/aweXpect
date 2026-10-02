@@ -177,16 +177,41 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 				await WaitUntil(areFound, timeout, cancellationToken);
 			}
 		}
-		finally
+		catch
 		{
 			if (_stopsAfterEvaluation)
 			{
 				// A predicate that throws must not leave the handlers attached to the subject.
 				Stop(context);
 			}
+
+			throw;
 		}
 
-		return this;
+		Snapshot snapshot = new(this);
+		if (_stopsAfterEvaluation)
+		{
+			StopWithEvaluation(context);
+		}
+
+		return snapshot;
+	}
+
+	/// <remarks>
+	///     The later constraints of the same expectation can still wait for events, so the recording only stops when
+	///     the evaluation ends. Without an <see cref="Core.EvaluationContext.EvaluationContext" /> of this library,
+	///     nothing would ever end it, so it stops right away.
+	/// </remarks>
+	private void StopWithEvaluation(IEvaluationContext? context)
+	{
+		if (context is Core.EvaluationContext.EvaluationContext evaluationContext)
+		{
+			evaluationContext.ReleaseWithEvaluation(() => Stop(context));
+		}
+		else
+		{
+			Stop(context);
+		}
 	}
 
 	private async Task WaitUntil(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
@@ -268,8 +293,8 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 
 	/// <remarks>
 	///     A stopped recording is detached from the subject and answers from its frozen queue, so a further expectation
-	///     would silently check stale data and has to fail loudly instead. The constraints of one awaited expectation
-	///     share the evaluation that stopped the recording and all describe that same snapshot, so they are let through.
+	///     would silently check stale data and has to fail loudly instead. A recording that was stopped right away with a
+	///     context that does not end with the evaluation can still be checked with that same context.
 	/// </remarks>
 	private void ThrowIfStopped(IEvaluationContext? context)
 	{
@@ -312,5 +337,29 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		}
 
 		return recorder;
+	}
+
+	/// <summary>
+	///     The events recorded when <see cref="StopWhen" /> returned, so that the result of a constraint matches what it
+	///     decided on, also while the recording continues for the next constraint.
+	/// </summary>
+	private sealed class Snapshot(EventRecording<TSubject> recording) : IEventRecordingResult
+	{
+		private readonly Dictionary<string, EventRecorder> _recorders
+			= recording._recorders.ToDictionary(x => x.Key, x => x.Value.Snapshot());
+
+		public int GetEventCount(string eventName, Func<object?[], bool>? filter = null)
+			=> GetRecorder(eventName).GetEventCount(filter);
+
+		public string ToString(string eventName)
+			=> GetRecorder(eventName).ToString();
+
+		public override string ToString()
+			=> recording.ToString();
+
+		private EventRecorder GetRecorder(string eventName)
+			=> _recorders.TryGetValue(eventName, out EventRecorder? recorder)
+				? recorder
+				: recording.GetRecorder(eventName);
 	}
 }

@@ -19,6 +19,7 @@ public static partial class ThatEventRecording
 	private sealed class HaveTriggeredConstraint<TSubject>(
 		string it,
 		ExpectationGrammars grammars,
+		ExpectationBuilder expectationBuilder,
 		string eventName,
 		TriggerEventFilter filter,
 		Quantifier quantifier,
@@ -52,7 +53,8 @@ public static partial class ThatEventRecording
 			{
 				_waitedTime = stopwatch.Elapsed;
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
-				if (!_stoppedEarly && cancellationToken.IsCancellationRequested)
+				if (!_stoppedEarly && cancellationToken.IsCancellationRequested &&
+				    !expectationBuilder.IsTimeoutReachedAt(options.Timeout, _waitedTime.Value))
 				{
 					// A cancellation can end the wait before the timeout, so the events recorded until then decide nothing.
 					Outcome = Outcome.Undecided;

@@ -385,6 +385,27 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_WhenNotTriggered_ShouldFailWithTheEventsWithinTheTimeout()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut at least once within 0:00.200,
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				CustomEventWithoutParametersClass sut = new();

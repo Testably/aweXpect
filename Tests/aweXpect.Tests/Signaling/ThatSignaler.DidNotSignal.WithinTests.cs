@@ -46,6 +46,30 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_ShouldSucceed()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_WithParameter_ShouldSucceed()
+			{
+				Signaler<string> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				Signaler signaler = new();
@@ -107,6 +131,32 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("timeout").And
 					.WithMessage("The timeout must not be negative.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second timeout would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsSpecifiedTwice_WithParameter_ShouldThrowInvalidOperationException()
+			{
+				Signaler<string> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second timeout would silently replace the first one");
 			}
 
 			[Fact]

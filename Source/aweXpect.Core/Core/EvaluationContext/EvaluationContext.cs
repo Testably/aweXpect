@@ -9,6 +9,7 @@ namespace aweXpect.Core.EvaluationContext;
 internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
+	private List<Action>? _releases;
 	private Dictionary<string, object?>? _store;
 
 	#region IEvaluationContext Members
@@ -45,13 +46,31 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 		=> expectationBuilder?.AddOtherExceptions(otherExceptions);
 
 	/// <summary>
-	///     Releases the sources of all collections that were materialized in this context and in its current attempt.
+	///     Registers the <paramref name="release" /> of a resource that the evaluation, including its failure message,
+	///     still uses, so that it is released together with the materialized sources of this context.
+	/// </summary>
+	public void ReleaseWithEvaluation(Action release)
+		=> (_releases ??= []).Add(release);
+
+	/// <summary>
+	///     Releases the sources of all collections that were materialized in this context and in its current attempt,
+	///     and the resources registered with <see cref="ReleaseWithEvaluation" />.
 	/// </summary>
 	public async Task ReleaseMaterializations()
 	{
 		foreach (IMaterialization materialization in this.GetMaterializations())
 		{
 			await materialization.ReleaseSource();
+		}
+
+		if (_releases is not null)
+		{
+			List<Action> releases = _releases;
+			_releases = null;
+			foreach (Action release in releases)
+			{
+				release();
+			}
 		}
 
 		if (_attempt is not null)

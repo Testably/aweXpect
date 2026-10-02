@@ -13,8 +13,9 @@ public interface IEventRecording<TSubject>
 {
 	/// <summary>
 	///     Waits until the recorded events satisfy <paramref name="areFound" />, the <paramref name="timeout" />
-	///     elapsed or the <paramref name="cancellationToken" /> was canceled, and then stops the recording of events,
-	///     unless it was set to <see cref="RecordExtensions.UntilDisposed{TSubject}(IEventRecording{TSubject})" />.
+	///     elapsed or the <paramref name="cancellationToken" /> was canceled, and returns the events recorded until
+	///     then. The recording of events stops when the evaluation of the <paramref name="context" /> ends, unless it
+	///     was set to <see cref="RecordExtensions.UntilDisposed{TSubject}(IEventRecording{TSubject})" />.
 	/// </summary>
 	/// <remarks>
 	///     <paramref name="areFound" /> is checked initially and after each recorded event, for at most the
@@ -22,8 +23,10 @@ public interface IEventRecording<TSubject>
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, which waits without a limit.<br />
 	///     A cancellation ends the wait like the <paramref name="timeout" /> does, so the result describes the events
 	///     recorded until then.<br />
-	///     A recording that was stopped with the same <paramref name="context" /> can be checked again, so that all
-	///     constraints of one expectation describe the same snapshot.
+	///     All constraints of one expectation share the <paramref name="context" /> of its evaluation, so each of them
+	///     can wait for the events that arrive during its own <paramref name="timeout" />. With any other
+	///     <paramref name="context" />, or without one, the recording stops when the wait ends, and only that same
+	///     non-<see langword="null" /> <paramref name="context" /> can check it again.
 	/// </remarks>
 	Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
 		IEvaluationContext? context = null, CancellationToken cancellationToken = default);

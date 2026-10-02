@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Signaling;
@@ -18,14 +18,18 @@ public class SignalCountWhoseResult<TParameter>(
 	: SignalCountResult<TParameter, SignalCountWhoseResult<TParameter>>(expectationBuilder, returnValue, quantifier,
 		options)
 {
+	private readonly SignalerOptions<TParameter> _options = options;
 
 	/// <summary>
 	///     …with parameters that…
 	/// </summary>
+	/// <remarks>
+	///     The parameters are the ones that were counted, i.e. that match the predicates from <c>With</c>.
+	/// </remarks>
 	public IThat<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
-			ExpectationBuilder.ForWhich<Signaler<TParameter>, IEnumerable<TParameter>>(
-				x => x.Wait(timeout: TimeSpan.Zero).Parameters,
+			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
+				x => x.Parameters.Where(_options.Matches).ToArray(),
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));

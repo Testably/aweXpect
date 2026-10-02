@@ -268,6 +268,110 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenChainedWithAnd_ShouldRecordTheEventsDuringTheWaitOfTheNextConstraint()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		Func<int, bool> raisesTheSecondEvent = RaisesTheSecondEventWhenFirstCalled(sut);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent))
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(raisesTheSecondEvent)
+				.Within(TimeSpan.FromSeconds(30));
+
+		await That(Act).DoesNotThrow().WithTimeout(TimeSpan.FromSeconds(10))
+			.Because("the first constraint must not stop the recording that the second one still waits on");
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording stops when the evaluation of the whole expectation ends");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithAnd_WhenAnEventArrivesDuringTheWaitOfALaterConstraint_ShouldDescribeWhatTheFirstOneCounted()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		Func<int, bool> raisesTheSecondEvent = RaisesTheSecondEventWhenFirstCalled(sut);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(raisesTheSecondEvent)
+				.Within(TimeSpan.FromSeconds(30));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut exactly twice and has recorded the CustomEvent event on sut with int parameter raisesTheSecondEvent at least once within 0:30,
+			             but it was recorded once in [
+			               CustomEvent(1)
+			             ]
+			             """).WithTimeout(TimeSpan.FromSeconds(10))
+			.Because("the failure of the first constraint has to describe the events it counted, not the ones that arrived later");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithAnd_WhenFailing_ShouldDetachTheHandlers()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once()
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).Twice();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*has recorded the CustomEvent event on sut exactly twice*").AsWildcard();
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("a failed expectation must not leave the handlers attached to the subject");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithAnd_WhenTheNextConstraintExpectsNoEvent_ShouldFailForAnEventDuringItsWait()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		Func<int, bool> raisesTheSecondEvent = RaisesTheSecondEventWhenFirstCalled(sut);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent))
+				.And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)).WithParameter(raisesTheSecondEvent)
+				.Within(TimeSpan.FromSeconds(30));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut at least once and has never recorded the CustomEvent event on sut with int parameter raisesTheSecondEvent within 0:30,
+			             but it was recorded once in [
+			               CustomEvent(1),
+			               CustomEvent(2)
+			             ] after 0:*
+			             """).AsWildcard().WithTimeout(TimeSpan.FromSeconds(10))
+			.Because("the event was raised during the wait of the second constraint");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithAnd_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once()
+			.And.Triggered(nameof(CustomEventClass.CustomEvent)).AtLeast().Once();
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("the recording is stopped once the evaluation of the chained expectation ended");
+	}
+
+	[Fact]
 	public async Task WhenChainedWithOr_ShouldCheckEveryConstraint()
 	{
 		CustomEventClass sut = new();
@@ -806,6 +910,25 @@ public sealed class EventRecordingTests
 
 		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
 			.Because("a recording of a single event keeps counting until it is disposed as well");
+	}
+
+	/// <remarks>
+	///     Raises the second event when the predicate is first called, i.e. when the constraint that filters with it
+	///     starts its wait, so that the event deterministically arrives after the previous constraints were evaluated.
+	/// </remarks>
+	private static Func<int, bool> RaisesTheSecondEventWhenFirstCalled(CustomEventClass sut)
+	{
+		bool isRaised = false;
+		return parameter =>
+		{
+			if (!isRaised)
+			{
+				isRaised = true;
+				sut.NotifyCustomEvent(2);
+			}
+
+			return parameter == 2;
+		};
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
