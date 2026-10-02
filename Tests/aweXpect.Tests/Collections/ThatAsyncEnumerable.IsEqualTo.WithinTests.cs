@@ -267,7 +267,7 @@ public sealed partial class ThatAsyncEnumerable
 					IEnumerable<double>? expected = null;
 
 					async Task Act()
-						=> await That(subject).IsEqualTo(expected!).Within(0.2);
+						=> await That(subject).IsEqualTo(expected).Within(0.2);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""

@@ -52,6 +52,8 @@ Awaiting such an expectation hands out the subject as not nullable, e.g.
 nullable number (`IsGreaterThan`, `IsGreaterThanOrEqualTo`, `IsLessThan`, `IsLessThanOrEqualTo`, `IsBetween` and their
 negations) return a `NumberToleranceResult<TNumber, IThat<TNumber?>>` instead of a
 `NullableNumberToleranceResult<TNumber, IThat<TNumber?>>`, so code that spells out this result type has to be adapted.
+In turn, a comparison that a `null` subject can satisfy hands the subject out as nullable, so
+`IEnumerable<int> values = await Expect.That(items).IsNotEqualTo(other);` now warns that `values` can be `null`.
 
 ## Argument validation
 

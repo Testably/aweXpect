@@ -287,7 +287,7 @@ public sealed partial class ThatEnumerable
 					IEnumerable<double>? unexpected = null;
 
 					async Task Act()
-						=> await That(subject).IsNotEqualTo(unexpected!).Within(0.2);
+						=> await That(subject).IsNotEqualTo(unexpected).Within(0.2);
 
 					await That(Act).DoesNotThrow()
 						.Because("a collection is not equal to a null collection, whether its items are nullable or not");

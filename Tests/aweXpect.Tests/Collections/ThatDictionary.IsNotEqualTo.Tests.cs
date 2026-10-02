@@ -21,7 +21,7 @@ public sealed partial class ThatDictionary
 				IDictionary<string, int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -38,7 +38,7 @@ public sealed partial class ThatDictionary
 				IDictionary<string, int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow()
 					.Because("a dictionary that is there is not equal to a null dictionary");
@@ -157,6 +157,19 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_ShouldHandOutANullableSubject()
+			{
+				Dictionary<int, int>? subject = null;
+
+				Dictionary<int, int>? result = await That(subject).IsNotEqualTo(new Dictionary<int, int>
+				{
+					{ 1, 1 },
+				});
+
+				await That(result).IsNull();
+			}
+
+			[Fact]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoUnexpectedKeysForOneEntry_ShouldSucceed()
 			{
 				IDictionary<string, int> subject =
@@ -235,7 +248,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> subject = new() { { "a", 1 }, };
 				Dictionary<string, int> unexpected = new() { { "a", 2 }, };
 
-				Dictionary<string, int> result = await That(subject).IsNotEqualTo(unexpected);
+				Dictionary<string, int>? result = await That(subject).IsNotEqualTo(unexpected);
 
 				await That(result).IsSameAs(subject);
 			}

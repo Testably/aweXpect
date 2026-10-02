@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -88,7 +88,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -108,7 +108,17 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
-			
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldHandOutANullableSubject()
+			{
+				int[]? subject = null;
+
+				IEnumerable<int>? result = await That(subject).IsNotEqualTo(new[] { 1, });
+
+				await That(result).IsNull();
+			}
+
 			[Fact]
 			public async Task WhenTypeDoesNotMatchNullability_ShouldStillWork()
 			{

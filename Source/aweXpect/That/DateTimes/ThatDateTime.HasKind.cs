@@ -17,6 +17,6 @@ public static partial class ThatDateTime
 	/// </summary>
 	public static AndOrResult<DateTime, IThat<DateTime>> HasKind(
 		this IThat<DateTime> subject,
-		DateTimeKind expected)
+		DateTimeKind? expected)
 		=> subject.HasKind().EqualTo(expected);
 }

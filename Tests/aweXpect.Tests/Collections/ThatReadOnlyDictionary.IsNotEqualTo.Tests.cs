@@ -15,7 +15,7 @@ public sealed partial class ThatReadOnlyDictionary
 				IReadOnlyDictionary<string, int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -32,7 +32,7 @@ public sealed partial class ThatReadOnlyDictionary
 				IReadOnlyDictionary<string, int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow()
 					.Because("a dictionary that is there is not equal to a null dictionary");

@@ -433,7 +433,7 @@ public static class PropertyResult
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> EqualTo(
-			DateTimeKind expected)
+			DateTimeKind? expected)
 			=> Add(expected, (a, e) => a?.Equals(e) == true,
 				$"equal to {Formatter.Format(expected)}");
 
@@ -441,12 +441,12 @@ public static class PropertyResult
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotEqualTo(
-			DateTimeKind unexpected)
+			DateTimeKind? unexpected)
 			=> Add(unexpected, (a, u) => a?.Equals(u) != true,
 				$"equal to {Formatter.Format(unexpected)}", isNegative: true);
 
 		private AndOrResult<TType, TThat> Add(
-			DateTimeKind expected,
+			DateTimeKind? expected,
 			Func<DateTimeKind?, DateTimeKind?, bool> condition,
 			string expectation,
 			bool isNegative = false)
