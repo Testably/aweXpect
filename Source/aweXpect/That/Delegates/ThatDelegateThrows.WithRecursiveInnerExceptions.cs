@@ -32,7 +32,7 @@ public static partial class ThatDelegateThrows
 						"recursive inner exceptions"),
 					(_, s) => s.Append(" that "))
 				.Validate((it, grammars) => new ThatException.HasRecursiveInnerExceptionsConstraint(
-					subject.ExpectationBuilder, it, grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested))
+					subject.Get().ExpectationBuilder, it, grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested))
 				.AddExpectations(e => expectations(new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested |
 					            ExpectationGrammars.Plural),
