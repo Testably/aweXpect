@@ -15,6 +15,19 @@ public sealed partial class ThatEnumerable
 			{
 				public sealed class DoubleTests
 				{
+					[Fact]
+					public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException()
+					{
+						IEnumerable<double> subject = [1.0, 1.1, 0.9,];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.0).Within(0.2).Using(new AllEqualComparer());
+
+						await That(Act).Throws<InvalidOperationException>()
+							.WithMessage("Using cannot be combined with Within.")
+							.Because("the comparer would silently replace the tolerance");
+					}
+
 					[Theory]
 					[InlineData(double.PositiveInfinity, 1.0)]
 					[InlineData(double.NegativeInfinity, 1.0)]
@@ -54,6 +67,18 @@ public sealed partial class ThatEnumerable
 							              Collection:
 							              [{Formatter.Format(value)}]
 							              """);
+					}
+
+					[Fact]
+					public async Task WhenUsingAComparerInsteadOfATolerance_ShouldApplyIt()
+					{
+						IEnumerable<double> subject = [1.0, 1.3, 0.9,];
+
+						async Task Act()
+							=> await That(subject).All().AreEqualTo(1.0).Using(new AllEqualComparer());
+
+						await That(Act).DoesNotThrow()
+							.Because("the items with a tolerance type accept a comparer like the other item types");
 					}
 
 					[Fact]

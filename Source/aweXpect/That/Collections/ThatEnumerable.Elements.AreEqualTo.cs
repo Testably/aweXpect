@@ -14,7 +14,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
-	internal static ToleranceEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
+	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			Elements<TItem> elements,
 			TItem expected,
@@ -22,7 +22,7 @@ public static partial class ThatEnumerable
 	{
 		IEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ToleranceEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
+		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
@@ -120,7 +120,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo)]
-	internal static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>
+	internal static ObjectEqualityWithToleranceResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>
 		AreEqualToWithToleranceForStructCore<TEnumerable, TItem, TTolerance>(
 			ElementsForStructEnumerable<TEnumerable, TItem> elements,
 			TItem expected,
@@ -129,7 +129,7 @@ public static partial class ThatEnumerable
 	{
 		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>(
+		return new ObjectEqualityWithToleranceResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
 					expectationBuilder,
