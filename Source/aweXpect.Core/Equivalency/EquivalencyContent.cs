@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 #endif
 using System.Text;
 #if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 #endif
@@ -43,34 +44,23 @@ internal static class EquivalencyContent
 			_ => IsJson(value.GetType()) ? UserCode.Invoke(GetJson, value, thrower) : value,
 		};
 
-#if NET8_0_OR_GREATER
-	private static bool IsJson(Type type)
-		=> type == typeof(JsonElement) || typeof(JsonNode).IsAssignableFrom(type);
-
-	/// <remarks>
-	///     The raw text of a parsed <see cref="JsonElement" /> keeps the formatting of its source, while whitespace
-	///     between tokens says nothing about the JSON. A default <see cref="JsonElement" /> has no JSON, so its
-	///     undefined value kind is its content.
-	/// </remarks>
-	private static object GetJson(object value)
-		=> value switch
-		{
-			JsonElement { ValueKind: JsonValueKind.Undefined, } => JsonValueKind.Undefined,
-			JsonElement element => RemoveWhitespaceBetweenTokens(element.GetRawText()),
-			_ => ((JsonNode)value).ToJsonString(),
-		};
-#else
 	private const string JsonElementName = "System.Text.Json.JsonElement";
 
 	/// <remarks>
-	///     netstandard2.0 has no System.Text.Json, but is served to runtimes and applications that have it, so its
-	///     types are matched by name and read by reflection there.
+	///     The types are matched by name, so that comparing other values never loads System.Text.Json, which
+	///     netstandard2.0 does not have at all. Only System.Text.Json itself can derive from <c>JsonNode</c>, as its
+	///     constructor is internal, so any other namespace rules a type out without walking its base types.
 	/// </remarks>
 	private static bool IsJson(Type type)
 	{
 		if (type.FullName == JsonElementName)
 		{
 			return true;
+		}
+
+		if (type.Namespace != "System.Text.Json.Nodes")
+		{
+			return false;
 		}
 
 		for (Type? current = type; current is not null; current = current.BaseType)
@@ -84,10 +74,26 @@ internal static class EquivalencyContent
 		return false;
 	}
 
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     The raw text of a parsed <see cref="JsonElement" /> keeps the formatting of its source, while whitespace
+	///     between tokens says nothing about the JSON. A default <see cref="JsonElement" /> has no JSON, so its
+	///     undefined value kind is its content.<br />
+	///     Not inlined, so that only compiling this method, which runs for JSON values alone, loads System.Text.Json.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static object GetJson(object value)
+		=> value switch
+		{
+			JsonElement { ValueKind: JsonValueKind.Undefined, } => JsonValueKind.Undefined,
+			JsonElement element => RemoveWhitespaceBetweenTokens(element.GetRawText()),
+			_ => ((JsonNode)value).ToJsonString(),
+		};
+#else
 	/// <remarks>
 	///     The raw text of a parsed <c>JsonElement</c> keeps the formatting of its source, while whitespace between
 	///     tokens says nothing about the JSON. A default <c>JsonElement</c> has no JSON, so its undefined value kind is
-	///     its content.
+	///     its content. netstandard2.0 has no System.Text.Json, so it is read by reflection there.
 	/// </remarks>
 	private static object GetJson(object value)
 	{
