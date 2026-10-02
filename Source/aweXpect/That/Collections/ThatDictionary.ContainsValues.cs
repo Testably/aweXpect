@@ -52,6 +52,35 @@ public static partial class ThatDictionary
 	}
 
 	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		GuaranteesNotNull = true, Summary = ContainsValuesSummary, NegatedSummary = DoesNotContainValuesSummary,
+		NegatedRemarks = DoesNotContainValuesRemarks)]
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		GuaranteesNotNull = true, Params = true, Summary = ContainsValuesSummary,
+		NegatedSummary = DoesNotContainValuesSummary, NegatedRemarks = DoesNotContainValuesRemarks)]
+	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
+		ContainsValuesWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
+			IThat<TCollection?> subject,
+			IEnumerable<TValue> expected,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			string? expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+	{
+		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new ContainValuesConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
+						negated)
+					.InvertIf(negated)),
+			subject,
+			options);
+	}
+
+	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValuesSummary, NegatedSummary = DoesNotContainValuesSummary,
 		NegatedRemarks = DoesNotContainValuesRemarks)]
 	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,

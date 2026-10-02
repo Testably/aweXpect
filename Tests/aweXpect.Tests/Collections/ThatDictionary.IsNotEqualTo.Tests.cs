@@ -240,6 +240,66 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class StringTests
+		{
+			[Fact]
+			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldFail()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
+				Dictionary<int, string> unexpected = new() { [1] = "LET IT BE", };
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to dictionary unexpected ignoring case,
+					             but it was
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be"
+					             }
+					             """);
+			}
+		}
+
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenAValueLiesOutsideTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
+				Dictionary<string, double> unexpected = new() { ["a"] = 1.0, };
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValuesLieWithinTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.05, };
+				Dictionary<string, double> unexpected = new() { ["a"] = 1.0, };
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to dictionary unexpected ± 0.1,
+					             but it was
+
+					             Dictionary:
+					             {["a"] = 1.05}
+					             """);
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

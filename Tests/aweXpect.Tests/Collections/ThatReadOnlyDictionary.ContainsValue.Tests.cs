@@ -85,6 +85,20 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 		}
 
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
+			{
+				ReadOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+
+				ReadOnlyDictionary<string, double> result = await That(subject).ContainsValue(1.0).Within(0.1);
+
+				await That(result).IsSameAs(subject)
+					.Because("the tolerance overload keeps the subject type, too");
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

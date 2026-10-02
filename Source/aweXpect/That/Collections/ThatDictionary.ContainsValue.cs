@@ -38,6 +38,26 @@ public static partial class ThatDictionary
 	}
 
 	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
+	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
+		ContainsValueWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
+			IThat<TCollection?> subject,
+			TValue expected,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new ContainValueConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expected, options).InvertIf(negated)),
+			subject,
+			options);
+	}
+
+	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
 	internal static StringEqualityResult<TCollection, IThat<TCollection?>>
 		ContainsValueForStringsCore<TCollection, TKey>(

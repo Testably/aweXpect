@@ -52,13 +52,62 @@ public static partial class ThatDictionary
 			options);
 	}
 
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
+	internal static ObjectEqualityWithToleranceResult<TCollection?, IThat<TCollection?>, TValue, TTolerance>
+		IsEqualToWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
+			IThat<TCollection?> subject,
+			IEnumerable<KeyValuePair<TKey, TValue>>? expected,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+	{
+		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
+			ThrowHelper.EnsureDistinctKeys(expected, negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection?, IThat<TCollection?>, TValue, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(),
+					expectedEntries,
+					options).InvertIf(negated)),
+			subject,
+			options);
+	}
+
+	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
+		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
+	internal static StringEqualityResult<TCollection?, IThat<TCollection?>>
+		IsEqualToForStringsCore<TCollection, TKey>(
+			IThat<TCollection?> subject,
+			IEnumerable<KeyValuePair<TKey, string?>>? expected,
+			string expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
+	{
+		ICollection<KeyValuePair<TKey, string?>>? expectedEntries =
+			ThrowHelper.EnsureDistinctKeys(expected, negated);
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new StringEqualityResult<TCollection?, IThat<TCollection?>>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(),
+					expectedEntries,
+					options).InvertIf(negated)),
+			subject,
+			options);
+	}
+
 	private sealed class IsEqualToConstraint<TDictionary, TKey, TValue>(
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
 		IEnumerable<KeyValuePair<TKey, TValue>>? expected,
-		ObjectEqualityOptions<TValue> options)
+		IOptionsEquality<TValue> options)
 		: ConstraintResult.WithEqualToValue<TDictionary?>(it, grammars, expected is null),
 			IAsyncConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>

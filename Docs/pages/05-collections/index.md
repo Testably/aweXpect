@@ -96,7 +96,8 @@ await Expect.That(durations).HasItem(2.0).Within(0.1).AtIndex(1);
 await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
 ```
 
-A tolerance takes precedence over the comparer of a set.
+A tolerance takes precedence over the comparer of a set. The values of a [dictionary](./04-dictionaries.md#values)
+accept the same tolerance.
 
 Without `Within`, the items of the time types use the
 [default tolerance](../04-values/10-datetime-offset.md#default-tolerance), if one is set.

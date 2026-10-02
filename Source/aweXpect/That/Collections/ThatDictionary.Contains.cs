@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -19,122 +17,16 @@ public static partial class ThatDictionary
 	private const string DoesNotContainEntrySummary =
 		"Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> entry.";
 
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
-	///     <paramref name="expectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
-		Contains<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> subject,
-			TKey expectedKey,
-			TValue expectedValue)
-		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
+	private const string ContainsKeyAndValueSummary =
+		"Verifies that the dictionary contains the <paramref name=\"expectedKey\" /> with the <paramref name=\"expectedValue\" />.";
 
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
-	///     <paramref name="expectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TValue>
-		Contains<TKey, TValue>(
-			this IThat<Dictionary<TKey, TValue>?> subject,
-			TKey expectedKey,
-			TValue expectedValue)
-		where TKey : notnull
-		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
-	///     <paramref name="expectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		Contains<TKey, TValue>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
-			TKey expectedKey,
-			TValue expectedValue)
-		where TKey : notnull
-		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
-	///     <paramref name="expectedValue" />.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		Contains<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			TKey expectedKey,
-			TValue expectedValue)
-		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
-	///     <paramref name="unexpectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
-		DoesNotContain<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> subject,
-			TKey unexpectedKey,
-			TValue unexpectedValue)
-		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
-	///     <paramref name="unexpectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TValue>
-		DoesNotContain<TKey, TValue>(
-			this IThat<Dictionary<TKey, TValue>?> subject,
-			TKey unexpectedKey,
-			TValue unexpectedValue)
-		where TKey : notnull
-		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
-	///     <paramref name="unexpectedValue" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		DoesNotContain<TKey, TValue>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
-			TKey unexpectedKey,
-			TValue unexpectedValue)
-		where TKey : notnull
-		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
-
-	/// <summary>
-	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
-	///     <paramref name="unexpectedValue" />.
-	/// </summary>
-	/// <remarks>
-	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
-	///     priority to decide between them.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
-			TValue>
-		DoesNotContain<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
-			TKey unexpectedKey,
-			TValue unexpectedValue)
-		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
+	private const string DoesNotContainKeyAndValueSummary =
+		"Verifies that the dictionary does not contain the <paramref name=\"unexpectedKey\" /> with the <paramref name=\"unexpectedValue\" />.";
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsEntrySummary, NegatedSummary = DoesNotContainEntrySummary)]
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, KeyAndValue = true,
+		GuaranteesNotNull = true, Summary = ContainsKeyAndValueSummary, NegatedSummary = DoesNotContainKeyAndValueSummary)]
 	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
 		ContainsCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
@@ -153,12 +45,58 @@ public static partial class ThatDictionary
 			options);
 	}
 
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		GuaranteesNotNull = true, Summary = ContainsEntrySummary, NegatedSummary = DoesNotContainEntrySummary)]
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, KeyAndValue = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		GuaranteesNotNull = true, Summary = ContainsKeyAndValueSummary, NegatedSummary = DoesNotContainKeyAndValueSummary)]
+	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
+		ContainsWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
+			IThat<TCollection?> subject,
+			KeyValuePair<TKey, TValue> expected,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+	{
+		expected.Key.ThrowIfNull(negated);
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new ContainsConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+					expected, options).InvertIf(negated)),
+			subject,
+			options);
+	}
+
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
+		GuaranteesNotNull = true, Summary = ContainsEntrySummary, NegatedSummary = DoesNotContainEntrySummary)]
+	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, KeyAndValue = true,
+		GuaranteesNotNull = true, Summary = ContainsKeyAndValueSummary, NegatedSummary = DoesNotContainKeyAndValueSummary)]
+	internal static StringEqualityResult<TCollection, IThat<TCollection?>>
+		ContainsForStringsCore<TCollection, TKey>(
+			IThat<TCollection?> subject,
+			KeyValuePair<TKey, string?> expected,
+			bool negated)
+		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
+	{
+		expected.Key.ThrowIfNull(negated);
+		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new ContainsConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
+					expected, options).InvertIf(negated)),
+			subject,
+			options);
+	}
+
 	private sealed class ContainsConstraint<TDictionary, TKey, TValue>(
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		KeyValuePair<TKey, TValue> expected,
-		ObjectEqualityOptions<TValue> options)
+		IOptionsEquality<TValue> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>

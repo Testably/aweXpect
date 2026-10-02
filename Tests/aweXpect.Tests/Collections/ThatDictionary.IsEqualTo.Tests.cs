@@ -577,6 +577,81 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class StringTests
+		{
+			[Fact]
+			public async Task WhenAValueDiffersInMoreThanCase_WithIgnoringCase_ShouldFail()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", [2] = "Help!", };
+				Dictionary<int, string> expected = new() { [1] = "LET IT BE", [2] = "YESTERDAY", };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected ignoring case,
+					             but it contained key 2 with value "Help!" instead of "YESTERDAY"
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be",
+					               [2] = "Help!"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
+				Dictionary<int, string> expected = new() { [1] = "LET IT BE", };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("the values have the same string options as ContainsValue");
+			}
+		}
+
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenAValueLiesOutsideTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.05, ["b"] = 2.2, };
+				Dictionary<string, double> expected = new() { ["a"] = 1.0, ["b"] = 2.0, };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected ± 0.1,
+					             but it contained key "b" with value 2.2 instead of 2.0
+
+					             Dictionary:
+					             {["a"] = 1.05, ["b"] = 2.2}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, DateTime> subject = new() { ["a"] = new DateTime(2024, 1, 1, 0, 0, 1), };
+				Dictionary<string, DateTime> expected = new() { ["a"] = new DateTime(2024, 1, 1), };
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(1.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("the values have the same tolerance as the items of a collection");
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]
@@ -670,6 +745,20 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("a type that implements both dictionary interfaces must not become ambiguous");
+			}
+
+			[Fact]
+			public async Task ForASortedDictionaryOfStrings_ShouldBindToTheStringOverload()
+			{
+				SortedDictionary<string, string> subject = new() { { "a", "foo" }, };
+				Dictionary<string, string> expected = new() { { "a", "FOO" }, };
+
+				async Task Act()
+					=> await (StringEqualityResult<IDictionary<string, string?>?, IThat<IDictionary<string, string?>?>>)
+						That(subject).IsEqualTo(expected).IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("the string overloads of both dictionary interfaces must not become ambiguous");
 			}
 		}
 

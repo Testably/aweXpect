@@ -54,6 +54,12 @@ internal static class CollectionExpectationSources
 			/// </summary>
 			public bool PerSubject { get; set; }
 
+			/// <summary>
+			/// Emit the expected <c>KeyValuePair&lt;TKey, TValue&gt;</c> as two parameters, its key and its value, which
+			/// are passed to the helper as one pair.
+			/// </summary>
+			public bool KeyAndValue { get; set; }
+
 			/// <summary>Mark the overloads with <c>[GuaranteesNotNull]</c>.</summary>
 			public bool GuaranteesNotNull { get; set; }
 

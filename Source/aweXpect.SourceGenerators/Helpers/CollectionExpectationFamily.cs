@@ -356,8 +356,10 @@ internal sealed record CollectionExpectationFamily(
 			{
 				OptionsParameter = optionsParameter.Name, FactoryCall = call,
 			};
-			// The cast-up rebinds the first type parameter, so the parameter has to name one there.
+			// The cast-up rebinds the first type parameter, so the parameter has to name one there, and the expected
+			// collection has to enumerate it, as an entry with a non-nullable value is no entry with a nullable one.
 			if (castsUp && parameterType.TypeArguments[0] is ITypeParameterSymbol &&
+			    SymbolEqualityComparer.Default.Equals(ElementOf(expected!.Type), parameterType.TypeArguments[0]) &&
 			    options.TypeArguments[0] is INamedTypeSymbol
 			    {
 				    ConstructedFrom.SpecialType: SpecialType.System_Nullable_T,
@@ -384,8 +386,9 @@ internal sealed record CollectionExpectationFamily(
 			string subjectItem = SubjectElementOf(helper) is { } subjectElement
 				? Substitute(subjectElement, substitutions)
 				: item;
+			// A kind such as Dictionary<TKey, TValue> names the type parameters a factory fills, too.
 			substitutions["TCollection"] = Bind(helper, "TCollection",
-				instantiation.Subject.Template.Replace(ItemPlaceholder, subjectItem),
+				Substitute(instantiation.Subject.Template.Replace(ItemPlaceholder, subjectItem), substitutions),
 				instantiation.Subject.IsValueType);
 		}
 
@@ -394,7 +397,17 @@ internal sealed record CollectionExpectationFamily(
 		List<string> arguments = [subjectName,];
 		// Only a helper that takes the expression can echo one, and a params array has none to echo.
 		bool echoesExpression = expected != null && !declaration.Params && TakesExpression(helper);
-		if (expected != null)
+		if (expected != null && declaration.KeyAndValue &&
+		    expected.Type is INamedTypeSymbol { TypeArguments.Length: 2, } entry)
+		{
+			string key = Substitute(entry.TypeArguments[0], substitutions);
+			string value = Substitute(entry.TypeArguments[1], substitutions);
+			parameters.Add($"{key} {variant.ParameterName}Key");
+			parameters.Add($"{value} {variant.ParameterName}Value");
+			arguments.Add(
+				$"new global::System.Collections.Generic.KeyValuePair<{key}, {value}>({variant.ParameterName}Key, {variant.ParameterName}Value)");
+		}
+		else if (expected != null)
 		{
 			string expectedType = RenderExpectedType(helper, expected, declaration, instantiation, item, substitutions);
 			parameters.Add($"{expectedType} {variant.ParameterName}");
@@ -693,6 +706,7 @@ internal sealed record CollectionExpectationFamily(
 		public INamedTypeSymbol? Factory { get; private set; }
 		public string? ExpectedType { get; private set; }
 		public bool PerSubject { get; private set; }
+		public bool KeyAndValue { get; private set; }
 		public bool GuaranteesNotNull { get; private set; }
 		public bool Params { get; private set; }
 		public int Priority { get; private set; }
@@ -714,6 +728,9 @@ internal sealed record CollectionExpectationFamily(
 					break;
 				case "PerSubject":
 					PerSubject = value.Value as bool? ?? false;
+					break;
+				case "KeyAndValue":
+					KeyAndValue = value.Value as bool? ?? false;
 					break;
 				case "GuaranteesNotNull":
 					GuaranteesNotNull = value.Value as bool? ?? false;

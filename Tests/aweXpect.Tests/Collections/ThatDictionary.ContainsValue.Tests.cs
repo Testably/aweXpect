@@ -224,6 +224,55 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheTimeLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<int, DateTimeOffset> subject = new()
+				{
+					[1] = new DateTimeOffset(2024, 1, 1, 0, 0, 1, TimeSpan.Zero),
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsValue(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero))
+						.Within(1.Seconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValueLiesOutsideTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
+
+				async Task Act()
+					=> await That(subject).ContainsValue(1.0).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains value 1.0 ± 0.1,
+					             but it did not contain 1.0
+
+					             Dictionary:
+					             {["a"] = 1.2}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, float?> subject = new() { ["a"] = null, ["b"] = 1.05F, };
+
+				async Task Act()
+					=> await That(subject).ContainsValue(1.0F).Within(0.1F);
+
+				await That(Act).DoesNotThrow()
+					.Because("the values have the same tolerance as the items of a collection");
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

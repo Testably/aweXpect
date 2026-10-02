@@ -203,5 +203,35 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("without the comparer of the subject, the two expected keys must not hide the key \"b\"");
 			}
 		}
+
+		public sealed class StringTests
+		{
+			[Fact]
+			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
+				IReadOnlyDictionary<int, string> expected = ToDictionary([1,], ["LET IT BE",]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+				IReadOnlyDictionary<string, double> expected = ToDictionary(["a",], [1.0,]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

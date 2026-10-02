@@ -187,6 +187,41 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheValueLiesOutsideTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue(1.0).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValueLiesWithinTheTolerance_ShouldFail()
+			{
+				Dictionary<string, TimeSpan> subject = new() { ["a"] = 61.Seconds(), };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue(1.Minutes()).Within(1.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain value 1:00 ± 0:01,
+					             but it did
+
+					             Dictionary:
+					             {
+					               ["a"] = 1:01
+					             }
+					             """);
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

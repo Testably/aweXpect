@@ -126,6 +126,34 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 		}
 
+		public sealed class StringTests
+		{
+			[Fact]
+			public async Task WhenTheValueDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
+
+				async Task Act()
+					=> await That(subject).Contains(1, "let it be").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
+			{
+				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1.0).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]
