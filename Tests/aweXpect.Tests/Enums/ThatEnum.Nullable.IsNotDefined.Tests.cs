@@ -8,6 +8,33 @@ public sealed partial class ThatEnum
 		{
 			public sealed class Tests
 			{
+				[Fact]
+				public async Task WhenFlagsSubjectHasAnUndefinedBit_ShouldSucceed()
+				{
+					MyColors? subject = (MyColors)(1 << 4 | 1);
+
+					async Task Act()
+						=> await That(subject).IsNotDefined();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(MyColors.Blue | MyColors.Green)]
+				[InlineData(MyColors.Yellow | MyColors.Red)]
+				public async Task WhenFlagsSubjectIsACombinationOfFlags_ShouldFail(MyColors? subject)
+				{
+					async Task Act()
+						=> await That(subject).IsNotDefined();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not defined,
+						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
 				[Theory]
 				[InlineData(MyColors.Blue)]
 				[InlineData(MyColors.Green)]

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Recording;
@@ -122,6 +123,12 @@ internal static class Checks
 				IEventRecording<IPublisher> recording = publisher.Record().Events();
 				publisher.RaiseChanged();
 				await That(recording).Triggered(nameof(IPublisher.Changed));
+			})),
+		new("a combination of flags is defined and an unnamed bit is not",
+			() => ShouldPass(async () =>
+			{
+				await That(RegexOptions.Multiline | RegexOptions.IgnoreCase).IsDefined();
+				await That((RegexOptions)(1 << 20)).IsNotDefined();
 			})),
 		new("a failure message renders the members of an object",
 			() => ShouldFail(async () =>

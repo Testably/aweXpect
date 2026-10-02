@@ -11,6 +11,10 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject is defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
+	/// <remarks>
+	///     For an enum with the <see cref="FlagsAttribute" />, a combination of the bits of its named members counts as
+	///     defined, too. Zero only counts as defined if a member names it.
+	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> IsDefined<TEnum>(
 		this IThat<TEnum> subject)
 		where TEnum : struct, Enum
@@ -21,6 +25,10 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject is not defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
+	/// <remarks>
+	///     For an enum with the <see cref="FlagsAttribute" />, a combination of the bits of its named members counts as
+	///     defined, too. Zero only counts as defined if a member names it.
+	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> IsNotDefined<TEnum>(
 		this IThat<TEnum> subject)
 		where TEnum : struct, Enum
@@ -36,11 +44,7 @@ public static partial class ThatEnum
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;
-#if NET8_0_OR_GREATER
-			Outcome = Enum.IsDefined(actual) ? Outcome.Success : Outcome.Failure;
-#else
-			Outcome = Enum.IsDefined(typeof(TEnum), actual) ? Outcome.Success : Outcome.Failure;
-#endif
+			Outcome = actual.IsDefinedValue() ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
