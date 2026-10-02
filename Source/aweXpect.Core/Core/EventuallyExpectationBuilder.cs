@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.TimeSystem;
@@ -103,27 +104,29 @@ internal class EventuallyExpectationBuilder<TValue>(
 		}
 
 		TimeSpan retryTimeout = GetRetryTimeout();
-		TimeSpan? cancellationTimeout = timeout < retryTimeout ? timeout : null;
-		if (cancellationTimeout is null)
+		// An outer timeout that is not shorter than the retry budget does not cancel the attempts, so that the last
+		// attempt at the end of the budget still decides.
+		EvaluationCancellation cancellation = new(timeout < retryTimeout ? timeout : null, cancellationToken);
+		context.Cancellation = cancellation;
+		try
 		{
-			return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationToken);
-		}
+			ConstraintResult result =
+				await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellation.Token);
+			if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } cancellationTimeout &&
+			    cancellation.IsTimeoutElapsed)
+			{
+				return new ConstraintResult.FromException(result,
+					ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout,
+						new OperationCanceledException(cancellation.Token)),
+					DefaultCurrentSubject, cancellationTimeout);
+			}
 
-		using CancellationTokenSource cancellationCts =
-			CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		cancellationCts.CancelAfter(cancellationTimeout.Value.ToTimerTimeout());
-		ConstraintResult result =
-			await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationCts.Token);
-		if (result.Outcome == Outcome.Undecided && cancellationCts.IsCancellationRequested &&
-		    !cancellationToken.IsCancellationRequested)
+			return result;
+		}
+		finally
 		{
-			return new ConstraintResult.FromException(result,
-				ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout.Value,
-					new OperationCanceledException(cancellationCts.Token)),
-				DefaultCurrentSubject, cancellationTimeout.Value);
+			cancellation.Release();
 		}
-
-		return result;
 	}
 
 	private TimeSpan GetRetryTimeout()

@@ -343,3 +343,10 @@ virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get 
 aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?>! memberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false) -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan duration) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
+aweXpect.Core.EvaluationContext.EvaluationCancellation
+aweXpect.Core.EvaluationContext.EvaluationCancellation.IsCallerCanceled.get -> bool
+aweXpect.Core.EvaluationContext.EvaluationCancellation.IsTimeoutElapsed.get -> bool
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Timeout.get -> System.TimeSpan?
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Token.get -> System.Threading.CancellationToken
+aweXpect.Core.EvaluationContext.IEvaluationContext.Cancellation.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
+static aweXpect.Core.EvaluationContext.EvaluationCancellation.None.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!

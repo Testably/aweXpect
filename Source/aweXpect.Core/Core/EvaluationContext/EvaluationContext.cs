@@ -36,6 +36,9 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 		return false;
 	}
 
+	/// <inheritdoc />
+	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
+
 	#endregion
 
 	/// <summary>
@@ -89,7 +92,10 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 	public async Task<EvaluationContext> StartAttempt()
 	{
 		await ReleaseMaterializations();
-		_attempt = new EvaluationContext(expectationBuilder);
+		_attempt = new EvaluationContext(expectationBuilder)
+		{
+			Cancellation = Cancellation,
+		};
 		return _attempt;
 	}
 }
