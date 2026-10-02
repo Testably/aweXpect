@@ -227,53 +227,11 @@ public abstract class ExpectationBuilder
 	public MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(
 		MemberAccessor<TSource, TTarget> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
-		bool replaceIt = true) =>
-		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback, addMappingCallback, _) =>
-		{
-			if (sourceConstraintCallback is not null)
-			{
-				IValueConstraint<TSource> constraint = sourceConstraintCallback.Invoke(_it, ExpectationGrammars);
-				_node.AddConstraint(constraint);
-			}
-
-			Node root = _node;
-			Node mappingNode = addMappingCallback is null
-				? _node.AddMapping(memberAccessor, expectationTextGenerator)
-				: addMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
-			if (mappingNode is MappingNode<TSource, TTarget> mapping)
-			{
-				mapping.Source = (_it, ExpectationGrammars);
-			}
-
-			_node = new ExpectationNode();
-			if (replaceIt)
-			{
-				_it = memberAccessor.ToString().Trim();
-			}
-
-			(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
-			_pendingWhich = null;
-
-			ExpectationGrammars previousGrammars = ExpectationGrammars;
-			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
-			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
-			int outerReasonCount = _reasons?.Count ?? 0;
-			expectationBuilderCallback.Invoke(this);
-			ExpectationGrammars = previousGrammars;
-
-			CompleteWhichNode();
-			_pendingWhich = outerPendingWhich;
-			ThrowIfEmpty(_node, "expectations");
-			mappingNode.AddNode(_node);
-			MoveReasonsTo(mappingNode, outerReasonCount);
-			_node = root;
-			if (replaceIt)
-			{
-				_it = DefaultCurrentSubject;
-			}
-
-			return this;
-		});
+		bool replaceIt = true)
+		=> new((expectations, expectationGrammars, sourceConstraint, createMappingNode)
+				=> AddMemberExpectations(memberAccessor, replaceIt, expectations, expectationGrammars,
+					sourceConstraint, createMappingNode),
+			new SyncMappingNodes<TSource, TTarget>(memberAccessor, expectationTextGenerator));
 
 	/// <summary>
 	///     Specifies a constraint that applies to the member selected asynchronously
@@ -288,53 +246,63 @@ public abstract class ExpectationBuilder
 	public MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
-		bool replaceIt = true) =>
-		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback, _, addAsyncMappingCallback) =>
+		bool replaceIt = true)
+		=> new((expectations, expectationGrammars, sourceConstraint, createMappingNode)
+				=> AddMemberExpectations(memberAccessor, replaceIt, expectations, expectationGrammars,
+					sourceConstraint, createMappingNode),
+			new AsyncMappingNodes<TSource, TTarget>(memberAccessor, expectationTextGenerator));
+
+	/// <summary>
+	///     Adds the mapping node from <paramref name="createMappingNode" /> and the <paramref name="expectations" /> on
+	///     the member, after the constraint from the <paramref name="sourceConstraint" /> on the value, if any.
+	/// </summary>
+	private ExpectationBuilder AddMemberExpectations<TSource>(
+		MemberAccessor memberAccessor,
+		bool replaceIt,
+		Action<ExpectationBuilder> expectations,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars,
+		Func<string, ExpectationGrammars, IValueConstraint<TSource>>? sourceConstraint,
+		Func<MappingNode> createMappingNode)
+	{
+		if (sourceConstraint is not null)
 		{
-			if (sourceConstraintCallback is not null)
-			{
-				IValueConstraint<TSource> constraint = sourceConstraintCallback.Invoke(_it, ExpectationGrammars);
-				_node.AddConstraint(constraint);
-			}
+			IValueConstraint<TSource> constraint = sourceConstraint.Invoke(_it, ExpectationGrammars);
+			_node.AddConstraint(constraint);
+		}
 
-			Node root = _node;
-			Node mappingNode = addAsyncMappingCallback is null
-				? _node.AddAsyncMapping(memberAccessor, expectationTextGenerator)
-				: addAsyncMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
-			if (mappingNode is AsyncMappingNode<TSource, TTarget> mapping)
-			{
-				mapping.Source = (_it, ExpectationGrammars);
-			}
+		Node root = _node;
+		MappingNode mapping = createMappingNode();
+		mapping.Source = (_it, ExpectationGrammars);
+		Node mappingNode = _node.AddMapping(mapping);
+		_node = new ExpectationNode();
+		if (replaceIt)
+		{
+			_it = memberAccessor.ToString().Trim();
+		}
 
-			_node = new ExpectationNode();
-			if (replaceIt)
-			{
-				_it = memberAccessor.ToString().Trim();
-			}
+		(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
+		_pendingWhich = null;
 
-			(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
-			_pendingWhich = null;
+		ExpectationGrammars previousGrammars = ExpectationGrammars;
+		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
+		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
+		int outerReasonCount = _reasons?.Count ?? 0;
+		expectations.Invoke(this);
+		ExpectationGrammars = previousGrammars;
 
-			ExpectationGrammars previousGrammars = ExpectationGrammars;
-			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
-			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
-			int outerReasonCount = _reasons?.Count ?? 0;
-			expectationBuilderCallback.Invoke(this);
-			ExpectationGrammars = previousGrammars;
+		CompleteWhichNode();
+		_pendingWhich = outerPendingWhich;
+		ThrowIfEmpty(_node, "expectations");
+		mappingNode.AddNode(_node);
+		MoveReasonsTo(mappingNode, outerReasonCount);
+		_node = root;
+		if (replaceIt)
+		{
+			_it = DefaultCurrentSubject;
+		}
 
-			CompleteWhichNode();
-			_pendingWhich = outerPendingWhich;
-			ThrowIfEmpty(_node, "expectations");
-			mappingNode.AddNode(_node);
-			MoveReasonsTo(mappingNode, outerReasonCount);
-			_node = root;
-			if (replaceIt)
-			{
-				_it = DefaultCurrentSubject;
-			}
-
-			return this;
-		});
+		return this;
+	}
 
 	/// <summary>
 	///     Moves the reasons that were added after the first <paramref name="outerReasonCount" /> ones, i.e. for the
@@ -763,10 +731,11 @@ public abstract class ExpectationBuilder
 				Action<ExpectationBuilder>,
 				Func<ExpectationGrammars, ExpectationGrammars>?,
 				Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
-				Func<Node, MemberAccessor<TSource, TMember>, Action<MemberAccessor, StringBuilder>?, Node>?,
-				Func<Node, MemberAccessor<TSource, Task<TMember>>, Action<MemberAccessor, StringBuilder>?, Node>?,
+				Func<MappingNode>,
 				ExpectationBuilder>
 			_callback;
+
+		private readonly MappingNodes<TSource, TMember> _mappingNodes;
 
 		private Func<string, ExpectationGrammars, IValueConstraint<TSource>>? _sourceConstraintBuilder;
 
@@ -774,12 +743,13 @@ public abstract class ExpectationBuilder
 				Action<ExpectationBuilder>,
 				Func<ExpectationGrammars, ExpectationGrammars>?,
 				Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
-				Func<Node, MemberAccessor<TSource, TMember>, Action<MemberAccessor, StringBuilder>?, Node>?,
-				Func<Node, MemberAccessor<TSource, Task<TMember>>, Action<MemberAccessor, StringBuilder>?, Node>?,
+				Func<MappingNode>,
 				ExpectationBuilder>
-			callback)
+			callback,
+			MappingNodes<TSource, TMember> mappingNodes)
 		{
 			_callback = callback;
+			_mappingNodes = mappingNodes;
 		}
 
 		/// <summary>
@@ -788,7 +758,7 @@ public abstract class ExpectationBuilder
 		public ExpectationBuilder AddExpectations(
 			Action<ExpectationBuilder> expectation,
 			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
-			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder, null, null);
+			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder, _mappingNodes.Create);
 
 		/// <summary>
 		///     Add expectations for the current <typeparamref name="TMember" /> that are typed at the narrower
@@ -804,12 +774,7 @@ public abstract class ExpectationBuilder
 			Action<ExpectationBuilder> expectation,
 			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
 			where TNarrowed : TMember
-			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder,
-				(node, memberAccessor, expectationTextGenerator)
-					=> node.AddNarrowingMapping<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator),
-				(node, memberAccessor, expectationTextGenerator)
-					=> node.AddAsyncNarrowingMapping<TSource, TMember, TNarrowed>(memberAccessor,
-						expectationTextGenerator));
+			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder, _mappingNodes.Create<TNarrowed>);
 
 		/// <summary>
 		///     Add a validation constraint for the current <typeparamref name="TSource" />.
@@ -825,6 +790,40 @@ public abstract class ExpectationBuilder
 			_sourceConstraintBuilder = constraintBuilder;
 			return this;
 		}
+	}
+
+	/// <summary>
+	///     Creates the mapping nodes for the member of type <typeparamref name="TMember" />.
+	/// </summary>
+	internal abstract class MappingNodes<TSource, TMember>
+	{
+		/// <summary>
+		///     Creates the mapping node whose expectations are typed at <typeparamref name="TMember" />.
+		/// </summary>
+		public MappingNode Create() => Create<TMember>();
+
+		/// <summary>
+		///     Creates the mapping node whose expectations are typed at <typeparamref name="TNarrowed" />.
+		/// </summary>
+		public abstract MappingNode Create<TNarrowed>();
+	}
+
+	private sealed class SyncMappingNodes<TSource, TMember>(
+		MemberAccessor<TSource, TMember> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
+		: MappingNodes<TSource, TMember>
+	{
+		public override MappingNode Create<TNarrowed>()
+			=> new MappingNode<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator);
+	}
+
+	private sealed class AsyncMappingNodes<TSource, TMember>(
+		MemberAccessor<TSource, Task<TMember>> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
+		: MappingNodes<TSource, TMember>
+	{
+		public override MappingNode Create<TNarrowed>()
+			=> new MappingNode<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator);
 	}
 }
 

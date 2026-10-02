@@ -48,37 +48,8 @@ internal abstract class JunctionNode : Node
 		=> Current.AddConstraint(constraint);
 
 	/// <inheritdoc />
-	public override Node AddMapping<TValue, TTarget>(MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> Current.AddMapping(memberAccessor, expectationTextGenerator);
-
-	/// <inheritdoc />
-	public override Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> Current.AddNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator);
-
-	/// <inheritdoc />
-	public override Node AddAsyncMapping<TValue, TTarget>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> Current.AddAsyncMapping(memberAccessor, expectationTextGenerator);
-
-	/// <inheritdoc />
-	public override Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> Current.AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator);
+	public override Node AddMapping(MappingNode mappingNode)
+		=> Current.AddMapping(mappingNode);
 
 	public override void AddNode(Node node, string? separator = null)
 	{

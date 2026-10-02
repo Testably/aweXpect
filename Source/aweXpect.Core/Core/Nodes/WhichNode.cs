@@ -49,38 +49,8 @@ internal class WhichNode<TSource, TMember> : Node
 		=> _inner?.AddConstraint(constraint);
 
 	/// <inheritdoc />
-	public override Node AddMapping<TValue, TTarget>(MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> _inner?.AddMapping(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> _inner?.AddNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddAsyncMapping<TValue, TTarget>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> _inner?.AddAsyncMapping(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> _inner?.AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator)
-		   ?? this;
+	public override Node AddMapping(MappingNode mappingNode)
+		=> _inner?.AddMapping(mappingNode) ?? this;
 
 	/// <inheritdoc />
 	public override void AddNode(Node node, string? separator = null)
