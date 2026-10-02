@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.AwaitExpectationAnalyzer,
@@ -160,6 +161,33 @@ public class AwaitExpectationCodeFixProviderTests
 		    {
 		        var subject = true;
 		        await Expect.That(subject).IsTrue();
+		    }
+		}
+		""");
+
+	[Fact]
+	public async Task ShouldAwaitTheExpectationReturnedFromAnAsyncLambda() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(bool subject)
+		    {
+		        await Task.Run(async () => {|aweXpect0001:Expect.That(subject)|}.IsTrue());
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(bool subject)
+		    {
+		        await Task.Run(async () => await Expect.That(subject).IsTrue());
 		    }
 		}
 		""");
@@ -559,6 +587,35 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Fact]
+	public async Task ShouldNotOfferAFixForAConditionalMethod() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Diagnostics;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    [Conditional("DEBUG")]
+		    public void MyTest()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using System.Diagnostics;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    [Conditional("DEBUG")]
+		    public void MyTest()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		    }
+		}
+		""");
+
+	[Fact]
 	public async Task ShouldNotOfferAFixForAMethodCalledInAnotherFile()
 	{
 		const string caller = """
@@ -633,6 +690,48 @@ public class AwaitExpectationCodeFixProviderTests
 		    }
 		}
 		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixForAMethodThatImplementsAnInterfaceOfADerivedClass()
+	{
+		const string source = """
+		                      using aweXpect;
+
+		                      public interface IRunner
+		                      {
+		                          void Run();
+		                      }
+
+		                      public class Base
+		                      {
+		                          public void Run()
+		                          {
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                          }
+		                      }
+		                      """;
+		const string derived = """
+		                       public class Derived : Base, IRunner
+		                       {
+		                       }
+		                       """;
+		Verifier.Test test = new()
+		{
+			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+			TestState =
+			{
+				Sources = { source, derived, },
+				AdditionalReferences =
+				{
+					typeof(Expect).Assembly.Location,
+					typeof(ThatBool).Assembly.Location,
+				},
+			},
+			FixedState = { Sources = { source, derived, }, },
+		};
+
+		await test.RunAsync(CancellationToken.None);
+	}
 
 	[Fact]
 	public async Task ShouldNotOfferAFixForAMethodUsedAsAMethodGroup() => await Verifier.VerifyCodeFixAsync(
@@ -802,6 +901,61 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Fact]
+	public async Task ShouldNotOfferAFixInFunctionsWithRefLocals()
+	{
+		// A `ref` or `ref struct` local can't be preserved across an `await`.
+		const string source = """
+		                      using System;
+		                      using System.Threading.Tasks;
+		                      using aweXpect;
+
+		                      public class MyClass
+		                      {
+		                          private int _field;
+
+		                          public void SpanLocal()
+		                          {
+		                              Span<int> span = stackalloc int[1];
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              span[0] = 1;
+		                          }
+
+		                          public async Task SpanLocalInAsyncMethod()
+		                          {
+		                              Span<int> span = stackalloc int[1];
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              span[0] = 1;
+		                          }
+
+		                          public void RefLocal()
+		                          {
+		                              ref int alias = ref _field;
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              alias = 1;
+		                          }
+
+		                          public void ForEachOverStackalloc()
+		                          {
+		                              foreach (int value in stackalloc int[] { 1, 2, })
+		                              {
+		                                  {|aweXpect0001:Expect.That(value)|}.IsPositive();
+		                              }
+		                          }
+
+		                          public void OutVariable()
+		                          {
+		                              Create(out Span<int> span);
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              span[0] = 1;
+		                          }
+
+		                          private static void Create(out Span<int> span) => span = default;
+		                      }
+		                      """;
+		await VerifyNoCodeFixAsync(source, LanguageVersion.Preview);
+	}
+
+	[Fact]
 	public async Task ShouldNotOfferAFixInMembersThatCannotBeAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -901,6 +1055,72 @@ public class AwaitExpectationCodeFixProviderTests
 		    }
 		}
 		""");
+
+	[Fact]
+	public async Task ShouldNotOfferAFixInUnsafeCode()
+	{
+		const string source = """
+		                      using System.Threading.Tasks;
+		                      using aweXpect;
+
+		                      public class MyClass
+		                      {
+		                          public unsafe void UnsafeMethod()
+		                          {
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                          }
+
+		                          public void UnsafeBlock()
+		                          {
+		                              unsafe
+		                              {
+		                                  {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              }
+		                          }
+
+		                          public async Task UnsafeBlockInAsyncMethod()
+		                          {
+		                              unsafe
+		                              {
+		                                  {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                              }
+		                          }
+
+		                          public static unsafe void PointerParameter(int* pointer)
+		                          {
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                          }
+		                      }
+
+		                      public unsafe class UnsafeClass
+		                      {
+		                          public void Method()
+		                          {
+		                              {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		                          }
+		                      }
+		                      """;
+		await VerifyNoCodeFixAsync(source, LanguageVersion.Preview);
+	}
+
+	[Fact]
+	public async Task ShouldNotOfferAFixWhenARefStructLocalIsDeclaredBeforeCSharp13()
+		=> await VerifyNoCodeFixAsync(
+			"""
+			using System;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest()
+			    {
+			        Span<int> span = stackalloc int[1];
+			        span[0] = 1;
+			        {|aweXpect0001:Expect.That(true)|}.IsTrue();
+			    }
+			}
+			""",
+			LanguageVersion.CSharp12);
 
 	[Fact]
 	public async Task ShouldNotOfferAFixWhenTheReturnTypeIsDictatedByABaseType() => await Verifier.VerifyCodeFixAsync(
@@ -1047,4 +1267,33 @@ public class AwaitExpectationCodeFixProviderTests
 		    }
 		}
 		""");
+
+	private static async Task VerifyNoCodeFixAsync(string source, LanguageVersion languageVersion)
+	{
+		Verifier.Test test = new()
+		{
+			TestCode = source,
+			FixedCode = source,
+			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+			TestState =
+			{
+				AdditionalReferences =
+				{
+					typeof(Expect).Assembly.Location,
+					typeof(ThatBool).Assembly.Location,
+				},
+			},
+		};
+		test.SolutionTransforms.Add((solution, projectId) =>
+		{
+			Project project = solution.GetProject(projectId)!;
+			return solution
+				.WithProjectCompilationOptions(projectId,
+					((CSharpCompilationOptions)project.CompilationOptions!).WithAllowUnsafe(true))
+				.WithProjectParseOptions(projectId,
+					((CSharpParseOptions)project.ParseOptions!).WithLanguageVersion(languageVersion));
+		});
+
+		await test.RunAsync(CancellationToken.None);
+	}
 }

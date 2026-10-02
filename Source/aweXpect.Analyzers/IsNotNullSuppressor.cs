@@ -16,9 +16,9 @@ namespace aweXpect.Analyzers;
 /// </summary>
 /// <remarks>
 ///     The suppression is limited to expectations that are guaranteed to have been evaluated for the same subject:
-///     the subject must be a local variable or a parameter, the expectation must be a preceding statement in an
-///     enclosing block of the warning, must not be separated from it by any branching and the subject must not be
-///     written to in between.
+///     the subject must be a local variable or a parameter that is not a <see langword="ref" />, the expectation must
+///     be awaited or verified in a preceding statement in an enclosing block of the warning, must not be separated
+///     from it by any branching or label and the subject must not be written to in between.
 ///     <para />
 ///     Only the warnings are suppressed, the null state of the compiler remains unchanged.
 /// </remarks>
@@ -60,15 +60,16 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		ISymbol? subject = semanticModel.GetSymbolInfo(identifier, context.CancellationToken).Symbol;
 
 		// Only local variables and parameters can be tracked reliably: a field could be changed by any method call
-		// in between and a property could even return a different value on each access.
-		if (subject is not (ILocalSymbol or IParameterSymbol))
+		// in between and a property could even return a different value on each access. The same applies to a
+		// `ref` local or parameter, which can refer to a field.
+		if (subject is not (ILocalSymbol { RefKind: RefKind.None, } or IParameterSymbol { RefKind: RefKind.None, }))
 		{
 			return false;
 		}
 
-		// The search for the expectation usually fails fast, the scan of the whole member for lambdas does not.
+		// The search for the expectation usually fails fast, the scan of the whole member does not.
 		return ExpectsNotNullBefore(identifier, subject, semanticModel, context.CancellationToken) &&
-		       !IsWrittenInsideLambda(identifier, subject, semanticModel, context.CancellationToken);
+		       !IsWrittenIndirectly(identifier, subject, semanticModel, context.CancellationToken);
 	}
 
 	/// <summary>
@@ -133,9 +134,10 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			StatementSyntax statement = statements[index];
 
 			// Branching statements are not necessarily evaluated and might write to the subject, so neither an
-			// expectation inside them nor an expectation before them can be relied upon.
+			// expectation inside them nor an expectation before them can be relied upon. A `goto` can jump to a
+			// label and skip the expectation.
 			if (statement is IfStatementSyntax or SwitchStatementSyntax or TryStatementSyntax or ForStatementSyntax
-			    or CommonForEachStatementSyntax or WhileStatementSyntax or DoStatementSyntax)
+			    or CommonForEachStatementSyntax or WhileStatementSyntax or DoStatementSyntax or LabeledStatementSyntax)
 			{
 				return Verification.Invalidated;
 			}
@@ -166,7 +168,9 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		// an `if`, in an earlier statement of a `switch` section, in the `try` block before a `finally` or in an
 		// earlier argument of the same statement. A later iteration of a loop reaches the usage again, so a
 		// write anywhere in the loop counts. An expectation inside the loop is found before the loop is left.
-		if (WritesTo(statement, subject, semanticModel, cancellationToken,
+		// A `goto` can jump to the label of an enclosing statement and skip an expectation before it.
+		if (statement is LabeledStatementSyntax ||
+		    WritesTo(statement, subject, semanticModel, cancellationToken,
 			    IsLoop(statement) ? int.MaxValue : usage.SpanStart))
 		{
 			return Verification.Invalidated;
@@ -214,7 +218,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	/// <summary>
 	///     Checks if the <paramref name="node" /> is not necessarily evaluated together with the
 	///     <paramref name="statement" />, e.g. because it is nested inside a lambda, a conditional expression or a
-	///     null-coalescing operator.
+	///     null-coalescing operator, or because it is neither awaited nor verified.
 	/// </summary>
 	private static bool IsConditionallyEvaluated(SyntaxNode node, StatementSyntax statement,
 		SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -222,20 +226,21 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		bool isEvaluated = false;
 		for (SyntaxNode? current = node.Parent; current is not null && current != statement; current = current.Parent)
 		{
-			// Only the nodes that make up an awaited expectation chain, an `Expect.ThatAll` combination or an
-			// assignment of the awaited result are known to always evaluate their children.
+			// Only the nodes that make up an awaited or verified expectation chain, an `Expect.ThatAll` combination
+			// or an assignment of the evaluated result are known to always evaluate their children.
 			if (current is not (InvocationExpressionSyntax or MemberAccessExpressionSyntax
-			    or ParenthesizedExpressionSyntax or AwaitExpressionSyntax
-			    or ArgumentSyntax or ArgumentListSyntax
+			    or ParenthesizedExpressionSyntax or AwaitExpressionSyntax or ArgumentListSyntax
 			    or AssignmentExpressionSyntax or EqualsValueClauseSyntax
-			    or VariableDeclaratorSyntax or VariableDeclarationSyntax))
+			    or VariableDeclaratorSyntax or VariableDeclarationSyntax) &&
+			    !IsEvaluatingArgument(current, semanticModel, cancellationToken))
 			{
 				return true;
 			}
 
 			if (current is AwaitExpressionSyntax ||
 			    (!isEvaluated && current is InvocationExpressionSyntax invocation &&
-			     IsSynchronousVerification(invocation, semanticModel, cancellationToken)))
+			     (IsSynchronousVerification(invocation, semanticModel, cancellationToken) ||
+			      IsAwaiterResult(invocation))))
 			{
 				isEvaluated = true;
 			}
@@ -246,8 +251,35 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			}
 		}
 
-		return false;
+		return !isEvaluated;
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="node" /> is an argument of <c>Expect.ThatAll</c> or of
+	///     <c>Synchronously.Verify</c>, which evaluate their arguments together with themselves, unlike other methods
+	///     that could store the expectation or discard it.
+	/// </summary>
+	private static bool IsEvaluatingArgument(SyntaxNode node, SemanticModel semanticModel,
+		CancellationToken cancellationToken)
+		=> node is ArgumentSyntax { Parent.Parent: InvocationExpressionSyntax invocation, } &&
+		   (IsSynchronousVerification(invocation, semanticModel, cancellationToken) ||
+		    (semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol methodSymbol &&
+		     methodSymbol.MatchesFullName("aweXpect", "Expect", "ThatAll") &&
+		     IsAweXpectAssembly(methodSymbol.ContainingAssembly, semanticModel.Compilation)));
+
+	/// <summary>
+	///     Checks if the <paramref name="invocation" /> is <c>GetAwaiter().GetResult()</c>, which evaluates the
+	///     expectation synchronously.
+	/// </summary>
+	private static bool IsAwaiterResult(InvocationExpressionSyntax invocation)
+		=> invocation.Expression is MemberAccessExpressionSyntax
+		{
+			Name.Identifier.Text: "GetResult",
+			Expression: InvocationExpressionSyntax
+			{
+				Expression: MemberAccessExpressionSyntax { Name.Identifier.Text: "GetAwaiter", },
+			},
+		};
 
 	private static bool IsSynchronousVerification(InvocationExpressionSyntax invocation, SemanticModel semanticModel,
 		CancellationToken cancellationToken)
@@ -284,9 +316,10 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 
 	/// <summary>
 	///     Checks if any lambda or local function in the enclosing member writes to the <paramref name="subject" />,
-	///     because calling it changes the subject without a visible write between the expectation and the usage.
+	///     or if a <see langword="ref" /> alias of the subject is taken, because calling the one or writing through
+	///     the other changes the subject without a visible write between the expectation and the usage.
 	/// </summary>
-	private static bool IsWrittenInsideLambda(SyntaxNode usage, ISymbol subject, SemanticModel semanticModel,
+	private static bool IsWrittenIndirectly(SyntaxNode usage, ISymbol subject, SemanticModel semanticModel,
 		CancellationToken cancellationToken)
 	{
 		SyntaxNode? member = usage.FirstAncestorOrSelf<MemberDeclarationSyntax>();
@@ -301,9 +334,14 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			return false;
 		}
 
-		return member.DescendantNodes()
-			.Where(node => node is AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
-			.Any(node => WritesTo(node, subject, semanticModel, cancellationToken));
+		return member.DescendantNodes().Any(node => node switch
+		{
+			AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax
+				=> WritesTo(node, subject, semanticModel, cancellationToken),
+			RefExpressionSyntax refExpression
+				=> IsSubject(refExpression.Expression, subject, semanticModel, cancellationToken),
+			_ => false,
+		});
 	}
 
 	private static bool IsLoop(StatementSyntax statement)
