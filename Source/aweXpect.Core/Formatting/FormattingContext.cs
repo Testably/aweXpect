@@ -13,6 +13,16 @@ public class FormattingContext
 	/// </summary>
 	public HashSet<object> FormattedObjects { get; } = new(ReferenceComparer.Instance);
 
+	/// <summary>
+	///     The number of objects, collections and tuples whose content is being written.
+	/// </summary>
+	internal int Depth { get; set; }
+
+	/// <summary>
+	///     The number of objects, collections and tuples whose content was written so far.
+	/// </summary>
+	internal int NumberOfWrittenContents { get; set; }
+
 	/// <remarks>
 	///     A recursion is the same instance coming round again, not an equal one, and an anonymous type aggregates its
 	///     members into <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" />, so a member that

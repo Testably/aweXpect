@@ -8,14 +8,22 @@ namespace aweXpect.Core.Helpers;
 
 internal static class StringExtensions
 {
+	/// <remarks>
+	///     Without globalization data, like in the invariant globalization mode, every string counts as normalized.
+	/// </remarks>
+	private static readonly bool CanCheckNormalization = !"e\u0301".IsNormalized();
+
 	/// <summary>
 	///     Makes line breaks, tabs, control characters and invisible characters in unquoted text visible as escape
 	///     sequences (<c>\n</c>, <c>\r</c>, <c>\t</c>, <c>\0</c> or <c>\uXXXX</c>).
 	/// </summary>
 	/// <remarks>
 	///     Invisible characters are format characters (like a zero-width space) and separators other than the plain
-	///     space (like a non-breaking space). Backslashes are kept, as unquoted text, like an exception message, is not
-	///     read as a literal and often holds a path.
+	///     space (like a non-breaking space). A combining mark is escaped at the start, where it would combine with the
+	///     preceding text, and in a value that is not normalized, where it can make a decomposed letter look like its
+	///     precomposed one; in normalized text, like most Hindi or Thai text, it stays readable. An unpaired surrogate is
+	///     escaped as well, as it is no valid text and cannot be written by a strict encoder. Backslashes are kept, as
+	///     unquoted text, like an exception message, is not read as a literal and often holds a path.
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? DisplayWhitespace(this string? value) => Escape(value, null);
@@ -38,10 +46,11 @@ internal static class StringExtensions
 		}
 
 		StringBuilder? sb = null;
+		bool? escapesCombiningMarks = null;
 		for (int index = 0; index < value.Length; index++)
 		{
 			char c = value[index];
-			if (!NeedsEscaping(c, quote))
+			if (!NeedsEscaping(value, index, quote, ref escapesCombiningMarks))
 			{
 				sb?.Append(c);
 				continue;
@@ -61,8 +70,9 @@ internal static class StringExtensions
 
 		return sb?.ToString() ?? value;
 
-		static bool NeedsEscaping(char c, char? quote)
+		static bool NeedsEscaping(string value, int index, char? quote, ref bool? escapesCombiningMarks)
 		{
+			char c = value[index];
 			if (c == ' ')
 			{
 				return false;
@@ -73,9 +83,34 @@ internal static class StringExtensions
 				return true;
 			}
 
-			return CharUnicodeInfo.GetUnicodeCategory(c) is UnicodeCategory.Control or UnicodeCategory.Format
-				or UnicodeCategory.SpaceSeparator or UnicodeCategory.LineSeparator
-				or UnicodeCategory.ParagraphSeparator;
+			return CharUnicodeInfo.GetUnicodeCategory(c) switch
+			{
+				UnicodeCategory.Surrogate => !char.IsSurrogatePair(value, index) &&
+				                             !(index > 0 && char.IsSurrogatePair(value, index - 1)),
+				UnicodeCategory.NonSpacingMark => index == 0 || (escapesCombiningMarks ??= !IsNormalized(value)),
+				UnicodeCategory.Control or UnicodeCategory.Format or UnicodeCategory.SpaceSeparator
+					or UnicodeCategory.LineSeparator or UnicodeCategory.ParagraphSeparator => true,
+				_ => false,
+			};
+		}
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="value" /> is in the Unicode normalization form C, in which a combining mark only
+	///     remains where no precomposed character exists.
+	/// </summary>
+	/// <remarks>
+	///     A value whose normalization cannot be checked, or that is no valid text, counts as not normalized.
+	/// </remarks>
+	private static bool IsNormalized(string value)
+	{
+		try
+		{
+			return CanCheckNormalization && value.IsNormalized();
+		}
+		catch (ArgumentException)
+		{
+			return false;
 		}
 	}
 

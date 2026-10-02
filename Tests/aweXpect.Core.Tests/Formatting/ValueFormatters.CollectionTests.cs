@@ -87,10 +87,10 @@ public partial class ValueFormatters
 				             Expected that subject
 				             is null,
 				             but it was [
-				               1,
-				               2,
-				               (the enumeration did throw an InvalidOperationException: enumeration failed)
-				             ]
+				                 1,
+				                 2,
+				                 (the enumeration did throw an InvalidOperationException: enumeration failed)
+				               ]
 				             """)
 				.Because("the items that were read before the exception are listed as well");
 		}
@@ -177,7 +177,7 @@ public partial class ValueFormatters
 		[Fact]
 		public async Task WhenCollectionContainsItself_ShouldDetectTheRecursion()
 		{
-			string expectedResult = "[[*recursive*]]";
+			string expectedResult = "[[ *recursive* ]]";
 			SelfContainingCollection value = new();
 			StringBuilder sb = new();
 
@@ -304,6 +304,30 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheItemsOfTheDeepestCollection()
+		{
+			List<object> value = [];
+			List<object> current = value;
+			for (int i = 0; i < 1000; i++)
+			{
+				List<object> inner = [];
+				current.Add(inner);
+				current = inner;
+			}
+
+			string expectedResult = new string('[', 20) + "[ … ]" + new string(']', 20);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			IEnumerable<int>? value = null;
@@ -378,6 +402,43 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		[Fact]
+		public async Task WithIndentation_ShouldIndentTheItemsAndTheClosingBracket()
+		{
+			int[] value = [1, 2,];
+			string expectedResult = """
+			                        [
+			                            1,
+			                            2
+			                          ]
+			                        """;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.Indented());
+			Formatter.Format(sb, value, FormattingOptions.Indented());
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("every line after the first one starts with the indentation, like the members of an object");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithIndentation_WhenItemIsAnObject_ShouldIndentItsMembersOnce()
+		{
+			Item[] value = [new() { Value = 1, },];
+			string expectedResult = """
+			                        [
+			                            ValueFormatters.CollectionTests.Item {
+			                              Value = 1
+			                            }
+			                          ]
+			                        """;
+
+			string result = Formatter.Format(value, FormattingOptions.Indented());
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
 		private static IEnumerable<int> Lazy(IEnumerable<int> items)
 		{
 			foreach (int item in items)
@@ -394,6 +455,12 @@ public partial class ValueFormatters
 			}
 
 			throw exception;
+		}
+
+		private sealed class Item
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public int Value { get; set; }
 		}
 
 		private sealed class ReadOnlyCollection(int[] items) : IReadOnlyCollection<int>

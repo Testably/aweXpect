@@ -114,7 +114,7 @@ public partial class ValueFormatters
 		[Fact]
 		public async Task WhenDictionaryContainsItself_ShouldDetectTheRecursion()
 		{
-			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = {*recursive*} }}";
+			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = { *recursive* } }}";
 			Dictionary<string, Holder> value = new();
 			value["self"] = new Holder(value);
 			StringBuilder sb = new();
@@ -126,6 +126,26 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheEntriesOfTheDeepestDictionary()
+		{
+			Dictionary<string, object> value = new();
+			Dictionary<string, object> current = value;
+			for (int i = 0; i < 1000; i++)
+			{
+				Dictionary<string, object> inner = new();
+				current["a"] = inner;
+				current = inner;
+			}
+
+			string expectedResult =
+				string.Concat(Enumerable.Repeat("{[\"a\"] = ", 20)) + "{ … }" + new string('}', 20);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult);
 		}
 
 		[Fact]
@@ -221,7 +241,7 @@ public partial class ValueFormatters
 			Dictionary<string, object> inner = new();
 			ReadOnlyDictionaryOnly<object> value = new(inner);
 			inner["self"] = new Holder(value);
-			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = {*recursive*} }}";
+			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = { *recursive* } }}";
 
 			string result = Formatter.Format((object?)value);
 

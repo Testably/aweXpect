@@ -109,20 +109,27 @@ built-in messages and respects the [formatting settings](../03-how-it-works/07-c
 | `TimeSpan`    | `0:02` or `0:00.015`                                                                                          |
 | `DateTime`    | `2024-12-24T13:15:00.0000000`                                                                                 |
 | `Type`        | its C# name without namespace, e.g. `int` or `List<string>`                                                   |
+| `enum`        | `Read`, or `Read \| Write` for a combination of flags                                                         |
 | `Exception`   | its type and message, e.g. `InvalidOperationException: Yesterday`                                             |
 | collection    | `["Help!", "Revolver"]`, with `(… and 2 more)` after `MaximumNumberOfCollectionItems` items                   |
 | other objects | their `ToString()` if it is overridden, otherwise their public members, e.g. `Album { Title = "Abbey Road" }` |
 
 Chars and strings on a single line are escaped like C# literals, so that every character can be told apart: a
-backslash, the enclosing quote, line breaks, tabs, control characters and invisible characters (like a non-breaking or
-a zero-width space) are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or ` `. Exception
-messages and the `ToString()` of other objects are not quoted, so only their line breaks, control and invisible
-characters are escaped when they are written on a single line.
+backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a non-breaking or a
+zero-width space), combining marks in text that is not normalized (like the accent of a decomposed `é`) and unpaired
+surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`. Exception messages and the
+`ToString()` of other objects are not quoted, so only their line breaks, control and invisible characters are escaped
+when they are written on a single line.
 
 The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
 `FormattingOptions.Indented(indentation)` indents the following lines. Register an `IValueFormatter` to format your
 own types, see [initialization](./05-initialization.md).
+
+Nested objects, collections and tuples are written up to 20 levels deep and up to 1000 of them per value. Beyond that,
+their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on
+every level neither overflows the stack nor grows without bound. An object or collection that contains itself is
+written as `{ *recursive* }` or `[ *recursive* ]` where it repeats.
 
 ## Vocabulary
 

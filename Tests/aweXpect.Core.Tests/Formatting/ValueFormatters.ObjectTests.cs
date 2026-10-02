@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.TestHelpers;
@@ -63,8 +64,34 @@ public partial class ValueFormatters
 				             is null,
 				             but it was ValueFormatters.ObjectTests.Node {
 				                 Children = [
-				                 ValueFormatters.ObjectTests.Node { *recursive* }
-				               ]
+				                   ValueFormatters.ObjectTests.Node { *recursive* }
+				                 ]
+				               }
+				             """);
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenObjectHasACollectionMember_ShouldIndentTheItemsBelowTheMember()
+		{
+			ClassWithCollectionMember subject = new()
+			{
+				Name = "foo",
+				Tags = ["a", "b",],
+			};
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was ValueFormatters.ObjectTests.ClassWithCollectionMember {
+				                 Name = "foo",
+				                 Tags = [
+				                   "a",
+				                   "b"
+				                 ]
 				               }
 				             """);
 		}
@@ -198,6 +225,20 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task ShouldUseToStringWhenImplemented_WithIndentation_ShouldIndentTheFollowingLinesLikeMembers()
+		{
+			ClassWithToString subject = new($"line1{Environment.NewLine}line2");
+			string expectedResult = """
+			                        line1
+			                            line2
+			                        """;
+
+			string result = Formatter.Format(subject, FormattingOptions.Indented());
+
+			await That(result).IsEqualTo(expectedResult);
 		}
 
 		[Theory]
@@ -475,6 +516,47 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenGraphIsDeeperThanTheMaximumDepth_ShouldLeaveOutTheMembersOfTheDeepestObject()
+		{
+			LinkedNode value = LinkedNode.Chain(1000);
+			string expectedResult =
+				string.Concat(Enumerable.Repeat("ValueFormatters.ObjectTests.LinkedNode { Next = ", 20)) +
+				"ValueFormatters.ObjectTests.LinkedNode { … }" +
+				string.Concat(Enumerable.Repeat(" }", 20));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("following a long chain would overflow the stack and end the whole test run");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenGraphSharesNodesOnEveryLevel_ShouldStopAfterTheMaximumNumberOfWrittenObjects()
+		{
+			SharingNode value = new();
+			for (int i = 0; i < 30; i++)
+			{
+				value = new SharingNode
+				{
+					Left = value,
+					Right = value,
+				};
+			}
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(Count(result, "SharingNode { Left = ")).IsEqualTo(1000)
+				.Because("each level doubles the written nodes, so 30 levels would write more than a billion of them");
+			await That(Count(result, "SharingNode { … }")).IsEqualTo(1001);
+
+			static int Count(string text, string part)
+				=> (text.Length - text.Replace(part, "").Length) / part.Length;
+		}
+
+		[Fact]
 		public async Task WhenMemberIsAStringWithLineBreaks_ShouldEscapeItLikeACollectionItem()
 		{
 			InnerDummy value = new()
@@ -637,6 +719,38 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenTupleIsNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheItemsOfTheDeepestTuple()
+		{
+			object value = 1;
+			for (int i = 0; i < 1000; i++)
+			{
+				value = Tuple.Create(1, value);
+			}
+
+			string expectedResult =
+				string.Concat(Enumerable.Repeat("(1, ", 20)) + "( … )" + new string(')', 20);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenTwoDeepGraphsAreSiblings_ShouldLeaveOutTheMembersOfBothAtTheSameDepth()
+		{
+			LinkedNode[] value = [LinkedNode.Chain(30), LinkedNode.Chain(30),];
+			string chain =
+				string.Concat(Enumerable.Repeat("ValueFormatters.ObjectTests.LinkedNode { Next = ", 19)) +
+				"ValueFormatters.ObjectTests.LinkedNode { … }" +
+				string.Concat(Enumerable.Repeat(" }", 19));
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo($"[{chain}, {chain}]")
+				.Because("the collection counts as one level, and the first chain must not use up the depth of the second");
+		}
+
+		[Fact]
 		public async Task WhenTwoMembersAreEqualButNotTheSame_ShouldFormatBoth()
 		{
 			object value = new
@@ -771,6 +885,15 @@ public partial class ValueFormatters
 			}
 		}
 
+		private sealed class ClassWithCollectionMember
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public string Name { get; set; } = "";
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public List<string> Tags { get; set; } = [];
+		}
+
 		private sealed class ClassWithExceptionProperty(Exception exception)
 		{
 			// ReSharper disable once UnusedMember.Local
@@ -894,6 +1017,25 @@ public partial class ValueFormatters
 			public int Registered { get; set; }
 		}
 
+		private sealed class LinkedNode
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public LinkedNode? Next { get; set; }
+
+			public static LinkedNode Chain(int length)
+			{
+				LinkedNode root = new();
+				LinkedNode current = root;
+				for (int i = 1; i < length; i++)
+				{
+					current.Next = new LinkedNode();
+					current = current.Next;
+				}
+
+				return root;
+			}
+		}
+
 		/// <remarks>
 		///     Throws once its children were read too often, so that following a cycle fails the test instead of
 		///     overflowing the stack.
@@ -914,6 +1056,15 @@ public partial class ValueFormatters
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
+		}
+
+		private sealed class SharingNode
+		{
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public SharingNode? Left { get; set; }
+
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public SharingNode? Right { get; set; }
 		}
 
 		private struct StructWithStaticPropertyOfItsOwnType

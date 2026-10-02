@@ -98,10 +98,10 @@ public sealed partial class ThatObject
 					                   Collection = <null>,
 					                   Inner = ThatObject.InnerClass {
 					                     Collection = [
-					                     "1",
-					                     "2",
-					                     "3"
-					                   ],
+					                       "1",
+					                       "2",
+					                       "3"
+					                     ],
 					                     Inner = <null>,
 					                     IntValue = 0,
 					                     Value = "Baz"
@@ -254,10 +254,10 @@ public sealed partial class ThatObject
 					                   Collection = <null>,
 					                   Inner = ThatObject.InnerClass {
 					                     Collection = [
-					                     "1",
-					                     "2",
-					                     "3"
-					                   ],
+					                       "1",
+					                       "2",
+					                       "3"
+					                     ],
 					                     Inner = <null>,
 					                     IntValue = 0,
 					                     Value = "Baz"
@@ -382,10 +382,10 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not equivalent to unexpected,
 					             but it was [
-					               1,
-					               2,
-					               3
-					             ], which is considered equivalent
+					                 1,
+					                 2,
+					                 3
+					               ], which is considered equivalent
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -407,10 +407,10 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not equivalent to unexpected,
 					             but it was [
-					               1,
-					               2,
-					               3
-					             ], which is considered equivalent
+					                 1,
+					                 2,
+					                 3
+					               ], which is considered equivalent
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -519,9 +519,9 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not equivalent to unexpected,
 					             but it was {
-					               [2] = 3,
-					               [1] = 4
-					             }, which is considered equivalent
+					                 [2] = 3,
+					                 [1] = 4
+					               }, which is considered equivalent
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -559,9 +559,9 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not equivalent to unexpected,
 					             but it was {
-					               ["A"] = "A",
-					               ["B"] = "B"
-					             }, which is considered equivalent
+					                 ["A"] = "A",
+					                 ["B"] = "B"
+					               }, which is considered equivalent
 
 					             Equivalency options:
 					              - include public fields and properties

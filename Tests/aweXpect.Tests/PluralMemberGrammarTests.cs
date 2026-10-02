@@ -284,9 +284,9 @@ public sealed class PluralMemberGrammar
 				             Expected that subject
 				             whose Items are null,
 				             but Items were [
-				               1,
-				               2
-				             ]
+				                 1,
+				                 2
+				               ]
 				             """);
 		}
 

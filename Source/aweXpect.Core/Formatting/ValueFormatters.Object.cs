@@ -85,7 +85,7 @@ public static partial class ValueFormatters
 		AppendTypeIfIncluded(stringBuilder, value, options);
 		if (options.UseLineBreaks)
 		{
-			stringBuilder.Append(toString.Indent(indentFirstLine: false));
+			stringBuilder.Append(toString.Indent(options.Indentation + "  ", false));
 		}
 		else
 		{
@@ -250,18 +250,31 @@ public static partial class ValueFormatters
 	private static void AppendTupleItems(StringBuilder stringBuilder, List<object?> items,
 		FormattingOptions options, FormattingContext context)
 	{
-		stringBuilder.Append('(');
-		for (int i = 0; i < items.Count; i++)
+		try
 		{
-			if (i > 0)
+			if (!EnterContent(context))
 			{
-				stringBuilder.Append(", ");
+				stringBuilder.Append("( \u2026 )");
+				return;
 			}
 
-			Format(Formatter, stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
-		}
+			stringBuilder.Append('(');
+			for (int i = 0; i < items.Count; i++)
+			{
+				if (i > 0)
+				{
+					stringBuilder.Append(", ");
+				}
 
-		stringBuilder.Append(')');
+				Format(Formatter, stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
+			}
+
+			stringBuilder.Append(')');
+		}
+		finally
+		{
+			context.Depth--;
+		}
 	}
 
 	/// <remarks>
@@ -367,10 +380,18 @@ public static partial class ValueFormatters
 
 		try
 		{
-			WriteMembers(obj, stringBuilder, type, options, context);
+			if (!EnterContent(context))
+			{
+				stringBuilder.Append("{ \u2026 }");
+			}
+			else
+			{
+				WriteMembers(obj, stringBuilder, type, options, context);
+			}
 		}
 		finally
 		{
+			context.Depth--;
 			context.FormattedObjects.Remove(obj);
 		}
 	}

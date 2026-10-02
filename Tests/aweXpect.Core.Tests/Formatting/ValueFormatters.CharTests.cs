@@ -61,6 +61,8 @@ public partial class ValueFormatters
 		[InlineData('\0', "'\\0'")]
 		[InlineData('\u00A0', "'\\u00A0'")]
 		[InlineData('\u200B', "'\\u200B'")]
+		[InlineData('\u0301', "'\\u0301'")]
+		[InlineData('\uD83D', "'\\uD83D'")]
 		[InlineData('\\', "'\\\\'")]
 		[InlineData('\'', "'\\''")]
 		[InlineData('"', "'\"'")]
