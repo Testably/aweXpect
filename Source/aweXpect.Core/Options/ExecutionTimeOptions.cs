@@ -110,7 +110,7 @@ public class ExecutionTimeOptions
 		}
 
 		_limit = new ApproximatelyLimit(expected, tolerance);
-		_onUpperBound?.Invoke(expected + tolerance);
+		_onUpperBound?.Invoke(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
 	}
 
 	/// <summary>
@@ -138,7 +138,7 @@ public class ExecutionTimeOptions
 	private sealed record ApproximatelyLimit(TimeSpan Expected, TimeSpan Tolerance) : Limit
 	{
 		public override bool IsWithinLimit(TimeSpan actual)
-			=> actual >= Expected - Tolerance && actual <= Expected + Tolerance;
+			=> (actual >= Expected ? actual - Expected : Expected - actual) <= Tolerance;
 
 		public override void AppendTo(StringBuilder stringBuilder, string prefix)
 		{

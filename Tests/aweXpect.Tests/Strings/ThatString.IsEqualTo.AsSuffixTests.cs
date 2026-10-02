@@ -118,8 +118,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with " \t some text",
-					             but it was "some text" with a length of 9, which is shorter than the expected length of 12 and misses the prefix:
-					               " \t "
+					             but it was "some text", which misses some whitespace (" \t " at the beginning)
 					             """);
 			}
 
@@ -136,11 +135,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text \t ",
-					             but it was "some text", which differs before index 8:
-					                            ↓ (actual)
-					                   "some text"
-					               "some text \t "
-					                            ↑ (expected suffix)
+					             but it was "some text", which misses some whitespace (" \t " at the end)
 					             """);
 			}
 
@@ -157,11 +152,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text",
-					             but it was "and some text \t ", which differs before index 15:
-					                                ↓ (actual)
-					               "and some text \t "
-					                       "some text"
-					                                ↑ (expected suffix)
+					             but it was "and some text \t ", which has unexpected whitespace (" \t " at the end)
 					             """);
 			}
 

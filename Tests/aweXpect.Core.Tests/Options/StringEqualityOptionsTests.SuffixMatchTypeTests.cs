@@ -244,6 +244,78 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an option that decides the outcome must not be invisible in the expectation");
 		}
 
+		[Fact]
+		public async Task GetExtendedFailure_WhenActualHasUnexpectedTrailingWhiteSpace_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text \t ", "some text");
+
+			await That(result)
+				.IsEqualTo("it was \"some text \\t \", which has unexpected whitespace (\" \\t \" at the end)");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenActualHasUnexpectedTrailingWhiteSpaceAndCaseIsIgnored_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix().IgnoringCase();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT \t ", "some text");
+
+			await That(result)
+				.IsEqualTo("it was \"SOME TEXT \\t \", which has unexpected whitespace (\" \\t \" at the end)");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenActualMissesLeadingWhiteSpace_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", " \t some text");
+
+			await That(result)
+				.IsEqualTo("it was \"some text\", which misses some whitespace (\" \\t \" at the beginning)");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenActualMissesTrailingWhiteSpace_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", "some text \t ");
+
+			await That(result)
+				.IsEqualTo("it was \"some text\", which misses some whitespace (\" \\t \" at the end)");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenActualMissesTrailingWhiteSpaceWithCustomComparer_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix().Using(StringComparer.OrdinalIgnoreCase);
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT", "some text \t ");
+
+			await That(result)
+				.IsEqualTo("it was \"SOME TEXT\", which misses some whitespace (\" \\t \" at the end)");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenTrailingWhiteSpaceIsNotTheOnlyDifference_ShouldShowTheDifference()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "text \t ", "some text");
+
+			await That(result).StartsWith("it was \"text \\t \", which differs")
+				.Because("removing the whitespace would still leave the subject without the expected suffix");
+		}
+
 		[Theory]
 		[InlineData(false, false, " as suffix")]
 		[InlineData(true, false, " as suffix ignoring case")]

@@ -390,6 +390,23 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
+		[Fact]
+		public async Task NotContaining_WhenValueIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotContaining("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value containing "foo",
+				             but it had string value <null>
+				             """)
+				.Because("a null value has no content to inspect, like a null string subject");
+		}
+
 		[Theory]
 		[InlineData("foo", "foo")]
 		[InlineData("foobar", "bar")]
@@ -473,6 +490,23 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' suffix cannot be empty.").AsPrefix().And
 				.WithParamName("unexpected")
 				.Because("the suffix is empty once the trailing whitespace is ignored");
+		}
+
+		[Fact]
+		public async Task NotEndingWith_WhenValueIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotEndingWith("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value ending with "foo",
+				             but it had string value <null>
+				             """)
+				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
 		[Fact]
@@ -607,6 +641,52 @@ public sealed partial class PropertyResultTests
 				.Because("a null subject has no string value to compare, whatever the unexpected value is");
 		}
 
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotEqualTo("foo");
+
+			await That(Act).DoesNotThrow()
+				.Because("an exact comparison treats null as a value that differs from \"foo\"");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndPatternIsRegex_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotEqualTo(".*").AsRegex();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value matching regex ".*",
+				             but it had string value <null>
+				             """)
+				.Because("a null value has no content to inspect, like a null string subject");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndPatternIsWildcard_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotEqualTo("*").AsWildcard();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value matching "*",
+				             but it had string value <null>
+				             """)
+				.Because("a null value has no content to inspect, like a null string subject");
+		}
+
 		[Theory]
 		[InlineData("foo", "foo")]
 		[InlineData("foobar", "foo")]
@@ -691,6 +771,23 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix().And
 				.WithParamName("unexpected")
 				.Because("the prefix is empty once the leading whitespace is ignored");
+		}
+
+		[Fact]
+		public async Task NotStartingWith_WhenValueIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotStartingWith("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value starting with "foo",
+				             but it had string value <null>
+				             """)
+				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
 		[Theory]

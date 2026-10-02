@@ -114,5 +114,46 @@ public sealed partial class ThatDelegateTests
 				.WithParamName("expected").And
 				.WithMessage("The expected duration must not be negative.").AsPrefix();
 		}
+
+		[Fact]
+		public async Task Within_WhenExpectedIsMaxValue_ShouldFailWithoutOverflow()
+		{
+			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn(TimeSpan.MaxValue).Within(TimeSpan.FromTicks(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             executes in approximately TimeSpan.MaxValue ± 0:00.0000001,
+				             but it took only *
+				             """).AsWildcard()
+				.Because("the upper bound saturates at the maximum duration instead of overflowing");
+		}
+
+		[Fact]
+		public async Task Within_WhenToleranceIsMaxValue_ShouldSucceed()
+		{
+			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn(1.Seconds()).Within(TimeSpan.MaxValue);
+
+			await That(Act).DoesNotThrow()
+				.Because("any execution time is within an unlimited tolerance");
+		}
+
+		[Fact]
+		public async Task Within_WithValue_WhenToleranceIsMaxValue_ShouldSucceed()
+		{
+			Func<int> @delegate = () => 1;
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn(1.Seconds()).Within(TimeSpan.MaxValue);
+
+			await That(Act).DoesNotThrow()
+				.Because("any execution time is within an unlimited tolerance");
+		}
 	}
 }

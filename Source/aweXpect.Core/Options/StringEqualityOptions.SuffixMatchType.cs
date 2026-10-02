@@ -58,41 +58,31 @@ public partial class StringEqualityOptions
 
 			string prefix =
 				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
-			int minCommonLength = Math.Min(actual.Length, expected.Length);
 			StringDifference stringDifference = new(actual, expected, comparer,
 				settings.WithMatchType(StringDifference.MatchType.Suffix));
 			int indexOfFirstMismatch = stringDifference.IndexOfFirstMismatch(StringDifference.MatchType.Suffix);
-			if (indexOfFirstMismatch == 0 && comparer.Equals(actual, expected.TrimStart()))
+			if (comparer.Equals(actual, expected.TrimStart()))
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
 					$"{prefix}, which misses some whitespace (\"{expected.Substring(0, GetIndexOfFirstMatch(expected, actual, comparer)).TruncateWithEllipsis(maxStringLength).Escape()}\" at the beginning)";
 			}
 
-			if (indexOfFirstMismatch == actual.Length)
-			{
-				string? trimmedActual = actual.TrimEnd();
-				int commonLength = Math.Min(trimmedActual.Length, expected.Length);
-				if (comparer.Equals(trimmedActual[^commonLength..], expected[^commonLength..]))
-				{
-					int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
-					return
-						$"{prefix}, which has unexpected whitespace (\"{actual.Substring(trimmedActual.Length).TruncateWithEllipsis(maxStringLength).Escape()}\" at the end)";
-				}
-			}
-
-			if (indexOfFirstMismatch == minCommonLength && comparer.Equals(actual, expected.TrimEnd()))
+			string? trimmedActual = actual.TrimEnd();
+			if (trimmedActual.Length >= expected.Length &&
+			    comparer.Equals(trimmedActual[^expected.Length..], expected))
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix}, which misses some whitespace (\"{expected.Substring(indexOfFirstMismatch).TruncateWithEllipsis(maxStringLength).Escape()}\" at the end)";
+					$"{prefix}, which has unexpected whitespace (\"{actual.Substring(trimmedActual.Length).TruncateWithEllipsis(maxStringLength).Escape()}\" at the end)";
 			}
 
-			if (actual.Length < expected.Length && indexOfFirstMismatch == actual.Length)
+			string? trimmedExpected = expected.TrimEnd();
+			if (comparer.Equals(actual, trimmedExpected))
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix} with a length of {actual.Length}, which is shorter than the expected length of {expected.Length} and misses:{Environment.NewLine}  \"{expected.Substring(actual.Length).TruncateWithEllipsis(maxStringLength).Escape()}\"";
+					$"{prefix}, which misses some whitespace (\"{expected.Substring(trimmedExpected.Length).TruncateWithEllipsis(maxStringLength).Escape()}\" at the end)";
 			}
 
 			if (actual.Length < expected.Length && indexOfFirstMismatch < 0)

@@ -965,10 +965,14 @@ public static class PropertyResult
 		private Exception? _exception;
 		private string? _value;
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		/// <remarks>
+		///     A match type that inspects the content of the value, e.g. a prefix or a pattern, fails for a
+		///     <see langword="null" /> value in both polarities, because it has no content.
+		/// </remarks>
 		public override Outcome Outcome
 		{
-			get => _exception is null ? base.Outcome : Outcome.Failure;
+			get => _exception is null && !(_value is null && options.InspectsSubject) ? base.Outcome : Outcome.Failure;
 			protected set => base.Outcome = value;
 		}
 
