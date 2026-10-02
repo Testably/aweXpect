@@ -336,3 +336,6 @@ virtual aweXpect.Core.Constraints.ConstraintResult.TrailingSubject.get -> string
 virtual aweXpect.Options.EnumerableQuantifier.FailsBothWays.get -> bool
 virtual aweXpect.Options.EnumerableQuantifier.GetQuantifierContext() -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
 virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get -> System.Type!
+*REMOVED*aweXpect.Core.ThatBoolSubject.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Equivalency.It.IsEquivalent<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!

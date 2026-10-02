@@ -34,7 +34,7 @@ public static class It
 		public IThat<T> That => this;
 
 		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-		public new ExpectationBuilder ExpectationBuilder => base.ExpectationBuilder;
+		ExpectationBuilder IExpectThat<T>.ExpectationBuilder => ExpectationBuilder;
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string? ToString() => ExpectationBuilder.ToString();

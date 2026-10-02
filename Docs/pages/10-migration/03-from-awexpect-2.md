@@ -384,6 +384,8 @@ count matches no collection.
 
 `ExpectationBuilder` and `EquivalencyExpectationBuilder` can no longer be derived from, as they rely on members
 that are not public.
+`ThatBoolSubject`, `ThatDelegateThrows<TException>` and `It.IsEquivalent<T>` no longer have a public
+`ExpectationBuilder` property; reach the builder through `IExpectThat<T>`, as for every other subject.
 
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.

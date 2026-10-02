@@ -31,7 +31,7 @@ public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 	}
 
 	/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-	public new ExpectationBuilder ExpectationBuilder => base.ExpectationBuilder;
+	ExpectationBuilder IExpectThat<bool>.ExpectationBuilder => ExpectationBuilder;
 
 	private sealed class WithDefaultExpectationBuilderProxy(ExpectationBuilder inner)
 		: ExpectationBuilder(inner.Subject, inner.ExpectationGrammars)

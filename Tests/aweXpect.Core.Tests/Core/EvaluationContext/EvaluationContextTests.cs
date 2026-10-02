@@ -95,7 +95,7 @@ public class EvaluationContextTests
 #pragma warning restore aweXpect0001
 		MyContextConstraint constraint = new();
 		await new AndOrResult<bool, IExpectThat<bool>>(
-			that.ExpectationBuilder
+			((IExpectThat<bool>)that).ExpectationBuilder
 				.AddConstraint((_, _) => constraint),
 			that);
 
