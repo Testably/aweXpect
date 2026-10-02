@@ -40,6 +40,14 @@ await Expect.That("Help!".AsSpan()).Contains('!');
 
 A span can't be kept across an `await`, so create it in the statement of the expectation.
 
+## Immutable arrays
+
+:::note[.NET 8 or later]
+An `ImmutableArray<T>` is a struct, so it only reaches the collection expectations through their own overloads, which
+exist on .NET 8 or later. On older targets, only `IsEmpty` and `IsNotEmpty` are available for it, so call
+`.AsEnumerable()` on the array or cast it to `IEnumerable<T>` to use the others.
+:::
+
 ## Sets
 
 :::warning[A set or a dictionary has no defined order]
