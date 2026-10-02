@@ -298,26 +298,18 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			TimeSpan waited = TimeSpan.Zero;
-			Actual = await Task.Run(() =>
-				{
-					// Measured inside the task, so that a busy thread pool does not count as waited time.
-					Stopwatch stopwatch = Stopwatch.StartNew();
-					// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
-					SignalerResult result = determinableAmount > 0
-						? actual.Wait(determinableAmount.Times(), timeout, cancellationToken)
-						: actual.Wait(timeout, cancellationToken);
-					waited = stopwatch.Elapsed;
-					_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : waited;
-					return result;
-				},
-				CancellationToken.None);
+			Stopwatch stopwatch = Stopwatch.StartNew();
+			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
+			Actual = determinableAmount > 0
+				? await actual.WaitAsync(determinableAmount.Times(), timeout, cancellationToken)
+				: await actual.WaitAsync(timeout, cancellationToken);
+			TimeSpan waited = stopwatch.Elapsed;
+			_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
 			}
-
 
 			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -368,26 +360,18 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			TimeSpan waited = TimeSpan.Zero;
-			Actual = await Task.Run(() =>
-				{
-					// Measured inside the task, so that a busy thread pool does not count as waited time.
-					Stopwatch stopwatch = Stopwatch.StartNew();
-					// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
-					SignalerResult<TParameter> result = UserCode.Invoke(() => determinableAmount > 0
-						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
-						: actual.Wait(o.Matches, timeout, cancellationToken), "the predicate");
-					waited = stopwatch.Elapsed;
-					_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : waited;
-					return result;
-				},
-				CancellationToken.None);
+			Stopwatch stopwatch = Stopwatch.StartNew();
+			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
+			Actual = await UserCode.InvokeAsync(async () => determinableAmount > 0
+				? await actual.WaitAsync(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
+				: await actual.WaitAsync(o.Matches, timeout, cancellationToken), "the predicate");
+			TimeSpan waited = stopwatch.Elapsed;
+			_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
 			}
-
 
 			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p, "the predicate"));
 
