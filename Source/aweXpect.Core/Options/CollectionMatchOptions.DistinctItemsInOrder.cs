@@ -97,44 +97,7 @@ public partial class CollectionMatchOptions
 			return false;
 		}
 
-		/// <summary>
-		///     Lets each sought item take the first fitting searched item, without backtracking, to describe a mismatch.
-		/// </summary>
-		/// <returns>
-		///     The sought items that found no fitting item, the searched items that were taken, and for a run the first
-		///     item that interrupts it, with the sought item behind it.
-		/// </returns>
-		public async ValueTask<(List<int> UnplacedSoughtIds, HashSet<int> PlacedSearchedIds,
-				(int Position, int SoughtId)? Interruption)>
-			PlaceFirstFitting()
-		{
-			List<int> unplaced = new();
-			List<int> positions = new();
-			List<int> soughtIds = new();
-			int position = -1;
-			for (int soughtId = 0; soughtId < _soughtCount; soughtId++)
-			{
-				int next = await FindNext(position, soughtId, positions);
-				if (next < 0)
-				{
-					unplaced.Add(soughtId);
-				}
-				else if (next < _searched.Length)
-				{
-					positions.Add(next);
-					soughtIds.Add(soughtId);
-					position = next;
-				}
-			}
-
-			HashSet<int> placedIds = new(positions.Select(chosen => _searched[chosen]));
-			(int, int)? interruption = _orderMatch == OrderMatch.Contiguous && unplaced.Count == 0
-				? await FindInterruption(positions, soughtIds, placedIds)
-				: null;
-			return (unplaced, placedIds, interruption);
-		}
-
-		public async ValueTask<bool> MatchesAnySoughtItem(int searchedId)
+		private async ValueTask<bool> MatchesAnySoughtItem(int searchedId)
 		{
 			for (int soughtId = 0; soughtId < _soughtCount; soughtId++)
 			{
@@ -145,29 +108,6 @@ public partial class CollectionMatchOptions
 			}
 
 			return false;
-		}
-
-		private async ValueTask<(int, int)?> FindInterruption(List<int> positions, List<int> soughtIds,
-			HashSet<int> placedIds)
-		{
-			int start = positions[0];
-			int end = positions[positions.Count - 1];
-			for (int i = 1; i < positions.Count; i++)
-			{
-				for (int position = positions[i - 1] + 1; position < positions[i]; position++)
-				{
-					int searchedId = _searched[position];
-					bool isDuplicate = _isOneToOne
-						? placedIds.Contains(searchedId)
-						: await MatchesAnySoughtItem(searchedId);
-					if (!isDuplicate && !IsOutside(searchedId, start, end))
-					{
-						return (position, soughtIds[i]);
-					}
-				}
-			}
-
-			return null;
 		}
 
 		/// <returns>

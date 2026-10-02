@@ -53,6 +53,7 @@ public partial class CollectionMatchOptions(
 	}
 #pragma warning restore S4070
 
+	private const string ItemsMatchInADifferentOrderHint = "(but the items match in a different order)";
 	private EquivalenceRelations _equivalenceRelations = equivalenceRelations;
 	private bool _ignoringDuplicates;
 	private bool _ignoringInterspersedItems;
@@ -103,77 +104,66 @@ public partial class CollectionMatchOptions(
 	/// </summary>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<T> expected)
 		where T : T2
-	{
-		ICollectionMatcher<T, T2> matcher = (_inAnyOrder, _ignoringDuplicates) switch
+		=> (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(true, false) => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
 				_ignoringInterspersedItems),
-			(false, false) => new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems),
+			(false, false) => WithInAnyOrderHint(
+				new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected, _ignoringInterspersedItems),
+				() => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
 		};
-
-		return WithInAnyOrderHint(matcher, () => _ignoringDuplicates
-			? new AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected)
-			: new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected));
-	}
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable of predicates.
 	/// </summary>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<Expression<Func<T, bool>>> expected)
 		where T : T2
-	{
-		ICollectionMatcher<T, T2> matcher = (_inAnyOrder, _ignoringDuplicates) switch
+		=> (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
 				expected),
 			(true, false) => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected,
-				_ignoringInterspersedItems),
-			(false, false) => new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems),
+				expected, _ignoringInterspersedItems),
+			(false, false) => WithInAnyOrderHint(
+				new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+					_ignoringInterspersedItems),
+				() => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
 		};
-
-		return WithInAnyOrderHint(matcher, () => _ignoringDuplicates
-			? new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected)
-			: new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected));
-	}
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable of predicates.
 	/// </summary>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<ExpectationItem<T>> expected)
 		where T : T2
-	{
-		ICollectionMatcher<T, T2> matcher = (_inAnyOrder, _ignoringDuplicates) switch
+		=> (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
 				expected),
 			(true, false) => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected,
-				_ignoringInterspersedItems),
-			(false, false) => new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems),
+				expected, _ignoringInterspersedItems),
+			(false, false) => WithInAnyOrderHint(
+				new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+					_ignoringInterspersedItems),
+				() => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
 		};
-
-		return WithInAnyOrderHint(matcher, () => _ignoringDuplicates
-			? new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected)
-			: new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected));
-	}
 
 	/// <summary>
 	///     Only equality guarantees that a successful any-order match means the same items in a different order; the
 	///     containment relations require the items to be contiguous, so their any-order match can succeed for other
 	///     reasons.
 	/// </summary>
+	/// <remarks>
+	///     Ignoring duplicates, the in-order matcher knows whether the items match in any order, so it adds the hint
+	///     itself.
+	/// </remarks>
 	private ICollectionMatcher<T, T2> WithInAnyOrderHint<T, T2>(ICollectionMatcher<T, T2> matcher,
 		Func<ICollectionMatcher<T, T2>> anyOrderMatcher)
 		where T : T2
-		=> _inAnyOrder || _equivalenceRelations != EquivalenceRelations.Equivalent
+		=> _equivalenceRelations != EquivalenceRelations.Equivalent
 			? matcher
 			: new InAnyOrderHintCollectionMatcher<T, T2>(matcher, anyOrderMatcher);
 

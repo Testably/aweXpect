@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -17,6 +16,10 @@ public partial class CollectionMatchOptions
 		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems)
 		where T : T2
 	{
+		private readonly HashSet<T> _expectedValues = new(expected);
+
+		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
+
 		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 	}
@@ -42,35 +45,35 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
+		private readonly CompiledPredicates<T> _predicates = new();
+
 		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> new ValueTask<bool>(UserCode.Invoke(expected.Compile(), value, "the predicate"));
+			=> _predicates.Invoke(expected, value);
 	}
 
+	/// <summary>
+	///     Equality compares each item with the expected item at its position; the containment relations search a run
+	///     or a subsequence, and their failures are described by <see cref="InOrderMismatch" />.
+	/// </summary>
 	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
-		private readonly bool _comparesByPosition;
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
-		private readonly List<(int Index, T Item)> _matchingItems = new();
-		private readonly List<T3> _missingItems = new();
-		private readonly Dictionary<int, T> _outOfOrderItems = new();
-		private readonly int _totalExpectedItems;
 		private readonly List<T> _values = new();
-		private int _alignment;
 		private List<int> _candidateOffsets = new();
 		private BoundedEditDistance<T, T3>? _editDistance;
-		private int _expectationIndex = -1;
-		private int _index;
+		private bool _isBroken;
+		private bool _isFound;
+		private int _lastMatchedExpectedIndex = -1;
 		private int _matchIndex;
-		private int _maxMatchIndex;
 		private int _positionalDeviations;
-		private List<int> _restartIndices = new();
-		private bool _runIsBroken;
+		private List<int> _runLengths = new();
+		private int _subjectItemsMatchingNothing;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
@@ -78,172 +81,235 @@ public partial class CollectionMatchOptions
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
-			_comparesByPosition = !ignoreInterspersedItems &&
-			                      !equivalenceRelation.HasFlag(EquivalenceRelations.Contains) &&
-			                      !equivalenceRelation.HasFlag(EquivalenceRelations.IsContainedIn);
 			_expectedItems = expected.ToArray();
-			_totalExpectedItems = _expectedItems.Length;
+			_isFound = _expectedItems.Length == 0;
 		}
 
 		/// <inheritdoc />
 		/// <remarks>
 		///     Once all expected items are found, the containment relation is met, and properly met as soon as there is
-		///     also another item, as the deviations of abandoned partial matches become additional items.
+		///     also another item.
 		/// </remarks>
 		public bool IsDetermined
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			   _matchIndex >= _expectedItems.Length &&
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) && _isFound &&
 			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
-			    _additionalItems.Count + _incorrectItems.Count > 0);
+			    _values.Count > _expectedItems.Length);
 
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				if (_ignoreInterspersedItems)
-				{
-					await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
-				}
-				else
-				{
-					await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
-				}
-			}
-			else if (_comparesByPosition)
-			{
-				return await VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
-			}
-			else if (_matchIndex >= _expectedItems.Length)
-			{
-				// All expected items were found -> additional items
-				_additionalItems.Add(_index, value);
-			}
-			else if (await AreConsideredEqual(value, _expectedItems[_matchIndex], options))
-			{
-				bool continuesTheRun = _matchIndex > 0;
-				VerifyTheCurrentValueIsEqualToTheExpectedValue(value);
-				if (!_ignoreInterspersedItems && continuesTheRun && _matchIndex < _expectedItems.Length)
-				{
-					await KeepTheRestartsThatContinueWith(value, options);
-				}
-			}
-			else if (_ignoreInterspersedItems)
-			{
-				_additionalItems.Add(_index, value);
-			}
-			else
-			{
-				await VerifyTheCurrentValueIsDifferentFromTheExpectedValue(value, options);
-			}
-
-			_index++;
-			long errorThreshold = 2L * maximumNumber;
-			int errorCount = _incorrectItems.Count + _outOfOrderItems.Count;
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
-			{
-				// Expected items outside the matched run are no deviations.
-				errorCount += _missingItems.Count;
+				return await VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
 			}
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
-				errorCount += _additionalItems.Count;
+				return await VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
 			}
 
-			return errorCount > errorThreshold
-				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)))
+			_values.Add(value);
+			if (!_isFound)
+			{
+				_isFound = _ignoreInterspersedItems
+					? await ContinuesTheSubsequence(value, options)
+					: await CompletesARun(value, options);
+			}
+
+			// Any later item can still complete the expected items, so no deviation is known before the end.
+			return (false, null);
+		}
+
+		public async ValueTask<(bool, string?)>
+			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			    !_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				return await VerifyCompleteForPositionalMatch(it, options, maximumNumber);
+			}
+
+			if (IsDetermined || IsContainedInTheExpectedItems())
+			{
+				return (false, null);
+			}
+
+			string? error = (await FindTheDeviations(options)).GetError(it, _equivalenceRelations, false,
+				_expectedItems.Length, options, maximumNumber);
+			return (true, error);
+		}
+
+		/// <summary>
+		///     The proper containment needs an expected item that the subject does not use.
+		/// </summary>
+		private bool IsContainedInTheExpectedItems()
+			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) && !_isBroken &&
+			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) ||
+			    _values.Count < _expectedItems.Length);
+
+		/// <summary>
+		///     The containment searches the subject in the expected items, the other relations search the expected items
+		///     in the subject.
+		/// </summary>
+		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
+		{
+			OrderMatch orderMatch = _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(
+					Enumerable.Range(0, _expectedItems.Length).ToArray(), _expectedItems.Length, _values.Count,
+					(expectedIndex, index) => AreConsideredEqual(_values[index], _expectedItems[expectedIndex], options),
+					true, orderMatch);
+				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
+					index => (index, _values[index]), expectedIndex => _expectedItems[expectedIndex]);
+			}
+
+			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(
+				Enumerable.Range(0, _values.Count).ToArray(), _values.Count, _expectedItems.Length,
+				(index, expectedIndex) => AreConsideredEqual(_values[index], _expectedItems[expectedIndex], options),
+				true, orderMatch);
+			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
+				index => (index, _values[index]), expectedIndex => _expectedItems[expectedIndex]);
+		}
+
+		/// <summary>
+		///     Keeps the length of each partial run that the <paramref name="value" /> continues, and starts a new one,
+		///     because the expected items can overlap with themselves, e.g. <c>[1, 1, 2]</c> in <c>[1, 1, 1, 2]</c>.
+		/// </summary>
+		/// <returns><see langword="true" />, when a run is complete.</returns>
+		private async ValueTask<bool> CompletesARun(T value, IOptionsEquality<T2> options)
+		{
+			List<int> runLengths = new();
+			foreach (int runLength in _runLengths)
+			{
+				if (await AreConsideredEqual(value, _expectedItems[runLength], options))
+				{
+					runLengths.Add(runLength + 1);
+				}
+			}
+
+			if (await AreConsideredEqual(value, _expectedItems[0], options))
+			{
+				runLengths.Add(1);
+			}
+
+			_runLengths = runLengths;
+			return runLengths.Count > 0 && runLengths[0] == _expectedItems.Length;
+		}
+
+		/// <summary>
+		///     Taking the first item that matches the next expected item never prevents finding a subsequence.
+		/// </summary>
+		/// <returns><see langword="true" />, when all expected items are found.</returns>
+		private async ValueTask<bool> ContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
+		{
+			if (await AreConsideredEqual(value, _expectedItems[_matchIndex], options))
+			{
+				_matchIndex++;
+			}
+
+			return _matchIndex == _expectedItems.Length;
+		}
+
+		/// <summary>
+		///     Once the subject leaves the expected items, the failure is certain; it aborts early, when more items are
+		///     unexpected regardless of the order than can be listed.
+		/// </summary>
+		private async ValueTask<(bool, string?)>
+			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
+				int maximumNumber)
+		{
+			_values.Add(value);
+			if (!_isBroken)
+			{
+				_isBroken = _ignoreInterspersedItems
+					? !await ContinuesTheSubsequenceInTheExpectedItems(value, options)
+					: !await ContinuesTheRunInTheExpectedItems(value, options);
+				if (!_isBroken)
+				{
+					return (false, null);
+				}
+			}
+
+			if (!IsEqualToAnExpectedItem(value) && !await MatchesAnExpectedItem(value, options))
+			{
+				_subjectItemsMatchingNothing++;
+			}
+
+			// One-to-one, the items beyond the number of expected items are unexpected as well.
+			long unexpectedItems = _subjectItemsMatchingNothing +
+			                       Math.Max(0, _values.Count - _subjectItemsMatchingNothing - _expectedItems.Length);
+			return unexpectedItems > 2L * maximumNumber
+				? (true, TooManyDeviationsError(it, maximumNumber,
+					(await FindTheDeviations(options)).ListDeviations(_equivalenceRelations, options)))
 				: (false, null);
+		}
+
+		/// <summary>
+		///     The subject continues the run at every offset in the expected items at which all its items so far match.
+		/// </summary>
+		private async ValueTask<bool> ContinuesTheRunInTheExpectedItems(T value, IOptionsEquality<T2> options)
+		{
+			int index = _values.Count - 1;
+			List<int> candidateOffsets = new();
+			IEnumerable<int> offsets = index == 0 ? Enumerable.Range(0, _expectedItems.Length) : _candidateOffsets;
+			foreach (int offset in offsets)
+			{
+				if (offset + index < _expectedItems.Length &&
+				    await AreConsideredEqual(value, _expectedItems[offset + index], options))
+				{
+					candidateOffsets.Add(offset);
+				}
+			}
+
+			_candidateOffsets = candidateOffsets;
+			return candidateOffsets.Count > 0;
+		}
+
+		/// <summary>
+		///     Taking the first expected item that matches never prevents finding the subject as a subsequence.
+		/// </summary>
+		private async ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(T value, IOptionsEquality<T2> options)
+		{
+			for (int i = _matchIndex; i < _expectedItems.Length; i++)
+			{
+				if (await AreConsideredEqual(value, _expectedItems[i], options))
+				{
+					_matchIndex = i + 1;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     Avoids comparing each item with the expected items, when it is known to match one of them.
+		/// </summary>
+		/// <remarks>
+		///     This only decides, whether the comparison can abort early, so it may err towards a match.
+		/// </remarks>
+		protected virtual bool IsEqualToAnExpectedItem(T value) => false;
+
+		private async ValueTask<bool> MatchesAnExpectedItem(T value, IOptionsEquality<T2> options)
+		{
+			int expectedIndex = await FindNear(_lastMatchedExpectedIndex, _expectedItems.Length,
+				index => AreConsideredEqual(value, _expectedItems[index], options));
+			if (expectedIndex < 0)
+			{
+				return false;
+			}
+
+			_lastMatchedExpectedIndex = expectedIndex;
+			return true;
 		}
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
 		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
-		{
-			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems, options)
-				.Concat(OutOfOrderItemsError(_outOfOrderItems));
-			return _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
-				? deviations
-				: deviations.Concat(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
-		}
-
-#pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
-
-		public async ValueTask<(bool, string?)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
-			{
-				return _ignoreInterspersedItems
-					? VerifyCompleteForSubsequenceMatch(it)
-					: VerifyCompleteForContiguousMatch(it, options);
-			}
-
-			if (_comparesByPosition)
-			{
-				return await VerifyCompleteForPositionalMatch(it, options, maximumNumber);
-			}
-
-			int consideredExpectedItems = Math.Max(_expectationIndex - 1, _maxMatchIndex);
-			if (_expectedItems.Length > consideredExpectedItems)
-			{
-				for (int i = consideredExpectedItems; i < _expectedItems.Length; i++)
-				{
-					T3 item = _expectedItems[i];
-					int? additionalIndex = await FindFirstKey(_additionalItems,
-						a => AreConsideredEqual(a, item, options));
-					if (additionalIndex is not null)
-					{
-						_additionalItems.Remove(additionalIndex.Value);
-						_missingItems.Add(item);
-					}
-					else if (await All(_additionalItems.Values, x => AreConsideredEqual(x, item, options), true) &&
-					         await All(_incorrectItems.Values, x => AreConsideredEqual(x.Item, item, options), true))
-					{
-						_missingItems.Add(item);
-					}
-
-					// For the containment relation, additional items are no deviation, and all missing items are listed.
-					if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-					    _additionalItems.Count + _incorrectItems.Count + _missingItems.Count > 2L * maximumNumber)
-					{
-						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
-					}
-				}
-			}
-
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			    _matchIndex >= _expectedItems.Length)
-			{
-				// A later complete match supersedes the deviations of abandoned partial matches.
-				foreach (KeyValuePair<int, (T Item, T3 Expected)> incorrectItem in _incorrectItems)
-				{
-					_additionalItems.Add(incorrectItem.Key, incorrectItem.Value.Item);
-				}
-
-				_incorrectItems.Clear();
-			}
-
-			Func<object?, string> formatItem = CreateItemFormatter();
-			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
-			{
-				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
-			}
-			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
-			{
-				errors.Add("did not contain any additional items");
-			}
-
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem,
-				options, maximumNumber));
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-#pragma warning restore S3776
+			=> IncorrectItemsError(_incorrectItems, options)
+				.Concat(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 
 		/// <summary>
 		///     Every subject item was compared with the expected item at its position, so the expected items beyond the
@@ -253,7 +319,7 @@ public partial class CollectionMatchOptions
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _index);
+			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _values.Count);
 			if (_editDistance is not null)
 			{
 				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits(
@@ -269,12 +335,8 @@ public partial class CollectionMatchOptions
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
 			}
 
-			for (int i = _index; i < _expectedItems.Length; i++)
-			{
-				_missingItems.Add(_expectedItems[i]);
-			}
-
-			return ReturnError(it, _incorrectItems, _outOfOrderItems, _additionalItems, _missingItems, options,
+			List<T3> missingItems = _expectedItems.Skip(_values.Count).ToList();
+			return ReturnError(it, _incorrectItems, new Dictionary<int, T>(), _additionalItems, missingItems, options,
 				maximumNumber);
 		}
 
@@ -334,245 +396,16 @@ public partial class CollectionMatchOptions
 			errors.AddRange(IncorrectItemsError(incorrectItems, options));
 			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
 			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
-			errors.AddRange(MissingItemsError(_totalExpectedItems, missingItems, _equivalenceRelations, false, formatItem,
-				options, maximumNumber));
+			errors.AddRange(MissingItemsError(_expectedItems.Length, missingItems, _equivalenceRelations, false,
+				formatItem, options, maximumNumber));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
-		}
-
-		/// <summary>
-		///     The subject is contained in the expected collection, when its items appear there as an uninterrupted run;
-		///     once no run is left, the remaining items are compared against the abandoned run.
-		/// </summary>
-		private (bool, string?) VerifyCompleteForContiguousMatch(string it, IOptionsEquality<T2> options)
-		{
-			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(_incorrectItems, options));
-			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
-			if (errors.Count == 0 &&
-			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
-			    _index >= _expectedItems.Length)
-			{
-				errors.Add("contained all expected items");
-			}
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-
-		/// <summary>
-		///     The subject is contained in the expected collection, when its items appear in the expected collection in the
-		///     same relative order; the expected items that are skipped in between are missing items.
-		/// </summary>
-		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it)
-		{
-			for (int i = _matchIndex; i < _expectedItems.Length; i++)
-			{
-				_missingItems.Add(_expectedItems[i]);
-			}
-
-			List<string> errors = new();
-			errors.AddRange(OutOfOrderItemsError(_outOfOrderItems));
-			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
-			{
-				errors.Add("contained all expected items");
-			}
-
-			string? error = ReturnErrorString(it, errors);
-			return (error != null, error);
-		}
-
-		/// <summary>
-		///     Keeps the subject indices at which a later run could start, as long as all items since then match the
-		///     expected items, because the expected items can overlap with themselves, e.g. <c>[1, 1, 2]</c> in
-		///     <c>[1, 1, 1, 2]</c>; the <paramref name="value" /> itself can start one as well.
-		/// </summary>
-		private async ValueTask KeepTheRestartsThatContinueWith(T value, IOptionsEquality<T2> options)
-		{
-			List<int> restartIndices = new();
-			foreach (int restartIndex in _restartIndices)
-			{
-				if (await AreConsideredEqual(value, _expectedItems[_index - restartIndex], options))
-				{
-					restartIndices.Add(restartIndex);
-				}
-			}
-
-			if (await AreConsideredEqual(value, _expectedItems[0], options))
-			{
-				restartIndices.Add(_index);
-			}
-
-			_restartIndices = restartIndices;
-		}
-
-		/// <summary>
-		///     The earliest restart inside the broken run is the longest run that still matches, so it continues as the
-		///     current run.
-		/// </summary>
-		private void RestartTheRunAt(int runStart, T value)
-		{
-			foreach ((int index, T matchingItem) in _matchingItems.Where(x => x.Index < runStart))
-			{
-				_additionalItems.Add(index, matchingItem);
-			}
-
-			_matchingItems.RemoveAll(x => x.Index < runStart);
-			_matchingItems.Add((_index, value));
-			_matchIndex = _index - runStart + 1;
-			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
-			_expectationIndex = _matchIndex - 1;
-		}
-
-		private async ValueTask
-			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
-		{
-			await KeepTheRestartsThatContinueWith(value, options);
-			if (_restartIndices.Count > 0 && _restartIndices[0] < _index)
-			{
-				RestartTheRunAt(_restartIndices[0], value);
-				_restartIndices.RemoveAt(0);
-				return;
-			}
-
-			if (_expectationIndex >= 0)
-			{
-				_expectationIndex++;
-			}
-
-			_matchIndex = 0;
-
-			if (_restartIndices.Remove(_index))
-			{
-				foreach ((int index, T matchingItem) in _matchingItems)
-				{
-					_additionalItems.Add(index, matchingItem);
-				}
-
-				_matchingItems.Clear();
-				_matchIndex++;
-				_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
-				_expectationIndex = 0;
-				_matchingItems.Add((_index, value));
-			}
-			else if (_expectationIndex < 0 || _expectationIndex >= _expectedItems.Length)
-			{
-				_additionalItems.Add(_index, value);
-			}
-			else if (await AreConsideredEqual(value, _expectedItems[_expectationIndex], options))
-			{
-				// The value still matches the expected item it is aligned with, so it is no deviation,
-				// although the run that could have matched was abandoned.
-				_maxMatchIndex = Math.Max(_expectationIndex + 1, _maxMatchIndex);
-			}
-			else
-			{
-				_incorrectItems.Add(_index, (value, _expectedItems[_expectationIndex]));
-			}
-		}
-
-		/// <summary>
-		///     Keeps all offsets in the expected collection at which the subject could still start an uninterrupted run;
-		///     when the last one is abandoned, the <paramref name="value" /> and all later items are reported against the
-		///     first abandoned offset, unless they still match the item at that offset.
-		/// </summary>
-		private async ValueTask
-			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
-		{
-			if (!_runIsBroken)
-			{
-				List<int> candidateOffsets = await FindTheRemainingCandidateOffsets(value, options);
-				if (candidateOffsets.Count > 0)
-				{
-					_candidateOffsets = candidateOffsets;
-					return;
-				}
-
-				_alignment = _candidateOffsets.Count > 0 ? _candidateOffsets[0] : 0;
-				_runIsBroken = true;
-			}
-
-			int expectedIndex = _alignment + _index;
-			if (expectedIndex >= _expectedItems.Length)
-			{
-				_additionalItems.Add(_index, value);
-			}
-			else if (!await AreConsideredEqual(value, _expectedItems[expectedIndex], options))
-			{
-				_incorrectItems.Add(_index, (value, _expectedItems[expectedIndex]));
-			}
-		}
-
-		/// <summary>
-		///     The first item opens a candidate at every offset it matches, each later item keeps the candidates whose
-		///     next expected item it matches.
-		/// </summary>
-		/// <returns>The offsets at which the run can still continue with the <paramref name="value" />.</returns>
-		private async ValueTask<List<int>>
-			FindTheRemainingCandidateOffsets(T value, IOptionsEquality<T2> options)
-		{
-			List<int> candidateOffsets = new();
-			if (_index == 0)
-			{
-				for (int offset = 0; offset < _expectedItems.Length; offset++)
-				{
-					if (await AreConsideredEqual(value, _expectedItems[offset], options))
-					{
-						candidateOffsets.Add(offset);
-					}
-				}
-			}
-			else
-			{
-				foreach (int offset in _candidateOffsets)
-				{
-					if (offset + _index < _expectedItems.Length &&
-					    await AreConsideredEqual(value, _expectedItems[offset + _index], options))
-					{
-						candidateOffsets.Add(offset);
-					}
-				}
-			}
-
-			return candidateOffsets;
-		}
-
-		/// <summary>
-		///     Consumes the expected items until the <paramref name="value" /> matches, so that gaps in the expected
-		///     collection are allowed, but the subject items must keep their relative order.
-		/// </summary>
-		private async ValueTask
-			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
-		{
-			for (int i = _matchIndex; i < _expectedItems.Length; i++)
-			{
-				if (await AreConsideredEqual(value, _expectedItems[i], options))
-				{
-					for (int j = _matchIndex; j < i; j++)
-					{
-						_missingItems.Add(_expectedItems[j]);
-					}
-
-					_matchIndex = i + 1;
-					return;
-				}
-			}
-
-			if (await Any(_missingItems, m => AreConsideredEqual(value, m, options)))
-			{
-				_outOfOrderItems.Add(_index, value);
-			}
-			else
-			{
-				_additionalItems.Add(_index, value);
-			}
 		}
 
 		/// <summary>
 		///     Equality compares each item with the expected item at its position, so that a deviating item never restarts
-		///     the comparison; only the containment relations and interspersed items search for the expected items.
+		///     the comparison.
 		/// </summary>
 		/// <remarks>
 		///     After the first deviation, the edit distance is tracked as well, so that the failure can report inserted or
@@ -583,27 +416,27 @@ public partial class CollectionMatchOptions
 			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
+			int index = _values.Count;
 			_values.Add(value);
-			bool isAdditional = _index >= _expectedItems.Length;
-			if (isAdditional || !await AreConsideredEqual(value, _expectedItems[_index], options))
+			bool isAdditional = index >= _expectedItems.Length;
+			if (isAdditional || !await AreConsideredEqual(value, _expectedItems[index], options))
 			{
 				if (_positionalDeviations++ <= 2L * maximumNumber)
 				{
 					if (isAdditional)
 					{
-						_additionalItems.Add(_index, value);
+						_additionalItems.Add(index, value);
 					}
 					else
 					{
-						_incorrectItems.Add(_index, (value, _expectedItems[_index]));
+						_incorrectItems.Add(index, (value, _expectedItems[index]));
 					}
 				}
 
 				_editDistance ??= new BoundedEditDistance<T, T3>(_expectedItems,
-					(int)Math.Min(2L * maximumNumber, int.MaxValue), _index);
+					(int)Math.Min(2L * maximumNumber, int.MaxValue), index);
 			}
 
-			_index++;
 			if (_editDistance is not null &&
 			    !await _editDistance.Add(value, (item, expected) => AreConsideredEqual(item, expected, options)))
 			{
@@ -613,19 +446,11 @@ public partial class CollectionMatchOptions
 			return (false, null);
 		}
 
-		private void VerifyTheCurrentValueIsEqualToTheExpectedValue(T value)
-		{
-			_matchIndex++;
-			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
-			_expectationIndex++;
-			_matchingItems.Add((_index, value));
-		}
-
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
+			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), []);
 
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);

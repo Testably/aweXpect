@@ -249,6 +249,8 @@ public static partial class ThatEnumerable
 				}
 			}
 
+			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
+			// The final check can evaluate item expectations as well, e.g. to reassign items in any order.
 			if (IsAnItemExpectationCanceled(cancellationToken))
 			{
 				Outcome = Outcome.Undecided;
@@ -256,7 +258,6 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, noOptions, maximumNumber);
 			if (completedResult)
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();

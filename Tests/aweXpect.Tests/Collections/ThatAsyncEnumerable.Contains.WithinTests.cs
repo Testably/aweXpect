@@ -28,13 +28,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1 day in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-13
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                2024-01-11,
+						                2024-01-21
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-13,
+						                2024-01-21
+						              ]
 						              """);
 				}
 
@@ -201,13 +208,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1 day in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-13
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                <null>,
+						                2024-01-11,
+						                2024-01-21
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-13,
+						                2024-01-21
+						              ]
 						              """);
 				}
 
@@ -305,13 +320,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-01T14:02:00.0000000
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -364,13 +386,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-01T14:02:00.0000000
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """)
 						.Because("the applied default tolerance is part of the expectation");
 				}
@@ -468,13 +497,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-01T14:02:00.0000000
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                <null>,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -541,13 +578,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-01T14:02:00.0000000+00:00
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T14:02:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 						              """);
 				}
 
@@ -657,13 +701,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2024-01-01T14:02:00.0000000+00:00
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                <null>,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T14:02:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 						              """);
 				}
 
@@ -730,13 +782,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -803,13 +855,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -876,13 +928,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -1000,13 +1052,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -1088,13 +1140,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -1161,13 +1213,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 0.25 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2.5
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [2.5, 3.0]
 						              """);
 				}
 
@@ -1248,13 +1300,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 14:02:00.0000000
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                14:00:00.0000000,
+						                15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                14:02:00.0000000,
+						                15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -1404,13 +1463,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 14:02:00.0000000
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                <null>,
+						                14:00:00.0000000,
+						                15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                14:02:00.0000000,
+						                15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -1490,13 +1557,20 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2:02:00
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                2:00:00,
+						                3:00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2:02:00,
+						                3:00:00
+						              ]
 						              """);
 				}
 
@@ -1606,13 +1680,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              contains collection expected ± 1:00 in order and contiguous,
-						              but it lacked all 2 expected items
+						              but it lacked 1 of 2 expected items: 2:02:00
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                <null>,
+						                2:00:00,
+						                3:00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2:02:00,
+						                3:00:00
+						              ]
 						              """);
 				}
 

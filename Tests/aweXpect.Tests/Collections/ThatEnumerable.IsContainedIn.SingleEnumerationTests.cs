@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
-					             but it contained item 4 at index 1 instead of 2
+					             but it contained item 4 at index 1 that was not expected
 
 					             Collection:
 					             [1, 4]

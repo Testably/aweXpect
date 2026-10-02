@@ -28,13 +28,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1 day in order and contiguous,
-						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 1 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+						              but it contained item 2024-01-11 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                2024-01-11,
+						                2024-01-21
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                2024-01-13,
+						                2024-01-21
+						              ]
 						              """);
 				}
 
@@ -84,13 +92,23 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1 day in order and contiguous,
-						              but it contained item {Formatter.Format(new DateOnly(2024, 1, 11))} at index 2 instead of {Formatter.Format(new DateOnly(2024, 1, 13))}
+						              but it contained item 2024-01-11 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                <null>,
+						                2024-01-11,
+						                2024-01-21
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                <null>,
+						                2024-01-13,
+						                2024-01-21
+						              ]
 						              """);
 				}
 
@@ -140,13 +158,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 1 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+						              but it contained item 2024-01-01T14:00:00.0000000 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -199,13 +225,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 1 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+						              but it contained item 2024-01-01T14:00:00.0000000 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """)
 						.Because("the applied default tolerance is part of the expectation");
 				}
@@ -227,13 +261,23 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new DateTime(2024, 1, 1, 14, 0, 0))} at index 2 instead of {Formatter.Format(new DateTime(2024, 1, 1, 14, 2, 0))}
+						              but it contained item 2024-01-01T14:00:00.0000000 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                <null>,
+						                2024-01-01T14:00:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                <null>,
+						                2024-01-01T14:02:00.0000000,
+						                2024-01-01T15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -267,13 +311,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))} at index 1 instead of {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero))}
+						              but it contained item 2024-01-01T14:00:00.0000000+00:00 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                2024-01-01T14:02:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 						              """);
 				}
 
@@ -307,13 +359,23 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero))} at index 2 instead of {Formatter.Format(new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero))}
+						              but it contained item 2024-01-01T14:00:00.0000000+00:00 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                <null>,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                <null>,
+						                2024-01-01T14:02:00.0000000+00:00,
+						                2024-01-01T15:00:00.0000000+00:00
+						              ]
 						              """);
 				}
 
@@ -347,13 +409,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0m)} at index 1 instead of {Formatter.Format(2.5m)}
+						              but it contained item 2.0 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, 2.5, 3.0]
 						              """);
 				}
 
@@ -387,13 +449,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0m)} at index 2 instead of {Formatter.Format(2.5m)}
+						              but it contained item 2.0 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, <null>, 2.5, 3.0]
 						              """);
 				}
 
@@ -427,13 +489,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0)} at index 1 instead of {Formatter.Format(2.5)}
+						              but it contained item 2.0 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, 2.5, 3.0]
 						              """);
 				}
 
@@ -493,13 +555,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0)} at index 2 instead of {Formatter.Format(2.5)}
+						              but it contained item 2.0 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, <null>, 2.5, 3.0]
 						              """);
 				}
 
@@ -533,13 +595,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0F)} at index 1 instead of {Formatter.Format(2.5F)}
+						              but it contained item 2.0 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, 2.5, 3.0]
 						              """);
 				}
 
@@ -573,13 +635,13 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
-						              but it contained item {Formatter.Format(2.0F)} at index 2 instead of {Formatter.Format(2.5F)}
+						              but it contained item 2.0 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, 3.0]
 
 						              Expected:
-						              {Formatter.Format(expected)}
+						              [1.0, <null>, 2.5, 3.0]
 						              """);
 				}
 
@@ -627,13 +689,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 1 instead of {Formatter.Format(new TimeOnly(14, 2))}
+						              but it contained item 14:00:00.0000000 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                14:00:00.0000000,
+						                15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                14:02:00.0000000,
+						                15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -681,13 +751,23 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new TimeOnly(14, 0))} at index 2 instead of {Formatter.Format(new TimeOnly(14, 2))}
+						              but it contained item 14:00:00.0000000 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                <null>,
+						                14:00:00.0000000,
+						                15:00:00.0000000
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                <null>,
+						                14:02:00.0000000,
+						                15:00:00.0000000
+						              ]
 						              """);
 				}
 
@@ -721,13 +801,21 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new TimeSpan(2, 0, 0))} at index 1 instead of {Formatter.Format(new TimeSpan(2, 2, 0))}
+						              but it contained item 2:00:00 at index 1 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                2:00:00,
+						                3:00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                2:02:00,
+						                3:00:00
+						              ]
 						              """);
 				}
 
@@ -761,13 +849,23 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
-						              but it contained item {Formatter.Format(new TimeSpan(2, 0, 0))} at index 2 instead of {Formatter.Format(new TimeSpan(2, 2, 0))}
+						              but it contained item 2:00:00 at index 2 that was not expected
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                <null>,
+						                2:00:00,
+						                3:00:00
+						              ]
 
 						              Expected:
-						              {Formatter.Format(expected, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                <null>,
+						                2:02:00,
+						                3:00:00
+						              ]
 						              """);
 				}
 

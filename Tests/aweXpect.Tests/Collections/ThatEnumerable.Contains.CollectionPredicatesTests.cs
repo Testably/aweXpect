@@ -181,9 +181,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item 3 at index 3 instead of a => (a == 1) and
-					               contained item 12 at index 4 instead of a => (a == 2)
+					             but it lacked 1 of 5 expected items: a => (a == 1)
 
 					             Collection:
 					             [1, 2, 1, 3, 12, 2, 2]
@@ -265,15 +263,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "d" at index 3 instead of x => (x == "x")
-					             and
-					               contained item "e" at index 4 instead of x => (x == "y")
-					             and
-					               lacked 3 of 6 expected items:
-					                 x => (x == "x"),
-					                 x => (x == "y"),
-					                 x => (x == "z")
+					             but it lacked 3 of 6 expected items:
+					               x => (x == "x"),
+					               x => (x == "y"),
+					               x => (x == "z")
 
 					             Collection:
 					             [
@@ -317,7 +310,9 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it lacked all 6 expected items
+					             but it lacked 2 of 6 expected items:
+					               x => (x == "a"),
+					               x => (x == "e")
 
 					             Collection:
 					             [
@@ -391,9 +386,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "c" at index 1 instead of x => (x == "b") and
-					               contained item "b" at index 2 instead of x => (x == "c")
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -502,10 +495,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it
-					               contained item "b" at index 1 instead of x => (x == "a") and
-					               contained item "c" at index 2 instead of x => (x == "b") and
-					               lacked 1 of 4 expected items: x => (x == "a")
+					             but it lacked 1 of 4 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -558,7 +548,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "c" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -905,15 +895,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "d" at index 3 instead of x => (x == "x")
-					             and
-					               contained item "e" at index 4 instead of x => (x == "y")
-					             and
-					               lacked 3 of 6 expected items:
-					                 x => (x == "x"),
-					                 x => (x == "y"),
-					                 x => (x == "z")
+					             but it lacked 3 of 6 expected items:
+					               x => (x == "x"),
+					               x => (x == "y"),
+					               x => (x == "z")
 
 					             Collection:
 					             [
@@ -957,7 +942,9 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 5 unique expected items
+					             but it lacked 2 of 5 expected items:
+					               x => (x == "a"),
+					               x => (x == "e")
 
 					             Collection:
 					             [
@@ -1031,9 +1018,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of x => (x == "b") and
-					               contained item "b" at index 2 instead of x => (x == "c")
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -1155,7 +1140,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "c" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -2535,17 +2520,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
-					             but it
-					               contained item "d" at index 3 instead of x => (x == "x")
-					             and
-					               contained item "e" at index 4 instead of x => (x == "y")
-					             and
-					               did not contain any additional items
-					             and
-					               lacked 3 of 6 expected items:
-					                 x => (x == "x"),
-					                 x => (x == "y"),
-					                 x => (x == "z")
+					             but it lacked 3 of 6 expected items:
+					               x => (x == "x"),
+					               x => (x == "y"),
+					               x => (x == "z")
 
 					             Collection:
 					             [
@@ -2590,8 +2568,11 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               did not contain any additional items and
-					               lacked all 6 expected items
+					               did not contain any additional items
+					             and
+					               lacked 2 of 6 expected items:
+					                 x => (x == "a"),
+					                 x => (x == "e")
 
 					             Collection:
 					             [
@@ -2666,8 +2647,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               contained item "c" at index 1 instead of x => (x == "b") and
-					               contained item "b" at index 2 instead of x => (x == "c") and
+					               contained item "b" at index 2 in wrong order and
 					               did not contain any additional items
 
 					             Collection:
@@ -2780,8 +2760,6 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it
-					               contained item "b" at index 1 instead of x => (x == "a") and
-					               contained item "c" at index 2 instead of x => (x == "b") and
 					               did not contain any additional items and
 					               lacked 1 of 4 expected items: x => (x == "a")
 
@@ -3150,15 +3128,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it
-					               contained item "d" at index 3 instead of x => (x == "x")
-					             and
-					               contained item "e" at index 4 instead of x => (x == "y")
-					             and
-					               lacked 3 of 6 expected items:
-					                 x => (x == "x"),
-					                 x => (x == "y"),
-					                 x => (x == "z")
+					             but it lacked 3 of 6 expected items:
+					               x => (x == "x"),
+					               x => (x == "y"),
+					               x => (x == "z")
 
 					             Collection:
 					             [
@@ -3203,8 +3176,11 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               did not contain any additional items and
-					               lacked all 5 unique expected items
+					               did not contain any additional items
+					             and
+					               lacked 2 of 5 expected items:
+					                 x => (x == "a"),
+					                 x => (x == "e")
 
 					             Collection:
 					             [
@@ -3279,8 +3255,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
-					               contained item "c" at index 1 instead of x => (x == "b") and
-					               contained item "b" at index 2 instead of x => (x == "c") and
+					               contained item "b" at index 2 in wrong order and
 					               did not contain any additional items
 
 					             Collection:
@@ -4880,7 +4855,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order ignoring interspersed items,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "b" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -4950,7 +4925,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates and interspersed items,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "b" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -5020,7 +4995,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring interspersed items,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "b" at index 1 in wrong order
 
 					             Collection:
 					             [
@@ -5111,7 +5086,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring duplicates and interspersed items,
-					             but it lacked 1 of 2 expected items: x => (x == "a")
+					             but it contained item "b" at index 1 in wrong order
 
 					             Collection:
 					             [

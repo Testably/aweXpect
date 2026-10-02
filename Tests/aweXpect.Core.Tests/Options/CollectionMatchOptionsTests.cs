@@ -210,9 +210,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but it
-				               contained item "b" at index 1 instead of an item that is equal to "c" and
-				               lacked 1 of 2 expected items: an item that is equal to "c"
+				             but it lacked 1 of 2 expected items: an item that is equal to "c"
 
 				             Collection:
 				             [
@@ -975,6 +973,99 @@ public class CollectionMatchOptionsTests
 			await That(result).IsEqualTo(isMatch);
 		}
 
+		[Fact]
+		public async Task ContainmentInOrder_ShouldAgreeWithABruteForceSearch()
+		{
+			CollectionMatchOptions.EquivalenceRelations[] relations =
+			[
+				CollectionMatchOptions.EquivalenceRelations.Contains,
+				CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
+				CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+				CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
+			];
+			string[] equalities = ["eq", "div2", "near", "pred",];
+			Random random = new(1530);
+			List<string> disagreements = new();
+			for (int run = 0; run < 2000; run++)
+			{
+				CollectionMatchOptions.EquivalenceRelations relation = relations[random.Next(relations.Length)];
+				bool isInterspersed = random.Next(2) == 0;
+				string equality = equalities[random.Next(equalities.Length)];
+				int[] subject = Enumerable.Range(0, random.Next(0, 6)).Select(_ => random.Next(4)).ToArray();
+				string[] expected = Enumerable.Range(0, random.Next(1, 5))
+					.Select(_ => (equality == "pred" ? new[] { "==", ">=", "<=", }[random.Next(3)] : "") + random.Next(4))
+					.ToArray();
+				CollectionMatchOptions sut = new(relation);
+				if (isInterspersed)
+				{
+					sut.IgnoringInterspersedItems();
+				}
+
+				ICollectionMatcher<int, int> matcher = equality == "pred"
+					? sut.GetCollectionMatcher<int, int>(expected.Select(ToPredicate))
+					: sut.GetCollectionMatcher<int, int>(expected.Select(int.Parse));
+				bool result = await Matches(matcher, subject, new Equality(equality));
+				if (result != IsContainedInOrder(relation, isInterspersed, subject, expected,
+					    (value, expectedText) => IsMatch(equality, value, expectedText)))
+				{
+					disagreements.Add($"{relation} {(isInterspersed ? "interspersed " : "")}{equality} " +
+					                  $"[{string.Join(",", subject)}] vs [{string.Join(",", expected)}]: {result}");
+				}
+			}
+
+			await That(disagreements).IsEmpty();
+		}
+
+		private static bool IsMatch(string equality, int value, string expected)
+			=> equality switch
+			{
+				"pred" => ToPredicate(expected).Compile()(value),
+				"div2" => value / 2 == int.Parse(expected) / 2,
+				"near" => Math.Abs(value - int.Parse(expected)) <= 1,
+				_ => value == int.Parse(expected),
+			};
+
+		/// <summary>
+		///     Searches every offset for a run, or the earliest matching items for a subsequence, which finds one whenever
+		///     there is one.
+		/// </summary>
+		private static bool IsContainedInOrder(CollectionMatchOptions.EquivalenceRelations relation,
+			bool isInterspersed, int[] subject, string[] expected, Func<int, string, bool> isMatch)
+		{
+			bool isContains = relation.HasFlag(CollectionMatchOptions.EquivalenceRelations.Contains);
+			int searchedCount = isContains ? subject.Length : expected.Length;
+			int soughtCount = isContains ? expected.Length : subject.Length;
+			bool Fits(int searched, int sought)
+				=> isContains ? isMatch(subject[searched], expected[sought]) : isMatch(subject[sought], expected[searched]);
+
+			bool isFound;
+			if (isInterspersed)
+			{
+				int position = 0;
+				for (int sought = 0; sought < soughtCount && position <= searchedCount; sought++, position++)
+				{
+					while (position < searchedCount && !Fits(position, sought))
+					{
+						position++;
+					}
+				}
+
+				isFound = position <= searchedCount;
+			}
+			else
+			{
+				isFound = Enumerable.Range(0, Math.Max(0, searchedCount - soughtCount + 1))
+					.Any(offset => Enumerable.Range(0, soughtCount).All(sought => Fits(offset + sought, sought)));
+			}
+
+			return isFound && (relation switch
+			{
+				CollectionMatchOptions.EquivalenceRelations.ContainsProperly => subject.Length > expected.Length,
+				CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly => subject.Length < expected.Length,
+				_ => true,
+			});
+		}
+
 		private static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
 			IOptionsEquality<int> options)
 		{
@@ -1099,10 +1190,8 @@ public class CollectionMatchOptionsTests
 				             Expected that subject
 				             is contained in collection [2, 3,] in order and contiguous,
 				             but it
-				               contained item 1 at index 0 instead of 2 and
-				               contained item 2 at index 1 instead of 3 and
-				               contained item 2 at index 2 that was not expected and
-				               contained item 3 at index 3 that was not expected
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 2 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]
