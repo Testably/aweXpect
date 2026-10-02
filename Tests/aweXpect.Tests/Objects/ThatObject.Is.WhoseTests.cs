@@ -144,6 +144,11 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 or whose GetValueAsync() is not equal to 42,
 					             but it was ThatObject.Is.WhoseTests.AsyncClass and GetValueAsync() was 42
+
+					             Actual:
+					             ThatObject.Is.WhoseTests.AsyncClass {
+					               Value = 42
+					             }
 					             """);
 			}
 
@@ -378,6 +383,12 @@ public sealed partial class ThatObject
 					             Expected that subject
 					             is not of type ThatObject.Is.AndWhoseTests.TwoValues whose First is equal to 1 or whose Second is not equal to 2,
 					             but it was ThatObject.Is.AndWhoseTests.TwoValues and Second was 2
+
+					             Actual:
+					             ThatObject.Is.AndWhoseTests.TwoValues {
+					               First = 1,
+					               Second = 2
+					             }
 					             """);
 			}
 

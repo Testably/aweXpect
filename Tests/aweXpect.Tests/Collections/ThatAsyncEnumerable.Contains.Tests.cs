@@ -88,19 +88,52 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained 1 at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
+					             """);
+			}
+
+			[Fact]
+			public async Task ShouldSupportAtMost_WhenTheFailureIsDecidedBeforeTheEnd_ShouldStopCounting()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+
+				async Task Act()
+					=> await That(subject).Contains(1).AtMost(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equal to 1 at most once,
+					             but it contained 1 at least twice
+
+					             Collection:
+					             [1, 1, (… and maybe more)]
+					             """)
+					.Because("the sync version reports the same input this way");
+			}
+
+			[Fact]
+			public async Task ShouldSupportAtMost_WhenTheSourceThrowsAfterTheFailure_ShouldKeepTheFailure()
+			{
+				async IAsyncEnumerable<int> ThrowingAfterTwoItems()
+				{
+					await Task.Yield();
+					yield return 1;
+					yield return 1;
+					throw new InvalidOperationException("enumerated too far");
+				}
+
+				async Task Act()
+					=> await That(ThrowingAfterTwoItems()).Contains(1).AtMost(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that ThrowingAfterTwoItems()
+					             contains an item equal to 1 at most once,
+					             but it contained 1 at least twice
+
+					             Collection:
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -168,19 +201,9 @@ public sealed partial class ThatAsyncEnumerable
 					              but it contained 1 {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
-					              ]
+					              {(times == 1
+					              	? "[1, 1, (… and maybe more)]"
+					              	: Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
 					              """);
 			}
 
@@ -201,19 +224,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained 1 at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -266,19 +277,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained 2 at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -480,14 +479,14 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "blue" at most once,
-					             but it contained "blue" twice
+					             but it contained "blue" at least twice
 
 					             Collection:
 					             [
 					               "green",
 					               "blue",
 					               "blue",
-					               "yellow"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -560,14 +559,14 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "blue" fewer than twice,
-					             but it contained "blue" twice
+					             but it contained "blue" at least twice
 
 					             Collection:
 					             [
 					               "green",
 					               "blue",
 					               "blue",
-					               "yellow"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -611,14 +610,15 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "yellow",
-					             but it contained "yellow" once
+					             but it contained "yellow" at least once
 
 					             Collection:
 					             [
 					               "green",
 					               "blue",
 					               "blue",
-					               "yellow"
+					               "yellow",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -841,20 +841,28 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained it at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
+			}
+
+			[Fact]
+			public async Task ShouldSupportAtMost_WhenTheFailureIsDecidedBeforeTheEnd_ShouldStopCounting()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+
+				async Task Act()
+					=> await That(subject).Contains(x => x == 1).AtMost(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item matching x => x == 1 at most once,
+					             but it contained it at least twice
+
+					             Collection:
+					             [1, 1, (… and maybe more)]
+					             """)
+					.Because("the sync version reports the same input this way");
 			}
 
 			[Theory]
@@ -909,19 +917,9 @@ public sealed partial class ThatAsyncEnumerable
 					              but it contained it {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
-					              ]
+					              {(times == 1
+					              	? "[1, 1, (… and maybe more)]"
+					              	: Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
 					              """);
 			}
 
@@ -942,19 +940,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained it at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -1007,19 +993,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it contained it at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, (… and maybe more)]
 					             """);
 			}
 

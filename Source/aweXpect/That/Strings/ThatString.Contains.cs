@@ -74,12 +74,14 @@ public static partial class ThatString
 	{
 		private string? _actual;
 		private int _actualCount;
+		private bool _addsContextWhenNegated;
 		private bool _isNegated;
 
 		/// <inheritdoc />
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -88,13 +90,22 @@ public static partial class ThatString
 
 			_actualCount = await options.CountOccurrences(actual, expected);
 			Outcome = quantifier.Check(_actualCount, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
-			if (Outcome != Outcome.Success && !string.IsNullOrEmpty(actual))
+			_addsContextWhenNegated = Outcome == Outcome.Success;
+			if (Outcome != Outcome.Success)
 			{
-				expectationBuilder.AddStringContext("Actual", actual, this);
-				expectationBuilder.AddStringContext("Expected", expected, this);
+				AddContexts(actual, false);
 			}
 			
 			return this;
+		}
+
+		private void AddContexts(string actual, bool onlyOnFailure)
+		{
+			if (!string.IsNullOrEmpty(actual))
+			{
+				expectationBuilder.AddStringContext("Actual", actual, this, onlyOnFailure);
+				expectationBuilder.AddStringContext("Expected", expected, this, onlyOnFailure);
+			}
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -167,6 +178,14 @@ public static partial class ThatString
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				AddContexts(_actual!, true);
+			}
+
 			return this;
 		}
 	}

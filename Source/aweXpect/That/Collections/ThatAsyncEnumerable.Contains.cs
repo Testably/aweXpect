@@ -320,7 +320,9 @@ public static partial class ThatAsyncEnumerable
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private IAsyncEnumerable<TItem>? _actual;
+		private LimitedCollection<TItem>? _items;
 		private int _count;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 
@@ -328,6 +330,7 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -339,9 +342,9 @@ public static partial class ThatAsyncEnumerable
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new();
+			_items = items;
 			_count = 0;
 			_isFinished = false;
-			bool isFailed = false;
 			int totalCount = 0;
 			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
@@ -355,19 +358,18 @@ public static partial class ThatAsyncEnumerable
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);
-					isFailed |= check == false;
-					if (check == true)
+					switch (check)
 					{
-						Outcome = Outcome.Success;
-						return this;
+						case false:
+							// The verdict is final, so no further items are received only for the context.
+							Outcome = Outcome.Failure;
+							expectationBuilder.AddCollectionContext(items, true);
+							return this;
+						case true:
+							Outcome = Outcome.Success;
+							_addsContextWhenNegated = true;
+							return this;
 					}
-				}
-
-				if (items.Count > maximumNumberOfCollectionItems && isFailed)
-				{
-					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(items, true);
-					return this;
 				}
 			}
 
@@ -470,6 +472,14 @@ public static partial class ThatAsyncEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_items, true, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}
@@ -486,8 +496,10 @@ public static partial class ThatAsyncEnumerable
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private IAsyncEnumerable<TItem>? _actual;
+		private LimitedCollection<TItem>? _items;
 		private int _count;
 		private TItem? _firstFoundItem;
+		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
 
@@ -495,6 +507,7 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -506,9 +519,9 @@ public static partial class ThatAsyncEnumerable
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new();
+			_items = items;
 			_count = 0;
 			_isFinished = false;
-			bool isFailed = false;
 			int totalCount = 0;
 			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 			{
@@ -521,19 +534,18 @@ public static partial class ThatAsyncEnumerable
 				if (await predicate(item))
 				{
 					bool? check = CountMatch(item);
-					isFailed |= check == false;
-					if (check == true)
+					switch (check)
 					{
-						Outcome = Outcome.Success;
-						return this;
+						case false:
+							// The verdict is final, so no further items are received only for the context.
+							Outcome = Outcome.Failure;
+							expectationBuilder.AddCollectionContext(items, true);
+							return this;
+						case true:
+							Outcome = Outcome.Success;
+							_addsContextWhenNegated = true;
+							return this;
 					}
-				}
-
-				if (items.Count > maximumNumberOfCollectionItems && isFailed)
-				{
-					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(items, true);
-					return this;
 				}
 			}
 
@@ -628,6 +640,14 @@ public static partial class ThatAsyncEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
+			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
+			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
+			if (_addsContextWhenNegated)
+			{
+				_addsContextWhenNegated = false;
+				expectationBuilder.AddCollectionContext(_items, true, onlyOnFailureOf: this);
+			}
+
 			return this;
 		}
 	}

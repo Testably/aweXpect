@@ -25,7 +25,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with ["## ", "te"] as prefix,
 					             but it did end with [
-					               "# Title",
 					               "## Intro",
 					               "text"
 					             ]
@@ -45,7 +44,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with ["^## ", "^te"] as regex,
 					             but it did end with [
-					               "# Title",
 					               "## Intro",
 					               "text"
 					             ]
@@ -79,7 +77,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with ["Intro", "xt"] as suffix,
 					             but it did end with [
-					               "# Title",
 					               "## Intro",
 					               "text"
 					             ]
@@ -99,7 +96,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with ["## *", "t*t"] as wildcard,
 					             but it did end with [
-					               "# Title",
 					               "## Intro",
 					               "text"
 					             ]
@@ -131,7 +127,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with ["bar"] ignoring case,
 					             but it did end with [
-					               "FOO",
 					               "BAR"
 					             ]
 					             """);
@@ -154,18 +149,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with [MyClass { StringValue = "", Value = 3 }, MyClass { StringValue = "", Value = 5 }, MyClass { StringValue = "", Value = 8 }] using equivalency,
 					             but it did end with [
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 1
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 1
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 2
-					               },
 					               MyClass {
 					                 StringValue = "",
 					                 Value = 3
@@ -211,6 +194,22 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectEndsWithUnexpectedValues_ShouldOnlyReportTheMatchingSuffix()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5);
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith(4, 5);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with [4, 5],
+					             but it did end with [4, 5]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectEndsWithUnexpectedValues_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -224,7 +223,6 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             does not end with unexpected,
 					             but it did end with [
-					               "foo",
 					               "bar",
 					               "baz"
 					             ]

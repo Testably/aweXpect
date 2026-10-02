@@ -1809,10 +1809,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1 day,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                2024-01-11,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1888,10 +1892,15 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1 day,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01,
+						                <null>,
+						                2024-01-11,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -1966,10 +1975,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                2024-01-01T14:00:00.0000000,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2045,10 +2058,15 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000,
+						                <null>,
+						                2024-01-01T14:00:00.0000000,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2123,10 +2141,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2202,10 +2224,15 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                2024-01-01T13:00:00.0000000+00:00,
+						                <null>,
+						                2024-01-01T14:00:00.0000000+00:00,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2275,10 +2302,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2348,10 +2375,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2421,10 +2448,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2494,10 +2521,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2567,10 +2594,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2640,10 +2667,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 0.25,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values)}
+						              [1.0, <null>, 2.0, (… and maybe more)]
 						              """);
 				}
 
@@ -2718,10 +2745,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                14:00:00.0000000,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2797,10 +2828,15 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                13:00:00.0000000,
+						                <null>,
+						                14:00:00.0000000,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2875,10 +2911,14 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[1])} once
+						              but it contained {Formatter.Format(values[1])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                2:00:00,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
@@ -2954,10 +2994,15 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              does not contain an item equal to {Formatter.Format(unexpected)} ± 1:00,
-						              but it contained {Formatter.Format(values[2])} once
+						              but it contained {Formatter.Format(values[2])} at least once
 
 						              Collection:
-						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              [
+						                1:00:00,
+						                <null>,
+						                2:00:00,
+						                (… and maybe more)
+						              ]
 						              """);
 				}
 
