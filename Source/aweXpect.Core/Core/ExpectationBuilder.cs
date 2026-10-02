@@ -465,23 +465,34 @@ public abstract class ExpectationBuilder
 	///     <see cref="OperationCanceledException" /> thrown while the evaluation is canceled aborts the evaluation
 	///     instead.
 	/// </remarks>
+	/// <param name="memberAccessor">Accesses the member on the source value.</param>
+	/// <param name="separator">The text between the previous expectation and the expectations on the member.</param>
+	/// <param name="subjectName">
+	///     The name that the expectations on the member use for it, or <see langword="null" /> to keep the current one.
+	/// </param>
+	/// <param name="expectationGrammars">
+	///     Changes the <see cref="ExpectationGrammars" /> of the expectations on the member.
+	/// </param>
+	/// <param name="negateMemberOnly">
+	///     Whether a negation only applies to the expectations on the member instead of the whole expectation.
+	/// </param>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, TTarget?> memberAccessor,
 		string? separator = null,
-		string? replaceIt = null,
-		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammar = null,
+		string? subjectName = null,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
 		bool negateMemberOnly = false)
 	{
 		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator,
-			negateMemberOnly, replaceIt));
+			negateMemberOnly, subjectName));
 
-		if (replaceIt != null)
+		if (subjectName != null)
 		{
-			_it = replaceIt;
+			_it = subjectName;
 		}
 
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
-		ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
+		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
 		return this;
 	}
 
@@ -500,6 +511,8 @@ public abstract class ExpectationBuilder
 	///     <see cref="OperationCanceledException" /> thrown while the evaluation is canceled aborts the evaluation
 	///     instead.
 	/// </remarks>
+	/// <param name="asyncMemberAccessor">Accesses the member on the source value asynchronously.</param>
+	/// <param name="separator">The text between the previous expectation and the expectations on the member.</param>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
 		string? separator = null)

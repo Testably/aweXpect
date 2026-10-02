@@ -30,5 +30,16 @@ public sealed partial class ThatDelegateTests
 			await That(sw.Elapsed).IsLessThan(10.Seconds())
 				.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 		}
+
+		[Fact]
+		public async Task WhenTimeoutIsANamedArgument_ShouldSucceed()
+		{
+			Action @delegate = () => throw new MyException();
+
+			async Task Act()
+				=> await That(@delegate).Throws<MyException>().Within(timeout: 1.Seconds());
+
+			await That(Act).DoesNotThrow();
+		}
 	}
 }

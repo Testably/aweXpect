@@ -5,7 +5,8 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that a string collection has a specified number of items.
+///     The result for verifying how often a <see langword="string" /> occurs, as a substring of a string or as an item
+///     of a string collection, with options for the string comparison.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="CountResult{TType,TThat,TSelf}" />
@@ -23,7 +24,8 @@ public class StringCountResult<TType, TThat>(
 		options);
 
 /// <summary>
-///     The result for verifying that a string collection has a specified number of items.
+///     The result for verifying how often a <see langword="string" /> occurs, as a substring of a string or as an item
+///     of a string collection, with options for the string comparison.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="CountResult{TType,TThat,TSelf}" />
