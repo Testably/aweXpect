@@ -14,13 +14,12 @@ public class IsUtf8SpanParsableResult<TType>(
 	: AndOrResult<SpanWrapper<byte>, IThat<SpanWrapper<byte>>>(expectationBuilder, subject)
 	where TType : IUtf8SpanParsable<TType>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
 	public IThat<TType> Which
-		=> new ThatSubject<TType>(_expectationBuilder
+		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<SpanWrapper<byte>, TType?>(d =>
 			{
 				if (TType.TryParse(d.AsSpan(), formatProvider, out TType? result))

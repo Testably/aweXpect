@@ -2,7 +2,6 @@
 using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -79,8 +78,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Tolerance
-				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 				Outcome = minimum.Value.DayNumber - actual.Value.DayNumber <= (int)timeTolerance.TotalDays &&
 				          actual.Value.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success

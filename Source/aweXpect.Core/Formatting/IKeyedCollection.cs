@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 
-namespace aweXpect.Helpers;
+namespace aweXpect.Formatting;
 
 /// <summary>
-///     A collection whose items belong to keys, so that a context lists the items together with their keys.
+///     A collection whose items belong to keys, e.g. the values that an expectation on a dictionary passes on.
 /// </summary>
-internal interface IKeyedCollection
+/// <remarks>
+///     The contexts of a failure, e.g. the matching items of a quantified expectation, list its items together with
+///     their keys.
+/// </remarks>
+public interface IKeyedCollection
 {
 	/// <summary>
 	///     Formats all items together with their keys.

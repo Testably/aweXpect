@@ -21,5 +21,5 @@ public partial class ThatDelegateThrows<TException>(
 	/// <summary>
 	///     The expectation builder.
 	/// </summary>
-	public ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+	public new ExpectationBuilder ExpectationBuilder => base.ExpectationBuilder;
 }

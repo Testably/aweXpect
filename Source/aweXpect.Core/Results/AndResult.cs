@@ -12,7 +12,6 @@ public class AndResult<TThat>(
 	TThat returnValue)
 	: ExpectationResult(expectationBuilder)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
@@ -21,7 +20,7 @@ public class AndResult<TThat>(
 	{
 		get
 		{
-			_expectationBuilder.And();
+			ExpectationBuilder.And();
 			return returnValue;
 		}
 	}
@@ -50,7 +49,6 @@ public class AndResult<TType, TThat, TSelf>(
 	: ExpectationResult<TType, TSelf>(expectationBuilder)
 	where TSelf : AndResult<TType, TThat, TSelf>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
@@ -59,7 +57,7 @@ public class AndResult<TType, TThat, TSelf>(
 	{
 		get
 		{
-			_expectationBuilder.And();
+			ExpectationBuilder.And();
 			return returnValue;
 		}
 	}

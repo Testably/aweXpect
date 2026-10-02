@@ -859,7 +859,7 @@ public static partial class ThatEnumerable
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => _quantifier is EnumerableQuantifier.NullCountQuantifier { IsOrderedAgainstNull: true, }
+			get => _quantifier.FailsBothWays
 				? Outcome.Failure
 				: base.Outcome;
 			protected set => base.Outcome = value;
@@ -966,7 +966,7 @@ public static partial class ThatEnumerable
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => _quantifier is EnumerableQuantifier.NullCountQuantifier { IsOrderedAgainstNull: true, }
+			get => _quantifier.FailsBothWays
 				? Outcome.Failure
 				: base.Outcome;
 			protected set => base.Outcome = value;

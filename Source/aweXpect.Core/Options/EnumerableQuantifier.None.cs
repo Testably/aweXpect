@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
 namespace aweXpect.Options;

@@ -25,7 +25,8 @@ internal static partial class SnippetCompiler
 {
 	private const string OmittedInitializerPattern = @"=\s*//\s*\.\.\.";
 	private static readonly CSharpParseOptions ParseOptions = new(LanguageVersion.Latest);
-	private static readonly Lazy<MetadataReference[]> References = new(GetReferences);
+	private static readonly Lazy<MetadataReference[]> References = new(() => GetReferences(false));
+	private static readonly Lazy<MetadataReference[]> CoreReferences = new(() => GetReferences(true));
 
 #if NET8_0_OR_GREATER
 	[GeneratedRegex(OmittedInitializerPattern)]
@@ -40,7 +41,13 @@ internal static partial class SnippetCompiler
 	///     Returns the compiler errors of the <paramref name="blocks" /> and <paramref name="scaffoldFiles" />, each
 	///     prefixed with the file and line.
 	/// </summary>
-	public static List<string> GetErrors(IReadOnlyList<CodeBlock> blocks, IEnumerable<string> scaffoldFiles)
+	/// <remarks>
+	///     With <paramref name="isExtensionCode" />, only the declarations of the blocks are compiled, against
+	///     aweXpect.Core without aweXpect, as an extension references it. Their statements show how a test project uses
+	///     the extension, which also references aweXpect.
+	/// </remarks>
+	public static List<string> GetErrors(IReadOnlyList<CodeBlock> blocks, IEnumerable<string> scaffoldFiles,
+		bool isExtensionCode = false)
 	{
 		List<(CodeBlock Block, CompilationUnitSyntax Root)> parsed = blocks
 			.Select(block => (block, CSharpSyntaxTree.ParseText(
@@ -62,7 +69,7 @@ internal static partial class SnippetCompiler
 
 		for (int i = 0; i < parsed.Count; i++)
 		{
-			AppendBlock(source, parsed[i].Block, parsed[i].Root, i, sharedTypes);
+			AppendBlock(source, parsed[i].Block, parsed[i].Root, i, sharedTypes, isExtensionCode);
 		}
 
 		source.AppendLine("}");
@@ -71,7 +78,7 @@ internal static partial class SnippetCompiler
 			scaffoldFiles
 				.Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file), ParseOptions, file))
 				.Append(CSharpSyntaxTree.ParseText(source.ToString(), ParseOptions, "Snippets.g.cs")),
-			References.Value,
+			isExtensionCode ? CoreReferences.Value : References.Value,
 			new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
 				nullableContextOptions: NullableContextOptions.Enable));
 
@@ -87,7 +94,7 @@ internal static partial class SnippetCompiler
 	}
 
 	private static void AppendBlock(StringBuilder source, CodeBlock block, CompilationUnitSyntax root, int index,
-		HashSet<string> sharedTypes)
+		HashSet<string> sharedTypes, bool withoutStatements)
 	{
 		List<SyntaxNode> statements = [];
 		List<SyntaxNode> members = [];
@@ -97,7 +104,10 @@ internal static partial class SnippetCompiler
 			if (member is GlobalStatementSyntax { Statement: var statement, } &&
 			    !(statement is LocalFunctionStatementSyntax localFunction && IsMethod(localFunction)))
 			{
-				statements.Add(member);
+				if (!withoutStatements)
+				{
+					statements.Add(member);
+				}
 			}
 			else if (member is BaseNamespaceDeclarationSyntax ||
 			         (GetTypeName(member) is { } name && sharedTypes.Contains(name) &&
@@ -159,7 +169,7 @@ internal static partial class SnippetCompiler
 		}
 	}
 
-	private static MetadataReference[] GetReferences()
+	private static MetadataReference[] GetReferences(bool withoutAweXpect)
 	{
 		Dictionary<string, string> paths = new(StringComparer.OrdinalIgnoreCase);
 #if NETFRAMEWORK
@@ -180,6 +190,11 @@ internal static partial class SnippetCompiler
 #endif
 
 		paths.Remove(typeof(SnippetCompiler).Assembly.GetName().Name!);
+		if (withoutAweXpect)
+		{
+			paths.Remove(typeof(ThatEnumerable).Assembly.GetName().Name!);
+		}
+
 		return paths.Values.Select(path => (MetadataReference)MetadataReference.CreateFromFile(path)).ToArray();
 	}
 #if NETFRAMEWORK

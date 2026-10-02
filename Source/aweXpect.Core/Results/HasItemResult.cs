@@ -18,7 +18,6 @@ public class HasItemResult<TCollection>(
 		IOptionsProvider<CollectionIndexOptions>
 {
 	private readonly IThat<TCollection?> _collection = collection;
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
@@ -29,7 +28,7 @@ public class HasItemResult<TCollection>(
 	public HasItemAtIndexResult<TCollection> AtIndex(int index)
 	{
 		collectionIndexOptions.SetMatch(new HasItemResultAtIndexMatch(index));
-		return new HasItemAtIndexResult<TCollection>(_expectationBuilder, _collection, collectionIndexOptions);
+		return new HasItemAtIndexResult<TCollection>(ExpectationBuilder, _collection, collectionIndexOptions);
 	}
 
 	private sealed class HasItemResultAtIndexMatch : CollectionIndexOptions.IMatchFromBeginning

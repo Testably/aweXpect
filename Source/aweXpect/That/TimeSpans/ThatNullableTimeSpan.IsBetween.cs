@@ -1,7 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -78,8 +77,7 @@ public static partial class ThatNullableTimeSpan
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Tolerance
-				                         ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 				Outcome = actual.Value.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
 				          actual.Value.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success

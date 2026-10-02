@@ -20,6 +20,13 @@ public class TimeTolerance
 	public TimeSpan? Tolerance { get; private set; }
 
 	/// <summary>
+	///     Returns the <see cref="Tolerance" />, or the
+	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> if none is set.
+	/// </summary>
+	public virtual TimeSpan GetToleranceOrDefault()
+		=> Tolerance ?? GetDefaultTolerance();
+
+	/// <summary>
 	///     Sets the tolerance to apply on the time comparisons.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>

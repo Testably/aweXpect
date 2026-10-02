@@ -1,18 +1,11 @@
-﻿using aweXpect.Core;
+﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
 namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
-	/// <summary>
-	///     Matches exactly <paramref name="expected" /> items, or no count at all when it is <see langword="null" />,
-	///     because a count is never <see langword="null" />.
-	/// </summary>
-	internal static EnumerableQuantifier Exactly(int? expected)
-		=> expected is null
-			? new NullCountQuantifier("exactly <null>", false)
-			: Exactly(expected.Value);
 
 	/// <summary>
 	///     Matches no count, because nothing can be ordered against <see langword="null" />, e.g.
@@ -24,9 +17,10 @@ public abstract partial class EnumerableQuantifier
 	internal static EnumerableQuantifier OrderedAgainstNull(string text)
 		=> new NullCountQuantifier(text, true);
 
-	internal sealed class NullCountQuantifier(string text, bool isOrderedAgainstNull) : EnumerableQuantifier
+	private sealed class NullCountQuantifier(string text, bool isOrderedAgainstNull) : EnumerableQuantifier
 	{
-		public bool IsOrderedAgainstNull { get; } = isOrderedAgainstNull;
+		/// <inheritdoc />
+		public override bool FailsBothWays => isOrderedAgainstNull;
 
 		public override string ToString() => text;
 

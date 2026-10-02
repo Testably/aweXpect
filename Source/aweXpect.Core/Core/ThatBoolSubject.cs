@@ -28,11 +28,10 @@ public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 
 	private ThatBoolSubject(WithDefaultExpectationBuilderProxy expectationBuilder) : base(expectationBuilder)
 	{
-		ExpectationBuilder = expectationBuilder;
 	}
 
 	/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-	public ExpectationBuilder ExpectationBuilder { get; }
+	public new ExpectationBuilder ExpectationBuilder => base.ExpectationBuilder;
 
 	private sealed class WithDefaultExpectationBuilderProxy(ExpectationBuilder inner)
 		: ExpectationBuilder(inner.Subject, inner.ExpectationGrammars)

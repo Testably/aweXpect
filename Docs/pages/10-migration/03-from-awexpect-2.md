@@ -358,8 +358,32 @@ interval, and the default comes from `Customize.aweXpect.Settings().DefaultCheck
 time at the timeout and never after it. As there, a `WithTimeout(…)` that is not shorter than `Within(…)` reports the
 result of that last check instead of "did not finish within …".
 
-`EnumerableQuantifier.AppendResult` takes the `it` of the expectation, so that a result about the items themselves can
-name the subject that had them. A custom quantifier has to add the parameter.
+An extension that references only `aweXpect.Core` can now add expectations on collection items and repeated checks:
+`EnumerableQuantifier`, `QuantifiedCollectionConstraint<TValue, TItem>`, `RepeatedCheckOptions`,
+`RepeatedCheckResult<TType, TThat>`, `ObjectCountResult<…>` and `CollectionCountResult<TReturn>` moved from `aweXpect` to
+`aweXpect.Core` and keep their namespaces, so only code compiled against an earlier pre-release has to be rebuilt.
+The interfaces of the quantified elements are no longer nested in `ThatEnumerable` and `ThatAsyncEnumerable`:
+
+| Before                                                            | Now                                             |
+|-------------------------------------------------------------------|-------------------------------------------------|
+| `ThatEnumerable.IElements<TItem>`                                 | `IEnumerableElements<TItem>`                    |
+| `ThatEnumerable.IElements`                                        | `IEnumerableStringElements`                     |
+| `ThatEnumerable.IElementsForEnumerable<TEnumerable>`              | `INonGenericEnumerableElements<TEnumerable>`    |
+| `ThatEnumerable.IElementsForStructEnumerable<TEnumerable, TItem>` | `IStructEnumerableElements<TEnumerable, TItem>` |
+| `ThatEnumerable.IElementsForStructEnumerable<TEnumerable>`        | `IStructEnumerableStringElements<TEnumerable>`  |
+| `ThatAsyncEnumerable.IElements<TItem>`                            | `IAsyncEnumerableElements<TItem>`               |
+| `ThatAsyncEnumerable.IElements`                                   | `IAsyncEnumerableStringElements`                |
+
+An expectation on collection items extends the interface, e.g. `this IEnumerableElements<Track> elements`, and reads
+its `Quantifier` and `Subject` without a cast.
+
+`EnumerableQuantifier` can no longer be derived from outside aweXpect.Core, because its negated and nested texts rely on
+members that are not public; use the built-in quantifiers. Its `AppendResult` takes the `it` of the expectation, so that
+a result about the items themselves can name the subject that had them. `Exactly` takes an `int?`, and a `null`
+count matches no collection.
+
+`ExpectationBuilder` and `EquivalencyExpectationBuilder` can no longer be derived from, as they rely on members
+that are not public.
 
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.

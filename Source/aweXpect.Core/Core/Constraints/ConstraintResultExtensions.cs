@@ -198,9 +198,9 @@ public static class ConstraintResultExtensions
 
 		public override Exception? FailureCause => _inner.FailureCause;
 
-		internal override string? LeadingSubject => _inner.LeadingSubject;
+		public override string? LeadingSubject => _inner.LeadingSubject;
 
-		internal override string? TrailingSubject => _inner.TrailingSubject;
+		public override string? TrailingSubject => _inner.TrailingSubject;
 
 		internal override bool IsExpectationOnly => _inner.IsExpectationOnly;
 
@@ -293,9 +293,9 @@ public static class ConstraintResultExtensions
 
 		public override Exception? FailureCause => _inner.FailureCause;
 
-		internal override string? LeadingSubject => _inner.LeadingSubject;
+		public override string? LeadingSubject => _inner.LeadingSubject;
 
-		internal override string? TrailingSubject => _inner.TrailingSubject;
+		public override string? TrailingSubject => _inner.TrailingSubject;
 
 		internal override bool IsExpectationOnly => _inner.IsExpectationOnly;
 

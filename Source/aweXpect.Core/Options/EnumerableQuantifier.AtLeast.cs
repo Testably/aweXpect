@@ -1,42 +1,40 @@
-﻿using aweXpect.Core;
+﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches between <paramref name="minimum" /> and <paramref name="maximum" /> items.
+	///     Matches at least <paramref name="minimum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier Between(int minimum, int maximum)
+	public static EnumerableQuantifier AtLeast(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
-		ThrowHelper.ThrowIfCountIsNegative(maximum);
-		ThrowHelper.ThrowIfMaximumIsBelowMinimum<int>(minimum, maximum);
-		return new BetweenQuantifier(minimum, maximum);
+		return new AtLeastQuantifier(minimum);
 	}
 
-	private sealed class BetweenQuantifier(int minimum, int maximum)
-		: EnumerableQuantifier
+	private sealed class AtLeastQuantifier(int minimum) : EnumerableQuantifier
 	{
-		public override string ToString() => $"between {minimum} and {maximum}";
+		public override string ToString()
+			=> minimum switch
+			{
+				1 => "at least one",
+				_ => $"at least {minimum}",
+			};
 
 		/// <inheritdoc />
 		public override bool IsDeterminable(int matchingCount, int notMatchingCount)
-			=> matchingCount > maximum;
+			=> matchingCount >= minimum;
 
 		/// <inheritdoc />
-		public override bool IsSingle() => false;
+		public override bool IsSingle() => minimum == 1;
 
 		/// <inheritdoc />
 		public override Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount)
 		{
-			if (matchingCount > maximum)
-			{
-				return Outcome.Failure;
-			}
-
 			if (matchingCount >= minimum)
 			{
 				return Outcome.Success;
@@ -51,6 +49,18 @@ public abstract partial class EnumerableQuantifier
 		}
 
 		/// <inheritdoc />
+		public override QuantifierContexts GetQuantifierContext()
+			=> QuantifierContexts.None;
+
+		/// <inheritdoc />
+		private protected override EnumerableQuantifier GetComplement(ExpectationGrammars grammars)
+			=> minimum switch
+			{
+				1 => None(grammars),
+				_ => LessThan(minimum),
+			};
+
+		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
 			string it,
@@ -59,6 +69,6 @@ public abstract partial class EnumerableQuantifier
 			int? totalCount,
 			string? verb = null)
 			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb,
-				matchingCount <= maximum && !grammars.IsNegated());
+				!grammars.IsNegated());
 	}
 }

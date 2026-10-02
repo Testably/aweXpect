@@ -221,3 +221,118 @@ aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsUndecided.get -
 *REMOVED*aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.NotEqualTo(System.DateTimeKind unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.EqualTo(System.DateTimeKind? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.NotEqualTo(System.DateTimeKind? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+*REMOVED*aweXpect.Core.ExpectationBuilder.ExpectationBuilder(string! subjectExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+*REMOVED*aweXpect.Equivalency.EquivalencyExpectationBuilder.EquivalencyExpectationBuilder() -> void
+override aweXpect.Options.DayTolerance.GetToleranceOrDefault() -> System.TimeSpan
+virtual aweXpect.Options.TimeTolerance.GetToleranceOrDefault() -> System.TimeSpan
+abstract aweXpect.Options.EnumerableQuantifier.AppendResult(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string! it, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null) -> void
+abstract aweXpect.Options.EnumerableQuantifier.GetOutcome(int matchingCount, int notMatchingCount, int? totalCount) -> aweXpect.Core.Constraints.Outcome
+abstract aweXpect.Options.EnumerableQuantifier.IsDeterminable(int matchingCount, int notMatchingCount) -> bool
+abstract aweXpect.Options.EnumerableQuantifier.IsSingle() -> bool
+abstract aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendItemExpectation(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation) -> void
+abstract aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Verb.get -> string!
+aweXpect.Core.Constraints.ConstraintResult.GetSubjectOfResult(string! it) -> string?
+aweXpect.Core.ExpectationBuilder.Or(string! textSeparator = " or ") -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Formatting.IKeyedCollection
+aweXpect.Formatting.IKeyedCollection.Format() -> string!
+aweXpect.Formatting.IKeyedCollection.Format(System.Collections.Generic.IEnumerable<int>! indices, int? totalCount) -> string!
+aweXpect.IAsyncEnumerableElements<TItem>
+aweXpect.IAsyncEnumerableElements<TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IAsyncEnumerableElements<TItem>.Subject.get -> aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!
+aweXpect.IAsyncEnumerableStringElements
+aweXpect.IAsyncEnumerableStringElements.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IAsyncEnumerableStringElements.Subject.get -> aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<string?>?>!
+aweXpect.IEnumerableElements<TItem>
+aweXpect.IEnumerableElements<TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IEnumerableElements<TItem>.Subject.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>!
+aweXpect.IEnumerableStringElements
+aweXpect.IEnumerableStringElements.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IEnumerableStringElements.Subject.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>!
+aweXpect.INonGenericEnumerableElements<TEnumerable>
+aweXpect.INonGenericEnumerableElements<TEnumerable>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.INonGenericEnumerableElements<TEnumerable>.Subject.get -> aweXpect.Core.IThat<TEnumerable?>!
+aweXpect.IStructEnumerableElements<TEnumerable, TItem>
+aweXpect.IStructEnumerableElements<TEnumerable, TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IStructEnumerableElements<TEnumerable, TItem>.Subject.get -> aweXpect.Core.IThat<TEnumerable>!
+aweXpect.IStructEnumerableStringElements<TEnumerable>
+aweXpect.IStructEnumerableStringElements<TEnumerable>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.IStructEnumerableStringElements<TEnumerable>.Subject.get -> aweXpect.Core.IThat<TEnumerable>!
+aweXpect.Options.EnumerableQuantifier
+aweXpect.Options.EnumerableQuantifier.AppendExpectation(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, System.Action<System.Text.StringBuilder!, aweXpect.Core.ExpectationGrammars>! appendItemExpectation) -> void
+aweXpect.Options.EnumerableQuantifier.GetItemGrammars(aweXpect.Core.ExpectationGrammars grammars) -> aweXpect.Core.ExpectationGrammars
+aweXpect.Options.EnumerableQuantifier.QuantifierContexts
+aweXpect.Options.EnumerableQuantifier.QuantifierContexts.MatchingItems = 2 -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
+aweXpect.Options.EnumerableQuantifier.QuantifierContexts.None = 0 -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
+aweXpect.Options.EnumerableQuantifier.QuantifierContexts.NotMatchingItems = 4 -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
+aweXpect.Options.RepeatedCheckOptions
+aweXpect.Options.RepeatedCheckOptions.CheckEvery(System.TimeSpan interval) -> void
+aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.RepeatedCheckOptions.Interval.get -> System.TimeSpan
+aweXpect.Options.RepeatedCheckOptions.IsRepeated.get -> bool
+aweXpect.Options.RepeatedCheckOptions.RepeatedCheckOptions() -> void
+aweXpect.Options.RepeatedCheckOptions.Timeout.get -> System.TimeSpan
+aweXpect.Options.RepeatedCheckOptions.Within(System.TimeSpan timeout) -> void
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>
+aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.QuantifiedCollectionConstraint(aweXpect.Core.ExpectationBuilder! expectationBuilder, string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string!>! expectationText, string! verb) -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Complete() -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.CompleteEarly() -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.IsDetermined.get -> bool
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.QuantifiedCollectionConstraintBase(aweXpect.Core.ExpectationBuilder! expectationBuilder, string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier) -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Record(TItem item, bool isMatch) -> void
+aweXpect.Results.CollectionCountResult<TReturn>
+aweXpect.Results.CollectionCountResult<TReturn>.Between(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
+aweXpect.Results.CollectionCountResult<TReturn>.CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier!, bool, TReturn>! factory) -> void
+aweXpect.Results.CollectionCountResult<TReturn>.EqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.GreaterThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotBetween(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
+aweXpect.Results.CollectionCountResult<TReturn>.NotEqualTo(int? unexpected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.ExpectationResult.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Results.ExpectationResult<TType, TSelf>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.ObjectCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf!
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement>
+aweXpect.Results.ObjectCountResult<TType, TThat, TElement>.ObjectCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
+aweXpect.Results.RepeatedCheckResult<TType, TThat>
+aweXpect.Results.RepeatedCheckResult<TType, TThat>.RepeatedCheckResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.RepeatedCheckOptions! options) -> void
+aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition
+aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition.CheckEvery(System.TimeSpan interval) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition.WithRepetition(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.RepeatedCheckOptions! options) -> void
+aweXpect.Results.RepeatedCheckResult<TType, TThat>.Within(System.TimeSpan timeout) -> aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition!
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.LeadingSubject.get -> string?
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TrailingSubject.get -> string?
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.LeadingSubject.get -> string?
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TrailingSubject.get -> string?
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.LeadingSubject.get -> string?
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TrailingSubject.get -> string?
+override aweXpect.Options.RepeatedCheckOptions.ToString() -> string!
+override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.AppendItemExpectation(System.Text.StringBuilder! stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation) -> void
+override sealed aweXpect.QuantifiedCollectionConstraint<TValue, TItem>.Verb.get -> string!
+static aweXpect.Options.EnumerableQuantifier.All() -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.AtLeast(int minimum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.AtMost(int maximum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.Between(int minimum, int maximum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.Exactly(int? expected) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.LessThan(int maximum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.MoreThan(int minimum) -> aweXpect.Options.EnumerableQuantifier!
+static aweXpect.Options.EnumerableQuantifier.None(aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) -> aweXpect.Options.EnumerableQuantifier!
+virtual aweXpect.Core.Constraints.ConstraintResult.LeadingSubject.get -> string?
+virtual aweXpect.Core.Constraints.ConstraintResult.TrailingSubject.get -> string?
+virtual aweXpect.Options.EnumerableQuantifier.FailsBothWays.get -> bool
+virtual aweXpect.Options.EnumerableQuantifier.GetQuantifierContext() -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
+virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get -> System.Type!

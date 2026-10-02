@@ -1,5 +1,5 @@
 using System;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Results;

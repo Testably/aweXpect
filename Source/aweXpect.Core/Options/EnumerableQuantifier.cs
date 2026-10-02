@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -60,6 +61,12 @@ public abstract partial class EnumerableQuantifier
 		int matchingCount,
 		int notMatchingCount,
 		int? totalCount);
+
+	/// <summary>
+	///     Indicates that the quantifier fails the expectation and its negation alike, e.g. <c>more than &lt;null&gt;</c>,
+	///     because nothing can be ordered against <see langword="null" />.
+	/// </summary>
+	public virtual bool FailsBothWays => false;
 
 	/// <summary>
 	///     Returns the <see cref="QuantifierContexts" /> which specifies which context values are helpful.
@@ -122,7 +129,7 @@ public abstract partial class EnumerableQuantifier
 	///     follows, and <c>that at least 2 are …</c> is not grammatical, so the separator is replaced with
 	///     <c>" of which "</c>.
 	/// </remarks>
-	internal void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 		Action<StringBuilder, ExpectationGrammars> appendItemExpectation)
 	{
 		bool isNegated = grammars.IsNegated();
@@ -157,7 +164,7 @@ public abstract partial class EnumerableQuantifier
 		}
 		else
 		{
-			stringBuilder.Append(" for ").Append(this).Append(' ').Append(this.GetItemString());
+			stringBuilder.Append(" for ").Append(this).Append(' ').Append(GetItemString());
 		}
 	}
 
@@ -170,7 +177,7 @@ public abstract partial class EnumerableQuantifier
 	///     is the subject of the item expectation, so it is no longer nested and its verb agrees with the number of the
 	///     quantifier (<c>none start with …</c>, <c>at least one starts with …</c>).
 	/// </remarks>
-	internal ExpectationGrammars GetItemGrammars(ExpectationGrammars grammars)
+	public ExpectationGrammars GetItemGrammars(ExpectationGrammars grammars)
 	{
 		ExpectationGrammars itemGrammars = grammars & ~ExpectationGrammars.Negated;
 		if (!grammars.IsNested())
@@ -197,7 +204,7 @@ public abstract partial class EnumerableQuantifier
 		EnumerableQuantifier? complement = GetComplement(ExpectationGrammars.None);
 		if (complement is null)
 		{
-			stringBuilder.Append(" for not ").Append(this).Append(' ').Append(this.GetItemString());
+			stringBuilder.Append(" for not ").Append(this).Append(' ').Append(GetItemString());
 		}
 		else
 		{
@@ -230,6 +237,9 @@ public abstract partial class EnumerableQuantifier
 		=> isNegated
 			? (GetComplement(ExpectationGrammars.Nested) ?? this).IsSingle()
 			: IsSingle();
+
+	private string GetItemString()
+		=> IsSingle() ? "item" : "items";
 
 	/// <summary>
 	///     Returns the quantifier that matches exactly when this one does not, or <see langword="null" /> when the

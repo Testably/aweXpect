@@ -18,14 +18,13 @@ public class SignalCountWhoseResult<TParameter>(
 	: SignalCountResult<TParameter, SignalCountWhoseResult<TParameter>>(expectationBuilder, returnValue, quantifier,
 		options)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	/// <summary>
 	///     …with parameters that…
 	/// </summary>
 	public IThat<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
-			_expectationBuilder.ForWhich<Signaler<TParameter>, IEnumerable<TParameter>>(
+			ExpectationBuilder.ForWhich<Signaler<TParameter>, IEnumerable<TParameter>>(
 				x => x.Wait(timeout: TimeSpan.Zero).Parameters,
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |

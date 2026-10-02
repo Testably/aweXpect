@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -69,8 +68,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Tolerance ??
-				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 				Outcome = expected.Any(value => value != null &&
 				                                Math.Abs(actual.Value.DayNumber - value.Value.DayNumber) <=
 				                                (int)timeTolerance.TotalDays)

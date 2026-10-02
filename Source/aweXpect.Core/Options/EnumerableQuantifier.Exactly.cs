@@ -1,6 +1,7 @@
-﻿using aweXpect.Core;
+﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -9,10 +10,18 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Matches exactly <paramref name="expected" /> items.
 	/// </summary>
-	public static EnumerableQuantifier Exactly(int expected)
+	/// <remarks>
+	///     A <see langword="null" /> count matches no collection, because a count is never <see langword="null" />.
+	/// </remarks>
+	public static EnumerableQuantifier Exactly(int? expected)
 	{
+		if (expected is null)
+		{
+			return new NullCountQuantifier("exactly <null>", false);
+		}
+
 		ThrowHelper.ThrowIfCountIsNegative(expected, "expected count");
-		return new ExactlyQuantifier(expected);
+		return new ExactlyQuantifier(expected.Value);
 	}
 
 	private sealed class ExactlyQuantifier(int expected) : EnumerableQuantifier

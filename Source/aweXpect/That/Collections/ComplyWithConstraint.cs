@@ -19,7 +19,7 @@ namespace aweXpect;
 ///     the negated text then comes from a second set of item expectations, which is only used for the text.
 /// </remarks>
 internal abstract class ComplyWithConstraint<TValue, TItem>
-	: QuantifiedCollectionConstraint<TValue, TItem>,
+	: QuantifiedCollectionConstraintBase<TValue, TItem>,
 		IExpectationTextConstraint
 {
 	private readonly ManualExpectationBuilder<TItem> _builder;
@@ -60,7 +60,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	public override Exception? FailureCause => _unansweredItem?.FailureCause;
 
 	/// <inheritdoc />
-	private protected override string Verb => _builder.GetResultVerb();
+	protected override string Verb => _builder.GetResultVerb();
 
 	/// <inheritdoc cref="IExpectationTextConstraint.GetExpectationResult(IEvaluationContext, CancellationToken)" />
 	public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
@@ -184,7 +184,10 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendExpectation(stringBuilder, _builder, indentation);
+	{
+		base.AppendNormalExpectation(stringBuilder, indentation);
+		_builder.AppendReasons(stringBuilder);
+	}
 
 	/// <inheritdoc />
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -201,7 +204,10 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 
 	/// <inheritdoc />
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendExpectation(stringBuilder, _negatedBuilder, indentation);
+	{
+		base.AppendNegatedExpectation(stringBuilder, indentation);
+		_negatedBuilder.AppendReasons(stringBuilder);
+	}
 
 	/// <inheritdoc />
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -216,13 +222,10 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 		}
 	}
 
-	private void AppendExpectation(StringBuilder stringBuilder, ManualExpectationBuilder<TItem> builder,
+	/// <inheritdoc />
+	protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 		string? indentation)
-	{
-		Quantifier.AppendExpectation(stringBuilder, Grammars,
-			(itemExpectation, _) => builder.AppendExpectation(itemExpectation, indentation));
-		builder.AppendReasons(stringBuilder);
-	}
+		=> (Grammars.IsNegated() ? _negatedBuilder : _builder).AppendExpectation(stringBuilder, indentation);
 
 	/// <summary>
 	///     Stops the evaluation at an item that a cancellation left undecided, as it must not count as not matching, or

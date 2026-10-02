@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -64,8 +63,7 @@ public static partial class ThatDateTime
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
-			TimeSpan timeTolerance = tolerance.Tolerance ??
-			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)

@@ -261,7 +261,7 @@ internal class OrNode : Node
 		                              (_furtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult &&
 		                               !_left.HasSameResultTextAs(_right)));
 
-		internal override string? LeadingSubject
+		public override string? LeadingSubject
 		{
 			get
 			{
@@ -274,7 +274,7 @@ internal class OrNode : Node
 			}
 		}
 
-		internal override string? TrailingSubject
+		public override string? TrailingSubject
 		{
 			get
 			{
