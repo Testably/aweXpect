@@ -173,6 +173,7 @@ await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
 await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
 
-`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails. Like
-`Satisfies`, `CompliesWith` can [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with
-`Within(…)`.
+`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails. The
+exception is a `null` subject, which fails an expectation that inspects it in its negated form as well, see
+[`null` subjects](../03-how-it-works/04-null-subjects.md). Like `Satisfies`, `CompliesWith` can
+[wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.

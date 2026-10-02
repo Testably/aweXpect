@@ -25,9 +25,9 @@ This page gives the overall picture. The complete list of changes, pull request 
 
 Both `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later. Equivalency, the
 rendering of objects in failure messages and event recording no longer rely on reflection: a source generator
-registers the members and events they need at compile time. Reflection stays available as a fallback under the JIT;
-when you publish with trimming or Native AOT, a type without a registration fails with an error that tells you to add
-`[assembly: GenerateMetadata(typeof(MyType))]`.
+registers the members and events they need at compile time. Reflection stays available as a fallback, except in a
+project that enables trimming or Native AOT (`PublishTrimmed` or `PublishAot`), also when it runs under the JIT: there,
+a type without a registration fails with an error that tells you to add `[assembly: GenerateMetadata(typeof(MyType))]`.
 
 - **Test projects** that use the built-in expectations need no changes.
 - **Extension authors** replace `IAweXpectInitializer` with a `[ModuleInitializer]` and register a hand-written
@@ -172,17 +172,17 @@ grammar slips were fixed. A `Whose(…)` nested inside a collection expectation 
 `HasItemThat(…)` now names the member it inspects, instead of reporting only the expectation on it. The same
 expectations also keep the expectation they continue from, so `HasSingle().Which.Whose(…)` reads
 `has a single item whose … for all items` instead of starting at the dangling connector. Where a connector already
-introduced the subject, as in `has item that …` or `contains key 2 whose value …`, the member no longer starts a
-second relative clause but reads `has Value which is equal to 5`, and it agrees with a plural connector
-(`whose values have Length which …`). `IgnoringCase()` is now also named in the expectation when the value is matched
+introduced the subject, as in `has an item that …` or `contains key 2 whose value …`, the member no longer starts a
+second relative clause but reads `has Value that is equal to 5`, and it agrees with a plural connector
+(`whose values all have Length that …`). `IgnoringCase()` is now also named in the expectation when the value is matched
 as a regex or wildcard pattern, where it took effect but stayed invisible. A quantified collection expectation refers
 back to its own verb, so `All().ComplyWith(it => it.StartsWith("a"))` reports `but only 1 of 3 did` instead of
 `but only 1 of 3 were`, a negated quantifier names its complement (`for no items` instead of
 `for not at least one item`), and `HasCount` names its subject (`but it had only 3 items` instead of
 `but found only 3`). Every expectation text also mirrors the method it comes from, so `IsEqualTo` reads
 `is equal to …` for `Guid`, `enum` and `char?` as well, `IsOneOf` on an object reads `is one of […]` instead of the
-ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they match (`has item matching _ => true`,
-`has item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
+ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they match (`has an item matching _ => true`,
+`has an item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
 need an update.
 
 An object that contains itself through a collection, such as a tree node that lists itself among its children, and a
@@ -217,8 +217,9 @@ test run instead of failing at the bound. The upper bound of `Throws().Within(d)
 so a delegate accepting a `CancellationToken` is cancelled once it elapsed and the expectation fails with
 "did not finish within …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. The task of an asynchronous
 delegate is abandoned at that point even if it ignores the token, and so is a `Task<T>` subject under `WithTimeout`
-or `WithCancellation`; only a synchronous delegate still runs to completion. A cancellation fails the
-expectation even with `AllowingExceptions()`, because it aborts the execution instead of timing it. See
+or `WithCancellation`; only a synchronous delegate still runs to completion. A timeout fails the
+expectation even with `AllowingExceptions()`, and a canceled `WithCancellation` token leaves it inconclusive, because
+both abort the execution instead of timing it. See
 [Delegates](../06-behaviour/01-delegates.md#execution-time).
 
 ## `Task` and `ValueTask` subjects
@@ -226,9 +227,9 @@ expectation even with `AllowingExceptions()`, because it aborts the execution in
 `Expect.That` awaited a `Task<T>` and used its result as the subject, but a non-generic `Task` or `ValueTask` became
 the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed without ever observing a failed operation. Both
 now bind to a delegate subject that awaits the task, which makes `DoesNotThrow()`, `Throws<TException>()` and the
-execution time expectations available. Every expectation on the task object is a compile error afterwards; where you
-really mean the object, name the type explicitly with `Expect.That<Task>(subject)`. See
-[Tasks](../06-behaviour/02-tasks.md).
+execution time expectations available. The analyzer rule `aweXpect0004` reports every expectation on the task object
+as an error afterwards; where you really mean the object, name the type explicitly with `Expect.That<Task>(subject)`.
+See [Tasks](../06-behaviour/02-tasks.md).
 
 ## `DateTime` kinds
 
@@ -370,8 +371,9 @@ members that an equivalency comparison includes.
 - **Collections** gain a positional `DoesNotHaveItem(x).AtIndex(n)`, and uniqueness becomes a quantifier:
   `AtLeast(1).AreNotUnique()`.
 - **Events** gain a positional `DidNotTrigger(eventName)`.
-- **Delegates** gain `DoesNotSatisfy(…).Within(…)` and more message and `HResult` continuations, and
-  `Throws(…).WithoutInner()` as the twin of `DoesNotHaveInner()`.
+- **Objects** gain `DoesNotSatisfy(…).Within(…)`.
+- **Delegates** gain more message and `HResult` continuations, and `Throws(…).WithoutInner()` as the twin of
+  `DoesNotHaveInner()`.
 - **Version** gains comparisons and its components. See [Version](../04-values/07-version.md).
 - **Guid** gains `IsOneOf`, and **Char** gains character class checks such as `IsADigit` and `IsUpperCased`.
 

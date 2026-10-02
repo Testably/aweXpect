@@ -26,6 +26,7 @@ public class NumberTolerance<TNumber>(
 	/// <summary>
 	///     Sets the tolerance to apply on the number comparisons.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public void SetTolerance(TNumber tolerance)
 	{

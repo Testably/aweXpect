@@ -54,10 +54,11 @@ The walk follows every member type the comparison would visit, including framewo
 too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
 their type stays on the reflection path.
 
-Reflection over a type without a registration is switched off when you publish with trimming or Native AOT enabled,
-because the trimmer removes members that only reflection reaches, and a comparison would silently verify less than it
-claims to. Such a comparison fails with an error that names the type and asks you to register it. The same applies to
-a comparison that requests `IncludeMembers.Internal`, because only public members are registered. The
+Reflection over a type without a registration is switched off in a project that enables trimming or Native AOT
+(`PublishTrimmed` or `PublishAot`), because the trimmer removes members that only reflection reaches, and a comparison
+would silently verify less than it claims to. This also applies when such a project runs under the JIT, e.g. in
+`dotnet test`. Such a comparison fails with an error that names the type and asks you to register it. The same applies
+to a comparison that requests `IncludeMembers.Internal`, because only public members are registered. The
 `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, and the
 `AweXpectReflectionFallback` property of your project sets that switch:
 
@@ -103,12 +104,12 @@ The generator works from the declared type, so the same limits apply as for
 A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(MyClass))]`, which
 registers its members and its events.
 
-Reflection over a subject without a registration is switched off when you publish with trimming or Native AOT
-enabled, because the trimmer removes events that only reflection reaches and the reflective recorder needs runtime
-code generation. Recording such a subject fails with an error that names the type and asks you to register it. The
-`aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
-[equivalency](#equivalency); with the fallback forced on, the error for an
-unknown event name, and for an event that a recording of all events did not find, asks you to root the type instead.
+Reflection over a subject without a registration is switched off in a project that enables trimming or Native AOT, also
+when it runs under the JIT, because the trimmer removes events that only reflection reaches and the reflective recorder
+needs runtime code generation. Recording such a subject fails with an error that names the type and asks you to register
+it. The `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
+[equivalency](#equivalency); with the fallback forced on, the error for an unknown event name, and for an event that a
+recording of all events did not find, asks you to root the type instead.
 
 </details>
 

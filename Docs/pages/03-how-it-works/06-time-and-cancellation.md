@@ -82,7 +82,7 @@ follows:
 | [`Eventually()`](#eventually)                                         | retries until the expectations are met, at most `DefaultEventuallyTimeout` (30 s) |
 | [`Triggered(…)`, `DidNotTrigger(…)`](#events)                         | does not wait, only the events recorded so far count                              |
 | [`Signaled()`](#callbacks)                                            | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
-| [`DidNotSignal()`](#callbacks)                                        | always waits the full `DefaultSignalerTimeout` (30 s)                             |
+| [`DidNotSignal()`](#callbacks)                                        | waits the full `DefaultSignalerTimeout` (30 s), unless the callback is signaled   |
 
 Both defaults can be changed in the [settings](./07-configuration.md#settings). When a default applied, the failure
 message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within 0:30`.
@@ -226,9 +226,9 @@ await Expect.That(signaler).Signaled().Within(TimeSpan.FromSeconds(5))
   .Because("it should take at most 5 seconds to complete");
 ```
 
-Only expectations without an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled. All
-others, including `DidNotSignal()`, have to wait for the timeout to expire, because only then is the number of signals
-final.
+An expectation without an upper bound (e.g. `AtLeast`) succeeds as soon as enough callbacks were signaled. An
+expectation with an upper bound, including `DidNotSignal()`, fails as soon as one signal too many is received, but has
+to wait for the timeout to expire to succeed, because only then is the number of signals final.
 
 A `CancellationToken` (`WithCancellation`) also ends the wait, but the signals received until then decide nothing, so
 the expectation is then [inconclusive](#outcome) instead of failed or successful. Use `Within(…)` to limit how long to

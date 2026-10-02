@@ -6,9 +6,9 @@ namespace aweXpect.Core.Adapters;
 ///     Registry for the <see cref="ITestFrameworkAdapter" /> that is used to report test results.
 /// </summary>
 /// <remarks>
-///     Registering an adapter explicitly avoids scanning all loaded assemblies for one, which cannot work when the
-///     application is published with trimming or Native AOT enabled, because the adapter is only referenced via
-///     reflection and is therefore removed.
+///     Only below .NET 8 are the loaded assemblies scanned for an adapter that is not registered, so on .NET 8 or
+///     later an adapter has to be registered, from code that runs before the first expectation, e.g. a module
+///     initializer in the test project.
 /// </remarks>
 public static class TestFrameworkRegistry
 {
@@ -29,7 +29,8 @@ public static class TestFrameworkRegistry
 	///     the order in which both run.<br />
 	///     The adapter has to be registered before the first expectation is evaluated, because it is resolved once and
 	///     then cached.<br />
-	///     When no adapter is registered, the loaded assemblies are scanned for one instead.
+	///     When no adapter is registered, the loaded assemblies are scanned for one below .NET 8, and aweXpect throws
+	///     its own exceptions otherwise.
 	/// </remarks>
 	public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true)
 		=> Instance.Add(testFrameworkAdapter, overwrite);

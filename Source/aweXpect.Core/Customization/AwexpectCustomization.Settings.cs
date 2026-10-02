@@ -60,7 +60,8 @@ public partial class AwexpectCustomization
 		}
 
 		/// <summary>
-		///     The default interval for repeatedly checking the condition on an object.
+		///     The default interval for re-checking a condition, e.g. for <c>Eventually()</c> or for <c>Satisfies</c>
+		///     with <c>Within</c>.
 		/// </summary>
 		public ICustomizationValueSetter<TimeSpan> DefaultCheckInterval { get; }
 
@@ -85,11 +86,11 @@ public partial class AwexpectCustomization
 		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
 		///     <see cref="DateTimeOffset" />, <see cref="DateOnly" />, <see cref="TimeOnly" /> or <see cref="TimeSpan" />
 		///     subject is compared directly and no explicit tolerance is given. For <see cref="DateOnly" /> only the whole
-		///     days of the tolerance count. It also applies to the items of a collection of <see cref="DateTime" />,
-		///     <see cref="DateTimeOffset" /> or <see cref="TimeSpan" /> values compared with <c>IsEqualTo</c> or
-		///     <c>All().AreEqualTo</c> without an explicit tolerance.<br />
-		///     It is not used for property verifications, other collection expectations, members compared by equivalency
-		///     or values compared as <see langword="object" />.
+		///     days of the tolerance count. It also applies to the items of a collection of such values (or of their
+		///     nullable counterparts) and to the values of a dictionary in every expectation, and its negation, that
+		///     compares them with expected values, e.g. <c>IsEqualTo</c>, <c>Contains</c> or <c>ContainsValue</c>.<br />
+		///     It is not used for property verifications, collection expectations that don't compare items with expected
+		///     values, dictionary keys, members compared by equivalency or values compared as <see langword="object" />.
 		/// </remarks>
 #else
 		/// <summary>
@@ -101,10 +102,11 @@ public partial class AwexpectCustomization
 		///     comparing them as exact values might result in brittle tests.<br />
 		///     Therefore, it is possible to specify a default tolerance that is used when a <see cref="DateTime" />,
 		///     <see cref="DateTimeOffset" /> or <see cref="TimeSpan" /> subject is compared directly and no explicit
-		///     tolerance is given. It also applies to the items of a collection of such values compared with
-		///     <c>IsEqualTo</c> or <c>All().AreEqualTo</c> without an explicit tolerance.<br />
-		///     It is not used for property verifications, other collection expectations, members compared by equivalency
-		///     or values compared as <see langword="object" />.
+		///     tolerance is given. It also applies to the items of a collection of such values (or of their nullable
+		///     counterparts) and to the values of a dictionary in every expectation, and its negation, that compares
+		///     them with expected values, e.g. <c>IsEqualTo</c>, <c>Contains</c> or <c>ContainsValue</c>.<br />
+		///     It is not used for property verifications, collection expectations that don't compare items with expected
+		///     values, dictionary keys, members compared by equivalency or values compared as <see langword="object" />.
 		/// </remarks>
 #endif
 		public ICustomizationValueSetter<TimeSpan> DefaultTimeComparisonTolerance { get; }

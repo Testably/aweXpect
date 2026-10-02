@@ -38,9 +38,9 @@ await Expect.That(ratings).IsEqualTo(new Dictionary<string, int> { { "LET IT BE"
 
 The comparer is read from the dictionary types of the framework and from the dictionary that a
 `ReadOnlyDictionary<TKey, TValue>` wraps, not from a custom dictionary or a `ConcurrentDictionary<TKey, TValue>` on
-.NET Framework. Before .NET 10, the wrapped dictionary is only reached by reflection, so it is not read when publishing
-with trimming or Native AOT. For the others, a key of the dictionary that equals no expected key fails the expectation,
-even when the comparer considers it the same as one.
+.NET Framework. Before .NET 10, the wrapped dictionary is only reached by reflection, so it is not read in a project
+that enables trimming or Native AOT. For the others, a key of the dictionary that equals no expected key fails the
+expectation, even when the comparer considers it the same as one.
 
 To compare the entries in their enumeration order instead, compare them as a collection of
 `KeyValuePair<TKey, TValue>`:
