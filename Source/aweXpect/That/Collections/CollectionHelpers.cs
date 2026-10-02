@@ -120,47 +120,19 @@ internal static class CollectionHelpers
 		=> quantifier.IsSingle() ? "item" : "items";
 
 	/// <summary>
-	///     Adds the "Collection" context for the <paramref name="value" />, passing the <paramref name="totalCount" />
-	///     of items whenever the caller counted them while the <paramref name="value" /> kept only the first ones.
+	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
+	///     <paramref name="expected" /> collection.
 	/// </summary>
-	/// <remarks>
-	///     With <paramref name="onlyOnFailureOf" />, the context is only shown when that result failed in the end.
-	/// </remarks>
-	internal static ExpectationBuilder AddCollectionContext<TItem>(this ExpectationBuilder expectationBuilder,
-		IEnumerable<TItem>? value, bool isIncomplete = false, int? totalCount = null,
-		ConstraintResult? onlyOnFailureOf = null)
-	{
-		if (value is null)
-		{
-			return expectationBuilder;
-		}
-
-		return expectationBuilder.AddContext(
-			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
-	}
-
-	/// <remarks>
-	///     A negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the context of a success, which a
-	///     further negation can turn back into a success.
-	/// </remarks>
-	private static bool IsHidden(ConstraintResult? onlyOnFailureOf)
-		=> onlyOnFailureOf is not null && onlyOnFailureOf.Outcome != Outcome.Failure;
-
-	/// <remarks>
-	///     A dedicated context instead of a callback, because a succeeding collection expectation adds it as well, and
-	///     the closures with their delegates would be allocated for a message that is rarely built.
-	/// </remarks>
-	private sealed class CollectionContext<TItem>(
-		IEnumerable<TItem> value,
-		bool isIncomplete,
-		int? totalCount,
-		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
-	{
-		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
-			=> Task.FromResult(IsHidden(onlyOnFailureOf)
-				? null
-				: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete));
-	}
+	internal static void AddExpectedItemsContext<TItem>(this ResultContextCollector contexts,
+		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
+		=> contexts.Add(new ResultContext.SyncCallback("Expected",
+			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			})),
+			-2));
 
 	/// <remarks>
 	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
@@ -181,21 +153,6 @@ internal static class CollectionHelpers
 			return typeof(object);
 		}
 	}
-
-	/// <summary>
-	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
-	///     <paramref name="expected" /> collection.
-	/// </summary>
-	internal static void AddExpectedItemsContext<TItem>(this ResultContextCollector contexts,
-		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
-		=> contexts.Add(new ResultContext.SyncCallback("Expected",
-			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-			{
-				ICollection<TItem> coll => coll.Count,
-				ICountable countable => countable.Count,
-				_ => null,
-			})),
-			-2));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
