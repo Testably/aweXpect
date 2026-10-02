@@ -103,7 +103,8 @@ whitespace becomes empty. To keep the relative indentation within the snippet, u
 ## Match types
 
 Instead of comparing for equality, `IsEqualTo` can match the subject against a pattern, a prefix or a suffix. The
-same match types are available for `IsNotEqualTo`, `IsOneOf`, `IsNotOneOf`, `Contains` and `DoesNotContain`.
+same match types are available for `IsNotEqualTo`, `IsOneOf`, `IsNotOneOf`, `Contains` and `DoesNotContain`, and
+so is the match as a [block](#blocks).
 
 :::note[A `null` subject has no content to match]
 Every match type except the plain comparison asks about the content of the subject, so it fails for a `null` subject in
@@ -343,6 +344,17 @@ subject. A line that consists only of whitespace matches any line that consists 
 is always ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two
 lines as `"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count
 quantifiers.
+
+With `IsEqualTo`, `IsNotEqualTo`, `IsOneOf` and `IsNotOneOf`, the whole subject has to be the block, which may still be
+indented as a whole. For a collection of strings, `HasItem`, `StartsWith`, `EndsWith` and `All().AreEqualTo` compare
+each item in the same way:
+
+```csharp
+string[] snippets = ["  a\n  b"];
+
+await Expect.That("  a\n  b").IsEqualTo("a\nb").AsBlock();
+await Expect.That(snippets).HasItem("a\nb").AsBlock().AtIndex(0);
+```
 
 ## Character casing
 
