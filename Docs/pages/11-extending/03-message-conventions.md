@@ -123,8 +123,9 @@ when they are written on a single line.
 
 The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
-`FormattingOptions.Indented(indentation)` indents the following lines. Register an `IValueFormatter` to format your
-own types, see [initialization](./05-initialization.md).
+`FormattingOptions.Indented(indentation)` indents the following lines. Without options, an object that is not an item
+of a collection puts each member on its own line; `FormattingOptions.SingleLine` keeps it on one line as in the table.
+Register an `IValueFormatter` to format your own types, see [initialization](./05-initialization.md).
 
 Nested objects, collections and tuples are written up to 20 levels deep and up to 1000 of them per value. Beyond that,
 their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on

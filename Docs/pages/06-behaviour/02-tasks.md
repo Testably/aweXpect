@@ -44,7 +44,9 @@ await Expect.That(() => playCount).DoesNotThrow();
 
 ## The task object
 
-To make an expectation about the task object rather than about what it does, state the type explicitly:
+An expectation for an object, such as `IsNotNull()`, does not check what a task passed to `Expect.That(task)` does,
+so the analyzer rule [aweXpect0004](../07-analyzers.md#awexpect0004) reports it as an error. To make an expectation
+about the task object rather than about what it does, state the type explicitly:
 
 ```csharp
 await Expect.That<Task>(task).IsNotNull();

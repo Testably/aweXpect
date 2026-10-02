@@ -22,6 +22,7 @@ public class TimeTolerance
 	/// <summary>
 	///     Sets the tolerance to apply on the time comparisons.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public virtual void SetTolerance(TimeSpan tolerance)
 	{
