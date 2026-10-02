@@ -26,6 +26,12 @@ internal abstract class MappingNode : ExpectationNode
 	public (string It, ExpectationGrammars Grammars) Source { get; set; } = ("it", ExpectationGrammars.None);
 
 	/// <summary>
+	///     The name of the member, when the result text refers to the member by it, so that its contexts are labelled
+	///     with it.
+	/// </summary>
+	public string? ContextMember { get; set; }
+
+	/// <summary>
 	///     Combines the <paramref name="result" /> of the expectations on the member with the
 	///     <paramref name="combinedResult" /> of the expectations on the value, if any.
 	/// </summary>
@@ -199,9 +205,9 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		if (combinedResult == null)
 		{
-			return result.PrependExpectationText(_appendMemberText);
+			return result.PrependExpectationText(_appendMemberText, ContextMember);
 		}
 
-		return new MappingResult(combinedResult, result, _appendMemberText);
+		return new MappingResult(combinedResult, result, _appendMemberText, ContextMember);
 	}
 }

@@ -53,6 +53,31 @@ internal abstract class CombinedResult : ConstraintResult
 	/// </remarks>
 	protected abstract (bool Left, bool Right) GetExplainingParts();
 
+	/// <inheritdoc />
+	/// <remarks>
+	///     Visits the parts that explain the outcome, also a right part whose result text is omitted as a repetition, as
+	///     its contexts can differ.
+	/// </remarks>
+	public sealed override void AppendContexts(ResultContextCollector contexts)
+	{
+		(bool explainsLeft, bool explainsRight) = GetExplainingParts();
+		if (explainsLeft)
+		{
+			contexts.Visit(Left);
+		}
+
+		if (explainsRight)
+		{
+			VisitRight(contexts);
+		}
+	}
+
+	/// <summary>
+	///     Visits the right part, which explains the outcome.
+	/// </summary>
+	protected virtual void VisitRight(ResultContextCollector contexts)
+		=> contexts.Visit(Right);
+
 	/// <summary>
 	///     Combines the outcomes of both parts with the junction for the current negation.
 	/// </summary>

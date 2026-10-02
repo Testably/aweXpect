@@ -271,13 +271,14 @@ public abstract class ExpectationBuilder
 		}
 
 		Node root = _node;
-		MappingNode mapping = createMappingNode();
-		mapping.Source = (_it, ExpectationGrammars);
-		Node mappingNode = _node.AddMapping(mapping);
+		MappingNode memberNode = createMappingNode();
+		memberNode.Source = (_it, ExpectationGrammars);
+		Node mappingNode = _node.AddMapping(memberNode);
 		_node = new ExpectationNode();
 		if (replaceIt)
 		{
 			_it = memberAccessor.ToString().Trim();
+			memberNode.ContextMember = _it;
 		}
 
 		(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
@@ -600,22 +601,7 @@ public abstract class ExpectationBuilder
 		sb.AppendLine(",");
 		sb.Append("but ");
 		failure.AppendResult(sb);
-		if (contexts is not null)
-		{
-			foreach (ResultContext context in contexts.OrderByDescending(x => x.Priority))
-			{
-				string? content = await context.GetContentUnlessUserCodeThrows(cancellationToken);
-				if (content is null)
-				{
-					continue;
-				}
-
-				sb.AppendLine().AppendLine();
-				sb.Append(context.Title).Append(':').AppendLine();
-				sb.Append(content);
-			}
-		}
-
+		await ResultContextRenderer.AppendContexts(sb, failure, contexts ?? [], cancellationToken);
 		return sb.ToString();
 	}
 

@@ -265,18 +265,8 @@ public abstract class Expectation
 			sb.AppendLine();
 			sb.AppendLine("but");
 			result.ConstraintResult.AppendResult(sb);
-			foreach (ResultContext context in GetContexts(0, outcomes).OrderByDescending(x => x.Priority))
-			{
-				string? content = await context.GetContentUnlessUserCodeThrows(cancellationToken);
-				if (content is null)
-				{
-					continue;
-				}
-
-				sb.AppendLine().AppendLine();
-				sb.Append(context.Title).Append(':').AppendLine();
-				sb.Append(content);
-			}
+			await ResultContextRenderer.AppendContexts(sb, result.ConstraintResult, GetContexts(0, outcomes),
+				cancellationToken);
 
 			if (result.ConstraintResult.Outcome == Outcome.Undecided)
 			{
@@ -382,6 +372,29 @@ public abstract class Expectation
 			}
 
 			public override ConstraintResult Negate() => this;
+
+			/// <remarks>
+			///     The contexts of each failed expectation are numbered like it, while a nested combination numbers its own.
+			/// </remarks>
+			public override void AppendContexts(ResultContextCollector contexts)
+			{
+				foreach ((Expectation expectation, Result result) in _results)
+				{
+					if (result.ConstraintResult.Outcome == Outcome.Success)
+					{
+						continue;
+					}
+
+					if (expectation is Combination)
+					{
+						contexts.Visit(result.ConstraintResult);
+					}
+					else
+					{
+						contexts.VisitWithTitlePrefix($"[{result.Index:00}] ", result.ConstraintResult);
+					}
+				}
+			}
 		}
 
 		/// <summary>

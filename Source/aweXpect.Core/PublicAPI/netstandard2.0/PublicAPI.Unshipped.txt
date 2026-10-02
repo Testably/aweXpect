@@ -377,3 +377,8 @@ aweXpect.Results.StringBlockResult<TType, TThat>.StringBlockResult(aweXpect.Core
 aweXpect.Results.StringBlockResult<TType, TThat>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Results.StringBlockResult<TType, TThat>!
 aweXpect.Results.StringEqualityTypeResult<TType, TThat>.AsBlock() -> aweXpect.Results.StringBlockResult<TType, TThat>!
 aweXpect.Results.StringHasItemResult<TCollection>.AsBlock() -> aweXpect.Results.StringBlockHasItemResult<TCollection>!
+aweXpect.Core.ResultContextCollector
+aweXpect.Core.ResultContextCollector.Add(aweXpect.Core.ResultContext! context) -> void
+aweXpect.Core.ResultContextCollector.Visit(aweXpect.Core.Constraints.ConstraintResult! result) -> void
+aweXpect.Core.ResultContextCollector.VisitMember(string! member, aweXpect.Core.Constraints.ConstraintResult! result) -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void

@@ -121,4 +121,24 @@ public abstract partial class ConstraintResult
 	///     Negate the current <see cref="ConstraintResult" />.
 	/// </summary>
 	public abstract ConstraintResult Negate();
+
+	/// <summary>
+	///     Adds the contexts that explain the failure of this result, e.g. the items of a collection, to the
+	///     <paramref name="contexts" />.
+	/// </summary>
+	/// <remarks>
+	///     It is only called while the failure message is created, and only for the parts of the result that explain the
+	///     failure, so a context must not be created during the evaluation. The negation is already applied, so the
+	///     contexts can depend on it.
+	///     <para />
+	///     A result that combines other results visits those that it renders with
+	///     <see cref="ResultContextCollector.Visit(ConstraintResult)" />.
+	///     <para />
+	///     The contexts capture the state they render when they are added, as the result can be evaluated again (e.g. for
+	///     the next item of a collection) before their content is created.
+	/// </remarks>
+	public virtual void AppendContexts(ResultContextCollector contexts)
+	{
+		// A result without contexts adds nothing.
+	}
 }
