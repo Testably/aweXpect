@@ -62,6 +62,9 @@ public sealed partial class ThatObject
 					             but it was ThatObject.MyClass {
 					                 Value = 0
 					               }, which is considered equivalent
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

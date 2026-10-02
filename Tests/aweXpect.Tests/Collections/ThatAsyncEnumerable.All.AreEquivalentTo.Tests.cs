@@ -63,14 +63,15 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task ShouldUseCustomComparer()
+				public async Task Using_ShouldThrowInvalidOperationException()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers(20);
 
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(5).Using(new AllEqualComparer());
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Using cannot be combined with Equivalent.");
 				}
 
 				[Fact]

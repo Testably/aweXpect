@@ -177,6 +177,9 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               (… and maybe more)
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

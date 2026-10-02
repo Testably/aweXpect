@@ -44,6 +44,9 @@ await Expect.That(tracks).All().AreEquivalentTo(expected);
 await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
 ```
 
+The options are passed to `AreEquivalentTo` itself: appending `.Equivalent(...)` or `.Using(comparer)` throws an
+`InvalidOperationException`. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
+
 ### As a modifier of equality
 
 For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`, `StartsWith`, `EndsWith`, `HasItem`,
@@ -59,6 +62,8 @@ await Expect.That(tracks).StartsWith(expectedTrack).Equivalent();
 await Expect.That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.IgnoringCollectionOrder());
 ```
 
+Like `IsEquivalentTo`, a failure lists the equivalency options that were used.
+
 ## Default behaviour
 
 Equivalency takes the **public fields and properties of the expected object** and compares each one with the member
@@ -67,6 +72,7 @@ of the same name on the actual object, recursing into nested objects. How a valu
 | Type                                                                                                                                                                 | Compared                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
 | primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid`, `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128`, `UInt128`            | by value, with `Equals`                     |
+| `DateOnly`, `TimeOnly`                                                                                                                                               | by value, with `Equals`                     |
 | `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo`, `IPAddress`, `Encoding` and anything derived from them                 | by value, with `Equals`                     |
 | `StringBuilder`                                                                                                                                                      | by its text, so it also matches a `string`  |
 | `JsonElement`, `JsonNode`                                                                                                                                            | by its compact JSON text                    |
@@ -166,7 +172,8 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 ```
 
 The match is case-insensitive. For nested members, the path is dot-separated (e.g. `"Artist.Name"`); for collection
-elements, the index is bracketed (e.g. `"Tracks[3]"`).
+elements, the index is bracketed (e.g. `"Tracks[3]"`), and for dictionary entries the key, formatted with the invariant
+culture (e.g. `"Prices[1.5]"`).
 
 The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
 depth, while `"ame"` or `"t.Name"` ignore nothing.
@@ -189,6 +196,10 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 await Expect.That(album).IsEquivalentTo(expected, o => o
   .Ignoring(memberType => memberType == typeof(DateTime)));
 ```
+
+A field or property is matched by its declared type, with `Nullable<T>` unwrapped, so the last example also ignores a
+`DateTime?` member, but not an `object` member that holds a `DateTime`. A collection item or a dictionary value is
+matched by the runtime type of its value, or by `object` when it is `null`.
 
 Use `IgnoringFields` or `IgnoringProperties` instead of `Ignoring` to restrict a predicate to one kind of member.
 They take the same member path and type, and are never applied to collection elements, which are neither a field nor a
@@ -250,6 +261,11 @@ Like the other fluent methods, `For<T>` returns a copy and leaves the options it
 is applied to the final options of the expectation, so every other option applies to `T` as well, no matter whether it
 is set before or after `For<T>`. A registration in the callback of a single expectation replaces one for the same type
 in the [customized default](#customizing-the-global-defaults).
+
+The options are looked up by the runtime type of a value, which is never an interface, so `For<T>` throws an
+`ArgumentException` for an interface; register the implementing class or struct instead. A registration for a nullable
+value type `T?` applies to `T`, because a boxed value cannot tell the two apart, so it also applies to members of type
+`T`.
 
 When the subject and the expectation have different types and both are registered, the registration for the type of
 the expectation wins, because the members that are compared come from the expectation. An extension can read the

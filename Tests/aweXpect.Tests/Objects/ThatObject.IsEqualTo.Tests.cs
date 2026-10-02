@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Equivalency;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatObject
 {
@@ -58,6 +60,39 @@ public sealed partial class ThatObject
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("an Equals that throws fails the expectation instead of aborting its evaluation");
+			}
+
+			[Fact]
+			public async Task WhenEquivalentIsSpecified_ShouldListTheEquivalencyOptions()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+				MyClass expected = new()
+				{
+					Value = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Equivalent(o => o.IgnoringMember("PlayCount"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.MyClass {
+					                 Value = 2
+					               },
+					             but it was not:
+					               Property Value differed:
+					                   Actual: 1
+					                 Expected: 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["PlayCount"]
+					             """)
+					.Because("the failure describes the options like IsEquivalentTo does");
 			}
 
 			[Theory]

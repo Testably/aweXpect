@@ -162,6 +162,9 @@ public sealed partial class ThatAsyncEnumerable
 					                 Value = 8
 					               }
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

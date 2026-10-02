@@ -329,6 +329,9 @@ public class CollectionMatchOptionsTests
 				               0,
 				               1
 				             ]
+
+				             Equivalency options:
+				              - include public fields and properties
 				             """)
 				.Because("an item and the expected item that format identically are only told apart by their type");
 		}

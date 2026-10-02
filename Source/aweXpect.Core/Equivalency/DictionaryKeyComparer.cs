@@ -85,7 +85,8 @@ internal sealed class DictionaryKeyComparer<TKey, TValue> : DictionaryKeyCompare
 
 	/// <remarks>
 	///     Only orders the keys that the dictionary itself holds or found, which are of its key type and not
-	///     <see langword="null" />.
+	///     <see langword="null" />: an expected key that the dictionary did not find is never looked up in a set that
+	///     uses this comparer.
 	/// </remarks>
 	private sealed class KeyOrderComparer(IComparer<TKey> comparer) : IComparer<object>
 	{

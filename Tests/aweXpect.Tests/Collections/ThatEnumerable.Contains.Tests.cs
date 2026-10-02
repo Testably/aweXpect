@@ -61,6 +61,9 @@ public sealed partial class ThatEnumerable
 					                 3
 					               ]
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
