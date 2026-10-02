@@ -82,6 +82,12 @@ await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
 await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
 ```
 
+An item for which the nested expectation fails and its negation fails as well decides the result, because the
+expectation could not answer it: the nested expectation threw (the exception becomes the `InnerException`), or the item
+or an inspected member is `null`. So `None().ComplyWith(item => item.StartsWith("Let"))` fails for a `null` item, and so
+does its negation. The same applies to [`HasItemThat`](#item-at-index) and to collections compared with item
+expectations or predicates, where in any order such an item only decides when it matches no other expected item.
+
 ### Condition
 
 You can verify that items in a collection satisfy a condition:

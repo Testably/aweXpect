@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -16,7 +18,9 @@ public partial class CollectionMatchOptions
 	///     free one can block a valid assignment. An item without a free match is pending, until an augmenting path
 	///     reassigns earlier items or proves that none exists. Only this search compares an item with expected items that
 	///     are already assigned, so for an equivalence relation it only runs for items that remain unmatched.<br />
-	///     An item for which no augmenting path exists never gets one later, so it is unmatched for good.
+	///     An item for which no augmenting path exists never gets one later, so it is unmatched for good.<br />
+	///     A comparison that code of the caller did not answer (it threw, or an item expectation failed both ways) is no
+	///     match. It only decides the result when the item matches no expected item at all.
 	/// </remarks>
 	private sealed class ItemMatching<TItem, TExpected>
 	{
@@ -58,12 +62,24 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Assigns the <paramref name="value" /> to the first free expected item it matches, otherwise it is pending.
 		/// </summary>
+		/// <remarks>
+		///     Without a free expected item, the <paramref name="value" /> is an additional item and is not compared.
+		/// </remarks>
 		public async ValueTask Add(int index, TItem value)
 		{
+			if (_freeExpected.Count == 0)
+			{
+				_unmatchedItems.Add(index, value);
+				return;
+			}
+
+			Exception? unanswered = null;
 			for (int i = 0; i < _freeExpected.Count; i++)
 			{
 				int expectedIndex = _freeExpected[i];
-				if (await _isMatch(value, _expected[expectedIndex]))
+				(bool isMatch, Exception? exception) = await Compare(value, _expected[expectedIndex]);
+				unanswered ??= exception;
+				if (isMatch)
 				{
 					_items.Add((index, value));
 					_expectedOfItem.Add(expectedIndex);
@@ -74,12 +90,7 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			if (_freeExpected.Count == 0)
-			{
-				_unmatchedItems.Add(index, value);
-				return;
-			}
-
+			await ThrowIfUnansweredAndNoAssignedExpectedItemMatches(value, unanswered);
 			_items.Add((index, value));
 			_expectedOfItem.Add(Unmatched);
 			_pendingItems.Add(_items.Count - 1);
@@ -113,6 +124,46 @@ public partial class CollectionMatchOptions
 			}
 
 			DiscardAllPendingItems();
+		}
+
+		/// <summary>
+		///     Compares the <paramref name="value" />, which matches no free expected item, with the expected items that are
+		///     assigned to other items, and throws the first unanswered comparison, unless one of them matches.
+		/// </summary>
+		private async ValueTask ThrowIfUnansweredAndNoAssignedExpectedItemMatches(TItem value, Exception? unanswered)
+		{
+			for (int expectedIndex = 0; expectedIndex < _expected.Length; expectedIndex++)
+			{
+				if (_itemOfExpected[expectedIndex] == Unmatched)
+				{
+					continue;
+				}
+
+				(bool isMatch, Exception? exception) = await Compare(value, _expected[expectedIndex]);
+				if (isMatch)
+				{
+					return;
+				}
+
+				unanswered ??= exception;
+			}
+
+			if (unanswered is not null)
+			{
+				ExceptionDispatchInfo.Capture(unanswered).Throw();
+			}
+		}
+
+		private async ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(TItem value, TExpected expected)
+		{
+			try
+			{
+				return (await _isMatch(value, expected), null);
+			}
+			catch (Exception exception) when (exception is UserCodeException or UnansweredItemException)
+			{
+				return (false, exception);
+			}
 		}
 
 		private void DiscardPendingItemsWhenNothingIsFree()
@@ -153,7 +204,7 @@ public partial class CollectionMatchOptions
 				{
 					if (visited[expectedIndex] ||
 					    (path.Count == 1 && _itemOfExpected[expectedIndex] == Unmatched) ||
-					    !await _isMatch(_items[item].Value, _expected[expectedIndex]))
+					    !(await Compare(_items[item].Value, _expected[expectedIndex])).IsMatch)
 					{
 						continue;
 					}
@@ -203,7 +254,7 @@ public partial class CollectionMatchOptions
 				for (int item = next; item < _items.Count; item++)
 				{
 					if (visited[item] || _expectedOfItem[item] == Discarded ||
-					    !await _isMatch(_items[item].Value, _expected[expectedIndex]))
+					    !(await Compare(_items[item].Value, _expected[expectedIndex])).IsMatch)
 					{
 						continue;
 					}

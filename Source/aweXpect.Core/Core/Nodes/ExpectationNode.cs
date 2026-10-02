@@ -162,6 +162,11 @@ internal class ExpectationNode : Node
 		{
 			ExceptionDispatchInfo.Capture(e.Exception).Throw();
 		}
+		catch (UnansweredItemException e)
+		{
+			result = UnansweredItemResult.Create(
+				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, value);
+		}
 
 		if (_inner != null)
 		{

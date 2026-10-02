@@ -44,6 +44,8 @@ public static partial class ThatEnumerable
 			private int _notMatchingCount;
 			private LimitedCollection<TItem>? _notMatchingItems;
 			private int? _totalCount;
+			private ConstraintResult? _unansweredItem;
+			private int _unansweredItemIndex;
 
 			public ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
 				EnumerableQuantifier quantifier,
@@ -55,12 +57,26 @@ public static partial class ThatEnumerable
 				_itemExpectations = new ComplyWithItemExpectations<TItem>(quantifier, grammars, expectations);
 			}
 
+			/// <inheritdoc cref="ConstraintResult.Outcome" />
+			/// <remarks>
+			///     An item that the expectations did not answer fails the expectation and its negation alike.
+			/// </remarks>
+			public override Outcome Outcome
+			{
+				get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+				protected set => base.Outcome = value;
+			}
+
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 			public async Task<ConstraintResult> IsMetBy(
 				IEnumerable<TItem>? actual,
 				IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				_unansweredItem = null;
 				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
@@ -83,6 +99,14 @@ public static partial class ThatEnumerable
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
+					if (isMatch.FailsBothWays())
+					{
+						_unansweredItem = isMatch;
+						_unansweredItemIndex = _matchingCount + _notMatchingCount;
+						_expectationBuilder.AddCollectionContext(materialized);
 						return this;
 					}
 
@@ -131,15 +155,25 @@ public static partial class ThatEnumerable
 				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
+
+			private void AppendItemsResult(StringBuilder stringBuilder, string? indentation)
+			{
+				if (_unansweredItem is not null)
+				{
+					stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+					return;
+				}
+
+				_quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
+					_itemExpectations.Builder.GetResultVerb());
+			}
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -184,6 +218,8 @@ public static partial class ThatEnumerable
 			private int _notMatchingCount;
 			private LimitedCollection<string?>? _notMatchingItems;
 			private int? _totalCount;
+			private ConstraintResult? _unansweredItem;
+			private int _unansweredItemIndex;
 
 			public ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
 				EnumerableQuantifier quantifier,
@@ -195,12 +231,26 @@ public static partial class ThatEnumerable
 				_itemExpectations = new ComplyWithItemExpectations<string?>(quantifier, grammars, expectations);
 			}
 
+			/// <inheritdoc cref="ConstraintResult.Outcome" />
+			/// <remarks>
+			///     An item that the expectations did not answer fails the expectation and its negation alike.
+			/// </remarks>
+			public override Outcome Outcome
+			{
+				get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+				protected set => base.Outcome = value;
+			}
+
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 			public async Task<ConstraintResult> IsMetBy(
 				IEnumerable<string?>? actual,
 				IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				_unansweredItem = null;
 				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
@@ -223,6 +273,14 @@ public static partial class ThatEnumerable
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
+					if (isMatch.FailsBothWays())
+					{
+						_unansweredItem = isMatch;
+						_unansweredItemIndex = _matchingCount + _notMatchingCount;
+						_expectationBuilder.AddCollectionContext(materialized);
 						return this;
 					}
 
@@ -271,15 +329,25 @@ public static partial class ThatEnumerable
 				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
+
+			private void AppendItemsResult(StringBuilder stringBuilder, string? indentation)
+			{
+				if (_unansweredItem is not null)
+				{
+					stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+					return;
+				}
+
+				_quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
+					_itemExpectations.Builder.GetResultVerb());
+			}
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -325,6 +393,8 @@ public static partial class ThatEnumerable
 			private int _notMatchingCount;
 			private LimitedCollection<object?>? _notMatchingItems;
 			private int? _totalCount;
+			private ConstraintResult? _unansweredItem;
+			private int _unansweredItemIndex;
 
 			public ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
 				EnumerableQuantifier quantifier,
@@ -336,12 +406,26 @@ public static partial class ThatEnumerable
 				_itemExpectations = new ComplyWithItemExpectations<object?>(quantifier, grammars, expectations);
 			}
 
+			/// <inheritdoc cref="ConstraintResult.Outcome" />
+			/// <remarks>
+			///     An item that the expectations did not answer fails the expectation and its negation alike.
+			/// </remarks>
+			public override Outcome Outcome
+			{
+				get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+				protected set => base.Outcome = value;
+			}
+
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 			public async Task<ConstraintResult> IsMetBy(
 				TEnumerable? actual,
 				IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				_unansweredItem = null;
 				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual is null)
 				{
@@ -365,6 +449,14 @@ public static partial class ThatEnumerable
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
+					if (isMatch.FailsBothWays())
+					{
+						_unansweredItem = isMatch;
+						_unansweredItemIndex = _matchingCount + _notMatchingCount;
+						_expectationBuilder.AddCollectionContext(materialized);
 						return this;
 					}
 
@@ -413,15 +505,25 @@ public static partial class ThatEnumerable
 				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
+
+			private void AppendItemsResult(StringBuilder stringBuilder, string? indentation)
+			{
+				if (_unansweredItem is not null)
+				{
+					stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+					return;
+				}
+
+				_quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
+					_itemExpectations.Builder.GetResultVerb());
+			}
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -468,6 +570,8 @@ public static partial class ThatEnumerable
 			private int _notMatchingCount;
 			private LimitedCollection<TItem>? _notMatchingItems;
 			private int? _totalCount;
+			private ConstraintResult? _unansweredItem;
+			private int _unansweredItemIndex;
 
 			public ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
 				EnumerableQuantifier quantifier,
@@ -479,12 +583,26 @@ public static partial class ThatEnumerable
 				_itemExpectations = new ComplyWithItemExpectations<TItem>(quantifier, grammars, expectations);
 			}
 
+			/// <inheritdoc cref="ConstraintResult.Outcome" />
+			/// <remarks>
+			///     An item that the expectations did not answer fails the expectation and its negation alike.
+			/// </remarks>
+			public override Outcome Outcome
+			{
+				get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+				protected set => base.Outcome = value;
+			}
+
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 			public async Task<ConstraintResult> IsMetBy(
 				TEnumerable actual,
 				IEvaluationContext context,
 				CancellationToken cancellationToken)
 			{
 				Actual = actual;
+				_unansweredItem = null;
 				await _itemExpectations.PrepareExpectation(context, cancellationToken);
 				if (actual.IsDefaultImmutableArray())
 				{
@@ -506,6 +624,14 @@ public static partial class ThatEnumerable
 					{
 						Outcome = Outcome.Undecided;
 						_expectationBuilder.AddCollectionContext(materialized, true);
+						return this;
+					}
+
+					if (isMatch.FailsBothWays())
+					{
+						_unansweredItem = isMatch;
+						_unansweredItemIndex = _matchingCount + _notMatchingCount;
+						_expectationBuilder.AddCollectionContext(materialized);
 						return this;
 					}
 
@@ -554,15 +680,25 @@ public static partial class ThatEnumerable
 				=> _itemExpectations.AppendExpectation(stringBuilder, false, indentation);
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-					_itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 				=> _itemExpectations.AppendExpectation(stringBuilder, true, indentation);
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-					_totalCount, _itemExpectations.Builder.GetResultVerb());
+				=> AppendItemsResult(stringBuilder, indentation);
+
+			private void AppendItemsResult(StringBuilder stringBuilder, string? indentation)
+			{
+				if (_unansweredItem is not null)
+				{
+					stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+					return;
+				}
+
+				_quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
+					_itemExpectations.Builder.GetResultVerb());
+			}
 
 			private void AppendContexts(bool isIncomplete)
 			{

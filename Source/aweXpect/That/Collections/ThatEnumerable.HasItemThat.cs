@@ -142,6 +142,8 @@ public static partial class ThatEnumerable
 		private readonly CollectionIndexOptions _options;
 		private TItem? _actual;
 		private bool _hasIndex;
+		private ConstraintResult? _unansweredItem;
+		private int _unansweredItemIndex;
 
 		public HasItemThatConstraint(ExpectationBuilder expectationBuilder,
 			string it,
@@ -158,10 +160,24 @@ public static partial class ThatEnumerable
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		/// <remarks>
+		///     An item that the expectations did not answer fails the expectation and its negation alike.
+		/// </remarks>
+		public override Outcome Outcome
+		{
+			get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+			protected set => base.Outcome = value;
+		}
+
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_unansweredItem = null;
 			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
@@ -204,6 +220,13 @@ public static partial class ThatEnumerable
 				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				if (isMatch.FailsBothWays())
+				{
+					_unansweredItem = isMatch;
+					_unansweredItemIndex = index;
+					return this;
+				}
+
 				Outcome = isMatch.Outcome;
 				if (isMatch.Outcome == Outcome.Success)
 				{
@@ -231,6 +254,12 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_unansweredItem is not null)
+			{
+				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+				return;
+			}
+
 			if (_hasIndex)
 			{
 				if (_options.Match.OnlySingleIndex())
@@ -260,6 +289,12 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_unansweredItem is not null)
+			{
+				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+				return;
+			}
+
 			stringBuilder.Append(_it).Append(" had item ");
 			Formatter.Format(stringBuilder, _actual);
 			stringBuilder.Append(_options.Match.GetDescription());
@@ -278,6 +313,8 @@ public static partial class ThatEnumerable
 		private readonly CollectionIndexOptions _options;
 		private object? _actual;
 		private bool _hasIndex;
+		private ConstraintResult? _unansweredItem;
+		private int _unansweredItemIndex;
 
 		public HasItemThatForEnumerableConstraint(ExpectationBuilder expectationBuilder,
 			string it,
@@ -294,10 +331,24 @@ public static partial class ThatEnumerable
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		/// <remarks>
+		///     An item that the expectations did not answer fails the expectation and its negation alike.
+		/// </remarks>
+		public override Outcome Outcome
+		{
+			get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
+			protected set => base.Outcome = value;
+		}
+
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause => _unansweredItem?.FailureCause;
+
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_unansweredItem = null;
 			if (actual.IsDefaultImmutableArray())
 			{
 				return this.AsNullSubject(It);
@@ -345,6 +396,13 @@ public static partial class ThatEnumerable
 				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+				if (isMatch.FailsBothWays())
+				{
+					_unansweredItem = isMatch;
+					_unansweredItemIndex = index;
+					return this;
+				}
+
 				Outcome = isMatch.Outcome;
 				if (isMatch.Outcome == Outcome.Success)
 				{
@@ -372,6 +430,12 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_unansweredItem is not null)
+			{
+				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+				return;
+			}
+
 			if (_hasIndex)
 			{
 				if (_options.Match.OnlySingleIndex())
@@ -401,6 +465,12 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_unansweredItem is not null)
+			{
+				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+				return;
+			}
+
 			stringBuilder.Append(_it).Append(" had item ");
 			Formatter.Format(stringBuilder, _actual);
 			stringBuilder.Append(_options.Match.GetDescription());

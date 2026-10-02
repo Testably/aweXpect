@@ -549,10 +549,19 @@ public partial class CollectionMatchOptions(
 		/// <summary>
 		///     Verifies if the <paramref name="value" /> is met by the expectation.
 		/// </summary>
+		/// <remarks>
+		///     A <paramref name="value" /> for which the expectation fails both ways (e.g. because code of the caller threw)
+		///     throws, so that the collection fails with the result of the item, unless another expected item matches it.
+		/// </remarks>
 		public async ValueTask<bool> IsMetBy(TItem value)
 		{
 			ConstraintResult result = await ItemExpectationBuilder.IsMetBy(value, _context, _cancellationToken);
 			IsUndecided |= result.Outcome == Outcome.Undecided;
+			if (result.FailsBothWays())
+			{
+				throw new UnansweredItemException(result, value);
+			}
+
 			return result.Outcome == Outcome.Success;
 		}
 
