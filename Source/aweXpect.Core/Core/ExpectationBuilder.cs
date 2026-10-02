@@ -24,6 +24,11 @@ public abstract class ExpectationBuilder
 
 	private ResultContexts? _contexts;
 
+	/// <summary>
+	///     The other exceptions of the faulted subject in the current evaluation.
+	/// </summary>
+	private Exception[]? _otherExceptions;
+
 	private EvaluationContext.EvaluationContext? _evaluationContext;
 
 	/// <summary>
@@ -552,24 +557,21 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Adds the <paramref name="otherExceptions" /> of a faulted task to the context, unless they are
+	///     Lists the <paramref name="otherExceptions" /> of the faulted subject as context of a failure, unless they are
 	///     <see langword="null" />.
 	/// </summary>
 	internal void AddOtherExceptions(Exception[]? otherExceptions)
 	{
 		if (otherExceptions is not null)
 		{
-			AddContext(CreateOtherExceptionsContext(otherExceptions));
+			_otherExceptions = otherExceptions;
 		}
 	}
 
-	/// <remarks>
-	///     A separate method, so that the closure over the <paramref name="otherExceptions" /> is only allocated when
-	///     there are any, and not for every delegate subject.
-	/// </remarks>
-	private static ResultContext.SyncCallback CreateOtherExceptionsContext(Exception[] otherExceptions)
-		=> new ResultContext.SyncCallback("Other exceptions",
-			() => Formatter.Format(otherExceptions, FormattingOptions.MultipleLines));
+	/// <summary>
+	///     Forgets the other exceptions of a previous attempt to meet the expectations.
+	/// </summary>
+	internal void ResetOtherExceptions() => _otherExceptions = null;
 
 	/// <summary>
 	///     Gets the list of <see cref="ResultContext" />.
@@ -632,7 +634,8 @@ public abstract class ExpectationBuilder
 	internal async Task<ConstraintResult> IsMet()
 	{
 		await EndEvaluation();
-		EvaluationContext.EvaluationContext context = new(this);
+		_otherExceptions = null;
+		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
 		ConstraintResult result;
 		try
@@ -660,9 +663,10 @@ public abstract class ExpectationBuilder
 		if (result.Outcome == Outcome.Success)
 		{
 			await EndEvaluation();
+			return result;
 		}
 
-		return result;
+		return _otherExceptions is null ? result : new ConstraintResult.WithOtherExceptions(result, _otherExceptions);
 	}
 
 	/// <summary>

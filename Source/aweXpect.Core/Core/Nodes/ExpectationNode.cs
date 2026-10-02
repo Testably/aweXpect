@@ -180,7 +180,8 @@ internal class ExpectationNode : Node
 	{
 		ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
 		ConstraintResult result =
-			MemberExceptionResult.Create(expectation, exception.Exception, exception.Thrower ?? "it", value);
+			MemberExceptionResult.FromEvaluation(expectation, exception.Exception, exception.Thrower ?? "it",
+				value);
 		return exception.ItemIndex is null
 			? result
 			: UnansweredItemResult.Create(expectation, result, null, exception.ItemIndex, value);

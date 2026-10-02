@@ -338,7 +338,7 @@ public class AsyncMappingNodeTests
 			             but length did throw an InvalidOperationException:
 			               A
 
-			             Other exceptions:
+			             Other exceptions (length):
 			             [
 			               ArgumentException: B,
 			               NotSupportedException: C

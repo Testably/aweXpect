@@ -826,10 +826,10 @@ public static class PropertyResult
 			StringEqualityOptions options,
 			bool invert)
 			=> subject.Get().ExpectationBuilder
-				.AddConstraint((expectationBuilder, it, constraintGrammars) =>
+				.AddConstraint((it, constraintGrammars) =>
 				{
 					StringConstraint<TValue> constraint = new(
-						includeValueInContext ? expectationBuilder : null,
+						includeValueInContext,
 						it,
 						constraintGrammars | grammars,
 						expected,
@@ -953,7 +953,7 @@ public static class PropertyResult
 	}
 
 	private sealed class StringConstraint<TItem>(
-		ExpectationBuilder? expectationBuilder,
+		bool includeValueInContext,
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
@@ -993,12 +993,15 @@ public static class PropertyResult
 			}
 
 			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
-			if (expectationBuilder is not null && !string.IsNullOrEmpty(_value))
-			{
-				expectationBuilder.AddContext(new ResultContext.Fixed(ToTitle(propertyExpression), _value!));
-			}
-
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (includeValueInContext && !string.IsNullOrEmpty(_value))
+			{
+				contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

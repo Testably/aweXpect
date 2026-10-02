@@ -132,10 +132,9 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		}
 		catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 		{
-			(context as EvaluationContext.EvaluationContext)?.AddOtherExceptions(
-				memberTask?.GetOtherExceptions(exception));
 			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
-			return MemberExceptionResult.Create(result, exception, MemberAccessor.ToString().Trim(), value);
+			return MemberExceptionResult.Create(result, exception, MemberAccessor.ToString().Trim(), value,
+				memberTask?.GetOtherExceptions(exception));
 		}
 
 		if (_asyncMemberAccessor is not null && memberTask is null)

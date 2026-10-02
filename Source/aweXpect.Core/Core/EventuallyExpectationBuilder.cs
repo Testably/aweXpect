@@ -161,6 +161,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			isLastAttempt = await polling.WaitForNextCheck() is PollStep.LastCheck or PollStep.Elapsed;
 			currentContext = await context.StartAttempt();
 			RestoreContexts(initialContexts);
+			ResetOtherExceptions();
 		}
 	}
 	/// <summary>

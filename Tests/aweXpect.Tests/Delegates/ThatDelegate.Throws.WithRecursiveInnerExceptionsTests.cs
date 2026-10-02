@@ -122,7 +122,7 @@ public sealed partial class ThatDelegate
 					             throws an exception with recursive inner exceptions of which all satisfy _ => false,
 					             but none of at least 1 did
 
-					             Not matching items:
+					             Not matching items (recursive inner exceptions):
 					             [
 					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
 					               (… and maybe more)

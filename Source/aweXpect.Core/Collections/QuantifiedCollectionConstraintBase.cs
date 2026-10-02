@@ -32,6 +32,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	: ConstraintResult.WithNotNullValue<TValue>
 {
 	private bool _isCompleted;
+	private bool _isIncomplete;
 	private int _matchingCount;
 	private LimitedCollection<TItem>? _matchingItems;
 	private int _notMatchingCount;
@@ -124,7 +125,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	}
 
 	/// <summary>
-	///     Determines the outcome from the recorded items and adds the contexts required by the quantifier.
+	///     Determines the outcome from the recorded items.
 	/// </summary>
 	protected void Complete()
 		=> DetermineOutcome(false);
@@ -135,6 +136,30 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// </summary>
 	protected void CompleteEarly()
 		=> DetermineOutcome(true);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     Adds the matching or the not matching items, as far as the quantifier requires them.
+	/// </remarks>
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (!_isCompleted)
+		{
+			return;
+		}
+
+		bool isIncomplete = _isIncomplete;
+		int matchingCount = _matchingCount;
+		int notMatchingCount = _notMatchingCount;
+		TValue? actual = Actual;
+		contexts.AddQuantifierContexts(Quantifier, Grammars.IsNegated(),
+			_matchingItems is { Count: > 0, } matchingItems
+				? () => matchingItems.Format(actual, ItemType, matchingCount).AppendIsIncomplete(isIncomplete)
+				: null,
+			_notMatchingItems is { Count: > 0, } notMatchingItems
+				? () => notMatchingItems.Format(actual, ItemType, notMatchingCount).AppendIsIncomplete(isIncomplete)
+				: null);
+	}
 
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -166,13 +191,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
 		Outcome = Quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
-		ExpectationBuilder.AddQuantifierContexts(this, Quantifier,
-			_matchingItems is { Count: > 0, } matchingItems
-				? () => matchingItems.Format(Actual, ItemType, _matchingCount).AppendIsIncomplete(isIncomplete)
-				: null,
-			_notMatchingItems is { Count: > 0, } notMatchingItems
-				? () => notMatchingItems.Format(Actual, ItemType, _notMatchingCount).AppendIsIncomplete(isIncomplete)
-				: null);
+		_isIncomplete = isIncomplete;
 	}
 
 	private void Reset()
