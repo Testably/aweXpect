@@ -55,7 +55,7 @@ public abstract partial class EnumerableQuantifier
 		///     <c>not for all items</c> keeps the negation in front of the connector, because <c>for not all items</c>
 		///     reads as a statement about the items rather than about the quantifier.
 		/// </remarks>
-		internal override void AppendNegated(StringBuilder stringBuilder)
+		private protected override void AppendNegated(StringBuilder stringBuilder)
 			=> stringBuilder.Append(" not for all items");
 
 		/// <inheritdoc />

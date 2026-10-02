@@ -23,7 +23,6 @@ namespace aweXpect;
 [CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 public static partial class ThatEnumerable
 {
-	private const string For = " for ";
 	private const string SortOrder = " order";
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
@@ -607,37 +606,18 @@ public static partial class ThatEnumerable
 		}
 	}
 
-	private sealed class CollectionConstraint<TItem>
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
+	private sealed class CollectionConstraint<TItem>(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		Func<TItem, bool> predicate,
+		string verb)
+		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly Func<TItem, bool> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly string _verb;
-		private int _matchingCount;
-		private LimitedCollection<TItem>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<TItem>? _notMatchingItems;
-		private int? _totalCount;
-
-		public CollectionConstraint(
-			ExpectationBuilder expectationBuilder,
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier,
-			Func<ExpectationGrammars, string> expectationText,
-			Func<TItem, bool> predicate,
-			string verb) : base(it, grammars)
-		{
-			_expectationBuilder = expectationBuilder;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
-		}
-
 		public Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
@@ -646,137 +626,48 @@ public static partial class ThatEnumerable
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			bool cancelEarly = actual is not ICollection<TItem>;
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			_matchingItems = new LimitedCollection<TItem>();
-			_notMatchingItems = new LimitedCollection<TItem>();
-
 			foreach (TItem item in materialized)
 			{
-				if (UserCode.Invoke(_predicate, item, "the predicate"))
+				Record(item, UserCode.Invoke(predicate, item, "the predicate"));
+				if (cancelEarly && IsDetermined)
 				{
-					_matchingItems.Add(item, _matchingCount + _notMatchingCount);
-					_matchingCount++;
-				}
-				else
-				{
-					_notMatchingItems.Add(item, _matchingCount + _notMatchingCount);
-					_notMatchingCount++;
-				}
-
-				if (cancelEarly && _quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					ExpectationBuilder.AddCollectionContext(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(materialized);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
 			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars));
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems is { Count: > 0 } matchingItems
-					? () => matchingItems.Format(Actual, typeof(TItem), _matchingCount)
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems is { Count: > 0 } notMatchingItems
-					? () => notMatchingItems.Format(Actual, typeof(TItem), _notMatchingCount)
-						.AppendIsIncomplete(isIncomplete)
-					: null);
 		}
 	}
 
-	private sealed class AsyncCollectionConstraint<TItem>
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
+	private sealed class AsyncCollectionConstraint<TItem>(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		Func<TItem, ValueTask<bool>> predicate,
+		string verb,
+		Func<object?, bool>? useComparerOf = null)
+		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly Func<TItem, ValueTask<bool>> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly Func<object?, bool>? _useComparerOf;
-		private readonly string _verb;
-		private int _matchingCount;
-		private LimitedCollection<TItem>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<TItem>? _notMatchingItems;
-		private int? _totalCount;
-
-		public AsyncCollectionConstraint(
-			ExpectationBuilder expectationBuilder,
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier,
-			Func<ExpectationGrammars, string> expectationText,
-			Func<TItem, ValueTask<bool>> predicate,
-			string verb,
-			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
-		{
-			_expectationBuilder = expectationBuilder;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
-			_useComparerOf = useComparerOf;
-		}
-
 		public async Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
@@ -785,137 +676,56 @@ public static partial class ThatEnumerable
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			_useComparerOf?.Invoke(actual);
+			useComparerOf?.Invoke(actual);
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			bool cancelEarly = actual is not ICollection<TItem>;
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			_matchingItems = new LimitedCollection<TItem>();
-			_notMatchingItems = new LimitedCollection<TItem>();
-
 			foreach (TItem item in materialized)
 			{
-				if (await _predicate(item))
+				Record(item, await predicate(item));
+				if (cancelEarly && IsDetermined)
 				{
-					_matchingItems.Add(item, _matchingCount + _notMatchingCount);
-					_matchingCount++;
-				}
-				else
-				{
-					_notMatchingItems.Add(item, _matchingCount + _notMatchingCount);
-					_notMatchingCount++;
-				}
-
-				if (cancelEarly && _quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					ExpectationBuilder.AddCollectionContext(materialized, true);
 					return this;
 				}
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(materialized);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
 			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars));
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount,
-			_verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems is { Count: > 0 } matchingItems
-					? () => matchingItems.Format(Actual, typeof(TItem), _matchingCount)
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems is { Count: > 0 } notMatchingItems
-					? () => notMatchingItems.Format(Actual, typeof(TItem), _notMatchingCount)
-						.AppendIsIncomplete(isIncomplete)
-					: null);
 		}
 	}
 
-	private sealed class CollectionForEnumerableConstraint<TEnumerable>
-		: ConstraintResult.WithNotNullValue<TEnumerable>,
+	/// <remarks>
+	///     The items of a non-generic collection are formatted as the type of its first item that is not
+	///     <see langword="null" />.
+	/// </remarks>
+	private sealed class CollectionForEnumerableConstraint<TEnumerable>(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		Func<object?, bool> predicate,
+		string verb)
+		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
+				expectationText, verb),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly Func<object?, bool> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly string _verb;
 		private Type? _itemType;
-		private int _matchingCount;
-		private LimitedCollection<object?>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<object?>? _notMatchingItems;
-		private int? _totalCount;
 
-		public CollectionForEnumerableConstraint(
-			ExpectationBuilder expectationBuilder,
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier,
-			Func<ExpectationGrammars, string> expectationText,
-			Func<object?, bool> predicate,
-			string verb) : base(it, grammars)
-		{
-			_expectationBuilder = expectationBuilder;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
-		}
+		protected override Type ItemType => _itemType ?? typeof(object);
 
 		public Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
@@ -930,145 +740,56 @@ public static partial class ThatEnumerable
 
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			bool cancelEarly = actual is not ICollection;
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			_matchingItems = new LimitedCollection<object?>();
-			_notMatchingItems = new LimitedCollection<object?>();
-
 			foreach (object? item in materialized)
 			{
-				if (_itemType is null && item is not null)
+				_itemType ??= item?.GetType();
+				Record(item, UserCode.Invoke(predicate, item, "the predicate"));
+				if (cancelEarly && IsDetermined)
 				{
-					_itemType = item.GetType();
-				}
-
-				if (UserCode.Invoke(_predicate, item, "the predicate"))
-				{
-					_matchingCount++;
-					_matchingItems.Add(item);
-				}
-				else
-				{
-					_notMatchingCount++;
-					_notMatchingItems.Add(item);
-				}
-
-				if (cancelEarly && _quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					ExpectationBuilder.AddCollectionContext(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(materialized);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
 			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars));
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems?.Count > 0
-					? () => Formatter.Format(_matchingItems,
-							(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems?.Count > 0
-					? () => Formatter.Format(_notMatchingItems,
-							(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null);
 		}
 	}
 
-	private sealed class AsyncCollectionForEnumerableConstraint<TEnumerable>
-		: ConstraintResult.WithNotNullValue<TEnumerable>,
+	/// <remarks>
+	///     The items are formatted as in <see cref="CollectionForEnumerableConstraint{TEnumerable}" />.
+	/// </remarks>
+	private sealed class AsyncCollectionForEnumerableConstraint<TEnumerable>(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier,
+		Func<ExpectationGrammars, string> expectationText,
+		Func<object?, ValueTask<bool>> predicate,
+		string verb,
+		Func<object?, bool>? useComparerOf = null)
+		: QuantifiedCollectionConstraint<TEnumerable, object?>(expectationBuilder, it, grammars, quantifier,
+				expectationText, verb),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
-		private readonly Func<ExpectationGrammars, string> _expectationText;
-		private readonly Func<object?, ValueTask<bool>> _predicate;
-		private readonly EnumerableQuantifier _quantifier;
-		private readonly Func<object?, bool>? _useComparerOf;
-		private readonly string _verb;
 		private Type? _itemType;
-		private int _matchingCount;
-		private LimitedCollection<object?>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<object?>? _notMatchingItems;
-		private int? _totalCount;
 
-		public AsyncCollectionForEnumerableConstraint(
-			ExpectationBuilder expectationBuilder,
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier,
-			Func<ExpectationGrammars, string> expectationText,
-			Func<object?, ValueTask<bool>> predicate,
-			string verb,
-			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
-		{
-			_expectationBuilder = expectationBuilder;
-			_quantifier = quantifier;
-			_expectationText = expectationText;
-			_predicate = predicate;
-			_verb = verb;
-			_useComparerOf = useComparerOf;
-		}
+		protected override Type ItemType => _itemType ?? typeof(object);
 
 		public async Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
@@ -1083,108 +804,34 @@ public static partial class ThatEnumerable
 
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			_useComparerOf?.Invoke(actual);
+			useComparerOf?.Invoke(actual);
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			bool cancelEarly = actual is not ICollection;
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			_matchingItems = new LimitedCollection<object?>();
-			_notMatchingItems = new LimitedCollection<object?>();
-
 			foreach (object? item in materialized)
 			{
-				if (_itemType is null && item is not null)
+				_itemType ??= item?.GetType();
+				Record(item, await predicate(item));
+				if (cancelEarly && IsDetermined)
 				{
-					_itemType = item.GetType();
-				}
-
-				if (await _predicate(item))
-				{
-					_matchingCount++;
-					_matchingItems.Add(item);
-				}
-				else
-				{
-					_notMatchingCount++;
-					_notMatchingItems.Add(item);
-				}
-
-				if (cancelEarly && _quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					AppendContexts(true);
-					_expectationBuilder.AddCollectionContext(materialized);
+					CompleteEarly();
+					ExpectationBuilder.AddCollectionContext(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					ExpectationBuilder.AddCollectionContext(materialized, true);
 					return this;
 				}
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(materialized);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(materialized);
 			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, false, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars));
-				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount, _verb);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.AppendNestedQuantifier(_quantifier, true, Grammars, _expectationText);
-			}
-			else
-			{
-				stringBuilder.Append(_expectationText(Grammars.Negate()));
-				_quantifier.AppendNegated(stringBuilder);
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount, _verb);
-
-		private void AppendContexts(bool isIncomplete)
-		{
-			_expectationBuilder.AddQuantifierContexts(this, _quantifier,
-				_matchingItems?.Count > 0
-					? () => Formatter.Format(_matchingItems,
-							(_itemType ?? typeof(object)).GetFormattingOption(_matchingItems?.Count, _matchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null,
-				_notMatchingItems?.Count > 0
-					? () => Formatter.Format(_notMatchingItems,
-							(_itemType ?? typeof(object)).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
-						.AppendIsIncomplete(isIncomplete)
-					: null);
 		}
 	}
 

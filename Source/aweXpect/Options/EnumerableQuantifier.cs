@@ -109,6 +109,82 @@ public abstract partial class EnumerableQuantifier
 		string? verb = null);
 
 	/// <summary>
+	///     Appends the expectation on the items with this quantifier, in the negated form when the
+	///     <paramref name="grammars" /> are negated and in the nested form when they are nested, e.g.
+	///     <c>is even for at least 2 items</c>, <c>is even for fewer than 2 items</c> or
+	///     <c>has values of which at least 2 are even</c>.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="appendItemExpectation" /> appends the expectation on a single item for the grammars from
+	///     <see cref="GetItemGrammars" />.
+	///     <para />
+	///     In the nested form, the parent renders the separator <c>" that "</c> before it knows that a quantifier
+	///     follows, and <c>that at least 2 are …</c> is not grammatical, so the separator is replaced with
+	///     <c>" of which "</c>.
+	/// </remarks>
+	internal void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+		Action<StringBuilder, ExpectationGrammars> appendItemExpectation)
+	{
+		bool isNegated = grammars.IsNegated();
+		if (grammars.IsNested())
+		{
+			const string that = " that ";
+			if (stringBuilder.Length >= that.Length &&
+			    stringBuilder.ToString(stringBuilder.Length - that.Length, that.Length) == that)
+			{
+				stringBuilder.Length -= that.Length;
+				stringBuilder.Append(" of which ");
+			}
+
+			if (isNegated)
+			{
+				AppendNestedNegated(stringBuilder);
+			}
+			else
+			{
+				stringBuilder.Append(this);
+			}
+
+			stringBuilder.Append(' ');
+			appendItemExpectation(stringBuilder, GetItemGrammars(grammars));
+			return;
+		}
+
+		appendItemExpectation(stringBuilder, GetItemGrammars(grammars));
+		if (isNegated)
+		{
+			AppendNegated(stringBuilder);
+		}
+		else
+		{
+			stringBuilder.Append(" for ").Append(this).Append(' ').Append(this.GetItemString());
+		}
+	}
+
+	/// <summary>
+	///     Returns the grammars of the expectation on a single item within an expectation with the
+	///     <paramref name="grammars" />.
+	/// </summary>
+	/// <remarks>
+	///     The quantifier carries the negation, so the item expectation is not negated. In the nested form, the quantifier
+	///     is the subject of the item expectation, so it is no longer nested and its verb agrees with the number of the
+	///     quantifier (<c>none start with …</c>, <c>at least one starts with …</c>).
+	/// </remarks>
+	internal ExpectationGrammars GetItemGrammars(ExpectationGrammars grammars)
+	{
+		ExpectationGrammars itemGrammars = grammars & ~ExpectationGrammars.Negated;
+		if (!grammars.IsNested())
+		{
+			return itemGrammars;
+		}
+
+		itemGrammars &= ~ExpectationGrammars.Nested;
+		return IsRenderedSingle(grammars.IsNegated())
+			? itemGrammars & ~ExpectationGrammars.Plural
+			: itemGrammars | ExpectationGrammars.Plural;
+	}
+
+	/// <summary>
 	///     Appends the connector together with the complement of the quantifier and the item noun,
 	///     e.g. <c> for no items</c>.
 	/// </summary>
@@ -116,7 +192,7 @@ public abstract partial class EnumerableQuantifier
 	///     The connector belongs to the negation, because the complement of <c>for all items</c> negates the connector
 	///     itself (<c>not for all items</c>).
 	/// </remarks>
-	internal virtual void AppendNegated(StringBuilder stringBuilder)
+	private protected virtual void AppendNegated(StringBuilder stringBuilder)
 	{
 		EnumerableQuantifier? complement = GetComplement(ExpectationGrammars.None);
 		if (complement is null)
@@ -133,7 +209,7 @@ public abstract partial class EnumerableQuantifier
 	///     Appends the complement of the quantifier in a nested expectation, e.g. <c>fewer than 2</c> in
 	///     <c>has lines of which fewer than 2 are …</c>.
 	/// </summary>
-	internal void AppendNestedNegated(StringBuilder stringBuilder)
+	private void AppendNestedNegated(StringBuilder stringBuilder)
 	{
 		EnumerableQuantifier? complement = GetComplement(ExpectationGrammars.Nested);
 		if (complement is null)
@@ -150,7 +226,7 @@ public abstract partial class EnumerableQuantifier
 	///     Returns <see langword="true" /> if the quantifier, or its complement when <paramref name="isNegated" />,
 	///     names a single item (e.g. <c>at least one</c>).
 	/// </summary>
-	internal bool IsRenderedSingle(bool isNegated)
+	private bool IsRenderedSingle(bool isNegated)
 		=> isNegated
 			? (GetComplement(ExpectationGrammars.Nested) ?? this).IsSingle()
 			: IsSingle();

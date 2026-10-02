@@ -37,7 +37,7 @@ public static partial class ThatAsyncEnumerable
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
+					=> new CollectionConstraint<TItem>(
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
