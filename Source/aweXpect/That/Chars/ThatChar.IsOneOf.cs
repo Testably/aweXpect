@@ -31,7 +31,6 @@ public static partial class ThatChar
 		return new CharEqualityResult<char, IThat<char>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(it, grammars) =>
 					new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
-						.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 						.InvertIf(negated)),
 			subject,
 			options);
@@ -57,6 +56,10 @@ public static partial class ThatChar
 		: ConstraintResult.WithNotNullValue<char>(it, grammars),
 			IValueConstraint<char>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(char actual)
 		{
 			Actual = actual;

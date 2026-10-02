@@ -30,7 +30,6 @@ public static partial class ThatEnum
 		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues, expectedExpression)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject);
 	}
@@ -56,6 +55,10 @@ public static partial class ThatEnum
 			IValueConstraint<TEnum>
 		where TEnum : struct, Enum
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;

@@ -19,8 +19,8 @@ public static partial class ThatString
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new IsEqualToConstraint(expectationBuilder, it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToConstraint(it, grammars, expected, options)),
 			subject,
 			options);
 	}
@@ -34,14 +34,13 @@ public static partial class ThatString
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new IsEqualToConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToConstraint(it, grammars, unexpected, options).Invert()),
 			subject,
 			options);
 	}
 
 	private sealed class IsEqualToConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
@@ -49,8 +48,6 @@ public static partial class ThatString
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
 			IAsyncConstraint<string?>
 	{
-		private bool _addsContextWhenNegated;
-
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, fails for a
@@ -68,39 +65,16 @@ public static partial class ThatString
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
-			_addsContextWhenNegated = Outcome == Outcome.Success && !string.IsNullOrEmpty(actual);
-			if (!string.IsNullOrEmpty(actual))
-			{
-				expectationBuilder.AddStringContext("Actual", actual, this);
-
-				if (Outcome != Outcome.Success)
-				{
-					AddExpectedContext(false);
-				}
-			}
-
 			return this;
 		}
 
-		public override ConstraintResult Negate()
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			base.Negate();
-			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the success into a failure.
-			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
-			if (_addsContextWhenNegated)
+			if (!string.IsNullOrEmpty(Actual))
 			{
-				_addsContextWhenNegated = false;
-				AddExpectedContext(true);
-			}
-
-			return this;
-		}
-
-		private void AddExpectedContext(bool onlyOnFailure)
-		{
-			if (!string.IsNullOrEmpty(expected))
-			{
-				expectationBuilder.AddStringContext("Expected", expected, this, onlyOnFailure);
+				contexts.AddStringContext("Actual", Actual, this);
+				contexts.AddStringContext("Expected", expected, this);
 			}
 		}
 

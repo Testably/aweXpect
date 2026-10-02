@@ -29,7 +29,6 @@ public static partial class ThatGuid
 		IEnumerable<Guid?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject);
 	}
@@ -53,6 +52,10 @@ public static partial class ThatGuid
 		: ConstraintResult.WithNotNullValue<Guid>(it, grammars),
 			IValueConstraint<Guid>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(Guid actual)
 		{
 			Actual = actual;

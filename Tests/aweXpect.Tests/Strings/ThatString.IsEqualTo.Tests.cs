@@ -129,6 +129,9 @@ public sealed partial class ThatString
 					             is equal to "abc" using ThatString.IsEqualTo.Tests.ThrowingComparer,
 					             but the comparer did throw an InvalidOperationException:
 					               comparer failed
+
+					             Actual:
+					             ABC
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}

@@ -32,7 +32,6 @@ public static partial class ThatTimeSpan
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			tolerance);
@@ -58,6 +57,10 @@ public static partial class ThatTimeSpan
 		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(TimeSpan actual)
 		{
 			Actual = actual;

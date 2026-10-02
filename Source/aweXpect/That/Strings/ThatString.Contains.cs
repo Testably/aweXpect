@@ -30,8 +30,8 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new ContainsConstraint(expectationBuilder, it, grammars, expected, quantifier, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new ContainsConstraint(it, grammars, expected, quantifier, options)),
 			subject,
 			quantifier,
 			options);
@@ -55,15 +55,14 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new ContainsConstraint(expectationBuilder, it, grammars, unexpected, quantifier, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new ContainsConstraint(it, grammars, unexpected, quantifier, options).Invert()),
 			subject,
 			quantifier,
 			options);
 	}
 
 	private sealed class ContainsConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
@@ -74,14 +73,12 @@ public static partial class ThatString
 	{
 		private string? _actual;
 		private int _actualCount;
-		private bool _addsContextWhenNegated;
 		private bool _isNegated;
 
 		/// <inheritdoc />
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
-			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -90,21 +87,16 @@ public static partial class ThatString
 
 			_actualCount = await options.CountOccurrences(actual, expected);
 			Outcome = quantifier.Check(_actualCount, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
-			_addsContextWhenNegated = Outcome == Outcome.Success;
-			if (Outcome != Outcome.Success)
-			{
-				AddContexts(actual, false);
-			}
-			
 			return this;
 		}
 
-		private void AddContexts(string actual, bool onlyOnFailure)
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (!string.IsNullOrEmpty(actual))
+			if (!string.IsNullOrEmpty(_actual))
 			{
-				expectationBuilder.AddStringContext("Actual", actual, this, onlyOnFailure);
-				expectationBuilder.AddStringContext("Expected", expected, this, onlyOnFailure);
+				contexts.AddStringContext("Actual", _actual, this);
+				contexts.AddStringContext("Expected", expected, this);
 			}
 		}
 
@@ -178,14 +170,6 @@ public static partial class ThatString
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
-			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the success into a failure.
-			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
-			if (_addsContextWhenNegated)
-			{
-				_addsContextWhenNegated = false;
-				AddContexts(_actual!, true);
-			}
-
 			return this;
 		}
 	}

@@ -34,7 +34,6 @@ public static partial class ThatObject
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, expectedExpression, options)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -55,7 +54,6 @@ public static partial class ThatObject
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<T, T>(it, grammars, expectedValues, expectedExpression, options)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -70,6 +68,10 @@ public static partial class ThatObject
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncConstraint<TSubject>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
