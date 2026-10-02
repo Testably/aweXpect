@@ -11,6 +11,11 @@ namespace aweXpect.Core.Nodes;
 
 internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 {
+	/// <summary>
+	///     Appends the text for the member, which precedes the expectations on it.
+	/// </summary>
+	private readonly Action<StringBuilder> _appendMemberText;
+
 	private readonly Action<MemberAccessor<TSource, Task<TTarget>>, StringBuilder>
 		_expectationTextGenerator;
 
@@ -28,6 +33,8 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 		{
 			_expectationTextGenerator = expectationTextGenerator;
 		}
+
+		_appendMemberText = stringBuilder => _expectationTextGenerator(_memberAccessor, stringBuilder);
 	}
 
 	/// <inheritdoc cref="MappingNode{TSource,TTarget}.Source" />
@@ -146,164 +153,14 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 	{
 		if (combinedResult == null)
 		{
-			return result.PrependExpectationText(e => _expectationTextGenerator(_memberAccessor, e));
+			return result.PrependExpectationText(_appendMemberText);
 		}
 
-		return new AsyncMappingConstraintResult(combinedResult, result, _expectationTextGenerator, _memberAccessor);
+		return new MappingResult(combinedResult, result, _appendMemberText);
 	}
 
 	private static void DefaultExpectationTextGenerator(
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
 		StringBuilder expectation)
 		=> expectation.Append(memberAccessor);
-
-	private sealed class AsyncMappingConstraintResult : ConstraintResult
-	{
-		private readonly Action<MemberAccessor<TSource, Task<TTarget>>, StringBuilder>? _expectationTextGenerator;
-		private readonly ConstraintResult _left;
-		private readonly MemberAccessor<TSource, Task<TTarget>> _memberAccessor;
-		private readonly ConstraintResult _right;
-		private bool _isNegated;
-		private bool _rightFailsAlsoWhenNegated;
-
-		/// <summary>
-		///     The positive expectation text of the member, which a negated result keeps, as only the left part renders
-		///     the negation.
-		/// </summary>
-		private string? _negatedRightExpectation;
-
-		public AsyncMappingConstraintResult(ConstraintResult left,
-			ConstraintResult right,
-			Action<MemberAccessor<TSource, Task<TTarget>>, StringBuilder>? expectationTextGenerator,
-			MemberAccessor<TSource, Task<TTarget>> memberAccessor) : base(FurtherProcessingStrategy.Continue)
-		{
-			_left = left;
-			_right = right;
-			_expectationTextGenerator = expectationTextGenerator;
-			_memberAccessor = memberAccessor;
-			Outcome = Combine(left.Outcome, right.Outcome, false);
-		}
-
-		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
-
-		/// <remarks>
-		///     An operand which only contributes an expectation text does not take part in the combination.
-		/// </remarks>
-		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
-		{
-			if (_left.IsExpectationOnly)
-			{
-				return right;
-			}
-
-			if (_right.IsExpectationOnly)
-			{
-				return left;
-			}
-
-			return isNegated ? Or(left, right) : And(left, right);
-		}
-
-		private static Outcome And(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Success, Outcome.Success) => Outcome.Success,
-				(_, Outcome.Failure) => Outcome.Failure,
-				(Outcome.Failure, _) => Outcome.Failure,
-				(_, _) => Outcome.Undecided,
-			};
-
-		private static Outcome Or(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
-				(_, Outcome.Success) => Outcome.Success,
-				(Outcome.Success, _) => Outcome.Success,
-				(_, _) => Outcome.Undecided,
-			};
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			_left.AppendExpectation(stringBuilder);
-			if (_negatedRightExpectation is not null)
-			{
-				stringBuilder.Append(_negatedRightExpectation);
-				return;
-			}
-
-			AppendRightExpectation(stringBuilder);
-		}
-
-		private void AppendRightExpectation(StringBuilder stringBuilder)
-		{
-			StringBuilder separator = new();
-			_expectationTextGenerator?.Invoke(_memberAccessor, separator);
-			stringBuilder.AppendSeparatedExpectation(separator.ToString(), _right);
-		}
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			bool rendersLeft = _left.ExplainsOutcomeOf(this);
-			// Under negation both parts were met, so the left part explains the failure, unless the member failed in
-			// both cases.
-			bool rendersRight = _right.ExplainsOutcomeOf(this) &&
-			                    (!_isNegated || _rightFailsAlsoWhenNegated || !rendersLeft);
-			if (rendersLeft)
-			{
-				int leftStart = stringBuilder.Length;
-				_left.AppendResult(stringBuilder, indentation);
-				if (rendersRight &&
-				    _left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue &&
-				    !_left.HasSameResultTextAs(_right))
-				{
-					stringBuilder.AppendAndSeparator(leftStart, indentation);
-					_right.AppendResult(stringBuilder, indentation);
-				}
-			}
-			else if (rendersRight)
-			{
-				_right.AppendResult(stringBuilder, indentation);
-			}
-		}
-
-		public override bool TryGetStoredValue<TValue>(out TValue? value)
-			where TValue : default
-		{
-			if (_left.TryGetStoredValue(out TValue? leftValue))
-			{
-				value = leftValue;
-				return true;
-			}
-
-			if (_right.TryGetStoredValue(out TValue? rightValue))
-			{
-				value = rightValue;
-				return true;
-			}
-
-			value = default;
-			return false;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			_left.Negate();
-			_negatedRightExpectation = _isNegated ? GetRightExpectation() : null;
-			Outcome rightOutcome = _right.Outcome;
-			_right.Negate();
-			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && _right.Outcome == Outcome.Failure;
-			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
-			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
-			return this;
-		}
-
-		private string GetRightExpectation()
-		{
-			StringBuilder stringBuilder = new();
-			AppendRightExpectation(stringBuilder);
-			return stringBuilder.ToString();
-		}
-	}
 }

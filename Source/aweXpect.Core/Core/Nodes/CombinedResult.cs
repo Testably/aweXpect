@@ -1,0 +1,114 @@
+﻿using System;
+using aweXpect.Core.Constraints;
+
+namespace aweXpect.Core.Nodes;
+
+/// <summary>
+///     A result that combines a <see cref="Left" /> and a <see cref="Right" /> part, which are both met (<c>and</c>) or
+///     of which one is met (<c>or</c>).
+/// </summary>
+/// <remarks>
+///     A negation swaps the junction (De Morgan), so that a part which stays failed under negation keeps the combination
+///     failed.
+/// </remarks>
+internal abstract class CombinedResult : ConstraintResult
+{
+	private readonly bool _isAnd;
+
+	/// <summary>
+	///     Initializes the combination of the <paramref name="left" /> and the <paramref name="right" /> part.
+	/// </summary>
+	protected CombinedResult(ConstraintResult left, ConstraintResult right, bool isAnd,
+		FurtherProcessingStrategy furtherProcessingStrategy) : base(furtherProcessingStrategy)
+	{
+		Left = left;
+		Right = right;
+		_isAnd = isAnd;
+	}
+
+	/// <summary>
+	///     The left part.
+	/// </summary>
+	protected ConstraintResult Left { get; set; }
+
+	/// <summary>
+	///     The right part.
+	/// </summary>
+	protected ConstraintResult Right { get; set; }
+
+	/// <summary>
+	///     Whether the combination is negated, which swaps the junction.
+	/// </summary>
+	protected bool IsNegated { get; set; }
+
+	/// <inheritdoc />
+	public override Exception? FailureCause
+		=> Outcome == Outcome.Failure ? Left.FailureCause ?? Right.FailureCause : null;
+
+	/// <summary>
+	///     Which parts explain the outcome of the combination.
+	/// </summary>
+	/// <remarks>
+	///     The result text renders these parts, except a right part whose result text only repeats the left one.
+	/// </remarks>
+	protected abstract (bool Left, bool Right) GetExplainingParts();
+
+	/// <summary>
+	///     Combines the outcomes of both parts with the junction for the current negation.
+	/// </summary>
+	/// <remarks>
+	///     A part which only contributes an expectation text does not take part in the combination.
+	/// </remarks>
+	protected Outcome CombineOutcomes()
+	{
+		if (Left.IsExpectationOnly)
+		{
+			return Right.Outcome;
+		}
+
+		if (Right.IsExpectationOnly)
+		{
+			return Left.Outcome;
+		}
+
+		return _isAnd != IsNegated ? And(Left.Outcome, Right.Outcome) : Or(Left.Outcome, Right.Outcome);
+	}
+
+	/// <inheritdoc />
+	public override bool TryGetStoredValue<TValue>(out TValue? value)
+		where TValue : default
+	{
+		if (Left.TryGetStoredValue(out TValue? leftValue))
+		{
+			value = leftValue;
+			return true;
+		}
+
+		if (Right.TryGetStoredValue(out TValue? rightValue))
+		{
+			value = rightValue;
+			return true;
+		}
+
+		value = default;
+		return false;
+	}
+
+	private static Outcome And(Outcome left, Outcome right)
+		=> (left, right) switch
+		{
+			(Outcome.Success, Outcome.Success) => Outcome.Success,
+			(_, Outcome.Failure) => Outcome.Failure,
+			(Outcome.Failure, _) => Outcome.Failure,
+			(_, _) => Outcome.Undecided,
+		};
+
+	private static Outcome Or(Outcome left, Outcome right)
+		=> (left, right) switch
+		{
+			(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
+			(_, Outcome.Success) => Outcome.Success,
+			(Outcome.Success, _) => Outcome.Success,
+			(_, _) => Outcome.Undecided,
+		};
+}
