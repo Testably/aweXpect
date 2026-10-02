@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
@@ -15,6 +16,37 @@ public sealed class EquivalencyOptionsTests
 		await That(inner.GetOptionsFor(typeof(string))).IsSameAs(inner)
 			.Because("the customized default is shared by every expectation");
 		await That(result.GetOptionsFor(typeof(string))).IsSameAs(result);
+	}
+
+	[Fact]
+	public async Task For_WhenTypeIsAnInterface_ShouldThrowArgumentException()
+	{
+		void Act()
+			=> new EquivalencyOptions().For<IEnumerable<int>>(x => x with
+			{
+				IgnoreCollectionOrder = true,
+			});
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("TMember").And
+			.WithMessage("""
+			             Options cannot be registered for the interface IEnumerable<int>, because they are looked up by the runtime type of a value and its base types. Register them for a class or struct instead.*
+			             """).AsWildcard()
+			.Because("a registration for an interface would never apply");
+	}
+
+	[Fact]
+	public async Task For_WhenTypeIsNullable_ShouldApplyToTheUnderlyingType()
+	{
+		EquivalencyTypeOptions typeOptions = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+
+		EquivalencyOptions result = new EquivalencyOptions().For<int?>(_ => typeOptions);
+
+		await That(result.GetOptionsFor(typeof(int))).IsSameAs(typeOptions)
+			.Because("the runtime type of a boxed nullable value is its underlying type");
 	}
 
 	[Fact]

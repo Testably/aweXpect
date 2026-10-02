@@ -36,6 +36,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [11]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
@@ -212,6 +215,9 @@ public sealed partial class ThatEnumerable
 
 					             Collection:
 					             [1]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

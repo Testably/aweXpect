@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using aweXpect.Core.Metadata;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 
@@ -19,6 +20,30 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed partial class EquivalencyComparisonTests
 {
+	[Fact]
+	public async Task WhenActualFieldIsPrivate_WithInternalFields_ShouldTreatItAsMissing()
+	{
+		WithPrivateField actual = new(2);
+		var expected = new
+		{
+			Value = 1,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("private members are never compared, also not on the actual object");
+	}
+
 	[Fact]
 	public async Task WhenActualImplementsAByRefLikePropertyExplicitly_ShouldTreatItAsMissing()
 	{
@@ -421,6 +446,30 @@ public sealed partial class EquivalencyComparisonTests
 		                                                  Property Value was missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
+	}
+
+	[Fact]
+	public async Task WhenActualPropertyIsPrivate_WithInternalProperties_ShouldTreatItAsMissing()
+	{
+		WithPrivateProperty actual = new(2);
+		var expected = new
+		{
+			Value = 1,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("private members are never compared, also not on the actual object");
 	}
 
 	[Fact]
@@ -1145,6 +1194,33 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the culture name is the identity, while its members expand into every format pattern the operating system knows");
 	}
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenDateOnlyMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Born = new DateOnly(2020, 1, 1),
+		};
+		var expected = new
+		{
+			Born = new DateOnly(2020, 1, 2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Born differed:
+		                                                      Actual: 2020-01-01
+		                                                    Expected: 2020-01-02
+		                                                """).IgnoringNewlineStyle()
+			.Because("the members of a date only repeat the same difference in several forms");
+	}
+#endif
+
 	[Fact]
 	public async Task WhenDelegateMemberDiffers_ShouldReportTheDifference()
 	{
@@ -1214,6 +1290,30 @@ public sealed partial class EquivalencyComparisonTests
 		                                                  Element [A] lacked a distinct key
 		                                                """).IgnoringNewlineStyle()
 			.Because("a read-only dictionary looks its keys up through the dictionary it wraps");
+	}
+
+	[Fact]
+	public async Task WhenDictionaryIsASortedDictionary_AndExpectedKeysHaveMixedTypes_ShouldReportTheMissingKey()
+	{
+		SortedDictionary<int, int> actual = new()
+		{
+			[1] = 1,
+		};
+		Dictionary<object, int> expected = new()
+		{
+			[1] = 1,
+			["a"] = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a] was missing 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("an expected key of another type than the keys of the sorted dictionary can never be among its matched keys");
 	}
 
 	[Fact]
@@ -1297,6 +1397,38 @@ public sealed partial class EquivalencyComparisonTests
 		                                                    Expected: 11
 		                                                """).IgnoringNewlineStyle()
 			.Because("the bracket inside the key does not open the path segment that the ignored name refers to");
+	}
+
+	[Fact]
+	public async Task WhenDictionaryKeyIsCultureDependent_ShouldFormatItInvariantly()
+	{
+		using CultureOverride _ = new("de-DE");
+		Dictionary<double, int> actual = new()
+		{
+			[1.5] = 1,
+			[2.5] = 1,
+		};
+		Dictionary<double, int> expected = new()
+		{
+			[1.5] = 2,
+			[2.5] = 2,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[2.5]"),],
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1.5] differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("a member path to ignore has to match on every machine, whatever its culture");
 	}
 
 	[Fact]
@@ -3201,6 +3333,30 @@ public sealed partial class EquivalencyComparisonTests
 				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or, when publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its members are preserved.");
 	}
 
+	[Fact]
+	public async Task WhenNullableMemberIsIgnoredByType_ShouldMatchTheUnderlyingType()
+	{
+		var actual = new
+		{
+			At = (DateTime?)new DateTime(2020, 1, 1),
+		};
+		var expected = new
+		{
+			At = (DateTime?)new DateTime(2020, 1, 2),
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByPredicate((_, type) => type == typeof(DateTime), "DateTime"),],
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a nullable member holds a value of the underlying type");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
 	[Theory]
 	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
 	public async Task WhenNumberMemberDiffers_ShouldFail(object actualValue, object expectedValue)
@@ -3799,6 +3955,33 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenTimeOnlyMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			At = new TimeOnly(10, 30),
+		};
+		var expected = new
+		{
+			At = new TimeOnly(10, 31),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property At differed:
+		                                                      Actual: 10:30:00.0000000
+		                                                    Expected: 10:31:00.0000000
+		                                                """).IgnoringNewlineStyle()
+			.Because("the members of a time only repeat the same difference in several forms");
+	}
+#endif
+
 	[Fact]
 	public async Task WhenTypeHasAnIndexer_ShouldIgnoreTheIndexer()
 	{
@@ -3972,6 +4155,38 @@ public sealed partial class EquivalencyComparisonTests
 
 		await That(result).IsTrue()
 			.Because("a request for non-public members bypasses the registry, and reflection does not know the phantom");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegisteredAsNullable_ShouldApplyTheOptionsToTheMember()
+	{
+		var actual = new
+		{
+			At = (Position?)new Position
+			{
+				X = 1,
+				Y = 2,
+			},
+		};
+		var expected = new
+		{
+			At = (Position?)new Position
+			{
+				X = 1,
+				Y = 3,
+			},
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new EquivalencyOptions().For<Position?>(x => x with
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("Y"),],
+		});
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the runtime type of a boxed nullable value is its underlying type");
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Fact]
@@ -4263,6 +4478,12 @@ public sealed partial class EquivalencyComparisonTests
 		Foo,
 	}
 
+	private struct Position
+	{
+		public int X { get; set; }
+		public int Y { get; set; }
+	}
+
 	private sealed class PropertyHidingProperty(int property, string text) : WithProperty(property)
 	{
 		public new string Value { get; } = text;
@@ -4423,10 +4644,24 @@ public sealed partial class EquivalencyComparisonTests
 		public string? Value { get; } = value;
 	}
 
+	private sealed class WithPrivateField(int value)
+	{
+		private readonly int Value = value;
+
+		public override string ToString() => $"{Value}";
+	}
+
 	private sealed class WithPrivateGetter(int value)
 	{
 		public int Value { private get; set; } = value;
 		public int Other { get; set; }
+
+		public override string ToString() => $"{Value}";
+	}
+
+	private sealed class WithPrivateProperty(int value)
+	{
+		private int Value { get; } = value;
 
 		public override string ToString() => $"{Value}";
 	}

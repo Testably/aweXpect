@@ -29,6 +29,7 @@ public static class EquivalencyDefaults
 		    || type == typeof(DateTimeOffset)
 		    || type == typeof(TimeSpan)
 		    || type == typeof(Guid)
+		    || IsDateOrTime(type)
 		    || IsNumber(type)
 		    || IsHandle(type)
 		    || EquivalencyContent.IsComparedByContent(type))
@@ -38,6 +39,20 @@ public static class EquivalencyDefaults
 
 		return EquivalencyComparisonType.ByMembers;
 	}
+
+	/// <remarks>
+	///     The public members of a date or a time of day are views of the same value, so one difference would be
+	///     reported once per view.
+	///     <para />
+	///     netstandard2.0 has no <c>DateOnly</c> or <c>TimeOnly</c>, but is served to runtimes that have them, so they
+	///     are matched by name there.
+	/// </remarks>
+	private static bool IsDateOrTime(Type type)
+#if NET8_0_OR_GREATER
+		=> type == typeof(DateOnly) || type == typeof(TimeOnly);
+#else
+		=> type.FullName is "System.DateOnly" or "System.TimeOnly";
+#endif
 
 	/// <remarks>
 	///     The public members of a number either only describe it (<c>Sign</c>, <c>IsEven</c>) or do not exist at all

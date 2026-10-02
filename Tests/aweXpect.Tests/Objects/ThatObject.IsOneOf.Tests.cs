@@ -79,9 +79,40 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to one of [ThatObject.MyClass { Value = 0 }],
-					             *
-					             """).AsWildcard()
-					.Because("the equivalency keeps naming the comparison it performs");
+					             but it was not:
+					               Property Value differed:
+					                   Actual: 1
+					                 Expected: 0
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the equivalency keeps naming the comparison it performs and lists the differences to the only candidate");
+			}
+
+			[Fact]
+			public async Task WhenComparingWithEquivalenceAgainstSeveralCandidates_ShouldDescribeTheSubject()
+			{
+				object subject = new MyClass
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsOneOf(new MyClass { Value = 2, }, new MyClass { Value = 3, }).Equivalent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to one of [ThatObject.MyClass { Value = 2 }, ThatObject.MyClass { Value = 3 }],
+					             but it was ThatObject.MyClass {
+					                 Value = 1
+					               }
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the differences to the last candidate would read as if it were the only expectation");
 			}
 
 			[Fact]

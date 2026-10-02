@@ -15,7 +15,12 @@ namespace aweXpect.Equivalency;
 internal readonly struct EquivalencyMember(string name, Type declaredType, Func<object, object?> getValue)
 {
 	public string Name { get; } = name;
-	public Type DeclaredType { get; } = declaredType;
+
+	/// <remarks>
+	///     A <see cref="Nullable{T}" /> is unwrapped, because the member holds a value of the underlying type, which is
+	///     also the runtime type a collection item of that type has.
+	/// </remarks>
+	public Type DeclaredType { get; } = Nullable.GetUnderlyingType(declaredType) ?? declaredType;
 	public Func<object, object?> GetValue { get; } = getValue;
 }
 

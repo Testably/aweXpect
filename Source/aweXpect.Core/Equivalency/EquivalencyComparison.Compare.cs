@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -609,14 +610,19 @@ public static partial class EquivalencyComparison
 	{
 		bool result = true;
 		ISet<object> matchedKeys = CreateKeySet(actualKeyComparer);
+		HashSet<int> matchedKeyIndices = [];
 		HashSet<int> collapsedKeyIndices = [];
 		int index = 0;
 		foreach (object? key in expected.Keys)
 		{
 			if (UserCode.Invoke(static entry => entry.actual.Contains(entry.key), (actual, key),
-				    GetThrower(memberPath)) && !matchedKeys.Add(key))
+				    GetThrower(memberPath)))
 			{
-				collapsedKeyIndices.Add(index);
+				matchedKeyIndices.Add(index);
+				if (!matchedKeys.Add(key))
+				{
+					collapsedKeyIndices.Add(index);
+				}
 			}
 
 			index++;
@@ -638,7 +644,7 @@ public static partial class EquivalencyComparison
 			{
 				foreach (object key in additionalKeys)
 				{
-					string elementMemberPath = $"{memberPath}[{key}]";
+					string elementMemberPath = GetKeyPath(memberPath, key);
 					object? actualObject = GetEntry(actual, key, elementMemberPath);
 					if (typeOptions.MembersToIgnore.Any(memberToIgnore
 						    => AppliesTo(memberToIgnore, MemberType.Element) &&
@@ -672,9 +678,10 @@ public static partial class EquivalencyComparison
 		index = 0;
 		foreach (object? key in expected.Keys)
 		{
+			bool isMatched = matchedKeyIndices.Contains(index);
 			bool isCollapsed = collapsedKeyIndices.Contains(index++);
-			string elementMemberPath = $"{memberPath}[{key}]";
-			if (!matchedKeys.Contains(key))
+			string elementMemberPath = GetKeyPath(memberPath, key);
+			if (!isMatched)
 			{
 				object? expectedObject = GetEntry(expected, key, elementMemberPath);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
@@ -713,6 +720,12 @@ public static partial class EquivalencyComparison
 
 		return result;
 	}
+
+	/// <remarks>
+	///     The key is formatted without the current culture, so that a member path to ignore matches on every machine.
+	/// </remarks>
+	private static string GetKeyPath(string memberPath, object? key)
+		=> $"{memberPath}[{(key is IFormattable formattable ? formattable.ToString(null, CultureInfo.InvariantCulture) : key)}]";
 
 	private static object? GetEntry(IDictionary dictionary, object key, string elementMemberPath)
 		=> UserCode.Invoke(static entry => entry.dictionary[entry.key], (dictionary, key), elementMemberPath);

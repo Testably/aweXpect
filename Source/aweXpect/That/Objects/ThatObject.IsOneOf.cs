@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -93,14 +94,23 @@ public static partial class ThatObject
 			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
+		/// <remarks>
+		///     The match type explains how the subject differs from a single candidate, but the differences to the last
+		///     of several candidates would read as if it were the only one, so then the subject is described instead.
+		/// </remarks>
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+		{
+			TExpected?[] candidates = expected.Take(2).ToArray();
+			stringBuilder.Append(candidates.Length == 1
+				? options.GetExtendedFailure(It, Grammars, Actual, candidates[0])
+				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented())}");
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 }

@@ -221,6 +221,9 @@ public sealed partial class ThatEnumerable
 					               },
 					               (… and maybe more)
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

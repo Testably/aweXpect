@@ -69,10 +69,23 @@ internal static class IncludeMembersExtensions
 	///     Finds the field <paramref name="name" /> the way a lookup with the binding flags of
 	///     <paramref name="includeMembers" /> does, without requiring the field itself to have a requested visibility.
 	/// </summary>
+	/// <remarks>
+	///     A field that is more visible than requested is still found, but a protected or private one never is. It
+	///     still hides a base field of the same name, like it does for the expected object.
+	/// </remarks>
 	public static FieldInfo? FindField(this Type type, string name, IncludeMembers includeMembers)
-		=> includeMembers == IncludeMembers.None
-			? null
-			: GetAllFields(type, includeMembers).FirstOrDefault(field => field.Name == name);
+	{
+		if (includeMembers == IncludeMembers.None ||
+		    GetAllFields(type, includeMembers).FirstOrDefault(field => field.Name == name) is not { } field)
+		{
+			return null;
+		}
+
+		return Includes(includeMembers | IncludeMembers.Public, field.IsPublic,
+			field.IsAssembly || field.IsFamilyOrAssembly)
+			? field
+			: null;
+	}
 
 	/// <summary>
 	///     Finds the property <paramref name="name" /> the way a lookup with the binding flags of
@@ -81,14 +94,25 @@ internal static class IncludeMembersExtensions
 	/// </summary>
 	/// <remarks>
 	///     A public request only sees a property that can be read publicly, because a registration cannot call a
-	///     non-public getter and the two paths have to agree.
+	///     non-public getter and the two paths have to agree. A property that is more visible than requested is still
+	///     found, but one with a protected or private getter never is. It still hides a base property of the same
+	///     name, like it does for the expected object.
 	/// </remarks>
 	public static PropertyInfo? FindProperty(this Type type, string name, IncludeMembers includeMembers)
-		=> includeMembers == IncludeMembers.None
-			? null
-			: GetAllProperties(type, includeMembers).FirstOrDefault(property
-				=> property.Name == name &&
-				   (includeMembers != IncludeMembers.Public || property.GetGetMethod(true)!.IsPublic));
+	{
+		if (includeMembers == IncludeMembers.None ||
+		    GetAllProperties(type, includeMembers).FirstOrDefault(property => property.Name == name) is not
+			    { } property)
+		{
+			return null;
+		}
+
+		MethodInfo getter = property.GetGetMethod(true)!;
+		return Includes(includeMembers | IncludeMembers.Public, getter.IsPublic,
+			getter.IsAssembly || getter.IsFamilyOrAssembly)
+			? property
+			: null;
+	}
 
 	/// <summary>
 	///     Returns the readable properties that the <paramref name="type" /> implements explicitly for an interface.

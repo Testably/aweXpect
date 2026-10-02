@@ -670,6 +670,9 @@ public sealed partial class ThatEnumerable
 					                 Value = 5
 					               }
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 

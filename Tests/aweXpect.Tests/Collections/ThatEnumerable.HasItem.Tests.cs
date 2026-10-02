@@ -1107,6 +1107,9 @@ public sealed partial class ThatEnumerable
 					               },
 					               (… and 10 more)
 					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 		}
