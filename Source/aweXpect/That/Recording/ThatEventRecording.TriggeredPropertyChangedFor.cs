@@ -40,11 +40,9 @@ public static partial class ThatEventRecording
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
 			DescribePropertyName(propertyName));
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new EventTriggerResult<TSubject>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, expectationBuilder,
-					nameof(INotifyPropertyChanged.PropertyChanged),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options)),
@@ -91,11 +89,9 @@ public static partial class ThatEventRecording
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
 			DescribePropertyName(propertyName));
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new EventTriggerResult<TSubject>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, expectationBuilder,
-					nameof(INotifyPropertyChanged.PropertyChanged),
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options).Invert()),

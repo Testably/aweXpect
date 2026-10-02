@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Signaling;
 
 // ReSharper disable MethodHasAsyncOverload
@@ -99,6 +100,31 @@ public sealed partial class ThatSignaler
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
+			public async Task
+				WhenTheTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
+			{
+				Signaler signaler = new();
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act() =>
+						await That(signaler).Signaled().Within(2.Seconds()).WithTimeout(10.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that signaler
+					            has recorded the callback at least once within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 			}
 
 			[Fact]

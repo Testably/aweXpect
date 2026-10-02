@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -26,9 +27,8 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new SignalCountResult(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, expectationBuilder, quantifier, options)),
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint(it, grammars, quantifier, options)),
 			subject,
 			quantifier,
 			options);
@@ -43,9 +43,8 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new SignalCountWhoseResult<TParameter>(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, expectationBuilder, quantifier, options)),
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
 			subject,
 			quantifier,
 			options);
@@ -63,9 +62,8 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new SignalCountResult(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, expectationBuilder, quantifier, options)),
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint(it, grammars, quantifier, options)),
 			subject,
 			quantifier,
 			options);
@@ -83,9 +81,8 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new SignalCountWhoseResult<TParameter>(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, expectationBuilder, quantifier, options)),
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
 			subject,
 			quantifier,
 			options);
@@ -107,9 +104,8 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new DidNotSignalResult(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, expectationBuilder, quantifier, options).Invert()),
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
 	}
@@ -131,9 +127,8 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new DidNotSignalResult<TParameter>(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, expectationBuilder, quantifier, options).Invert()),
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
 	}
@@ -158,9 +153,8 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new DidNotSignalResult(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, expectationBuilder, quantifier, options).Invert()),
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
 	}
@@ -187,9 +181,8 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new DidNotSignalResult<TParameter>(expectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, expectationBuilder, quantifier, options).Invert()),
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
 	}
@@ -265,15 +258,10 @@ public static partial class ThatSignaler
 	///     the signals received until then decide nothing, unless the cancellation counts as the
 	///     <paramref name="timeout" /> having elapsed.
 	/// </remarks>
-	private static void ThrowIfTheWaitWasCanceled(bool isSuccess, TimeSpan? timeout, TimeSpan waited,
-		ExpectationBuilder expectationBuilder, CancellationToken cancellationToken)
-	{
-		if (!isSuccess && timeout != TimeSpan.Zero &&
-		    !(timeout is { } t && expectationBuilder.IsTimeoutReachedAt(t, waited)))
-		{
-			cancellationToken.ThrowIfCancellationRequested();
-		}
-	}
+	private static bool IsCanceledBeforeTheTimeout(bool isSuccess, TimeSpan? timeout, TimeSpan waited,
+		IEvaluationContext context)
+		=> !isSuccess && timeout != TimeSpan.Zero && context.Cancellation.Token.IsCancellationRequested &&
+		   !(timeout is { } t && context.Cancellation.CountsAsElapsed(t, waited));
 
 	private static void AppendWaitedTime(StringBuilder stringBuilder, TimeSpan? waitedTime, bool? isSuccess)
 	{
@@ -290,15 +278,15 @@ public static partial class ThatSignaler
 	private sealed class SignaledConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		ExpectationBuilder expectationBuilder,
 		Quantifier quantifier,
 		SignalerOptions options)
-		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncConstraint<Signaler>
+		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncContextConstraint<Signaler>
 	{
 		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
-		public async Task<ConstraintResult> IsMetBy(Signaler actual, CancellationToken cancellationToken)
+		public async Task<ConstraintResult> IsMetBy(Signaler actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
@@ -324,7 +312,12 @@ public static partial class ThatSignaler
 					return result;
 				},
 				CancellationToken.None);
-			ThrowIfTheWaitWasCanceled(Actual.IsSuccess, timeout, waited, expectationBuilder, cancellationToken);
+			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
+			{
+				Outcome = Outcome.Undecided;
+				return this;
+			}
+
 
 			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -350,11 +343,10 @@ public static partial class ThatSignaler
 	private sealed class SignaledConstraint<TParameter>(
 		string it,
 		ExpectationGrammars grammars,
-		ExpectationBuilder expectationBuilder,
 		Quantifier quantifier,
 		SignalerOptions<TParameter> options)
 		: ConstraintResult.WithNotNullValue<SignalerResult<TParameter>>(it, grammars),
-			IAsyncConstraint<Signaler<TParameter>>
+			IAsyncContextConstraint<Signaler<TParameter>>
 	{
 		private int _actualCount;
 		private TimeSpan? _defaultTimeout;
@@ -362,6 +354,7 @@ public static partial class ThatSignaler
 
 		public async Task<ConstraintResult> IsMetBy(
 			Signaler<TParameter> actual,
+			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
@@ -389,7 +382,12 @@ public static partial class ThatSignaler
 					return result;
 				},
 				CancellationToken.None);
-			ThrowIfTheWaitWasCanceled(Actual.IsSuccess, timeout, waited, expectationBuilder, cancellationToken);
+			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
+			{
+				Outcome = Outcome.Undecided;
+				return this;
+			}
+
 
 			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p, "the predicate"));
 
