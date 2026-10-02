@@ -143,6 +143,8 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_foundValues.Clear();
+			_foundMismatch = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;

@@ -132,7 +132,37 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
+			[Fact]
+			public async Task WhenRetriedAfterIncompatibleKinds_ShouldJudgeTheNextAttemptOnItsOwn()
+			{
+				int attempts = 0;
+
+				DateTime[] GetSubject()
+					=> attempts++ == 0 ? [Utc, Local,] : [Utc, Utc.AddHours(1),];
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().CheckEvery(1.Milliseconds()).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the second attempt only contains UTC times in ascending order");
+			}
+
 #if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenImmutableArrayIsRetriedAfterIncompatibleKinds_ShouldJudgeTheNextAttemptOnItsOwn()
+			{
+				int attempts = 0;
+
+				ImmutableArray<DateTime> GetSubject()
+					=> attempts++ == 0 ? [Utc, Local,] : [Utc, Utc.AddHours(1),];
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().CheckEvery(1.Milliseconds()).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the second attempt only contains UTC times in ascending order");
+			}
+
 			[Fact]
 			public async Task WhenImmutableArrayKindsAreIncompatible_ShouldFail()
 			{

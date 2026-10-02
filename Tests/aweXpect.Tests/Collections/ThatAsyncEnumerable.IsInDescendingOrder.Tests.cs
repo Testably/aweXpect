@@ -12,6 +12,18 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenEvaluatedForSeveralItems_ShouldJudgeEachOneOnItsOwn()
+			{
+				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(1, 2), ToAsyncEnumerable(2, 1),];
+
+				async Task Act()
+					=> await That(subject).AtLeast(1).ComplyWith(x => x.IsInDescendingOrder());
+
+				await That(Act).DoesNotThrow()
+					.Because("the second item is in descending order");
+			}
+
+			[Fact]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(3, 3, 2, 1, 3);
@@ -26,7 +38,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had 1 before 3, which is not in descending order
 
 					             Collection:
-					             [3, 3, 2, 1, 3]
+					             [3, 3, 2, 1, 3, (… and maybe more)]
 					             """);
 			}
 
@@ -39,6 +51,26 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsInDescendingOrder();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterTheItemsOutOfOrder_ShouldFailBecauseOfTheOrder()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("the source broke"), 1, 2);
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in descending order,
+					             but it had 1 before 2, which is not in descending order
+
+					             Collection:
+					             [1, 2, (… and maybe more)]
+					             """)
+					.Because("the evaluation stops at the first items out of order");
 			}
 
 			[Fact]
@@ -110,7 +142,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Collection:
 					             [
 					               "A",
-					               "a"
+					               "a",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -145,7 +178,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "b",
 					               "a",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -210,7 +244,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInDescendingOrder.MyIntClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -293,7 +328,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInDescendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "a"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -338,7 +374,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInDescendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "c"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

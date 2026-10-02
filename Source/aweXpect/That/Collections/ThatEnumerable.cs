@@ -1090,6 +1090,8 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_failureText = null;
+			IsIncomparable = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -1219,6 +1221,8 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_failureText = null;
+			IsIncomparable = false;
 			if (actual.IsDefaultImmutableArray())
 			{
 				return Task.FromResult(this.AsNullSubject(It));

@@ -71,6 +71,34 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEvaluatedForSeveralItems_ShouldOnlyConsiderTheItemsOfEachOne()
+			{
+				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(1, 2, 3), ToAsyncEnumerable<int>(),];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x.EndsWith(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with [3] for all items,
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               IAsyncEnumerable<int>
+					             ]
+
+					             Collection:
+					             [
+					               IAsyncEnumerable<int>,
+					               IAsyncEnumerable<int>
+					             ]
+					             """)
+					.Because("the second item is empty");
+			}
+
+			[Fact]
 			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -116,6 +144,32 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
+			{
+				int attempts = 0;
+
+				IAsyncEnumerable<int> GetSubject()
+					=> attempts++ == 0 ? ToAsyncEnumerable(3) : ToAsyncEnumerable(2);
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(500.Milliseconds()).CheckEvery(1.Milliseconds())
+						.EndsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually ends with [1, 2] within 0:00.500,
+					             but it contained only 1 item and lacked 1 item: [
+					               1
+					             ]
+
+					             Collection:
+					             [2]
+					             """)
+					.Because("the mismatch of the first attempt does not apply to the later ones");
 			}
 
 			[Fact]
