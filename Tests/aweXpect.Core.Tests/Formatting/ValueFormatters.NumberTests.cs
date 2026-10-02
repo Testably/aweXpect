@@ -2,6 +2,7 @@
 using System.Text;
 #if NET8_0_OR_GREATER
 using System.Globalization;
+using System.Numerics;
 using aweXpect.Core.Tests.TestHelpers;
 #endif
 
@@ -239,6 +240,32 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task Numbers_Int128AndBigInteger_ShouldUseInvariantCulture()
+		{
+			using CultureOverride _ = new("sv-SE");
+			StringBuilder sb = new();
+			Formatter.Format(sb, (Int128)(-1));
+			Formatter.Format(sb, new BigInteger(-2));
+
+			string[] results =
+			[
+				Formatter.Format((Int128)(-1)),
+				Formatter.Format((object?)new BigInteger(-2)),
+				Formatter.Format(UInt128.MaxValue),
+				Formatter.Format((object?)(Int128)(-4), FormattingOptions.WithType),
+				Formatter.Format(new BigInteger(-5), FormattingOptions.WithType),
+			];
+
+			await That(CultureInfo.CurrentCulture.NumberFormat.NegativeSign).IsEqualTo("−")
+				.Because("ICU renders negative numbers in sv-SE with the Unicode minus sign");
+			await That(string.Join(" | ", results))
+				.IsEqualTo("-1 | -2 | 340282366920938463463374607431768211455 | Int128 -4 | BigInteger -5");
+			await That(sb.ToString()).IsEqualTo("-1-2");
+		}
+#endif
 
 		[Fact]
 		public async Task Numbers_Int16_ShouldReturnExpectedValue()

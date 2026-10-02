@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using aweXpect.Core.Metadata;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -458,6 +460,21 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenFormattable_ShouldUseTheInvariantCulture()
+		{
+			using CultureOverride _ = new("de-DE");
+			object value = new FormattableClass(1.5);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo("1.5")
+				.Because("a message must not depend on the current culture, even when the type renders itself");
+			await That(sb.ToString()).IsEqualTo("1.5");
+		}
+
+		[Fact]
 		public async Task WhenMemberIsAStringWithLineBreaks_ShouldEscapeItLikeACollectionItem()
 		{
 			InnerDummy value = new()
@@ -508,6 +525,53 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult).AsWildcard();
 		}
 
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task WhenRecordHasOwnRendering_ShouldUseIt()
+		{
+			string toStringResult = Formatter.Format((object)new RecordWithToString(1.5));
+			string printMembersResult = Formatter.Format((object)new RecordWithPrintMembers("custom"));
+
+			await That(toStringResult).IsEqualTo("custom")
+				.Because("only the compiler-generated rendering of a record is replaced");
+			await That(printMembersResult).IsEqualTo("RecordWithPrintMembers { custom }")
+				.Because("a user-written PrintMembers is part of the rendering of the record");
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task WhenRecordIsCompilerGenerated_ShouldFormatMembersWithTheirFormatters()
+		{
+			using CultureOverride _ = new("de-DE");
+			object value = new MyRecord(1.5, "a b");
+			string expectedResult = "ValueFormatters.ObjectTests.MyRecord { S = \"a b\", X = 1.5 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the compiler-generated ToString uses the current culture and does not quote strings");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Fact]
+		public async Task WhenRecordStructIsCompilerGenerated_ShouldFormatMembersWithTheirFormatters()
+		{
+			using CultureOverride _ = new("de-DE");
+			object value = new MyRecordStruct(1.5, null);
+			string expectedResult = "ValueFormatters.ObjectTests.MyRecordStruct { S = <null>, X = 1.5 }";
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the compiler-generated ToString renders null as an empty text");
+		}
+#endif
+
 		[Fact]
 		public async Task WhenRegistered_ShouldDisplayOnlyTheRegisteredMembers()
 		{
@@ -545,6 +609,31 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult)
 				.Because("each read boxes a new value, so the recursion guard would never stop following it");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenTuple_ShouldFormatItemsPositionally()
+		{
+			using CultureOverride _ = new("de-DE");
+			StringBuilder sb = new();
+			Formatter.Format(sb, (object)(1.5, "a"));
+
+			string[] results =
+			[
+				Formatter.Format((object)(1.5, "a")),
+				Formatter.Format((object)("a\"b", (string?)null)),
+				Formatter.Format((object)Tuple.Create(1.5, "a")),
+				Formatter.Format((object)((1, 2), 3)),
+				Formatter.Format((object)ValueTuple.Create(1)),
+				Formatter.Format((object)ValueTuple.Create()),
+				Formatter.Format((object)(1, 2, 3, 4, 5, 6, 7, 8, 9)),
+				Formatter.Format((object)Tuple.Create(1, 2, 3, 4, 5, 6, 7, 8)),
+			];
+
+			await That(string.Join(" | ", results)).IsEqualTo(
+				"(1.5, \"a\") | (\"a\\\"b\", <null>) | (1.5, \"a\") | ((1, 2), 3) | (1) | () | (1, 2, 3, 4, 5, 6, 7, 8, 9) | (1, 2, 3, 4, 5, 6, 7, 8)"
+			).Because("the compiler-generated ToString uses the current culture, does not quote strings and renders null as an empty text");
+			await That(sb.ToString()).IsEqualTo("(1.5, \"a\")");
 		}
 
 		[Fact]
@@ -608,6 +697,32 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithType_WhenToStringIsImplemented_ShouldIncludeTheType()
+		{
+			object value = new ClassWithToString("foo");
+			string expectedResult = "ValueFormatters.ObjectTests.ClassWithToString foo";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the own rendering of a type does not name it, unlike its members would");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WithType_WhenTuple_ShouldIncludeTheType()
+		{
+			object value = (1, "a");
+			string expectedResult = "ValueTuple<int, string> (1, \"a\")";
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
 		}
 
 		private class BaseWithField
@@ -740,6 +855,38 @@ public partial class ValueFormatters
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
 		}
+
+		private sealed class FormattableClass(double value) : IFormattable
+		{
+			public string ToString(string? format, IFormatProvider? formatProvider)
+				=> value.ToString(format, formatProvider);
+
+			/// <inheritdoc />
+			public override string ToString()
+				=> ToString(null, CultureInfo.CurrentCulture);
+		}
+
+#if NET8_0_OR_GREATER
+		private sealed record MyRecord(double X, string S);
+
+		private record struct MyRecordStruct(double X, string? S);
+
+		private sealed record RecordWithPrintMembers(string Text)
+		{
+			private bool PrintMembers(StringBuilder builder)
+			{
+				builder.Append(Text);
+				return true;
+			}
+		}
+
+		private sealed record RecordWithToString(double X)
+		{
+			/// <inheritdoc />
+			public override string ToString()
+				=> "custom";
+		}
+#endif
 
 		private sealed class RegisteredDummy
 		{

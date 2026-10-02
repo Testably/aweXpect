@@ -123,8 +123,16 @@ public static partial class ValueFormatters
 
 		if (value is IDictionary dictionary)
 		{
-			FormatItems(stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
-				new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
+			if (ValueFormatter.Registrations.Length > 0)
+			{
+				FormatItems(stringBuilder, value, value.Cast<object?>(), dictionary.Count, options,
+					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem));
+			}
+			else
+			{
+				FormatItems(stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
+					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
+			}
 		}
 		else
 		{
@@ -147,6 +155,21 @@ public static partial class ValueFormatters
 		}, context);
 		return stringBuilder.ToString();
 	}
+
+	/// <remarks>
+	///     The entries of a generic dictionary are enumerated as the boxed <see cref="KeyValuePair{TKey,TValue}" />
+	///     instead of as <see cref="DictionaryEntry" />, so that the registered formatters are offered the same value as
+	///     for a typed dictionary. Without registrations, the entries are read through <see cref="IDictionary" />,
+	///     which needs no reflection to read the key and value of a boxed pair.
+	/// </remarks>
+	private static string FormatDictionaryItem(
+		ValueFormatter formatter,
+		object? item,
+		FormattingOptions options,
+		FormattingContext context)
+		=> item is DictionaryEntry entry
+			? FormatDictionaryEntry(formatter, entry, options, context)
+			: FormatItem(formatter, item, options, context);
 
 	private static string FormatItem(
 		ValueFormatter formatter,
@@ -173,16 +196,17 @@ public static partial class ValueFormatters
 		ItemFormatter<T> itemFormatter)
 	{
 		FormattingContext context = itemFormatter.Context;
+		bool isDictionary = IsDictionary(value);
 		if (!context.FormattedObjects.Add(value))
 		{
-			stringBuilder.Append(value is IDictionary ? "{*recursive*}" : "[*recursive*]");
+			stringBuilder.Append(isDictionary ? "{*recursive*}" : "[*recursive*]");
 			return;
 		}
 
 		int length = stringBuilder.Length;
 		try
 		{
-			AppendItems(stringBuilder, value, items, totalCount, options, itemFormatter);
+			AppendItems(stringBuilder, value, isDictionary, items, totalCount, options, itemFormatter);
 		}
 		catch (Exception exception)
 		{
@@ -199,6 +223,7 @@ public static partial class ValueFormatters
 	private static void AppendItems<T>(
 		StringBuilder stringBuilder,
 		IEnumerable value,
+		bool isDictionary,
 		IEnumerable<T> items,
 		int? totalCount,
 		FormattingOptions? options,
@@ -215,7 +240,6 @@ public static partial class ValueFormatters
 		int maxCount = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		int count = maxCount;
 
-		bool isDictionary = value is IDictionary;
 		stringBuilder.Append(isDictionary ? '{' : '[');
 		bool hasMoreValues = false;
 		bool isNotEmpty = false;
@@ -345,6 +369,15 @@ public static partial class ValueFormatters
 			IReadOnlyCollection<T> collection => collection.Count,
 			_ => null,
 		};
+
+	/// <remarks>
+	///     A type that only implements the generic dictionary interfaces is a dictionary as well, so it is rendered in
+	///     braces like one.
+	/// </remarks>
+	private static bool IsDictionary(IEnumerable value)
+		=> value is IDictionary ||
+		   value.GetType().FindGenericInterface(definition => definition == typeof(IDictionary<,>) ||
+		                                                      definition == typeof(IReadOnlyDictionary<,>)) is not null;
 
 	private static IEnumerable<DictionaryEntry> GetEntries(IDictionary dictionary)
 	{

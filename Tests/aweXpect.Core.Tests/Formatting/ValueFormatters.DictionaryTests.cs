@@ -86,6 +86,32 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenAKeyValuePairFormatterIsRegistered_ShouldUseItAlsoWhenBoxed()
+		{
+			using IDisposable _ = ValueFormatter.Register(new PairKeyFormatter());
+			Dictionary<PairKey, int> value = new()
+			{
+				[new PairKey()] = 1,
+			};
+			Hashtable nonGeneric = new()
+			{
+				["1"] = 1,
+			};
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			string memberResult = Formatter.Format(new Holder(value), FormattingOptions.SingleLine);
+			string nonGenericResult = Formatter.Format((object?)nonGeneric);
+
+			await That(result).IsEqualTo("{CUSTOM(1)}");
+			await That(objectResult).IsEqualTo("{CUSTOM(1)}")
+				.Because("a dictionary that lost its static type still offers its entries to the registered formatters");
+			await That(memberResult).IsEqualTo("ValueFormatters.DictionaryTests.Holder { Value = {CUSTOM(1)} }")
+				.Because("a dictionary that is a member is formatted boxed");
+			await That(nonGenericResult).IsEqualTo("{[\"1\"] = 1}");
+		}
+
+		[Fact]
 		public async Task WhenDictionaryContainsItself_ShouldDetectTheRecursion()
 		{
 			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = {*recursive*} }}";
@@ -167,6 +193,39 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(ValueFormatter.NullString);
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
+		}
+
+		[Fact]
+		public async Task WhenOnlyAGenericReadOnlyDictionary_ShouldUseBraces()
+		{
+			string expectedResult = "{[\"a\"] = 1}";
+			ReadOnlyDictionaryOnly<int> value = new(new Dictionary<string, int>
+			{
+				["a"] = 1,
+			});
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a dictionary is rendered in braces, even when it does not implement the non-generic IDictionary");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
+		public async Task WhenOnlyAGenericReadOnlyDictionaryContainsItself_ShouldDetectTheRecursionInBraces()
+		{
+			Dictionary<string, object> inner = new();
+			ReadOnlyDictionaryOnly<object> value = new(inner);
+			inner["self"] = new Holder(value);
+			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = {*recursive*} }}";
+
+			string result = Formatter.Format((object?)value);
+
+			await That(result).IsEqualTo(expectedResult);
 		}
 
 		[Fact]
@@ -301,6 +360,35 @@ public partial class ValueFormatters
 
 			public object Value
 				=> ++_reads > 100 ? throw new InvalidOperationException("read too often") : value;
+		}
+
+		private sealed class PairKey;
+
+		private sealed class PairKeyFormatter : IValueFormatter
+		{
+			public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+			{
+				if (value is KeyValuePair<PairKey, int> pair)
+				{
+					stringBuilder.Append("CUSTOM(").Append(pair.Value).Append(')');
+					return true;
+				}
+
+				return false;
+			}
+		}
+
+		private sealed class ReadOnlyDictionaryOnly<TValue>(Dictionary<string, TValue> inner)
+			: IReadOnlyDictionary<string, TValue>
+		{
+			public int Count => inner.Count;
+			public TValue this[string key] => inner[key];
+			public IEnumerable<string> Keys => inner.Keys;
+			public IEnumerable<TValue> Values => inner.Values;
+			public bool ContainsKey(string key) => inner.ContainsKey(key);
+			public bool TryGetValue(string key, out TValue value) => inner.TryGetValue(key, out value!);
+			public IEnumerator<KeyValuePair<string, TValue>> GetEnumerator() => inner.GetEnumerator();
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 	}
 }

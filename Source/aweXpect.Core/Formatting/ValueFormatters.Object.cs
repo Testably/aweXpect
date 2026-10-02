@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
@@ -12,6 +15,14 @@ namespace aweXpect.Formatting;
 
 public static partial class ValueFormatters
 {
+	private static readonly HashSet<Type> TupleDefinitions =
+	[
+		typeof(ValueTuple<>), typeof(ValueTuple<,>), typeof(ValueTuple<,,>), typeof(ValueTuple<,,,>),
+		typeof(ValueTuple<,,,,>), typeof(ValueTuple<,,,,,>), typeof(ValueTuple<,,,,,,>), typeof(ValueTuple<,,,,,,,>),
+		typeof(Tuple<>), typeof(Tuple<,>), typeof(Tuple<,,>), typeof(Tuple<,,,>),
+		typeof(Tuple<,,,,>), typeof(Tuple<,,,,,>), typeof(Tuple<,,,,,,>), typeof(Tuple<,,,,,,,>),
+	];
+
 	internal static void FormatObject(StringBuilder stringBuilder, object value, FormattingOptions options,
 		FormattingContext? context)
 	{
@@ -21,46 +32,99 @@ public static partial class ValueFormatters
 		}
 		else if (TryGetKeyValuePair(value, out object? key, out object? pairValue))
 		{
-			FormattingOptions pairOptions = options with
+			AppendTypeIfIncluded(stringBuilder, value, options);
+			AppendKeyValuePair(Formatter, stringBuilder, key, pairValue, options with
 			{
 				IncludeType = false,
-			};
-			AppendKeyValuePair(Formatter, stringBuilder, key, pairValue, pairOptions, context ?? new FormattingContext());
+			}, context ?? new FormattingContext());
+		}
+		else if (TryGetTupleItems(value, out List<object?>? items))
+		{
+			AppendTypeIfIncluded(stringBuilder, value, options);
+			AppendTupleItems(stringBuilder, items, options with
+			{
+				IncludeType = false,
+			}, context ?? new FormattingContext());
 		}
 		else
 		{
-			string? toString = null;
-			if (!IsAnonymousType(value.GetType()))
-			{
-				try
-				{
-					toString = value.ToString();
-				}
-				catch (Exception exception)
-				{
-					stringBuilder.Append(FormatThrownException(
-						$"ToString of {Formatter.Format(value.GetType())}", exception));
-					return;
-				}
-			}
+			AppendRenderingOrMemberValues(stringBuilder, value, options, context);
+		}
+	}
 
-			if (toString is null || toString == value.GetType().ToString())
+	private static void AppendRenderingOrMemberValues(StringBuilder stringBuilder, object value,
+		FormattingOptions options, FormattingContext? context)
+	{
+		string? toString = null;
+		if (!IsAnonymousType(value.GetType()) && !IsCompilerGeneratedRecord(value.GetType()))
+		{
+			try
 			{
-				context ??= new FormattingContext();
-				WriteTypeAndMemberValues(value, stringBuilder, options with
-				{
-					IncludeType = false,
-				}, context);
+				toString = value is IFormattable formattable
+					? formattable.ToString(null, CultureInfo.InvariantCulture)
+					: value.ToString();
 			}
-			else if (options.UseLineBreaks)
+			catch (Exception exception)
 			{
-				stringBuilder.Append(toString.Indent(indentFirstLine: false));
-			}
-			else
-			{
-				stringBuilder.Append(toString.DisplayWhitespace());
+				stringBuilder.Append(FormatThrownException(
+					$"ToString of {Formatter.Format(value.GetType())}", exception));
+				return;
 			}
 		}
+
+		if (toString is null || toString == value.GetType().ToString())
+		{
+			context ??= new FormattingContext();
+			WriteTypeAndMemberValues(value, stringBuilder, options with
+			{
+				IncludeType = false,
+			}, context);
+			return;
+		}
+
+		AppendTypeIfIncluded(stringBuilder, value, options);
+		if (options.UseLineBreaks)
+		{
+			stringBuilder.Append(toString.Indent(indentFirstLine: false));
+		}
+		else
+		{
+			stringBuilder.Append(toString.DisplayWhitespace());
+		}
+	}
+
+	/// <remarks>
+	///     A rendering that is not written member-wise does not name the type, so it is prefixed like the values of
+	///     the typed overloads.
+	/// </remarks>
+	private static void AppendTypeIfIncluded(StringBuilder stringBuilder, object value, FormattingOptions options)
+	{
+		if (options.IncludeType)
+		{
+			Formatter.Format(stringBuilder, value.GetType());
+			stringBuilder.Append(' ');
+		}
+	}
+
+	/// <remarks>
+	///     A record renders itself through a compiler-generated <see cref="object.ToString()" /> that passes every
+	///     member through its own one, which uses the current culture and does not quote strings, so it is written
+	///     member-wise instead. A record with a user-written <see cref="object.ToString()" /> or <c>PrintMembers</c>
+	///     keeps its own rendering. Without reflection, a record cannot be recognized and keeps its rendering as well.
+	/// </remarks>
+	private static bool IsCompilerGeneratedRecord(Type type)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			return false;
+		}
+
+		const BindingFlags instanceMembers = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+		MethodInfo? toString = type.GetMethod(nameof(object.ToString), instanceMembers, null, Type.EmptyTypes, null);
+		MethodInfo? printMembers = type.GetMethod("PrintMembers", instanceMembers, null, [typeof(StringBuilder),],
+			null);
+		return toString?.IsDefined(typeof(CompilerGeneratedAttribute), false) == true &&
+		       printMembers?.IsDefined(typeof(CompilerGeneratedAttribute), false) == true;
 	}
 
 	/// <remarks>
@@ -125,6 +189,79 @@ public static partial class ValueFormatters
 		key = getKey(value);
 		pairValue = getValue(value);
 		return true;
+	}
+
+	/// <remarks>
+	///     A tuple renders itself through a compiler-generated <see cref="object.ToString()" /> that passes every item
+	///     through its own one, which uses the current culture and does not quote strings, so its items are formatted
+	///     like any other value instead, in the positional syntax of C#.
+	/// </remarks>
+	private static bool TryGetTupleItems(object value, [NotNullWhen(true)] out List<object?>? items)
+	{
+		items = null;
+		if (!IsTupleType(value.GetType()))
+		{
+			return false;
+		}
+
+		items = [];
+#if NET8_0_OR_GREATER
+		ITuple tuple = (ITuple)value;
+		for (int i = 0; i < tuple.Length; i++)
+		{
+			items.Add(tuple[i]);
+		}
+#else
+		AddTupleItems(value, items);
+#endif
+		return true;
+	}
+
+#if !NET8_0_OR_GREATER
+	/// <remarks>
+	///     netstandard2.0 lacks <c>ITuple</c>, so the items are read by name, from the fields of a value tuple or the
+	///     properties of a reference tuple. The eighth item holds the remaining items as another tuple.
+	/// </remarks>
+	private static void AddTupleItems(object tuple, List<object?> items)
+	{
+		Type type = tuple.GetType();
+		int count = type.IsGenericType ? type.GetGenericArguments().Length : 0;
+		for (int i = 1; i <= count; i++)
+		{
+			string name = i == 8 ? "Rest" : $"Item{i}";
+			FieldInfo? field = type.GetField(name);
+			object? item = field is not null ? field.GetValue(tuple) : type.GetProperty(name)!.GetValue(tuple);
+			if (i == 8 && item is not null && IsTupleType(item.GetType()))
+			{
+				AddTupleItems(item, items);
+			}
+			else
+			{
+				items.Add(item);
+			}
+		}
+	}
+#endif
+
+	private static bool IsTupleType(Type type)
+		=> type == typeof(ValueTuple) ||
+		   (type.IsGenericType && TupleDefinitions.Contains(type.GetGenericTypeDefinition()));
+
+	private static void AppendTupleItems(StringBuilder stringBuilder, List<object?> items,
+		FormattingOptions options, FormattingContext context)
+	{
+		stringBuilder.Append('(');
+		for (int i = 0; i < items.Count; i++)
+		{
+			if (i > 0)
+			{
+				stringBuilder.Append(", ");
+			}
+
+			Format(Formatter, stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
+		}
+
+		stringBuilder.Append(')');
 	}
 
 	/// <remarks>

@@ -28,6 +28,24 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task NestedGenericTypeInNonGenericNestedType_ShouldKeepTheTypeArgumentOfTheOuterType()
+		{
+			Type value = typeof(NestedGenericType<TypeTests>.InnerRegularClass.InnerGenericClass<string>);
+			string expectedResult =
+				"ValueFormatters.TypeTests.NestedGenericType<ValueFormatters.TypeTests>.InnerRegularClass.InnerGenericClass<string>";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the type arguments of all declaring types precede the own ones, not only those of the direct declaring type");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task NestedGenericTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
 			Type value = typeof(NestedGenericType<TypeTests>);
@@ -120,6 +138,25 @@ public partial class ValueFormatters
 			Formatter.Format(sb, value);
 
 			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Theory]
+		[InlineData(typeof(int[,]), "int[,]")]
+		[InlineData(typeof(int[,,]), "int[,,]")]
+		[InlineData(typeof(int[][,]), "int[][,]")]
+		[InlineData(typeof(int[,][]), "int[,][]")]
+		public async Task ShouldSupportMultiDimensionalArraySyntax(Type value, string expectedResult)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the rank is part of the type and the ranks are written in C# order, outermost first");
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
@@ -316,7 +353,10 @@ public partial class ValueFormatters
 		{
 			public sealed class InnerClass<T1, T2>;
 
-			public sealed class InnerRegularClass;
+			public sealed class InnerRegularClass
+			{
+				public sealed class InnerGenericClass<T1>;
+			}
 		}
 
 		// ReSharper disable once UnusedParameter.Local

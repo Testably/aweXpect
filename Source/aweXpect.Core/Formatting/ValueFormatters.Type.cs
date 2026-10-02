@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using aweXpect.Core.Helpers;
@@ -130,8 +129,7 @@ public static partial class ValueFormatters
 		}
 		else if (value.IsArray)
 		{
-			FormatType(value.GetElementType()!, stringBuilder);
-			stringBuilder.Append("[]");
+			FormatArrayType(value, stringBuilder);
 		}
 		else if (!AppendedPrimitiveAlias(value, stringBuilder))
 		{
@@ -140,11 +138,12 @@ public static partial class ValueFormatters
 				Type[]? declaringTypeGenericArguments = null;
 				if (value.IsGenericType)
 				{
-					int arity = GetArityOfGenericParameters(value.DeclaringType);
+					// Also counts the arguments of the types declaring the declaring type, which its own name omits.
+					int arity = value.DeclaringType.GetGenericArguments().Length;
 					// GenericTypeArguments is empty for an open generic type, which would drop its "<>".
-					Type[] allGenericArguments = value.GetGenericArguments();
+					Type[] allGenericArguments = genericArguments ?? value.GetGenericArguments();
 					declaringTypeGenericArguments = [..allGenericArguments.Take(arity),];
-					genericArguments = [..(genericArguments ?? allGenericArguments).Skip(arity),];
+					genericArguments = [..allGenericArguments.Skip(arity),];
 				}
 
 				FormatType(value.DeclaringType, stringBuilder, declaringTypeGenericArguments);
@@ -191,19 +190,25 @@ public static partial class ValueFormatters
 	}
 #pragma warning restore S3776
 
-	private static int GetArityOfGenericParameters(Type type)
+	/// <remarks>
+	///     The ranks are written outermost first, as in C#, where <c>int[][,]</c> is an array of two-dimensional
+	///     arrays, although reflection sees its element type <c>int[,]</c> first.
+	/// </remarks>
+	private static void FormatArrayType(Type value, StringBuilder stringBuilder)
 	{
-		int tickIndex = type.Name.LastIndexOf('`');
-		if (tickIndex != -1)
+		List<int> ranks = [];
+		Type elementType = value;
+		while (elementType.IsArray)
 		{
-			string? arityStr = type.Name[(tickIndex + 1)..];
-			if (int.TryParse(arityStr, NumberStyles.None, CultureInfo.InvariantCulture, out int arity))
-			{
-				return arity;
-			}
+			ranks.Add(elementType.GetArrayRank());
+			elementType = elementType.GetElementType()!;
 		}
 
-		return 0;
+		FormatType(elementType, stringBuilder);
+		foreach (int rank in ranks)
+		{
+			stringBuilder.Append('[').Append(',', rank - 1).Append(']');
+		}
 	}
 
 	private static bool AppendedPrimitiveAlias(Type value, StringBuilder stringBuilder)

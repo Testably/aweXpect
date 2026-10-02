@@ -132,7 +132,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it contained additional key "b"
 
 					             Dictionary:
-					             [["a"] = 1, ["b"] = 2]
+					             {["a"] = 1, ["b"] = 2}
 					             """);
 			}
 
@@ -154,7 +154,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it contained key "a" that matched no expected key
 
 					             Dictionary:
-					             [["a"] = 1]
+					             {["a"] = 1}
 					             """)
 					.Because("the expected key \"A\" is found through its own TryGetValue, but without its comparer the key \"a\" cannot be told apart from an additional key");
 			}
@@ -176,7 +176,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it contained 2 keys and matched 1 expected key
 
 					             Dictionary:
-					             [["a"] = 1, ["b"] = 1]
+					             {["a"] = 1, ["b"] = 1}
 					             """)
 					.Because("without the comparer of the subject, naming the additional keys would overshoot");
 			}
@@ -198,7 +198,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it contained key "b" that matched no expected key
 
 					             Dictionary:
-					             [["a"] = 1, ["b"] = 1]
+					             {["a"] = 1, ["b"] = 1}
 					             """)
 					.Because("without the comparer of the subject, the two expected keys must not hide the key \"b\"");
 			}

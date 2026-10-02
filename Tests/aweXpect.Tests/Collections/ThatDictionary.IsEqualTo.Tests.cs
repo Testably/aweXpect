@@ -339,7 +339,7 @@ public sealed partial class ThatDictionary
 					             but it contained key "A" that matched no expected key
 
 					             Dictionary:
-					             [["A"] = 1]
+					             {["A"] = 1}
 					             """)
 					.Because("without the comparer of the wrapped dictionary, the key \"A\" cannot be told apart from an additional key");
 			}
@@ -361,7 +361,7 @@ public sealed partial class ThatDictionary
 					             but it contained 2 keys that matched no expected key: ["A", "B"]
 
 					             Dictionary:
-					             [["A"] = 1, ["B"] = 1]
+					             {["A"] = 1, ["B"] = 1}
 					             """)
 					.Because("without the comparer of the wrapped dictionary, neither key can be told apart from an additional key");
 			}
@@ -383,7 +383,7 @@ public sealed partial class ThatDictionary
 					             but it contained key "b" that matched no expected key
 
 					             Dictionary:
-					             [["a"] = 1, ["b"] = 1]
+					             {["a"] = 1, ["b"] = 1}
 					             """)
 					.Because("without the comparer of the wrapped dictionary, the two expected keys must not hide the key \"b\"");
 			}

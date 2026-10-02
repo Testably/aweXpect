@@ -72,8 +72,8 @@ public sealed partial class EquivalencyComparerTests
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                It differed:
-			                                    Actual: SomeRecord { }
-			                                  Expected: SomeOtherRecord { }
+			                                    Actual: EquivalencyComparerTests.RecordTests.SomeRecord { }
+			                                  Expected: EquivalencyComparerTests.RecordTests.SomeOtherRecord { }
 			                              """);
 		}
 
