@@ -430,63 +430,17 @@ public partial class CollectionMatchOptions(
 		}
 	}
 
-	private static async ValueTask<bool> All<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate,
-		bool invert = false)
+	private static async ValueTask<bool> Any<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate)
 	{
 		foreach (T item in items)
 		{
-			if (await predicate(item) == invert)
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private static async ValueTask<bool> Any<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate,
-		bool invert = false)
-	{
-		foreach (T item in items)
-		{
-			if (await predicate(item) != invert)
+			if (await predicate(item))
 			{
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-	private static async ValueTask<List<TMember>> Filter<T, TMember>(IEnumerable<T> items,
-		Func<T, ValueTask<bool>> predicate, Func<T, TMember> memberAccessor)
-	{
-		List<TMember> list = new();
-		foreach (T item in items)
-		{
-			if (await predicate(item))
-			{
-				list.Add(memberAccessor(item));
-			}
-		}
-
-		return list;
-	}
-
-	/// <summary>
-	///     The key tells whether an item was found, because the item itself can be the default value.
-	/// </summary>
-	private static async ValueTask<int?> FindFirstKey<T>(Dictionary<int, T> items, Func<T, ValueTask<bool>> predicate)
-	{
-		foreach (KeyValuePair<int, T> item in items)
-		{
-			if (await predicate(item.Value))
-			{
-				return item.Key;
-			}
-		}
-
-		return null;
 	}
 
 	/// <summary>

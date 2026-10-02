@@ -210,22 +210,7 @@ public partial class CollectionMatchOptions
 				}
 
 				placedSoughtIds.Add(soughtId);
-				List<int> occurrences = _occurrences[searchedId];
-				// Descending, so that two occurrences of the same item never extend each other.
-				for (int i = occurrences.Count - 1; i >= 0; i--)
-				{
-					int position = occurrences[i];
-					int length = FindTheFirstTailNotBefore(tails, entries, position);
-					entries.Add((soughtId, position, length > 0 ? tails[length - 1] : None));
-					if (length == tails.Count)
-					{
-						tails.Add(entries.Count - 1);
-					}
-					else
-					{
-						tails[length] = entries.Count - 1;
-					}
-				}
+				ExtendTheChains(soughtId, _occurrences[searchedId], entries, tails);
 			}
 
 			List<(int SoughtId, int Position)> chain = new();
@@ -242,6 +227,33 @@ public partial class CollectionMatchOptions
 				.Where(soughtId => !chainedSoughtIds.Contains(soughtId))
 				.Select(soughtId => (soughtId, _occurrences[_assignedSearchedId[soughtId]][0])));
 			return chain;
+		}
+
+		/// <summary>
+		///     Each chain of a given length keeps the entry with the smallest last position, and an occurrence extends the
+		///     longest chain that ends before it.
+		/// </summary>
+		/// <remarks>
+		///     The occurrences are added in descending order, so that two occurrences of the same item never extend each
+		///     other.
+		/// </remarks>
+		private static void ExtendTheChains(int soughtId, List<int> occurrences,
+			List<(int SoughtId, int Position, int Previous)> entries, List<int> tails)
+		{
+			for (int i = occurrences.Count - 1; i >= 0; i--)
+			{
+				int position = occurrences[i];
+				int length = FindTheFirstTailNotBefore(tails, entries, position);
+				entries.Add((soughtId, position, length > 0 ? tails[length - 1] : None));
+				if (length == tails.Count)
+				{
+					tails.Add(entries.Count - 1);
+				}
+				else
+				{
+					tails[length] = entries.Count - 1;
+				}
+			}
 		}
 
 		private static int FindTheFirstTailNotBefore(List<int> tails,
