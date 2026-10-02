@@ -22,7 +22,8 @@ internal static class EnumHelpers
 		}
 
 		ulong bits = value.ToBits();
-		return bits != 0 && FlagsMask<TEnum>.Value is { } mask && (bits & ~mask) == 0;
+		return bits != 0 && typeof(TEnum).IsDefined(typeof(FlagsAttribute), false) &&
+		       (bits & ~GetFlagsMask<TEnum>()) == 0;
 	}
 
 	/// <summary>
@@ -48,33 +49,22 @@ internal static class EnumHelpers
 			? Convert.ToUInt64(value, CultureInfo.InvariantCulture)
 			: unchecked((ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture));
 
-	private static class FlagsMask<TEnum>
+	/// <summary>
+	///     Returns the bits of all named members of the <typeparamref name="TEnum" />.
+	/// </summary>
+	private static ulong GetFlagsMask<TEnum>()
 		where TEnum : struct, Enum
 	{
-		/// <summary>
-		///     The bits of all named members, or <see langword="null" /> if the <typeparamref name="TEnum" /> has no
-		///     <see cref="FlagsAttribute" />.
-		/// </summary>
-		public static readonly ulong? Value = Compute();
-
-		private static ulong? Compute()
-		{
-			if (!typeof(TEnum).IsDefined(typeof(FlagsAttribute), false))
-			{
-				return null;
-			}
-
-			ulong mask = 0;
+		ulong mask = 0;
 #if NET8_0_OR_GREATER
-			foreach (TEnum member in Enum.GetValues<TEnum>())
+		foreach (TEnum member in Enum.GetValues<TEnum>())
 #else
-			foreach (TEnum member in (TEnum[])Enum.GetValues(typeof(TEnum)))
+		foreach (TEnum member in (TEnum[])Enum.GetValues(typeof(TEnum)))
 #endif
-			{
-				mask |= member.ToBits();
-			}
-
-			return mask;
+		{
+			mask |= member.ToBits();
 		}
+
+		return mask;
 	}
 }
