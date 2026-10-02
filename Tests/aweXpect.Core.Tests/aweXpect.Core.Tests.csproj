@@ -12,6 +12,11 @@
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
 	</ItemGroup>
 
+	<!-- The netstandard2.0 build matches JSON values and memory by name, which only a package brings to .NET Framework. -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Remove="Nullable"/>
 		<PackageReference Include="aweXpect.Chronology"/>

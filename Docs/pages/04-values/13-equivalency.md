@@ -67,9 +67,11 @@ of the same name on the actual object, recursing into nested objects. How a valu
 | Type                                                                                                                                                                 | Compared                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
 | primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid`, `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128`, `UInt128`            | by value, with `Equals`                     |
-| `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo` and anything derived from them                                           | by value, with `Equals`                     |
+| `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo`, `IPAddress`, `Encoding` and anything derived from them                 | by value, with `Equals`                     |
 | `StringBuilder`                                                                                                                                                      | by its text, so it also matches a `string`  |
-| collections (`IEnumerable<T>`)                                                                                                                                       | item by item, in order                      |
+| `JsonElement`, `JsonNode`                                                                                                                                            | by its compact JSON text                    |
+| `Regex`                                                                                                                                                              | by its pattern and options                  |
+| collections (`IEnumerable<T>`), `Memory<T>`, `ReadOnlyMemory<T>`                                                                                                     | item by item, in order                      |
 | sets (`ISet<T>`, `IReadOnlySet<T>`)                                                                                                                                  | item by item, without an order              |
 | dictionaries (`IDictionary`, `IDictionary<TKey, TValue>`, `IReadOnlyDictionary<TKey, TValue>`)                                                                       | entry by entry, by key                      |
 | everything else                                                                                                                                                      | by its members, recursively                 |
@@ -100,6 +102,8 @@ reported as ambiguous. Failures name the kind of the *expected* member.
   `Equals` can neither hide differing members nor reject matching ones. To let `Equals` decide, compare the type
   [by value](#comparing-by-value-or-by-members); to check a member against your own criterion, use
   [`It.Is<T>()`](#per-property-expectations-with-itist).
+- A `JsonElement` or `JsonNode` is compared by its JSON text without the whitespace between tokens, so the order of
+  the properties and the notation of numbers still matter: `{"a":1.0}` differs from `{"a":1}`.
 
 ### Collections and dictionaries
 
