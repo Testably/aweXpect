@@ -28,10 +28,9 @@ public sealed class EquivalencyOptionsTests
 			});
 
 		await That(Act).Throws<ArgumentException>()
-			.WithParamName("TMember").And
 			.WithMessage("""
-			             Options cannot be registered for the interface IEnumerable<int>, because they are looked up by the runtime type of a value and its base types. Register them for a class or struct instead.*
-			             """).AsWildcard()
+			             Options cannot be registered for the interface IEnumerable<int>, because they are looked up by the runtime type of a value and its base types. Register them for a class or struct instead.
+			             """)
 			.Because("a registration for an interface would never apply");
 	}
 

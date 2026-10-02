@@ -74,8 +74,7 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 		if (typeof(TMember).IsInterface)
 		{
 			throw Tracing.WriteException(new ArgumentException(
-				$"Options cannot be registered for the interface {Formatter.Format(typeof(TMember))}, because they are looked up by the runtime type of a value and its base types. Register them for a class or struct instead.",
-				nameof(TMember)));
+				$"Options cannot be registered for the interface {Formatter.Format(typeof(TMember))}, because they are looked up by the runtime type of a value and its base types. Register them for a class or struct instead."));
 		}
 
 		return this with
