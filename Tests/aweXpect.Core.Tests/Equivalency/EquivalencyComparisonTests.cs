@@ -16,7 +16,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
 
-public sealed class EquivalencyComparisonTests
+public sealed partial class EquivalencyComparisonTests
 {
 	[Fact]
 	public async Task WhenActualImplementsAByRefLikePropertyExplicitly_ShouldTreatItAsMissing()
@@ -3418,8 +3418,8 @@ public sealed class EquivalencyComparisonTests
 	[Fact]
 	public async Task WhenRegexDiffersInItsOptions_ShouldReportTheOptions()
 	{
-		Regex actual = new("^a$", RegexOptions.IgnoreCase);
-		Regex expected = new("^a$");
+		Regex actual = PatternAIgnoringCase();
+		Regex expected = PatternA();
 		StringBuilder failureBuilder = new();
 
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
@@ -3437,8 +3437,8 @@ public sealed class EquivalencyComparisonTests
 	[Fact]
 	public async Task WhenRegexDiffersInItsPattern_ShouldReportThePattern()
 	{
-		Regex actual = new("^a$");
-		Regex expected = new("^b$");
+		Regex actual = PatternA();
+		Regex expected = PatternB();
 		StringBuilder failureBuilder = new();
 
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
@@ -3456,8 +3456,8 @@ public sealed class EquivalencyComparisonTests
 	[Fact]
 	public async Task WhenRegexHasTheSamePatternAndOptions_ShouldSucceed()
 	{
-		Regex actual = new("^a$", RegexOptions.IgnoreCase);
-		Regex expected = new("^a$", RegexOptions.IgnoreCase);
+		Regex actual = PatternAIgnoringCase();
+		Regex expected = CopyOfPatternAIgnoringCase();
 		StringBuilder failureBuilder = new();
 
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
@@ -4043,6 +4043,33 @@ public sealed class EquivalencyComparisonTests
 	///     method get separate targets.
 	/// </remarks>
 	private static Func<int> Capture(int value) => () => value;
+
+#if NET8_0_OR_GREATER
+	[GeneratedRegex("^a$", RegexOptions.IgnoreCase)]
+	private static partial Regex CopyOfPatternAIgnoringCase();
+
+	[GeneratedRegex("^a$")]
+	private static partial Regex PatternA();
+
+	[GeneratedRegex("^a$", RegexOptions.IgnoreCase)]
+	private static partial Regex PatternAIgnoringCase();
+
+	[GeneratedRegex("^b$")]
+	private static partial Regex PatternB();
+#else
+	private static readonly Regex CopyOfPatternAIgnoringCaseRegex = new("^a$", RegexOptions.IgnoreCase);
+	private static readonly Regex PatternARegex = new("^a$");
+	private static readonly Regex PatternAIgnoringCaseRegex = new("^a$", RegexOptions.IgnoreCase);
+	private static readonly Regex PatternBRegex = new("^b$");
+
+	private static Regex CopyOfPatternAIgnoringCase() => CopyOfPatternAIgnoringCaseRegex;
+
+	private static Regex PatternA() => PatternARegex;
+
+	private static Regex PatternAIgnoringCase() => PatternAIgnoringCaseRegex;
+
+	private static Regex PatternB() => PatternBRegex;
+#endif
 
 	private static void RegisterAmbiguousExplicitPhantom()
 	{
