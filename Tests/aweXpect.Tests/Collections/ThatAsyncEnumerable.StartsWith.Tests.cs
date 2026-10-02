@@ -308,6 +308,40 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedContainsNull_ShouldMatchANullItem()
+			{
+				IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("a", null, "b");
+
+				async Task Act()
+					=> await That(subject).StartsWith("a", null);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsNull_WhenTheItemIsNotNull_ShouldFail()
+			{
+				IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("a", "b");
+
+				async Task Act()
+					=> await That(subject).StartsWith("a", null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with ["a", <null>],
+					             but it contained item "b" at index 1 instead of <null>
+
+					             Collection:
+					             [
+					               "a",
+					               "b",
+					               (… and maybe more)
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectStartsWithExpectedValues_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);

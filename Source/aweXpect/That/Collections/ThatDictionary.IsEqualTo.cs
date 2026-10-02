@@ -30,10 +30,10 @@ public static partial class ThatDictionary
 
 	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
-	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>
+	internal static ObjectEqualityResult<TCollection?, IThat<TCollection?>, TValue>
 		IsEqualToCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
-			IEnumerable<KeyValuePair<TKey, TValue>> expected,
+			IEnumerable<KeyValuePair<TKey, TValue>>? expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
@@ -42,7 +42,7 @@ public static partial class ThatDictionary
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
 		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
+		return new ObjectEqualityResult<TCollection?, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(),

@@ -83,7 +83,7 @@ public static partial class ThatAsyncEnumerable
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Params = true, ExpectedType = "string",
+		Params = true, ExpectedType = "string?",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		StartsWithForStringsCore(

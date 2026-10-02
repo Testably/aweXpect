@@ -67,7 +67,7 @@ public static partial class ThatEnumerable
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
-		Params = true, ExpectedType = "string",
+		Params = true, ExpectedType = "string?",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary, Remarks = SetComparerRemarks)]
 	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWithForStringsCore(
@@ -224,7 +224,7 @@ public static partial class ThatEnumerable
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
-		ExpectedType = "string",
+		ExpectedType = "string?",
 		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
 	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
 		StartsWithForCollectionStringsCore<TCollection>(

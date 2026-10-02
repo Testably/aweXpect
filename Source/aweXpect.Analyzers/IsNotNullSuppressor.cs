@@ -484,9 +484,8 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	/// <remarks>
 	///     The expectations declare this themselves with the <c>aweXpect.Core.GuaranteesNotNullAttribute</c>, because
 	///     neither their name nor their result type can be used to detect it: overloads of the same name can differ,
-	///     and the result type often replaces the nullable subject type of the <c>IThat&lt;TSubject?&gt;</c> it extends
-	///     with its not-nullable counterpart even for expectations that a <see langword="null" /> subject does fulfil,
-	///     e.g. <c>IsNotEmpty</c> on a string or <c>IsNotEqualTo</c> on a collection.
+	///     and nothing makes the result type of an extension package name the subject type as not nullable exactly
+	///     when a <see langword="null" /> subject cannot fulfil the expectation.
 	///     <para />
 	///     The receiver of an aweXpect method is deliberately not restricted to <c>IThat&lt;TSubject&gt;</c>:
 	///     <c>aweXpect.Core</c> declares expectations such as <c>Throws</c> or <c>IsExactly</c> as instance members of

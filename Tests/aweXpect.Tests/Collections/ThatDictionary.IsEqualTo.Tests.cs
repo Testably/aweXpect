@@ -23,7 +23,7 @@ public sealed partial class ThatDictionary
 				IDictionary<string, int>? expected = null;
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected!);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
 					.Because("a null dictionary is equal to a null dictionary");
@@ -96,7 +96,7 @@ public sealed partial class ThatDictionary
 				IDictionary<string, int>? expected = null;
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected!);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -586,7 +586,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> expected = new() { { "b", 2 }, { "a", 1 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<Dictionary<string, int>, IThat<Dictionary<string, int>?>, int>)
+					=> await (ObjectEqualityResult<Dictionary<string, int>?, IThat<Dictionary<string, int>?>, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
@@ -599,7 +599,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> subject = new() { { "a", 1 }, };
 				Dictionary<string, int> expected = new() { { "a", 1 }, };
 
-				Dictionary<string, int> result = await That(subject).IsEqualTo(expected);
+				Dictionary<string, int>? result = await That(subject).IsEqualTo(expected);
 
 				await That(result).IsSameAs(subject);
 			}
@@ -665,7 +665,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> expected = new() { { "a", 1 }, { "b", 2 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
+					=> await (ObjectEqualityResult<IDictionary<string, int>?, IThat<IDictionary<string, int>?>, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()

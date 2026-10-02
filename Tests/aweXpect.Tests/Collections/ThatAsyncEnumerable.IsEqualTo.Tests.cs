@@ -263,7 +263,7 @@ public sealed partial class ThatAsyncEnumerable
 				IEnumerable<int>? expected = null;
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected!);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -280,7 +280,7 @@ public sealed partial class ThatAsyncEnumerable
 				IEnumerable<int>? expected = null;
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected!);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
 			}

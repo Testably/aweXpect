@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
@@ -92,6 +93,51 @@ public sealed class GuaranteesNotNullTests
 
 		await That(nullable).IsEmpty()
 			.Because("an expectation that rules a null subject out must hand out the subject as not nullable when awaited");
+	}
+
+	[Fact]
+	public async Task EveryUnmarkedExpectation_ShouldNotNarrowTheSubjectToNotNull()
+	{
+		List<string> notNullable = GetAllExpectations()
+			.Where(method => method.GetCustomAttribute<GuaranteesNotNullAttribute>() is null &&
+			                 HandsOutANotNullableSubject(method))
+			.Select(GetIdentifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(notNullable).IsEmpty()
+			.Because(
+				"an expectation that a null subject can satisfy must hand out the subject as nullable when awaited, or the compiler does not warn about dereferencing it");
+	}
+
+	[Theory]
+	[InlineData(nameof(HandingOutANotNullableString), true)]
+	[InlineData(nameof(HandingOutANullableString), false)]
+	[InlineData(nameof(HandingOutANotNullableInt), true)]
+	[InlineData(nameof(HandingOutANullableIntFromItsBase), false)]
+	public async Task ShouldDetectANotNullableSubject(string methodName, bool expected)
+	{
+		MethodInfo method = typeof(GuaranteesNotNullTests)
+			.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static)!;
+
+		bool result = HandsOutANotNullableSubject(method);
+
+		await That(result).IsEqualTo(expected)
+			.Because("the check for unmarked expectations must not silently degrade into one that finds nothing");
+	}
+
+	[Fact]
+	public async Task ShouldNegateTheExpectationsThatNeedAContinuation()
+	{
+		List<string> negated = Observations
+			.Where(observation => observation.FailsWhenNegated is not null)
+			.Select(observation => observation.Identifier)
+			.ToList();
+
+		await That(negated).Contains("ThatString.HasLength(IThat<String>)").And
+			.Contains("ThatEnumerable.HasCount<TItem>(IThat<IEnumerable<TItem>>)").And
+			.Contains("ThatEnumerable.All<TItem>(IThat<IEnumerable<TItem>>)")
+			.Because("an expectation that only adds its constraint in a continuation must be negated as well");
 	}
 
 	[Fact]
@@ -280,6 +326,7 @@ public sealed class GuaranteesNotNullTests
 	{
 		MethodInfo closedMethod;
 		Type subjectType;
+		List<MethodInfo[]> paths;
 		try
 		{
 			closedMethod = CloseMethod(method);
@@ -290,12 +337,35 @@ public sealed class GuaranteesNotNullTests
 			}
 
 			subjectType = thatSubjectType;
+			// An expectation such as HasLength() only adds its constraint in a continuation, so it is negated with each
+			// continuation that completes it.
+			paths = DiscoverCompletions(
+				() => Invoke(closedMethod, CreateNullSubject(GetSubjectType(closedMethod))), [], 0);
 		}
 		catch (Exception)
 		{
 			return null;
 		}
 
+		// As in the positive sweep, only a failure on every path counts.
+		bool observed = false;
+		foreach (MethodInfo[] path in paths)
+		{
+			switch (FailsWhenNegated(closedMethod, subjectType, path))
+			{
+				case false:
+					return false;
+				case true:
+					observed = true;
+					break;
+			}
+		}
+
+		return observed ? true : null;
+	}
+
+	private static bool? FailsWhenNegated(MethodInfo method, Type subjectType, MethodInfo[] path)
+	{
 		bool observed = false;
 		foreach (bool nullValues in new[]
 		         {
@@ -304,23 +374,28 @@ public sealed class GuaranteesNotNullTests
 		{
 			try
 			{
-				Await(InvokeNegated(closedMethod, subjectType, nullValues));
+				Await(InvokeNegated(method, subjectType, path, nullValues));
 				return false;
 			}
 			catch (XunitException)
 			{
 				observed = true;
 			}
+			catch (ArgumentNullException) when (nullValues)
+			{
+				// A guard that rejects the null argument lets no null subject pass, so the run with non-null
+				// arguments decides.
+			}
 			catch (Exception)
 			{
-				// The expectation cannot be invoked with these arguments, which the positive sweep already reports.
+				return false;
 			}
 		}
 
 		return observed ? true : null;
 	}
 
-	private static object InvokeNegated(MethodInfo method, Type subjectType, bool nullValues)
+	private static object InvokeNegated(MethodInfo method, Type subjectType, MethodInfo[] path, bool nullValues)
 	{
 		Type thatSubjectType = typeof(IThatSubject<>).MakeGenericType(subjectType);
 		ParameterExpression subject = Expression.Parameter(thatSubjectType, "subject");
@@ -329,9 +404,15 @@ public sealed class GuaranteesNotNullTests
 				? (Expression)Expression.Convert(subject, parameter.ParameterType)
 				: Expression.Constant(CreateArgument(parameter, nullValues), parameter.ParameterType))
 			.ToArray();
+		MethodInfo follow = typeof(GuaranteesNotNullTests)
+			.GetMethod(nameof(Follow), BindingFlags.NonPublic | BindingFlags.Static)!;
 		Delegate expectations = Expression
 			.Lambda(typeof(Action<>).MakeGenericType(thatSubjectType),
-				Expression.Call(null, method, arguments), subject)
+				Expression.Call(null, follow,
+					Expression.Convert(Expression.Call(null, method, arguments), typeof(object)),
+					Expression.Constant(path),
+					Expression.Constant(nullValues)),
+				subject)
 			.Compile();
 
 		MethodInfo doesNotComplyWith = typeof(CoreGeneric)
@@ -384,8 +465,16 @@ public sealed class GuaranteesNotNullTests
 		object current = expectation;
 		foreach (MethodInfo continuation in path)
 		{
-			current = continuation.Invoke(current,
-				continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, nullValues)).ToArray())!;
+			try
+			{
+				current = continuation.Invoke(current,
+					continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, nullValues))
+						.ToArray())!;
+			}
+			catch (TargetInvocationException exception) when (exception.InnerException is not null)
+			{
+				throw exception.InnerException;
+			}
 		}
 
 		return current;
@@ -469,6 +558,31 @@ public sealed class GuaranteesNotNullTests
 	///     compiler's <c>NullableAttribute</c>, which holds one flag per reference type in the flattened signature.
 	/// </remarks>
 	private static bool HandsOutANullableSubject(MethodInfo method)
+		=> HandsOutTheNullableSubject(method, true);
+
+	/// <summary>
+	///     Whether an extension on a nullable subject returns a result, or a builder for one, that names the subject type
+	///     as not nullable outside the <c>IThat&lt;…&gt;</c> it continues with.
+	/// </summary>
+	/// <remarks>
+	///     A result can hand out a struct type argument as nullable in its base class, like
+	///     <c>NullableNumberToleranceResult&lt;TType, TThat&gt;</c>, so for a nullable struct subject only the awaited type
+	///     tells.
+	/// </remarks>
+	private static bool HandsOutANotNullableSubject(MethodInfo method)
+	{
+		if (method.IsStatic &&
+		    GetThatSubjectType(method.GetParameters()[0].ParameterType) is { } subjectType &&
+		    Nullable.GetUnderlyingType(subjectType) is { } underlyingType)
+		{
+			return method.ReturnType.GetMethod("GetAwaiter")?.ReturnType.GetMethod("GetResult")?.ReturnType ==
+			       underlyingType;
+		}
+
+		return HandsOutTheNullableSubject(method, false);
+	}
+
+	private static bool HandsOutTheNullableSubject(MethodInfo method, bool asNullable)
 	{
 		if (!method.IsStatic || GetThatSubjectType(method.GetParameters()[0].ParameterType) is not { } subjectType)
 		{
@@ -480,8 +594,8 @@ public sealed class GuaranteesNotNullTests
 		                         GetFlag(parameterFlags, 1) == 2;
 		Type nonNullableSubjectType = Nullable.GetUnderlyingType(subjectType) ?? subjectType;
 		return isNullableSubject &&
-		       NamesNullable(method.ReturnType, GetNullableFlags(method.ReturnParameter, method), 0,
-			       nonNullableSubjectType, []);
+		       Names(method.ReturnType, GetNullableFlags(method.ReturnParameter, method), 0,
+			       nonNullableSubjectType, asNullable, []);
 	}
 
 	/// <remarks>
@@ -490,17 +604,22 @@ public sealed class GuaranteesNotNullTests
 	///     is walked only once. The flags of the declared type do not describe a base type, so only a nullable struct
 	///     is detected there.
 	/// </remarks>
-	private static bool NamesNullable(Type type, byte[] flags, int slot, Type subjectType, HashSet<Type> visited)
+	private static bool Names(Type type, byte[] flags, int slot, Type subjectType, bool asNullable,
+		HashSet<Type> visited)
 	{
 		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IThat<>))
 		{
 			return false;
 		}
 
-		if (Nullable.GetUnderlyingType(type) == subjectType ||
-		    (type == subjectType && TakesASlot(type) && GetFlag(flags, slot) == 2))
+		if (Nullable.GetUnderlyingType(type) is { } underlyingType)
 		{
-			return true;
+			return asNullable && underlyingType == subjectType;
+		}
+
+		if (type == subjectType && TakesASlot(type))
+		{
+			return GetFlag(flags, slot) == (asNullable ? 2 : 1);
 		}
 
 		if (type.IsGenericParameter)
@@ -508,12 +627,12 @@ public sealed class GuaranteesNotNullTests
 			return false;
 		}
 
-		return (type.IsGenericType && NamesNullableTypeArgument(type, flags, slot, subjectType, visited)) ||
+		return (type.IsGenericType && NamesTypeArgument(type, flags, slot, subjectType, asNullable, visited)) ||
 		       (visited.Add(type) && type.BaseType is { } baseType &&
-		        NamesNullable(baseType, [0,], 0, subjectType, visited));
+		        Names(baseType, [0,], 0, subjectType, asNullable, visited));
 	}
 
-	private static bool NamesNullableTypeArgument(Type type, byte[] flags, int slot, Type subjectType,
+	private static bool NamesTypeArgument(Type type, byte[] flags, int slot, Type subjectType, bool asNullable,
 		HashSet<Type> visited)
 	{
 		int next = slot + (TakesASlot(type) ? 1 : 0);
@@ -522,7 +641,7 @@ public sealed class GuaranteesNotNullTests
 		for (int index = 0; index < arguments.Length; index++)
 		{
 			if (!IsInputValue(type, parameters[index]) &&
-			    NamesNullable(arguments[index], flags, next, subjectType, visited))
+			    Names(arguments[index], flags, next, subjectType, asNullable, visited))
 			{
 				return true;
 			}
@@ -984,6 +1103,19 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	private sealed class NotInvocableException(string message) : Exception(message);
+
+	private static AndOrResult<string, IThat<string?>> HandingOutANotNullableString(IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static AndOrResult<string?, IThat<string?>> HandingOutANullableString(IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static AndOrResult<int, IThat<int?>> HandingOutANotNullableInt(IThat<int?> subject)
+		=> throw new NotSupportedException();
+
+	private static NullableNumberToleranceResult<int, IThat<int?>> HandingOutANullableIntFromItsBase(
+		IThat<int?> subject)
+		=> throw new NotSupportedException();
 
 	private sealed class NotifyingSubject : INotifyPropertyChanged
 	{

@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
-		Params = true, ExpectedType = "string",
+		Params = true, ExpectedType = "string?",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary, Remarks = SetComparerRemarks)]
 	internal static StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		EndsWithForStringsCore(
@@ -212,7 +212,7 @@ public static partial class ThatEnumerable
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
-		ExpectedType = "string",
+		ExpectedType = "string?",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
 		EndsWithForCollectionStringsCore<TCollection>(

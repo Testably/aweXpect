@@ -66,7 +66,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotEqualTo(unexpected!);
+					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject)!.IsNotEqualTo(unexpected!);
+					=> await That(subject)!.IsNotEqualTo(unexpected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -43,17 +43,17 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks = SetComparerRemarks)]
-	internal static ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	internal static ObjectCollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<TItem> expected,
+			IEnumerable<TItem>? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ObjectCollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
@@ -68,17 +68,17 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks = SetComparerRemarks)]
-	internal static StringCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+	internal static StringCollectionMatchResult<IEnumerable<string?>?, IThat<IEnumerable<string?>?>>
 		IsEqualToForStringsCore(
 			IThat<IEnumerable<string?>?> subject,
-			IEnumerable<string?> expected,
+			IEnumerable<string?>? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
+		return new StringCollectionMatchResult<IEnumerable<string?>?, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
 			{
 				IsEqualToConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
@@ -93,17 +93,17 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -1,
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = UntypedSetComparerRemarks)]
-	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
+	internal static ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, TItem>
 		IsEqualToForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
-			IEnumerable<TItem> expected,
+			IEnumerable<TItem>? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		ItemEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
+		return new ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem> constraint = new(
@@ -125,13 +125,13 @@ public static partial class ThatEnumerable
 		Remarks = SingleValueRemarks + "\nA <see langword=\"null\" /> argument is still an expected collection that is\n" +
 		          "<see langword=\"null\" />, so that <c>IsEqualTo(null)</c> keeps its meaning.\n" +
 		          UntypedSetComparerRemarks)]
-	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, string?>
+	internal static ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, string?>
 		IsEqualToSingleStringCore(
 			IThat<IEnumerable?> subject,
 			string? expected,
 			string expectedExpression,
 			bool negated)
-		=> IsEqualToForEnumerableCore<string?>(subject, expected is null ? null! : [expected,],
+		=> IsEqualToForEnumerableCore<string?>(subject, expected is null ? null : [expected,],
 			expectedExpression, negated);
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -2,
@@ -141,17 +141,17 @@ public static partial class ThatEnumerable
 			"equality expectation for objects, which compares the instances by reference. A multi-dimensional array\n" +
 			"has no shape as an <see cref=\"System.Collections.IEnumerable\" />, so it is compared by its flattened\n" +
 			"content.\n" + UntypedSetComparerRemarks)]
-	internal static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+	internal static ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, object?>
 		IsEqualToForObjectsCore(
 			IThat<IEnumerable?> subject,
-			IEnumerable expected,
+			IEnumerable? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		ItemEqualityOptions<object?> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>(
+		return new ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<IEnumerable, object?, object?> constraint = new(
@@ -167,18 +167,18 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SetComparerRemarks)]
-	internal static ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
+	internal static ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>
 		IsEqualToWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<TItem> expected,
+			IEnumerable<TItem>? expected,
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			string expectedExpression,
 			bool negated)
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
+		return new ObjectCollectionMatchWithToleranceResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
@@ -194,16 +194,16 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = MatchesPredicates, NegatedSummary = DoesNotMatchPredicates)]
-	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	internal static CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromPredicatesCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			IEnumerable<Expression<Func<TItem, bool>>>? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
@@ -217,16 +217,16 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}EqualTo",
 		Summary = MatchesExpectations, NegatedSummary = DoesNotMatchExpectations)]
-	internal static CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	internal static CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
 		IsEqualToFromExpectationsCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			IEnumerable<Action<IThatSubject<TItem?>>>? expected,
 			string expectedExpression,
 			bool negated)
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
@@ -245,7 +245,7 @@ public static partial class ThatEnumerable
 	internal static ObjectCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
 		IsEqualToForCollectionCore<TCollection, TItem>(
 			IThat<TCollection> subject,
-			IEnumerable<TItem> expected,
+			IEnumerable<TItem>? expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable
@@ -273,7 +273,7 @@ public static partial class ThatEnumerable
 	internal static StringCollectionMatchResult<TCollection, IThat<TCollection>>
 		IsEqualToForCollectionStringsCore<TCollection>(
 			IThat<TCollection> subject,
-			IEnumerable<string?> expected,
+			IEnumerable<string?>? expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable
@@ -300,7 +300,7 @@ public static partial class ThatEnumerable
 	internal static ObjectCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
 		IsEqualToWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
 			IThat<TCollection> subject,
-			IEnumerable<TItem> expected,
+			IEnumerable<TItem>? expected,
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			string expectedExpression,
 			bool negated)
@@ -327,7 +327,7 @@ public static partial class ThatEnumerable
 	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>
 		IsEqualToFromPredicatesForCollectionCore<TCollection, TItem>(
 			IThat<TCollection> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			IEnumerable<Expression<Func<TItem, bool>>>? expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<TItem>
@@ -352,7 +352,7 @@ public static partial class ThatEnumerable
 	internal static CollectionMatchResult<TCollection, IThat<TCollection>, TItem>
 		IsEqualToFromExpectationsForCollectionCore<TCollection, TItem>(
 			IThat<TCollection> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			IEnumerable<Action<IThatSubject<TItem?>>>? expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<TItem>

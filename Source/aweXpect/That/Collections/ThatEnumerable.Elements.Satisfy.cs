@@ -94,7 +94,7 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			Satisfy(
-				Func<TItem?, bool> predicate,
+				Func<TItem, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{

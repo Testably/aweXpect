@@ -217,3 +217,7 @@ aweXpect.Core.KeyComparers
 static aweXpect.Core.KeyComparers.CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! dictionary) -> System.Collections.Generic.ISet<TKey>!
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterDictionary<TKey, TValue>() -> void
 aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsUndecided.get -> bool
+*REMOVED*aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.EqualTo(System.DateTimeKind expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+*REMOVED*aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.NotEqualTo(System.DateTimeKind unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.EqualTo(System.DateTimeKind? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.NotEqualTo(System.DateTimeKind? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!

@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 				int[] expected = [1, 2,];
 
 				async Task Act()
-					=> await (ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, int>)
+					=> await (ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
@@ -64,7 +64,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable expected = new ArrayList { 1, 2, };
 
 				async Task Act()
-					=> await (ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>)
+					=> await (ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, object?>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable? expected = null;
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected!);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -98,7 +98,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable? expected = null;
 
 				async Task Act()
-					=> await That(subject)!.IsEqualTo(expected!);
+					=> await That(subject)!.IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
 			}

@@ -7,6 +7,35 @@ public sealed partial class ThatDateTime
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldFail()
+			{
+				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
+				DateTimeKind? expected = null;
+
+				async Task Act()
+					=> await That(subject).HasKind(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has kind equal to <null>,
+					             but it had kind Utc
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullableAndTheSame_ShouldSucceed()
+			{
+				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
+				DateTimeKind? expected = DateTimeKind.Utc;
+
+				async Task Act()
+					=> await That(subject).HasKind(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenKindOfSubjectIsDifferent_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -97,6 +126,18 @@ public sealed partial class ThatDateTime
 					              does not have kind equal to {Formatter.Format(unexpected)},
 					              but it had kind Utc
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			{
+				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
+				DateTimeKind? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).HasKind().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
