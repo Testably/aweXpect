@@ -9,7 +9,7 @@ Describes the possible expectations for `enum` values.
 | [`IsEqualTo`](#equality) | `IsNotEqualTo`     | equal to the expected value               |
 | [`IsOneOf`](#one-of)     | `IsNotOneOf`       | equal to one of the expected values       |
 | [`HasValue`](#value)     | negated comparison | has the expected underlying numeric value |
-| [`IsDefined`](#defined)  | `IsNotDefined`     | a named member of the `enum`              |
+| [`IsDefined`](#defined)  | `IsNotDefined`     | a named member or combination of flags    |
 | [`HasFlag`](#flags)      | `DoesNotHaveFlag`  | has the expected flag set                 |
 
 A `null` subject, i.e. a nullable `enum`, fails every expectation on this page except equality and one of, as the
@@ -72,6 +72,18 @@ await Expect.That((Genre)3).IsDefined()
 await Expect.That((Genre)5).IsNotDefined()
   .Because("5 is no valid genre");
 ```
+
+For an `enum` with the `[Flags]` attribute, a combination of the bits of its named members is defined as well, while a
+value with any other bit set is not:
+
+```csharp
+using System.Text.RegularExpressions;
+
+await Expect.That(RegexOptions.Multiline | RegexOptions.IgnoreCase).IsDefined();
+await Expect.That((RegexOptions)(1 << 20)).IsNotDefined();
+```
+
+Zero is only defined if a member names it, like `RegexOptions.None` does.
 
 ## Flags
 

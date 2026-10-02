@@ -11,6 +11,10 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject is defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
+	/// <remarks>
+	///     For an enum with the <see cref="FlagsAttribute" />, a combination of the bits of its named members counts as
+	///     defined, too. Zero only counts as defined if a member names it.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum, IThat<TEnum?>> IsDefined<TEnum>(
 		this IThat<TEnum?> subject)
@@ -22,6 +26,10 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject is not defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
+	/// <remarks>
+	///     For an enum with the <see cref="FlagsAttribute" />, a combination of the bits of its named members counts as
+	///     defined, too. Zero only counts as defined if a member names it.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum, IThat<TEnum?>> IsNotDefined<TEnum>(
 		this IThat<TEnum?> subject)
@@ -38,7 +46,7 @@ public static partial class ThatNullableEnum
 		public ConstraintResult IsMetBy(TEnum? actual)
 		{
 			Actual = actual;
-			Outcome = actual != null && Enum.IsDefined(typeof(TEnum), actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsDefinedValue() == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

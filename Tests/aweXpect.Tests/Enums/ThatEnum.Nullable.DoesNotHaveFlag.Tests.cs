@@ -8,19 +8,6 @@ public sealed partial class ThatEnum
 		{
 			public sealed class Tests
 			{
-				[Fact]
-				public async Task WhenSubjectAndUnexpectedIsNull_ShouldThrowArgumentNullException()
-				{
-					MyColors? subject = null;
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveFlag(null);
-
-					await That(Act).Throws<ArgumentNullException>()
-						.WithParamName("unexpected").And
-						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
-				}
-
 				[Theory]
 				[InlineData(MyColors.Blue)]
 				[InlineData(MyColors.Green)]
@@ -93,19 +80,6 @@ public sealed partial class ThatEnum
 						=> await That(subject).DoesNotHaveFlag(unexpected: MyColors.Blue);
 
 					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
-				{
-					MyColors? subject = MyColors.Yellow;
-
-					async Task Act()
-						=> await That(subject).DoesNotHaveFlag(null);
-
-					await That(Act).Throws<ArgumentNullException>()
-						.WithParamName("unexpected").And
-						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 			}
 		}

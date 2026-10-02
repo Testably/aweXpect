@@ -9,6 +9,20 @@ public sealed partial class ThatEnum
 		Max = byte.MaxValue,
 	}
 
+	[Flags]
+	public enum EnumFlagsSByte : sbyte
+	{
+		Low = 1,
+		Sign = sbyte.MinValue,
+	}
+
+	[Flags]
+	public enum EnumFlagsULong : ulong
+	{
+		Low = 1,
+		High = 1UL << 63,
+	}
+
 	public enum EnumInt
 	{
 		Min = int.MinValue,

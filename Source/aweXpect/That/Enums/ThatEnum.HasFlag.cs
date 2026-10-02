@@ -14,37 +14,29 @@ public static partial class ThatEnum
 	/// <remarks>
 	///     Unlike the other <c>Has…</c> expectations this one has no continuation: testing a flag asks whether a bit is
 	///     set, so the comparisons a continuation offers (greater than, between, …) have no meaning for it.<br />
-	///     A <see langword="null" /> <paramref name="expected" /> flag throws an <see cref="ArgumentNullException" />.
 	///     A zero flag is always set (as in <see cref="Enum.HasFlag(Enum)" />), so it matches every subject.
 	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> HasFlag<TEnum>(
 		this IThat<TEnum> subject,
-		TEnum? expected)
+		TEnum expected)
 		where TEnum : struct, Enum
-	{
-		expected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, expected!.Value)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, expected)),
 			subject);
-	}
 
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpected" /> flag set.
 	/// </summary>
 	/// <remarks>
-	///     A <see langword="null" /> <paramref name="unexpected" /> flag throws an <see cref="ArgumentNullException" />.
 	///     A zero flag is always set (as in <see cref="Enum.HasFlag(Enum)" />), so it fails for every subject.
 	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> DoesNotHaveFlag<TEnum>(
 		this IThat<TEnum> subject,
-		TEnum? unexpected)
+		TEnum unexpected)
 		where TEnum : struct, Enum
-	{
-		unexpected.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, unexpected!.Value).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, unexpected).Invert()),
 			subject);
-	}
 
 	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum expectedFlag)
 		: ConstraintResult.WithNotNullValue<TEnum>(it, grammars),
