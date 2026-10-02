@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Recording;
@@ -54,6 +55,33 @@ internal static class Checks
 				});
 				await That(actual).IsEquivalentTo(expected);
 			}, "[vip]")),
+		new("a dictionary is compared with its key comparer",
+			() => ShouldPass(async () =>
+			{
+				Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
+				{
+					["A"] = 1,
+				};
+				await That(actual).IsEquivalentTo(new Dictionary<string, int>
+				{
+					["a"] = 1,
+				});
+			})),
+		new("a read-only dictionary is compared with the key comparer of the dictionary it wraps",
+			() => ShouldPass(async () =>
+			{
+				ReadOnlyDictionary<string, int> actual = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+				{
+					["A"] = 1,
+				});
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+				};
+				await That(actual).IsEquivalentTo(expected);
+				await That(actual).IsEqualTo(expected);
+				await That(actual).Keys.Contains("a");
+			})),
 		new("a subject the generator did not see fails loudly",
 			() => ShouldFailOrFailLoudly(async () =>
 			{

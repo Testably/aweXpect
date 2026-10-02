@@ -46,7 +46,8 @@ public static partial class ThatDictionary
 		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainKeysConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(keys), keys).InvertIf(negated)),
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(keys), keys, negated)
+					.InvertIf(negated)),
 			subject,
 			keys,
 			dictionary => new KeyedValues<TKey, TValue?>(keys
@@ -56,12 +57,17 @@ public static partial class ThatDictionary
 		);
 	}
 
+	/// <remarks>
+	///     <paramref name="isAny" /> selects at construction whether the constraint asks for any or for all of the
+	///     <paramref name="expected" /> keys, so that a later negation inverts the same question its text describes.
+	/// </remarks>
 	private sealed class ContainKeysConstraint<TDictionary, TKey, TValue>(
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expectedExpression,
-		TKey[] expected)
+		TKey[] expected,
+		bool isAny)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IValueConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
@@ -89,7 +95,7 @@ public static partial class ThatDictionary
 				}
 			}
 
-			Outcome = (IsNegated, _missingKeys, _existingKeys) switch
+			Outcome = (isAny, _missingKeys, _existingKeys) switch
 			{
 				(true, _, []) => Outcome.Failure,
 				(true, _, _) => Outcome.Success,
@@ -102,7 +108,10 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("contains keys ", "contain keys ")).Append(expectedExpression);
+			stringBuilder.Append(isAny
+					? Grammars.Verb("contains any of keys ", "contain any of keys ")
+					: Grammars.Verb("contains keys ", "contain keys "))
+				.Append(expectedExpression);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -113,7 +122,9 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(Grammars.Verb("does not contain keys ", "do not contain keys "))
+			stringBuilder.Append(isAny
+					? Grammars.Verb("does not contain keys ", "do not contain keys ")
+					: Grammars.Verb("does not contain all keys ", "do not contain all keys "))
 				.Append(expectedExpression);
 		}
 

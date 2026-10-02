@@ -139,6 +139,29 @@ public sealed partial class ThatDictionary
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenNoKeyExists_ShouldFail()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2,], [0, 0,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(d => d.DoesNotContainKeys(3, 4));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains any of keys [3, 4],
+					             but it did not contain [
+					               3,
+					               4
+					             ]
+
+					             Dictionary:
+					             {[1] = 0, [2] = 0}
+					             """)
+					.Because("the negation of DoesNotContainKeys only fails when none of the keys is contained");
+			}
+
+			[Fact]
 			public async Task WhenOneKeyIsMissingAndOneExists_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);

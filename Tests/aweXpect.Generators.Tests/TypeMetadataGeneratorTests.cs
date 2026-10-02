@@ -510,6 +510,39 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenCoreCannotRegisterDictionaries_ShouldNotRegisterThem()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithMap { public System.Collections.Generic.Dictionary<string, int> Map { get; set; } = new(); } }",
+			"""
+			namespace aweXpect.Core.Metadata
+			{
+				public sealed class GenerateMetadataAttribute(System.Type type) : System.Attribute
+				{
+					public System.Type Type { get; } = type;
+				}
+
+				public static class TypeMetadataRegistry
+				{
+					public static void RegisterField<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					public static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					public static void RegisterProperty<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+				}
+			}
+			""",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.WithMap))]",
+		], false);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains(
+				"RegisterProperty<global::Models.WithMap, global::System.Collections.Generic.Dictionary<string, int>>(\"Map\", o => o.Map);");
+		await That(result.Generated).DoesNotContain("RegisterDictionary")
+			.Because("an aweXpect.Core without the registration would not compile it, and reads the key comparer by reflection instead");
+	}
+
+	[Fact]
 	public async Task WhenCoreCannotRegisterExplicitProperties_ShouldRegisterThePublicMembersOnly()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1067,6 +1100,51 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the element type of the receiver is the subject of each element comparison");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsADictionary_ShouldRegisterItsKeyAndValueTypesOnce()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call(
+				"Expect.That(new System.Collections.Generic.Dictionary<string, Models.Other>()).IsEquivalentTo(new System.Collections.Generic.Dictionary<string, Models.Other>());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains(
+				"global::aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterDictionary<string, global::Models.Other>();")
+			.Once()
+			.Because("the comparison reads the key comparer through a reader for the type arguments of both dictionary interfaces");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("the values are still compared by their members");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsAnUnnameableDictionary_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			using aweXpect;
+
+			public class Tests
+			{
+				private class Hidden { public int Id { get; set; } }
+
+				public void Test()
+					=> Expect.That(new System.Collections.Generic.Dictionary<int, Hidden>())
+						.IsEquivalentTo(new System.Collections.Generic.Dictionary<int, Hidden>());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("RegisterDictionary")
+			.Because("the generated code cannot name the private value type");
 	}
 
 	[Fact]

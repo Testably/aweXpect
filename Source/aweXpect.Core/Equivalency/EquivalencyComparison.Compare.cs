@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -520,56 +517,27 @@ public static partial class EquivalencyComparison
 	///     <paramref name="dictionary" />, or <see langword="null" /> when that comparer cannot be read.
 	/// </summary>
 	/// <remarks>
-	///     The type arguments of the dictionary are out of reach here, so its comparer cannot be read through a type
-	///     check. It is read instead from the public <c>Comparer</c> or <c>KeyComparer</c> property that the dictionaries
-	///     of the framework expose, and a <see cref="ReadOnlyDictionary{TKey,TValue}" /> is asked for the dictionary it
-	///     wraps. This needs reflection, so it is only attempted while the <see cref="ReflectionFallback" /> is
-	///     supported, which it is not by default when publishing with Native AOT.
+	///     The type arguments of the dictionary are out of reach here, so its comparer is read by the
+	///     <see cref="DictionaryKeyComparer" /> for the generic dictionary interface it implements, the same way as for
+	///     expectations that know them, through <see cref="KeyComparers" />.
 	/// </remarks>
+#if NET8_0_OR_GREATER
+	[UnconditionalSuppressMessage("Trimming", "IL2075",
+		Justification = "The matched interfaces are referenced, so they are not trimmed away.")]
+#endif
 	private static object? GetKeyComparer(object dictionary)
 	{
-		if (!ReflectionFallback.IsSupported)
+		foreach (Type interfaceType in dictionary.GetType().GetInterfaces())
 		{
-			return null;
-		}
-
-		Type type = dictionary.GetType();
-		if (IsReadOnlyDictionary(type))
-		{
-			return type.FindProperty("Dictionary", IncludeMembers.Internal)?.GetValue(dictionary) is { } inner
-				? GetKeyComparer(inner)
-				: null;
-		}
-
-		PropertyInfo? property = type.FindProperty("Comparer", IncludeMembers.Public) ??
-		                         type.FindProperty("KeyComparer", IncludeMembers.Public);
-		if (property?.GetValue(dictionary) is not { } comparer || !property.PropertyType.IsGenericType)
-		{
-			return null;
-		}
-
-		Type definition = property.PropertyType.GetGenericTypeDefinition();
-		if (definition == typeof(IEqualityComparer<>))
-		{
-			return new KeyEqualityComparer(comparer, property.PropertyType);
-		}
-
-		return definition == typeof(IComparer<>)
-			? new KeyOrderComparer(comparer, property.PropertyType)
-			: null;
-	}
-
-	private static bool IsReadOnlyDictionary(Type type)
-	{
-		for (Type? current = type; current is not null; current = current.BaseType)
-		{
-			if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(ReadOnlyDictionary<,>))
+			if (interfaceType.IsGenericType &&
+			    (interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
+			     interfaceType.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)))
 			{
-				return true;
+				return DictionaryKeyComparer.For(interfaceType)?.Read(dictionary);
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/// <summary>
@@ -583,74 +551,6 @@ public static partial class EquivalencyComparison
 			IComparer<object> comparer => new SortedSet<object>(comparer),
 			_ => new HashSet<object>(),
 		};
-
-	/// <summary>
-	///     Invokes the <paramref name="method" /> of a comparer, with the exception it throws instead of the wrapping
-	///     <see cref="TargetInvocationException" />.
-	/// </summary>
-	private static object? InvokeComparer(MethodInfo method, object comparer, params object[] arguments)
-	{
-		try
-		{
-			return method.Invoke(comparer, arguments);
-		}
-		catch (TargetInvocationException exception) when (exception.InnerException is not null)
-		{
-			ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-			throw;
-		}
-	}
-
-	/// <summary>
-	///     Compares keys with the <see cref="IEqualityComparer{T}" /> <paramref name="comparer" /> of a dictionary, whose
-	///     type argument is only known at runtime.
-	/// </summary>
-	/// <remarks>
-	///     A <see langword="null" /> key, or one that is not of the key type, is compared with its own
-	///     <see cref="object.Equals(object)" /> and never handed to the comparer, which would reject it.
-	/// </remarks>
-#if NET8_0_OR_GREATER
-	[UnconditionalSuppressMessage("Trimming", "IL2070",
-		Justification = "The methods of IEqualityComparer<T> are kept, because the dictionary calls them.")]
-#endif
-	private sealed class KeyEqualityComparer(object comparer, Type comparerType) : IEqualityComparer<object>
-	{
-		private readonly MethodInfo _equals = comparerType.GetMethod(nameof(IEqualityComparer<object>.Equals))!;
-
-		private readonly MethodInfo _getHashCode =
-			comparerType.GetMethod(nameof(IEqualityComparer<object>.GetHashCode))!;
-
-		private readonly Type _keyType = comparerType.GetGenericArguments()[0];
-
-		bool IEqualityComparer<object>.Equals(object? x, object? y)
-			=> _keyType.IsInstanceOfType(x) && _keyType.IsInstanceOfType(y)
-				? (bool)InvokeComparer(_equals, comparer, x!, y!)!
-				: Equals(x, y);
-
-		int IEqualityComparer<object>.GetHashCode(object obj)
-			=> _keyType.IsInstanceOfType(obj)
-				? (int)InvokeComparer(_getHashCode, comparer, obj)!
-				: obj.GetHashCode();
-	}
-
-	/// <summary>
-	///     Orders keys with the <see cref="IComparer{T}" /> <paramref name="comparer" /> of a sorted dictionary, whose
-	///     type argument is only known at runtime.
-	/// </summary>
-	/// <remarks>
-	///     Only orders the keys that the dictionary itself holds or found, which are of its key type and not
-	///     <see langword="null" />.
-	/// </remarks>
-#if NET8_0_OR_GREATER
-	[UnconditionalSuppressMessage("Trimming", "IL2070",
-		Justification = "The methods of IComparer<T> are kept, because the dictionary calls them.")]
-#endif
-	private sealed class KeyOrderComparer(object comparer, Type comparerType) : IComparer<object>
-	{
-		private readonly MethodInfo _compare = comparerType.GetMethod(nameof(IComparer<object>.Compare))!;
-
-		int IComparer<object>.Compare(object? x, object? y) => (int)InvokeComparer(_compare, comparer, x!, y!)!;
-	}
 
 	/// <remarks>
 	///     A set has no order, so comparing two of them by position would report a difference that says nothing about

@@ -236,7 +236,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain values [41, 42],
+					             does not contain all values [41, 42],
 					             but it contained [
 					               41,
 					               42

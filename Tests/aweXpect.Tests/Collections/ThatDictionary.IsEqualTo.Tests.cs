@@ -323,9 +323,9 @@ public sealed partial class ThatDictionary
 
 #endif
 			[Fact]
-			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithADifferentlyCasedKey_ShouldFail()
+			public async Task WhenSubjectIsACustomDictionaryWrapper_WithADifferentlyCasedKey_ShouldFail()
 			{
-				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
 					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
 				IDictionary<string, int> expected = ToDictionary(["a",], [1,]);
 
@@ -339,15 +339,15 @@ public sealed partial class ThatDictionary
 					             but it contained key "A" that matched no expected key
 
 					             Dictionary:
-					             {["A"] = 1}
+					             [["A"] = 1]
 					             """)
 					.Because("without the comparer of the wrapped dictionary, the key \"A\" cannot be told apart from an additional key");
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithTwoDifferentlyCasedKeys_ShouldFail()
+			public async Task WhenSubjectIsACustomDictionaryWrapper_WithTwoDifferentlyCasedKeys_ShouldFail()
 			{
-				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
 					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, { "B", 1 }, });
 				IDictionary<string, int> expected = ToDictionary(["a", "b",], [1, 1,]);
 
@@ -361,15 +361,15 @@ public sealed partial class ThatDictionary
 					             but it contained 2 keys that matched no expected key: ["A", "B"]
 
 					             Dictionary:
-					             {["A"] = 1, ["B"] = 1}
+					             [["A"] = 1, ["B"] = 1]
 					             """)
 					.Because("without the comparer of the wrapped dictionary, neither key can be told apart from an additional key");
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_WithTwoExpectedKeysForOneEntry_ShouldFail()
+			public async Task WhenSubjectIsACustomDictionaryWrapper_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
-				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
 					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
 				IDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
 
@@ -383,9 +383,22 @@ public sealed partial class ThatDictionary
 					             but it contained key "b" that matched no expected key
 
 					             Dictionary:
-					             {["a"] = 1, ["b"] = 1}
+					             [["a"] = 1, ["b"] = 1]
 					             """)
 					.Because("without the comparer of the wrapped dictionary, the two expected keys must not hide the key \"b\"");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_ShouldUseTheComparerOfTheWrappedDictionary()
+			{
+				ReadOnlyDictionary<string, int> subject = new(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["Let it be"] = 5, });
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(new Dictionary<string, int> { ["LET IT BE"] = 5, });
+
+				await That(Act).DoesNotThrow()
+					.Because("IsEquivalentTo and ContainsKey use the comparer of the wrapped dictionary as well");
 			}
 
 			[Fact]
@@ -530,7 +543,10 @@ public sealed partial class ThatDictionary
 					new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase),
 					entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase),
 					entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase),
-					entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase));
+					entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
+					new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)),
+					new ReadOnlyDictionary<string, int>(
+						new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)));
 #if NET8_0_OR_GREATER
 				dictionaries.Add(new ConcurrentDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase));
 #endif

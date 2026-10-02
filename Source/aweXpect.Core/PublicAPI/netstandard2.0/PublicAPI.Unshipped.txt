@@ -224,3 +224,6 @@ override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredVal
 aweXpect.Core.IStringMatchType.InspectsSubject.get -> bool
 aweXpect.Core.ICollectionMatcher<T, T2>.IsDetermined.get -> bool
 aweXpect.Core.ManualExpectationBuilder<TValue>.AppendReasons(System.Text.StringBuilder! stringBuilder) -> void
+aweXpect.Core.KeyComparers
+static aweXpect.Core.KeyComparers.CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! dictionary) -> System.Collections.Generic.ISet<TKey>!
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterDictionary<TKey, TValue>() -> void

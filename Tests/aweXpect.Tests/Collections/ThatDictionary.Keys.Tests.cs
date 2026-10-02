@@ -1,6 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 
 namespace aweXpect.Tests;
 
@@ -196,6 +197,19 @@ public sealed partial class ThatDictionary
 					=> await That(subject).Keys.IsInAscendingOrder();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForAReadOnlyDictionary_ShouldUseTheKeyComparerOfTheWrappedDictionary()
+			{
+				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+
+				async Task Act()
+					=> await That(subject).Keys.Contains("A");
+
+				await That(Act).DoesNotThrow()
+					.Because("ContainsKey(\"A\") on the same dictionary succeeds");
 			}
 
 			[Fact]

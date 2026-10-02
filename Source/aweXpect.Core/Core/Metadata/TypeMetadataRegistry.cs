@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Metadata;
 
@@ -89,6 +90,21 @@ public static class TypeMetadataRegistry
 			(subject, handler) => removeHandler((T)subject, handler));
 
 	/// <summary>
+	///     Registers the dictionaries with keys of type <typeparamref name="TKey" /> and values of type
+	///     <typeparamref name="TValue" />, so that the equivalency comparison reads their key comparer.
+	/// </summary>
+	/// <remarks>
+	///     The comparison only knows the type arguments of a dictionary at runtime, and reading its key comparer for them
+	///     otherwise needs dynamic code.
+	/// </remarks>
+	public static void RegisterDictionary<TKey, TValue>()
+	{
+		DictionaryKeyComparer keyComparer = new DictionaryKeyComparer<TKey, TValue>();
+		Instance.AddKeyComparer(typeof(IDictionary<TKey, TValue>), keyComparer);
+		Instance.AddKeyComparer(typeof(IReadOnlyDictionary<TKey, TValue>), keyComparer);
+	}
+
+	/// <summary>
 	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
 	///     it returns.
 	/// </summary>
@@ -125,6 +141,9 @@ public static class TypeMetadataRegistry
 			Action<object, Delegate> addHandler, Action<object, Delegate> removeHandler)
 			=> Add(type, metadata => metadata.Events[name] =
 				new RegisteredEvent(name, createHandler, addHandler, removeHandler, NextOrder()));
+
+		public void AddKeyComparer(Type dictionaryInterface, DictionaryKeyComparer keyComparer)
+			=> Add(dictionaryInterface, metadata => metadata.KeyComparer = keyComparer);
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -207,12 +226,20 @@ public static class TypeMetadataRegistry
 		public ConcurrentDictionary<string, RegisteredEvent> Events { get; } = new(StringComparer.Ordinal);
 
 		/// <summary>
+		///     The reader of the key comparer, registered for a generic dictionary interface.
+		/// </summary>
+		public DictionaryKeyComparer? KeyComparer { get; set; }
+
+		/// <summary>
 		///     A copy of this metadata in which the <paramref name="registered" /> members and events replace those of the
 		///     same name.
 		/// </summary>
 		public TypeMetadata MergedWith(TypeMetadata registered)
 		{
-			TypeMetadata merged = new();
+			TypeMetadata merged = new()
+			{
+				KeyComparer = registered.KeyComparer ?? KeyComparer,
+			};
 			Merge(merged.Fields, Fields, registered.Fields);
 			Merge(merged.Properties, Properties, registered.Properties);
 			Merge(merged.ExplicitProperties, ExplicitProperties, registered.ExplicitProperties);

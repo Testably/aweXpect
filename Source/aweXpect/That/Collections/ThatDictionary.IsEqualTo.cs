@@ -23,9 +23,10 @@ public static partial class ThatDictionary
 		"two expected keys that it considers the same cannot both be matched by one of its keys. Detecting this needs the\n" +
 		"comparer itself, which is only read from known dictionary types such as\n" +
 		"<see cref=\"System.Collections.Generic.Dictionary{TKey,TValue}\" /> or\n" +
-		"<see cref=\"System.Collections.Generic.SortedDictionary{TKey,TValue}\" />, not from a wrapper such as\n" +
-		"<see cref=\"System.Collections.ObjectModel.ReadOnlyDictionary{TKey,TValue}\" /> or a custom dictionary. Without it,\n" +
-		"a key of the dictionary that equals no expected key is reported, even when the comparer considers it the same as one.";
+		"<see cref=\"System.Collections.Generic.SortedDictionary{TKey,TValue}\" />, and from the dictionary that a\n" +
+		"<see cref=\"System.Collections.ObjectModel.ReadOnlyDictionary{TKey,TValue}\" /> wraps, not from a custom dictionary.\n" +
+		"Without it, a key of the dictionary that equals no expected key is reported, even when the comparer considers it\n" +
+		"the same as one.";
 
 	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
@@ -85,7 +86,7 @@ public static partial class ThatDictionary
 			List<TKey> missingKeys = [];
 			List<TKey> collapsedKeys = [];
 			List<string> incorrectValues = [];
-			ISet<TKey> matchedKeys = CollectionComparerHelpers.CreateKeySet(actual);
+			ISet<TKey> matchedKeys = KeyComparers.CreateKeySet(actual);
 			foreach (KeyValuePair<TKey, TValue> pair in expected)
 			{
 				if (!tryGetValue(pair.Key, out TValue? value))

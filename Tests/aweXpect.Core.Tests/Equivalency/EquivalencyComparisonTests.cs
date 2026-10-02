@@ -1318,7 +1318,7 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
-	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectExposesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectExposesAComparerProperty_ShouldCompareTheKeysByTheirEquality()
 	{
 		ReadOnlyDictionaryOnlyWithComparer<string, int> actual = new(
 			new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -1333,9 +1333,13 @@ public sealed class EquivalencyComparisonTests
 
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
 
-		await That(result).IsTrue()
-			.Because("the entries are copied into a dictionary that uses the comparer the subject exposes");
-		await That(failureBuilder.ToString()).IsEmpty();
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a] had superfluous 1 and
+		                                                  Element [A] was missing 1
+		                                                """).IgnoringNewlineStyle()
+			.Because("the comparer is only read from known dictionary types, as for IsEqualTo and under Native AOT");
 	}
 
 	[Fact]
