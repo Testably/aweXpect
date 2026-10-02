@@ -60,7 +60,7 @@ public static partial class ThatEnumerable
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType);
@@ -90,7 +90,7 @@ public static partial class ThatEnumerable
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
 			{
-				IsEqualToConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToConstraint<string?, string?> constraint = new(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.ComparesByOrdinalEquality);
@@ -123,7 +123,7 @@ public static partial class ThatEnumerable
 			TItem, TTolerance>(
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
-				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				IsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
@@ -154,7 +154,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType);
@@ -212,7 +212,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -238,7 +238,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -266,7 +266,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<TCollection, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -295,7 +295,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<TCollection, string?, string?> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -325,7 +325,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				IsEqualToForEnumerableConstraint<TCollection, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -354,7 +354,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				IsEqualToFromPredicateConstraint<TCollection, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -382,7 +382,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions, failsForNullSubject: true);
 				return negated ? constraint.Invert() : constraint;
 			}),

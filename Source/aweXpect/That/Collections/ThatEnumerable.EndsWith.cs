@@ -43,7 +43,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -72,7 +72,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.ComparesByOrdinalEquality);
-				EndsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<string?, string?> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -102,7 +102,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -132,7 +132,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 				EndsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -173,7 +173,7 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.HasDefaultMatchType);
 				EndsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					Formatter.Format(expectedItems), expectedItems, itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -200,7 +200,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -229,7 +229,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -259,7 +259,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -273,7 +273,7 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly TItem[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
@@ -286,8 +286,11 @@ public static partial class ThatEnumerable
 		private int _itemsCount;
 		private int _offset;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public EndsWithConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
@@ -295,7 +298,6 @@ public static partial class ThatEnumerable
 			IOptionsEquality<TMatch> options,
 			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
@@ -306,6 +308,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -329,7 +332,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -343,7 +346,7 @@ public static partial class ThatEnumerable
 				if (_index + _offset < 0)
 				{
 					Outcome = Outcome.Failure;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -353,7 +356,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -413,7 +416,7 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly TMatch[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
@@ -426,8 +429,11 @@ public static partial class ThatEnumerable
 		private int _itemsCount;
 		private int _offset;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public EndsWithForEnumerableConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
@@ -435,7 +441,6 @@ public static partial class ThatEnumerable
 			IOptionsEquality<TMatch> options,
 			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
@@ -446,6 +451,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -473,7 +479,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -487,7 +493,7 @@ public static partial class ThatEnumerable
 				if (_index + _offset < 0)
 				{
 					Outcome = Outcome.Failure;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -498,7 +504,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}

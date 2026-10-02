@@ -44,15 +44,13 @@ internal static class QuantifiedCollectionHelpers
 	];
 
 	/// <summary>
-	///     Adds the matching and the not matching items as context, as far as the <paramref name="quantifier" /> shows
-	///     them for the final negation.
+	///     Adds the matching and the not matching items as context, as far as they are <paramref name="shown" />.
 	/// </summary>
 	internal static void AddQuantifierContexts(this ResultContextCollector contexts,
-		EnumerableQuantifier quantifier, bool isNegated,
+		EnumerableQuantifier quantifier, EnumerableQuantifier.QuantifierContexts shown,
 		Func<string>? matchingItems, Func<string>? notMatchingItems)
 	{
 		EnumerableQuantifier.QuantifierContexts normal = quantifier.GetQuantifierContext();
-		EnumerableQuantifier.QuantifierContexts shown = isNegated ? quantifier.GetNegatedQuantifierContext() : normal;
 
 		void Add(string title, EnumerableQuantifier.QuantifierContexts context, Func<string>? items)
 		{

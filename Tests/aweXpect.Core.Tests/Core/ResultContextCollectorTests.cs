@@ -106,6 +106,56 @@ public sealed class ResultContextCollectorTests
 	}
 
 	[Fact]
+	public async Task ItemExpectations_ForAll_ShouldShowTheContextsOfTheFirstNotMatchingItem()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).All().ComplyWith(item => item.MatchesValue("Value", 1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches Value 1 for all items,
+			             but only 1 of 3 did
+
+			             Not matching items:
+			             [2, 3]
+
+			             Collection:
+			             [1, 2, 3]
+
+			             Value (item [1]):
+			             2
+			             """);
+	}
+
+	[Fact]
+	public async Task ItemExpectations_ForNone_ShouldShowTheContextsOfTheFirstMatchingItem()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).None().ComplyWith(item => item.MatchesValue("Value", 3));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches Value 3 for no items,
+			             but 1 of 3 did
+
+			             Matching items:
+			             [3]
+
+			             Collection:
+			             [1, 2, 3]
+
+			             Value (item [2]):
+			             3
+			             """);
+	}
+
+	[Fact]
 	public async Task NestedMember_ShouldLabelTheContextWithTheMemberPath()
 	{
 		Outer subject = new(new Pair(1, 2));

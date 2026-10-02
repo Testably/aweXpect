@@ -32,7 +32,6 @@ public static partial class ThatEnumerable
 	///     expectation names it.
 	/// </remarks>
 	private sealed class IsEqualToConstraint<TItem, TMatch>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -45,6 +44,8 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
 	{
+		private CollectionContext _collectionContext;
+		private ICollection<TItem>? _expectedItems;
 		private string? _failure;
 		private SubjectComparer<TItem>? _subjectComparer;
 
@@ -54,9 +55,21 @@ public static partial class ThatEnumerable
 			protected set => base.Outcome = value;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			if (expected is not null && _expectedItems is not null)
+			{
+				contexts.AddExpectedItemsContext(expected, _expectedItems);
+			}
+		}
+
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
+			_expectedItems = null;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -67,13 +80,13 @@ public static partial class ThatEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(
+				_collectionContext.Set(
 					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			expectationBuilder.AddExpectedItemsContext(expected, expectedItems);
+			_expectedItems = expectedItems;
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
@@ -90,7 +103,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -99,7 +112,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -114,11 +127,11 @@ public static partial class ThatEnumerable
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				_collectionContext.Set(materializedEnumerable);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable);
+			_collectionContext.Set(materializedEnumerable);
 			Outcome = Outcome.Success;
 			return this;
 		}
@@ -162,7 +175,6 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TMatch>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -174,7 +186,9 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable<TItem>?
 		where TItem : TMatch
 	{
+		private CollectionContext _collectionContext;
 		private CollectionMatchOptions.ExpectationItem<TItem>[] _expectations = [];
+		private bool _showsExpected;
 
 		private string? _failure;
 
@@ -184,9 +198,23 @@ public static partial class ThatEnumerable
 			protected set => base.Outcome = value;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			if (_showsExpected)
+			{
+				CollectionMatchOptions.ExpectationItem<TItem>[] expectations = _expectations;
+				contexts.Add(new ResultContext.SyncCallback("Expected",
+					() => Formatter.Format(expectations, typeof(TItem).GetFormattingOption(expectations.Length)), -2));
+			}
+		}
+
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
+			_showsExpected = false;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -202,7 +230,7 @@ public static partial class ThatEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(
+				_collectionContext.Set(
 					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
@@ -216,9 +244,7 @@ public static partial class ThatEnumerable
 						cancellationToken))
 				.ToArray();
 			await PrepareExpectations();
-			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(_expectations, typeof(TItem).GetFormattingOption(_expectations.Length)),
-					-2));
+			_showsExpected = true;
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(_expectations);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
@@ -228,7 +254,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -238,7 +264,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -253,7 +279,7 @@ public static partial class ThatEnumerable
 			if (IsAnItemExpectationCanceled(cancellationToken))
 			{
 				Outcome = Outcome.Undecided;
-				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				_collectionContext.Set(materializedEnumerable);
 				return this;
 			}
 
@@ -261,11 +287,11 @@ public static partial class ThatEnumerable
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				_collectionContext.Set(materializedEnumerable);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable);
+			_collectionContext.Set(materializedEnumerable);
 			Outcome = Outcome.Success;
 			return this;
 		}
@@ -323,7 +349,6 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatch>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -335,6 +360,8 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable<TItem>?
 		where TItem : TMatch
 	{
+		private CollectionContext _collectionContext;
+		private ICollection<Expression<Func<TItem, bool>>>? _expectedItems;
 		private string? _failure;
 
 		public override Outcome Outcome
@@ -343,9 +370,22 @@ public static partial class ThatEnumerable
 			protected set => base.Outcome = value;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			if (_expectedItems is { } expectedItems)
+			{
+				contexts.Add(new ResultContext.SyncCallback("Expected",
+					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines), -2));
+			}
+		}
+
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
+			_expectedItems = null;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -361,16 +401,14 @@ public static partial class ThatEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(
+				_collectionContext.Set(
 					context.UseMaterializedEnumerable<TItem>(actual));
 				return this;
 			}
 
 			ICollection<Expression<Func<TItem, bool>>> expectedItems =
 				expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
-			expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
-					() => Formatter.Format(expectedItems, FormattingOptions.MultipleLines),
-					-2));
+			_expectedItems = expectedItems;
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
@@ -382,7 +420,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -391,7 +429,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -406,11 +444,11 @@ public static partial class ThatEnumerable
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				_collectionContext.Set(materializedEnumerable);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable);
+			_collectionContext.Set(materializedEnumerable);
 			Outcome = Outcome.Success;
 			return this;
 		}
@@ -462,7 +500,6 @@ public static partial class ThatEnumerable
 	///     expectation names it.
 	/// </remarks>
 	private sealed class IsEqualToForEnumerableConstraint<TEnumerable, TItem, TMatch>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -476,6 +513,8 @@ public static partial class ThatEnumerable
 		where TEnumerable : IEnumerable?
 		where TItem : TMatch
 	{
+		private CollectionContext _collectionContext;
+		private ICollection<TItem>? _expectedItems;
 		private string? _failure;
 		private SubjectComparer<TItem>? _subjectComparer;
 
@@ -485,9 +524,21 @@ public static partial class ThatEnumerable
 			protected set => base.Outcome = value;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			if (expected is not null && _expectedItems is not null)
+			{
+				contexts.AddExpectedItemsContext(expected, _expectedItems);
+			}
+		}
+
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
+			_expectedItems = null;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -503,12 +554,12 @@ public static partial class ThatEnumerable
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(context.UseMaterializedEnumerable(actual));
+				_collectionContext.Set(context.UseMaterializedEnumerable(actual));
 				return this;
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			expectationBuilder.AddExpectedItemsContext(expected, expectedItems);
+			_expectedItems = expectedItems;
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			ICollectionMatcher<object?, object?> matcher =
 				matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>());
@@ -524,7 +575,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materializedEnumerable, true);
+					_collectionContext.Set(materializedEnumerable, true);
 					return this;
 				}
 
@@ -533,7 +584,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(materializedEnumerable);
+					_collectionContext.Set(materializedEnumerable);
 					return this;
 				}
 
@@ -548,11 +599,11 @@ public static partial class ThatEnumerable
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
 				Outcome = Outcome.Failure;
-				expectationBuilder.AddCollectionContext(materializedEnumerable);
+				_collectionContext.Set(materializedEnumerable);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(materializedEnumerable);
+			_collectionContext.Set(materializedEnumerable);
 			Outcome = Outcome.Success;
 			return this;
 		}
@@ -618,11 +669,21 @@ public static partial class ThatEnumerable
 				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -637,20 +698,20 @@ public static partial class ThatEnumerable
 				if (cancelEarly && IsDetermined)
 				{
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return Task.FromResult<ConstraintResult>(this);
 		}
 	}
@@ -668,11 +729,21 @@ public static partial class ThatEnumerable
 				expectationText, verb),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -688,20 +759,20 @@ public static partial class ThatEnumerable
 				if (cancelEarly && IsDetermined)
 				{
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return this;
 				}
 			}
 
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return this;
 		}
 	}
@@ -723,7 +794,15 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
 
@@ -732,6 +811,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -752,20 +832,20 @@ public static partial class ThatEnumerable
 				if (cancelEarly && IsDetermined)
 				{
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return Task.FromResult<ConstraintResult>(this);
 		}
 	}
@@ -787,7 +867,15 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
 
@@ -796,6 +884,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -817,20 +906,20 @@ public static partial class ThatEnumerable
 				if (cancelEarly && IsDetermined)
 				{
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return this;
 				}
 			}
 
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return this;
 		}
 	}
@@ -839,20 +928,22 @@ public static partial class ThatEnumerable
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly EnumerableQuantifier _quantifier;
 		private int _matchingCount;
 		private int _notMatchingCount;
 		private int? _totalCount;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public SyncCollectionCountConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier)
 			: base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_quantifier = quantifier;
 		}
 
@@ -870,6 +961,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -885,7 +977,7 @@ public static partial class ThatEnumerable
 				_matchingCount = collectionOfT.Count;
 				_totalCount = _matchingCount;
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-				_expectationBuilder.AddCollectionContext(actual);
+				_collectionContext.Set(actual);
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
@@ -899,20 +991,20 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_expectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
 			_totalCount = _matchingCount + _notMatchingCount;
-			_expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 			return Task.FromResult<ConstraintResult>(this);
 		}
@@ -946,20 +1038,22 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly EnumerableQuantifier _quantifier;
 		private int _matchingCount;
 		private int _notMatchingCount;
 		private int? _totalCount;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public SyncCollectionCountForEnumerableConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier)
 			: base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_quantifier = quantifier;
 		}
 
@@ -977,6 +1071,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -997,7 +1092,7 @@ public static partial class ThatEnumerable
 				_matchingCount = collection.Count;
 				_totalCount = _matchingCount;
 				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-				_expectationBuilder.AddCollectionContext(actual);
+				_collectionContext.Set(actual);
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
@@ -1010,20 +1105,20 @@ public static partial class ThatEnumerable
 				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
 				{
 					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_expectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					_expectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 			}
 
 			_totalCount = _matchingCount + _notMatchingCount;
-			_expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 			return Task.FromResult<ConstraintResult>(this);
 		}
@@ -1072,7 +1167,6 @@ public static partial class ThatEnumerable
 	///     <paramref name="options" />, and the expectation names it.
 	/// </remarks>
 	private sealed class IsInOrderConstraint<TItem, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, TMember> memberAccessor,
@@ -1083,12 +1177,18 @@ public static partial class ThatEnumerable
 		: OrderingConstraint<IEnumerable<TItem>?>(it, grammars, false),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private string? _failureText;
 		private IComparer<TMember>? _subjectOrder;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_failureText = null;
 			IsIncomparable = false;
@@ -1100,7 +1200,7 @@ public static partial class ThatEnumerable
 
 			IEnumerable<TItem> materialized = context
 				.UseMaterializedEnumerable<TItem>(actual);
-			expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 
 			TMember previous = default!;
 			int index = 0;
@@ -1204,7 +1304,6 @@ public static partial class ThatEnumerable
 	///     a comparer is specified in the <paramref name="options" />, and the expectation names it.
 	/// </remarks>
 	private sealed class IsInOrderForEnumerableConstraint<TEnumerable, TItem, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, TMember> memberAccessor,
@@ -1216,12 +1315,18 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private string? _failureText;
 		private IComparer<TMember>? _subjectOrder;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_failureText = null;
 			IsIncomparable = false;
@@ -1237,7 +1342,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 
 			TMember previous = default!;
 			int index = 0;

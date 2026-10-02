@@ -841,7 +841,7 @@ public sealed partial class ThatEnumerable
 					             whose Items do not have a single item that is equal to 1,
 					             but it had the single item 1
 
-					             Collection:
+					             Collection (Items):
 					             [1]
 					             """);
 			}

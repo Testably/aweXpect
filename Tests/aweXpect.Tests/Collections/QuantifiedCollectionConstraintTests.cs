@@ -77,7 +77,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			             has values of which more than one is even,
 			             but 1 of 2 were
 
-			             Not matching items:
+			             Not matching items (values):
 			             [3]
 			             """)
 			.Because("the extension renders the nested negated quantifier like the built-in Satisfy");

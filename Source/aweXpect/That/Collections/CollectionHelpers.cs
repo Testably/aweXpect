@@ -80,7 +80,8 @@ internal static class CollectionHelpers
 		=> new ThatSubject<IEnumerable<TItem>?>(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, memberName))
 			.ForWhich(memberAccessor, " that ", "it",
-				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural, negateMemberOnly: true));
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural, negateMemberOnly: true,
+				contextMember: memberName));
 
 	/// <summary>
 	///     Names the member in the expectation text and rules a <see langword="null" /> subject out. A negation applies
@@ -136,17 +137,6 @@ internal static class CollectionHelpers
 
 		return expectationBuilder.AddContext(
 			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
-	}
-
-	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
-		IEnumerable? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
-	{
-		if (value is null)
-		{
-			return expectationBuilder;
-		}
-
-		return expectationBuilder.AddContext(new CollectionContext(value, isIncomplete, onlyOnFailureOf));
 	}
 
 #if NET8_0_OR_GREATER
@@ -252,82 +242,26 @@ internal static class CollectionHelpers
 		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
 			=> Task.FromResult(IsHidden(onlyOnFailureOf)
 				? null
-				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
-
-		/// <remarks>
-		///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must
-		///     not be rendered as the total from which the number of remaining items is derived.
-		/// </remarks>
-		private string? FormatCollection()
-		{
-			if (value is IKeyedCollection keyed)
-			{
-				return keyed.Format();
-			}
-
-			if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
-			{
-				return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
-			}
-
-			int? count = totalCount ?? value switch
-			{
-				ICollection<TItem> coll => coll.Count,
-				ICountable countable => countable.Count,
-				_ => null,
-			};
-			return Formatter.Format(value, typeof(TItem).GetFormattingOption(
-				value is LimitedCollection<TItem> limited ? limited.Count : count, count));
-		}
+				: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete));
 	}
 
-	/// <inheritdoc cref="CollectionContext{TItem}" />
-	private sealed class CollectionContext(
-		IEnumerable value,
-		bool isIncomplete,
-		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
+	/// <remarks>
+	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
+	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
+	///     renders it.
+	/// </remarks>
+	private static Type GetItemTypeOfListedItems(IEnumerable value)
 	{
-		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
-			=> Task.FromResult(IsHidden(onlyOnFailureOf)
-				? null
-				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
-
-		private string? FormatCollection()
+		IEnumerable<object?> items = value is ICollection
+			? value.Cast<object?>()
+			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+		try
 		{
-			if (value is IMaterializedEnumerable { Count: null, } materialized)
-			{
-				return FormatReadItems(materialized.MaterializedItems,
-					materialized.MaterializedItems.GetItemType());
-			}
-
-			int? totalCount = value switch
-			{
-				ICollection coll => coll.Count,
-				ICountable countable => countable.Count,
-				_ => null,
-			};
-			return Formatter.Format(value,
-				GetItemTypeOfListedItems().GetFormattingOption(totalCount, totalCount));
+			return items.GetItemType();
 		}
-
-		/// <remarks>
-		///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be
-		///     searched to its end. An exception of the source is ignored here, as the formatter enumerates the same
-		///     items and renders it.
-		/// </remarks>
-		private Type GetItemTypeOfListedItems()
+		catch (Exception)
 		{
-			IEnumerable<object?> items = value is ICollection
-				? value.Cast<object?>()
-				: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-			try
-			{
-				return items.GetItemType();
-			}
-			catch (Exception)
-			{
-				return typeof(object);
-			}
+			return typeof(object);
 		}
 	}
 
@@ -335,6 +269,18 @@ internal static class CollectionHelpers
 	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
 	///     <paramref name="expected" /> collection.
 	/// </summary>
+	internal static void AddExpectedItemsContext<TItem>(this ResultContextCollector contexts,
+		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
+		=> contexts.Add(new ResultContext.SyncCallback("Expected",
+			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			})),
+			-2));
+
+	/// <inheritdoc cref="AddExpectedItemsContext{TItem}(ResultContextCollector, IEnumerable{TItem}, ICollection{TItem})" />
 	internal static void AddExpectedItemsContext<TItem>(this ExpectationBuilder expectationBuilder,
 		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
 		=> expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
@@ -445,6 +391,51 @@ internal static class CollectionHelpers
 		}
 
 		return count;
+	}
+
+	/// <summary>
+	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
+	///     be rendered as the total from which the number of remaining items is derived.
+	/// </summary>
+	internal static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
+	{
+		if (value is IKeyedCollection keyed)
+		{
+			return keyed.Format();
+		}
+
+		if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
+		{
+			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
+		}
+
+		totalCount ??= value switch
+		{
+			ICollection<TItem> coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
+			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
+	}
+
+	/// <summary>
+	///     Formats the untyped <paramref name="value" />, laid out by the type of its listed items.
+	/// </summary>
+	internal static string? FormatUntypedCollection(IEnumerable value)
+	{
+		if (value is IMaterializedEnumerable { Count: null, } materialized)
+		{
+			return FormatReadItems(materialized.MaterializedItems, materialized.MaterializedItems.GetItemType());
+		}
+
+		int? totalCount = value switch
+		{
+			ICollection coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
 	}
 
 	/// <summary>

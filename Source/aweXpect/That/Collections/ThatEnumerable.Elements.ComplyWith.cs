@@ -103,11 +103,21 @@ public static partial class ThatEnumerable
 				expectations),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual is null)
@@ -118,7 +128,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			return await IsMetByItems(materialized, actual is not ICollection<TItem>,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 	}
@@ -137,7 +147,15 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
 
@@ -146,6 +164,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual is null)
@@ -156,7 +175,7 @@ public static partial class ThatEnumerable
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			return await IsMetByItems(WithItemType(materialized), actual is not ICollection,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 
@@ -180,11 +199,21 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual.IsDefaultImmutableArray())
@@ -195,7 +224,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			return await IsMetByItems(materialized, actual is not ICollection<TItem>,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 	}

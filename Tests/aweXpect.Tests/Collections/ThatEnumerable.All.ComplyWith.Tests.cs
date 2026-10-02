@@ -224,6 +224,12 @@ public sealed partial class ThatEnumerable
 						                 3
 						               ]
 						             ]
+
+						             Collection (item [1]):
+						             [1, 3]
+
+						             Expected (item [1]):
+						             [1, 2]
 						             """);
 				}
 
@@ -263,6 +269,9 @@ public sealed partial class ThatEnumerable
 						               ],
 						               (… and maybe more)
 						             ]
+
+						             Collection (item [1]):
+						             [1, 3]
 						             """);
 				}
 
@@ -616,6 +625,12 @@ public sealed partial class ThatEnumerable
 						                 Value = 1
 						               }
 						             ]
+
+						             Actual (item [0]):
+						             MyClass {
+						               StringValue = "foo",
+						               Value = 1
+						             }
 						             """);
 				}
 

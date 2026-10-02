@@ -260,12 +260,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all do not start with "f",
 					             but only 1 of 2 did
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [1] = "foo"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -295,7 +295,7 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2, 3] whose values at least 2 are equal to "foo",
 					             but only 1 of 3 were
 
-					             Collection:
+					             Collection (values of keys [1, 2, 3]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar",
@@ -325,12 +325,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values none start with "f",
 					             but 1 of 2 did
 
-					             Matching items:
+					             Matching items (values of keys [1, 2]):
 					             [
 					               [1] = "foo"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -359,12 +359,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all are equal to "foo",
 					             but only 1 of 2 were
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [2] = "bar"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -394,13 +394,13 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all have Length that is equal to 4,
 					             but none of 2 did
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -429,10 +429,16 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values are equal to collection ["foo", "baz",] in order,
 					             but values of keys [1, 2] contained item "bar" at index 1 instead of "baz"
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
+					             ]
+
+					             Expected (values of keys [1, 2]):
+					             [
+					               "foo",
+					               "baz"
 					             ]
 
 					             Dictionary:
@@ -441,12 +447,6 @@ public sealed partial class ThatDictionary
 					               [2] = "bar",
 					               [3] = "baz"
 					             }
-
-					             Expected:
-					             [
-					               "foo",
-					               "baz"
-					             ]
 					             """);
 			}
 
@@ -464,13 +464,13 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2, 3] whose values all are unique,
 					             but only 1 of 3 were
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2, 3]):
 					             [
 					               [1] = "foo",
 					               [3] = "foo"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2, 3]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar",
@@ -500,13 +500,13 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all are unique ignoring case,
 					             but none of 2 were
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "FOO"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "FOO"
@@ -535,12 +535,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all start with "f",
 					             but only 1 of 2 did
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [2] = "bar"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -569,7 +569,7 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values contain "baz" at least once,
 					             but values of keys [1, 2] did not contain it
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -598,12 +598,12 @@ public sealed partial class ThatDictionary
 					             contains keys [2] whose values all are equal to "foo",
 					             but none of 1 were
 
-					             Not matching items:
+					             Not matching items (values of keys [2]):
 					             [
 					               [2] = "bar"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [2]):
 					             [
 					               [2] = "bar"
 					             ]
@@ -631,12 +631,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values all satisfy v => v?.StartsWith("fo") == true,
 					             but only 1 of 2 did
 
-					             Not matching items:
+					             Not matching items (values of keys [1, 2]):
 					             [
 					               [2] = "bar"
 					             ]
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -665,7 +665,7 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2] whose values have exactly 3 items,
 					             but values of keys [1, 2] had only 2 items
 
-					             Collection:
+					             Collection (values of keys [1, 2]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar"
@@ -747,7 +747,7 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2, 3] whose values not all are unique,
 					             but all 3 were
 
-					             Collection:
+					             Collection (values of keys [1, 2, 3]):
 					             [
 					               [1] = "foo",
 					               [2] = "bar",
@@ -778,7 +778,7 @@ public sealed partial class ThatDictionary
 					             contains keys [2, 3] whose values at least one starts with "f",
 					             but none of 2 did
 
-					             Collection:
+					             Collection (values of keys [2, 3]):
 					             [
 					               [2] = "bar",
 					               [3] = "baz"

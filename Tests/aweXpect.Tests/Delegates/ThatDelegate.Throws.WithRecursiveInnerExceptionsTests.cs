@@ -97,7 +97,7 @@ public sealed partial class ThatDelegate
 					             throws an exception with recursive inner exceptions of which at least 2 are of type ThatDelegate.CustomException,
 					             but only 1 of 5 were
 
-					             Collection:
+					             Collection (recursive inner exceptions):
 					             [
 					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
 					               AggregateException: *,
@@ -128,7 +128,7 @@ public sealed partial class ThatDelegate
 					               (… and maybe more)
 					             ]
 
-					             Collection:
+					             Collection (recursive inner exceptions):
 					             [
 					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
 					               (… and maybe more)
@@ -149,9 +149,6 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an expectation on the inner exceptions requires at least one of them");
 			}
@@ -169,9 +166,6 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which at most 2 satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
@@ -189,9 +183,6 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which none satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
@@ -227,9 +218,6 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}
@@ -247,9 +235,6 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which none satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}

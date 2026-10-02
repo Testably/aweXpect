@@ -619,11 +619,14 @@ public static partial class ThatEnumerable
 				expectationText, "were"),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
 		public async Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -640,7 +643,7 @@ public static partial class ThatEnumerable
 				}
 
 				Complete();
-				ExpectationBuilder.AddCollectionContext(materialized);
+				_collectionContext.Set(materialized);
 				return this;
 			}
 
@@ -654,22 +657,29 @@ public static partial class ThatEnumerable
 				{
 					RecordAll(items, occurrences);
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return this;
 				}
 			}
 
 			RecordAll(items, occurrences);
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
 		}
 
 		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
@@ -700,7 +710,15 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
 
@@ -709,6 +727,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -731,7 +750,7 @@ public static partial class ThatEnumerable
 				}
 
 				Complete();
-				ExpectationBuilder.AddCollectionContext(materialized);
+				_collectionContext.Set(materialized);
 				return this;
 			}
 
@@ -746,21 +765,21 @@ public static partial class ThatEnumerable
 				{
 					RecordAll(items, occurrences);
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(materialized);
+					_collectionContext.Set(materialized);
 					return this;
 				}
 
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					ExpectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return this;
 				}
 			}
 
 			RecordAll(items, occurrences);
 			Complete();
-			ExpectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			return this;
 		}
 

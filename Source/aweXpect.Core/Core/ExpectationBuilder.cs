@@ -449,6 +449,9 @@ public abstract class ExpectationBuilder
 	///     exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
 	///     <see cref="OperationCanceledException" /> thrown while the evaluation is canceled aborts the evaluation
 	///     instead.
+	///     <para />
+	///     The contexts of the member are labelled with the <paramref name="contextMember" />, e.g. <c>keys</c>, or with
+	///     the <paramref name="subjectName" />, unless the member is called <c>it</c>.
 	/// </remarks>
 	/// <param name="memberAccessor">Accesses the member on the source value.</param>
 	/// <param name="separator">The text between the previous expectation and the expectations on the member.</param>
@@ -461,15 +464,21 @@ public abstract class ExpectationBuilder
 	/// <param name="negateMemberOnly">
 	///     Whether a negation only applies to the expectations on the member instead of the whole expectation.
 	/// </param>
+	/// <param name="contextMember">
+	///     The member that labels the contexts of the expectations on the member, or <see langword="null" /> for the
+	///     <paramref name="subjectName" />.
+	/// </param>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, TTarget?> memberAccessor,
 		string? separator = null,
 		string? subjectName = null,
 		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
-		bool negateMemberOnly = false)
+		bool negateMemberOnly = false,
+		string? contextMember = null)
 	{
+		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
 		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator,
-			negateMemberOnly, subjectName));
+			negateMemberOnly, subjectName, contextMember));
 
 		if (subjectName != null)
 		{

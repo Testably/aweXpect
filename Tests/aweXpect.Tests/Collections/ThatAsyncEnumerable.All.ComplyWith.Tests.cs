@@ -181,6 +181,12 @@ public sealed partial class ThatAsyncEnumerable
 						               ],
 						               (… and maybe more)
 						             ]
+
+						             Collection (item [1]):
+						             [1, 3]
+
+						             Expected (item [1]):
+						             [1, 3]
 						             """);
 				}
 

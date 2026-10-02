@@ -13,6 +13,7 @@ namespace aweXpect.Core.Nodes;
 internal class WhichNode<TSource, TMember> : Node
 {
 	private readonly Func<TSource, Task<TMember?>>? _asyncMemberAccessor;
+	private readonly string? _contextMember;
 	private readonly Func<TSource, TMember?>? _memberAccessor;
 	private readonly string _memberName = "it";
 	private readonly bool _negateMemberOnly;
@@ -25,8 +26,10 @@ internal class WhichNode<TSource, TMember> : Node
 		Func<TSource, TMember?> memberAccessor,
 		string? separator = null,
 		bool negateMemberOnly = false,
-		string? memberName = null)
+		string? memberName = null,
+		string? contextMember = null)
 	{
+		_contextMember = contextMember;
 		_parent = parent;
 		_memberAccessor = memberAccessor;
 		_separator = separator;
@@ -208,22 +211,25 @@ internal class WhichNode<TSource, TMember> : Node
 	{
 		if (leftResult == null)
 		{
-			return separator.Length == 0
-				? rightResult
-				: PrependSeparator(rightResult, separator);
+			if (separator.Length == 0)
+			{
+				return _contextMember is null ? rightResult : rightResult.PrependExpectationText(null, _contextMember);
+			}
+
+			return PrependSeparator(rightResult, separator, _contextMember);
 		}
 
 		return new WhichConstraintResult(leftResult, rightResult, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue,
-			value, _negateMemberOnly, false);
+			value, _negateMemberOnly, false, _contextMember);
 	}
 
 	/// <remarks>
 	///     A separate method, so that the closure over the <paramref name="separator" /> is only allocated when it is
 	///     prepended, and not on every combination.
 	/// </remarks>
-	private static ConstraintResult PrependSeparator(ConstraintResult result, string separator)
-		=> result.PrependExpectationText(sb => sb.Append(separator.TrimStart()));
+	private static ConstraintResult PrependSeparator(ConstraintResult result, string separator, string? contextMember)
+		=> result.PrependExpectationText(sb => sb.Append(separator.TrimStart()), contextMember);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -239,6 +245,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 	private sealed class WhichConstraintResult : CombinedResult
 	{
+		private readonly string? _contextMember;
 		private readonly bool _isMemberSkipped;
 		private readonly bool _negateMemberOnly;
 		private readonly string _separator;
@@ -260,8 +267,10 @@ internal class WhichNode<TSource, TMember> : Node
 			FurtherProcessingStrategy furtherProcessingStrategy,
 			TMember? value,
 			bool negateMemberOnly,
-			bool isMemberSkipped) : base(left, right, true, furtherProcessingStrategy)
+			bool isMemberSkipped,
+			string? contextMember = null) : base(left, right, true, furtherProcessingStrategy)
 		{
+			_contextMember = contextMember;
 			_separator = separator;
 			_value = value;
 			_negateMemberOnly = negateMemberOnly;
@@ -313,6 +322,10 @@ internal class WhichNode<TSource, TMember> : Node
 				Right.AppendResult(stringBuilder, indentation);
 			}
 		}
+
+		/// <inheritdoc />
+		protected override void VisitRight(ResultContextCollector contexts)
+			=> contexts.VisitOptionalMember(_contextMember, Right);
 
 		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default

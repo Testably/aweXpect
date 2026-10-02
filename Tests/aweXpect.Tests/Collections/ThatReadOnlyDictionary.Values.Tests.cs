@@ -23,10 +23,10 @@ public sealed partial class ThatReadOnlyDictionary
 					             has values of which all are unique,
 					             but only 2 of 4 were
 
-					             Not matching items:
+					             Not matching items (values):
 					             [1, 1]
 
-					             Collection:
+					             Collection (values):
 					             [1, 2, 3, 1]
 					             """);
 			}
@@ -88,13 +88,13 @@ public sealed partial class ThatReadOnlyDictionary
 					             has values of which all are unique ignoring case,
 					             but none of 2 were
 
-					             Not matching items:
+					             Not matching items (values):
 					             [
 					               "a",
 					               "A"
 					             ]
 
-					             Collection:
+					             Collection (values):
 					             [
 					               "a",
 					               "A"

@@ -1379,11 +1379,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not have a single item whose y!.Name is equal to "i",
 					             but it was <null>
-
-					             Collection:
-					             [
-					               <null>
-					             ]
 					             """);
 			}
 
@@ -1401,14 +1396,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not have a single item whose In has Name that is equal to "i",
 					             but In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 
@@ -1432,14 +1419,6 @@ public sealed partial class ThatGeneric
 					               }
 					             ]
 					             and In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 
@@ -1457,14 +1436,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is not empty and does not have a single item whose In has Name that is equal to "i",
 					             but In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 

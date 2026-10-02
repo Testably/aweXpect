@@ -110,7 +110,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 
 			index++;
 
-			Record(item, isMatch.Outcome == Outcome.Success);
+			Record(item, isMatch);
 			if (cancelEarly && IsDetermined)
 			{
 				CompleteEarly();
@@ -160,7 +160,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 
 			count++;
 
-			Record(item, isMatch.Outcome == Outcome.Success);
+			Record(item, isMatch);
 			if (IsDetermined)
 			{
 				CompleteEarly();

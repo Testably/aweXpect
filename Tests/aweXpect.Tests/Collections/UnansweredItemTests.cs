@@ -145,7 +145,7 @@ public sealed class UnansweredItem
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
-				             Collection:
+				             Collection (values):
 				             [1]
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));

@@ -16,8 +16,9 @@ internal static class ResultContextRenderer
 	///     Appends the contexts of the <paramref name="failure" /> to the <paramref name="stringBuilder" />.
 	/// </summary>
 	/// <remarks>
-	///     A context of a member is labelled with it, e.g. <c>Collection (Items):</c>. Contexts with the same title and
-	///     member are shown once when their content is the same, and are numbered otherwise, e.g. <c>Expected #1:</c>.
+	///     A context of a member is labelled with it, e.g. <c>Collection (Items):</c>, and the contexts of an item of a
+	///     collection follow those of the collection. Contexts with the same title and member are shown once when their
+	///     content is the same, and are numbered otherwise, e.g. <c>Expected #1:</c>.
 	/// </remarks>
 	public static async Task AppendContexts(StringBuilder stringBuilder, ConstraintResult failure,
 		IEnumerable<ResultContext> builderContexts, CancellationToken cancellationToken)
@@ -25,9 +26,11 @@ internal static class ResultContextRenderer
 		ResultContextCollector collector = new();
 		collector.Visit(failure);
 		IEnumerable<(ResultContext Context, string? Subject, string TitlePrefix)> candidates = collector.Entries
-			.Select(entry => (entry.Context, entry.GetSubjectLabel(), entry.TitlePrefix))
-			.Concat(builderContexts.Select(context => (context, (string?)null, "")))
-			.OrderByDescending(candidate => candidate.Item1.Priority);
+			.Select(entry => (entry.Context, entry.GetSubjectLabel(), entry.TitlePrefix, entry.IsOfItem))
+			.Concat(builderContexts.Select(context => (context, (string?)null, "", false)))
+			.OrderBy(candidate => candidate.Item4)
+			.ThenByDescending(candidate => candidate.Item1.Priority)
+			.Select(candidate => (candidate.Item1, candidate.Item2, candidate.Item3));
 
 		List<Block> blocks = [];
 		foreach ((ResultContext context, string? subject, string titlePrefix) in candidates)
