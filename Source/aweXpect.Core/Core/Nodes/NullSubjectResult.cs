@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Nodes;
 
@@ -37,8 +38,17 @@ internal sealed class NullSubjectResult : ConstraintResult
 	///     Creates a <see cref="NullSubjectResult" /> which uses the <paramref name="inner" /> result for the expectation
 	///     text.
 	/// </summary>
-	public static NullSubjectResult Create<T>(ConstraintResult inner, T value)
-		=> new(inner, value, typeof(T), "it was <null>");
+	/// <remarks>
+	///     The <paramref name="it" /> names the subject that was <see langword="null" />, e.g. the member a nested
+	///     member is accessed on, in the number of the <paramref name="grammars" />.
+	/// </remarks>
+	public static NullSubjectResult Create<T>(ConstraintResult inner, T value, string it = "it",
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+	{
+		StringBuilder result = new();
+		result.ItWasNull(it, grammars);
+		return new NullSubjectResult(inner, value, typeof(T), result.ToString());
+	}
 
 	/// <summary>
 	///     Creates a <see cref="NullSubjectResult" /> for the <paramref name="member" /> that returned a

@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Core.Tests.Results;
+﻿using aweXpect.Core.Helpers;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Core.Tests.Results;
 
 public class AndOrWhoseResultTests
 {
@@ -80,6 +83,27 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("memberAccessor").And
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenTheMemberIsACollection_ShouldUseThePluralForm()
+	{
+		ListClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<ListClass>()
+				.Whose(f => f.Name, f => f.Get().ExpectationBuilder.AddConstraint((_, g)
+					=> new DummyConstraint<string?>(_ => true, g.Verb("has a value", "have a value"))))
+				.AndWhose(f => f.Items, f => f.Get().ExpectationBuilder.AddConstraint((_, g)
+					=> new DummyConstraint<int[]?>(_ => false, g.Verb("has one item", "have one item"))));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ListClass whose Name has a value and whose Items have one item,
+			             *
+			             """).AsWildcard()
+			.Because("the number of the member follows its type, like in the other Whose overloads");
 	}
 
 	[Fact]
@@ -271,6 +295,43 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task Whose_WhenTheAsyncMemberIsACollection_ShouldUseThePluralForm()
+	{
+		ListClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<ListClass>()
+				.Whose(f => f.GetItemsAsync(), f => f.Get().ExpectationBuilder.AddConstraint((_, g)
+					=> new DummyConstraint<int[]?>(_ => false, g.Verb("has one item", "have one item"))));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ListClass whose GetItemsAsync() have one item,
+			             *
+			             """).AsWildcard();
+	}
+
+	[Fact]
+	public async Task Whose_WhenTheMemberIsACollection_ShouldUseThePluralForm()
+	{
+		ListClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<ListClass>()
+				.Whose(f => f.Items, f => f.Get().ExpectationBuilder.AddConstraint((_, g)
+					=> new DummyConstraint<int[]?>(_ => false, g.Verb("has one item", "have one item"))));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.ListClass whose Items have one item,
+			             *
+			             """).AsWildcard()
+			.Because("the number of the member follows its type, like in the other Whose overloads");
+	}
+
+	[Fact]
 	public async Task Whose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -404,6 +465,14 @@ public class AndOrWhoseResultTests
 			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True,
 			             but Value1 was False
 			             """);
+	}
+
+	private sealed class ListClass
+	{
+		public int[] Items { get; } = [];
+		public string Name { get; } = "";
+
+		public Task<int[]> GetItemsAsync() => Task.FromResult(Items);
 	}
 
 	private sealed class MyClass

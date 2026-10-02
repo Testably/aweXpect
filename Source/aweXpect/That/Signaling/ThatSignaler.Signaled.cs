@@ -232,7 +232,12 @@ public static partial class ThatSignaler
 			? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()
 			: null;
 
-	private static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
+	/// <remarks>
+	///     The event recording phrases its occurrences the same way.<br />
+	///     <c>only</c> says that too few occurred, so it is left out when fewer would also meet the
+	///     <paramref name="quantifier" />, e.g. for <c>not exactly once</c>.
+	/// </remarks>
+	internal static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
 	{
 		if (count == 0)
 		{
@@ -240,7 +245,7 @@ public static partial class ThatSignaler
 			return;
 		}
 
-		if (quantifier.Check(count, false) is null)
+		if (quantifier.Check(count, false) is null && (quantifier.Check(0, true) ?? quantifier.IsNegated) == false)
 		{
 			stringBuilder.Append("only ");
 		}

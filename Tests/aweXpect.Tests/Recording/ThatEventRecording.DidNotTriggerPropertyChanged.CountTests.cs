@@ -49,7 +49,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut more than once,
-					             but it was recorded once in *
+					             but it was only recorded once in *
 					             """).AsWildcard();
 			}
 
@@ -117,7 +117,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut at least twice,
-					             but it was recorded once in *
+					             but it was only recorded once in *
 					             """).AsWildcard();
 			}
 
@@ -161,7 +161,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut at least once,
-					             but it was never recorded in []
+					             but it was never recorded
 					             """);
 			}
 

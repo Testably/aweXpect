@@ -8,7 +8,7 @@ namespace aweXpect.Core.Helpers;
 ///     item is <see langword="null" />), so that the evaluation of the collection reports it instead of a mismatch.
 /// </summary>
 #pragma warning disable S3871 // Only the evaluation catches it, like the UserCodeException
-internal sealed class UnansweredItemException(ConstraintResult itemResult, object? item)
+internal sealed class UnansweredItemException(ConstraintResult itemResult, object? item, int? index = null)
 	: Exception("An item expectation was not answered.", itemResult.FailureCause)
 {
 	/// <summary>
@@ -20,5 +20,10 @@ internal sealed class UnansweredItemException(ConstraintResult itemResult, objec
 	///     The item that the item expectation did not answer.
 	/// </summary>
 	public object? Item { get; } = item;
+
+	/// <summary>
+	///     The index of the <see cref="Item" /> in the collection, or <see langword="null" /> when it is unknown.
+	/// </summary>
+	public int? Index { get; } = index;
 }
 #pragma warning restore S3871

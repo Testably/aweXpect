@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Core.Tests.Delegates;
+﻿using System.Collections.ObjectModel;
+using aweXpect.Core.Helpers;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Core.Tests.Delegates;
 
 public sealed partial class ThatDelegateTests
 {
@@ -82,6 +86,44 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("memberAccessor").And
 				.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WhenTheAsyncMemberIsACollection_ShouldUseThePluralForm()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.GetItemsAsync(), v => v.Get().ExpectationBuilder.AddConstraint((_, g)
+						=> new DummyConstraint<int[]?>(_ => false, g.Verb("has one item", "have one item"))));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetItemsAsync() have one item,
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task Throws_Whose_WhenTheMemberIsACollection_ShouldUseThePluralForm()
+		{
+			void Delegate() => throw new AggregateException(new InvalidOperationException());
+
+			async Task Act()
+				=> await That(Delegate).Throws<AggregateException>()
+					.Whose(e => e.InnerExceptions, v => v.Get().ExpectationBuilder.AddConstraint((_, g)
+						=> new DummyConstraint<ReadOnlyCollection<Exception>?>(_ => false,
+							g.Verb("has two items", "have two items"))));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws an AggregateException whose InnerExceptions have two items,
+				             *
+				             """).AsWildcard()
+				.Because("the number of the member follows its type, like in the other Whose overloads");
 		}
 
 		[Fact]
@@ -201,6 +243,8 @@ public sealed partial class ThatDelegateTests
 				await Task.Yield();
 				throw new InvalidOperationException($"async member failed for {value}");
 			}
+
+			public Task<int[]> GetItemsAsync() => Task.FromResult(new[] { value, });
 
 			public Task<int> GetTask() => task!;
 

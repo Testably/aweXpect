@@ -244,7 +244,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but for item "b", the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -274,7 +274,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection expected in order,
-				             but for item "b", the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -540,6 +540,83 @@ public class CollectionMatchOptionsTests
 				             """)
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
+
+		[Fact]
+		public async Task WhenPredicateThrowsInAnyOrder_ShouldNameTheItemByItsIndex()
+		{
+			string[] subject = ["b", "c",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).InAnyOrder();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in any order,
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
+				               boom
+				             *
+				             """).AsWildcard()
+				.Because("the item that the predicate did not answer is named like in the other collection expectations");
+		}
+
+		[Fact]
+		public async Task WhenPredicateThrowsInAnyOrderIgnoringDuplicates_ShouldNameTheItemByItsIndex()
+		{
+			string[] subject = ["b", "b", "c",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in any order ignoring duplicates,
+				             but for the item at index 2, the predicate did throw an InvalidOperationException:
+				               boom
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task WhenPredicateThrowsInOrder_ShouldNameTheItemByItsIndex()
+		{
+			string[] subject = ["b", "c",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in order,
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
+				               boom
+				             *
+				             """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task WhenPredicateThrowsInOrderIgnoringDuplicates_ShouldNameTheItemByItsIndex()
+		{
+			string[] subject = ["b", "b", "c",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in order ignoring duplicates,
+				             but for the item at index 2, the predicate did throw an InvalidOperationException:
+				               boom
+				             *
+				             """).AsWildcard()
+				.Because("the duplicates are compared once, so the item is named by the index where it first occurs");
+		}
+
+		private static bool Throw(string _)
+			=> throw new InvalidOperationException("boom");
 	}
 
 	public class GetExpectationTests

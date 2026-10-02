@@ -21,7 +21,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value <null>,
-					             but it did not contain <null>
+					             but it did not contain value <null>
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
@@ -77,7 +77,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value 2,
-					             but it did not contain 2
+					             but it did not contain value 2
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}

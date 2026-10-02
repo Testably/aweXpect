@@ -632,7 +632,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order ignoring duplicates,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -665,7 +665,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => IsB(x), x => x == "c",] in any order,
-				             but the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               null
 
 				             Expected:
@@ -703,7 +703,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -775,7 +775,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -798,7 +798,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             does not contain collection expected in order and contiguous,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -821,7 +821,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is contained in collection expected in order and contiguous,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -844,7 +844,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but for item 2, the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -866,7 +866,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but for item <null>, it was <null>
+				             but for the item at index 1, it was <null>
 
 				             Expected:
 				             [
@@ -891,7 +891,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is not contained in collection expected in order and contiguous,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -914,7 +914,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection expected in order,
-				             but for item 1, the predicate did throw an InvalidOperationException:
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Expected:
@@ -1009,7 +1009,7 @@ public sealed class UnansweredItem
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
-				             but for item 2, the predicate did throw an InvalidOperationException:
+				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
 				             Collection:

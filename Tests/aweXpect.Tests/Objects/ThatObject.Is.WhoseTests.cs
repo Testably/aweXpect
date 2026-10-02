@@ -358,7 +358,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is of type ThatObject.Is.AndWhoseTests.TwoCollections whose First is equal to collection [1, 2,] in order and whose Second is equal to collection [1, 2,] in order,
+					             is of type ThatObject.Is.AndWhoseTests.TwoCollections whose First are equal to collection [1, 2,] in order and whose Second are equal to collection [1, 2,] in order,
 					             but Second contained item 3 at index 1 instead of 2
 					             *
 					             """).AsWildcard();

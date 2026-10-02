@@ -21,7 +21,7 @@ public partial class CollectionMatchOptions
 	///     It starts at the first positional deviation: the items before it match the expected items at their position,
 	///     so their distance to a prefix of the expected items is the difference in length.
 	/// </remarks>
-	private sealed class BoundedEditDistance<T, T3>
+	private sealed class BoundedEditDistance<T3>
 	{
 		private readonly T3[] _expectedItems;
 		private readonly int _maximumEdits;
@@ -52,12 +52,12 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <summary>
-		///     Adds the next subject item.
+		///     Adds the next subject item, which <paramref name="areConsideredEqual" /> receives by its index.
 		/// </summary>
 		/// <returns>
 		///     <see langword="true" />, when the subject can still be aligned within the maximum number of edits.
 		/// </returns>
-		public async ValueTask<bool> Add(T value, Func<T, T3, ValueTask<bool>> areConsideredEqual)
+		public async ValueTask<bool> Add(Func<int, T3, ValueTask<bool>> areConsideredEqual)
 		{
 			int subjectIndex = _start + _rows.Count - 1;
 			byte[] previous = _rows[_rows.Count - 1];
@@ -85,7 +85,7 @@ public partial class CollectionMatchOptions
 				// The comparison is only needed when aligning the item can beat the other two edits.
 				if (expectedIndex > 0 && previous[offset] < distance)
 				{
-					bool isEqual = await areConsideredEqual(value, _expectedItems[expectedIndex - 1]);
+					bool isEqual = await areConsideredEqual(subjectIndex, _expectedItems[expectedIndex - 1]);
 					distance = Math.Min(distance, previous[offset] + (isEqual ? 0 : 1));
 				}
 
@@ -106,7 +106,7 @@ public partial class CollectionMatchOptions
 		///     are needed.
 		/// </returns>
 		public async ValueTask<List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>?>
-			GetEdits(List<T> values, Func<T, T3, ValueTask<bool>> areConsideredEqual)
+			GetEdits(Func<int, T3, ValueTask<bool>> areConsideredEqual)
 		{
 			int subjectIndex = _start + _rows.Count - 1;
 			int expectedIndex = _expectedItems.Length;
@@ -119,7 +119,7 @@ public partial class CollectionMatchOptions
 			List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits = new();
 			while (subjectIndex > _start)
 			{
-				EditKind? edit = await TraceBackOneStep(values, subjectIndex, expectedIndex, areConsideredEqual);
+				EditKind? edit = await TraceBackOneStep(subjectIndex, expectedIndex, areConsideredEqual);
 				switch (edit)
 				{
 					case EditKind.Additional:
@@ -163,15 +163,15 @@ public partial class CollectionMatchOptions
 		///     The edit of this step, or <see langword="null" /> when the item matches the expected item it is aligned
 		///     with.
 		/// </returns>
-		private async ValueTask<EditKind?> TraceBackOneStep(List<T> values, int subjectIndex, int expectedIndex,
-			Func<T, T3, ValueTask<bool>> areConsideredEqual)
+		private async ValueTask<EditKind?> TraceBackOneStep(int subjectIndex, int expectedIndex,
+			Func<int, T3, ValueTask<bool>> areConsideredEqual)
 		{
 			byte[] row = _rows[subjectIndex - _start];
 			byte[] previous = _rows[subjectIndex - _start - 1];
 			int offset = expectedIndex - subjectIndex + _maximumEdits;
 			if (expectedIndex > 0 && previous[offset] < _unreachable)
 			{
-				bool isEqual = await areConsideredEqual(values[subjectIndex - 1], _expectedItems[expectedIndex - 1]);
+				bool isEqual = await areConsideredEqual(subjectIndex - 1, _expectedItems[expectedIndex - 1]);
 				if (previous[offset] + (isEqual ? 0 : 1) == row[offset])
 				{
 					return isEqual ? null : EditKind.Incorrect;

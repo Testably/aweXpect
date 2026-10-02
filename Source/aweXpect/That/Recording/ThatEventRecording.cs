@@ -104,27 +104,13 @@ public static partial class ThatEventRecording
 				return;
 			}
 
-			int? eventCount = _result?.GetEventCount(eventName, filter.IsMatch);
 			stringBuilder.Append(it).Append(" was ");
-			if (eventCount == 0)
+			ThatSignaler.AppendOccurrences(stringBuilder, quantifier, _result?.GetEventCount(eventName, filter.IsMatch) ?? 0);
+			if (_result?.GetEventCount(eventName) > 0)
 			{
-				stringBuilder.Append("never recorded ");
-			}
-			else if (eventCount == 1)
-			{
-				stringBuilder.Append("recorded once ");
-			}
-			else if (eventCount == 2)
-			{
-				stringBuilder.Append("recorded twice ");
-			}
-			else
-			{
-				stringBuilder.Append("recorded ").Append(eventCount).Append(" times ");
+				stringBuilder.Append(" in ").Append(_result.ToString(eventName));
 			}
 
-			stringBuilder.Append("in ");
-			stringBuilder.Append(_result?.ToString(eventName));
 			if (_waitedTime is not null)
 			{
 				stringBuilder.Append(_stoppedEarly ? " after " : " within ");

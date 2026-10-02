@@ -30,7 +30,7 @@ public partial class ThatDelegateThrows<TException>
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-					grammars => grammars | ExpectationGrammars.Introduced),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			this);
 	}
 
@@ -58,7 +58,7 @@ public partial class ThatDelegateThrows<TException>
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-					grammars => grammars | ExpectationGrammars.Introduced),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			this);
 	}
 

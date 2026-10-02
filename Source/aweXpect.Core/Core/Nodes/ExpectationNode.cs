@@ -155,8 +155,12 @@ internal class ExpectationNode : Node
 		}
 		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 		{
-			result = MemberExceptionResult.Create(await GetExpectationResult(_constraint!, context, cancellationToken),
-				e.Exception, e.Thrower ?? "it", value);
+			ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
+			result = MemberExceptionResult.Create(expectation, e.Exception, e.Thrower ?? "it", value);
+			if (e.ItemIndex is not null)
+			{
+				result = UnansweredItemResult.Create(expectation, result, null, e.ItemIndex, value);
+			}
 		}
 		catch (UserCodeException e)
 		{
@@ -165,7 +169,8 @@ internal class ExpectationNode : Node
 		catch (UnansweredItemException e)
 		{
 			result = UnansweredItemResult.Create(
-				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, value);
+				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, e.Index,
+				value);
 		}
 
 		if (_inner != null)

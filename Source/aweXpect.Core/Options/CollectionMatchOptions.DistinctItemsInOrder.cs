@@ -298,7 +298,8 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask<bool> CanAssignEachSoughtItem()
 		{
-			ItemMatching<int, int> matching = new(Enumerable.Range(0, _soughtCount), IsMatch, new Dictionary<int, int>());
+			ItemMatching<int, int> matching = new(Enumerable.Range(0, _soughtCount),
+				(_, searchedId, soughtId) => IsMatch(searchedId, soughtId), new Dictionary<int, int>());
 			for (int searchedId = 0; searchedId < _searchedCount; searchedId++)
 			{
 				await matching.Add(searchedId, searchedId);

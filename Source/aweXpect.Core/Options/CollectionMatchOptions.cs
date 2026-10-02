@@ -450,7 +450,11 @@ public partial class CollectionMatchOptions(
 	{
 		private readonly Dictionary<Expression<Func<T, bool>>, Func<T, bool>> _predicates = new();
 
-		public ValueTask<bool> Invoke(Expression<Func<T, bool>> predicate, T value)
+		/// <summary>
+		///     Evaluates the <paramref name="predicate" /> for the <paramref name="value" /> at the
+		///     <paramref name="index" />, which an exception of the predicate names.
+		/// </summary>
+		public ValueTask<bool> Invoke(Expression<Func<T, bool>> predicate, T value, int index)
 		{
 			if (!_predicates.TryGetValue(predicate, out Func<T, bool>? compiled))
 			{
@@ -458,7 +462,14 @@ public partial class CollectionMatchOptions(
 				_predicates.Add(predicate, compiled);
 			}
 
-			return new ValueTask<bool>(UserCode.Invoke(compiled, value, "the predicate"));
+			try
+			{
+				return new ValueTask<bool>(compiled(value));
+			}
+			catch (Exception exception)
+			{
+				throw new UserCodeException(exception, "the predicate", index);
+			}
 		}
 	}
 
@@ -497,13 +508,21 @@ public partial class CollectionMatchOptions(
 		///     A <paramref name="value" /> for which the expectation fails both ways (e.g. because code of the caller threw)
 		///     throws, so that the collection fails with the result of the item, unless another expected item matches it.
 		/// </remarks>
-		public async ValueTask<bool> IsMetBy(TItem value)
+		public ValueTask<bool> IsMetBy(TItem value)
+			=> IsMetBy(value, null);
+
+		/// <inheritdoc cref="IsMetBy(TItem)" />
+		/// <remarks>
+		///     The exception for a <paramref name="value" /> for which the expectation fails both ways names it by its
+		///     <paramref name="index" /> in the collection.
+		/// </remarks>
+		internal async ValueTask<bool> IsMetBy(TItem value, int? index)
 		{
 			ConstraintResult result = await ItemExpectationBuilder.IsMetBy(value, _context, _cancellationToken);
 			IsUndecided |= result.Outcome == Outcome.Undecided;
 			if (result.FailsBothWays())
 			{
-				throw new UnansweredItemException(result, value);
+				throw new UnansweredItemException(result, value, index);
 			}
 
 			return result.Outcome == Outcome.Success;

@@ -30,6 +30,9 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 		}
 	}
 
+	/// <inheritdoc cref="MappingNode{TSource,TTarget}.Source" />
+	public (string It, ExpectationGrammars Grammars) Source { get; set; } = ("it", ExpectationGrammars.None);
+
 	/// <inheritdoc />
 	public override async Task<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
@@ -44,7 +47,7 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
 			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
-			return NullSubjectResult.Create(result, value);
+			return NullSubjectResult.Create(result, value, Source.It, Source.Grammars);
 		}
 
 		if (value is TSource typedValue)

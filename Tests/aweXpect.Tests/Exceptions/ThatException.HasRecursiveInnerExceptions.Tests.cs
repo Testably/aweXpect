@@ -356,7 +356,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions of which all satisfy e => e.Message.StartsWith("inner"),
-					             but it had
+					             but it had 4 recursive inner exceptions
 
 					             Collection:
 					             [
@@ -420,7 +420,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions that have exactly one item,
-					             but it had
+					             but it had 1 recursive inner exception
 					             
 					             Collection:
 					             [
@@ -475,7 +475,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions that have a single item whose InnerException has z!.Message that is equal to "x",
-					             but it had and it was <null>
+					             but it had 1 recursive inner exception and InnerException was <null>
 
 					             Collection:
 					             [

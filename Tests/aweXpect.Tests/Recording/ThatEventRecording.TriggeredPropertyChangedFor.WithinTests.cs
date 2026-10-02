@@ -36,7 +36,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least 3 times within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}

@@ -82,7 +82,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut at least once,
-					             but it was never recorded in []
+					             but it was never recorded
 					             """);
 			}
 

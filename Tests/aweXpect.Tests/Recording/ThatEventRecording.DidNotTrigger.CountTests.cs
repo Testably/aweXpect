@@ -77,7 +77,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut more than {maximum.ToTimesString()},
-					              but it was recorded {count.ToTimesString()} in *
+					              but it was only recorded {count.ToTimesString()} in *
 					              """).AsWildcard();
 			}
 
@@ -103,7 +103,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut not between {minimum} and {maximum} times,
-					              but it was {(count == 0 ? "never recorded" : $"recorded {count} times")} in *
+					              but it was {(count == 0 ? "never recorded" : $"recorded {count} times in *")}
 					              """).AsWildcard();
 			}
 
@@ -152,7 +152,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut at least {maximum.ToTimesString()},
-					              but it was recorded {count.ToTimesString()} in *
+					              but it was only recorded {count.ToTimesString()} in *
 					              """).AsWildcard();
 			}
 
@@ -199,7 +199,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
-					             but it was never recorded in []
+					             but it was never recorded
 					             """);
 			}
 
@@ -415,7 +415,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with sender s => s == sender more than once,
-					             but it was recorded once in *
+					             but it was only recorded once in *
 					             """).AsWildcard();
 			}
 		}
@@ -441,7 +441,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least twice,
-					             but it was recorded once in [
+					             but it was only recorded once in [
 					               CustomEvent()
 					             ]
 					             """);

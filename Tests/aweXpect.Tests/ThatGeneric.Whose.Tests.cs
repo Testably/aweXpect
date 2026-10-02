@@ -1219,7 +1219,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
-					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+					             but it was ThatGeneric.Whose.NegatedTests.Container and In was <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Container {
@@ -1245,7 +1245,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             whose In has Name that is not equal to "i",
-					             but it was <null>
+					             but In was <null>
 					             """);
 			}
 
@@ -1297,7 +1297,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Task.FromResult(x.In) has Name that is equal to "i",
-					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null>
+					             but it was ThatGeneric.Whose.NegatedTests.Container and Task.FromResult(x.In) was <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Container {
@@ -1351,7 +1351,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Other whose Name is equal to "x" and has Name that is equal to "i",
-					             but it was ThatGeneric.Whose.NegatedTests.Container and it was <null> and Name was "i"
+					             but it was ThatGeneric.Whose.NegatedTests.Container and Other was <null> and Name was "i"
 					             """);
 			}
 
@@ -1390,7 +1390,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item whose In has Name that is equal to "i",
-					             but it was <null>
+					             but In was <null>
 
 					             Collection:
 					             [
@@ -1421,7 +1421,7 @@ public sealed partial class ThatGeneric
 					                 Name = <null>
 					               }
 					             ]
-					             and it was <null>
+					             and In was <null>
 
 					             Collection:
 					             [
@@ -1446,7 +1446,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is not empty and does not have a single item whose In has Name that is equal to "i",
-					             but it was <null>
+					             but In was <null>
 
 					             Collection:
 					             [
@@ -1507,7 +1507,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that (object)subject
 					             is of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
-					             but it was <null>
+					             but In was <null>
 					             """);
 			}
 
@@ -1523,8 +1523,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that (object)subject
-					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item equal to 1 at least once,
-					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contain an item equal to 1 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items were <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Lists {*}
@@ -1543,8 +1543,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that (object)subject
-					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contains an item matching item => item > 0 at least once,
-					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items was <null>
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contain an item matching item => item > 0 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Items were <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Lists {*}
@@ -1564,8 +1564,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that (object)subject
-					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array contains an item equal to 1 at least once,
-					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array contain an item equal to 1 at least once,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array were <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Lists {
@@ -1587,8 +1587,8 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that (object)subject
-					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array is equal to collection [1,] in order,
-					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array was <null>
+					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array are equal to collection [1,] in order,
+					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array were <null>
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Lists {

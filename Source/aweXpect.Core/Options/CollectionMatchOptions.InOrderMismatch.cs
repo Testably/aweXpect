@@ -122,7 +122,8 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask AssignOneToOne()
 		{
-			ItemMatching<int, int> matching = new(Enumerable.Range(0, _soughtCount), _isMatch,
+			ItemMatching<int, int> matching = new(Enumerable.Range(0, _soughtCount),
+				(_, searchedId, soughtId) => _isMatch(searchedId, soughtId),
 				new Dictionary<int, int>());
 			int previous = None;
 			for (int searchedId = 0; searchedId < _isSearchedMatched.Length; searchedId++)

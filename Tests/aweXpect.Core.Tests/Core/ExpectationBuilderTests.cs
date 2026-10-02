@@ -70,6 +70,24 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForAsyncMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
+			.AddExpectations(inner => inner
+				.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+				.AddExpectations(length => length.AddConstraint((_, _)
+					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetResultText()).IsEqualTo("inner was <null>")
+			.Because("the subject itself was not null, only the member the nested member is read from");
+	}
+
+	[Fact]
 	public async Task ForAsyncMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
 	{
 		ManualExpectationBuilder<string> sut = new(null);
@@ -169,6 +187,55 @@ public class ExpectationBuilderTests
 
 		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
 		await That(sut.ExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
+	}
+
+	[Fact]
+	public async Task ForMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
+			.AddExpectations(inner => inner
+				.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+				.AddExpectations(length => length.AddConstraint((_, _)
+					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetResultText()).IsEqualTo("inner was <null>")
+			.Because("the subject itself was not null, only the member the nested member is read from");
+	}
+
+	[Fact]
+	public async Task ForMember_WhenTheSourceOfANestedPluralMemberIsNull_ShouldUseThePluralVerb()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "items "))
+			.AddExpectations(inner => inner
+				.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+				.AddExpectations(length => length.AddConstraint((_, _)
+					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))),
+				g => g | ExpectationGrammars.Plural);
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.GetResultText()).IsEqualTo("items were <null>");
+	}
+
+	[Fact]
+	public async Task ForMember_WhenTheSubjectIsNull_ShouldReferToTheSubjectAsIt()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(length => length.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy(null!, null!,CancellationToken.None);
+
+		await That(constraintResult.GetResultText()).IsEqualTo("it was <null>");
 	}
 
 	[Fact]

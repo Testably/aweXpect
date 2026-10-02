@@ -58,11 +58,12 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter s => s == "foo" at least twice,
-					             but it was recorded once in [
+					             but it was only recorded once in [
 					               CustomEvent("foo"),
 					               CustomEvent("bar")
 					             ]
-					             """);
+					             """)
+					.Because("too few recordings are phrased like too few signals");
 			}
 
 			[Fact]

@@ -48,7 +48,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0,
-					             but it did not contain 0
+					             but it did not contain key 0
 
 					             Dictionary:
 					             {[1] = 0, [2] = 0, [3] = 0}
@@ -164,7 +164,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0 whose value is equal to "bar",
-					             but it did not contain 0
+					             but it did not contain key 0
 
 					             Dictionary:
 					             {
@@ -203,7 +203,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 4 and contains key 5,
-					             but it did not contain 4 and did not contain 5
+					             but it did not contain key 4 and did not contain key 5
 
 					             Dictionary:
 					             {
