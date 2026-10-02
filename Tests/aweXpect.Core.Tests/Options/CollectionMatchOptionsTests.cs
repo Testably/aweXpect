@@ -229,6 +229,83 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenExpectationItemThrows_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["a", "b",];
+			Action<IThat<string?>>[] expected =
+			[
+				x => x.IsEqualTo("a"),
+				x => x.Satisfies(_ => throw exception),
+			];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but for item "b", the predicate did throw an InvalidOperationException:
+				               boom
+
+				             Expected:
+				             [
+				               an item that is equal to "a",
+				               an item that satisfies _ => throw exception
+				             ]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task WhenExpectationItemThrowsUnderNegation_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["a", "b",];
+			Action<IThat<string?>>[] expected =
+			[
+				x => x.IsEqualTo("a"),
+				x => x.Satisfies(_ => throw exception),
+			];
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is not equal to collection expected in order,
+				             but for item "b", the predicate did throw an InvalidOperationException:
+				               boom
+
+				             Expected:
+				             [
+				               an item that is equal to "a",
+				               an item that satisfies _ => throw exception
+				             ]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("an item that the expectation did not answer fails the negation as well");
+		}
+
+		[Fact]
+		public async Task WhenExpectationItemThrowsForAnItemThatMatchesAnotherExpectedItemInAnyOrder_ShouldSucceed()
+		{
+			string[] subject = ["b", "a",];
+			Action<IThat<string?>>[] expected =
+			[
+				x => x.Satisfies(s => s == "a" ? true : throw new InvalidOperationException("boom")),
+				x => x.IsEqualTo("b"),
+			];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
 		public async Task WhenIncorrectItemFormatsLikeTheExpectedItem_ShouldIncludeTheRuntimeType()
 		{
 			object[] subject = [0, 1,];

@@ -19,6 +19,25 @@ public static class ConstraintResultExtensions
 	}
 
 	/// <summary>
+	///     Checks if the <paramref name="constraintResult" /> fails its expectation and the negation alike, e.g. because
+	///     code of the caller threw, so that the expectation was not answered.
+	/// </summary>
+	/// <remarks>
+	///     The negation is undone afterwards, because the results of an item expectation are reused for every item.
+	/// </remarks>
+	internal static bool FailsBothWays(this ConstraintResult constraintResult)
+	{
+		if (constraintResult.Outcome != Outcome.Failure)
+		{
+			return false;
+		}
+
+		bool isNegationFailed = constraintResult.Negate().Outcome == Outcome.Failure;
+		constraintResult.Negate();
+		return isNegationFailed;
+	}
+
+	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> from the <paramref name="inner" /> using the given
 	///     <paramref name="value" />.
 	/// </summary>
