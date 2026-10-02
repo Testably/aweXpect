@@ -26,6 +26,7 @@ namespace aweXpect.Analyzers.CodeFixers;
 public class AwaitExpectationCodeFixProvider : CodeFixProvider
 {
 	private static readonly SyntaxAnnotation RemovedReturnAnnotation = new();
+	private static readonly SyntaxAnnotation FixedNodeAnnotation = new();
 
 	/// <inheritdoc />
 	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } = [Rules.AwaitExpectationRule.Id,];
@@ -57,14 +58,82 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 				continue;
 			}
 
+			Document fixedDocument = context.Document.WithSyntaxRoot(
+				root.ReplaceNode(node, replacement.WithAdditionalAnnotations(FixedNodeAnnotation)));
+			if (await WouldNotCompileAsync(node, semanticModel, fixedDocument, context.CancellationToken)
+				    .ConfigureAwait(false))
+			{
+				continue;
+			}
+
 			context.RegisterCodeFix(
 				CodeAction.Create(
 					Resources.aweXpect0001CodeFixTitle,
-					_ => Task.FromResult(context.Document.WithSyntaxRoot(root.ReplaceNode(node, replacement))),
+					_ => Task.FromResult(fixedDocument),
 					nameof(Resources.aweXpect0001CodeFixTitle)),
 				diagnostic);
 		}
 	}
+
+	/// <summary>
+	///     Whether the fixed function would not compile, because it has errors that the original one did not have or
+	///     because it declares a <see langword="ref" /> local or a local of a <see langword="ref" /> struct type.
+	/// </summary>
+	/// <remarks>
+	///     Many constructs can't be used in an <c>async</c> function, e.g. unsafe code or pointer parameters, and
+	///     attributes like <c>[Conditional]</c> require a <c>void</c> return type. Compiling the fixed function covers
+	///     them, except for a <see langword="ref" /> or <see langword="ref" /> <see langword="struct" /> local that is
+	///     used across an <c>await</c>, which the compiler only reports when it emits the assembly.
+	/// </remarks>
+	private static async Task<bool> WouldNotCompileAsync(SyntaxNode node, SemanticModel semanticModel,
+		Document fixedDocument, CancellationToken cancellationToken)
+	{
+		SyntaxNode function = GetFunction(node);
+		if (HasRefLocals(function, semanticModel, cancellationToken))
+		{
+			return true;
+		}
+
+		SyntaxNode? fixedRoot = await fixedDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+		SemanticModel? fixedSemanticModel =
+			await fixedDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+		if (fixedRoot?.GetAnnotatedNodes(FixedNodeAnnotation).FirstOrDefault() is not { } fixedNode ||
+		    fixedSemanticModel is null)
+		{
+			return true;
+		}
+
+		HashSet<string> errors = [..GetErrors(function, semanticModel, cancellationToken),];
+		return GetErrors(GetFunction(fixedNode), fixedSemanticModel, cancellationToken)
+			.Any(error => !errors.Contains(error));
+	}
+
+	/// <summary>
+	///     The function that contains the <paramref name="node" />, or the compilation unit for top-level statements,
+	///     which all belong to the same function.
+	/// </summary>
+	private static SyntaxNode GetFunction(SyntaxNode node)
+	{
+		SyntaxNode function = node.AncestorsAndSelf().First(ancestor =>
+			ancestor is AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax or MemberDeclarationSyntax);
+		return function is GlobalStatementSyntax { Parent: { } compilationUnit, } ? compilationUnit : function;
+	}
+
+	private static IEnumerable<string> GetErrors(SyntaxNode function, SemanticModel semanticModel,
+		CancellationToken cancellationToken)
+		=> semanticModel.GetDiagnostics(function.Span, cancellationToken)
+			.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+			.Select(diagnostic => diagnostic.Id);
+
+	private static bool HasRefLocals(SyntaxNode function, SemanticModel semanticModel,
+		CancellationToken cancellationToken)
+		=> function.DescendantNodes().Any(node =>
+			(node is VariableDeclaratorSyntax or SingleVariableDesignationSyntax or ForEachStatementSyntax &&
+			 semanticModel.GetDeclaredSymbol(node, cancellationToken) is ILocalSymbol local &&
+			 (local.IsRef || local.Type.IsRefLikeType)) ||
+			// The hidden enumerator of a `foreach` loop is a local as well.
+			(node is CommonForEachStatementSyntax forEach &&
+			 semanticModel.GetForEachStatementInfo(forEach).GetEnumeratorMethod?.ReturnType.IsRefLikeType == true));
 
 	private static ExpressionSyntax GetExpectation(ExpressionSyntax expression)
 	{
@@ -230,9 +299,7 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 	{
 		if (modifiers.Any(SyntaxKind.PartialKeyword) || symbol.IsOverride || symbol.IsVirtual ||
 		    !symbol.ExplicitInterfaceImplementations.IsEmpty ||
-		    symbol.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()).Any(member =>
-			    SymbolEqualityComparer.Default.Equals(
-				    symbol.ContainingType.FindImplementationForInterfaceMember(member), symbol)))
+		    await ImplementsInterfaceMemberAsync(symbol, solution, cancellationToken).ConfigureAwait(false))
 		{
 			return true;
 		}
@@ -241,6 +308,28 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 			.FindReferencesAsync(symbol, solution, cancellationToken)
 			.ConfigureAwait(false);
 		return references.Any(reference => reference.Locations.Any());
+	}
+
+	/// <summary>
+	///     Whether the method implements an interface member, either for its own type or for a derived class that
+	///     declares the interface.
+	/// </summary>
+	private static async Task<bool> ImplementsInterfaceMemberAsync(IMethodSymbol symbol, Solution solution,
+		CancellationToken cancellationToken)
+	{
+		INamedTypeSymbol containingType = symbol.ContainingType;
+		IEnumerable<INamedTypeSymbol> types = [containingType,];
+		if (containingType is { TypeKind: TypeKind.Class, IsSealed: false, })
+		{
+			types = types.Concat(await SymbolFinder
+				.FindDerivedClassesAsync(containingType, solution, cancellationToken: cancellationToken)
+				.ConfigureAwait(false));
+		}
+
+		return types.Any(type => type.AllInterfaces
+			.SelectMany(@interface => @interface.GetMembers())
+			.Any(member => SymbolEqualityComparer.Default.Equals(
+				type.FindImplementationForInterfaceMember(member)?.OriginalDefinition, symbol)));
 	}
 
 	/// <summary>

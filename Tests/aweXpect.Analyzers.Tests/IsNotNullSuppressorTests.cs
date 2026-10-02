@@ -28,6 +28,24 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenAwaiterResultIsNotRequested_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest(string? subject)
+			    {
+			        Expect.That(subject).IsNotNull().GetAwaiter();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenControlFlowIsBetweenExpectationAndUsage_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -122,6 +140,25 @@ public class IsNotNullSuppressorTests
 			""",
 			NotSuppressedNullabilityWarning()
 		);
+
+	[Fact]
+	public async Task WhenExpectationIsABareStatement_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest(string? subject)
+			    {
+			        Expect.That(subject).IsNotNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
 	[Fact]
 	public async Task WhenExpectationIsCombinedWithAnd_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
@@ -219,6 +256,24 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenExpectationIsEvaluatedThroughTheAwaiter_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest(string? subject)
+			    {
+			        Expect.That(subject).IsNotNull().GetAwaiter().GetResult();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenExpectationIsFollowedByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -301,6 +356,30 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenExpectationIsPassedAsArgument_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        var list = new List<object>();
+			        list.Add(Expect.That(subject).IsNotNull());
+			        await Helper(Expect.That(subject).IsNotNull());
+			        _ = {|#0:subject|}.Length;
+			    }
+
+			    private static Task Helper(object expectation) => Task.CompletedTask;
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenExpectationIsPrecededByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -337,6 +416,25 @@ public class IsNotNullSuppressorTests
 			}
 			""",
 			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExpectationIsVerifiedStatically_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    public void MyTest(string? subject)
+			    {
+			        Synchronously.Verify(Expect.That(subject).IsNotNull());
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
 		);
 
 	[Fact]
@@ -684,6 +782,51 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenGotoSkipsTheExpectation_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject, bool condition)
+			    {
+			        if (condition) goto skip;
+			        await Expect.That(subject).IsNotNull();
+			        skip:
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenLabelIsBetweenExpectationAndUsage_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject, bool condition)
+			    {
+			        if (condition) goto skip;
+			        await Expect.That(subject).IsNotNull();
+			        skip: ;
+			        if (condition)
+			        {
+			            _ = {|#0:subject|}.Length;
+			        }
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenOtherSubjectIsExpectedNotNull_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -966,6 +1109,55 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenSubjectIsRefLocal_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    private string? _field = "foo";
+
+			    public void MyTest()
+			    {
+			        ref string? subject = ref _field;
+			        Expect.That(subject).IsNotNull().VerifySynchronously();
+			        Reset();
+			        _ = {|#0:subject|}.Length;
+			    }
+
+			    private void Reset() => _field = null;
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenSubjectIsRefParameter_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    private string? _field = "foo";
+
+			    public void MyTest() => Verify(ref _field);
+
+			    private void Verify(ref string? subject)
+			    {
+			        Expect.That(subject).IsNotNull().VerifySynchronously();
+			        _field = null;
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenSubjectIsUsedAfterExpectation_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1154,6 +1346,27 @@ public class IsNotNullSuppressorTests
 			await Expect.That(subject).IsNotNull();
 			clear();
 			_ = {|#0:subject|}.Length;
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenSubjectIsWrittenThroughARefAlias_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Synchronous;
+
+			public class MyClass
+			{
+			    public void MyTest(string? subject)
+			    {
+			        ref string? alias = ref subject;
+			        Expect.That(subject).IsNotNull().VerifySynchronously();
+			        alias = null;
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
 			""",
 			NotSuppressedNullabilityWarning()
 		);

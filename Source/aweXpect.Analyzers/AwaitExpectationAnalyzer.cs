@@ -81,6 +81,9 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 				case IParenthesizedOperation:
 				case IInvocationOperation:
 				case IArgumentOperation:
+				case IConditionalOperation conditional when !ReferenceEquals(conditional.Condition, current):
+				case ISwitchExpressionArmOperation arm when ReferenceEquals(arm.Value, current):
+				case ISwitchExpressionOperation when current is ISwitchExpressionArmOperation:
 					break;
 				case IMemberReferenceOperation memberReference
 					when ReferenceEquals(memberReference.Instance, current):
@@ -97,9 +100,9 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 
 	/// <summary>
 	///     The <see langword="await" /> of a call like <c>Task.Run(() => Expect.That(…)…)</c> that only hands back the
-	///     expectation returned from the lambda: its delegate returns a type parameter of the method, and the method
-	///     returns a task of that type parameter, so awaiting it (also through <c>ConfigureAwait(…)</c>) yields the
-	///     expectation without evaluating it.
+	///     expectation returned from the lambda: its delegate returns a type parameter of the method (or, for an
+	///     <see langword="async" /> lambda, a task of it), and the method returns a task of that type parameter, so
+	///     awaiting it (also through <c>ConfigureAwait(…)</c>) yields the expectation without evaluating it.
 	/// </summary>
 	private static IAwaitOperation? GetAwaitOfDeferringCall(IReturnOperation returnOperation)
 	{
@@ -111,7 +114,7 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 
 		if (function is not IAnonymousFunctionOperation
 		    {
-			    Symbol.IsAsync: false,
+			    Symbol: var lambda,
 			    Parent: IDelegateCreationOperation
 			    {
 				    Parent: IArgumentOperation
@@ -123,16 +126,23 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 		    GetAwait(invocation) is not { } awaitOperation ||
 		    parameter.OriginalDefinition.Type is not INamedTypeSymbol
 		    {
-			    DelegateInvokeMethod.ReturnType: ITypeParameterSymbol { TypeParameterKind: TypeParameterKind.Method, } result,
+			    DelegateInvokeMethod.ReturnType: var returnType,
 		    } ||
-		    invocation.TargetMethod.OriginalDefinition.ReturnType is not INamedTypeSymbol { TypeArguments.Length: 1, } task ||
-		    !SymbolEqualityComparer.Default.Equals(task.TypeArguments[0], result))
+		    (lambda.IsAsync ? GetTaskResult(returnType) : returnType) is not ITypeParameterSymbol
+		    {
+			    TypeParameterKind: TypeParameterKind.Method,
+		    } result ||
+		    GetTaskResult(invocation.TargetMethod.OriginalDefinition.ReturnType) is not { } taskResult ||
+		    !SymbolEqualityComparer.Default.Equals(taskResult, result))
 		{
 			return null;
 		}
 
 		return awaitOperation;
 	}
+
+	private static ITypeSymbol? GetTaskResult(ITypeSymbol type)
+		=> type is INamedTypeSymbol { TypeArguments.Length: 1, } task ? task.TypeArguments[0] : null;
 
 	private static IAwaitOperation? GetAwait(IInvocationOperation invocation)
 		=> invocation.Parent switch

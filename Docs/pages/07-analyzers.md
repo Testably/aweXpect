@@ -20,10 +20,11 @@ The code fix awaits the expectation in its innermost enclosing method, local fun
 function that is not `async` yet is made `async`: a `void` or `T` return type becomes `Task` or `Task<T>`, and the
 `return` statements of a method that already returns a task are adjusted where needed. The fix is not offered where
 the result would not compile or would change a signature that other code depends on, e.g. in a lambda that is not
-`async` (such as one converted to an `Action`), in a constructor, a property, an iterator or a `lock` statement, in a
-method with `ref`, `out` or `in` parameters, or in a method or local function whose return type would have to change
-while other code depends on it: an override, a virtual method, an interface implementation, or one that is called or
-used as a method group elsewhere.
+`async` (such as one converted to an `Action`), in a constructor, a property, an iterator, a `lock` statement or unsafe
+code, in a function with `ref` locals or `ref struct` locals, in a method with `ref`, `out`, `in` or pointer
+parameters, in a `[Conditional]` method, or in a method or local function whose return type would have to change
+while other code depends on it: an override, a virtual method, an interface implementation (also one that only a
+derived class declares), or one that is called or used as a method group elsewhere.
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
 [When you cannot await](./03-how-it-works/index.md#when-you-cannot-await).
@@ -133,9 +134,11 @@ also reports a delegate whose `ValueTask` is given explicitly as the type argume
 
 After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
 `aweXpect` package suppresses the nullability warnings CS8600, CS8602, CS8604 and CS8629 for that subject, with the
-suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter, and the
-expectation has to be a preceding statement in the same method, local function or lambda, without a branch or a
-write to the subject in between. Only the warnings are suppressed; the null state of the compiler is unchanged.
+suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter that is not a
+`ref`, and the expectation has to be awaited or verified in a preceding statement in the same method, local function
+or lambda, without a branch, a label or a write to the subject in between. A `ref` alias of the subject prevents the
+suppression, as it can change the subject unnoticed. Only the warnings are suppressed; the null state of the compiler
+is unchanged.
 Expectations of extension packages take part when they are marked with `[GuaranteesNotNull]`, see
 [nullability warnings](./11-extending/02-constraints-and-results.md#nullability-warnings).
 
