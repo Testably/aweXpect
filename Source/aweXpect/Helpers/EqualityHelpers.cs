@@ -4,6 +4,30 @@ namespace aweXpect.Helpers;
 
 internal static class EqualityHelpers
 {
+	/// <remarks>
+	///     The distance is measured as an unsigned number, which holds the distance between any two values, so that it
+	///     cannot overflow.
+	/// </remarks>
+	public static bool IsConsideredEqualTo(this long actual, long? expected, long tolerance)
+		=> expected is not null && unchecked(
+			(actual > expected.Value ? (ulong)actual - (ulong)expected.Value : (ulong)expected.Value - (ulong)actual)
+			<= (ulong)tolerance);
+
+	/// <inheritdoc cref="IsConsideredEqualTo(long, long?, long)" />
+	public static bool IsConsideredEqualTo(this long? actual, long? expected, long tolerance)
+		=> actual is null || expected is null
+			? actual is null && expected is null
+			: actual.Value.IsConsideredEqualTo(expected, tolerance);
+
+	public static bool IsConsideredEqualTo(this ulong actual, ulong? expected, ulong tolerance)
+		=> expected is not null &&
+		   (actual > expected.Value ? actual - expected.Value : expected.Value - actual) <= tolerance;
+
+	public static bool IsConsideredEqualTo(this ulong? actual, ulong? expected, ulong tolerance)
+		=> actual is null || expected is null
+			? actual is null && expected is null
+			: actual.Value.IsConsideredEqualTo(expected, tolerance);
+
 	public static bool IsConsideredEqualTo(this double actual, double? expected, double tolerance)
 	{
 		if (expected is null)

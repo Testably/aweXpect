@@ -79,9 +79,10 @@ only a set of the expected item type is recognised, e.g. a `HashSet<string>` for
 ## Tolerance
 
 The expectations that compare items with an expected value accept a tolerance for `double`, `float`, `decimal`,
-`DateTime`, `DateTimeOffset` and `TimeSpan` items, and [on .NET 8 or later](../02-getting-started.md#target-frameworks)
-also for `DateOnly`, whose tolerance must be a whole number of
-days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two minutes apart:
+`byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `DateTime`, `DateTimeOffset` and `TimeSpan` items,
+and [on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly`, whose tolerance must be a
+whole number of days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two
+minutes apart:
 
 ```csharp
 IEnumerable<double> durations = [1.01, 2.02, 3.04];
@@ -94,6 +95,7 @@ await Expect.That(durations).StartsWith(1.0, 2.0).Within(0.1);
 await Expect.That(durations).EndsWith(2.0, 3.0).Within(0.1);
 await Expect.That(durations).HasItem(2.0).Within(0.1).AtIndex(1);
 await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
+await Expect.That([9, 20, 31]).Contains(10).Within(1);
 ```
 
 A tolerance takes precedence over the comparer of a set. The values of a [dictionary](./04-dictionaries.md#values)

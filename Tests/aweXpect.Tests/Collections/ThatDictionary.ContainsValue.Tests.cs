@@ -227,6 +227,18 @@ public sealed partial class ThatDictionary
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task WhenAnIntegerLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, int> subject = new() { ["a"] = 41, };
+
+				async Task Act()
+					=> await That(subject).ContainsValue(42).Within(1);
+
+				await That(Act).DoesNotThrow()
+					.Because("integer values have the same tolerance as a single number");
+			}
+
+			[Fact]
 			public async Task WhenTheTimeLiesWithinTheTolerance_ShouldSucceed()
 			{
 				Dictionary<int, DateTimeOffset> subject = new()
