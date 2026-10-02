@@ -24,9 +24,11 @@ public static partial class ThatEventRecording
 		Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options)),
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, expectationBuilder, eventName, filter, quantifier,
+					options)),
 			subject,
 			filter,
 			quantifier,
@@ -52,9 +54,11 @@ public static partial class ThatEventRecording
 		Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options).Invert()),
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, expectationBuilder, eventName, filter, quantifier,
+					options).Invert()),
 			subject,
 			filter,
 			quantifier,

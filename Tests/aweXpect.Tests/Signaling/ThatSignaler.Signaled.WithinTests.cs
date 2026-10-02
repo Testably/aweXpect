@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using aweXpect.Core;
 using aweXpect.Signaling;
 
 // ReSharper disable MethodHasAsyncOverload
@@ -53,6 +54,51 @@ public sealed partial class ThatSignaler
 					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
+			}
+
+			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_ShouldDecideByTheSignalsWithinTheTimeout()
+			{
+				Signaler signaler = new();
+				signaler.Signal();
+
+				async Task Act() =>
+					await That(signaler).Signaled().AtMost(1.Times()).Within(200.Milliseconds())
+						.WithTimeout(200.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_WhenNotTriggered_ShouldFailWithTheSignalsWithinTheTimeout()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least once within 0:00.200,
+					             but it was never recorded within 0:*
+					             """).AsWildcard()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_WithParameter_ShouldDecideByTheSignalsWithinTheTimeout()
+			{
+				Signaler<string> signaler = new();
+				signaler.Signal("foo");
+
+				async Task Act() =>
+					await That(signaler).Signaled().AtMost(1.Times()).Within(200.Milliseconds())
+						.WithTimeout(200.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
 			[Fact]
@@ -117,6 +163,32 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("timeout").And
 					.WithMessage("The timeout must not be negative.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Within(1.Seconds()).Within(50.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second timeout would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutIsSpecifiedTwice_WithParameter_ShouldThrowInvalidOperationException()
+			{
+				Signaler<string> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Within(1.Seconds()).Within(50.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("the second timeout would silently replace the first one");
 			}
 
 			[Fact]

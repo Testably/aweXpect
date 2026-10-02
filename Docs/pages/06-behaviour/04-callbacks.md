@@ -92,7 +92,8 @@ signaler.Signal("Yesterday");
 await Expect.That(signaler).Signaled().AtLeast(2.Times()).With(p => p == "Yesterday");
 ```
 
-`WhoseParameters` continues with expectations on the collection of recorded parameters:
+`WhoseParameters` continues with expectations on the collection of recorded parameters that match the filter from
+`With`:
 
 ```csharp
 Signaler<string> signaler = new();

@@ -44,10 +44,10 @@ by name throws right away.
 
 ### Stopping
 
-An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Every
-constraint of that one expectation still sees the recorded events, because `.And` and `.Or` combine into a single
-expectation. A further expectation on the same recording throws an `InvalidOperationException`, so that it cannot
-silently answer from the events that were recorded until then:
+An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Until then,
+every constraint of that one expectation sees the recorded events, including the ones that arrive while it waits with
+`Within(…)`, because `.And` and `.Or` combine into a single expectation. A further expectation on the same recording
+throws an `InvalidOperationException`, so that it cannot silently answer from the events that were recorded until then:
 
 ```csharp
 IEventRecording<Player> recording = player.Record().Events();

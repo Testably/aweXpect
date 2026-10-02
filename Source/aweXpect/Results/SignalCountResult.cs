@@ -28,9 +28,11 @@ public class SignalCountResult(
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public SignalCountResult Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
 		options.Timeout = timeout;
 		return this;
 	}
@@ -72,9 +74,11 @@ public class SignalCountResult<TParameter, TSelf>(
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public TSelf Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
 		options.Timeout = timeout;
 		return (TSelf)this;
 	}

@@ -50,6 +50,20 @@ public sealed partial class ThatEventRecording
 					             ] after 0:*
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenTheOuterTimeoutIsAsLong_ShouldSucceed()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
 		}
 	}
 }

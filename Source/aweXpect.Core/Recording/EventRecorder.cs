@@ -32,6 +32,16 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 	}
 
 	/// <summary>
+	///     Returns a stopped copy with the events recorded so far, which later events do not change.
+	/// </summary>
+	public EventRecorder Snapshot()
+	{
+		EventRecorder snapshot = new(eventName, () => { });
+		snapshot._frozenEvents = Volatile.Read(ref _frozenEvents) ?? _eventQueue.ToArray();
+		return snapshot;
+	}
+
+	/// <summary>
 	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
 	///     reflectively.
 	/// </summary>
