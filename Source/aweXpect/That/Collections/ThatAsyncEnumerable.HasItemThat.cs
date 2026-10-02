@@ -28,7 +28,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
+				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -45,7 +45,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
+				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)
 					.Invert()),
 			subject,
 			indexOptions);
@@ -55,7 +55,7 @@ public static partial class ThatAsyncEnumerable
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>,
 		IExpectationTextConstraint
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly string _it;
 		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 		private readonly CollectionIndexOptions _options;
@@ -64,13 +64,15 @@ public static partial class ThatAsyncEnumerable
 		private ConstraintResult? _unansweredItem;
 		private int _unansweredItemIndex;
 
-		public HasItemThatConstraint(ExpectationBuilder expectationBuilder,
-			string it,
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
+		public HasItemThatConstraint(string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
 			CollectionIndexOptions options) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_options = options;
 
@@ -95,6 +97,7 @@ public static partial class ThatAsyncEnumerable
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_unansweredItem = null;
 			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
@@ -106,7 +109,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			_expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 

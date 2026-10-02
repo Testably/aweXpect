@@ -60,7 +60,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+				new AsyncContainConstraint<TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
+				new AsyncContainConstraint<TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -109,7 +109,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
+				new AsyncContainConstraint<string?>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedStringExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -133,7 +133,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
+				new ContainConstraint<TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
@@ -158,7 +158,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				new IsEqualToConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -186,7 +186,7 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				new IsEqualToConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -211,7 +211,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
+				new IsEqualToConstraint<string?, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -245,7 +245,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -278,7 +278,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
+				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -310,7 +310,6 @@ public static partial class ThatAsyncEnumerable
 			: Formatter.Format(expected) + options;
 
 	private sealed class ContainConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
@@ -319,18 +318,22 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private IAsyncEnumerable<TItem>? _actual;
 		private LimitedCollection<TItem>? _items;
 		private int _count;
-		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			_actual = actual;
-			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -363,11 +366,11 @@ public static partial class ThatAsyncEnumerable
 						case false:
 							// The verdict is final, so no further items are received only for the context.
 							Outcome = Outcome.Failure;
-							expectationBuilder.AddCollectionContext(items, true);
+							_collectionContext.Set(items, true);
 							return this;
 						case true:
 							Outcome = Outcome.Success;
-							_addsContextWhenNegated = true;
+							_collectionContext.Set(items, true);
 							return this;
 					}
 				}
@@ -376,11 +379,11 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
-				expectationBuilder.AddCollectionContext(items, true);
+				_collectionContext.Set(items, true);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
+			_collectionContext.Set(items, totalCount: totalCount);
 			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
@@ -472,20 +475,11 @@ public static partial class ThatAsyncEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
-			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
-			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
-			if (_addsContextWhenNegated)
-			{
-				_addsContextWhenNegated = false;
-				expectationBuilder.AddCollectionContext(_items, true, onlyOnFailureOf: this);
-			}
-
 			return this;
 		}
 	}
 
 	private sealed class AsyncContainConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<Quantifier, ExpectationGrammars, string> expectationText,
@@ -495,19 +489,23 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private IAsyncEnumerable<TItem>? _actual;
 		private LimitedCollection<TItem>? _items;
 		private int _count;
 		private TItem? _firstFoundItem;
-		private bool _addsContextWhenNegated;
 		private bool _isFinished;
 		private bool _isNegated;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			_actual = actual;
-			_addsContextWhenNegated = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -539,11 +537,11 @@ public static partial class ThatAsyncEnumerable
 						case false:
 							// The verdict is final, so no further items are received only for the context.
 							Outcome = Outcome.Failure;
-							expectationBuilder.AddCollectionContext(items, true);
+							_collectionContext.Set(items, true);
 							return this;
 						case true:
 							Outcome = Outcome.Success;
-							_addsContextWhenNegated = true;
+							_collectionContext.Set(items, true);
 							return this;
 					}
 				}
@@ -552,11 +550,11 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
-				expectationBuilder.AddCollectionContext(items, true);
+				_collectionContext.Set(items, true);
 				return this;
 			}
 
-			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
+			_collectionContext.Set(items, totalCount: totalCount);
 			_isFinished = true;
 			Outcome = (quantifier.Check(_count, true) ?? _isNegated) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -640,14 +638,6 @@ public static partial class ThatAsyncEnumerable
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
-			// A negation after the evaluation (e.g. by `DoesNotComplyWith`) turns the early success into a failure.
-			// Only the first one adds the context, as the next one reverts it before a repeated evaluation.
-			if (_addsContextWhenNegated)
-			{
-				_addsContextWhenNegated = false;
-				expectationBuilder.AddCollectionContext(_items, true, onlyOnFailureOf: this);
-			}
-
 			return this;
 		}
 	}

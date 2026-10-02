@@ -43,7 +43,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
+				=> new HasItemConstraint<TItem>(it, grammars,
 					x => options.Matches(x),
 					options.GetDescription,
 					indexOptions).InvertIf(negated)),
@@ -66,7 +66,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
+				=> new HasItemConstraint<TItem>(it, grammars, predicate,
 					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
@@ -85,7 +85,7 @@ public static partial class ThatAsyncEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
+				=> new AsyncHasItemConstraint<TItem>(it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
@@ -108,7 +108,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
+				=> new AsyncHasItemConstraint<TItem>(it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
 					indexOptions).InvertIf(negated)),
@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<IAsyncEnumerable<string?>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncHasItemConstraint<string?>(expectationBuilder, it, grammars,
+				=> new AsyncHasItemConstraint<string?>(it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetExpectation(expected, grammars),
 					indexOptions).InvertIf(negated)),
@@ -140,7 +140,6 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class HasItemConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, bool> predicate,
@@ -149,12 +148,18 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private TItem? _actual;
 		private bool _hasIndex;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -164,7 +169,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
@@ -246,7 +251,6 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class AsyncHasItemConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, ValueTask<bool>> predicate,
@@ -255,12 +259,18 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private TItem? _actual;
 		private bool _hasIndex;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -270,7 +280,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			expectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+			_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 

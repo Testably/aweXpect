@@ -23,6 +23,9 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 		IExpectationTextConstraint
 {
 	private readonly ManualExpectationBuilder<TItem> _builder;
+#if NET8_0_OR_GREATER
+	private CollectionContext _asyncCollectionContext;
+#endif
 	private readonly ManualExpectationBuilder<TItem> _negatedBuilder;
 	private ConstraintResult? _unansweredItem;
 	private int _unansweredItemIndex;
@@ -138,6 +141,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	private protected async Task<ConstraintResult> IsMetByItems(IAsyncEnumerable<TItem> materialized,
 		IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		_asyncCollectionContext = default;
 		LimitedCollection<TItem> items = new();
 		int count = 0;
 		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
@@ -148,11 +152,11 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 			{
 				if (_unansweredItem is null)
 				{
-					ExpectationBuilder.AddCollectionContext(items, true);
+					_asyncCollectionContext.Set(items, true);
 				}
 				else
 				{
-					ExpectationBuilder.AddCollectionContext(materialized as IMaterializedAsyncEnumerable<TItem>);
+					_asyncCollectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 				}
 
 				return this;
@@ -164,7 +168,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 			if (IsDetermined)
 			{
 				CompleteEarly();
-				ExpectationBuilder.AddCollectionContext(items, true);
+				_asyncCollectionContext.Set(items, true);
 				return this;
 			}
 		}
@@ -172,16 +176,25 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 		if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 		{
 			Outcome = Outcome.Undecided;
-			ExpectationBuilder.AddCollectionContext(items, true);
+			_asyncCollectionContext.Set(items, true);
 			return this;
 		}
 
 		Complete();
-		ExpectationBuilder.AddCollectionContext(items, totalCount: count);
+		_asyncCollectionContext.Set(items, totalCount: count);
 		return this;
 	}
 #endif
 
+#if NET8_0_OR_GREATER
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_asyncCollectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
+	}
+
+#endif
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{

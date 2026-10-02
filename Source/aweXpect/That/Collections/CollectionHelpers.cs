@@ -139,41 +139,6 @@ internal static class CollectionHelpers
 			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
 	}
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Adds the "Collection" context for the items of the <paramref name="value" /> that were received when the
-	///     failure message is created.
-	/// </summary>
-	/// <remarks>
-	///     No further items are received for the context, so that it can neither delay nor change the outcome. The
-	///     context is left out while nothing is known about the items.
-	/// </remarks>
-	internal static ExpectationBuilder AddCollectionContext<TItem>(
-		this ExpectationBuilder expectationBuilder,
-		IMaterializedAsyncEnumerable<TItem>? value, bool isIncomplete = false)
-	{
-		if (value is null)
-		{
-			return expectationBuilder;
-		}
-
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Collection"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Collection",
-						() => value.MaterializedItems.Count == 0 && value.Count is null
-							? null
-							: value.FormatMaterializedItems(FormattingOptions.SingleLine)
-								.AppendIsIncomplete(isIncomplete),
-						-1));
-			}
-		});
-	}
-#endif
-
 	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
 		IDictionary<TKey, TValue>? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
 	{
@@ -272,18 +237,6 @@ internal static class CollectionHelpers
 	internal static void AddExpectedItemsContext<TItem>(this ResultContextCollector contexts,
 		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
 		=> contexts.Add(new ResultContext.SyncCallback("Expected",
-			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
-			{
-				ICollection<TItem> coll => coll.Count,
-				ICountable countable => countable.Count,
-				_ => null,
-			})),
-			-2));
-
-	/// <inheritdoc cref="AddExpectedItemsContext{TItem}(ResultContextCollector, IEnumerable{TItem}, ICollection{TItem})" />
-	internal static void AddExpectedItemsContext<TItem>(this ExpectationBuilder expectationBuilder,
-		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
-		=> expectationBuilder.AddContext(new ResultContext.SyncCallback("Expected",
 			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 			{
 				ICollection<TItem> coll => coll.Count,

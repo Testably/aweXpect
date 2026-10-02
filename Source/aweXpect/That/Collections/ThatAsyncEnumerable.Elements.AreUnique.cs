@@ -252,11 +252,14 @@ public static partial class ThatAsyncEnumerable
 				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -275,7 +278,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					RecordAll(items, occurrences);
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(items.ConvertAll(x => x.Item), true);
+					_collectionContext.Set(items.ConvertAll(x => x.Item), true);
 					return this;
 				}
 			}
@@ -284,14 +287,21 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
-				ExpectationBuilder.AddCollectionContext(collection, true);
+				_collectionContext.Set(collection, true);
 				return this;
 			}
 
 			RecordAll(items, occurrences);
 			Complete();
-			ExpectationBuilder.AddCollectionContext(collection);
+			_collectionContext.Set(collection);
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
 		}
 
 		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)

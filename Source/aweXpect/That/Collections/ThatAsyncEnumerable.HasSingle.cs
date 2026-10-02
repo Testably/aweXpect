@@ -27,7 +27,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new HasSingleConstraint<TItem>(expectationBuilder, it, grammars, options)),
+				new HasSingleConstraint<TItem>(it, grammars, options)),
 			options,
 			async f =>
 			{
@@ -46,21 +46,26 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class HasSingleConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
 		: ConstraintResult.WithValue<TItem?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isEmpty;
 		private IMaterializedAsyncEnumerable<TItem>? _materialized;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			_actual = actual;
 			if (actual is null)
 			{
@@ -92,14 +97,19 @@ public static partial class ThatAsyncEnumerable
 			if (_count <= 1 && cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
-				expectationBuilder.AddCollectionContext(_materialized, true);
+				_collectionContext.Set(_materialized, true);
 				return this;
 			}
 
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
+			// The single item also explains the failure of a negation, but not of a continuation on the item.
 			if (_count > 1)
 			{
-				expectationBuilder.AddCollectionContext(_materialized);
+				_collectionContext.Set(_materialized);
+			}
+			else if (_count == 1)
+			{
+				_collectionContext.Set(_materialized?.MaterializedItems);
 			}
 
 			return this;
@@ -170,19 +180,6 @@ public static partial class ThatAsyncEnumerable
 		{
 			get => _actual is null ? Outcome.Failure : base.Outcome;
 			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			base.Negate();
-			// The collection context is only added once the negation is known, as it would otherwise also appear when a
-			// continuation on the single item fails.
-			if (IsNegated && _count == 1)
-			{
-				expectationBuilder.AddCollectionContext(_materialized?.MaterializedItems);
-			}
-
-			return this;
 		}
 	}
 }

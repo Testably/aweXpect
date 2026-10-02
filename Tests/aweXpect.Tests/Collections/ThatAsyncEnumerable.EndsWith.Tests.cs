@@ -94,6 +94,9 @@ public sealed partial class ThatAsyncEnumerable
 					               IAsyncEnumerable<int>,
 					               IAsyncEnumerable<int>
 					             ]
+
+					             Collection (item [1]):
+					             []
 					             """)
 					.Because("the second item is empty");
 			}
