@@ -52,7 +52,9 @@ public class ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>(
 	///     Ignores duplicates in both collections.
 	/// </summary>
 	/// <remarks>
-	///     Each distinct item is compared once, so <c>[1, 1, 2]</c> matches <c>[1, 2]</c>.
+	///     Only which items occur matters, not how often: every expected item has to be matched by an item, and every
+	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
+	///     <c>[1, 2]</c>.
 	/// </remarks>
 	public TSelf IgnoringDuplicates()
 	{

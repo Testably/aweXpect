@@ -810,7 +810,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -841,7 +841,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -890,7 +890,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 that was not expected and
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 unique expected items
+					               lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -1148,6 +1148,18 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithItemMatchingSeveralPredicates_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 5, });
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([x => x > 0, x => x > 1,]).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("only which items occur matters, not how often, so one item may match every predicate");
 			}
 
 			[Fact]
@@ -1981,7 +1993,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 5 expected items
 
 					             Collection:
 					             []
@@ -2014,7 +2026,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -2063,7 +2075,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 that was not expected and
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 unique expected items
+					               lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -2301,6 +2313,18 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithItemMatchingSeveralPredicates_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 5, });
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([x => x > 0, x => x > 1,]).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("only which items occur matters, not how often, so one item may match every predicate");
 			}
 
 			[Fact]

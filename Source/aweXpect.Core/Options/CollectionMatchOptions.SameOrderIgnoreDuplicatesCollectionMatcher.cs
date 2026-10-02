@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -17,13 +16,11 @@ public partial class CollectionMatchOptions
 		: SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(
 			equivalenceRelation,
 			expected,
-			null,
+			EqualityComparer<T>.Default,
 			ignoreInterspersedItems)
 		where T : T2
 	{
 		private readonly HashSet<T> _expectedValues = new(expected);
-
-		protected override bool IsOneToOne => false;
 
 		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
 
@@ -39,7 +36,7 @@ public partial class CollectionMatchOptions
 		: SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, ExpectationItem<T>>(
 			equivalenceRelation,
 			expected,
-			new ExpectationItemEqualityComparer<T>(),
+			null,
 			ignoreInterspersedItems)
 		where T : T2
 	{
@@ -55,7 +52,7 @@ public partial class CollectionMatchOptions
 		: SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(
 			equivalenceRelation,
 			expected,
-			new ExpressionEqualityComparer<T, bool>(),
+			null,
 			ignoreInterspersedItems)
 		where T : T2
 	{
@@ -73,6 +70,7 @@ public partial class CollectionMatchOptions
 	private abstract class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
+		private readonly bool _areExpectedItemsUnique;
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedDistinctItems;
 		private readonly int[] _expectedIds;
@@ -85,6 +83,10 @@ public partial class CollectionMatchOptions
 		private int _lastMatchedExpectedId = -1;
 		private int _subjectItemsMatchingNothing;
 
+		/// <remarks>
+		///     The comparer merges equal expected values; predicates and expectations cannot be compared with each other,
+		///     so without it each expected item stands for itself.
+		/// </remarks>
 		protected SameOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
 			IEqualityComparer<T3>? comparer,
@@ -93,16 +95,18 @@ public partial class CollectionMatchOptions
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_expectedItems = expected.ToArray();
+			_areExpectedItemsUnique = comparer is not null;
+			if (comparer is null)
+			{
+				_expectedIds = Enumerable.Range(0, _expectedItems.Length).ToArray();
+				_expectedDistinctItems = _expectedItems;
+				return;
+			}
+
 			ItemIds<T3> expectedIds = new(comparer);
 			_expectedIds = _expectedItems.Select(item => expectedIds.GetOrAdd(item, out _)).ToArray();
 			_expectedDistinctItems = expectedIds.Items.ToArray();
 		}
-
-		/// <summary>
-		///     Predicates and expectations need one distinct item each; expected values form a set, so items that match the
-		///     same value are duplicates, e.g. when ignoring the casing.
-		/// </summary>
-		protected virtual bool IsOneToOne => true;
 
 		/// <inheritdoc />
 		/// <remarks>
@@ -133,7 +137,7 @@ public partial class CollectionMatchOptions
 				_subjectItemsMatchingNothing++;
 			}
 
-			return CountTheCertainlyUnexpectedItems() > 2L * maximumNumber
+			return _subjectItemsMatchingNothing > 2L * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber,
 					(await FindTheDeviations(options)).ListDeviations(_equivalenceRelations, options)))
 				: (false, null);
@@ -151,8 +155,8 @@ public partial class CollectionMatchOptions
 			}
 
 			InOrderDeviations<T, T3> deviations = await FindTheDeviations(options);
-			string? error = deviations.GetError(it, _equivalenceRelations, true, _expectedDistinctItems.Length,
-				options, maximumNumber);
+			string? error = deviations.GetError(it, _equivalenceRelations, _areExpectedItemsUnique,
+				_expectedDistinctItems.Length, options, maximumNumber);
 			if (_equivalenceRelations == EquivalenceRelations.Equivalent && deviations.MatchesInAnyOrder)
 			{
 				error += Environment.NewLine + ItemsMatchInADifferentOrderHint;
@@ -192,17 +196,6 @@ public partial class CollectionMatchOptions
 			                await order.HasAdditionalItem());
 		}
 
-		/// <summary>
-		///     A subject item that matches no expected item is unexpected regardless of the other items; one-to-one, so
-		///     are the items beyond the number of expected items.
-		/// </summary>
-		private long CountTheCertainlyUnexpectedItems()
-		{
-			int beyondTheExpectedItems = _subjectIds.Items.Count - _subjectItemsMatchingNothing -
-			                             _expectedDistinctItems.Length;
-			return _subjectItemsMatchingNothing + (IsOneToOne ? Math.Max(0, beyondTheExpectedItems) : 0);
-		}
-
 		private async ValueTask<bool> MatchesAnExpectedItem(int subjectId, IOptionsEquality<T2> options)
 		{
 			int expectedId = await FindNear(_lastMatchedExpectedId, _expectedDistinctItems.Length,
@@ -226,7 +219,7 @@ public partial class CollectionMatchOptions
 			{
 				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(_expectedIds,
 					_expectedDistinctItems.Length, _subjectIds.Items.Count,
-					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch());
+					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), false, GetOrderMatch());
 				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
 					subjectId => (_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId]),
 					position => _expectedItems[position]);
@@ -234,7 +227,7 @@ public partial class CollectionMatchOptions
 
 			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(_subjectIdAt.ToArray(),
 				_subjectIds.Items.Count, _expectedDistinctItems.Length,
-				(subjectId, expectedId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch());
+				(subjectId, expectedId) => IsMatch(subjectId, expectedId, options), false, GetOrderMatch());
 			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
 				position => (position, _subjectIds.Items[_subjectIdAt[position]]),
 				expectedId => _expectedDistinctItems[expectedId]);
@@ -247,10 +240,10 @@ public partial class CollectionMatchOptions
 		private DistinctItemsInOrder CreateOrder(IOptionsEquality<T2> options)
 			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
 				? new DistinctItemsInOrder(_expectedIds, _expectedDistinctItems.Length, _subjectIds.Items.Count,
-					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), IsOneToOne, GetOrderMatch())
+					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), GetOrderMatch())
 				: new DistinctItemsInOrder(_subjectIdAt.ToArray(), _subjectIds.Items.Count,
 					_expectedDistinctItems.Length, (subjectId, expectedId) => IsMatch(subjectId, expectedId, options),
-					IsOneToOne, GetOrderMatch());
+					GetOrderMatch());
 
 		private OrderMatch GetOrderMatch()
 		{

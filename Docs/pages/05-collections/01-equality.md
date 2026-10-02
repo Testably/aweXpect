@@ -32,6 +32,9 @@ await Expect.That(values).IsNotEqualTo([4, 3, 2, 1]).InAnyOrder();
 Without `InAnyOrder()` the items are compared in the order in which the collection enumerates them, which is not
 defined for a [set](./index.md#sets).
 
+With `IgnoringDuplicates()`, only which items occur matters, not how often: every expected item has to be matched by an
+item of the collection, and every item of the collection has to match an expected item.
+
 ## Contained items
 
 You can verify that the collection contains a specific item or not:
@@ -89,6 +92,9 @@ items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringIn
 `InAnyOrder` and `IgnoringInterspersedItems` exclude each other, here and for `IsContainedIn`: specifying the second one
 throws an `InvalidOperationException`.
 
+With `IgnoringDuplicates()`, only which items occur matters, not how often: every expected item has to be matched by an
+item of the collection.
+
 To check for a proper subset, append `.Properly()` (which would fail for equal collections). The negation is
 `DoesNotContain`.
 
@@ -108,6 +114,9 @@ await Expect.That(values).IsNotContainedIn([1, 2]);
 
 Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
 without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
+
+With `IgnoringDuplicates()`, only which items occur matters, not how often: every item of the collection has to match
+an expected item.
 
 To check for a proper superset, append `.Properly()` (which would fail for equal collections). The negation is
 `IsNotContainedIn`.
@@ -145,6 +154,9 @@ await Expect.That(songs).IsEqualTo([
 ]).InAnyOrder();
 await Expect.That(songs).Contains([x => x == "Something", x => x.EndsWith("Be")]);
 ```
+
+Predicates and expectations are never compared with each other. With `IgnoringDuplicates()`, one item may therefore
+match several of them, e.g. `[5]` is equal to `[x => x > 0, x => x > 1]` in any order ignoring duplicates.
 
 The failure message lists the predicates or expectations as the expected items:
 
