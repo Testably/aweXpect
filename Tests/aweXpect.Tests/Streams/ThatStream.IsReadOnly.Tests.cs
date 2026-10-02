@@ -24,6 +24,19 @@ public sealed partial class ThatStream
 					             """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
+			{
+				using BufferedStream subject = new(new MemoryStream(new byte[3], writable: false), 4096);
+
+				async Task Act()
+					=> await That(subject).IsReadOnly().And.HasBufferSize(4096);
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
 			[Theory]
 			[InlineData(false, false)]
 			[InlineData(false, true)]
