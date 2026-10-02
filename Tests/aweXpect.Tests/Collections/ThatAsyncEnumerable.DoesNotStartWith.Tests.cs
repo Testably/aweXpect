@@ -202,6 +202,24 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenRetried_ShouldOnlyListTheItemsOfTheLastAttempt()
+			{
+				IAsyncEnumerable<int> GetSubject() => ToAsyncEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(50.Milliseconds()).CheckEvery(1.Milliseconds())
+						.DoesNotStartWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually does not start with [1, 2] within 0:00.050,
+					             but it did start with [1, 2]
+					             """)
+					.Because("the items of earlier attempts do not belong to the last one");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;

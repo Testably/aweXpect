@@ -323,6 +323,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			_items = [];
+			_foundMismatch = false;
 			foreach (TItem item in materializedEnumerable)
 			{
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
@@ -466,6 +467,7 @@ public static partial class ThatEnumerable
 
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			_items = [];
+			_foundMismatch = false;
 			foreach (object? item in materializedEnumerable)
 			{
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))

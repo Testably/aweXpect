@@ -12,6 +12,18 @@ public sealed partial class ThatAsyncEnumerable
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenEvaluatedForSeveralItems_ShouldJudgeEachOneOnItsOwn()
+			{
+				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(2, 1), ToAsyncEnumerable(1, 2),];
+
+				async Task Act()
+					=> await That(subject).AtLeast(1).ComplyWith(x => x.IsInAscendingOrder());
+
+				await That(Act).DoesNotThrow()
+					.Because("the second item is in ascending order");
+			}
+
+			[Fact]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 2, 3, 1);
@@ -26,7 +38,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
-					             [1, 1, 2, 3, 1]
+					             [1, 1, 2, 3, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -39,6 +51,26 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsInAscendingOrder();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSourceThrowsAfterTheItemsOutOfOrder_ShouldFailBecauseOfTheOrder()
+			{
+				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("the source broke"), 2, 1);
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is in ascending order,
+					             but it had 2 before 1, which is not in ascending order
+
+					             Collection:
+					             [2, 1, (… and maybe more)]
+					             """)
+					.Because("the evaluation stops at the first items out of order");
 			}
 
 			[Fact]
@@ -110,7 +142,8 @@ public sealed partial class ThatAsyncEnumerable
 					             Collection:
 					             [
 					               "a",
-					               "A"
+					               "A",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -145,7 +178,8 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "a"
+					               "a",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -210,7 +244,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInAscendingOrder.MyIntClass {
 					                 Value = 1
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -306,7 +341,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInAscendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "A"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -351,7 +387,8 @@ public sealed partial class ThatAsyncEnumerable
 					               },
 					               ThatAsyncEnumerable.IsInAscendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "a"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -482,6 +519,23 @@ public sealed partial class ThatAsyncEnumerable
 					              is in ascending order by x => x.NullableValue,
 					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenRetriedAfterIncompatibleKinds_ShouldJudgeTheNextAttemptOnItsOwn()
+			{
+				int attempts = 0;
+
+				IAsyncEnumerable<DateTime> GetSubject()
+					=> attempts++ == 0
+						? ToAsyncEnumerable<DateTime>(Utc, Local)
+						: ToAsyncEnumerable<DateTime>(Utc, Utc.AddHours(1));
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().CheckEvery(1.Milliseconds()).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the second attempt only contains UTC times in ascending order");
 			}
 
 			private sealed class Item(DateTime value)

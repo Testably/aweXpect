@@ -334,6 +334,7 @@ public static partial class ThatEnumerable
 			_materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
 			_index = 0;
+			_foundMismatch = false;
 			foreach (TItem item in _materializedEnumerable)
 			{
 				TItem expectedItem = _expected[_index++];
@@ -461,6 +462,7 @@ public static partial class ThatEnumerable
 
 			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			_index = 0;
+			_foundMismatch = false;
 			foreach (object? item in _materializedEnumerable)
 			{
 				object? expectedItem = _expected[_index++];

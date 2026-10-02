@@ -82,6 +82,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEvaluatedForSeveralItems_ShouldStartEachEvaluationAtTheFirstItem()
+			{
+				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(1, 2), ToAsyncEnumerable(1, 3),];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x.StartsWith(1));
+
+				await That(Act).DoesNotThrow()
+					.Because("both items start with 1");
+			}
+
+			[Fact]
+			public async Task WhenEvaluatedForSeveralItemsAfterAMismatch_ShouldStartAtTheFirstExpectedItem()
+			{
+				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(3), ToAsyncEnumerable(1, 2),];
+
+				async Task Act()
+					=> await That(subject).AtLeast(1).ComplyWith(x => x.StartsWith(1, 2));
+
+				await That(Act).DoesNotThrow()
+					.Because("the second item starts with [1, 2]");
+			}
+
+			[Fact]
 			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -126,6 +150,32 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
+			{
+				int attempts = 0;
+
+				IAsyncEnumerable<int> GetSubject()
+					=> attempts++ == 0 ? ToAsyncEnumerable(3) : ToAsyncEnumerable(1);
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(500.Milliseconds()).CheckEvery(1.Milliseconds())
+						.StartsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually starts with [1, 2] within 0:00.500,
+					             but it contained only 1 item and lacked 1 item: [
+					               2
+					             ]
+
+					             Collection:
+					             [1]
+					             """)
+					.Because("the mismatch of the first attempt does not apply to the later ones");
 			}
 
 			[Fact]

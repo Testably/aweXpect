@@ -159,6 +159,19 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToIsInAscendingOrderDecide()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsInAscendingOrder().Or.Contains(1).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the received items already contain 1, so the undecided order does not matter");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportACountAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -332,6 +345,27 @@ public sealed partial class ThatAsyncEnumerable
 				               x => (x == 2),
 				               x => (x == 3)
 				             ]
+				             """)
+				.Because("the items received before the cancellation explain where the evaluation stopped");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsInAscendingOrderAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).IsInAscendingOrder().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             is in ascending order,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
 				             """)
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}

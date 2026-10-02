@@ -118,6 +118,32 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
+			{
+				int attempts = 0;
+
+				IEnumerable<int> GetSubject()
+					=> attempts++ == 0 ? [3,] : [2,];
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(500.Milliseconds()).CheckEvery(1.Milliseconds())
+						.EndsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually ends with [1, 2] within 0:00.500,
+					             but it contained only 1 item and lacked 1 item: [
+					               1
+					             ]
+
+					             Collection:
+					             [2]
+					             """)
+					.Because("the mismatch of the first attempt does not apply to the later ones");
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasMoreItemsThanTheFormatterLimit_ShouldNameTheRemainingItems()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);

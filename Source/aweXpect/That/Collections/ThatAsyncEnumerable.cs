@@ -655,6 +655,8 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_failureText = null;
+			IsIncomparable = false;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -667,19 +669,18 @@ public static partial class ThatAsyncEnumerable
 
 			TMember previous = default!;
 			int index = 0;
-			int maximumNumberOfCollectionItems =
-				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			IComparer<TMember> comparer = options.GetComparer();
 			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
-				if (_failureText == null && incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
 				{
 					// The order of incompatible items cannot be verified, so the negated check fails as well.
 					_failureText = $"{It} {incompatibility}";
 					IsIncomparable = true;
-					break;
+					Outcome = Outcome.Failure;
+					return this;
 				}
 
 				if (index++ == 0)
@@ -690,19 +691,16 @@ public static partial class ThatAsyncEnumerable
 
 				if (IsOutOfOrder(UserCode.Invoke(() => comparer.Compare(previous, current), "the comparer")))
 				{
-					_failureText ??=
+					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
-				}
-
-				if (_failureText != null && index > maximumNumberOfCollectionItems)
-				{
-					break;
+					Outcome = Outcome.Failure;
+					return this;
 				}
 
 				previous = current;
 			}
 
-			Outcome = _failureText != null ? Outcome.Failure : Outcome.Success;
+			Outcome = cancellationToken.IsCanceledBeforeTheEndOf(materialized) ? Outcome.Undecided : Outcome.Success;
 			return this;
 		}
 
