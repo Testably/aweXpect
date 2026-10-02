@@ -10,6 +10,15 @@ namespace aweXpect.Core.EvaluationContext;
 /// </summary>
 public sealed class EvaluationCancellation
 {
+	/// <summary>
+	///     How close to the end of a wait a cancellation still counts as the wait having elapsed.
+	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Tasks.Task.Delay(TimeSpan, CancellationToken)" /> truncates to whole milliseconds
+	///     and the timers of the waits and of the timeout do not share the clock of the stopwatch that measures them.
+	/// </remarks>
+	internal static readonly TimeSpan Tolerance = TimeSpan.FromMilliseconds(2);
+
 	private readonly CancellationToken _callerToken;
 	private readonly CancellationTokenSource? _timeoutCts;
 
@@ -53,6 +62,27 @@ public sealed class EvaluationCancellation
 	///     <c>Customize.aweXpect.Settings().TestCancellation</c>.
 	/// </summary>
 	public bool IsCallerCanceled => _callerToken.IsCancellationRequested;
+
+	/// <summary>
+	///     Whether a cancellation that ended a wait of at most <paramref name="waitTimeout" /> after
+	///     <paramref name="waited" /> counts as the <paramref name="waitTimeout" /> having elapsed, so that the result at
+	///     that time decides instead of the cancellation.
+	/// </summary>
+	/// <remarks>
+	///     This is the case, when the cancellation came at the end of the wait, or when the <see cref="Timeout" /> elapsed
+	///     and is not shorter than the <paramref name="waitTimeout" />: its timer started before the wait, so it can expire
+	///     slightly before the wait does. A cancellation by the caller, a shorter <see cref="Timeout" /> and every
+	///     cancellation of an infinite <paramref name="waitTimeout" /> end the wait without a decision.
+	/// </remarks>
+	public bool CountsAsElapsed(TimeSpan waitTimeout, TimeSpan waited)
+	{
+		if (waitTimeout == System.Threading.Timeout.InfiniteTimeSpan || waitTimeout == TimeSpan.MaxValue)
+		{
+			return false;
+		}
+
+		return waitTimeout - waited < Tolerance || (IsTimeoutElapsed && Timeout >= waitTimeout);
+	}
 
 	internal bool HasTimedOut(Exception? exception)
 		=> exception is OperationCanceledException && IsTimeoutElapsed;

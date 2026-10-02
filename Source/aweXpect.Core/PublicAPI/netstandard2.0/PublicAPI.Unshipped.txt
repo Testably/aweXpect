@@ -271,7 +271,7 @@ aweXpect.Options.EnumerableQuantifier.QuantifierContexts.None = 0 -> aweXpect.Op
 aweXpect.Options.EnumerableQuantifier.QuantifierContexts.NotMatchingItems = 4 -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
 aweXpect.Options.RepeatedCheckOptions
 aweXpect.Options.RepeatedCheckOptions.CheckEvery(System.TimeSpan interval) -> void
-aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.EvaluationContext.IEvaluationContext! context) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.Outcome>!
 aweXpect.Options.RepeatedCheckOptions.Interval.get -> System.TimeSpan
 aweXpect.Options.RepeatedCheckOptions.IsRepeated.get -> bool
 aweXpect.Options.RepeatedCheckOptions.RepeatedCheckOptions() -> void
@@ -355,3 +355,4 @@ aweXpect.Core.EvaluationContext.EvaluationCancellation.Timeout.get -> System.Tim
 aweXpect.Core.EvaluationContext.EvaluationCancellation.Token.get -> System.Threading.CancellationToken
 aweXpect.Core.EvaluationContext.IEvaluationContext.Cancellation.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
 static aweXpect.Core.EvaluationContext.EvaluationCancellation.None.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
+aweXpect.Core.EvaluationContext.EvaluationCancellation.CountsAsElapsed(System.TimeSpan waitTimeout, System.TimeSpan waited) -> bool

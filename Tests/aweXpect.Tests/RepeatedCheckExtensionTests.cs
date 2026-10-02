@@ -1,9 +1,30 @@
-﻿using aweXpect.Options;
+﻿using System.Threading;
+using aweXpect.Customization;
+using aweXpect.Options;
 
 namespace aweXpect.Tests;
 
 public sealed class RepeatedCheckExtensionTests
 {
+	[Fact]
+	public async Task CheckRepeatedly_WhenCallerCancelsWhileRetrying_ShouldBeInconclusive()
+	{
+		MyRepeatedCheckExtensions.Probe probe = new(() => 0);
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await That(probe).ReturnsPositive().Within(30.Seconds()).WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that probe
+			             returns a positive value within 0:30,
+			             but it could not be verified, because the evaluation was already canceled
+			             """).WithTimeout(10.Seconds())
+			.Because("an extension reports the undecided outcome of CheckRepeatedly as inconclusive");
+	}
+
 	[Fact]
 	public async Task CheckRepeatedly_WhenInvertedAndProbeBecomesFalseWithinTheTimeout_ShouldSucceed()
 	{
@@ -53,6 +74,31 @@ public sealed class RepeatedCheckExtensionTests
 			             """);
 		await That(count).IsEqualTo(2)
 			.Because("the wait is shortened to the timeout, so the last check is made at the timeout");
+	}
+
+	[Fact]
+	public async Task
+		CheckRepeatedly_WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
+	{
+		MyRepeatedCheckExtensions.Probe probe = new(() => 0);
+		Exception? exception;
+		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+			       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+		{
+			async Task Act()
+				=> await That(probe).ReturnsPositive().Within(2.Seconds()).WithTimeout(10.Seconds());
+
+			exception = await Record.ExceptionAsync(Act);
+		}
+
+		await That(exception).IsExactly<XunitException>().And
+			.HasMessage("""
+			            Expected that probe
+			            returns a positive value within 0:02,
+			            but it did not finish within 0:00.300
+			            """).And
+			.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+			.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 	}
 
 	[Fact]

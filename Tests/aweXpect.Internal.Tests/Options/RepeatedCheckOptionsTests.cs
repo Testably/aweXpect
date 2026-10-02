@@ -1,5 +1,7 @@
-﻿using System.Threading;
-using aweXpect.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Options;
 using FluentAssertions.Extensions;
@@ -39,29 +41,26 @@ public class RepeatedCheckOptionsTests
 	{
 		RepeatedCheckOptions sut = new();
 		sut.Within(Timeout.InfiniteTimeSpan);
-		using CancellationTokenSource cts = new();
-		cts.CancelAfter(5.Seconds());
-		Task<bool> result;
+		bool isMet = false;
+		Task<Outcome> result;
 		using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
 			       TimeSpan.Zero))
 		{
 			await That(sut.Interval).IsEqualTo(TimeSpan.Zero)
 				.Because("the interval must be stored under the key that the setting reads");
-			result = sut.CheckRepeatedly(() => Task.FromResult(false), new ManualExpectationBuilder<int>(null),
-				cts.Token);
+			result = sut.CheckRepeatedly(() => Task.FromResult(Volatile.Read(ref isMet)), new NoEvaluationContext());
 		}
 
 		bool isCompletedSynchronously = result.IsCompleted;
-		cts.Cancel();
+		Volatile.Write(ref isMet, true);
 
 		await That(isCompletedSynchronously).IsFalse()
 			.Because("checking without waiting must still hand the thread back between the checks");
-		await That(async () => await result).Throws<OperationCanceledException>()
-			.Whose(e => e.CancellationToken, token => token.IsEqualTo(cts.Token));
+		await That(await result).IsEqualTo(Outcome.Success).WithTimeout(10.Seconds());
 	}
 
 	[Fact]
-	public async Task Interval_ShouldBeReadOnlyOnceFromCustomization()
+	public async Task Interval_ShouldReadTheCurrentDefaultEachTime()
 	{
 		RepeatedCheckOptions sut = new();
 		TimeSpan interval1, interval2;
@@ -76,7 +75,8 @@ public class RepeatedCheckOptionsTests
 		}
 
 		await That(interval1).IsEqualTo(103.Milliseconds());
-		await That(interval2).IsEqualTo(interval1);
+		await That(interval2).IsEqualTo(107.Milliseconds())
+			.Because("a re-evaluated expectation uses the default of its current evaluation, like Eventually() does");
 	}
 
 	[Fact]
@@ -112,5 +112,18 @@ public class RepeatedCheckOptionsTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Within cannot be specified more than once.")
 			.Because("the second timeout would silently replace the first one");
+	}
+
+	private sealed class NoEvaluationContext : IEvaluationContext
+	{
+		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+
+		public void Store<T>(string key, T value) { }
+
+		public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
+		{
+			value = default;
+			return false;
+		}
 	}
 }

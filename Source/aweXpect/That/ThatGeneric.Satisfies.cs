@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -28,9 +29,8 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new SatisfiesConstraint<T>(
-						expectationBuilder,
 						it,
 						grammars,
 						predicate,
@@ -56,9 +56,8 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new SatisfiesConstraint<T>(
-						expectationBuilder,
 						it,
 						grammars,
 						predicate,
@@ -74,14 +73,13 @@ public static partial class ThatGeneric
 	///     the subject and states itself how a <see langword="null" /> is to be treated.
 	/// </remarks>
 	private sealed class SatisfiesConstraint<T>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
 		string predicateExpression,
 		RepeatedCheckOptions options)
 		: ConstraintResult.WithValue<T>(it, grammars),
-			IAsyncConstraint<T>
+			IAsyncContextConstraint<T>
 	{
 		private Exception? _exception;
 
@@ -98,11 +96,17 @@ public static partial class ThatGeneric
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause => _exception;
 
-		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
+		public async Task<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			await options.CheckRepeatedly(() => Task.FromResult(IsMet(actual, cancellationToken)), expectationBuilder,
-				cancellationToken);
+			Outcome outcome =
+				await options.CheckRepeatedly(() => Task.FromResult(IsMet(actual, cancellationToken)), context);
+			if (outcome == Outcome.Undecided)
+			{
+				Outcome = Outcome.Undecided;
+			}
+
 			return this;
 		}
 

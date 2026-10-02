@@ -117,6 +117,11 @@ await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEve
 
 The interval must be positive, and `Within` and `CheckEvery` can each only be specified once.
 
+As for [`Eventually()`](#eventually), the tighter timeout wins: a `WithTimeout` or a global
+`TestCancellation.FromTimeout` that is shorter than `Within` ends the checks and fails the expectation with "did not
+finish within …", while one that is not shorter lets the last check at the timeout decide. A cancellation via
+`WithCancellation` or `TestCancellation.FromCancellationToken` makes the expectation inconclusive.
+
 ### Eventually
 
 Some values only become correct after a short delay, e.g. because a background task is still running. Instead of

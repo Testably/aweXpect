@@ -2,6 +2,7 @@
 using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -13,8 +14,8 @@ public static class MyRepeatedCheckExtensions
 	{
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
-				.AddConstraint((expectationBuilder, it, grammars)
-					=> new ReturnsPositiveConstraint(expectationBuilder, it, grammars, options).Invert()),
+				.AddConstraint((it, grammars)
+					=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
 			subject,
 			options);
 	}
@@ -23,8 +24,8 @@ public static class MyRepeatedCheckExtensions
 	{
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
-				.AddConstraint((expectationBuilder, it, grammars)
-					=> new ReturnsPositiveConstraint(expectationBuilder, it, grammars, options)),
+				.AddConstraint((it, grammars)
+					=> new ReturnsPositiveConstraint(it, grammars, options)),
 			subject,
 			options);
 	}
@@ -35,24 +36,29 @@ public static class MyRepeatedCheckExtensions
 	}
 
 	private sealed class ReturnsPositiveConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		RepeatedCheckOptions options)
 		: ConstraintResult.WithNotNullValue<Probe>(it, grammars),
-			IAsyncConstraint<Probe>
+			IAsyncContextConstraint<Probe>
 	{
 		private int _returned;
 
-		public async Task<ConstraintResult> IsMetBy(Probe actual, CancellationToken cancellationToken)
+		public async Task<ConstraintResult> IsMetBy(Probe actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			await options.CheckRepeatedly(() =>
+			Outcome outcome = await options.CheckRepeatedly(() =>
 			{
 				_returned = actual.Read();
 				Outcome = _returned > 0 ? Outcome.Success : Outcome.Failure;
 				return Task.FromResult(_returned > 0 != IsNegated);
-			}, expectationBuilder, cancellationToken);
+			}, context);
+			if (outcome == Outcome.Undecided)
+			{
+				Outcome = Outcome.Undecided;
+			}
+
 			return this;
 		}
 

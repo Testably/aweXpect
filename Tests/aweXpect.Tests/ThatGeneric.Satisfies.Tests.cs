@@ -528,6 +528,55 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task
+				WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
+			{
+				Other subject = new();
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act()
+						=> await That(subject).Satisfies(_ => false).Within(2.Seconds()).WithTimeout(10.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that subject
+					            satisfies _ => false within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
+			}
+
+			[Fact]
+			public async Task WhenTestCancellationTimeoutIsShorter_ShouldFailWithTheTestCancellationTimeout()
+			{
+				Other subject = new();
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act()
+						=> await That(subject).Satisfies(_ => false).Within(2.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that subject
+					            satisfies _ => false within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("a TestCancellation timeout that is shorter than Within ends the checks");
+			}
+
+			[Fact]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				Other subject = new();

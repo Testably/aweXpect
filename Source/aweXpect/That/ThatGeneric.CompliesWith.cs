@@ -56,7 +56,6 @@ public static partial class ThatGeneric
 			IAsyncContextConstraint<T>,
 			IExpectationTextConstraint
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
 		private readonly RepeatedCheckOptions _options;
 		private bool _isNegated;
@@ -66,7 +65,6 @@ public static partial class ThatGeneric
 			Action<IThatSubject<T>> expectations, RepeatedCheckOptions options)
 			: base(grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_options = options;
 			_itemExpectationBuilder = new ManualExpectationBuilder<T>(expectationBuilder, grammars);
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
@@ -79,13 +77,14 @@ public static partial class ThatGeneric
 		{
 			RevertPreviousNegation();
 			ConstraintResult? isMatch = null;
-			await _options.CheckRepeatedly(async () =>
+			Outcome outcome = await _options.CheckRepeatedly(async () =>
 			{
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
 				return isMatch.Outcome == Outcome.Success != _isNegated;
-			}, _expectationBuilder, cancellationToken);
-			return KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
+			}, context);
+			ConstraintResult result = KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
 				.AppendExpectationText(AppendSuffix);
+			return outcome == Outcome.Undecided ? new CanceledResult(result) : result;
 		}
 
 		private void AppendSuffix(StringBuilder stringBuilder)
@@ -161,6 +160,34 @@ public static partial class ThatGeneric
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
+			return this;
+		}
+	}
+
+	/// <summary>
+	///     The undecided result of a repeated check that the cancellation of the evaluation ended before its timeout.
+	/// </summary>
+	private sealed class CanceledResult(ConstraintResult inner) : ConstraintResult(inner.Grammars)
+	{
+		public override Outcome Outcome
+		{
+			get => Outcome.Undecided;
+			// The outcome of a canceled check is always undecided, so the value is discarded.
+			protected set => _ = value;
+		}
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> inner.AppendExpectation(stringBuilder, indentation);
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendCanceledResult(stringBuilder, "it");
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+			=> inner.TryGetStoredValue(out value);
+
+		public override ConstraintResult Negate()
+		{
+			inner.Negate();
 			return this;
 		}
 	}

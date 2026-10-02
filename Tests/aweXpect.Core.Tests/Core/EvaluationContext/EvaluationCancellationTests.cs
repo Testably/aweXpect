@@ -61,6 +61,72 @@ public class EvaluationCancellationTests
 	}
 
 	[Fact]
+	public async Task CountsAsElapsed_WhenTheCallerCanceled_ShouldBeFalse()
+	{
+		using CancellationTokenSource cts = new();
+		EvaluationCancellation sut = new(10.Seconds(), cts.Token);
+		cts.Cancel();
+
+		bool result = sut.CountsAsElapsed(1.Seconds(), 100.Milliseconds());
+
+		await That(result).IsFalse()
+			.Because("a cancellation by the caller before the end of the wait decides nothing");
+		sut.Release();
+	}
+
+	[Fact]
+	public async Task CountsAsElapsed_WhenTheCancellationCameAtTheEndOfTheWait_ShouldBeTrue()
+	{
+		using CancellationTokenSource cts = new();
+		EvaluationCancellation sut = new(null, cts.Token);
+		cts.Cancel();
+
+		bool result = sut.CountsAsElapsed(1.Seconds(), 999.Milliseconds());
+
+		await That(result).IsTrue()
+			.Because("the timers of the wait and of the cancellation do not share the clock of the stopwatch");
+	}
+
+	[Fact]
+	public async Task CountsAsElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_ShouldBeTrue()
+	{
+		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+
+		bool result = sut.CountsAsElapsed(10.Milliseconds(), 1.Milliseconds());
+
+		await That(result).IsTrue()
+			.Because("the timer of the timeout started before the wait, so it can expire slightly earlier");
+		sut.Release();
+	}
+
+	[Fact]
+	public async Task CountsAsElapsed_WhenTheTimeoutElapsedAndIsShorterThanTheWait_ShouldBeFalse()
+	{
+		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+
+		bool result = sut.CountsAsElapsed(1.Seconds(), 10.Milliseconds());
+
+		await That(result).IsFalse()
+			.Because("a shorter timeout is reported as the timeout, not as the result of the wait");
+		sut.Release();
+	}
+
+	[Fact]
+	public async Task CountsAsElapsed_WhenTheWaitIsInfinite_ShouldBeFalse()
+	{
+		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+
+		bool result = sut.CountsAsElapsed(Timeout.InfiniteTimeSpan, 10.Milliseconds());
+
+		await That(result).IsFalse()
+			.Because("an infinite wait is never used up");
+		sut.Release();
+	}
+
+	[Fact]
 	public async Task IsCallerCanceled_WhenTheCallerCanceled_ShouldBeTrue()
 	{
 		using CancellationTokenSource cts = new();
