@@ -334,6 +334,26 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenIncorrectItemIsALongStringThatDiffersAfterTheMaximumStringLength_ShouldShowTheDifference()
+		{
+			string common = new('a', 120);
+			string[] subject = [common + "x",];
+			string[] expected = [common + "y",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but it contained item "…aaaaaaaaaax" at index 0 instead of "…aaaaaaaaaay"
+				             *
+				             """).AsWildcard()
+				.Because("both truncated texts would be identical, so the strings are shown from shortly before their first difference");
+		}
+
+		[Fact]
 		public async Task WhenManyExpectedItemsAreMissing_ShouldListTheFirstOfThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();

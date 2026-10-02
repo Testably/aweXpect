@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using aweXpect.Core.Metadata;
+using aweXpect.Customization;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
@@ -2413,6 +2414,61 @@ public sealed class EquivalencyComparisonTests
 		                                                      Actual: 3
 		                                                    Expected: 1
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenLongStringMembersDifferAfterACustomMaximumStringLength_ShouldKeepTheDifferenceWithinIt()
+	{
+		var actual = new
+		{
+			Text = "aaaaaaaaaax",
+		};
+		var expected = new
+		{
+			Text = "aaaaaaaaaay",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result;
+		using (IDisposable _ = Customize.aweXpect.Formatting().MaximumStringLength.Set(6))
+		{
+			result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+		}
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Text differed:
+		                                                      Actual: "…aaaax"
+		                                                    Expected: "…aaaay"
+		                                                """).IgnoringNewlineStyle()
+			.Because("the leading ellipsis and the difference must both fit into the maximum string length");
+	}
+
+	[Fact]
+	public async Task WhenLongStringMembersDifferAfterTheMaximumStringLength_ShouldShowTheDifference()
+	{
+		string common = new('a', 120);
+		var actual = new
+		{
+			Text = common + "x",
+		};
+		var expected = new
+		{
+			Text = common + "y",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Text differed:
+		                                                      Actual: "…aaaaaaaaaax"
+		                                                    Expected: "…aaaaaaaaaay"
+		                                                """).IgnoringNewlineStyle()
+			.Because("both truncated texts would be identical, so the strings are shown from shortly before their first difference");
 	}
 
 	[Theory]

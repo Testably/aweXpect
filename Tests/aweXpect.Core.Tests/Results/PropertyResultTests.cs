@@ -178,7 +178,7 @@ public sealed partial class PropertyResultTests
 			return new StringProperty(source, _ => throw exception, "string value");
 		}
 
-		public static StringProperty HasStringValue(string stringValue,
+		public static StringProperty HasStringValue(string? stringValue,
 			ExpectationGrammars grammars = ExpectationGrammars.None)
 		{
 			MyClass subject = new()
