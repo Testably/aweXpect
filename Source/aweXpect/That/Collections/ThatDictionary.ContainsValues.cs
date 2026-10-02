@@ -43,7 +43,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValuesConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
 						negated)
 					.InvertIf(negated)),
@@ -72,7 +72,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValuesConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
 						negated)
 					.InvertIf(negated)),
@@ -99,7 +99,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValuesConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
+				new ContainValuesConstraint<TCollection, TKey, string?>(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(values), values, options,
 						negated)
 					.InvertIf(negated)),
@@ -112,7 +112,6 @@ public static partial class ThatDictionary
 	///     <paramref name="expected" /> values, so that a later negation inverts the same question its text describes.
 	/// </remarks>
 	private sealed class ContainValuesConstraint<TDictionary, TKey, TValue>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expectedExpression,
@@ -125,6 +124,10 @@ public static partial class ThatDictionary
 	{
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> AddDictionaryContext(contexts, Actual);
 
 		public async Task<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
 		{
@@ -153,7 +156,6 @@ public static partial class ThatDictionary
 				(false, [], _) => Outcome.Success,
 				(false, _, _) => Outcome.Failure,
 			};
-			AddDictionaryContext(expectationBuilder, actual);
 			return this;
 		}
 

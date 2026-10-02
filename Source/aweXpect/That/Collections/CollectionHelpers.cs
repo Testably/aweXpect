@@ -139,54 +139,6 @@ internal static class CollectionHelpers
 			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
 	}
 
-	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
-		IDictionary<TKey, TValue>? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
-	{
-		if (value is null)
-		{
-			return expectationBuilder;
-		}
-
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Dictionary"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Dictionary",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
-								.AppendIsIncomplete(isIncomplete),
-						-2));
-			}
-		});
-	}
-
-	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
-		IReadOnlyDictionary<TKey, TValue>? value, bool isIncomplete = false, ConstraintResult? onlyOnFailureOf = null)
-	{
-		if (value is null)
-		{
-			return expectationBuilder;
-		}
-
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Dictionary"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Dictionary",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: Formatter.Format(value, typeof(TValue).GetFormattingOption(value.Count))
-								.AppendIsIncomplete(isIncomplete),
-						-2));
-			}
-		});
-	}
-
 	/// <remarks>
 	///     A negation after the evaluation (e.g. by <c>DoesNotComplyWith</c>) adds the context of a success, which a
 	///     further negation can turn back into a success.

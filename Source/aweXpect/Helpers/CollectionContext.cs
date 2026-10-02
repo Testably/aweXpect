@@ -50,16 +50,20 @@ internal struct CollectionContext
 #endif
 
 	/// <summary>
-	///     Keeps the <paramref name="value" /> for the "Dictionary" context.
+	///     Keeps the <paramref name="dictionary" /> for the "Dictionary" context, when it is a mutable or a read-only
+	///     dictionary.
 	/// </summary>
-	public void SetDictionary<TKey, TValue>(IDictionary<TKey, TValue>? value, bool isIncomplete = false)
-		=> Keep(value, DictionaryFormat<TKey, TValue>.Format, isIncomplete, null, true);
-
-	/// <summary>
-	///     Keeps the <paramref name="value" /> for the "Dictionary" context.
-	/// </summary>
-	public void SetDictionary<TKey, TValue>(IReadOnlyDictionary<TKey, TValue>? value, bool isIncomplete = false)
-		=> Keep(value, ReadOnlyDictionaryFormat<TKey, TValue>.Format, isIncomplete, null, true);
+	public void SetDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary)
+	{
+		if (dictionary is IDictionary<TKey, TValue> mutableDictionary)
+		{
+			Keep(mutableDictionary, DictionaryFormat<TKey, TValue>.Format, false, null, true);
+		}
+		else if (dictionary is IReadOnlyDictionary<TKey, TValue> readOnlyDictionary)
+		{
+			Keep(readOnlyDictionary, ReadOnlyDictionaryFormat<TKey, TValue>.Format, false, null, true);
+		}
+	}
 
 	/// <summary>
 	///     Adds the context for the kept collection, if any.

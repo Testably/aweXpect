@@ -45,7 +45,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainKeysConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				new ContainKeysConstraint<TCollection, TKey, TValue>(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(keys), keys, negated)
 					.InvertIf(negated)),
 			subject,
@@ -62,7 +62,6 @@ public static partial class ThatDictionary
 	///     <paramref name="expected" /> keys, so that a later negation inverts the same question its text describes.
 	/// </remarks>
 	private sealed class ContainKeysConstraint<TDictionary, TKey, TValue>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expectedExpression,
@@ -74,6 +73,10 @@ public static partial class ThatDictionary
 	{
 		private List<TKey>? _existingKeys;
 		private List<TKey>? _missingKeys;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> AddDictionaryContext(contexts, Actual);
 
 		public ConstraintResult IsMetBy(TDictionary? actual)
 		{
@@ -103,7 +106,6 @@ public static partial class ThatDictionary
 				(false, [], _) => Outcome.Success,
 				(false, _, _) => Outcome.Failure,
 			};
-			AddDictionaryContext(expectationBuilder, actual);
 			return this;
 		}
 

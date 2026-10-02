@@ -161,13 +161,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -195,13 +188,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -230,13 +216,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               "foo",
 					               "baz"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -266,13 +245,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [2] = "bar",
 					               [3] = "foo"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "foo"
-					             }
 					             """);
 			}
 
@@ -300,13 +272,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -329,13 +294,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -362,13 +320,6 @@ public sealed partial class ThatReadOnlyDictionary
 					             [
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -396,13 +347,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -425,13 +369,6 @@ public sealed partial class ThatReadOnlyDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 

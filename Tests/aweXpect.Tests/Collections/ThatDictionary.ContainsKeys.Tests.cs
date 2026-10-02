@@ -270,13 +270,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """)
 					.Because("the plural connector must also govern the negated form of a string match type");
 			}
@@ -301,13 +294,6 @@ public sealed partial class ThatDictionary
 					               [2] = "bar",
 					               [3] = "baz"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -335,13 +321,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -369,13 +348,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -405,12 +377,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar"
-					             }
 					             """)
 					.Because("the connector already introduced the values, so the member must not start a second \"whose\"");
 			}
@@ -440,13 +406,6 @@ public sealed partial class ThatDictionary
 					               "foo",
 					               "baz"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -476,13 +435,6 @@ public sealed partial class ThatDictionary
 					               [2] = "bar",
 					               [3] = "foo"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "foo"
-					             }
 					             """);
 			}
 
@@ -511,13 +463,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "FOO"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "FOO",
-					               [3] = "bar"
-					             }
 					             """);
 			}
 
@@ -545,13 +490,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -574,13 +512,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -607,13 +538,6 @@ public sealed partial class ThatDictionary
 					             [
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -641,13 +565,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -670,13 +587,6 @@ public sealed partial class ThatDictionary
 					               [1] = "foo",
 					               [2] = "bar"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -753,13 +663,6 @@ public sealed partial class ThatDictionary
 					               [2] = "bar",
 					               [3] = "baz"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """);
 			}
 
@@ -783,13 +686,6 @@ public sealed partial class ThatDictionary
 					               [2] = "bar",
 					               [3] = "baz"
 					             ]
-
-					             Dictionary:
-					             {
-					               [1] = "foo",
-					               [2] = "bar",
-					               [3] = "baz"
-					             }
 					             """)
 					.Because("the complement of the quantifier is singular, so the verb of the values must be singular too");
 			}

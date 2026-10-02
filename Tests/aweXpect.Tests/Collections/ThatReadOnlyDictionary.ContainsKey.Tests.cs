@@ -109,13 +109,6 @@ public sealed partial class ThatReadOnlyDictionary
 					             does not contain key 2 whose value is equal to "foo",
 					             but value of key 2 did throw an InvalidOperationException:
 					               lookup failed
-
-					             Dictionary:
-					             {
-					               [1] = "",
-					               [2] = "",
-					               [3] = ""
-					             }
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a value that was never looked up cannot prove the negation either");
