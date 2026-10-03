@@ -25,7 +25,7 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new CollectionConstraint<TItem>(
+				=> new AsyncCollectionConstraint<TItem>(
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
@@ -46,7 +46,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new CollectionConstraint<TItem>(
+				=> new AsyncCollectionConstraint<TItem>(
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
@@ -68,7 +68,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new CollectionConstraint<string?>(
+				=> new AsyncCollectionConstraint<string?>(
 					it, grammars,
 					iElements.Quantifier,
 					g => ElementExpectations.IsEqualToString(g, expected, options),
