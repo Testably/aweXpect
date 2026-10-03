@@ -139,4 +139,48 @@ _stringArrayAnyOrderSubject.Should().BeEquivalentTo(_stringArrayAnyOrderExpectat
 
 </TabItem>
 
+<TabItem value="Satisfies" label="Condition">
+
+Verifies that an `int` subject satisfies a predicate.
+
+<BenchmarkResult name="Satisfies" />
+
+```csharp title="aweXpect"
+await Expect.That(_satisfiesSubject).Satisfies(x => x > 0);
+```
+
+```csharp no-compile title="FluentAssertions"
+_satisfiesSubject.Should().Match(x => x > 0);
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Satisfies.cs)
+
+</TabItem>
+
+<TabItem value="EventTriggered" label="Events">
+
+Verifies that an event was raised, including starting the recording and raising the event.
+
+<BenchmarkResult name="EventTriggered" />
+
+```csharp title="aweXpect"
+using aweXpect.Recording;
+
+Player player = new();
+IEventRecording<Player> recording = player.Record().Events();
+player.Play();
+await Expect.That(recording).Triggered(nameof(Player.Started));
+```
+
+```csharp no-compile title="FluentAssertions"
+Player player = new();
+using IMonitor<Player> monitor = player.Monitor();
+player.Play();
+monitor.Should().Raise(nameof(Player.Started));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.EventTriggered.cs)
+
+</TabItem>
+
 </Tabs>

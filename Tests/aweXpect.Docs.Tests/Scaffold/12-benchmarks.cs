@@ -17,9 +17,17 @@ internal static class Prelude
 	public static string[] _stringArrayExpectation = ["foo", "bar", "baz",];
 	public static string[] _stringArrayAnyOrderSubject = ["foo", "bar", "baz",];
 	public static string[] _stringArrayAnyOrderExpectation = ["baz", "foo", "bar",];
+	public static int _satisfiesSubject = 42;
 
 	public class Nested
 	{
 		public Nested? Inner { get; set; }
+	}
+
+	public sealed class Player
+	{
+		public event EventHandler? Started;
+
+		public void Play() => Started?.Invoke(this, EventArgs.Empty);
 	}
 }
