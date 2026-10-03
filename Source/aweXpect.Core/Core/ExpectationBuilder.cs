@@ -296,7 +296,7 @@ public abstract class ExpectationBuilder
 
 		CompleteWhichNode();
 		_pendingWhich = outerPendingWhich;
-		ThrowIfEmpty(_node, "expectations");
+		ThrowIfEmpty(_node, nameof(expectations));
 		mappingNode.AddNode(_node);
 		MoveReasonsTo(mappingNode, outerReasonCount);
 		_node = root;
