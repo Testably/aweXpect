@@ -12,12 +12,15 @@ internal static class GenericInterfaceExtensions
 	///     The first interface of the <paramref name="type" /> whose generic definition matches.
 	/// </summary>
 	/// <remarks>
-	///     The trimmer keeps the implementations of an interface it keeps, and every generic definition this is
-	///     matched against is referenced by its caller, so the matched interfaces survive trimming.
+	///     Referencing the open generic definition does not keep an implementation under Native AOT. The AOT compiler
+	///     keeps it when the program references the closed interface, like the generated registrations do for the
+	///     collection and member types they see, and can drop it when it resolves every use statically, like that of
+	///     the only async iterator of a program. A dropped implementation is reported as absent, so the caller degrades
+	///     to the result for a type without it instead of failing.
 	/// </remarks>
 #if NET8_0_OR_GREATER
 	[UnconditionalSuppressMessage("Trimming", "IL2070",
-		Justification = "The matched interfaces are referenced, so they are not trimmed away.")]
+		Justification = "A dropped interface is reported as absent, which the callers treat like a type without it.")]
 #endif
 	public static Type? FindGenericInterface(this Type type, Func<Type, bool> matchesDefinition)
 		=> type.GetInterfaces()
