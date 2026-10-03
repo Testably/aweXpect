@@ -4254,6 +4254,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -4965,7 +4971,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -5680,7 +5687,8 @@ window.BENCHMARK_DATA = {
           234.52247835795086,
           341.13765646616616,
           173.47869953087397,
-          372.90322062174477
+          372.90322062174477,
+          281.60245819091796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6397,6 +6405,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -7123,7 +7132,8 @@ window.BENCHMARK_DATA = {
           196.33848306337993,
           240.80439786911012,
           133.22139133725847,
-          237.84199518423813
+          237.84199518423813,
+          204.47215623514992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7316,6 +7326,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11649,6 +11660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -12283,7 +12300,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -12921,7 +12939,8 @@ window.BENCHMARK_DATA = {
           187347.56459960938,
           295734.0402483259,
           146925.58851841517,
-          290380.4139927455
+          290380.4139927455,
+          220585.15937151227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13564,6 +13583,7 @@ window.BENCHMARK_DATA = {
           86137,
           86138,
           86137,
+          86138,
           86138
         ],
         "borderColor": "#63A2AC",
@@ -14210,7 +14230,8 @@ window.BENCHMARK_DATA = {
           1424963.7809895833,
           2610232.06484375,
           1254349.052734375,
-          2515918.62109375
+          2515918.62109375,
+          1808925.5673177084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14853,7 +14874,8 @@ window.BENCHMARK_DATA = {
           4841611,
           4841651,
           4841647,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19121,6 +19143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -19832,7 +19860,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -20547,7 +20576,8 @@ window.BENCHMARK_DATA = {
           360.124720287323,
           502.90954602559407,
           239.24562018712362,
-          532.9993427276611
+          532.9993427276611,
+          388.9199968973796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21264,6 +21294,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -21990,7 +22021,8 @@ window.BENCHMARK_DATA = {
           372.3125605583191,
           479.83998171488446,
           261.75292506217954,
-          480.38019987742103
+          480.38019987742103,
+          400.45877707799275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22183,6 +22215,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26978,6 +27011,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -27689,7 +27728,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -28404,7 +28444,8 @@ window.BENCHMARK_DATA = {
           244.0821105003357,
           390.416090742747,
           192.22235318592615,
-          375.72293860117594
+          375.72293860117594,
+          303.6057075353769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29121,6 +29162,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -29847,7 +29889,8 @@ window.BENCHMARK_DATA = {
           193.77425656318664,
           244.9692392985026,
           141.10517188707988,
-          240.2495800336202
+          240.2495800336202,
+          191.07920319239298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30040,6 +30083,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34835,6 +34879,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -35546,7 +35596,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -36261,7 +36312,8 @@ window.BENCHMARK_DATA = {
           357.7716964483261,
           512.7948634465536,
           224.305471438628,
-          559.1372151692708
+          559.1372151692708,
+          392.96149935041154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36978,6 +37030,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1080,
           1080,
           1080,
           1080,
@@ -37704,7 +37757,8 @@ window.BENCHMARK_DATA = {
           865.8583909670512,
           1246.9402375539144,
           621.1622296651204,
-          1159.2521332332067
+          1159.2521332332067,
+          882.7562196731567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38133,6 +38187,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42692,6 +42747,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -43403,7 +43464,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -44118,7 +44180,8 @@ window.BENCHMARK_DATA = {
           1289.945943069458,
           2672.669841512044,
           1450.9872616254365,
-          2691.866480255127
+          2691.866480255127,
+          1944.4431457519531
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44835,6 +44898,7 @@ window.BENCHMARK_DATA = {
           4376,
           4376,
           4384,
+          2896,
           2896,
           2896,
           2896,
@@ -45561,7 +45625,8 @@ window.BENCHMARK_DATA = {
           990.7968257023738,
           1324.7816797892253,
           728.2218722025553,
-          1250.2981399536134
+          1250.2981399536134,
+          1062.8478544871011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45754,6 +45819,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50549,6 +50615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
@@ -51260,7 +51332,8 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -51975,7 +52048,8 @@ window.BENCHMARK_DATA = {
           1636.337705930074,
           3245.4842256818497,
           1730.6978145326887,
-          3242.6715207781112
+          3242.6715207781112,
+          2463.241643172044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52692,6 +52766,7 @@ window.BENCHMARK_DATA = {
           4280,
           4280,
           4288,
+          3176,
           3176,
           3176,
           3176,
@@ -53418,7 +53493,8 @@ window.BENCHMARK_DATA = {
           12603.91444162222,
           26656.025815691268,
           11316.766002948467,
-          26028.70656738281
+          26028.70656738281,
+          15590.14028676351
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54138,6 +54214,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -54176,13 +54253,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -54192,7 +54276,8 @@ window.BENCHMARK_DATA = {
           3115.3962191263836,
           5879.949660746256,
           2672.734001977103,
-          5520.70621287028
+          5520.70621287028,
+          3987.009569440569
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54204,6 +54289,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -54225,7 +54311,8 @@ window.BENCHMARK_DATA = {
           32265.072572980607,
           83063.9206891741,
           29970.870603434243,
-          84091.42727225168
+          84091.42727225168,
+          53261.49040120443
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54240,7 +54327,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54278,13 +54366,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -54294,7 +54389,8 @@ window.BENCHMARK_DATA = {
           341.0223775931767,
           535.4486650058201,
           272.6125044482095,
-          540.926056098938
+          540.926056098938,
+          423.7307744026184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54306,6 +54402,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -54327,7 +54424,8 @@ window.BENCHMARK_DATA = {
           13434.774471028646,
           33315.1684526716,
           9999.445686848958,
-          30943.731740315754
+          30943.731740315754,
+          14791.289885384696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54342,7 +54440,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
