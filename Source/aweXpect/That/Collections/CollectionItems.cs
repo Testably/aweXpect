@@ -67,6 +67,25 @@ internal readonly struct CollectionItems<TItem>
 			: (actual as ICollection)?.Count;
 
 	/// <summary>
+	///     Casts the <paramref name="item" /> to <typeparamref name="TMatch" />, which can fail for an untyped item.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> item is not matched by a type pattern, but is a valid value whenever
+	///     <typeparamref name="TMatch" /> admits it.
+	/// </remarks>
+	public static bool TryCast<TMatch>(TItem item, out TMatch matched)
+	{
+		if (item is TMatch typed)
+		{
+			matched = typed;
+			return true;
+		}
+
+		matched = default!;
+		return item is null && default(TMatch) is null;
+	}
+
+	/// <summary>
 	///     Whether a subject of type <typeparamref name="TEnumerable" /> is read with the item type.
 	/// </summary>
 	public static bool IsTyped<TEnumerable>()

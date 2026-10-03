@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				StartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+				StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -84,7 +84,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.ComparesByOrdinalEquality);
-				StartsWithConstraint<string?, string?> constraint = new(it, grammars,
+				StartsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -114,7 +114,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				StartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+				StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -143,7 +143,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
+				StartsWithConstraint<IEnumerable?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
@@ -184,7 +184,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.HasDefaultMatchType);
-				StartsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
+				StartsWithConstraint<IEnumerable?, object?, string?> constraint = new(
 					it, grammars,
 					Formatter.Format(expectedItems), expectedItems, itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -211,7 +211,7 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+				StartsWithConstraint<TCollection?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -240,7 +240,7 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				StartsWithForEnumerableConstraint<TCollection, string?> constraint = new(
+				StartsWithConstraint<TCollection?, object?, string?> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -271,7 +271,7 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+				StartsWithConstraint<TCollection?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -281,13 +281,13 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	private sealed class StartsWithConstraint<TItem, TMatch>
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-		where TItem : TMatch
+	private sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>
+		: ConstraintResult.WithNotNullValue<TEnumerable>,
+			IAsyncContextConstraint<TEnumerable>
+		where TEnumerable : IEnumerable?
 	{
 		private CollectionContext _collectionContext;
-		private readonly TItem[] _expected;
+		private readonly TMatch[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
 		private readonly IOptionsEquality<TMatch> _options;
@@ -295,7 +295,7 @@ public static partial class ThatEnumerable
 		private TItem? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
-		private IEnumerable<TItem>? _materializedEnumerable;
+		private IEnumerable<TItem>? _items;
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
@@ -305,136 +305,6 @@ public static partial class ThatEnumerable
 		}
 
 		public StartsWithConstraint(
-			string it,
-			ExpectationGrammars grammars,
-			string expectedExpression,
-			TItem[] expected,
-			IOptionsEquality<TMatch> options,
-			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
-		{
-			_it = it;
-			_expectedExpression = expectedExpression;
-			_expected = expected;
-			_options = options;
-			_useComparerOf = useComparerOf;
-		}
-
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			_useComparerOf?.Invoke(actual);
-			if (_expected.Length == 0)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			_index = 0;
-			_foundMismatch = false;
-			foreach (TItem item in _materializedEnumerable)
-			{
-				TItem expectedItem = _expected[_index++];
-				if (!await _options.AreConsideredEqual(item, expectedItem))
-				{
-					_firstMismatchItem = item;
-					_foundMismatch = true;
-					_collectionContext.Set(_materializedEnumerable);
-					Outcome = Outcome.Failure;
-					return this;
-				}
-
-				if (_expected.Length == _index)
-				{
-					Outcome = Outcome.Success;
-					return this;
-				}
-			}
-
-			_collectionContext.Set(_materializedEnumerable);
-			Outcome = Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("starts with ", "start with ")).Append(_expectedExpression);
-			stringBuilder.Append(_options);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_foundMismatch)
-			{
-				stringBuilder.Append(_it).Append(" contained item ");
-				Formatter.Format(stringBuilder, _firstMismatchItem);
-				stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
-				stringBuilder.AppendExpectedItem(_expected[_index - 1], _options);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" contained only ").AppendItemCount(_index).Append(" and lacked ")
-					.AppendItemCount(_expected.Length - _index).Append(": ");
-				Formatter.Format(stringBuilder, _expected.Skip(_index), FormattingOptions.MultipleLines);
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("does not start with ", "do not start with "))
-				.Append(_expectedExpression);
-			stringBuilder.Append(_options);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_expected.Length == 0)
-			{
-				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
-				Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" did start with ");
-				Formatter.Format(stringBuilder, _materializedEnumerable?.Take(_index),
-					typeof(TItem).GetFormattingOption(_index));
-			}
-		}
-	}
-
-	private sealed class StartsWithForEnumerableConstraint<TEnumerable, TMatch>
-		: ConstraintResult.WithNotNullValue<TEnumerable?>,
-			IAsyncContextConstraint<TEnumerable?>
-		where TEnumerable : IEnumerable
-	{
-		private CollectionContext _collectionContext;
-		private readonly TMatch[] _expected;
-		private readonly string _expectedExpression;
-		private readonly string _it;
-		private readonly IOptionsEquality<TMatch> _options;
-		private readonly Func<object?, bool>? _useComparerOf;
-		private object? _firstMismatchItem;
-		private bool _foundMismatch;
-		private int _index;
-		private IEnumerable? _materializedEnumerable;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			contexts.AddOptionsContexts(_options);
-		}
-
-		public StartsWithForEnumerableConstraint(
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
@@ -449,10 +319,14 @@ public static partial class ThatEnumerable
 			_useComparerOf = useComparerOf;
 		}
 
-		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
+		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
+			_firstMismatchItem = default;
+			_foundMismatch = false;
+			_index = 0;
+			_items = null;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -466,24 +340,24 @@ public static partial class ThatEnumerable
 			}
 
 			_useComparerOf?.Invoke(actual);
-			if (_expected.Length == 0)
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			_items = materialized.Items;
+			foreach (TItem item in _items)
 			{
-				Outcome = Outcome.Success;
-				return this;
-			}
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
+				{
+					Outcome = Outcome.Undecided;
+					materialized.SetContext(ref _collectionContext, true);
+					return this;
+				}
 
-			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			_index = 0;
-			_foundMismatch = false;
-			foreach (object? item in _materializedEnumerable)
-			{
-				object? expectedItem = _expected[_index++];
-				if (!TryCastItem(item, out TMatch matchedItem) ||
+				TMatch expectedItem = _expected[_index++];
+				if (!CollectionItems<TItem>.TryCast(item, out TMatch matchedItem) ||
 				    !await _options.AreConsideredEqual(matchedItem, expectedItem))
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_collectionContext.Set(_materializedEnumerable);
+					materialized.SetContext(ref _collectionContext);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -495,7 +369,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			_collectionContext.Set(_materializedEnumerable);
+			materialized.SetContext(ref _collectionContext);
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -532,17 +406,22 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_expected.Length == 0)
-			{
-				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
-				Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
-			}
-			else
-			{
-				IEnumerable<object?> prefix = _materializedEnumerable?.Cast<object?>().Take(_index) ?? [];
-				stringBuilder.Append(_it).Append(" did start with ");
-				Formatter.Format(stringBuilder, prefix, prefix.GetItemType().GetFormattingOption(_index));
-			}
+			stringBuilder.Append(_it).Append(" did start with ");
+			AppendItems<TEnumerable, TItem>(stringBuilder, _items?.Take(_index) ?? [], _index);
 		}
+	}
+
+	/// <summary>
+	///     Appends the <paramref name="count" /> <paramref name="items" />, laid out by their type, or for untyped items by
+	///     the type of the first one that is not <see langword="null" />.
+	/// </summary>
+	private static void AppendItems<TEnumerable, TItem>(StringBuilder stringBuilder, IEnumerable<TItem> items,
+		int count)
+		where TEnumerable : IEnumerable?
+	{
+		Type itemType = CollectionItems<TItem>.IsTyped<TEnumerable>()
+			? typeof(TItem)
+			: items.Cast<object?>().GetItemType();
+		Formatter.Format(stringBuilder, items, itemType.GetFormattingOption(count));
 	}
 }

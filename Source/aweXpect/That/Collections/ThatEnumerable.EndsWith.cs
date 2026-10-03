@@ -43,7 +43,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+				EndsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -72,7 +72,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.ComparesByOrdinalEquality);
-				EndsWithConstraint<string?, string?> constraint = new(it, grammars,
+				EndsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -102,7 +102,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+				EndsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -131,7 +131,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				EndsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
+				EndsWithConstraint<IEnumerable?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
@@ -172,7 +172,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.HasDefaultMatchType);
-				EndsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
+				EndsWithConstraint<IEnumerable?, object?, string?> constraint = new(
 					it, grammars,
 					Formatter.Format(expectedItems), expectedItems, itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -199,7 +199,7 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+				EndsWithConstraint<TCollection?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -228,7 +228,7 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				EndsWithForEnumerableConstraint<TCollection, string?> constraint = new(
+				EndsWithConstraint<TCollection?, object?, string?> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -258,7 +258,7 @@ public static partial class ThatEnumerable
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				EndsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+				EndsWithConstraint<TCollection?, object?, TItem> constraint = new(
 					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
@@ -268,13 +268,13 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	private sealed class EndsWithConstraint<TItem, TMatch>
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-		where TItem : TMatch
+	private sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>
+		: ConstraintResult.WithNotNullValue<TEnumerable>,
+			IAsyncContextConstraint<TEnumerable>
+		where TEnumerable : IEnumerable?
 	{
 		private CollectionContext _collectionContext;
-		private readonly TItem[] _expected;
+		private readonly TMatch[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
 		private readonly IOptionsEquality<TMatch> _options;
@@ -297,7 +297,7 @@ public static partial class ThatEnumerable
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
-			TItem[] expected,
+			TMatch[] expected,
 			IOptionsEquality<TMatch> options,
 			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
@@ -308,11 +308,19 @@ public static partial class ThatEnumerable
 			_useComparerOf = useComparerOf;
 		}
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
+			_firstMismatchItem = default;
+			_foundMismatch = false;
+			_items = null;
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -320,29 +328,21 @@ public static partial class ThatEnumerable
 			}
 
 			_useComparerOf?.Invoke(actual);
-			if (_expected.Length == 0)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			IEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			_foundMismatch = false;
-			if (materializedEnumerable is TItem[] or List<TItem>)
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			if (materialized.Value is TItem[] or List<TItem>)
 			{
 				// The items are already in memory, and reading them by index calls no code of the caller.
-				_items = (IList<TItem>)materializedEnumerable;
+				_items = (IList<TItem>)materialized.Value;
 			}
 			else
 			{
 				List<TItem> items = [];
-				foreach (TItem item in materializedEnumerable)
+				foreach (TItem item in materialized.Items)
 				{
-					if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
+					if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 					{
 						Outcome = Outcome.Undecided;
-						_collectionContext.Set(materializedEnumerable, true);
+						materialized.SetContext(ref _collectionContext, true);
 						return this;
 					}
 
@@ -359,17 +359,17 @@ public static partial class ThatEnumerable
 				if (_index + _offset < 0)
 				{
 					Outcome = Outcome.Failure;
-					_collectionContext.Set(materializedEnumerable);
+					materialized.SetContext(ref _collectionContext);
 					return this;
 				}
 
 				TItem item = _items[_index + _offset];
-				TItem expectedItem = _expected[_index];
-				if (!await _options.AreConsideredEqual(item, expectedItem))
+				if (!CollectionItems<TItem>.TryCast(item, out TMatch matchedItem) ||
+				    !await _options.AreConsideredEqual(matchedItem, _expected[_index]))
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_collectionContext.Set(materializedEnumerable);
+					materialized.SetContext(ref _collectionContext);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -410,168 +410,8 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_expected.Length == 0)
-			{
-				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
-				Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, _items?.Skip(_offset),
-					typeof(TItem).GetFormattingOption(_expected.Length));
-			}
-		}
-	}
-
-	private sealed class EndsWithForEnumerableConstraint<TEnumerable, TMatch>
-		: ConstraintResult.WithNotNullValue<TEnumerable?>,
-			IAsyncContextConstraint<TEnumerable?>
-		where TEnumerable : IEnumerable
-	{
-		private CollectionContext _collectionContext;
-		private readonly TMatch[] _expected;
-		private readonly string _expectedExpression;
-		private readonly string _it;
-		private readonly IOptionsEquality<TMatch> _options;
-		private readonly Func<object?, bool>? _useComparerOf;
-		private object? _firstMismatchItem;
-		private bool _foundMismatch;
-		private int _index;
-		private List<object?>? _items;
-		private int _itemsCount;
-		private int _offset;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			contexts.AddOptionsContexts(_options);
-		}
-
-		public EndsWithForEnumerableConstraint(
-			string it,
-			ExpectationGrammars grammars,
-			string expectedExpression,
-			TMatch[] expected,
-			IOptionsEquality<TMatch> options,
-			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
-		{
-			_it = it;
-			_expectedExpression = expectedExpression;
-			_expected = expected;
-			_options = options;
-			_useComparerOf = useComparerOf;
-		}
-
-		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return this.AsNullSubject(It);
-			}
-
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			_useComparerOf?.Invoke(actual);
-			if (_expected.Length == 0)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			_items = [];
-			_foundMismatch = false;
-			foreach (object? item in materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materializedEnumerable, true);
-					return this;
-				}
-
-				_items.Add(item);
-			}
-
-			_itemsCount = _items.Count;
-			_offset = _itemsCount - _expected.Length;
-			for (_index = _expected.Length - 1; _index >= 0; _index--)
-			{
-				if (_index + _offset < 0)
-				{
-					Outcome = Outcome.Failure;
-					_collectionContext.Set(materializedEnumerable);
-					return this;
-				}
-
-				object? item = _items[_index + _offset];
-				TMatch expectedItem = _expected[_index];
-				if (!TryCastItem(item, out TMatch matchedItem) ||
-				    !await _options.AreConsideredEqual(matchedItem, expectedItem))
-				{
-					_firstMismatchItem = item;
-					_foundMismatch = true;
-					_collectionContext.Set(materializedEnumerable);
-					Outcome = Outcome.Failure;
-					return this;
-				}
-			}
-
-			Outcome = Outcome.Success;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("ends with ", "end with ")).Append(_expectedExpression);
-			stringBuilder.Append(_options);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_foundMismatch)
-			{
-				stringBuilder.Append(_it).Append(" contained item ");
-				Formatter.Format(stringBuilder, _firstMismatchItem);
-				stringBuilder.Append(" at index ").Append(_index + _offset).Append(" instead of ");
-				stringBuilder.AppendExpectedItem(_expected[_index], _options);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" contained only ").AppendItemCount(_itemsCount).Append(" and lacked ")
-					.AppendItemCount(_expected.Length - _itemsCount).Append(": ");
-				Formatter.Format(stringBuilder, _expected.Take(-_offset), FormattingOptions.MultipleLines);
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("does not end with ", "do not end with ")).Append(_expectedExpression);
-			stringBuilder.Append(_options);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_expected.Length == 0)
-			{
-				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
-				Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
-			}
-			else
-			{
-				IEnumerable<object?> suffix = _items?.Skip(_offset) ?? [];
-				stringBuilder.Append(_it).Append(" did end with ");
-				Formatter.Format(stringBuilder, suffix, suffix.GetItemType().GetFormattingOption(_expected.Length));
-			}
+			stringBuilder.Append(_it).Append(" did end with ");
+			AppendItems<TEnumerable, TItem>(stringBuilder, _items?.Skip(_offset) ?? [], _expected.Length);
 		}
 	}
 }

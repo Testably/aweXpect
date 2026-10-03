@@ -145,6 +145,31 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenRetriedAfterAMismatchWithAnEmptySubject_ShouldDescribeTheLastAttempt()
+			{
+				int attempts = 0;
+
+				IEnumerable<int> GetSubject()
+					=> attempts++ == 0 ? [2,] : [];
+
+				async Task Act()
+					=> await That(GetSubject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.StartsWith(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that GetSubject
+					             eventually starts with [1] within 0:00.200,
+					             but it contained only 0 items and lacked 1 item: [
+					               1
+					             ]
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
 			{
 				int attempts = 0;

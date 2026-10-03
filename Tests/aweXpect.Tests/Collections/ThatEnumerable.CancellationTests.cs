@@ -1120,6 +1120,36 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
+		[Fact]
+		public async Task WhenTimeoutElapses_ShouldFailStartsWith()
+		{
+			IEnumerable<int> subject = SlowItems(1, 2, 3);
+
+			async Task Act()
+				=> await That(subject).StartsWith(1, 2, 3).WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             starts with [1, 2, 3],
+				             but it did not finish within 0:00.050
+
+				             Collection:
+				             [1, (… and maybe more)]
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a timeout that elapsed while an item was read must not be ignored, as with EndsWith");
+
+			static IEnumerable<int> SlowItems(params int[] items)
+			{
+				foreach (int item in items)
+				{
+					Thread.Sleep(100);
+					yield return item;
+				}
+			}
+		}
+
 		private static bool Cancel(CancellationTokenSource cts, bool result)
 		{
 			cts.Cancel();
