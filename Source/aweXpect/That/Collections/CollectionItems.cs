@@ -43,7 +43,7 @@ internal readonly struct CollectionItems<TItem>
 	/// </summary>
 	public static CollectionItems<TItem> Of<TEnumerable>(TEnumerable actual)
 		where TEnumerable : IEnumerable?
-		=> IsTyped<TEnumerable>.Value
+		=> IsTypedSubject<TEnumerable>.Value
 			? new CollectionItems<TItem>((IEnumerable<TItem>)actual!, null)
 			: new CollectionItems<TItem>(null, actual);
 
@@ -52,7 +52,7 @@ internal readonly struct CollectionItems<TItem>
 	/// </summary>
 	public static CollectionItems<TItem> Materialize<TEnumerable>(TEnumerable actual, IEvaluationContext context)
 		where TEnumerable : IEnumerable?
-		=> IsTyped<TEnumerable>.Value
+		=> IsTypedSubject<TEnumerable>.Value
 			? new CollectionItems<TItem>(context.UseMaterializedEnumerable((IEnumerable<TItem>)actual!), null)
 			: new CollectionItems<TItem>(null, context.UseMaterializedEnumerable(actual));
 
@@ -62,9 +62,15 @@ internal readonly struct CollectionItems<TItem>
 	/// </summary>
 	public static int? CountOf<TEnumerable>(TEnumerable actual)
 		where TEnumerable : IEnumerable?
-		=> IsTyped<TEnumerable>.Value
+		=> IsTypedSubject<TEnumerable>.Value
 			? (actual as ICollection<TItem>)?.Count
 			: (actual as ICollection)?.Count;
+
+	/// <summary>
+	///     Whether a subject of type <typeparamref name="TEnumerable" /> is read with the item type.
+	/// </summary>
+	public static bool IsTyped<TEnumerable>()
+		=> IsTypedSubject<TEnumerable>.Value;
 
 	/// <summary>
 	///     Whether the <paramref name="cancellationToken" /> is canceled before all items are available.
@@ -89,8 +95,16 @@ internal readonly struct CollectionItems<TItem>
 		}
 	}
 
-	private static class IsTyped<TEnumerable>
+	/// <remarks>
+	///     Untyped items are read as <see langword="object" />, which every collection of a reference type converts to by
+	///     variance, e.g. an <c>ImmutableArray&lt;string&gt;</c>, although the other collection interfaces, e.g.
+	///     <see cref="ICollection{T}" />, are invariant. So only a subject of exactly <c>IEnumerable&lt;object&gt;</c>
+	///     reads <see langword="object" /> items typed.
+	/// </remarks>
+	private static class IsTypedSubject<TEnumerable>
 	{
-		public static readonly bool Value = typeof(IEnumerable<TItem>).IsAssignableFrom(typeof(TEnumerable));
+		public static readonly bool Value = typeof(TEnumerable) == typeof(IEnumerable<TItem>) ||
+		                                    (typeof(TItem) != typeof(object) &&
+		                                     typeof(IEnumerable<TItem>).IsAssignableFrom(typeof(TEnumerable)));
 	}
 }

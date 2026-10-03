@@ -659,227 +659,60 @@ public static partial class ThatEnumerable
 		}
 	}
 
-	private sealed class CollectionConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		string verb)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
-				expectationText, verb),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-		}
-
-		public Task<ConstraintResult> IsMetBy(
-			IEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			bool cancelEarly = actual is not ICollection<TItem>;
-			foreach (TItem item in materialized)
-			{
-				Record(item, UserCode.Invoke(predicate, item, "the predicate"));
-				if (cancelEarly && IsDetermined)
-				{
-					CompleteEarly();
-					_collectionContext.Set(materialized);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-			}
-
-			Complete();
-			_collectionContext.Set(materialized);
-			return Task.FromResult<ConstraintResult>(this);
-		}
-	}
-
-	private sealed class AsyncCollectionConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, ValueTask<bool>> predicate,
-		string verb,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
-				expectationText, verb),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(
-			IEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				return this;
-			}
-
-			useComparerOf?.Invoke(actual);
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			bool cancelEarly = actual is not ICollection<TItem>;
-			foreach (TItem item in materialized)
-			{
-				Record(item, await predicate(item));
-				if (cancelEarly && IsDetermined)
-				{
-					CompleteEarly();
-					_collectionContext.Set(materialized);
-					return this;
-				}
-
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return this;
-				}
-			}
-
-			Complete();
-			_collectionContext.Set(materialized);
-			return this;
-		}
-	}
-
 	/// <remarks>
 	///     The items of a non-generic collection are formatted as the type of its first item that is not
 	///     <see langword="null" />.
 	/// </remarks>
-	private sealed class CollectionForEnumerableConstraint<TEnumerable>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<object?, bool> predicate,
-		string verb)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
-				expectationText, verb),
+	private sealed class CollectionConstraint<TEnumerable, TItem>
+		: QuantifiedCollectionConstraint<TEnumerable, TItem>,
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private readonly Action<ResultContextCollector>? _appendOptionsContexts;
+		private readonly Func<TItem, ValueTask<bool>>? _asyncPredicate;
+		private readonly Func<TItem, bool>? _predicate;
+		private readonly Func<object?, bool>? _useComparerOf;
 		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		public CollectionConstraint(
+			string it,
+			ExpectationGrammars grammars,
+			EnumerableQuantifier quantifier,
+			Func<ExpectationGrammars, string> expectationText,
+			Func<TItem, bool> predicate,
+			string verb)
+			: base(it, grammars, quantifier, expectationText, verb)
+		{
+			_predicate = predicate;
+		}
+
+		public CollectionConstraint(
+			string it,
+			ExpectationGrammars grammars,
+			EnumerableQuantifier quantifier,
+			Func<ExpectationGrammars, string> expectationText,
+			Func<TItem, ValueTask<bool>> predicate,
+			string verb,
+			Func<object?, bool>? useComparerOf = null,
+			Action<ResultContextCollector>? appendOptionsContexts = null)
+			: base(it, grammars, quantifier, expectationText, verb)
+		{
+			_asyncPredicate = predicate;
+			_useComparerOf = useComparerOf;
+			_appendOptionsContexts = appendOptionsContexts;
+		}
+
+		/// <inheritdoc />
+		protected override Type ItemType => _itemType ?? typeof(TItem);
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			_collectionContext.AppendTo(contexts);
 			base.AppendContexts(contexts);
+			_appendOptionsContexts?.Invoke(contexts);
 		}
-
-		protected override Type ItemType => _itemType ?? typeof(object);
-
-		public Task<ConstraintResult> IsMetBy(
-			TEnumerable actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return Task.FromResult(this.AsNullSubject(It));
-			}
-
-			if (actual is null)
-			{
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			bool cancelEarly = actual is not ICollection;
-			foreach (object? item in materialized)
-			{
-				_itemType ??= item?.GetType();
-				Record(item, UserCode.Invoke(predicate, item, "the predicate"));
-				if (cancelEarly && IsDetermined)
-				{
-					CompleteEarly();
-					_collectionContext.Set(materialized);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-			}
-
-			Complete();
-			_collectionContext.Set(materialized);
-			return Task.FromResult<ConstraintResult>(this);
-		}
-	}
-
-	/// <remarks>
-	///     The items are formatted as in <see cref="CollectionForEnumerableConstraint{TEnumerable}" />.
-	/// </remarks>
-	private sealed class AsyncCollectionForEnumerableConstraint<TEnumerable>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<object?, ValueTask<bool>> predicate,
-		string verb,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
-				expectationText, verb),
-			IAsyncContextConstraint<TEnumerable>
-		where TEnumerable : IEnumerable?
-	{
-		private CollectionContext _collectionContext;
-		private Type? _itemType;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		protected override Type ItemType => _itemType ?? typeof(object);
 
 		public async Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
@@ -887,6 +720,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
+			_itemType = null;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -898,30 +732,37 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			useComparerOf?.Invoke(actual);
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			bool cancelEarly = actual is not ICollection;
-			foreach (object? item in materialized)
+			_useComparerOf?.Invoke(actual);
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
+			bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
+			foreach (TItem item in materialized.Items)
 			{
-				_itemType ??= item?.GetType();
-				Record(item, await predicate(item));
+				if (isUntyped)
+				{
+					_itemType ??= item?.GetType();
+				}
+
+				Record(item, _asyncPredicate is null
+					? UserCode.Invoke(_predicate!, item, "the predicate")
+					: await _asyncPredicate(item));
 				if (cancelEarly && IsDetermined)
 				{
 					CompleteEarly();
-					_collectionContext.Set(materialized);
+					materialized.SetContext(ref _collectionContext);
 					return this;
 				}
 
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
+					materialized.SetContext(ref _collectionContext, true);
 					return this;
 				}
 			}
 
 			Complete();
-			_collectionContext.Set(materialized);
+			materialized.SetContext(ref _collectionContext);
 			return this;
 		}
 	}
