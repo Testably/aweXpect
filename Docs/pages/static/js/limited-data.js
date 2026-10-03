@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          240.5099015235901,
           258.94757595062254,
           218.62173357009888,
           306.1412992477417,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           234.52247835795086,
           341.13765646616616,
           173.47869953087397,
-          372.90322062174477
+          372.90322062174477,
+          281.60245819091796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -466,6 +465,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.75712037086487,
           284.532284450531,
           231.4863794485728,
           249.71533705393475,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           196.33848306337993,
           240.80439786911012,
           133.22139133725847,
-          237.84199518423813
+          237.84199518423813,
+          204.47215623514992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          297280.58162434894,
           318864.2989676339,
           252249.9796875,
           318501.8701497396,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           187347.56459960938,
           295734.0402483259,
           146925.58851841517,
-          290380.4139927455
+          290380.4139927455,
+          220585.15937151227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          617976,
           617976,
           617976,
           618120,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           86137,
           86138,
           86137,
+          86138,
           86138
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2266648.5515625,
           2462532.89375,
           1794733.3513020833,
           2599195.6180245536,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1424963.7809895833,
           2610232.06484375,
           1254349.052734375,
-          2515918.62109375
+          2515918.62109375,
+          1808925.5673177084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841609,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841611,
           4841651,
           4841647,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
       {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          448.54104007993425,
           448.95081618626915,
           388.24630062920704,
           531.7529220581055,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           360.124720287323,
           502.90954602559407,
           239.24562018712362,
-          532.9993427276611
+          532.9993427276611,
+          388.9199968973796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1368,
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1682,6 +1681,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          498.14485263824463,
           495.09659112294514,
           443.9078366279602,
           492.4942326863607,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           372.3125605583191,
           479.83998171488446,
           261.75292506217954,
-          480.38019987742103
+          480.38019987742103,
+          400.45877707799275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.34549614361356,
           265.6497843106588,
           231.98326710065206,
           301.0016506635226,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           244.0821105003357,
           390.416090742747,
           192.22235318592615,
-          375.72293860117594
+          375.72293860117594,
+          303.6057075353769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2290,6 +2289,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.9226801554362,
           243.09207551819938,
           227.02876474062603,
           243.2290725026812,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           193.77425656318664,
           244.9692392985026,
           141.10517188707988,
-          240.2495800336202
+          240.2495800336202,
+          191.07920319239298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          510.2206741968791,
           542.7885704040527,
           410.8887882868449,
           576.9623188018799,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           357.7716964483261,
           512.7948634465536,
           224.305471438628,
-          559.1372151692708
+          559.1372151692708,
+          392.96149935041154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1256,
           1400,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1159.5472478230795,
           1204.099277496338,
           1003.8728504180908,
           1192.900960786002,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           865.8583909670512,
           1246.9402375539144,
           621.1622296651204,
-          1159.2521332332067
+          1159.2521332332067,
+          882.7562196731567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1863.4957852363586,
           1970.669078009469,
           1242.9716849009196,
           2024.6299023946126,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1289.945943069458,
           2672.669841512044,
           1450.9872616254365,
-          2691.866480255127
+          2691.866480255127,
+          1944.4431457519531
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2752,
           2752,
           2752,
           3104,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
+          2896,
           2896
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1335.7106372833252,
           1379.4092335019793,
           1161.6914187113443,
           1350.3154574076334,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           990.7968257023738,
           1324.7816797892253,
           728.2218722025553,
-          1250.2981399536134
+          1250.2981399536134,
+          1062.8478544871011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "256937ca3c850676c0475a20f436d0af8b4205be",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
-      },
-      {
         "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
-      "256937ca",
       "9e372b47",
       "5a801961",
       "1305e06f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2466.2980736952563,
           2576.014488728841,
           1651.6465266301082,
           2581.742345937093,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1636.337705930074,
           3245.4842256818497,
           1730.6978145326887,
-          3242.6715207781112
+          3242.6715207781112,
+          2463.241643172044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2944,
           2944,
           2944,
           3296,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
+          3176,
           3176
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19562.031495157877,
           20710.378143310547,
           14474.885506184895,
           26294.660250150242,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           12603.91444162222,
           26656.025815691268,
           11316.766002948467,
-          26028.70656738281
+          26028.70656738281,
+          15590.14028676351
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4194,7 +4194,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4240,6 +4239,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
@@ -4280,13 +4280,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -4296,7 +4303,8 @@ window.BENCHMARK_DATA = {
           3115.3962191263836,
           5879.949660746256,
           2672.734001977103,
-          5520.70621287028
+          5520.70621287028,
+          3987.009569440569
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4308,6 +4316,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -4329,7 +4338,8 @@ window.BENCHMARK_DATA = {
           32265.072572980607,
           83063.9206891741,
           29970.870603434243,
-          84091.42727225168
+          84091.42727225168,
+          53261.49040120443
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4344,7 +4354,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4382,13 +4393,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
         "message": "perf: evaluate an expectation through a ValueTask chain and return a met result right away (#1574)"
+      },
+      {
+        "sha": "6f9d4282e4b1abd2b047c507a78ed5a83abe8d56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
+        "message": "ci: publish benchmark results only from main (#1575)"
       }
     ],
     "labels": [
       "fc7ed429",
       "e49da50c",
       "e1449d7d",
-      "ec5a355e"
+      "ec5a355e",
+      "6f9d4282"
     ],
     "datasets": [
       {
@@ -4398,7 +4416,8 @@ window.BENCHMARK_DATA = {
           341.0223775931767,
           535.4486650058201,
           272.6125044482095,
-          540.926056098938
+          540.926056098938,
+          423.7307744026184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4410,6 +4429,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -4431,7 +4451,8 @@ window.BENCHMARK_DATA = {
           13434.774471028646,
           33315.1684526716,
           9999.445686848958,
-          30943.731740315754
+          30943.731740315754,
+          14791.289885384696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4446,7 +4467,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
