@@ -30,19 +30,7 @@ public sealed partial class ThatEnumerable
 					             but it could not be verified, because the evaluation was already canceled
 
 					             Collection:
-					             [
-					               0,
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6,
-					               7,
-					               8,
-					               9,
-					               (… and maybe more)
-					             ]
+					             [0, 1, 2, 3, 4, 5, 6, (… and maybe more)]
 					             """);
 			}
 
@@ -73,19 +61,7 @@ public sealed partial class ThatEnumerable
 					             but at least 2 of at least 2 were
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -134,7 +110,7 @@ public sealed partial class ThatEnumerable
 					             but at least 4 of at least 4 were
 
 					             Collection:
-					             [1, 1, 1, 1, 2, 2, 3]
+					             [1, 1, 1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -175,7 +151,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "foo",
 					               "FOO",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -233,7 +209,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "foo",
 					               "foo",
-					               "bar"
+					               (… and maybe more)
 					             ]
 					             """);
 			}

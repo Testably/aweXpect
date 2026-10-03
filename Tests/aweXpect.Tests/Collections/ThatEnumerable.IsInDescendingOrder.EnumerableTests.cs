@@ -105,7 +105,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInDescendingOrder.MyIntClass {
 					                 Value = 3
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

@@ -192,7 +192,7 @@ public sealed partial class ThatEnumerable
 						             but it had at least 3 items
 
 						             Collection:
-						             [1, 2, 3]
+						             [1, 2, 3, (… and maybe more)]
 						             """);
 				}
 

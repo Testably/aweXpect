@@ -279,7 +279,7 @@ public sealed partial class ThatException
 					               Exception: inner1*,
 					               AggregateException:*,
 					               Exception: inner3A*,
-					               Exception: inner3B*
+					               (… and maybe more)
 					             ]
 					             """).AsWildcard();
 			}
@@ -312,9 +312,7 @@ public sealed partial class ThatException
 					             Collection:
 					             [
 					               Exception: inner1*,
-					               AggregateException:*,
-					               Exception: inner3A*,
-					               Exception: inner3B*
+					               (… and maybe more)
 					             ]
 					             """).AsWildcard();
 			}

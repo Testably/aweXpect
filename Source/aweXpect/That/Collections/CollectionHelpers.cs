@@ -121,7 +121,7 @@ internal static class CollectionHelpers
 					.Add(new ResultContext.SyncCallback("Collection",
 						() => IsHidden(onlyOnFailureOf)
 							? null
-							: FormatCollection(value, totalCount).AppendIsIncomplete(isIncomplete),
+							: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
@@ -144,7 +144,7 @@ internal static class CollectionHelpers
 					.Add(new ResultContext.SyncCallback("Collection",
 						() => IsHidden(onlyOnFailureOf)
 							? null
-							: FormatCollection(value, GetItemTypeOfListedItems(value)).AppendIsIncomplete(isIncomplete),
+							: FormatCollection(value)?.AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
@@ -380,63 +380,59 @@ internal static class CollectionHelpers
 	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
 	///     be rendered as the total from which the number of remaining items is derived.
 	/// </summary>
-	private static string FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
+	private static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
 	{
 		if (value is IKeyedCollection keyed)
 		{
 			return keyed.Format();
 		}
 
+		if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
+		{
+			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
+		}
+
 		totalCount ??= value switch
 		{
 			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.CountUpToFormatterLimit(value),
+			ICountable countable => countable.Count,
 			_ => null,
 		};
 		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
 			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
 	}
 
-	private static string FormatCollection(IEnumerable value, Type itemType)
+	private static string? FormatCollection(IEnumerable value)
 	{
+		if (value is IMaterializedEnumerable { Count: null, } materialized)
+		{
+			return FormatReadItems(materialized.MaterializedItems, materialized.MaterializedItems.GetItemType());
+		}
+
 		int? totalCount = value switch
 		{
 			ICollection coll => coll.Count,
-			ICountable countable => countable.CountUpToFormatterLimit(value),
+			ICountable countable => countable.Count,
 			_ => null,
 		};
-		return Formatter.Format(value, itemType.GetFormattingOption(totalCount, totalCount));
+		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
 	}
 
 	/// <summary>
-	///     The count of the materialized <paramref name="value" /> is only known once it is enumerated to its end, which an
-	///     expectation that stops early does not do. It is enumerated as far as the formatter lists its items, so that a
-	///     small collection is laid out like a complete one.
+	///     Formats the items that were read from a source that did not reach its end, marked as incomplete.
 	/// </summary>
 	/// <remarks>
-	///     An exception of the source is ignored here, as the formatter enumerates the same items and renders it.
+	///     No further items are read for the context, so that a source that blocks cannot hang the failure message. The
+	///     context is left out while nothing is known about the items.
 	/// </remarks>
-	private static int? CountUpToFormatterLimit(this ICountable countable, IEnumerable value)
-	{
-		if (countable.Count is null)
-		{
-			try
-			{
-				_ = value.ExceedsFormatterLimit();
-			}
-			catch (Exception)
-			{
-				return null;
-			}
-		}
+	private static string? FormatReadItems<TItem>(IReadOnlyList<TItem> items, Type itemType)
+		=> items.Count == 0
+			? null
+			: Formatter.Format(HideCount(items), itemType.GetFormattingOption(items.Count)).AppendIsIncomplete(true);
 
-		return countable.Count;
-	}
-
-#if NET8_0_OR_GREATER
 	/// <summary>
-	///     The materialized items can be only the first items of the asynchronous enumerable, so their count must not be
-	///     rendered as the number of remaining items.
+	///     The materialized items can be only the first items of the source, so their count must not be rendered as the
+	///     number of remaining items.
 	/// </summary>
 	private static IEnumerable<TItem> HideCount<TItem>(IEnumerable<TItem> items)
 	{
@@ -445,7 +441,6 @@ internal static class CollectionHelpers
 			yield return item;
 		}
 	}
-#endif
 
 	internal static bool ExceedsFormatterLimit<TItem>(this IEnumerable<TItem> subject)
 	{

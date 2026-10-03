@@ -82,7 +82,9 @@ public partial class CollectionMatchOptions(
 	///     Ignores duplicates in both collections.
 	/// </summary>
 	/// <remarks>
-	///     Each distinct item is compared once, so <c>[1, 1, 2]</c> matches <c>[1, 2]</c>.
+	///     Only which items occur matters, not how often: every expected item has to be matched by an item, and every
+	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
+	///     <c>[1, 2]</c>.
 	/// </remarks>
 	public void IgnoringDuplicates() => _ignoringDuplicates = true;
 
@@ -556,30 +558,5 @@ public partial class CollectionMatchOptions(
 			ItemExpectationBuilder.AppendReasons(sb);
 			return sb.ToString();
 		}
-	}
-
-	internal sealed class ExpectationItemEqualityComparer<TItem> : IEqualityComparer<ExpectationItem<TItem>>
-	{
-		public bool Equals(ExpectationItem<TItem>? x, ExpectationItem<TItem>? y)
-		{
-			if (ReferenceEquals(x, y))
-			{
-				return true;
-			}
-
-			if (x is null || y is null)
-			{
-				return false;
-			}
-
-			if (x.GetType() != y.GetType())
-			{
-				return false;
-			}
-
-			return x.ItemExpectationBuilder.Equals(y.ItemExpectationBuilder);
-		}
-
-		public int GetHashCode(ExpectationItem<TItem> obj) => obj.ItemExpectationBuilder.GetHashCode();
 	}
 }

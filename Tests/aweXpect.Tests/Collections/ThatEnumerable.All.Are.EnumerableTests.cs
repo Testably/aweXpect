@@ -43,33 +43,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -136,33 +110,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 2
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 3
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 4
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 5
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 6
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 7
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 8
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 9
-						               },
-						               ThatEnumerable.All.Are.MyBaseClass {
-						                 Foo = 10
-						               }
+						               (… and maybe more)
 						             ]
 						             """);
 				}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -831,6 +832,28 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenAnItemMatchesAnExpectedItemAndTheNextOneInAnyOrder_ShouldStopReadingWhenContained()
+		{
+			int readItems = 0;
+
+			IEnumerable<int> Source()
+			{
+				for (int i = 0; i < 1000; i++)
+				{
+					readItems++;
+					yield return 5;
+				}
+			}
+
+			async Task Act()
+				=> await That(Source()).Contains([x => x > 0, x => x > 1,]).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).DoesNotThrow();
+			await That(readItems).IsEqualTo(1)
+				.Because("the first item already matches both predicates, which decides the containment");
+		}
+
+		[Fact]
 		public async Task WhenAnItemMatchesTwoExpectedValuesInAnyOrder_ShouldMatchBoth()
 		{
 			double[] subject = [1.1,];
@@ -882,29 +905,15 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenOneItemMatchesTwoPredicatesInSameOrder_ShouldFail()
+		public async Task WhenOneItemMatchesTwoPredicatesInSameOrder_ShouldSucceed()
 		{
 			int[] subject = [1,];
 
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x > 0, x => x == 1,]).IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             is equal to collection [x => x > 0, x => x == 1,] in order ignoring duplicates,
-				             but it lacked 1 of 2 expected items: x => (x == 1)
-
-				             Collection:
-				             [1]
-
-				             Expected:
-				             [
-				               x => (x > 0),
-				               x => (x == 1)
-				             ]
-				             """)
-				.Because("each predicate needs its own distinct item, as in any order");
+			await That(Act).DoesNotThrow()
+				.Because("only which items occur matters, so the one item may match both predicates, as in any order");
 		}
 
 		[Fact]
@@ -913,12 +922,12 @@ public class CollectionMatchOptionsTests
 			int[] subject = [3, 0, 2, 2,];
 
 			async Task Act()
-				=> await That(subject).Contains([x => x >= 1, x => x == 2,]).IgnoringDuplicates();
+				=> await That(subject).Contains([x => x >= 3, x => x == 2,]).IgnoringDuplicates();
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             contains collection [x => x >= 1, x => x == 2,] in order and contiguous ignoring duplicates,
+				             contains collection [x => x >= 3, x => x == 2,] in order and contiguous ignoring duplicates,
 				             but it contained item 0 at index 1 instead of x => (x == 2)
 
 				             Collection:
@@ -926,7 +935,7 @@ public class CollectionMatchOptionsTests
 
 				             Expected:
 				             [
-				               x => (x >= 1),
+				               x => (x >= 3),
 				               x => (x == 2)
 				             ]
 				             """);
@@ -957,30 +966,103 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenTwoItemsMatchTheSamePredicate_ShouldNotBeDuplicates()
+		public async Task WhenTwoItemsMatchTheSamePredicate_ShouldBeDuplicates()
 		{
 			int[] subject = [1, 4, 2,];
 
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x > 0, x => x == 2,]).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             is equal to collection [x => x > 0, x => x == 2,] in any order ignoring duplicates,
-				             but it contained item 4 at index 1 that was not expected
-
-				             Collection:
-				             [1, 4, 2]
-
-				             Expected:
-				             [
-				               x => (x > 0),
-				               x => (x == 2)
-				             ]
-				             """)
-				.Because("a predicate can match unrelated items, so only equal items are duplicates");
+			await That(Act).DoesNotThrow()
+				.Because("only which items occur matters, so 1 and 4 both count for x > 0, like for expected values");
 		}
+
+		[Theory]
+		[MemberData(nameof(MatchedOnBothSidesCases))]
+		public async Task WithAnyKindOfExpectedItems_ShouldOnlyRequireEachSideToBeMatched(
+			CollectionMatchOptions.EquivalenceRelations relation, string mode, string kind, string subject,
+			string expected, bool isMatch)
+		{
+			CollectionMatchOptions sut = new(relation);
+			if (mode == "any")
+			{
+				sut.InAnyOrder();
+			}
+			else if (mode == "same-interspersed")
+			{
+				sut.IgnoringInterspersedItems();
+			}
+
+			sut.IgnoringDuplicates();
+			IEnumerable<int> expectedValues = expected.Split(',').Select(int.Parse);
+			ICollectionMatcher<int, int> matcher = kind switch
+			{
+				"predicates" => sut.GetCollectionMatcher<int, int>(expectedValues.Select(IsNear)),
+				"expectations" => sut.GetCollectionMatcher<int, int>(expectedValues.Select(IsNearExpectation)),
+				_ => sut.GetCollectionMatcher<int, int>(expectedValues),
+			};
+
+			bool result = await ReferenceCaseTests.Matches(matcher, subject.Split(',').Select(int.Parse),
+				new ReferenceCaseTests.Equality("near"));
+
+			await That(result).IsEqualTo(isMatch)
+				.Because("only which items occur matters, not how often, for values, predicates and expectations alike");
+		}
+
+		public static TheoryData<CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool>
+			MatchedOnBothSidesCases()
+		{
+			const CollectionMatchOptions.EquivalenceRelations equivalent =
+				CollectionMatchOptions.EquivalenceRelations.Equivalent;
+			const CollectionMatchOptions.EquivalenceRelations contains =
+				CollectionMatchOptions.EquivalenceRelations.Contains;
+			const CollectionMatchOptions.EquivalenceRelations containsProperly =
+				CollectionMatchOptions.EquivalenceRelations.ContainsProperly;
+			const CollectionMatchOptions.EquivalenceRelations isContainedIn =
+				CollectionMatchOptions.EquivalenceRelations.IsContainedIn;
+			const CollectionMatchOptions.EquivalenceRelations isContainedInProperly =
+				CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly;
+			(string Subject, string Expected, string Modes, CollectionMatchOptions.EquivalenceRelations[] Matching)[]
+				scenarios =
+				[
+					("5", "4,6", "any,same,same-interspersed", [equivalent, contains, isContainedIn,]),
+					("5,0", "4,6", "any,same,same-interspersed", [contains, containsProperly,]),
+					("5", "4,6,0", "any,same,same-interspersed", [isContainedIn, isContainedInProperly,]),
+					("3,9", "3,9", "any,same,same-interspersed", [equivalent, contains, isContainedIn,]),
+					("9,3", "3,9", "any", [equivalent, contains, isContainedIn,]),
+					("9,3", "3,9", "same,same-interspersed", []),
+				];
+			TheoryData<CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool> data = new();
+			foreach ((string subject, string expected, string modes,
+				         CollectionMatchOptions.EquivalenceRelations[] matching) in scenarios)
+			{
+				foreach (CollectionMatchOptions.EquivalenceRelations relation in new[]
+				         {
+					         equivalent, contains, containsProperly, isContainedIn, isContainedInProperly,
+				         })
+				{
+					foreach (string mode in modes.Split(','))
+					{
+						foreach (string kind in new[] { "values", "predicates", "expectations", })
+						{
+							data.Add(relation, mode, kind, subject, expected, matching.Contains(relation));
+						}
+					}
+				}
+			}
+
+			return data;
+		}
+
+		private static Expression<Func<int, bool>> IsNear(int value)
+			=> item => Math.Abs(item - value) <= 1;
+
+		/// <remarks>
+		///     Every expectation renders the same text, as it is built in a loop over the captured value.
+		/// </remarks>
+		private static CollectionMatchOptions.ExpectationItem<int> IsNearExpectation(int value)
+			=> new(x => x.Satisfies(item => Math.Abs(item - value) <= 1), ExpectationGrammars.None,
+				new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
 	}
 
 	public class IgnoringInterspersedItemsTests
@@ -1053,17 +1135,17 @@ public class CollectionMatchOptionsTests
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly, "same-dup", "div2", "0",
 			"1,0", false)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "0", "<=2,==0",
-			false)]
+			true)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "3,3,2", "<=3,>=0",
 			true)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "0,0,1,3",
 			"==3,<=2,<=2", false)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "3,0,2,2", ">=1,==2",
-			false)]
+			true)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup-interspersed", "pred", "2,0,3,1",
-			"==0,>=2,>=3", false)]
+			"==0,>=2,>=3", true)]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "same-dup", "pred", "1,3,2,2",
-			">=1,<=3,<=3", false)]
+			">=1,<=3,<=3", true)]
 		public async Task ShouldAgreeWithTheReference(CollectionMatchOptions.EquivalenceRelations relation,
 			string mode, string equality, string subject, string expected, bool isMatch)
 		{
@@ -1185,7 +1267,7 @@ public class CollectionMatchOptionsTests
 			});
 		}
 
-		private static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
+		internal static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
 			IOptionsEquality<int> options)
 		{
 			foreach (int item in subject)
@@ -1203,9 +1285,6 @@ public class CollectionMatchOptionsTests
 			return !isCompleteFailure;
 		}
 
-		/// <remarks>
-		///     The value is a constant, so that equal predicates are duplicates.
-		/// </remarks>
 		private static Expression<Func<int, bool>> ToPredicate(string text)
 		{
 			ParameterExpression x = Expression.Parameter(typeof(int), "x");
@@ -1222,7 +1301,7 @@ public class CollectionMatchOptionsTests
 		/// <summary>
 		///     "div2" merges distinct values like ignoring the casing; "near" is not transitive, like a tolerance.
 		/// </summary>
-		private sealed class Equality(string kind) : IOptionsEquality<int>
+		internal sealed class Equality(string kind) : IOptionsEquality<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(expected is int value && kind switch

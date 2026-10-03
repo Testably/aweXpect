@@ -708,7 +708,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 11 unique expected items
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -760,7 +760,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -792,7 +792,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -831,7 +831,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked all 10 unique expected items
+					             but it lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -959,7 +959,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked 2 of 5 expected items:
+					             but it lacked 2 of 6 expected items:
 					               an item that is equal to "a",
 					               an item that is equal to "e"
 
@@ -1848,7 +1848,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked all 11 unique expected items
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -1902,7 +1902,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 5 expected items
 
 					             Collection:
 					             []
@@ -1936,7 +1936,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -1975,7 +1975,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked all 10 unique expected items
+					             but it lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -2103,7 +2103,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked 2 of 5 expected items:
+					             but it lacked 2 of 6 expected items:
 					               an item that is equal to "a",
 					               an item that is equal to "e"
 
@@ -2965,7 +2965,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it lacked all 11 unique expected items
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -3019,7 +3019,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked all 3 unique expected items
+					               lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -3053,7 +3053,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked all 2 unique expected items
+					               lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -3092,7 +3092,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
-					             but it lacked all 10 unique expected items
+					             but it lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -3195,7 +3195,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items
 					             and
-					               lacked 2 of 5 expected items:
+					               lacked 2 of 6 expected items:
 					                 an item that is equal to "a",
 					                 an item that is equal to "e"
 
@@ -4200,7 +4200,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
-					             but it lacked all 11 unique expected items
+					             but it lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -4256,7 +4256,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked all 3 unique expected items
+					               lacked all 5 expected items
 
 					             Collection:
 					             []
@@ -4292,7 +4292,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked all 2 unique expected items
+					               lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -4331,7 +4331,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
-					             but it lacked all 10 unique expected items
+					             but it lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -4434,7 +4434,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items
 					             and
-					               lacked 2 of 5 expected items:
+					               lacked 2 of 6 expected items:
 					                 an item that is equal to "a",
 					                 an item that is equal to "e"
 

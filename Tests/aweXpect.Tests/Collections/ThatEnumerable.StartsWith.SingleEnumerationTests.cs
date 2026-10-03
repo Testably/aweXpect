@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 4
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 4
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
@@ -165,7 +165,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               (… and maybe more)
 					             ]
 					             """)
 					.Because("the guard and the comparison share one enumeration of the expected items");
@@ -187,7 +187,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 4
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
@@ -251,7 +251,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2.0 at index 1 instead of 4.0
 
 					             Collection:
-					             [1.0, 2.0, 3.0]
+					             [1.0, 2.0, (… and maybe more)]
 					             """)
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}

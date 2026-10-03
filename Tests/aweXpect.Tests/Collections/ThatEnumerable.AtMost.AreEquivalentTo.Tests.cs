@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 						             [1, 1, 1, (… and maybe more)]
 
 						             Collection:
-						             [1, 1, 1, 2]
+						             [1, 1, 1, (… and maybe more)]
 
 						             Equivalency options:
 						              - include public fields and properties

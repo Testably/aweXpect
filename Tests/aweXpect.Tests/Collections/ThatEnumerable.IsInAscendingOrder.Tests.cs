@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 					             but it had 3 before 1, which is not in ascending order
 
 					             Collection:
-					             [1, 1, 2, 3, 1]
+					             [1, 1, 2, 3, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -135,7 +135,8 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [
 					               "a",
-					               "A"
+					               "A",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -170,7 +171,8 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [
 					               "a",
-					               "b"
+					               "b",
+					               (… and maybe more)
 					             ]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -196,7 +198,8 @@ public sealed partial class ThatEnumerable
 					               "a",
 					               "b",
 					               "c",
-					               "a"
+					               "a",
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -229,7 +232,8 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [
 					               "a",
-					               "B"
+					               "B",
+					               (… and maybe more)
 					             ]
 					             """)
 					.Because("strings are ordered ordinally, whatever the item type of the collection");
@@ -284,7 +288,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
 					                 Value = 1
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -337,9 +342,7 @@ public sealed partial class ThatEnumerable
 					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
 					                 Value = 2
 					               },
-					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
-					                 Value = 3
-					               }
+					               (… and maybe more)
 					             ]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -428,9 +431,7 @@ public sealed partial class ThatEnumerable
 					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
 					                 Value = 2
 					               },
-					               ThatEnumerable.IsInAscendingOrder.MyIntClass {
-					                 Value = 3
-					               }
+					               (… and maybe more)
 					             ]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
@@ -461,7 +462,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInAscendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "A"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -505,7 +507,8 @@ public sealed partial class ThatEnumerable
 					               },
 					               ThatEnumerable.IsInAscendingOrder.StringMemberTests.MyStringClass {
 					                 Value = "a"
-					               }
+					               },
+					               (… and maybe more)
 					             ]
 					             """);
 			}

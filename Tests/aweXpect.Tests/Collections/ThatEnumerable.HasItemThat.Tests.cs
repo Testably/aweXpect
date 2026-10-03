@@ -1,4 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using aweXpect.Core;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -48,6 +53,72 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(5));
 
 				await That(Act).DoesNotThrow();
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenCancellationLeavesAnItemOfAnImmutableArrayUndecided_ShouldReportTheEvaluationAsCanceled()
+			{
+				using CancellationTokenSource cts = new();
+				ImmutableArray<IEnumerable<int>> subject = [GetCancellingEnumerable(1, cts, 4), [1, 2,],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(x => x.HasCount(3)).WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that has exactly 3 items,
+					             but it could not be verified, because the evaluation was already canceled
+
+					             Collection:
+					             [
+					               [
+					                 0,
+					                 1,
+					                 2,
+					                 3
+					               ],
+					               [
+					                 1,
+					                 2
+					               ]
+					             ]
+					             """)
+					.Because("the first item was canceled before its count was known");
+			}
+#endif
+
+			[Fact]
+			public async Task WhenCancellationLeavesAnItemUndecided_ShouldReportTheEvaluationAsCanceled()
+			{
+				using CancellationTokenSource cts = new();
+				IEnumerable<int>[] subject = [GetCancellingEnumerable(1, cts, 4), [1, 2,],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(x => x.HasCount(3)).WithCancellation(cts.Token);
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that has exactly 3 items,
+					             but it could not be verified, because the evaluation was already canceled
+
+					             Collection:
+					             [
+					               [
+					                 0,
+					                 1,
+					                 2,
+					                 3
+					               ],
+					               [
+					                 1,
+					                 2
+					               ]
+					             ]
+					             """)
+					.Because("the first item was canceled before its count was known");
 			}
 
 			[Fact]
@@ -404,7 +475,8 @@ public sealed partial class ThatEnumerable
 					             [
 					               "a",
 					               "b",
-					               "c"
+					               "c",
+					               (… and maybe more)
 					             ]
 					             """);
 			}

@@ -39,19 +39,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 5 at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, 3, 5, (… and maybe more)]
 					             """);
 			}
 
@@ -72,19 +60,7 @@ public sealed partial class ThatEnumerable
 					              but it contained 1 at least twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                (… and maybe more)
-					              ]
+					              [1, 1, (… and maybe more)]
 					              """);
 			}
 
@@ -198,26 +174,6 @@ public sealed partial class ThatEnumerable
 					                 StringValue = "",
 					                 Value = 5
 					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 8
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 13
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 21
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 34
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 55
-					               },
 					               (… and maybe more)
 					             ]
 
@@ -311,19 +267,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 1 at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -453,11 +397,6 @@ public sealed partial class ThatEnumerable
 					               "item-2",
 					               "item-3",
 					               "item-5",
-					               "item-8",
-					               "item-13",
-					               "item-21",
-					               "item-34",
-					               "item-55",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -746,19 +685,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, 2, 3, 5, (… and maybe more)]
 					             """);
 			}
 
@@ -779,19 +706,7 @@ public sealed partial class ThatEnumerable
 					              but it contained it at least twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                (… and maybe more)
-					              ]
+					              [1, 1, (… and maybe more)]
 					              """);
 			}
 
@@ -947,19 +862,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 

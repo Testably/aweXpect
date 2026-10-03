@@ -73,7 +73,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("a collection argument is the expected sequence and not a single expected item");
 			}
@@ -136,7 +136,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("a collection argument is the expected sequence and not a single expected item");
 			}
@@ -170,7 +170,7 @@ public sealed partial class ThatEnumerable
 					             but it contained item 2 at index 1 instead of 3
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """)
 					.Because("a collection argument without an item type is the expected sequence and not a single expected item");
 			}
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [
 					               "bar",
-					               "baz"
+					               (… and maybe more)
 					             ]
 					             """)
 					.Because("a string argument is a single expected item and not a sequence of characters");

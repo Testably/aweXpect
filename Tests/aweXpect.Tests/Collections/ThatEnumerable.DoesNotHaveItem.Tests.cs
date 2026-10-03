@@ -330,7 +330,7 @@ public sealed partial class ThatEnumerable
 					             but it had item 1 at index 0 and had item 2 at index 1
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """);
 			}
 		}
@@ -661,14 +661,7 @@ public sealed partial class ThatEnumerable
 					                 StringValue = "",
 					                 Value = 2
 					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 3
-					               },
-					               MyClass {
-					                 StringValue = "",
-					                 Value = 5
-					               }
+					               (… and maybe more)
 					             ]
 
 					             Equivalency options:

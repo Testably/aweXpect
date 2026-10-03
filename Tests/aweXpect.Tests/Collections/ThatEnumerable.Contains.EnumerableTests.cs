@@ -88,19 +88,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 1 at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -161,6 +149,24 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).Exactly(times);
 
+				string collection = times == 1
+					? "[1, 1, (… and maybe more)]"
+					: """
+					  [
+					    1,
+					    1,
+					    2,
+					    3,
+					    5,
+					    8,
+					    13,
+					    21,
+					    34,
+					    55,
+					    (… and 10 more)
+					  ]
+					  """;
+
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
@@ -168,19 +174,7 @@ public sealed partial class ThatEnumerable
 					              but it contained 1 {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
-					              ]
+					              {collection}
 					              """);
 			}
 
@@ -201,19 +195,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 1 at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -266,19 +248,7 @@ public sealed partial class ThatEnumerable
 					             but it contained 1 at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, (… and maybe more)]
 					             """);
 			}
 
@@ -550,19 +520,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -611,6 +569,24 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => 1.Equals(x)).Exactly(times);
 
+				string collection = times == 1
+					? "[1, 1, (… and maybe more)]"
+					: """
+					  [
+					    1,
+					    1,
+					    2,
+					    3,
+					    5,
+					    8,
+					    13,
+					    21,
+					    34,
+					    55,
+					    (… and 10 more)
+					  ]
+					  """;
+
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
@@ -618,19 +594,7 @@ public sealed partial class ThatEnumerable
 					              but it contained it {(times == 1 ? "at least " : "")}twice
 
 					              Collection:
-					              [
-					                1,
-					                1,
-					                2,
-					                3,
-					                5,
-					                8,
-					                13,
-					                21,
-					                34,
-					                55,
-					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
-					              ]
+					              {collection}
 					              """);
 			}
 
@@ -651,19 +615,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least twice
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, 1, (… and maybe more)]
 					             """);
 			}
 
@@ -716,19 +668,7 @@ public sealed partial class ThatEnumerable
 					             but it contained it at least once
 
 					             Collection:
-					             [
-					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
-					               (… and maybe more)
-					             ]
+					             [1, (… and maybe more)]
 					             """);
 			}
 

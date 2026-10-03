@@ -117,7 +117,7 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			int index = -1;
-			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
+			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
 				index++;
 				bool? isIndexInRange = _options.Match switch
@@ -130,30 +130,51 @@ public static partial class ThatAsyncEnumerable
 				{
 					if (isIndexInRange == false)
 					{
-						break;
+						return this;
 					}
 
 					continue;
 				}
 
-				_hasIndex = true;
-				_actual = item;
-				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
-				if (isMatch.FailsBothWays())
+				if (await IsDecidedBy(item, index, context, cancellationToken))
 				{
-					_unansweredItem = isMatch;
-					_unansweredItemIndex = index;
 					return this;
-				}
-
-				Outcome = isMatch.Outcome;
-				if (isMatch.Outcome == Outcome.Success)
-				{
-					break;
 				}
 			}
 
+			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+			{
+				Outcome = Outcome.Undecided;
+			}
+
 			return this;
+		}
+
+		/// <summary>
+		///     Checks the <paramref name="item" /> at the <paramref name="index" /> and returns whether it decides the
+		///     outcome, so that no further item is checked.
+		/// </summary>
+		private async Task<bool> IsDecidedBy(TItem item, int index, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			_hasIndex = true;
+			_actual = item;
+			ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
+			if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+			{
+				Outcome = Outcome.Undecided;
+				return true;
+			}
+
+			if (isMatch.FailsBothWays())
+			{
+				_unansweredItem = isMatch;
+				_unansweredItemIndex = index;
+				return true;
+			}
+
+			Outcome = isMatch.Outcome;
+			return isMatch.Outcome == Outcome.Success;
 		}
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,

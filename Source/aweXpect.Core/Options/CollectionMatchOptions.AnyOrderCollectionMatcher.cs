@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -45,61 +44,23 @@ public partial class CollectionMatchOptions
 			=> _predicates.Invoke(expected, value, index);
 	}
 
-	private sealed class AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(
-		EquivalenceRelations equivalenceRelation,
-		IEnumerable<ExpectationItem<T>> expected)
-		: AnyOrderCollectionMatcherBase<T, T2, ExpectationItem<T>>(
-			equivalenceRelation,
-			expected.Distinct(new ExpectationItemEqualityComparer<T>()),
-			true)
-		where T : T2
-	{
-		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
-			IOptionsEquality<T2> options)
-			=> expected.IsMetBy(value, index);
-	}
-
-	private sealed class AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(
-		EquivalenceRelations equivalenceRelation,
-		IEnumerable<Expression<Func<T, bool>>> expected)
-		: AnyOrderCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(
-			equivalenceRelation,
-			expected.Distinct(new ExpressionEqualityComparer<T, bool>()),
-			true)
-		where T : T2
-	{
-		private readonly CompiledPredicates<T> _predicates = new();
-
-		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
-			=> _predicates.Invoke(expected, value, index);
-	}
-
 	/// <summary>
 	///     Matches each subject item with a distinct expected item.
 	/// </summary>
-	/// <remarks>
-	///     When ignoring duplicates, an item that is equal to an earlier one is skipped, and the expected items are
-	///     distinct.
-	/// </remarks>
 	private abstract class AnyOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly List<T3> _expected;
-		private readonly bool _ignoringDuplicates;
-		private readonly HashSet<T> _uniqueItems = new();
 		private int _index;
 		private ItemMatching<T, T3>? _matching;
 		private List<T3> _missingItems = new();
 
-		protected AnyOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation, IEnumerable<T3> expected,
-			bool ignoringDuplicates = false)
+		protected AnyOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation, IEnumerable<T3> expected)
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_expected = expected.ToList();
-			_ignoringDuplicates = ignoringDuplicates;
 		}
 
 		/// <inheritdoc />
@@ -116,11 +77,6 @@ public partial class CollectionMatchOptions
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int index = _index++;
-			if (_ignoringDuplicates && !_uniqueItems.Add(value))
-			{
-				return (false, null);
-			}
-
 			ItemMatching<T, T3> matching = GetMatching(options);
 			await matching.Add(index, value);
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
@@ -168,7 +124,7 @@ public partial class CollectionMatchOptions
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
 				errors.AddRange(MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations,
-					_ignoringDuplicates, formatItem, options, maximumNumber));
+					false, formatItem, options, maximumNumber));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{

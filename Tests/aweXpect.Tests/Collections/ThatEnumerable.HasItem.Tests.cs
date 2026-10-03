@@ -126,11 +126,7 @@ public sealed partial class ThatEnumerable
 					               enumeration failed
 
 					             Collection:
-					             [
-					               1,
-					               2,
-					               (the enumeration did throw an InvalidOperationException: enumeration failed)
-					             ]
+					             [1, 2, (… and maybe more)]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("the collection lists the items before the exception, followed by a placeholder for it");
@@ -179,7 +175,7 @@ public sealed partial class ThatEnumerable
 					               predicate failed
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a predicate that throws fails the expectation instead of aborting its evaluation");
@@ -202,7 +198,7 @@ public sealed partial class ThatEnumerable
 					               predicate failed
 
 					             Collection:
-					             [1, 2, 3]
+					             [1, 2, (… and maybe more)]
 					             """).And
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 					.Because("a predicate that threw answered nothing, so the negation fails as well");

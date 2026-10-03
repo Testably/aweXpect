@@ -30,8 +30,8 @@ public static class EvaluationContextExtensions
 	///     further enumeration replays them before it continues the source where the previous one stopped. The
 	///     enumerator of the source is disposed once the evaluation is completed, including its failure message.<br />
 	///     A <paramref name="collection" /> that is an <see cref="ICollection{T}" /> is returned unchanged. Otherwise, the
-	///     returned sequence implements <see cref="ICountable" />, and an exception of the source fails the expectation
-	///     like one of <see cref="UserCode" /> and is thrown again by every further enumeration.<br />
+	///     returned sequence implements <see cref="IMaterializedEnumerable{T}" />, and an exception of the source fails
+	///     the expectation like one of <see cref="UserCode" /> and is thrown again by every further enumeration.<br />
 	///     The <see cref="IEvaluationContext" /> is only available to a constraint that implements
 	///     <see cref="IContextConstraint{TValue}" /> or <see cref="IAsyncContextConstraint{TValue}" />. The returned
 	///     sequence must not be enumerated concurrently.

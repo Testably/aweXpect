@@ -922,7 +922,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 3 expected items
 					             
 					             Collection:
 					             []
@@ -954,7 +954,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -1004,7 +1004,7 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 that was not expected and
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 unique expected items
+					               lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -1270,6 +1270,38 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithExpectationsBuiltInALoop_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable(new[] { 1, 2, });
+				IEnumerable<Action<IThat<int>>> expected = new[] { 1, 2, }
+					.Select(v => (Action<IThat<int>>)(x => x.Satisfies(i => i == v)))
+					.ToList();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("each item matches one of the expectations, although they all read the same");
+			}
+
+			[Fact]
+			public async Task WithItemMatchingSeveralExpectations_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable(new[] { 5, });
+				IEnumerable<Action<IThat<int>>> expected =
+				[
+					x => x.IsGreaterThan(0),
+					x => x.IsGreaterThan(1),
+				];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("only which items occur matters, not how often, so one item may match every expectation");
 			}
 
 			[Fact]
@@ -2123,7 +2155,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
-					             but it lacked all 3 unique expected items
+					             but it lacked all 5 expected items
 
 					             Collection:
 					             []
@@ -2157,7 +2189,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
-					             but it lacked all 2 unique expected items
+					             but it lacked all 3 expected items
 
 					             Collection:
 					             []
@@ -2207,7 +2239,7 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 that was not expected and
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
-					               lacked all 10 unique expected items
+					               lacked all 10 expected items
 
 					             Collection:
 					             [
@@ -2453,6 +2485,38 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithExpectationsBuiltInALoop_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable(new[] { 1, 2, });
+				IEnumerable<Action<IThat<int>>> expected = new[] { 1, 2, }
+					.Select(v => (Action<IThat<int>>)(x => x.Satisfies(i => i == v)))
+					.ToList();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("each item matches one of the expectations, although they all read the same");
+			}
+
+			[Fact]
+			public async Task WithItemMatchingSeveralExpectations_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable(new[] { 5, });
+				IEnumerable<Action<IThat<int>>> expected =
+				[
+					x => x.IsGreaterThan(0),
+					x => x.IsGreaterThan(1),
+				];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("only which items occur matters, not how often, so one item may match every expectation");
 			}
 
 			[Fact]
