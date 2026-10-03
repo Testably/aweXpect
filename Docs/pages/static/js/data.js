@@ -4266,6 +4266,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -4979,7 +4985,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -5696,7 +5703,8 @@ window.BENCHMARK_DATA = {
           173.47869953087397,
           372.90322062174477,
           281.60245819091796,
-          181.4545805624553
+          181.4545805624553,
+          351.66029326121014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6413,6 +6421,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -7143,7 +7152,8 @@ window.BENCHMARK_DATA = {
           133.22139133725847,
           237.84199518423813,
           204.47215623514992,
-          145.49324812207902
+          145.49324812207902,
+          252.23526869501387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7336,6 +7346,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11683,6 +11694,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -12319,7 +12336,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -12959,7 +12977,8 @@ window.BENCHMARK_DATA = {
           146925.58851841517,
           290380.4139927455,
           220585.15937151227,
-          148709.5198625837
+          148709.5198625837,
+          290245.4733698918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13602,6 +13621,7 @@ window.BENCHMARK_DATA = {
           86137,
           86138,
           86137,
+          86138,
           86138,
           86138,
           86138
@@ -14252,7 +14272,8 @@ window.BENCHMARK_DATA = {
           1254349.052734375,
           2515918.62109375,
           1808925.5673177084,
-          1295520.78984375
+          1295520.78984375,
+          2303982.52421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14897,6 +14918,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841648,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -19177,6 +19199,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -19890,7 +19918,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -20607,7 +20636,8 @@ window.BENCHMARK_DATA = {
           239.24562018712362,
           532.9993427276611,
           388.9199968973796,
-          284.65417126814526
+          284.65417126814526,
+          566.9924236297608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21324,6 +21354,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -22054,7 +22085,8 @@ window.BENCHMARK_DATA = {
           261.75292506217954,
           480.38019987742103,
           400.45877707799275,
-          268.01146796771457
+          268.01146796771457,
+          491.15626989092146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22247,6 +22279,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -27056,6 +27089,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -27769,7 +27808,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -28486,7 +28526,8 @@ window.BENCHMARK_DATA = {
           192.22235318592615,
           375.72293860117594,
           303.6057075353769,
-          182.40172738295334
+          182.40172738295334,
+          380.74375101498197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29203,6 +29244,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -29933,7 +29975,8 @@ window.BENCHMARK_DATA = {
           141.10517188707988,
           240.2495800336202,
           191.07920319239298,
-          134.61963035265606
+          134.61963035265606,
+          244.56347176233928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30126,6 +30169,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34935,6 +34979,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -35648,7 +35698,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -36365,7 +36416,8 @@ window.BENCHMARK_DATA = {
           224.305471438628,
           559.1372151692708,
           392.96149935041154,
-          243.23858434813363
+          243.23858434813363,
+          502.5803561528524
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37082,6 +37134,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1080,
           1080,
           1080,
           1080,
@@ -37812,7 +37865,8 @@ window.BENCHMARK_DATA = {
           621.1622296651204,
           1159.2521332332067,
           882.7562196731567,
-          597.8788195610047
+          597.8788195610047,
+          1152.8177640279134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38241,6 +38295,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42814,6 +42869,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -43527,7 +43588,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -44244,7 +44306,8 @@ window.BENCHMARK_DATA = {
           1450.9872616254365,
           2691.866480255127,
           1944.4431457519531,
-          1419.1521091461182
+          1419.1521091461182,
+          2781.446640777588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44961,6 +45024,7 @@ window.BENCHMARK_DATA = {
           4376,
           4376,
           4384,
+          2896,
           2896,
           2896,
           2896,
@@ -45691,7 +45755,8 @@ window.BENCHMARK_DATA = {
           728.2218722025553,
           1250.2981399536134,
           1062.8478544871011,
-          646.5440812792096
+          646.5440812792096,
+          1316.2379275004068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45884,6 +45949,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50693,6 +50759,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -51406,7 +51478,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -52123,7 +52196,8 @@ window.BENCHMARK_DATA = {
           1730.6978145326887,
           3242.6715207781112,
           2463.241643172044,
-          1690.9833320617677
+          1690.9833320617677,
+          3321.210398864746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52840,6 +52914,7 @@ window.BENCHMARK_DATA = {
           4280,
           4280,
           4288,
+          3176,
           3176,
           3176,
           3176,
@@ -53570,7 +53645,8 @@ window.BENCHMARK_DATA = {
           11316.766002948467,
           26028.70656738281,
           15590.14028676351,
-          10010.612716674805
+          10010.612716674805,
+          20295.053096516927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54292,6 +54368,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -54342,6 +54419,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -54350,7 +54433,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -54362,7 +54446,8 @@ window.BENCHMARK_DATA = {
           2672.734001977103,
           5520.70621287028,
           3987.009569440569,
-          2820.00571568807
+          2820.00571568807,
+          5096.47492980957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54374,6 +54459,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -54399,7 +54485,8 @@ window.BENCHMARK_DATA = {
           29970.870603434243,
           84091.42727225168,
           53261.49040120443,
-          29120.87935093471
+          29120.87935093471,
+          62192.45831298828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54416,7 +54503,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54466,6 +54554,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
         "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
+      },
+      {
+        "sha": "a42982477411f69fcf590605388ac190eb71c51e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
+        "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
       }
     ],
     "labels": [
@@ -54474,7 +54568,8 @@ window.BENCHMARK_DATA = {
       "e1449d7d",
       "ec5a355e",
       "6f9d4282",
-      "62b5cca4"
+      "62b5cca4",
+      "a4298247"
     ],
     "datasets": [
       {
@@ -54486,7 +54581,8 @@ window.BENCHMARK_DATA = {
           272.6125044482095,
           540.926056098938,
           423.7307744026184,
-          260.7688136100769
+          260.7688136100769,
+          560.0543730417887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54498,6 +54594,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -54523,7 +54620,8 @@ window.BENCHMARK_DATA = {
           9999.445686848958,
           30943.731740315754,
           14791.289885384696,
-          9445.914090983073
+          9445.914090983073,
+          18669.087475585937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54540,7 +54638,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
