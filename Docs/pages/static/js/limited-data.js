@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          258.94757595062254,
           218.62173357009888,
           306.1412992477417,
           306.65425740755524,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           341.13765646616616,
           173.47869953087397,
           372.90322062174477,
-          281.60245819091796
+          281.60245819091796,
+          181.4545805624553
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -421,7 +421,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           696,
-          696,
           840,
           840,
           840,
@@ -465,6 +464,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          284.532284450531,
           231.4863794485728,
           249.71533705393475,
           255.23794501168388,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           240.80439786911012,
           133.22139133725847,
           237.84199518423813,
-          204.47215623514992
+          204.47215623514992,
+          145.49324812207902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          318864.2989676339,
           252249.9796875,
           318501.8701497396,
           326566.2730794271,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           295734.0402483259,
           146925.58851841517,
           290380.4139927455,
-          220585.15937151227
+          220585.15937151227,
+          148709.5198625837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          617976,
           617976,
           618120,
           618120,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           86138,
           86137,
           86138,
+          86138,
           86138
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2462532.89375,
           1794733.3513020833,
           2599195.6180245536,
           2588997.383072917,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2610232.06484375,
           1254349.052734375,
           2515918.62109375,
-          1808925.5673177084
+          1808925.5673177084,
+          1295520.78984375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841609,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
       {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          448.95081618626915,
           388.24630062920704,
           531.7529220581055,
           538.1694253512791,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           502.90954602559407,
           239.24562018712362,
           532.9993427276611,
-          388.9199968973796
+          388.9199968973796,
+          284.65417126814526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1637,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1368,
-          1368,
           1512,
           1512,
           1512,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          495.09659112294514,
           443.9078366279602,
           492.4942326863607,
           518.6470956802368,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           479.83998171488446,
           261.75292506217954,
           480.38019987742103,
-          400.45877707799275
+          400.45877707799275,
+          268.01146796771457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.6497843106588,
           231.98326710065206,
           301.0016506635226,
           323.1038678487142,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           390.416090742747,
           192.22235318592615,
           375.72293860117594,
-          303.6057075353769
+          303.6057075353769,
+          182.40172738295334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,7 +2245,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2289,6 +2288,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.09207551819938,
           227.02876474062603,
           243.2290725026812,
           258.2499782562256,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           244.9692392985026,
           141.10517188707988,
           240.2495800336202,
-          191.07920319239298
+          191.07920319239298,
+          134.61963035265606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          542.7885704040527,
           410.8887882868449,
           576.9623188018799,
           590.45237159729,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           512.7948634465536,
           224.305471438628,
           559.1372151692708,
-          392.96149935041154
+          392.96149935041154,
+          243.23858434813363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1256,
           1256,
           1400,
           1400,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1204.099277496338,
           1003.8728504180908,
           1192.900960786002,
           1185.8738259633383,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1246.9402375539144,
           621.1622296651204,
           1159.2521332332067,
-          882.7562196731567
+          882.7562196731567,
+          597.8788195610047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1970.669078009469,
           1242.9716849009196,
           2024.6299023946126,
           2019.8510101863317,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2672.669841512044,
           1450.9872616254365,
           2691.866480255127,
-          1944.4431457519531
+          1944.4431457519531,
+          1419.1521091461182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2752,
           2752,
           3104,
           3104,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
+          2896,
           2896
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1379.4092335019793,
           1161.6914187113443,
           1350.3154574076334,
           1315.3896138509115,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1324.7816797892253,
           728.2218722025553,
           1250.2981399536134,
-          1062.8478544871011
+          1062.8478544871011,
+          646.5440812792096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
-        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
-      },
-      {
         "sha": "5a80196171b0bf0f30d8f2922ed7f0acc1b456bd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 10:50:28 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
-      "9e372b47",
       "5a801961",
       "1305e06f",
       "e00183f5",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2576.014488728841,
           1651.6465266301082,
           2581.742345937093,
           2583.1968972342356,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3245.4842256818497,
           1730.6978145326887,
           3242.6715207781112,
-          2463.241643172044
+          2463.241643172044,
+          1690.9833320617677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2944,
           2944,
           3296,
           3296,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
+          3176,
           3176
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20710.378143310547,
           14474.885506184895,
           26294.660250150242,
           27306.86591491699,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26656.025815691268,
           11316.766002948467,
           26028.70656738281,
-          15590.14028676351
+          15590.14028676351,
+          10010.612716674805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33471,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4286,6 +4286,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -4293,7 +4299,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -4304,7 +4311,8 @@ window.BENCHMARK_DATA = {
           5879.949660746256,
           2672.734001977103,
           5520.70621287028,
-          3987.009569440569
+          3987.009569440569,
+          2820.00571568807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4316,6 +4324,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -4339,7 +4348,8 @@ window.BENCHMARK_DATA = {
           83063.9206891741,
           29970.870603434243,
           84091.42727225168,
-          53261.49040120443
+          53261.49040120443,
+          29120.87935093471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4355,6 +4365,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -4399,6 +4410,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -4406,7 +4423,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -4417,7 +4435,8 @@ window.BENCHMARK_DATA = {
           535.4486650058201,
           272.6125044482095,
           540.926056098938,
-          423.7307744026184
+          423.7307744026184,
+          260.7688136100769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4429,6 +4448,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -4452,7 +4472,8 @@ window.BENCHMARK_DATA = {
           33315.1684526716,
           9999.445686848958,
           30943.731740315754,
-          14791.289885384696
+          14791.289885384696,
+          9445.914090983073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4468,6 +4489,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
