@@ -2,11 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -620,124 +616,6 @@ public static partial class ThatEnumerable
 						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
-		}
-	}
-
-	/// <remarks>
-	///     When <paramref name="isUniqueBySubject" /> holds for the subject, e.g. for a set with a custom comparer
-	///     whose comparison was not changed, every item is unique without being compared, because a set never holds two
-	///     items that its comparer considers equal.
-	///     <para />
-	///     The items of a non-generic collection are formatted as the type of its first item that is not
-	///     <see langword="null" />.
-	/// </remarks>
-	private sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, TMember> memberAccessor,
-		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-		bool expectUnique,
-		Func<object?, bool>? isUniqueBySubject = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null,
-		Func<Func<TMember, int>?>? createGetHashCode = null)
-		: QuantifiedCollectionConstraint<TEnumerable, TItem>(it, grammars, quantifier,
-				expectationText, "were"),
-			IAsyncContextConstraint<TEnumerable>
-		where TEnumerable : IEnumerable?
-	{
-		private CollectionContext _collectionContext;
-		private Type? _itemType;
-
-		/// <inheritdoc />
-		protected override Type ItemType => _itemType ?? typeof(TItem);
-
-		public async Task<ConstraintResult> IsMetBy(
-			TEnumerable actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_itemType = null;
-			Actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return this.AsNullSubject(It);
-			}
-
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
-			bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
-			if (isUniqueBySubject?.Invoke(actual) == true)
-			{
-				foreach (TItem item in materialized.Items)
-				{
-					KeepItemType(item, isUntyped);
-					Record(item, expectUnique);
-				}
-
-				Complete();
-				materialized.SetContext(ref _collectionContext);
-				return this;
-			}
-
-			bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
-			List<(TItem Item, int MemberIndex)> items = [];
-			foreach (TItem item in materialized.Items)
-			{
-				KeepItemType(item, isUntyped);
-				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
-				if (cancelEarly && occurrences.Determines(Quantifier, expectUnique))
-				{
-					RecordAll(items, occurrences);
-					CompleteEarly();
-					materialized.SetContext(ref _collectionContext);
-					return this;
-				}
-
-				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
-				{
-					Outcome = Outcome.Undecided;
-					materialized.SetContext(ref _collectionContext, true);
-					return this;
-				}
-			}
-
-			RecordAll(items, occurrences);
-			Complete();
-			materialized.SetContext(ref _collectionContext);
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		private void KeepItemType(TItem item, bool isUntyped)
-		{
-			if (isUntyped)
-			{
-				_itemType ??= item?.GetType();
-			}
-		}
-
-		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
-		{
-			foreach ((TItem item, int memberIndex) in items)
-			{
-				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
-			}
 		}
 	}
 }
