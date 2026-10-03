@@ -52,10 +52,7 @@ file static class CustomResultExtensions
 		: AndOrResult<int, IThat<int>>(expectationBuilder, subject)
 	{
 		public AndOrResult<int, IThat<int>> OrNegative()
-		{
-			ExpectationBuilder.Or();
-			return subject.IsNegativeNumber();
-		}
+			=> Or.IsNegativeNumber();
 	}
 
 	private sealed class NumberConstraint(

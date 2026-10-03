@@ -50,12 +50,14 @@ public static partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
+#nullable disable annotations
 	/// <summary>
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string?>> AtMost(
-		this IThat<ImmutableArray<string?>> subject,
+	public static ElementsForStructEnumerable<ImmutableArray<string>> AtMost(
+		this IThat<ImmutableArray<string>> subject,
 		int maximum)
 		=> new(subject, EnumerableQuantifier.AtMost(maximum));
+#nullable restore annotations
 #endif
 }

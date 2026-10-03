@@ -17,7 +17,7 @@ public partial class HappyCaseBenchmarks
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_aweXpect()
-		=> (await Expect.That(_stringArrayAnyOrderSubject).IsEqualTo(_stringArrayAnyOrderExpectation).InAnyOrder())
+		=> (await Expect.That(_stringArrayAnyOrderSubject).IsEqualTo(_stringArrayAnyOrderExpectation).InAnyOrder())!
 			.Consume(_consumer);
 
 	[Benchmark]

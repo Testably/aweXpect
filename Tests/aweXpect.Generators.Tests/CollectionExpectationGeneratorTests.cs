@@ -169,6 +169,35 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task PerSubject_WhenTheHelperFixesAReferenceTypeOfTheKind_ShouldEmitItWithoutAnnotations()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("ContainsValue", PerSubject = true, Summary = "Contains the value.")]
+				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey>(
+					IThat<TCollection?> subject,
+					string? expected)
+					where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("#nullable disable annotations").Once()
+			.Because("a dictionary is invariant in its value, so string? would refuse a dictionary of string");
+		await That(result.Generated).Contains("#nullable restore annotations").Once();
+		await That(result.Generated).Contains("string expected").Once();
+		await That(result.Generated).DoesNotContain("string?>").And.DoesNotContain(">?").And
+			.DoesNotContain("string? expected");
+	}
+
+	[Fact]
 	public async Task PerSubject_WhenTheHelperFixesATypeArgumentOfTheKind_ShouldBindIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -191,10 +220,66 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Warnings).IsEmpty();
 		await That(result.Generated).Contains("ContainsValue<TKey>(").Once();
 		await That(result.Generated)
-			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, string?>?> subject")
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, string>> subject")
 			.Once()
 			.Because("the helper's constraint fixes the value type that the kind leaves to a type parameter");
 		await That(result.Generated).Contains("where TKey : notnull").Once();
+	}
+
+	[Fact]
+	public async Task PerSubject_WhenTheItemIsAReferenceType_ShouldEmitItWithoutAnnotations()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Summary = "Matches.")]
+				[CreateExpectationFamily("IsEqualTo", PerSubject = true, Params = true, Summary = "Matches.")]
+				internal static IThat<TCollection?> IsEqualToCore<TCollection>(
+					IThat<TCollection?> subject,
+					IEnumerable<string?>? expected)
+					where TCollection : System.Collections.IEnumerable
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("#nullable disable annotations").Exactly(2)
+			.Because("an immutable array is invariant in its item, so string? would refuse an array of string");
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Immutable.ImmutableArray<string>> subject")
+			.Exactly(2);
+		await That(result.Generated).Contains("params string[] expected").Once();
+		await That(result.Generated).DoesNotContain("string?>").And.DoesNotContain(">?").And
+			.DoesNotContain("string?[]");
+	}
+
+	[Fact]
+	public async Task PerSubject_WhenTheItemIsATypeParameter_ShouldKeepTheAnnotations()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
+			public static partial class ThatList
+			{
+				[CreateExpectationFamily("Contains", PerSubject = true, Summary = "Contains.")]
+				internal static IThat<TCollection?> ContainsCore<TCollection, TItem>(
+					IThat<TCollection?> subject,
+					TItem? expected)
+					where TCollection : IEnumerable<TItem>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("#nullable disable annotations");
+		await That(result.Generated).Contains("TItem? expected").Once();
 	}
 
 	[Fact]

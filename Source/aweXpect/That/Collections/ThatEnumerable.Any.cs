@@ -46,11 +46,13 @@ public static partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
+#nullable disable annotations
 	/// <summary>
 	///     Verifies that in the collection any (at least one) item…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string?>> Any(
-		this IThat<ImmutableArray<string?>> subject)
+	public static ElementsForStructEnumerable<ImmutableArray<string>> Any(
+		this IThat<ImmutableArray<string>> subject)
 		=> new(subject, EnumerableQuantifier.AtLeast(1));
+#nullable restore annotations
 #endif
 }

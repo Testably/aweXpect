@@ -30,6 +30,9 @@ internal sealed record CollectionExpectationFamily(
 			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
+	private static readonly SymbolDisplayFormat ObliviousFormat = SymbolDisplayFormat.FullyQualifiedFormat
+		.WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+
 	public static CollectionExpectationFamily Create(IMethodSymbol helper, AttributeData attributeData,
 		Compilation compilation)
 	{
@@ -194,8 +197,12 @@ internal sealed record CollectionExpectationFamily(
 				if (value.Value?.ToString() is { } template &&
 				    Resolve(template, compilation) is { } definition)
 				{
-					yield return new SubjectKind(Qualify(BindFixedArguments(helper, template, definition)),
-						definition.IsValueType, priority, remarks, KindConstraints(template, definition));
+					string bound = BindFixedArguments(helper, template, definition, out bool fixesReferenceType);
+					yield return new SubjectKind(Qualify(bound), definition.IsValueType, priority, remarks,
+						KindConstraints(template, definition))
+					{
+						FixesReferenceType = fixesReferenceType,
+					};
 				}
 			}
 		}
@@ -206,8 +213,10 @@ internal sealed record CollectionExpectationFamily(
 	///     <c>TCollection</c>, as <c>IEnumerable&lt;KeyValuePair&lt;TKey, string?&gt;&gt;</c> fixes the value of a
 	///     dictionary to <see cref="string" />.
 	/// </remarks>
-	private static string BindFixedArguments(IMethodSymbol helper, string template, INamedTypeSymbol definition)
+	private static string BindFixedArguments(IMethodSymbol helper, string template, INamedTypeSymbol definition,
+		out bool fixesReferenceType)
 	{
+		fixesReferenceType = false;
 		INamedTypeSymbol? enumerable = definition.AllInterfaces.FirstOrDefault(x =>
 			x.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T);
 		if (SubjectElementOf(helper) is not { } element || enumerable == null)
@@ -225,7 +234,8 @@ internal sealed record CollectionExpectationFamily(
 			    helper.TypeParameters.All(x => x.Name != arguments[i]) &&
 			    fixedTypes.TryGetValue(definition.TypeParameters[i], out ITypeSymbol? type))
 			{
-				arguments[i] = type.ToDisplayString(TypeFormat);
+				fixesReferenceType |= !type.IsValueType;
+				arguments[i] = type.ToDisplayString(type.IsValueType ? TypeFormat : ObliviousFormat);
 				isChanged = true;
 			}
 		}
@@ -309,7 +319,7 @@ internal sealed record CollectionExpectationFamily(
 		Dictionary<string, List<string>> result = [];
 		for (int i = 0; i < arguments.Length && i < definition.TypeParameters.Length; i++)
 		{
-			List<string> constraints = ConstraintsOf(definition.TypeParameters[i], byName);
+			List<string> constraints = ConstraintsOf(definition.TypeParameters[i], byName, TypeFormat);
 			if (constraints.Count > 0)
 			{
 				result[arguments[i]] = constraints;
@@ -376,32 +386,34 @@ internal sealed record CollectionExpectationFamily(
 	private static string Render(IMethodSymbol helper, IParameterSymbol? expected, Declaration declaration,
 		Instantiation instantiation, Variant variant)
 	{
-		Dictionary<string, Bound> substitutions = Bindings(helper, instantiation);
+		bool oblivious = IsOblivious(helper, expected, instantiation.Subject);
+		SymbolDisplayFormat format = oblivious ? ObliviousFormat : TypeFormat;
+		Dictionary<string, Bound> substitutions = Bindings(helper, instantiation, oblivious);
 		// The element is what the expected parameter carries once the factory has filled its type parameters.
 		string item = expected == null
 			? instantiation.Item ?? "TItem"
-			: Substitute(ElementOf(expected.Type), substitutions);
+			: Substitute(ElementOf(expected.Type), substitutions, format);
 		if (instantiation.Subject != null)
 		{
 			string subjectItem = SubjectElementOf(helper) is { } subjectElement
-				? Substitute(subjectElement, substitutions)
+				? Substitute(subjectElement, substitutions, format)
 				: item;
 			// A kind such as Dictionary<TKey, TValue> names the type parameters a factory fills, too.
 			substitutions["TCollection"] = Bind(helper, "TCollection",
 				Substitute(instantiation.Subject.Template.Replace(ItemPlaceholder, subjectItem), substitutions),
-				instantiation.Subject.IsValueType);
+				instantiation.Subject.IsValueType, oblivious);
 		}
 
 		string subjectName = helper.Parameters[0].Name;
-		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions)} {subjectName}",];
+		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions, format)} {subjectName}",];
 		List<string> arguments = [subjectName,];
 		// Only a helper that takes the expression can echo one, and a params array has none to echo.
 		bool echoesExpression = expected != null && !declaration.Params && TakesExpression(helper);
 		if (expected != null && declaration.KeyAndValue &&
 		    expected.Type is INamedTypeSymbol { TypeArguments.Length: 2, } entry)
 		{
-			string key = Substitute(entry.TypeArguments[0], substitutions);
-			string value = Substitute(entry.TypeArguments[1], substitutions);
+			string key = Substitute(entry.TypeArguments[0], substitutions, format);
+			string value = Substitute(entry.TypeArguments[1], substitutions, format);
 			parameters.Add($"{key} {variant.ParameterName}Key");
 			parameters.Add($"{value} {variant.ParameterName}Value");
 			arguments.Add(
@@ -409,7 +421,8 @@ internal sealed record CollectionExpectationFamily(
 		}
 		else if (expected != null)
 		{
-			string expectedType = RenderExpectedType(helper, expected, declaration, instantiation, item, substitutions);
+			string expectedType =
+				RenderExpectedType(helper, expected, declaration, instantiation, item, substitutions, format);
 			parameters.Add($"{expectedType} {variant.ParameterName}");
 			if (echoesExpression)
 			{
@@ -428,23 +441,43 @@ internal sealed record CollectionExpectationFamily(
 		ITypeParameterSymbol[] ownTypeParameters = helper.TypeParameters
 			.Where(x => !substitutions.ContainsKey(x.Name)).ToArray();
 		string constraints = string.Concat(ownTypeParameters
-			.Select(x => RenderConstraints(x, substitutions, instantiation.Subject))
+			.Select(x => RenderConstraints(x, substitutions, instantiation.Subject, format))
 			.Where(x => x != null)
 			.Select(x => $"\n\t\t{x}"));
 		string typeArguments = TypeParameterList(helper.TypeParameters
 			.Select(x => substitutions.TryGetValue(x.Name, out Bound? v) ? v.Type : x.Name));
 		string returnType = variant.Negated && declaration.NegatedReturnType != null
 			? Substitute(Qualify(declaration.NegatedReturnType), substitutions)
-			: Substitute(helper.ReturnType, substitutions);
+			: Substitute(helper.ReturnType, substitutions, format);
 
-		return $$"""
-		         {{Header(declaration, instantiation, variant)}}
-		         	public static {{returnType}}
-		         		{{variant.MethodName}}{{TypeParameterList(ownTypeParameters.Select(x => x.Name))}}(
-		         			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
-		         		=> {{helper.Name}}{{typeArguments}}(
-		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
-		         """;
+		string method = $$"""
+		                  {{Header(declaration, instantiation, variant)}}
+		                  	public static {{returnType}}
+		                  		{{variant.MethodName}}{{TypeParameterList(ownTypeParameters.Select(x => x.Name))}}(
+		                  			{{string.Join(",\n\t\t\t", parameters)}}){{constraints}}
+		                  		=> {{helper.Name}}{{typeArguments}}(
+		                  {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
+		                  """;
+		return oblivious
+			? $"#nullable disable annotations\n{method}\n#nullable restore annotations"
+			: method;
+	}
+
+	/// <remarks>
+	///     A kind is invariant in its type arguments, so one fixed to an annotated <c>string?</c> would refuse a
+	///     collection of <see cref="string" />, and one fixed to <see cref="string" /> a collection of <c>string?</c>.
+	/// </remarks>
+	private static bool IsOblivious(IMethodSymbol helper, IParameterSymbol? expected, SubjectKind? subject)
+	{
+		if (subject == null)
+		{
+			return false;
+		}
+
+		ITypeSymbol? item = SubjectElementOf(helper) ?? (expected == null ? null : ElementOf(expected.Type));
+		return subject.FixesReferenceType ||
+		       (subject.Template.Contains(ItemPlaceholder) &&
+		        item is { IsValueType: false, } and not ITypeParameterSymbol);
 	}
 
 	private static bool TakesExpression(IMethodSymbol helper)
@@ -458,11 +491,14 @@ internal sealed record CollectionExpectationFamily(
 		   (type.SpecialType == SpecialType.System_Collections_IEnumerable ||
 		    type.AllInterfaces.Any(x => x.SpecialType == SpecialType.System_Collections_IEnumerable));
 
-	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation)
-		=> instantiation.TypeBindings.ToDictionary(x => x.Name, x => Bind(helper, x.Name, x.Type, x.IsValueType));
+	private static Dictionary<string, Bound> Bindings(IMethodSymbol helper, Instantiation instantiation,
+		bool oblivious)
+		=> instantiation.TypeBindings.ToDictionary(x => x.Name,
+			x => Bind(helper, x.Name, x.Type, x.IsValueType, oblivious));
 
 	private static string RenderExpectedType(IMethodSymbol helper, IParameterSymbol expected,
-		Declaration declaration, Instantiation instantiation, string item, Dictionary<string, Bound> substitutions)
+		Declaration declaration, Instantiation instantiation, string item, Dictionary<string, Bound> substitutions,
+		SymbolDisplayFormat format)
 	{
 		if (declaration.Params)
 		{
@@ -487,7 +523,7 @@ internal sealed record CollectionExpectationFamily(
 			};
 		}
 
-		return Substitute(expected.Type, substitutions);
+		return Substitute(expected.Type, substitutions, format);
 	}
 
 	/// <remarks>
@@ -539,10 +575,17 @@ internal sealed record CollectionExpectationFamily(
 
 	/// <remarks>
 	///     An annotated <c>T?</c> is <c>T</c> itself once a value type fills an unconstrained <c>T</c>, and only
-	///     <c>Nullable&lt;T&gt;</c> when <c>T</c> is constrained to a struct; a reference type keeps the annotation.
+	///     <c>Nullable&lt;T&gt;</c> when <c>T</c> is constrained to a struct; a reference type keeps the annotation,
+	///     unless the overload is emitted without annotations.
 	/// </remarks>
-	private static Bound Bind(IMethodSymbol helper, string name, string type, bool isValueType)
+	private static Bound Bind(IMethodSymbol helper, string name, string type, bool isValueType,
+		bool oblivious = false)
 	{
+		if (oblivious && !isValueType)
+		{
+			return new Bound(type.TrimEnd('?'), type.TrimEnd('?'));
+		}
+
 		bool isNullableOfType = !isValueType ||
 		                        helper.TypeParameters.Any(x => x.Name == name && x.HasValueTypeConstraint);
 		return new Bound(type, isNullableOfType ? $"{type.TrimEnd('?')}?" : type);
@@ -567,7 +610,7 @@ internal sealed record CollectionExpectationFamily(
 	///     A type parameter the overload keeps also keeps the helper's constraints, with the bound ones substituted.
 	/// </remarks>
 	private static string? RenderConstraints(ITypeParameterSymbol typeParameter,
-		Dictionary<string, Bound> substitutions, SubjectKind? subject)
+		Dictionary<string, Bound> substitutions, SubjectKind? subject, SymbolDisplayFormat format)
 	{
 		List<string> constraints = [];
 		if (subject != null && subject.Constraints.TryGetValue(typeParameter.Name, out List<string>? fromKind))
@@ -575,7 +618,7 @@ internal sealed record CollectionExpectationFamily(
 			constraints.AddRange(fromKind);
 		}
 
-		constraints.AddRange(ConstraintsOf(typeParameter, substitutions));
+		constraints.AddRange(ConstraintsOf(typeParameter, substitutions, format));
 		constraints = constraints.Distinct().OrderBy(Rank).ToList();
 		return constraints.Count == 0 ? null : $"where {typeParameter.Name} : {string.Join(", ", constraints)}";
 	}
@@ -592,7 +635,7 @@ internal sealed record CollectionExpectationFamily(
 		};
 
 	private static List<string> ConstraintsOf(ITypeParameterSymbol typeParameter,
-		Dictionary<string, Bound> substitutions)
+		Dictionary<string, Bound> substitutions, SymbolDisplayFormat format)
 	{
 		List<string> constraints = [];
 		if (typeParameter.HasReferenceTypeConstraint)
@@ -614,7 +657,7 @@ internal sealed record CollectionExpectationFamily(
 			constraints.Add("notnull");
 		}
 
-		constraints.AddRange(typeParameter.ConstraintTypes.Select(x => Substitute(x, substitutions)));
+		constraints.AddRange(typeParameter.ConstraintTypes.Select(x => Substitute(x, substitutions, format)));
 		if (typeParameter.HasConstructorConstraint)
 		{
 			constraints.Add("new()");
@@ -627,8 +670,9 @@ internal sealed record CollectionExpectationFamily(
 	///     The helper is rendered unconstructed and the bound type parameters are replaced by name, because an
 	///     instantiation cannot construct a method that still carries the overload's own type parameters.
 	/// </remarks>
-	private static string Substitute(ITypeSymbol type, Dictionary<string, Bound> substitutions)
-		=> Substitute(type.ToDisplayString(TypeFormat), substitutions);
+	private static string Substitute(ITypeSymbol type, Dictionary<string, Bound> substitutions,
+		SymbolDisplayFormat format)
+		=> Substitute(type.ToDisplayString(format), substitutions);
 
 	private static string Substitute(string type, Dictionary<string, Bound> substitutions)
 	{
@@ -804,6 +848,11 @@ internal sealed record CollectionExpectationFamily(
 		string? remarks,
 		Dictionary<string, List<string>> constraints)
 	{
+		/// <summary>
+		///     Whether the helper fixes a type argument of the kind to a reference type.
+		/// </summary>
+		public bool FixesReferenceType { get; init; }
+
 		public string Template { get; } = template;
 		public bool IsValueType { get; } = isValueType;
 		public int Priority { get; } = priority;
