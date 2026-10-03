@@ -265,7 +265,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value 1.0 ± 0.1,
-					             but it did not contain 1.0
+					             but it did not contain value 1.0
 
 					             Dictionary:
 					             {["a"] = 1.2}

@@ -233,7 +233,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains [1] = "Yesterday" ignoring case,
-					             but it contained the key 1 with value "Let It Be"
+					             but it contained key 1 with value "Let It Be"
 
 					             Dictionary:
 					             {
@@ -291,7 +291,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 1.0 ± 0.1,
-					             but it contained the key "a" with value 1.2
+					             but it contained key "a" with value 1.2
 
 					             Dictionary:
 					             {["a"] = 1.2}
