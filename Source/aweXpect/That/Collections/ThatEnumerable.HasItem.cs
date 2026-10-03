@@ -44,7 +44,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(it, grammars,
+				=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					x => options.Matches(x),
 					options.GetDescription,
 					indexOptions).InvertIf(negated)),
@@ -67,7 +67,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TItem>(it, grammars, predicate,
+				=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars, predicate,
 					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions);
@@ -89,7 +89,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new HasAsyncItemConstraint<TItem>(it, grammars,
+				return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					a => itemOptions.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
 					      itemOptions.Comparer,
@@ -119,7 +119,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				return new HasAsyncItemConstraint<TItem>(it, grammars,
+				return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					a => itemOptions.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
 					      itemOptions.Comparer,
@@ -148,7 +148,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
-				return new HasAsyncItemConstraint<string?>(it, grammars,
+				return new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
 					a => itemOptions.AreConsideredEqual(a, expected),
 					() => options.GetExpectation(expected, grammars) + itemOptions.Comparer,
 					indexOptions,
@@ -171,7 +171,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(it, grammars,
+				=> new HasItemConstraint<IEnumerable, object?>(it, grammars,
 					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
@@ -192,7 +192,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
+				=> new HasItemConstraint<IEnumerable, object?>(
 					it, grammars,
 					predicate, () => $"matching {predicateExpression}",
 					indexOptions).InvertIf(negated)),
@@ -216,7 +216,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<object?, object?> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
+				return new HasItemConstraint<IEnumerable, object?>(
 					it, grammars,
 					a => itemOptions.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
@@ -245,7 +245,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<TCollection>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<TCollection, TItem>(
+				=> new HasItemConstraint<TCollection, TItem>(
 					it, grammars,
 					predicate, () => $"matching {predicateExpression}",
 					indexOptions).InvertIf(negated)),
@@ -266,7 +266,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemForEnumerableConstraint<TCollection, TItem>(it, grammars,
+				=> new HasItemConstraint<TCollection, TItem>(it, grammars,
 					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
 			subject,
 			indexOptions,
@@ -287,7 +287,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
+				=> new HasItemConstraint<TCollection, TItem>(
 					it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
@@ -313,7 +313,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<TCollection, TItem>(
+				=> new HasItemConstraint<TCollection, TItem>(
 					it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
@@ -338,7 +338,7 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<TCollection>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasAsyncItemForEnumerableConstraint<TCollection, string?>(
+				=> new HasItemConstraint<TCollection, string?>(
 					it, grammars,
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetExpectation(expected, grammars),
@@ -382,150 +382,64 @@ public static partial class ThatEnumerable
 			_ => false,
 		};
 
-	private sealed class HasAsyncItemConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private TItem? _actual;
-		private bool _hasIndex;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			useComparerOf?.Invoke(actual);
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
-			Outcome = Outcome.Failure;
-
-			if (!TryCountForIndex(options, actual, materialized, cancellationToken, out int? count))
-			{
-				Outcome = Outcome.Undecided;
-				return this;
-			}
-
-			int index = -1;
-			foreach (TItem item in materialized)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return this;
-				}
-
-				index++;
-				bool? isIndexInRange = IsIndexInRange(options, index, count);
-				if (isIndexInRange == false)
-				{
-					break;
-				}
-
-				if (isIndexInRange is null)
-				{
-					continue;
-				}
-
-				_hasIndex = true;
-				_actual = item;
-				bool isMatch = await predicate(item);
-				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-				if (isMatch)
-				{
-					break;
-				}
-			}
-
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_hasIndex)
-			{
-				if (options.Match.OnlySingleIndex())
-				{
-					stringBuilder.Append(It).Append(" had item ");
-					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(options.Match.GetDescription());
-				}
-				else
-				{
-					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
-				}
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-				.Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" had item ");
-			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(options.Match.GetDescription());
-		}
-	}
-
-	private sealed class HasAsyncItemForEnumerableConstraint<TEnumerable, TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
+	private sealed class HasItemConstraint<TEnumerable, TItem>
+		: ConstraintResult.WithNotNullValue<TEnumerable>,
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private readonly Action<ResultContextCollector>? _appendOptionsContexts;
+		private readonly Func<TItem, ValueTask<bool>>? _asyncPredicate;
+		private readonly CollectionIndexOptions _options;
+		private readonly Func<TItem, bool>? _predicate;
+		private readonly Func<string> _predicateDescription;
+		private readonly Func<object?, bool>? _useComparerOf;
+		private TItem? _actual;
 		private CollectionContext _collectionContext;
-		private object? _actual;
 		private bool _hasIndex;
+
+		public HasItemConstraint(
+			string it,
+			ExpectationGrammars grammars,
+			Func<TItem, bool> predicate,
+			Func<string> predicateDescription,
+			CollectionIndexOptions options)
+			: base(it, grammars)
+		{
+			_predicate = predicate;
+			_predicateDescription = predicateDescription;
+			_options = options;
+		}
+
+		public HasItemConstraint(
+			string it,
+			ExpectationGrammars grammars,
+			Func<TItem, ValueTask<bool>> predicate,
+			Func<string> predicateDescription,
+			CollectionIndexOptions options,
+			Func<object?, bool>? useComparerOf = null,
+			Action<ResultContextCollector>? appendOptionsContexts = null)
+			: base(it, grammars)
+		{
+			_asyncPredicate = predicate;
+			_predicateDescription = predicateDescription;
+			_options = options;
+			_useComparerOf = useComparerOf;
+			_appendOptionsContexts = appendOptionsContexts;
+		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			_collectionContext.AppendTo(contexts);
-			appendOptionsContexts?.Invoke(contexts);
+			_appendOptionsContexts?.Invoke(contexts);
 		}
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
+			_actual = default;
+			_hasIndex = false;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -538,29 +452,29 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			useComparerOf?.Invoke(actual);
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
+			_useComparerOf?.Invoke(actual);
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			materialized.SetContext(ref _collectionContext);
 			Outcome = Outcome.Failure;
 
-			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
+			IEnumerable<TItem> items = materialized.Items;
+			if (!TryCountForIndex(_options, actual, items, cancellationToken, out int? count))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
 			}
 
 			int index = -1;
-			foreach (TItem item in materialized.Cast<TItem>())
+			foreach (TItem item in items)
 			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					Outcome = Outcome.Undecided;
 					return this;
 				}
 
 				index++;
-				bool? isIndexInRange = IsIndexInRange(options, index, count);
+				bool? isIndexInRange = IsIndexInRange(_options, index, count);
 				if (isIndexInRange == false)
 				{
 					break;
@@ -573,7 +487,9 @@ public static partial class ThatEnumerable
 
 				_hasIndex = true;
 				_actual = item;
-				bool isMatch = await predicate(item);
+				bool isMatch = _asyncPredicate is null
+					? UserCode.Invoke(_predicate!, item, "the predicate")
+					: await _asyncPredicate(item);
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
 				if (isMatch)
 				{
@@ -585,268 +501,40 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
-				.Append(options.Match.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(_predicateDescription())
+				.Append(_options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_hasIndex)
 			{
-				if (options.Match.OnlySingleIndex())
+				if (_options.Match.OnlySingleIndex())
 				{
 					stringBuilder.Append(It).Append(" had item ");
 					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(options.Match.GetDescription());
+					stringBuilder.Append(_options.Match.GetDescription());
 				}
 				else
 				{
-					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
+					stringBuilder.Append(It).Append(" had no matching item").Append(_options.Match.GetDescription());
 				}
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no item").Append(_options.Match.GetDescription());
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-				.Append(predicateDescription())
-				.Append(options.Match.GetDescription());
+				.Append(_predicateDescription())
+				.Append(_options.Match.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" had item ");
 			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(options.Match.GetDescription());
-		}
-	}
-
-	private sealed class HasItemConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, bool> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options)
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private TItem? _actual;
-		private bool _hasIndex;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
-			Outcome = Outcome.Failure;
-
-			if (!TryCountForIndex(options, actual, materialized, cancellationToken, out int? count))
-			{
-				Outcome = Outcome.Undecided;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			int index = -1;
-			foreach (TItem item in materialized)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				index++;
-				bool? isIndexInRange = IsIndexInRange(options, index, count);
-				if (isIndexInRange == false)
-				{
-					break;
-				}
-
-				if (isIndexInRange is null)
-				{
-					continue;
-				}
-
-				_hasIndex = true;
-				_actual = item;
-				bool isMatch = UserCode.Invoke(predicate, item, "the predicate");
-				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-				if (isMatch)
-				{
-					break;
-				}
-			}
-
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_hasIndex)
-			{
-				if (options.Match.OnlySingleIndex())
-				{
-					stringBuilder.Append(It).Append(" had item ");
-					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(options.Match.GetDescription());
-				}
-				else
-				{
-					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
-				}
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-				.Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" had item ");
-			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(options.Match.GetDescription());
-		}
-	}
-
-	private sealed class HasItemForEnumerableConstraint<TEnumerable, TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, bool> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options)
-		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
-			IAsyncContextConstraint<TEnumerable>
-		where TEnumerable : IEnumerable?
-	{
-		private CollectionContext _collectionContext;
-		private object? _actual;
-		private bool _hasIndex;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return Task.FromResult(this.AsNullSubject(It));
-			}
-
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
-			Outcome = Outcome.Failure;
-
-			if (!TryCountForIndex(options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
-			{
-				Outcome = Outcome.Undecided;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			int index = -1;
-			foreach (TItem item in materialized.Cast<TItem>())
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				index++;
-				bool? isIndexInRange = IsIndexInRange(options, index, count);
-				if (isIndexInRange == false)
-				{
-					break;
-				}
-
-				if (isIndexInRange is null)
-				{
-					continue;
-				}
-
-				_hasIndex = true;
-				_actual = item;
-				bool isMatch = UserCode.Invoke(predicate, item, "the predicate");
-				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-				if (isMatch)
-				{
-					break;
-				}
-			}
-
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_hasIndex)
-			{
-				if (options.Match.OnlySingleIndex())
-				{
-					stringBuilder.Append(It).Append(" had item ");
-					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(options.Match.GetDescription());
-				}
-				else
-				{
-					stringBuilder.Append(It).Append(" had no matching item").Append(options.Match.GetDescription());
-				}
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" had no item").Append(options.Match.GetDescription());
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-				.Append(predicateDescription())
-				.Append(options.Match.GetDescription());
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" had item ");
-			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(options.Match.GetDescription());
+			stringBuilder.Append(_options.Match.GetDescription());
 		}
 	}
 }
