@@ -4218,6 +4218,25 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsRegisteredAfterAComparison_ShouldCompareTheRegisteredMembers()
+	{
+		LateRegisteredProbe actual = new(1);
+		LateRegisteredProbe expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool resultBeforeRegistration =
+			await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+		TypeMetadataRegistry.RegisterProperty<LateRegisteredProbe, int>("Phantom", x => x.PhantomValue());
+		bool resultAfterRegistration =
+			await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(resultBeforeRegistration).IsTrue();
+		await That(resultAfterRegistration).IsFalse()
+			.Because("the members that were resolved for the first comparison must not hide a later registration");
+		await That(failureBuilder.ToString()).Contains("Property Phantom differed");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsRegisteredAsNullable_ShouldApplyTheOptionsToTheMember()
 	{
 		var actual = new
@@ -4612,6 +4631,13 @@ public sealed partial class EquivalencyComparisonTests
 
 	private sealed class RegisteredExplicitProbe(int phantom)
 	{
+		public int PhantomValue() => phantom;
+	}
+
+	private sealed class LateRegisteredProbe(int phantom)
+	{
+		public int Visible { get; set; }
+
 		public int PhantomValue() => phantom;
 	}
 

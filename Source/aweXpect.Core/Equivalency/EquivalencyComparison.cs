@@ -142,6 +142,50 @@ public static partial class EquivalencyComparison
 		}
 	}
 
+	/// <summary>
+	///     The path of a compared value, which is only joined into a <see langword="string" /> when it is read.
+	/// </summary>
+	/// <remarks>
+	///     Most members and elements are compared by value and are equal, so nothing ever reads their path: only ignore
+	///     rules, failures, code of the caller that throws and the members of a nested object do.
+	/// </remarks>
+	private readonly struct MemberPath
+	{
+		private readonly int _index;
+		private readonly string? _name;
+		private readonly string _parent;
+
+		private MemberPath(string parent, string? name, int index)
+		{
+			_parent = parent;
+			_name = name;
+			_index = index;
+		}
+
+		public static implicit operator MemberPath(string path) => new(path, null, -1);
+
+		/// <summary>
+		///     The path of the member <paramref name="name" /> of the value at the <paramref name="parent" /> path.
+		/// </summary>
+		public static MemberPath Member(string parent, string name) => new(parent, name, -1);
+
+		/// <summary>
+		///     The path of the element at the <paramref name="index" /> of the sequence at the <paramref name="parent" />
+		///     path.
+		/// </summary>
+		public static MemberPath Element(string parent, int index) => new(parent, null, index);
+
+		public override string ToString()
+		{
+			if (_name is not null)
+			{
+				return _parent.Length == 0 ? _name : $"{_parent}.{_name}";
+			}
+
+			return _index >= 0 ? $"{_parent}[{_index}]" : _parent;
+		}
+	}
+
 	private readonly struct ComparedPair : IEquatable<ComparedPair>
 	{
 		private readonly object _actual;
