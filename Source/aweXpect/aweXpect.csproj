@@ -4,10 +4,7 @@
 		<Description>Assert unit tests in natural language using awesome expectations.</Description>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(Configuration)' != 'Debug' ">
-		<PackageReference Include="aweXpect.Core"/>
-	</ItemGroup>
-	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<ItemGroup>
 		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj"/>
 	</ItemGroup>
 
