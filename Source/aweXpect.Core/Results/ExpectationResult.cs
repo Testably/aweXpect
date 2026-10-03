@@ -264,24 +264,28 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <remarks>
 	///     An expectation that is met without waiting for anything returns its value right away, as starting the
 	///     asynchronous evaluation would take longer than the expectation itself.
+	///     <para />
+	///     A <see cref="ValueTaskAwaiter{TResult}" />, so that returning the value right away allocates no task. Every
+	///     other evaluation is backed by a <see cref="Task{TResult}" />, which <c>GetAwaiter().GetResult()</c> can block
+	///     on.
 	/// </remarks>
 	[StackTraceHidden]
-	public TaskAwaiter<TType> GetAwaiter()
+	public ValueTaskAwaiter<TType> GetAwaiter()
 	{
 		ValueTask<ConstraintResult> isMet = ExpectationBuilder.IsMet();
 		if (!isMet.IsCompletedSuccessfully)
 		{
-			return GetResultOrThrow(isMet).GetAwaiter();
+			return new ValueTask<TType>(GetResultOrThrow(isMet)).GetAwaiter();
 		}
 
 		ConstraintResult result = isMet.Result;
 		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null &&
 		    result.TryGetStoredValue(out TType? value))
 		{
-			return Task.FromResult(value!).GetAwaiter();
+			return new ValueTask<TType>(value!).GetAwaiter();
 		}
 
-		return GetResultOrThrow(new ValueTask<ConstraintResult>(result)).GetAwaiter();
+		return new ValueTask<TType>(GetResultOrThrow(new ValueTask<ConstraintResult>(result))).GetAwaiter();
 	}
 
 	/// <summary>
