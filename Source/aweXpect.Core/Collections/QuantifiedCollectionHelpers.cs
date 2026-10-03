@@ -21,6 +21,28 @@ internal static class QuantifiedCollectionHelpers
 {
 	private const string MaybeMoreMarker = "(… and maybe more)";
 
+	private static readonly Type[] SingleLineTypes =
+	[
+		typeof(bool),
+		typeof(char),
+		typeof(byte),
+		typeof(sbyte),
+		typeof(float),
+		typeof(double),
+		typeof(decimal),
+		typeof(int),
+		typeof(uint),
+		typeof(long),
+		typeof(ulong),
+		typeof(short),
+		typeof(ushort),
+#if NET8_0_OR_GREATER
+		typeof(Int128),
+		typeof(UInt128),
+		typeof(Half),
+#endif
+	];
+
 	/// <summary>
 	///     Adds the <paramref name="matchingItems" /> and the <paramref name="notMatchingItems" /> of the
 	///     <paramref name="constraint" /> as context, as far as the <paramref name="quantifier" /> requests them.
@@ -105,28 +127,7 @@ internal static class QuantifiedCollectionHelpers
 	/// </summary>
 	internal static FormattingOptions GetFormattingOption(this Type type, int? count, int? totalCount = null)
 	{
-		Type[] singleLineTypes =
-		[
-			typeof(bool),
-			typeof(char),
-			typeof(byte),
-			typeof(sbyte),
-			typeof(float),
-			typeof(double),
-			typeof(decimal),
-			typeof(int),
-			typeof(uint),
-			typeof(long),
-			typeof(ulong),
-			typeof(short),
-			typeof(ushort),
-#if NET8_0_OR_GREATER
-			typeof(Int128),
-			typeof(UInt128),
-			typeof(Half),
-#endif
-		];
-		if (count < 10 && (type.IsEnum || singleLineTypes.Contains(type)))
+		if (count < 10 && (type.IsEnum || SingleLineTypes.Contains(type)))
 		{
 			return FormattingOptions.SingleLine with
 			{
@@ -137,7 +138,7 @@ internal static class QuantifiedCollectionHelpers
 		Type? underlyingType = Nullable.GetUnderlyingType(type);
 
 		if (count < 10 && underlyingType != null &&
-		    (underlyingType.IsEnum || singleLineTypes.Contains(underlyingType)))
+		    (underlyingType.IsEnum || SingleLineTypes.Contains(underlyingType)))
 		{
 			return FormattingOptions.SingleLine with
 			{

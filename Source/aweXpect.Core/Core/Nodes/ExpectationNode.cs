@@ -172,7 +172,7 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult = await _inner.IsMetBy(value, context, cancellationToken);
 			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
-			return await ApplyReasons(innerResult, context);
+			return _reasons is null ? innerResult : await ApplyReasons(innerResult, context);
 		}
 
 		if (result is null)
@@ -182,7 +182,7 @@ internal class ExpectationNode : Node
 					$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
 		}
 
-		return await ApplyReasons(result, context);
+		return _reasons is null ? result : await ApplyReasons(result, context);
 	}
 
 	/// <summary>
@@ -200,12 +200,7 @@ internal class ExpectationNode : Node
 	/// </remarks>
 	private async Task<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
 	{
-		if (_reasons is null)
-		{
-			return result;
-		}
-
-		foreach (IBecauseReason reason in _reasons)
+		foreach (IBecauseReason reason in _reasons!)
 		{
 			if (reason is AsyncBecauseReason asyncReason && context is ExpectationTextEvaluationContext)
 			{

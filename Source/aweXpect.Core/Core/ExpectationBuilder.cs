@@ -683,9 +683,13 @@ public abstract class ExpectationBuilder
 			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 			                                      System.Threading.CancellationToken.None;
 			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
-			result = await ApplyReasons(await IsMet(GetRootNode(), context, timeSystem,
+			result = await IsMet(GetRootNode(), context, timeSystem,
 				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
-				cancellationToken));
+				cancellationToken);
+			if (_reasons is not null)
+			{
+				result = await ApplyReasons(result);
+			}
 		}
 		catch
 		{
