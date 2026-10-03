@@ -186,7 +186,7 @@ partial class Build
 				bool? hasReport = await DownloadSlicedMutationReport(project.Name, artifactName, slices);
 				if (hasReport is null)
 				{
-					// `build.yml` and `nightly.yml` each mutate only one of the projects.
+					// A run without an artifact for the project did not mutate it.
 					continue;
 				}
 
