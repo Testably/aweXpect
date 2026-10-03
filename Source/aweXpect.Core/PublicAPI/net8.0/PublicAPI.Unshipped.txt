@@ -433,3 +433,5 @@ aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, Sys
 aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, System.Func<TState, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, System.Func<TState, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, System.Func<TState, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter<TType>
+aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.ValueTaskAwaiter<TType>
