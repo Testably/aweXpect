@@ -18,13 +18,17 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	/// <summary>
 	///     Returns the result returned from the delegate.
 	/// </summary>
+	/// <remarks>
+	///     The result only exists when the delegate did not throw, so a negation only applies to the expectations on the
+	///     result: "throws an exception or its result is not …".
+	/// </remarks>
 	public IThat<T> WhoseResult
 	{
 		get
 		{
-			ExpectationBuilder.And("")
+			ExpectationBuilder.And(" and its result ")
 				.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
-				.ForWhich<DelegateValue<T>, T?>(d => d.Value, " and its result ", "it");
+				.ForWhich<DelegateValue<T>, T?>(d => d.Value, "", "it", negateMemberOnly: true);
 			return new ThatSubject<T?>(ExpectationBuilder);
 		}
 	}
