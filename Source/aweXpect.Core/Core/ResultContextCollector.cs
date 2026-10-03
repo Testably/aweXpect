@@ -148,7 +148,7 @@ public sealed class ResultContextCollector
 			StringBuilder sb = new();
 			foreach (string segment in Subject)
 			{
-				if (segment.StartsWith("[", System.StringComparison.Ordinal))
+				if (segment.StartsWith('['))
 				{
 					sb.Append(sb.Length == 0 ? "item " : "").Append(segment);
 				}

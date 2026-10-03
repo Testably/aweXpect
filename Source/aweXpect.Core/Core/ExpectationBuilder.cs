@@ -604,7 +604,7 @@ public abstract class ExpectationBuilder
 	internal async Task<ConstraintResult> IsMet()
 	{
 		await EndEvaluation();
-		_otherExceptions = null;
+		ResetOtherExceptions();
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
 		ConstraintResult result;
@@ -695,7 +695,7 @@ public abstract class ExpectationBuilder
 				ExpectationBuilder>
 			_callback;
 
-		private readonly MappingNodes<TSource, TMember> _mappingNodes;
+		private readonly MappingNodes<TMember> _mappingNodes;
 
 		private Func<string, ExpectationGrammars, IValueConstraint<TSource>>? _sourceConstraintBuilder;
 
@@ -706,7 +706,7 @@ public abstract class ExpectationBuilder
 				Func<MappingNode>,
 				ExpectationBuilder>
 			callback,
-			MappingNodes<TSource, TMember> mappingNodes)
+			MappingNodes<TMember> mappingNodes)
 		{
 			_callback = callback;
 			_mappingNodes = mappingNodes;
@@ -755,7 +755,7 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Creates the mapping nodes for the member of type <typeparamref name="TMember" />.
 	/// </summary>
-	internal abstract class MappingNodes<TSource, TMember>
+	internal abstract class MappingNodes<TMember>
 	{
 		/// <summary>
 		///     Creates the mapping node whose expectations are typed at <typeparamref name="TMember" />.
@@ -771,7 +771,7 @@ public abstract class ExpectationBuilder
 	private sealed class SyncMappingNodes<TSource, TMember>(
 		MemberAccessor<TSource, TMember> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
-		: MappingNodes<TSource, TMember>
+		: MappingNodes<TMember>
 	{
 		public override MappingNode Create<TNarrowed>()
 			=> new MappingNode<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator);
@@ -780,7 +780,7 @@ public abstract class ExpectationBuilder
 	private sealed class AsyncMappingNodes<TSource, TMember>(
 		MemberAccessor<TSource, Task<TMember>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
-		: MappingNodes<TSource, TMember>
+		: MappingNodes<TMember>
 	{
 		public override MappingNode Create<TNarrowed>()
 			=> new MappingNode<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator);

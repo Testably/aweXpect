@@ -322,7 +322,6 @@ public static partial class ThatAsyncEnumerable
 	{
 		private CollectionContext _collectionContext;
 		private IAsyncEnumerable<TItem>? _actual;
-		private LimitedCollection<TItem>? _items;
 		private int _count;
 		private bool _isFinished;
 		private bool _isNegated;
@@ -347,7 +346,6 @@ public static partial class ThatAsyncEnumerable
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new();
-			_items = items;
 			_count = 0;
 			_isFinished = false;
 			int totalCount = 0;
@@ -494,7 +492,6 @@ public static partial class ThatAsyncEnumerable
 	{
 		private CollectionContext _collectionContext;
 		private IAsyncEnumerable<TItem>? _actual;
-		private LimitedCollection<TItem>? _items;
 		private int _count;
 		private TItem? _firstFoundItem;
 		private bool _isFinished;
@@ -523,7 +520,6 @@ public static partial class ThatAsyncEnumerable
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new();
-			_items = items;
 			_count = 0;
 			_isFinished = false;
 			int totalCount = 0;

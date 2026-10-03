@@ -99,7 +99,7 @@ internal sealed class JunctionResult : CombinedResult
 	{
 		const string and = " and";
 		return IsNegated && _separator.StartsWith(and, StringComparison.Ordinal)
-			? " or" + _separator.Substring(and.Length)
+			? " or" + _separator[and.Length..]
 			: _separator;
 	}
 
