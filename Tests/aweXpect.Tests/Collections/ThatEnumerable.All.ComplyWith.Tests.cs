@@ -90,6 +90,30 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenAnEarlierAttemptHadOtherItems_ShouldDescribeTheLastAttempt()
+				{
+					int calls = 0;
+					Func<int[]> subject = () => calls++ == 0 ? [0, 0,] : [2, 0,];
+
+					async Task Act()
+						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+							.All().ComplyWith(x => x.IsGreaterThan(1));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             eventually is greater than 1 for all items within 0:00.200,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [0]
+
+						             Collection:
+						             [2, 0]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 				{
 					int[] subject = [1, 1, 1, 1, 2, 2, 3,];

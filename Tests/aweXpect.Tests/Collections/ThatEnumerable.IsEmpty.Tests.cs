@@ -57,6 +57,26 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAnEarlierAttemptHadAnotherSubject_ShouldDescribeTheLastOne()
+			{
+				int calls = 0;
+				Func<IEnumerable<int>> subject = () => calls++ == 0 ? [1, 2,] : ToEnumerable([3,]);
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.IsEmpty();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             eventually is empty within 0:00.200,
+					             but it was [
+					               3
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenArrayContainsValues_ShouldFail()
 			{
 				string[] subject = ["foo",];

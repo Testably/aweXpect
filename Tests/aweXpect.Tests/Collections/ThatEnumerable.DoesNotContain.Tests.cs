@@ -271,6 +271,27 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenAnEarlierAttemptContainedItMoreOften_ShouldDescribeTheLastAttempt()
+			{
+				int calls = 0;
+				Func<int[]> subject = () => calls++ == 0 ? [1, 1,] : [1,];
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.DoesNotContain(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             eventually does not contain an item equal to 1 within 0:00.200,
+					             but it contained 1 at least once
+
+					             Collection:
+					             [1]
+					             """);
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenEnumerableContainsUnexpectedValue_ShouldFail(
