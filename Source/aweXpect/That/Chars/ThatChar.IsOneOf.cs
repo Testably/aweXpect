@@ -29,9 +29,11 @@ public static partial class ThatChar
 		IEnumerable<char?> expectedValues = expected.ToNonEmptyValues(negated);
 		CharEqualityOptions options = new();
 		return new CharEqualityResult<char, IThat<char>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars) =>
-					new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
-						.InvertIf(negated)),
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
+					Negated: negated),
+				static (state, it, grammars) =>
+					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 	}

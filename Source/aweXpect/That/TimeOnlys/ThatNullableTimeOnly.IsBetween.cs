@@ -26,8 +26,10 @@ public static partial class ThatNullableTimeOnly
 		TimeTolerance tolerance = new();
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance)),
 				subject,
 				tolerance));
 	}
@@ -48,8 +50,10 @@ public static partial class ThatNullableTimeOnly
 		TimeTolerance tolerance = new();
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance).Invert()),
 				subject,
 				tolerance));
 	}

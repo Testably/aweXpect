@@ -250,9 +250,11 @@ public class EnumValueResult<TValue, TType>
 		bool isNegative = false,
 		bool isOrderedAgainstNull = false)
 		=> new(_subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new ValueConstraint(it, grammars, _mapper, _propertyExpression, condition, expectation,
-						isNegative, isOrderedAgainstNull)),
+				.AddConstraint((Mapper: _mapper, PropertyExpression: _propertyExpression, Condition: condition,
+						Expectation: expectation, IsNegative: isNegative, IsOrderedAgainstNull: isOrderedAgainstNull),
+					static (state, it, grammars) =>
+						new ValueConstraint(it, grammars, state.Mapper, state.PropertyExpression, state.Condition,
+							state.Expectation, state.IsNegative, state.IsOrderedAgainstNull)),
 			_subject);
 
 	private sealed class ValueConstraint(

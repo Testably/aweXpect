@@ -20,8 +20,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<object?, object?>(it, grammars, expected, null, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<object?, object?>(it, grammars, state.Expected, null, state.Options)),
 			subject,
 			options);
 	}
@@ -37,8 +38,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new NullableIsEqualToConstraint<T>(it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new NullableIsEqualToConstraint<T>(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -54,8 +56,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<T>(it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<T>(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -69,8 +72,10 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<object?, object?>(it, grammars, unexpected, null, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<object?, object?>(it, grammars, state.Unexpected, null, state.Options)
+						.Invert()),
 			subject,
 			options);
 	}
@@ -87,8 +92,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new NullableIsEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars)
+					=> new NullableIsEqualToConstraint<T>(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -105,8 +111,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<T>(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}

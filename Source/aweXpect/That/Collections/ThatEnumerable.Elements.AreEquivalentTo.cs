@@ -33,15 +33,20 @@ public static partial class ThatEnumerable
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsEquivalentTo(g,
-							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were",
-						appendOptionsContexts: equalityOptions.AppendContexts)),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
+						EqualityOptions: equalityOptions),
+					static (state, it, grammars)
+						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsEquivalentTo(g,
+								state.Expected is null
+									? Formatter.Format(state.Expected)
+									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
+							"were",
+							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}
@@ -79,15 +84,20 @@ public static partial class ThatEnumerable
 			ObjectEqualityOptions<object?> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsEquivalentTo(g,
-							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were",
-						appendOptionsContexts: equalityOptions.AppendContexts)),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
+						EqualityOptions: equalityOptions),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsEquivalentTo(g,
+								state.Expected is null
+									? Formatter.Format(state.Expected)
+									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
+							"were",
+							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}
@@ -125,15 +135,20 @@ public static partial class ThatEnumerable
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsEquivalentTo(g,
-							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						a => equalityOptions.AreConsideredEqual((TItem)a!, expected),
-						"were",
-						appendOptionsContexts: equalityOptions.AppendContexts)),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
+						EqualityOptions: equalityOptions),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsEquivalentTo(g,
+								state.Expected is null
+									? Formatter.Format(state.Expected)
+									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							a => state.EqualityOptions.AreConsideredEqual((TItem)a!, state.Expected),
+							"were",
+							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}

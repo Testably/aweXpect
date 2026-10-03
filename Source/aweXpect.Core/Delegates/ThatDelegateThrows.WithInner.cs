@@ -103,8 +103,8 @@ public partial class ThatDelegateThrows<TException>
 	{
 		type.ThrowIfNotAnExceptionType();
 		return new(ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new HasInnerExceptionValueConstraint(type, it, grammars)),
+				.AddConstraint(type, static (innerExceptionType, it, grammars) =>
+					new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
 			this);
 	}
 
@@ -135,8 +135,8 @@ public partial class ThatDelegateThrows<TException>
 	{
 		type.ThrowIfNotAnExceptionType();
 		return new(ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new HasInnerExceptionValueConstraint(type, it, grammars).Invert()),
+				.AddConstraint(type, static (innerExceptionType, it, grammars) =>
+					new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars).Invert()),
 			this);
 	}
 

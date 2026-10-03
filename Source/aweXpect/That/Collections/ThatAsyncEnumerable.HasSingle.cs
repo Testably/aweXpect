@@ -22,8 +22,8 @@ public static partial class ThatAsyncEnumerable
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncHasSingleConstraint<TItem>(it, grammars, options)),
+			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars) =>
+				new AsyncHasSingleConstraint<TItem>(it, grammars, predicateOptions)),
 			options,
 			async f =>
 			{

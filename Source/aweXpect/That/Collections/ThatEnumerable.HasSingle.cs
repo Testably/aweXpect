@@ -27,8 +27,8 @@ public static partial class ThatEnumerable
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, options)),
+			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
+				=> new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, predicateOptions)),
 			options,
 			f => f.FirstOrDefault(item => options.Matches(item))
 		);
@@ -45,9 +45,9 @@ public static partial class ThatEnumerable
 		PredicateOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
 				=> new HasSingleConstraint<IEnumerable, object?>(it, grammars,
-					options)),
+					predicateOptions)),
 			options,
 			f =>
 			{
@@ -65,9 +65,9 @@ public static partial class ThatEnumerable
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
 				=> new HasSingleConstraint<ImmutableArray<TItem>, TItem>(it, grammars,
-					options)),
+					predicateOptions)),
 			options,
 			f =>
 			{

@@ -31,8 +31,8 @@ public abstract partial class ThatDelegate
 		public ExpectationResult DoesNotThrowExactly(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
-			return new(ExpectationBuilder.AddConstraint((it, grammars) =>
-				new DoesNotThrowExactlyConstraint(it, grammars, type)));
+			return new(ExpectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
+				new DoesNotThrowExactlyConstraint(it, grammars, exceptionType)));
 		}
 
 		private sealed class DoesNotThrowExactlyConstraint(string it, ExpectationGrammars grammars, Type exceptionType)

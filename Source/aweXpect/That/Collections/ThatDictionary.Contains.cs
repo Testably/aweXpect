@@ -38,9 +38,10 @@ public static partial class ThatDictionary
 		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
-					expected, options).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
+				static (state, it, grammars)
+					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -62,9 +63,10 @@ public static partial class ThatDictionary
 		expected.Key.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
-					expected, options).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
+				static (state, it, grammars)
+					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -84,9 +86,10 @@ public static partial class ThatDictionary
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new ContainsConstraint<TCollection, TKey, string?>(it, grammars,
-					expected, options).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
+				static (state, it, grammars)
+					=> new ContainsConstraint<TCollection, TKey, string?>(it, grammars,
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}

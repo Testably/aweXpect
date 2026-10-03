@@ -13,8 +13,8 @@ public static partial class ThatObject
 	public static AndOrResult<T?, IThat<T?>> IsSameAs<T>(this IThat<T?> subject, object? expected)
 		where T : class
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new IsSameAsConstraint<T>(it, grammars, expected)),
+				.AddConstraint(expected, static (expectedValue, it, grammars) =>
+					new IsSameAsConstraint<T>(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -23,8 +23,8 @@ public static partial class ThatObject
 	public static AndOrResult<T?, IThat<T?>> IsNotSameAs<T>(this IThat<T?> subject, object? unexpected)
 		where T : class
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new IsSameAsConstraint<T>(it, grammars, unexpected).Invert()),
+				.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+					new IsSameAsConstraint<T>(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsSameAsConstraint<T>(

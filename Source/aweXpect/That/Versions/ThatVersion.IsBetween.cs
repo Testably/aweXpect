@@ -24,8 +24,9 @@ public static partial class ThatVersion
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new AndOrResult<Version, IThat<Version?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum)),
+				subject.Get().ExpectationBuilder.AddConstraint((Minimum: minimum, Maximum: maximum),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum)),
 				subject);
 		});
 
@@ -45,8 +46,9 @@ public static partial class ThatVersion
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new AndOrResult<Version, IThat<Version?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum).Invert()),
+				subject.Get().ExpectationBuilder.AddConstraint((Minimum: minimum, Maximum: maximum),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum).Invert()),
 				subject);
 		});
 

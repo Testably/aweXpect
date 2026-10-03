@@ -23,8 +23,9 @@ public static partial class ThatNullableTimeOnly
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, expected, tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Expected, state.Tolerance)),
 			subject,
 			tolerance);
 	}
@@ -43,8 +44,9 @@ public static partial class ThatNullableTimeOnly
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, unexpected, tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
 			subject,
 			tolerance);
 	}

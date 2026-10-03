@@ -23,9 +23,10 @@ public static partial class ThatDictionary
 		expected.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainsKeyConstraint<TCollection, TKey, TValue>(it, grammars, expected)
-					.InvertIf(negated)),
+			expectationBuilder.AddConstraint((Expected: expected, Negated: negated),
+				static (state, it, grammars) =>
+					new ContainsKeyConstraint<TCollection, TKey, TValue>(it, grammars, state.Expected)
+						.InvertIf(state.Negated)),
 			subject,
 			expected,
 			f => GetLookup(f)(expected, out TValue? value) ? value : default

@@ -44,10 +44,12 @@ public static partial class ThatDictionary
 
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainKeysConstraint<TCollection, TKey, TValue>(it, grammars,
-					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(keys), keys, negated)
-					.InvertIf(negated)),
+			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Keys: keys, Negated: negated),
+				static (state, it, grammars) =>
+					new ContainKeysConstraint<TCollection, TKey, TValue>(it, grammars,
+						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Keys), state.Keys,
+						state.Negated)
+						.InvertIf(state.Negated)),
 			subject,
 			keys,
 			dictionary => new KeyedValues<TKey, TValue?>(keys

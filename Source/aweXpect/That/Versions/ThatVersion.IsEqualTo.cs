@@ -18,8 +18,8 @@ public static partial class ThatVersion
 	public static AndOrResult<Version?, IThat<Version?>> IsEqualTo(
 		this IThat<Version?> subject,
 		Version? expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars) =>
+				new IsEqualToConstraint(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -32,8 +32,8 @@ public static partial class ThatVersion
 	public static AndOrResult<Version?, IThat<Version?>> IsNotEqualTo(
 		this IThat<Version?> subject,
 		Version? unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+				new IsEqualToConstraint(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsEqualToConstraint(string it, ExpectationGrammars grammars, Version? expected)

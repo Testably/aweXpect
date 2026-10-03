@@ -22,8 +22,9 @@ public static partial class ThatNullableDateTime
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, expected, tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Expected, state.Tolerance)),
 			subject,
 			tolerance);
 	}
@@ -41,8 +42,9 @@ public static partial class ThatNullableDateTime
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, unexpected, tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
 			subject,
 			tolerance);
 	}

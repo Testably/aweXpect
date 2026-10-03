@@ -31,9 +31,11 @@ public static partial class ThatVersion
 		bool negated)
 	{
 		IEnumerable<Version?> expectedValues = expected.ToNonEmptyValues(negated);
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression)
-					.InvertIf(negated)),
+		return new(subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
+				static (state, it, grammars) =>
+					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression)
+						.InvertIf(state.Negated)),
 			subject);
 	}
 

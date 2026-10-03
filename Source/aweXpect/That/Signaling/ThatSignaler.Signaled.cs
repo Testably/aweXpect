@@ -27,8 +27,10 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions options = new();
-		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, quantifier, options)),
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint(it, grammars, state.Quantifier, state.Options)),
 			subject,
 			quantifier,
 			options);
@@ -43,8 +45,10 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options)),
 			subject,
 			quantifier,
 			options);
@@ -62,8 +66,10 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
-		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, quantifier, options)),
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint(it, grammars, state.Quantifier, state.Options)),
 			subject,
 			quantifier,
 			options);
@@ -81,8 +87,10 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options)),
 			subject,
 			quantifier,
 			options);
@@ -104,8 +112,10 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions options = new();
-		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint(it, grammars, state.Quantifier, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -127,8 +137,10 @@ public static partial class ThatSignaler
 	{
 		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
-		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -153,8 +165,10 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
-		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint(it, grammars, state.Quantifier, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -181,8 +195,10 @@ public static partial class ThatSignaler
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
-		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
+				(Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options).Invert()),
 			subject,
 			options);
 	}

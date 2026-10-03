@@ -26,8 +26,8 @@ public static partial class ThatGeneric
 		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((_, grammars) =>
-					new CompliesWithConstraint<T>(grammars, expectations, options)),
+				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
+					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options)),
 			subject,
 			options);
 	}
@@ -45,8 +45,8 @@ public static partial class ThatGeneric
 		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((_, grammars) =>
-					new CompliesWithConstraint<T>(grammars, expectations, options).Invert()),
+				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
+					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options).Invert()),
 			subject,
 			options);
 	}

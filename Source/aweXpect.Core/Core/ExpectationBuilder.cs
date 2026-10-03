@@ -223,6 +223,154 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, the current name for the
+	///     subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, this
+	///     <see cref="ExpectationBuilder" />, the current name for the subject (mostly "it") and the current
+	///     <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IContextConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, the current name for the
+	///     subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IContextConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, this
+	///     <see cref="ExpectationBuilder" />, the current name for the subject (mostly "it") and the current
+	///     <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IAsyncConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, the current name for the
+	///     subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IAsyncConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, this
+	///     <see cref="ExpectationBuilder" />, the current name for the subject (mostly "it") and the current
+	///     <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IAsyncContextConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, the current name for the
+	///     subject (mostly "it") and the current <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
+	///     Adds the <see cref="IAsyncContextConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies
+	///     the underlying value.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraintBuilder" /> receives the <paramref name="state" />, this
+	///     <see cref="ExpectationBuilder" />, the current name for the subject (mostly "it") and the current
+	///     <see cref="ExpectationGrammars" />.
+	///     <para />
+	///     Passing the values of the constraint as <paramref name="state" /> to a <see langword="static" /> lambda avoids
+	///     allocating a closure and a delegate for every expectation.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
+		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
+	{
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		return this;
+	}
+
+	/// <summary>
 	///     Specifies a constraint that applies to the member selected
 	///     by the <paramref name="memberAccessor" />.
 	/// </summary>

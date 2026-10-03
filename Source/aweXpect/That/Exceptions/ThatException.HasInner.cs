@@ -105,8 +105,8 @@ public static partial class ThatException
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasInnerExceptionValueConstraint(type, it, grammars)),
+		return new(subject.Get().ExpectationBuilder.AddConstraint(type, static (innerExceptionType, it, grammars)
+				=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
 			subject);
 	}
 }

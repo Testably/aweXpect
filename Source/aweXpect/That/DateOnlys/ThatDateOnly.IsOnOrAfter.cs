@@ -19,8 +19,9 @@ public static partial class ThatDateOnly
 	{
 		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOnOrAfterConstraint(it, grammars, expected, tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsOnOrAfterConstraint(it, grammars, state.Expected, state.Tolerance)),
 			subject,
 			tolerance);
 	}
@@ -34,8 +35,9 @@ public static partial class ThatDateOnly
 	{
 		TimeTolerance tolerance = new DayTolerance();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOnOrAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsOnOrAfterConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
 			subject,
 			tolerance);
 	}

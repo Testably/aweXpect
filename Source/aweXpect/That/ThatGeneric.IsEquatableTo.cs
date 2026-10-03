@@ -17,8 +17,8 @@ public static partial class ThatGeneric
 		this IThat<TEquatable> subject,
 		T expected)
 		where TEquatable : IEquatable<T>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars)
+				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -30,8 +30,8 @@ public static partial class ThatGeneric
 		this IThat<TEquatable> subject,
 		T unexpected)
 		where TEquatable : IEquatable<T>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars)
+				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsEquatableToConstraint<T, TEquatable>(

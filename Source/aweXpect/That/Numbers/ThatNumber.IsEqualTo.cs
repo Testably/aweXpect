@@ -22,8 +22,9 @@ public static partial class ThatNumber
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TNumber>(it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint<TNumber>(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -37,8 +38,9 @@ public static partial class ThatNumber
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsEqualToConstraint<TNumber>(it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars) =>
+					new NullableIsEqualToConstraint<TNumber>(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -52,8 +54,9 @@ public static partial class ThatNumber
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint<TNumber>(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -67,8 +70,9 @@ public static partial class ThatNumber
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsEqualToConstraint<TNumber>(it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars) =>
+					new NullableIsEqualToConstraint<TNumber>(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -173,8 +177,10 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint<TNumber>(it, grammars, state.Expected, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 
@@ -186,8 +192,10 @@ public static partial class ThatNumber
 		NumberTolerance<TNumber> options,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsEqualToConstraint<TNumber>(it, grammars, expected, options).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
+				static (state, it, grammars) =>
+					new NullableIsEqualToConstraint<TNumber>(it, grammars, state.Expected, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 

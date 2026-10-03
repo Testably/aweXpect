@@ -48,10 +48,13 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions,
-					failsForNullSubject: true).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, Options: options,
+					MatchOptions: matchOptions, Negated: negated),
+				static (state, it, grammars) =>
+					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
+						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions,
@@ -79,12 +82,15 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
 			ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars) =>
-					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-						doNotPopulateThisValue.TrimCommonWhiteSpace(),
-						expected,
-						options,
-						matchOptions, failsForNullSubject: true)),
+				expectationBuilder.AddConstraint(
+					(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, Options: options,
+						MatchOptions: matchOptions),
+					static (state, it, grammars) =>
+						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+							state.Expected,
+							state.Options,
+							state.MatchOptions, failsForNullSubject: true)),
 				subject,
 				options,
 				matchOptions,
@@ -113,12 +119,15 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>,
 			IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					options,
-					matchOptions, failsForNullSubject: true)),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, Options: options,
+					MatchOptions: matchOptions),
+				static (state, it, grammars) =>
+					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Expected,
+						state.Options,
+						state.MatchOptions, failsForNullSubject: true)),
 			subject,
 			options,
 			matchOptions,
@@ -145,11 +154,13 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions, failsForNullSubject: true)),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, MatchOptions: matchOptions),
+				static (state, it, grammars)
+					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Expected,
+						state.MatchOptions, failsForNullSubject: true)),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
@@ -175,11 +186,13 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions, failsForNullSubject: true)),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, MatchOptions: matchOptions),
+				static (state, it, grammars)
+					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Expected,
+						state.MatchOptions, failsForNullSubject: true)),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
@@ -206,12 +219,15 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
 			ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars) =>
-					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-						doNotPopulateThisValue.TrimCommonWhiteSpace(),
-						unexpected,
-						options,
-						matchOptions, failsForNullSubject: true).Invert()),
+				expectationBuilder.AddConstraint(
+					(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, Options: options,
+						MatchOptions: matchOptions),
+					static (state, it, grammars) =>
+						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+							state.Unexpected,
+							state.Options,
+							state.MatchOptions, failsForNullSubject: true).Invert()),
 				subject,
 				options,
 				matchOptions,
@@ -240,12 +256,15 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>,
 			IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					options,
-					matchOptions, failsForNullSubject: true).Invert()),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, Options: options,
+					MatchOptions: matchOptions),
+				static (state, it, grammars) =>
+					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Unexpected,
+						state.Options,
+						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			options,
 			matchOptions,
@@ -272,11 +291,13 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions, failsForNullSubject: true).Invert()),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, MatchOptions: matchOptions),
+				static (state, it, grammars)
+					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Unexpected,
+						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
@@ -302,11 +323,13 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions, failsForNullSubject: true).Invert()),
+			expectationBuilder.AddConstraint(
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, MatchOptions: matchOptions),
+				static (state, it, grammars)
+					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
+						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.Unexpected,
+						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);

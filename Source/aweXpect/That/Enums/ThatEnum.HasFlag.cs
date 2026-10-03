@@ -20,8 +20,8 @@ public static partial class ThatEnum
 		this IThat<TEnum> subject,
 		TEnum expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -34,8 +34,8 @@ public static partial class ThatEnum
 		this IThat<TEnum> subject,
 		TEnum unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum expectedFlag)

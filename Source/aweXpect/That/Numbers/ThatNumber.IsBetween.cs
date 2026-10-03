@@ -28,8 +28,10 @@ public static partial class ThatNumber
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options)),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Options: options),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)),
 				subject,
 				options);
 		});
@@ -50,8 +52,11 @@ public static partial class ThatNumber
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options)),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Options: options),
+					static (state, it, grammars) =>
+						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum,
+							state.Options)),
 				subject,
 				options);
 		});
@@ -71,8 +76,11 @@ public static partial class ThatNumber
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Options: options),
+					static (state, it, grammars) =>
+						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
+							.Invert()),
 				subject,
 				options);
 		});
@@ -93,8 +101,11 @@ public static partial class ThatNumber
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
+				subject.Get().ExpectationBuilder.AddConstraint(
+					(Minimum: minimum, Maximum: maximum, Options: options),
+					static (state, it, grammars) =>
+						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum,
+							state.Options).Invert()),
 				subject,
 				options);
 		});
@@ -267,8 +278,11 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 		=> new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
+				static (state, it, grammars) =>
+					new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options));
 
@@ -282,8 +296,11 @@ public static partial class ThatNumber
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 		=> new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsBetweenConstraint<TNumber>(it, grammars, minimum, maximum, options).InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
+				static (state, it, grammars) =>
+					new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options));
 

@@ -19,8 +19,9 @@ public static partial class ThatString
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, expected, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -34,8 +35,9 @@ public static partial class ThatString
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, unexpected, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (state, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}

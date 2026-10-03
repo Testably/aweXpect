@@ -28,9 +28,11 @@ public static partial class ThatEnum
 		where TEnum : struct, Enum
 	{
 		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint<TEnum>(it, grammars, expectedValues, expectedExpression)
-					.InvertIf(negated)),
+		return new(subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
+				static (state, it, grammars) =>
+					new IsOneOfConstraint<TEnum>(it, grammars, state.ExpectedValues, state.ExpectedExpression)
+						.InvertIf(state.Negated)),
 			subject);
 	}
 

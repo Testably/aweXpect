@@ -14,8 +14,8 @@ public static partial class ThatEnum
 	public static AndOrResult<TEnum, IThat<TEnum>> IsEqualTo<TEnum>(this IThat<TEnum> subject,
 		TEnum? expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TEnum>(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars) =>
+				new IsEqualToConstraint<TEnum>(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -24,8 +24,8 @@ public static partial class ThatEnum
 	public static AndOrResult<TEnum, IThat<TEnum>> IsNotEqualTo<TEnum>(this IThat<TEnum> subject,
 		TEnum? unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TEnum>(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+				new IsEqualToConstraint<TEnum>(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsEqualToConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expected)

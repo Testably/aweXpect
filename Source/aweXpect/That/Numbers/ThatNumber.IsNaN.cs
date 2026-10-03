@@ -127,8 +127,9 @@ public static partial class ThatNumber
 		FloatingPointTraits<TNumber> traits,
 		bool negated)
 		where TNumber : struct
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsNaNConstraint<TNumber>(it, grammars, traits.IsNaN).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Traits: traits, Negated: negated),
+				static (state, it, grammars) =>
+					new IsNaNConstraint<TNumber>(it, grammars, state.Traits.IsNaN).InvertIf(state.Negated)),
 			subject);
 
 	[CreateExpectationFamily("Is{Not}NaN", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
@@ -140,8 +141,9 @@ public static partial class ThatNumber
 		FloatingPointTraits<TNumber> traits,
 		bool negated)
 		where TNumber : struct
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsNaNConstraint<TNumber>(it, grammars, traits.IsNaN).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Traits: traits, Negated: negated),
+				static (state, it, grammars) =>
+					new NullableIsNaNConstraint<TNumber>(it, grammars, state.Traits.IsNaN).InvertIf(state.Negated)),
 			subject);
 
 	private sealed class IsNaNConstraint<TNumber>(

@@ -21,8 +21,10 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<IEnumerable<TItem>?, TItem>(it, grammars, _quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
+					static (state, it, grammars)
+						=> new ComplyWithConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier,
+							state.Expectations)),
 				_subject);
 		}
 	}
@@ -37,9 +39,10 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<IEnumerable<string?>?, string?>(it, grammars, _quantifier,
-						expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
+					static (state, it, grammars)
+						=> new ComplyWithConstraint<IEnumerable<string?>?, string?>(it, grammars, state.Quantifier,
+							state.Expectations)),
 				_subject);
 		}
 	}
@@ -54,9 +57,10 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<TEnumerable?, object?>(it, grammars,
-						_quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
+					static (state, it, grammars)
+						=> new ComplyWithConstraint<TEnumerable?, object?>(it, grammars,
+							state.Quantifier, state.Expectations)),
 				_subject);
 		}
 	}
@@ -71,9 +75,10 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<TEnumerable, TItem>(it,
-						grammars, _quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
+					static (state, it, grammars)
+						=> new ComplyWithConstraint<TEnumerable, TItem>(it,
+							grammars, state.Quantifier, state.Expectations)),
 				_subject);
 		}
 	}

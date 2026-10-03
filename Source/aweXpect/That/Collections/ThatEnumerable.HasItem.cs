@@ -39,11 +39,12 @@ public static partial class ThatEnumerable
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-					x => options.Matches(x),
-					options.GetDescription,
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						x => state.Options.Matches(x),
+						state.Options.GetDescription,
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -62,9 +63,12 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars, predicate,
-					() => $"matching {predicateExpression}", indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Predicate: predicate, PredicateExpression: predicateExpression, IndexOptions: indexOptions,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Predicate,
+						() => $"matching {state.PredicateExpression}", state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
 	}
@@ -81,18 +85,20 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ItemEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-			{
-				SubjectEqualityOptions<TItem, TItem> itemOptions =
-					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-					a => itemOptions.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
-					      itemOptions.Comparer,
-					indexOptions,
-					itemOptions.UseComparerOf,
-					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
-			}),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					SubjectEqualityOptions<TItem, TItem> itemOptions =
+						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
+					return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						a => itemOptions.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
+							comparison: "equal to") + itemOptions.Comparer,
+						state.IndexOptions,
+						itemOptions.UseComparerOf,
+						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
+				}),
 			subject,
 			indexOptions,
 			options);
@@ -111,18 +117,21 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-			{
-				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
-					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-					a => itemOptions.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
-					      itemOptions.Comparer,
-					indexOptions,
-					itemOptions.UseComparerOf,
-					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
-			}),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options,
+						() => state.Expected is not null &&
+						      ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(state.Options));
+					return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						a => itemOptions.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
+							comparison: "equal to") + itemOptions.Comparer,
+						state.IndexOptions,
+						itemOptions.UseComparerOf,
+						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
+				}),
 			subject,
 			indexOptions,
 			options);
@@ -140,16 +149,18 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<IEnumerable<string?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-			{
-				SubjectEqualityOptions<string?, string?> itemOptions =
-					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
-				return new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
-					a => itemOptions.AreConsideredEqual(a, expected),
-					() => options.GetExpectation(expected, grammars) + itemOptions.Comparer,
-					indexOptions,
-					itemOptions.UseComparerOf).InvertIf(negated);
-			}),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					SubjectEqualityOptions<string?, string?> itemOptions =
+						new(state.Options, () => state.Expected is not null && state.Options.ComparesByOrdinalEquality);
+					return new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
+						a => itemOptions.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetExpectation(state.Expected, grammars) + itemOptions.Comparer,
+						state.IndexOptions,
+						itemOptions.UseComparerOf).InvertIf(state.Negated);
+				}),
 			subject,
 			indexOptions,
 			options);
@@ -166,9 +177,11 @@ public static partial class ThatEnumerable
 		PredicateOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<IEnumerable, object?>(it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable, object?>(it, grammars,
+						x => state.Options.Matches(x), state.Options.GetDescription, state.IndexOptions)
+						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -187,11 +200,14 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<IEnumerable, object?>(
-					it, grammars,
-					predicate, () => $"matching {predicateExpression}",
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Predicate: predicate, PredicateExpression: predicateExpression, IndexOptions: indexOptions,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable, object?>(
+						it, grammars,
+						state.Predicate, () => $"matching {state.PredicateExpression}",
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
 	}
@@ -208,19 +224,21 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ItemEqualityOptions<object?> options = new();
 		return new ObjectHasItemResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-			{
-				SubjectEqualityOptions<object?, object?> itemOptions =
-					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new HasItemConstraint<IEnumerable, object?>(
-					it, grammars,
-					a => itemOptions.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to") +
-					      itemOptions.Comparer,
-					indexOptions,
-					itemOptions.UseComparerOf,
-					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
-			}),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					SubjectEqualityOptions<object?, object?> itemOptions =
+						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
+					return new HasItemConstraint<IEnumerable, object?>(
+						it, grammars,
+						a => itemOptions.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
+							comparison: "equal to") + itemOptions.Comparer,
+						state.IndexOptions,
+						itemOptions.UseComparerOf,
+						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
+				}),
 			subject,
 			indexOptions,
 			options);
@@ -240,11 +258,14 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<TCollection>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TCollection, TItem>(
-					it, grammars,
-					predicate, () => $"matching {predicateExpression}",
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Predicate: predicate, PredicateExpression: predicateExpression, IndexOptions: indexOptions,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<TCollection, TItem>(
+						it, grammars,
+						state.Predicate, () => $"matching {state.PredicateExpression}",
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
 	}
@@ -261,9 +282,11 @@ public static partial class ThatEnumerable
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<TCollection, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TCollection, TItem>(it, grammars,
-					x => options.Matches(x), options.GetDescription, indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<TCollection, TItem>(it, grammars,
+						x => state.Options.Matches(x), state.Options.GetDescription, state.IndexOptions)
+						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -282,13 +305,16 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<TCollection, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TCollection, TItem>(
-					it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions,
-					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<TCollection, TItem>(
+						it, grammars,
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
+							comparison: "equal to"),
+						state.IndexOptions,
+						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -308,13 +334,16 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TCollection, TItem>(
-					it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetItemExpectation(Formatter.Format(expected), comparison: "equal to"),
-					indexOptions,
-					appendOptionsContexts: options.AppendContexts).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<TCollection, TItem>(
+						it, grammars,
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
+							comparison: "equal to"),
+						state.IndexOptions,
+						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -333,12 +362,14 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringHasItemResult<TCollection>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemConstraint<TCollection, string?>(
-					it, grammars,
-					a => options.AreConsideredEqual(a, expected),
-					() => options.GetExpectation(expected, grammars),
-					indexOptions).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
+				static (state, it, grammars)
+					=> new HasItemConstraint<TCollection, string?>(
+						it, grammars,
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						() => state.Options.GetExpectation(state.Expected, grammars),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);

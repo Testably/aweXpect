@@ -138,14 +138,18 @@ public static partial class ThatAsyncEnumerable
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-			{
-				AsyncIsInOrderConstraint<TItem, TMember> constraint = new(
-					it, grammars,
-					memberAccessor, sortOrder, options, memberExpression,
-					createIncompatibilityCheck?.Invoke(options));
-				return isNegated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(MemberAccessor: memberAccessor, SortOrder: sortOrder, Options: options,
+					MemberExpression: memberExpression, CreateIncompatibilityCheck: createIncompatibilityCheck,
+					IsNegated: isNegated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsInOrderConstraint<TItem, TMember> constraint = new(
+						it, grammars,
+						state.MemberAccessor, state.SortOrder, state.Options, state.MemberExpression,
+						state.CreateIncompatibilityCheck?.Invoke(state.Options));
+					return state.IsNegated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			options);
 	}

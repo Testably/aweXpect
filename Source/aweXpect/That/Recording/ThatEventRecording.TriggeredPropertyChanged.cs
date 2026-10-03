@@ -22,11 +22,12 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-					filter,
-					quantifier,
-					options)),
+					state.Filter,
+					state.Quantifier,
+					state.Options)),
 			subject,
 			filter,
 			quantifier,
@@ -50,11 +51,12 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
+				static (state, it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-					filter,
-					quantifier,
-					options).Invert()),
+					state.Filter,
+					state.Quantifier,
+					state.Options).Invert()),
 			subject,
 			filter,
 			quantifier,

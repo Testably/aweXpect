@@ -69,15 +69,17 @@ public static partial class ThatAsyncEnumerable
 			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<string?, string?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
-						a => a,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique, Options: options),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<string?, string?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUnique(state.ExpectUnique ? g : g.Negate(), state.Options),
+							a => a,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}
@@ -90,17 +92,21 @@ public static partial class ThatAsyncEnumerable
 			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>, TMember>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<string?, TMember>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
-							memberAccessorExpression.TrimCommonWhiteSpace(), options),
-						memberAccessor,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						appendOptionsContexts: options.AppendContexts,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique,
+						MemberAccessorExpression: memberAccessorExpression, Options: options,
+						MemberAccessor: memberAccessor),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<string?, TMember>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
+								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
+							state.MemberAccessor,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							appendOptionsContexts: state.Options.AppendContexts,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}
@@ -112,16 +118,20 @@ public static partial class ThatAsyncEnumerable
 			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<string?, string>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
-							memberAccessorExpression.TrimCommonWhiteSpace(), options),
-						memberAccessor,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique,
+						MemberAccessorExpression: memberAccessorExpression, Options: options,
+						MemberAccessor: memberAccessor),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<string?, string>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
+								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
+							state.MemberAccessor,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}
@@ -185,16 +195,18 @@ public static partial class ThatAsyncEnumerable
 			ItemEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<TItem, TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
-						a => a,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						appendOptionsContexts: options.AppendContexts,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique, Options: options),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<TItem, TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUnique(state.ExpectUnique ? g : g.Negate(), state.Options),
+							a => a,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							appendOptionsContexts: state.Options.AppendContexts,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}
@@ -207,17 +219,21 @@ public static partial class ThatAsyncEnumerable
 			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<TItem, TMember>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
-							memberAccessorExpression.TrimCommonWhiteSpace(), options),
-						memberAccessor,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						appendOptionsContexts: options.AppendContexts,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique,
+						MemberAccessorExpression: memberAccessorExpression, Options: options,
+						MemberAccessor: memberAccessor),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<TItem, TMember>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
+								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
+							state.MemberAccessor,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							appendOptionsContexts: state.Options.AppendContexts,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}
@@ -229,16 +245,20 @@ public static partial class ThatAsyncEnumerable
 			StringEqualityOptions options = new("expected");
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncAreUniqueConstraint<TItem, string>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
-							memberAccessorExpression.TrimCommonWhiteSpace(), options),
-						memberAccessor,
-						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique,
-						createGetHashCode: () => MemberHashing.For(options))),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, ExpectUnique: expectUnique,
+						MemberAccessorExpression: memberAccessorExpression, Options: options,
+						MemberAccessor: memberAccessor),
+					static (state, it, grammars)
+						=> new AsyncAreUniqueConstraint<TItem, string>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
+								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
+							state.MemberAccessor,
+							(a, b) => state.Options.AreConsideredEqual(a, b),
+							state.ExpectUnique,
+							createGetHashCode: () => MemberHashing.For(state.Options))),
 				_subject,
 				options);
 		}

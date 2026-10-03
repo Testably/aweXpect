@@ -15,8 +15,8 @@ public static partial class ThatVersion
 	public static AndOrResult<Version, IThat<Version?>> IsGreaterThanOrEqualTo(
 		this IThat<Version?> subject,
 		Version? expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars) =>
+				new IsGreaterThanOrEqualToConstraint(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -26,8 +26,8 @@ public static partial class ThatVersion
 	public static AndOrResult<Version, IThat<Version?>> IsNotGreaterThanOrEqualTo(
 		this IThat<Version?> subject,
 		Version? unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsGreaterThanOrEqualToConstraint(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+				new IsGreaterThanOrEqualToConstraint(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsGreaterThanOrEqualToConstraint(

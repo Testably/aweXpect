@@ -78,7 +78,8 @@ internal static class CollectionHelpers
 		Func<TSource, IEnumerable<TItem>?> memberAccessor,
 		string memberName)
 		=> new ThatSubject<IEnumerable<TItem>?>(subject.Get().ExpectationBuilder
-			.AddConstraint((it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, memberName))
+			.AddConstraint(memberName,
+				static (name, it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, name))
 			.ForWhich(memberAccessor, " that ", "it",
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural, negateMemberOnly: true,
 				contextMember: memberName));

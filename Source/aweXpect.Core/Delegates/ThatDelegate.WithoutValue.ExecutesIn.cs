@@ -33,8 +33,9 @@ public abstract partial class ThatDelegate
 			ExecutionTimeOptions options = new();
 			options.OnUpperBound(ExpectationBuilder.WithTimeout);
 			return new ExecutesInResult<AndResult<WithoutValue>>(
-				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
-						=> new ExecutesInConstraint(it, grammars, options)),
+				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint(options,
+						static (executionTimeOptions, it, grammars)
+							=> new ExecutesInConstraint(it, grammars, executionTimeOptions)),
 					this),
 				options);
 		}
@@ -60,8 +61,9 @@ public abstract partial class ThatDelegate
 			ExecutionTimeOptions options = new();
 			options.OnUpperBound(ExpectationBuilder.WithTimeout);
 			return new ExecutesInToleranceResult<AndResult<WithoutValue>>(
-				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
-						=> new ExecutesInConstraint(it, grammars, options)),
+				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint(options,
+						static (executionTimeOptions, it, grammars)
+							=> new ExecutesInConstraint(it, grammars, executionTimeOptions)),
 					this),
 				options,
 				expected);

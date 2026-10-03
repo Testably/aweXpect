@@ -32,9 +32,13 @@ public static partial class ThatObject
 		IEnumerable<object?> expectedValues = expected.ToNonEmptyValues(negated);
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint<object?, object?>(it, grammars, expectedValues, expectedExpression, options)
-					.InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsOneOfConstraint<object?, object?>(it, grammars, state.ExpectedValues,
+							state.ExpectedExpression, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -52,9 +56,13 @@ public static partial class ThatObject
 		IEnumerable<T?> expectedValues = expected.ToNonEmptyValues(negated);
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint<T, T>(it, grammars, expectedValues, expectedExpression, options)
-					.InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsOneOfConstraint<T, T>(it, grammars, state.ExpectedValues,
+							state.ExpectedExpression, state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 	}

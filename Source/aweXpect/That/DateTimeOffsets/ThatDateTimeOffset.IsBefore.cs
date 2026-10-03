@@ -18,8 +18,9 @@ public static partial class ThatDateTimeOffset
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsBeforeConstraint(it, grammars, expected, tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsBeforeConstraint(it, grammars, state.Expected, state.Tolerance)),
 			subject,
 			tolerance);
 	}
@@ -33,8 +34,9 @@ public static partial class ThatDateTimeOffset
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsBeforeConstraint(it, grammars, unexpected, tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
+				static (state, it, grammars) =>
+					new IsBeforeConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
 			subject,
 			tolerance);
 	}

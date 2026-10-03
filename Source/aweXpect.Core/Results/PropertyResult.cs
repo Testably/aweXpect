@@ -200,13 +200,16 @@ public static class PropertyResult
 			bool isNegative = false,
 			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint((it, constraintGrammars) =>
-						new StructPropertyConstraint<TValue, int>(
-							it, constraintGrammars | grammars,
-							mapper,
-							propertyExpression,
-							new StructComparison<int>(expected, condition, expectation, isNegative,
-								isOrderedAgainstNull))),
+					.AddConstraint(
+						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
+							Comparison: new StructComparison<int>(expected, condition, expectation, isNegative,
+								isOrderedAgainstNull)),
+						static (state, it, constraintGrammars) =>
+							new StructPropertyConstraint<TValue, int>(
+								it, constraintGrammars | state.Grammars,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Comparison)),
 				subject);
 	}
 
@@ -395,13 +398,16 @@ public static class PropertyResult
 			bool isNegative = false,
 			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint((it, constraintGrammars) =>
-						new StructPropertyConstraint<TValue, long>(
-							it, constraintGrammars | grammars,
-							mapper,
-							propertyExpression,
-							new StructComparison<long>(expected, condition, expectation, isNegative,
-								isOrderedAgainstNull))),
+					.AddConstraint(
+						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
+							Comparison: new StructComparison<long>(expected, condition, expectation, isNegative,
+								isOrderedAgainstNull)),
+						static (state, it, constraintGrammars) =>
+							new StructPropertyConstraint<TValue, long>(
+								it, constraintGrammars | state.Grammars,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Comparison)),
 				subject);
 	}
 
@@ -451,12 +457,15 @@ public static class PropertyResult
 			string expectation,
 			bool isNegative = false)
 			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint((it, constraintGrammars) =>
-						new StructPropertyConstraint<TValue, DateTimeKind>(
-							it, constraintGrammars | grammars,
-							mapper,
-							propertyExpression,
-							new StructComparison<DateTimeKind>(expected, condition, expectation, isNegative))),
+					.AddConstraint(
+						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
+							Comparison: new StructComparison<DateTimeKind>(expected, condition, expectation, isNegative)),
+						static (state, it, constraintGrammars) =>
+							new StructPropertyConstraint<TValue, DateTimeKind>(
+								it, constraintGrammars | state.Grammars,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Comparison)),
 				subject);
 	}
 
@@ -645,13 +654,16 @@ public static class PropertyResult
 			bool isNegative = false,
 			bool isOrderedAgainstNull = false)
 			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint((it, constraintGrammars) =>
-						new StructPropertyConstraint<TValue, TimeSpan>(
-							it, constraintGrammars | grammars,
-							mapper,
-							propertyExpression,
-							new StructComparison<TimeSpan>(expected, condition, expectation, isNegative,
-								isOrderedAgainstNull))),
+					.AddConstraint(
+						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
+							Comparison: new StructComparison<TimeSpan>(expected, condition, expectation, isNegative,
+								isOrderedAgainstNull)),
+						static (state, it, constraintGrammars) =>
+							new StructPropertyConstraint<TValue, TimeSpan>(
+								it, constraintGrammars | state.Grammars,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Comparison)),
 				subject);
 	}
 
@@ -826,18 +838,21 @@ public static class PropertyResult
 			StringEqualityOptions options,
 			bool invert)
 			=> subject.Get().ExpectationBuilder
-				.AddConstraint((it, constraintGrammars) =>
-				{
-					StringConstraint<TValue> constraint = new(
-						includeValueInContext,
-						it,
-						constraintGrammars | grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						options);
-					return invert ? constraint.Invert() : constraint;
-				});
+				.AddConstraint(
+					(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
+						Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: invert),
+					static (state, it, constraintGrammars) =>
+					{
+						StringConstraint<TValue> constraint = new(
+							state.IncludeValueInContext,
+							it,
+							constraintGrammars | state.Grammars,
+							state.Expected,
+							state.Mapper,
+							state.PropertyExpression,
+							state.Options);
+						return state.Invert ? constraint.Invert() : constraint;
+					});
 	}
 
 	/// <summary>
