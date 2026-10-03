@@ -247,6 +247,7 @@ public static partial class EquivalencyComparison
 	private static bool IsIgnored(MemberToIgnore[] membersToIgnore, MemberType memberType, string memberPath,
 		Type type)
 	{
+#pragma warning disable S3267 // Every compared member is checked, so Any with a closure is avoided here
 		foreach (MemberToIgnore memberToIgnore in membersToIgnore)
 		{
 			if (AppliesTo(memberToIgnore, memberType) && memberToIgnore.IgnoreMember(memberPath, type))
@@ -254,6 +255,7 @@ public static partial class EquivalencyComparison
 				return true;
 			}
 		}
+#pragma warning restore S3267
 
 		return false;
 	}

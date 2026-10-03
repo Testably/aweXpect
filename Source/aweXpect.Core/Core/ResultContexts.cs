@@ -55,6 +55,7 @@ public class ResultContexts : IEnumerable<ResultContext>
 	/// </summary>
 	internal bool ContainsTitle(string title)
 	{
+#pragma warning disable S3267 // Every expectation adds its contexts, so Any with a closure is avoided here
 		foreach (ResultContext context in _results)
 		{
 			if (string.Equals(context.Title, title, StringComparison.Ordinal))
@@ -62,6 +63,7 @@ public class ResultContexts : IEnumerable<ResultContext>
 				return true;
 			}
 		}
+#pragma warning restore S3267
 
 		return false;
 	}

@@ -172,45 +172,6 @@ public abstract class Expectation
 				: new CombinationResult(Outcome.Success, results));
 		}
 
-		private static string GetExpectationTexts((Expectation Expectation, Result Result)[] results)
-		{
-			StringBuilder expectationTexts = new();
-			foreach ((Expectation expectation, Result result) in results)
-			{
-				if (expectationTexts.Length > 0)
-				{
-					expectationTexts.AppendLine();
-				}
-
-				if (expectation is Combination)
-				{
-					expectationTexts.Append("  ").Append(result.SubjectLine).AppendLine().Append("  ");
-					result.ConstraintResult.AppendExpectation(expectationTexts, "  ");
-				}
-				else
-				{
-					expectationTexts.Append(result.SubjectLine).Append(' ');
-					result.ConstraintResult.AppendExpectation(expectationTexts, "      ");
-				}
-			}
-
-			return expectationTexts.ToString();
-		}
-
-		private static string GetFailureTexts((Expectation Expectation, Result Result)[] results)
-		{
-			StringBuilder failureTexts = new();
-			foreach ((Expectation expectation, Result result) in results)
-			{
-				if (result.ConstraintResult.Outcome != Outcome.Success)
-				{
-					AppendFailureText(failureTexts, expectation, result);
-				}
-			}
-
-			return failureTexts.ToString();
-		}
-
 		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
 		{
 			List<ResultContext> combinedContexts = new();
@@ -274,25 +235,6 @@ public abstract class Expectation
 				{
 					outcomes[index] = Outcome.Success;
 				}
-			}
-		}
-
-		private static void AppendFailureText(StringBuilder failureTexts, Expectation expectation, Result result)
-		{
-			if (failureTexts.Length > 0)
-			{
-				failureTexts.AppendLine();
-			}
-
-			if (expectation is Combination)
-			{
-				failureTexts.Append("  ");
-				result.ConstraintResult.AppendResult(failureTexts, "  ");
-			}
-			else
-			{
-				failureTexts.Append(" [").Append(result.Index.ToString("00")).Append("] ");
-				result.ConstraintResult.AppendResult(failureTexts, "      ");
 			}
 		}
 
@@ -365,13 +307,71 @@ public abstract class Expectation
 			public override Exception? FailureCause { get; }
 
 			public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-				=> stringBuilder.Append(GetExpectationTexts(_results).Indent(indentation, false));
+				=> stringBuilder.Append(GetExpectationTexts().Indent(indentation, false));
 
 			public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			{
 				if (Outcome != Outcome.Success)
 				{
-					stringBuilder.Append(GetFailureTexts(_results).Indent(indentation, false));
+					stringBuilder.Append(GetFailureTexts().Indent(indentation, false));
+				}
+			}
+
+			private string GetExpectationTexts()
+			{
+				StringBuilder expectationTexts = new();
+				foreach ((Expectation expectation, Result result) in _results)
+				{
+					if (expectationTexts.Length > 0)
+					{
+						expectationTexts.AppendLine();
+					}
+
+					if (expectation is Combination)
+					{
+						expectationTexts.Append("  ").Append(result.SubjectLine).AppendLine().Append("  ");
+						result.ConstraintResult.AppendExpectation(expectationTexts, "  ");
+					}
+					else
+					{
+						expectationTexts.Append(result.SubjectLine).Append(' ');
+						result.ConstraintResult.AppendExpectation(expectationTexts, "      ");
+					}
+				}
+
+				return expectationTexts.ToString();
+			}
+
+			private string GetFailureTexts()
+			{
+				StringBuilder failureTexts = new();
+				foreach ((Expectation expectation, Result result) in _results)
+				{
+					if (result.ConstraintResult.Outcome != Outcome.Success)
+					{
+						AppendFailureText(failureTexts, expectation, result);
+					}
+				}
+
+				return failureTexts.ToString();
+			}
+
+			private static void AppendFailureText(StringBuilder failureTexts, Expectation expectation, Result result)
+			{
+				if (failureTexts.Length > 0)
+				{
+					failureTexts.AppendLine();
+				}
+
+				if (expectation is Combination)
+				{
+					failureTexts.Append("  ");
+					result.ConstraintResult.AppendResult(failureTexts, "  ");
+				}
+				else
+				{
+					failureTexts.Append(" [").Append(result.Index.ToString("00")).Append("] ");
+					result.ConstraintResult.AppendResult(failureTexts, "      ");
 				}
 			}
 

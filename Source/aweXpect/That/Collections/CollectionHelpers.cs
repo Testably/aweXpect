@@ -252,7 +252,33 @@ internal static class CollectionHelpers
 		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
 			=> Task.FromResult(IsHidden(onlyOnFailureOf)
 				? null
-				: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete));
+				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
+
+		/// <remarks>
+		///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must
+		///     not be rendered as the total from which the number of remaining items is derived.
+		/// </remarks>
+		private string? FormatCollection()
+		{
+			if (value is IKeyedCollection keyed)
+			{
+				return keyed.Format();
+			}
+
+			if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
+			{
+				return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
+			}
+
+			int? count = totalCount ?? value switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			};
+			return Formatter.Format(value, typeof(TItem).GetFormattingOption(
+				value is LimitedCollection<TItem> limited ? limited.Count : count, count));
+		}
 	}
 
 	/// <inheritdoc cref="CollectionContext{TItem}" />
@@ -264,7 +290,25 @@ internal static class CollectionHelpers
 		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
 			=> Task.FromResult(IsHidden(onlyOnFailureOf)
 				? null
-				: FormatCollection(value)?.AppendIsIncomplete(isIncomplete));
+				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
+
+		private string? FormatCollection()
+		{
+			if (value is IMaterializedEnumerable { Count: null, } materialized)
+			{
+				return FormatReadItems(materialized.MaterializedItems,
+					materialized.MaterializedItems.GetItemType());
+			}
+
+			int? totalCount = value switch
+			{
+				ICollection coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			};
+			return Formatter.Format(value,
+				GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
+		}
 	}
 
 	/// <summary>
@@ -401,48 +445,6 @@ internal static class CollectionHelpers
 		}
 
 		return count;
-	}
-
-	/// <summary>
-	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
-	///     be rendered as the total from which the number of remaining items is derived.
-	/// </summary>
-	private static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
-	{
-		if (value is IKeyedCollection keyed)
-		{
-			return keyed.Format();
-		}
-
-		if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
-		{
-			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
-		}
-
-		totalCount ??= value switch
-		{
-			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
-			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
-	}
-
-	private static string? FormatCollection(IEnumerable value)
-	{
-		if (value is IMaterializedEnumerable { Count: null, } materialized)
-		{
-			return FormatReadItems(materialized.MaterializedItems, materialized.MaterializedItems.GetItemType());
-		}
-
-		int? totalCount = value switch
-		{
-			ICollection coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
 	}
 
 	/// <summary>

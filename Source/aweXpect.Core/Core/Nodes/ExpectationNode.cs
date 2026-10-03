@@ -172,7 +172,7 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult = await _inner.IsMetBy(value, context, cancellationToken);
 			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
-			return _reasons is null ? innerResult : await ApplyReasons(innerResult, context);
+			return await ApplyReasons(innerResult, context);
 		}
 
 		if (result is null)
@@ -182,7 +182,7 @@ internal class ExpectationNode : Node
 					$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
 		}
 
-		return _reasons is null ? result : await ApplyReasons(result, context);
+		return await ApplyReasons(result, context);
 	}
 
 	/// <summary>
@@ -197,10 +197,17 @@ internal class ExpectationNode : Node
 	/// <remarks>
 	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved, so that
 	///     <see cref="AppendExpectation" /> includes them.
+	///     <para />
+	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then nothing is allocated.
 	/// </remarks>
-	private async Task<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
+	private async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
 	{
-		foreach (IBecauseReason reason in _reasons!)
+		if (_reasons is null)
+		{
+			return result;
+		}
+
+		foreach (IBecauseReason reason in _reasons)
 		{
 			if (reason is AsyncBecauseReason asyncReason && context is ExpectationTextEvaluationContext)
 			{

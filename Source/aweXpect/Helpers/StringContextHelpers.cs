@@ -23,25 +23,6 @@ internal static class StringContextHelpers
 		ConstraintResult result, bool onlyOnFailure = false)
 		=> expectationBuilder.AddContext(new StringContext(title, value, result, onlyOnFailure));
 
-	private static bool IsShownCompletely(string value, ConstraintResult result)
-	{
-		// The formatter escapes line breaks and tabs before it shortens the value, which still shows it completely.
-		if (GetEscapedLength(value) > Customize.aweXpect.Formatting().MaximumStringLength.Get())
-		{
-			return false;
-		}
-
-		// Some match types shorten the value further, so it must actually appear in the rendered text.
-		string formatted = Formatter.Format(value);
-		StringBuilder stringBuilder = new();
-		result.AppendExpectation(stringBuilder);
-		result.AppendResult(stringBuilder);
-		return stringBuilder.ToString().Contains(formatted);
-	}
-
-	private static int GetEscapedLength(string value)
-		=> value.Length + value.Count(c => c is '\n' or '\r' or '\t');
-
 	/// <remarks>
 	///     A dedicated context instead of a callback, because a succeeding string expectation adds it as well, and a
 	///     closure with its delegate would be allocated for a message that is rarely built.
@@ -50,8 +31,27 @@ internal static class StringContextHelpers
 		: ResultContext(title)
 	{
 		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
-			=> Task.FromResult((onlyOnFailure && result.Outcome != Outcome.Failure) || IsShownCompletely(value, result)
+			=> Task.FromResult((onlyOnFailure && result.Outcome != Outcome.Failure) || IsShownCompletely()
 				? null
 				: value);
+
+		private bool IsShownCompletely()
+		{
+			// The formatter escapes line breaks and tabs before it shortens the value, which still shows it completely.
+			if (GetEscapedLength() > Customize.aweXpect.Formatting().MaximumStringLength.Get())
+			{
+				return false;
+			}
+
+			// Some match types shorten the value further, so it must actually appear in the rendered text.
+			string formatted = Formatter.Format(value);
+			StringBuilder stringBuilder = new();
+			result.AppendExpectation(stringBuilder);
+			result.AppendResult(stringBuilder);
+			return stringBuilder.ToString().Contains(formatted);
+		}
+
+		private int GetEscapedLength()
+			=> value.Length + value.Count(c => c is '\n' or '\r' or '\t');
 	}
 }

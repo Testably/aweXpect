@@ -340,11 +340,7 @@ public sealed class StringDifference(
 			return 0;
 		}
 
-		StringComparison? comparison = ReferenceEquals(comparer, StringComparer.Ordinal)
-			? StringComparison.Ordinal
-			: ReferenceEquals(comparer, StringComparer.OrdinalIgnoreCase)
-				? StringComparison.OrdinalIgnoreCase
-				: null;
+		StringComparison? comparison = GetOrdinalComparison(comparer);
 		int maxCommonLength = Math.Min(actualValue.Length, expectedValue.Length);
 		int min = 0;
 		int max = maxCommonLength + 1;
@@ -356,11 +352,7 @@ public sealed class StringDifference(
 				break;
 			}
 
-			if (comparison is not null
-				    ? AreEqualInPlace(actualValue, expectedValue, mid, fromEnd, comparison.Value)
-				    : fromEnd
-					    ? comparer.Equals(actualValue[^mid..], expectedValue[^mid..])
-					    : comparer.Equals(actualValue[..mid], expectedValue[..mid]))
+			if (AreEqual(actualValue, expectedValue, mid, fromEnd, comparer, comparison))
 			{
 				min = mid;
 			}
@@ -374,19 +366,47 @@ public sealed class StringDifference(
 	}
 
 	/// <summary>
-	///     Compares the first or last <paramref name="length" /> characters of both values without copying them.
+	///     The comparison that decides like the <paramref name="comparer" />, when it is one of the default comparers.
+	/// </summary>
+	private static StringComparison? GetOrdinalComparison(IEqualityComparer<string> comparer)
+	{
+		if (ReferenceEquals(comparer, StringComparer.Ordinal))
+		{
+			return StringComparison.Ordinal;
+		}
+
+		if (ReferenceEquals(comparer, StringComparer.OrdinalIgnoreCase))
+		{
+			return StringComparison.OrdinalIgnoreCase;
+		}
+
+		return null;
+	}
+
+	/// <summary>
+	///     Compares the first or last <paramref name="length" /> characters of both values.
 	/// </summary>
 	/// <remarks>
-	///     A substring per step of the search allocates about twice the length of the values for every halving, which
-	///     adds up to gigabytes for long values. An ordinal comparison of the ranges decides exactly like the default
-	///     comparers do for the substrings.
+	///     With a <paramref name="comparison" />, the ranges are compared without copying them: a substring per step of
+	///     the search allocates about twice the length of the values for every halving, which adds up to gigabytes for
+	///     long values. An ordinal comparison of the ranges decides exactly like the default comparers do for the
+	///     substrings.
 	/// </remarks>
-	private static bool AreEqualInPlace(string actualValue, string expectedValue, int length, bool fromEnd,
-		StringComparison comparison)
-		=> fromEnd
+	private static bool AreEqual(string actualValue, string expectedValue, int length, bool fromEnd,
+		IEqualityComparer<string> comparer, StringComparison? comparison)
+	{
+		if (comparison is null)
+		{
+			return fromEnd
+				? comparer.Equals(actualValue[^length..], expectedValue[^length..])
+				: comparer.Equals(actualValue[..length], expectedValue[..length]);
+		}
+
+		return fromEnd
 			? string.Compare(actualValue, actualValue.Length - length, expectedValue, expectedValue.Length - length,
-				length, comparison) == 0
-			: string.Compare(actualValue, 0, expectedValue, 0, length, comparison) == 0;
+				length, comparison.Value) == 0
+			: string.Compare(actualValue, 0, expectedValue, 0, length, comparison.Value) == 0;
+	}
 
 	/// <summary>
 	///     Calculates how many characters to keep in <paramref name="value" />.
