@@ -45,7 +45,8 @@ public partial class ObjectEqualityOptions<TSubject>
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 			=> new ValueTask<bool>(TryCast(actual, out TSubject typedActual) &&
 			                       TryCast(expected, out TSubject typedExpected) &&
-			                       UserCode.Invoke(() => comparer.Equals(typedActual, typedExpected), "the comparer"));
+			                       UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
+				                       (Comparer: comparer, Actual: typedActual, Expected: typedExpected), "the comparer"));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
@@ -88,7 +89,8 @@ public partial class ObjectEqualityOptions<TSubject>
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new ValueTask<bool>(UserCode.Invoke(() => comparer.Equals(actual, expected), "the comparer"));
+			=> new ValueTask<bool>(UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
+				(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer"));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)

@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -71,6 +73,28 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual("foo  \nbar", "foo\nbar");
 
 			await That(result).IsFalse();
+		}
+
+		[Theory]
+		[InlineData("AsBlock")]
+		[InlineData("AsPrefix")]
+		[InlineData("AsSuffix")]
+		[InlineData("Containing")]
+		[InlineData("Exact")]
+		public async Task AreConsideredEqual_WhenTheComparerThrows_ShouldNameTheComparer(string matchType)
+		{
+			InvalidOperationException exception = new("comparer failed");
+			StringEqualityOptions sut = WithMatchType(matchType);
+			sut.Using(new ThrowingComparer(exception));
+
+			async Task Act()
+				=> await sut.AreConsideredEqual("foo", "foo");
+
+			await That(Act).Throws<UserCodeException>()
+				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+				.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("the comparer")).And
+				.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+				.Because("the failure has to blame the comparer for every match type that consults it");
 		}
 
 		[Fact]
@@ -681,6 +705,13 @@ public sealed partial class StringEqualityOptionsTests
 			}
 
 			return options;
+		}
+
+		private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>
+		{
+			public bool Equals(string? x, string? y) => throw exception;
+
+			public int GetHashCode(string obj) => throw exception;
 		}
 	}
 }

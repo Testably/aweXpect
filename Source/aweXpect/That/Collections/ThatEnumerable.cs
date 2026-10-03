@@ -1128,7 +1128,9 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(sortOrder, UserCode.Invoke(() => comparer.Compare(previous, current), "the comparer")))
+				if (IsOutOfOrder(sortOrder, UserCode.Invoke(
+					    static values => values.Comparer.Compare(values.Previous, values.Current),
+					    (Comparer: comparer, Previous: previous, Current: current), "the comparer")))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
@@ -1268,7 +1270,9 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(sortOrder, UserCode.Invoke(() => comparer.Compare(previous, current), "the comparer")))
+				if (IsOutOfOrder(sortOrder, UserCode.Invoke(
+					    static values => values.Comparer.Compare(values.Previous, values.Current),
+					    (Comparer: comparer, Previous: previous, Current: current), "the comparer")))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";

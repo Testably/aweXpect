@@ -689,7 +689,8 @@ public static partial class ThatAsyncEnumerable
 					continue;
 				}
 
-				if (IsOutOfOrder(UserCode.Invoke(() => comparer.Compare(previous, current), "the comparer")))
+				if (IsOutOfOrder(UserCode.Invoke(static values => values.Comparer.Compare(values.Previous, values.Current),
+					    (Comparer: comparer, Previous: previous, Current: current), "the comparer")))
 				{
 					_failureText =
 						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";

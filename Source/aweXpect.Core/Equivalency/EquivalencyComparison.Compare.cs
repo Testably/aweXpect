@@ -47,8 +47,12 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-		bool isEqual = UserCode.Invoke(() => isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected),
-			() => UserCode.EqualsOf(isDecidedByExpected ? expected : actual));
+		bool isEqual = UserCode.Invoke(
+			static values => values.IsDecidedByExpected
+				? values.Expected!.Equals(values.Actual)
+				: values.Actual!.Equals(values.Expected),
+			(Actual: actual, Expected: expected, IsDecidedByExpected: isDecidedByExpected),
+			static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
 		if (!isEqual)
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);

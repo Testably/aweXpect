@@ -84,7 +84,8 @@ public static partial class ThatDictionary
 				_existingKeys = [];
 				foreach (TKey item in expected)
 				{
-					if (UserCode.Invoke(() => ContainsKey(actual, item)))
+					if (UserCode.Invoke(static values => ContainsKey(values.Dictionary, values.Key),
+						    (Dictionary: actual, Key: item)))
 					{
 						_existingKeys.Add(item);
 					}

@@ -429,6 +429,10 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 
+	private static bool AreEqualByComparer(IEqualityComparer<string> comparer, string actual, string expected)
+		=> UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
+			(Comparer: comparer, Actual: actual, Expected: expected), "the comparer");
+
 	/// <summary>
 	///     Applies all options that transform the <paramref name="value" /> as a whole.
 	/// </summary>

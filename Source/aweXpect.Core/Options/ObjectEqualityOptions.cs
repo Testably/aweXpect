@@ -52,8 +52,8 @@ internal static class ObjectEqualityOptions
 			}
 
 			if (expected is TActual castedExpected &&
-			    UserCode.Invoke(() => EqualityComparer<TActual>.Default.Equals(actual, castedExpected),
-				    () => UserCode.EqualsOf(actual)))
+			    UserCode.Invoke(static values => EqualityComparer<TActual>.Default.Equals(values.Actual, values.Expected),
+				    (Actual: actual, Expected: castedExpected), static values => UserCode.EqualsOf(values.Actual!)))
 			{
 				return new ValueTask<bool>(true);
 			}
@@ -64,8 +64,8 @@ internal static class ObjectEqualityOptions
 				return new ValueTask<bool>(true);
 			}
 
-			return new ValueTask<bool>(UserCode.Invoke(() => Equals(actual, expected),
-				() => UserCode.EqualsOf(actual)));
+			return new ValueTask<bool>(UserCode.Invoke(static values => Equals(values.Actual, values.Expected),
+				(Actual: actual, Expected: expected), static values => UserCode.EqualsOf(values.Actual!)));
 		}
 
 		private static bool AreNumericsEqual(object actual, object expected)
