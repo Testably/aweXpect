@@ -38,6 +38,16 @@ internal readonly struct CollectionItems<TItem>
 	public object Value => _typed ?? (object)_untyped!;
 
 	/// <summary>
+	///     The items of the <paramref name="actual" /> subject without materializing them, e.g. for a collection that
+	///     knows its number of items.
+	/// </summary>
+	public static CollectionItems<TItem> Of<TEnumerable>(TEnumerable actual)
+		where TEnumerable : IEnumerable?
+		=> IsTyped<TEnumerable>.Value
+			? new CollectionItems<TItem>((IEnumerable<TItem>)actual!, null)
+			: new CollectionItems<TItem>(null, actual);
+
+	/// <summary>
 	///     Materializes the items of the <paramref name="actual" /> subject in the <paramref name="context" />.
 	/// </summary>
 	public static CollectionItems<TItem> Materialize<TEnumerable>(TEnumerable actual, IEvaluationContext context)

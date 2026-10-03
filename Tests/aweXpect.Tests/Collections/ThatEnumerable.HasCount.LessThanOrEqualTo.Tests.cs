@@ -36,6 +36,35 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenAnEarlierAttemptHadAnotherSubject_ShouldNotReuseItsTotalCount()
+				{
+					int calls = 0;
+					Func<IEnumerable<int>> subject = () => ++calls == 1 ? [1, 2, 3, 4, 5,] : Lazy(4);
+
+					async Task Act()
+						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+							.HasCount().LessThanOrEqualTo(2);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             eventually has at most 2 items within 0:00.200,
+						             but it had at least 3 items
+
+						             Collection:
+						             [1, 2, 3, (… and maybe more)]
+						             """);
+
+					static IEnumerable<int> Lazy(int count)
+					{
+						for (int i = 1; i <= count; i++)
+						{
+							yield return i;
+						}
+					}
+				}
+
+				[Fact]
 				public async Task WhenArrayContainsMatchingItems_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];

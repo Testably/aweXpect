@@ -926,150 +926,33 @@ public static partial class ThatEnumerable
 		}
 	}
 
-	private sealed class SyncCollectionCountConstraint<TItem>
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private readonly EnumerableQuantifier _quantifier;
-		private int _matchingCount;
-		private int _notMatchingCount;
-		private int? _totalCount;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public SyncCollectionCountConstraint(
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier)
-			: base(it, grammars)
-		{
-			_quantifier = quantifier;
-		}
-
-		/// <inheritdoc />
-		public override Outcome Outcome
-		{
-			get => _quantifier.FailsBothWays
-				? Outcome.Failure
-				: base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public Task<ConstraintResult> IsMetBy(
-			IEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-
-			if (actual is ICollection<TItem> collectionOfT)
-			{
-				_matchingCount = collectionOfT.Count;
-				_totalCount = _matchingCount;
-				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-				_collectionContext.Set(actual);
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable<TItem> materialized =
-				context.UseMaterializedEnumerable<TItem>(actual);
-
-			foreach (TItem _ in materialized)
-			{
-				_matchingCount++;
-
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
-				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_collectionContext.Set(materialized);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-			}
-
-			_totalCount = _matchingCount + _notMatchingCount;
-			_collectionContext.Set(materialized);
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("has ", "have "));
-			stringBuilder.Append(_quantifier);
-			stringBuilder.Append(' ');
-			stringBuilder.Append(_quantifier.GetItemString());
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount);
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("does not have ", "do not have "));
-			stringBuilder.Append(_quantifier);
-			stringBuilder.Append(' ');
-			stringBuilder.Append(_quantifier.GetItemString());
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount);
-	}
-
-	private sealed class SyncCollectionCountForEnumerableConstraint<TEnumerable>
-		: ConstraintResult.WithNotNullValue<TEnumerable>,
+	private sealed class CollectionCountConstraint<TEnumerable, TItem>(
+		string it,
+		ExpectationGrammars grammars,
+		EnumerableQuantifier quantifier)
+		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private CollectionContext _collectionContext;
-		private readonly EnumerableQuantifier _quantifier;
-		private int _matchingCount;
-		private int _notMatchingCount;
+		private int _count;
 		private int? _totalCount;
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> _collectionContext.AppendTo(contexts);
 
-		public SyncCollectionCountForEnumerableConstraint(
-			string it,
-			ExpectationGrammars grammars,
-			EnumerableQuantifier quantifier)
-			: base(it, grammars)
-		{
-			_quantifier = quantifier;
-		}
-
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => _quantifier.FailsBothWays
+			get => quantifier.FailsBothWays
 				? Outcome.Failure
 				: base.Outcome;
 			protected set => base.Outcome = value;
 		}
 
 		public Task<ConstraintResult> IsMetBy(
-			TEnumerable? actual,
+			TEnumerable actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
@@ -1086,67 +969,63 @@ public static partial class ThatEnumerable
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-
-			if (actual is ICollection collection)
+			if (CollectionItems<TItem>.CountOf(actual) is { } totalCount)
 			{
-				_matchingCount = collection.Count;
-				_totalCount = _matchingCount;
-				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-				_collectionContext.Set(actual);
-				return Task.FromResult<ConstraintResult>(this);
+				CollectionItems<TItem>.Of(actual).SetContext(ref _collectionContext);
+				return Complete(totalCount, totalCount);
 			}
 
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-
-			foreach (object? _ in materialized)
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			int count = 0;
+			foreach (TItem _ in materialized.Items)
 			{
-				_matchingCount++;
-
-				if (_quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
+				count++;
+				if (quantifier.IsDeterminable(count, 0))
 				{
-					Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-					_collectionContext.Set(materialized);
-					return Task.FromResult<ConstraintResult>(this);
+					materialized.SetContext(ref _collectionContext);
+					return Complete(count, null);
 				}
 
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return Task.FromResult<ConstraintResult>(this);
+					materialized.SetContext(ref _collectionContext, true);
+					return Complete(count, null, true);
 				}
 			}
 
-			_totalCount = _matchingCount + _notMatchingCount;
-			_collectionContext.Set(materialized);
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+			materialized.SetContext(ref _collectionContext);
+			return Complete(count, count);
+		}
+
+		private Task<ConstraintResult> Complete(int count, int? totalCount, bool isCanceled = false)
+		{
+			_count = count;
+			_totalCount = totalCount;
+			Outcome = isCanceled ? Outcome.Undecided : quantifier.GetOutcome(count, 0, totalCount);
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("has ", "have "));
-			stringBuilder.Append(_quantifier);
+			stringBuilder.Append(quantifier);
 			stringBuilder.Append(' ');
-			stringBuilder.Append(_quantifier.GetItemString());
+			stringBuilder.Append(quantifier.GetItemString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount, _totalCount);
+			=> quantifier.AppendResult(stringBuilder, Grammars, It, _count, 0, _totalCount);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("does not have ", "do not have "));
-			stringBuilder.Append(_quantifier);
+			stringBuilder.Append(quantifier);
 			stringBuilder.Append(' ');
-			stringBuilder.Append(_quantifier.GetItemString());
+			stringBuilder.Append(quantifier.GetItemString());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars, It, _matchingCount, _notMatchingCount,
-				_totalCount);
+			=> quantifier.AppendResult(stringBuilder, Grammars, It, _count, 0, _totalCount);
 	}
 
 	/// <summary>
