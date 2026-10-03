@@ -4260,6 +4260,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -4972,7 +4978,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -5688,7 +5695,8 @@ window.BENCHMARK_DATA = {
           341.13765646616616,
           173.47869953087397,
           372.90322062174477,
-          281.60245819091796
+          281.60245819091796,
+          181.4545805624553
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6405,6 +6413,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -7133,7 +7142,8 @@ window.BENCHMARK_DATA = {
           240.80439786911012,
           133.22139133725847,
           237.84199518423813,
-          204.47215623514992
+          204.47215623514992,
+          145.49324812207902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7326,6 +7336,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11666,6 +11677,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -12301,7 +12318,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -12940,7 +12958,8 @@ window.BENCHMARK_DATA = {
           295734.0402483259,
           146925.58851841517,
           290380.4139927455,
-          220585.15937151227
+          220585.15937151227,
+          148709.5198625837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13583,6 +13602,7 @@ window.BENCHMARK_DATA = {
           86137,
           86138,
           86137,
+          86138,
           86138,
           86138
         ],
@@ -14231,7 +14251,8 @@ window.BENCHMARK_DATA = {
           2610232.06484375,
           1254349.052734375,
           2515918.62109375,
-          1808925.5673177084
+          1808925.5673177084,
+          1295520.78984375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14875,7 +14896,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19149,6 +19171,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -19861,7 +19889,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -20577,7 +20606,8 @@ window.BENCHMARK_DATA = {
           502.90954602559407,
           239.24562018712362,
           532.9993427276611,
-          388.9199968973796
+          388.9199968973796,
+          284.65417126814526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21294,6 +21324,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -22022,7 +22053,8 @@ window.BENCHMARK_DATA = {
           479.83998171488446,
           261.75292506217954,
           480.38019987742103,
-          400.45877707799275
+          400.45877707799275,
+          268.01146796771457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22215,6 +22247,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -27017,6 +27050,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -27729,7 +27768,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -28445,7 +28485,8 @@ window.BENCHMARK_DATA = {
           390.416090742747,
           192.22235318592615,
           375.72293860117594,
-          303.6057075353769
+          303.6057075353769,
+          182.40172738295334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29162,6 +29203,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -29890,7 +29932,8 @@ window.BENCHMARK_DATA = {
           244.9692392985026,
           141.10517188707988,
           240.2495800336202,
-          191.07920319239298
+          191.07920319239298,
+          134.61963035265606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30083,6 +30126,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34885,6 +34929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -35597,7 +35647,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -36313,7 +36364,8 @@ window.BENCHMARK_DATA = {
           512.7948634465536,
           224.305471438628,
           559.1372151692708,
-          392.96149935041154
+          392.96149935041154,
+          243.23858434813363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37030,6 +37082,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1080,
           1080,
           1080,
           1080,
@@ -37758,7 +37811,8 @@ window.BENCHMARK_DATA = {
           1246.9402375539144,
           621.1622296651204,
           1159.2521332332067,
-          882.7562196731567
+          882.7562196731567,
+          597.8788195610047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38187,6 +38241,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42753,6 +42808,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -43465,7 +43526,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -44181,7 +44243,8 @@ window.BENCHMARK_DATA = {
           2672.669841512044,
           1450.9872616254365,
           2691.866480255127,
-          1944.4431457519531
+          1944.4431457519531,
+          1419.1521091461182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44898,6 +44961,7 @@ window.BENCHMARK_DATA = {
           4376,
           4376,
           4384,
+          2896,
           2896,
           2896,
           2896,
@@ -45626,7 +45690,8 @@ window.BENCHMARK_DATA = {
           1324.7816797892253,
           728.2218722025553,
           1250.2981399536134,
-          1062.8478544871011
+          1062.8478544871011,
+          646.5440812792096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45819,6 +45884,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50621,6 +50687,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -51333,7 +51405,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -52049,7 +52122,8 @@ window.BENCHMARK_DATA = {
           3245.4842256818497,
           1730.6978145326887,
           3242.6715207781112,
-          2463.241643172044
+          2463.241643172044,
+          1690.9833320617677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52766,6 +52840,7 @@ window.BENCHMARK_DATA = {
           4280,
           4280,
           4288,
+          3176,
           3176,
           3176,
           3176,
@@ -53494,7 +53569,8 @@ window.BENCHMARK_DATA = {
           26656.025815691268,
           11316.766002948467,
           26028.70656738281,
-          15590.14028676351
+          15590.14028676351,
+          10010.612716674805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54215,6 +54291,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -54259,6 +54336,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -54266,7 +54349,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -54277,7 +54361,8 @@ window.BENCHMARK_DATA = {
           5879.949660746256,
           2672.734001977103,
           5520.70621287028,
-          3987.009569440569
+          3987.009569440569,
+          2820.00571568807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54289,6 +54374,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -54312,7 +54398,8 @@ window.BENCHMARK_DATA = {
           83063.9206891741,
           29970.870603434243,
           84091.42727225168,
-          53261.49040120443
+          53261.49040120443,
+          29120.87935093471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54328,6 +54415,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -54372,6 +54460,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:25 2026 \u002B0200",
         "message": "ci: publish benchmark results only from main (#1575)"
+      },
+      {
+        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
+        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
       }
     ],
     "labels": [
@@ -54379,7 +54473,8 @@ window.BENCHMARK_DATA = {
       "e49da50c",
       "e1449d7d",
       "ec5a355e",
-      "6f9d4282"
+      "6f9d4282",
+      "62b5cca4"
     ],
     "datasets": [
       {
@@ -54390,7 +54485,8 @@ window.BENCHMARK_DATA = {
           535.4486650058201,
           272.6125044482095,
           540.926056098938,
-          423.7307744026184
+          423.7307744026184,
+          260.7688136100769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54402,6 +54498,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -54425,7 +54522,8 @@ window.BENCHMARK_DATA = {
           33315.1684526716,
           9999.445686848958,
           30943.731740315754,
-          14791.289885384696
+          14791.289885384696,
+          9445.914090983073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54441,6 +54539,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
