@@ -340,6 +340,11 @@ public sealed class StringDifference(
 			return 0;
 		}
 
+		StringComparison? comparison = ReferenceEquals(comparer, StringComparer.Ordinal)
+			? StringComparison.Ordinal
+			: ReferenceEquals(comparer, StringComparer.OrdinalIgnoreCase)
+				? StringComparison.OrdinalIgnoreCase
+				: null;
 		int maxCommonLength = Math.Min(actualValue.Length, expectedValue.Length);
 		int min = 0;
 		int max = maxCommonLength + 1;
@@ -351,9 +356,11 @@ public sealed class StringDifference(
 				break;
 			}
 
-			if (fromEnd
-				    ? comparer.Equals(actualValue[^mid..], expectedValue[^mid..])
-				    : comparer.Equals(actualValue[..mid], expectedValue[..mid]))
+			if (comparison is not null
+				    ? AreEqualInPlace(actualValue, expectedValue, mid, fromEnd, comparison.Value)
+				    : fromEnd
+					    ? comparer.Equals(actualValue[^mid..], expectedValue[^mid..])
+					    : comparer.Equals(actualValue[..mid], expectedValue[..mid]))
 			{
 				min = mid;
 			}
@@ -365,6 +372,21 @@ public sealed class StringDifference(
 
 		return fromEnd ? actualValue.Length - min - 1 : min;
 	}
+
+	/// <summary>
+	///     Compares the first or last <paramref name="length" /> characters of both values without copying them.
+	/// </summary>
+	/// <remarks>
+	///     A substring per step of the search allocates about twice the length of the values for every halving, which
+	///     adds up to gigabytes for long values. An ordinal comparison of the ranges decides exactly like the default
+	///     comparers do for the substrings.
+	/// </remarks>
+	private static bool AreEqualInPlace(string actualValue, string expectedValue, int length, bool fromEnd,
+		StringComparison comparison)
+		=> fromEnd
+			? string.Compare(actualValue, actualValue.Length - length, expectedValue, expectedValue.Length - length,
+				length, comparison) == 0
+			: string.Compare(actualValue, 0, expectedValue, 0, length, comparison) == 0;
 
 	/// <summary>
 	///     Calculates how many characters to keep in <paramref name="value" />.
