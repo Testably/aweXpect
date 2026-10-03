@@ -148,17 +148,21 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 		return IsSynchronous
-			? Task.FromResult(Verify(materialized, cancelEarly, cancellationToken))
+			? Task.FromResult<ConstraintResult>(Verify(materialized, cancelEarly, cancellationToken))
 			: VerifyAsync(materialized, cancelEarly, cancellationToken);
 	}
 
-	private ConstraintResult Verify(CollectionItems<TItem> materialized, bool cancelEarly,
+	private CollectionConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
 		foreach (TItem item in materialized.Items)
 		{
-			if (IsCanceled(materialized, cancellationToken) ||
-			    IsDecidedBy(materialized, item, MatchesSynchronously(item), cancelEarly))
+			if (IsCanceled(materialized, cancellationToken))
+			{
+				return this;
+			}
+
+			if (IsDecidedBy(materialized, item, MatchesSynchronously(item), cancelEarly))
 			{
 				return this;
 			}
@@ -172,8 +176,12 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 	{
 		foreach (TItem item in materialized.Items)
 		{
-			if (IsCanceled(materialized, cancellationToken) ||
-			    IsDecidedBy(materialized, item, await Matches(item), cancelEarly))
+			if (IsCanceled(materialized, cancellationToken))
+			{
+				return this;
+			}
+
+			if (IsDecidedBy(materialized, item, await Matches(item), cancelEarly))
 			{
 				return this;
 			}

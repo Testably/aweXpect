@@ -1123,31 +1123,23 @@ public sealed partial class ThatEnumerable
 		[Fact]
 		public async Task WhenTimeoutElapses_ShouldFailStartsWith()
 		{
-			IEnumerable<int> subject = SlowItems(1, 2, 3);
+			IEnumerable<int> subject = SlowNumbers();
+			int[] expected = Enumerable.Range(0, 1000).ToArray();
 
 			async Task Act()
-				=> await That(subject).StartsWith(1, 2, 3).WithTimeout(50.Milliseconds());
+				=> await That(subject).StartsWith(expected).WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             starts with [1, 2, 3],
+				             starts with [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and 990 more)],
 				             but it did not finish within 0:00.050
 
 				             Collection:
-				             [1, (… and maybe more)]
-				             """).And
+				             [*0,*(… and maybe more)*]
+				             """).AsWildcard().And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
-				.Because("a timeout that elapsed while an item was read must not be ignored, as with EndsWith");
-
-			static IEnumerable<int> SlowItems(params int[] items)
-			{
-				foreach (int item in items)
-				{
-					Thread.Sleep(100);
-					yield return item;
-				}
-			}
+				.Because("a timeout that elapsed while the items were read must not be ignored, as with EndsWith");
 		}
 
 		private static bool Cancel(CancellationTokenSource cts, bool result)

@@ -342,12 +342,12 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
-						.IsEqualTo(["b",]);
+						.IsEqualTo(["b",]).InAnyOrder();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             eventually is equal to collection ["b",] in order within 0:00.200,
+					             eventually is equal to collection ["b",] in any order within 0:00.200,
 					             but it was <null>
 					             """);
 			}

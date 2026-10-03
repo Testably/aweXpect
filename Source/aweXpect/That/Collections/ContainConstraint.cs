@@ -179,29 +179,34 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(" contained ");
-			if (_hasExpected)
-			{
-				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : _expected);
-			}
-			else
-			{
-				stringBuilder.Append("it");
-			}
+			AppendContainedResult(stringBuilder);
+		}
+	}
 
-			stringBuilder.Append(_isFinished ? " " : " at least ");
-			if (_count == 1)
-			{
-				stringBuilder.Append("once");
-			}
-			else if (_count == 2)
-			{
-				stringBuilder.Append("twice");
-			}
-			else
-			{
-				stringBuilder.Append(_count).Append(" times");
-			}
+	private void AppendContainedResult(StringBuilder stringBuilder)
+	{
+		stringBuilder.Append(It).Append(" contained ");
+		if (_hasExpected)
+		{
+			Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : _expected);
+		}
+		else
+		{
+			stringBuilder.Append("it");
+		}
+
+		stringBuilder.Append(_isFinished ? " " : " at least ");
+		if (_count == 1)
+		{
+			stringBuilder.Append("once");
+		}
+		else if (_count == 2)
+		{
+			stringBuilder.Append("twice");
+		}
+		else
+		{
+			stringBuilder.Append(_count).Append(" times");
 		}
 	}
 
@@ -296,7 +301,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 		if (_lookup?.Invoke(actual) is { } isContained)
 		{
 			CountExpected(isContained);
-			return Task.FromResult(Finish(CollectionItems<TItem>.Of(actual)));
+			return Task.FromResult<ConstraintResult>(Finish(CollectionItems<TItem>.Of(actual)));
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
@@ -358,7 +363,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 		return true;
 	}
 
-	private ConstraintResult Finish(CollectionItems<TItem> items)
+	private ContainConstraint<TEnumerable, TItem> Finish(CollectionItems<TItem> items)
 	{
 		items.SetContext(ref _collectionContext);
 		Finish();

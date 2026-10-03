@@ -215,11 +215,11 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		}
 
 		return IsSynchronous
-			? Task.FromResult(Verify(materialized, count, cancellationToken))
+			? Task.FromResult<ConstraintResult>(Verify(materialized, count, cancellationToken))
 			: VerifyAsync(materialized, count, cancellationToken);
 	}
 
-	private ConstraintResult Verify(CollectionItems<TItem> materialized, int? count,
+	private HasItemConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, int? count,
 		CancellationToken cancellationToken)
 	{
 		int index = 0;

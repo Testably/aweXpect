@@ -83,6 +83,18 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return this;
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Fails, because the expected collection is <see langword="null" />, and shows the <paramref name="items" />.
+	/// </summary>
+	protected ConstraintResult FailForNullExpected<TItem>(IAsyncEnumerable<TItem> items)
+	{
+		Outcome = Outcome.Failure;
+		_collectionContext.Set(items as IMaterializedAsyncEnumerable<TItem>);
+		return this;
+	}
+#endif
+
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
 	/// </summary>
@@ -120,16 +132,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Fails, because the expected collection is <see langword="null" />, and shows the <paramref name="items" />.
-	/// </summary>
-	protected ConstraintResult FailForNullExpected<TItem>(IAsyncEnumerable<TItem> items)
-	{
-		Outcome = Outcome.Failure;
-		_collectionContext.Set(items as IMaterializedAsyncEnumerable<TItem>);
-		return this;
-	}
-
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
 	/// </summary>

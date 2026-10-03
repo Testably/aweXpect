@@ -229,9 +229,11 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 		IAsyncEnumerable<TItem> materialized = context
 			.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 		_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
-		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
+		await using IAsyncEnumerator<TItem> items =
+			materialized.UntilCancelled(cancellationToken).GetAsyncEnumerator(CancellationToken.None);
+		while (await items.MoveNextAsync())
 		{
-			if (IsOutOfOrder(item))
+			if (IsOutOfOrder(items.Current))
 			{
 				return this;
 			}

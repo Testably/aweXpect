@@ -234,11 +234,13 @@ internal sealed class AsyncHasSingleConstraint<TItem>(
 		IAsyncEnumerable<TItem> materialized =
 			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 		_materialized = materialized as IMaterializedAsyncEnumerable<TItem>;
-		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
+		await using (IAsyncEnumerator<TItem> items =
+		             materialized.UntilCancelled(cancellationToken).GetAsyncEnumerator(CancellationToken.None))
 		{
-			if (Record(item))
+			bool isDecided = false;
+			while (!isDecided && await items.MoveNextAsync())
 			{
-				break;
+				isDecided = Record(items.Current);
 			}
 		}
 
