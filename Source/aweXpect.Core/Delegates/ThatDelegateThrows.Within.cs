@@ -7,30 +7,30 @@ namespace aweXpect.Delegates;
 public partial class ThatDelegateThrows<TException>
 {
 	/// <summary>
-	///     Verifies that the delegate throws within the given <paramref name="duration" />.
+	///     Verifies that the delegate throws within the given <paramref name="timeout" />.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="duration" /> is applied as timeout (a tighter timeout, e.g. from <c>WithTimeout(…)</c>,
+	///     The <paramref name="timeout" /> also limits the evaluation (a tighter timeout, e.g. from <c>WithTimeout(…)</c>,
 	///     still applies), so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is canceled
 	///     once it elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">A duration is already set.</exception>
-	public ThatDelegateThrows<TException> Within(TimeSpan duration)
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
+	public ThatDelegateThrows<TException> Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(ThrowOptions.IsWithinSpecified, nameof(Within));
 		ThrowOptions.IsWithinSpecified = true;
-		if (duration == System.Threading.Timeout.InfiniteTimeSpan)
+		if (timeout == System.Threading.Timeout.InfiniteTimeSpan)
 		{
 			return this;
 		}
 
 		ExecutionTimeOptions options = new();
-		options.Within(duration);
+		options.Within(timeout);
 		ThrowOptions.ExecutionTimeOptions = options;
-		ExpectationBuilder.WithTimeout(duration);
+		ExpectationBuilder.WithTimeout(timeout);
 		return this;
 	}
 }

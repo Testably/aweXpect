@@ -339,3 +339,7 @@ virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get 
 *REMOVED*aweXpect.Core.ThatBoolSubject.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Equivalency.It.IsEquivalent<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?>! memberAccessor, string? separator = null, string? replaceIt = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammar = null, bool negateMemberOnly = false) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?>! memberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false) -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan duration) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.ThatDelegateThrows<TException>!

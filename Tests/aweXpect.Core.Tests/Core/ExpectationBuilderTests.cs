@@ -536,6 +536,29 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForWhich_WithSubjectNameAndExpectationGrammars_ShouldApplyThemToTheMember()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+		string? usedIt = null;
+		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForWhich<string, int>(s => s.Length, " whose length ",
+			subjectName: "the length",
+			expectationGrammars: g => g | ExpectationGrammars.Nested);
+		sut.AddConstraint((it, g) =>
+		{
+			usedIt = it;
+			usedExpectationGrammars = g;
+			return new DummyConstraint<int>(i => i == 3, "is 3");
+		});
+
+		await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(usedIt).IsEqualTo("the length");
+		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
+	}
+
+	[Fact]
 	public async Task IsMet_WhenFailing_ShouldReleaseTheMaterializedSourceAfterTheFailureMessage()
 	{
 		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());

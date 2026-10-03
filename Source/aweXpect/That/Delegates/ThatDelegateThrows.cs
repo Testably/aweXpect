@@ -1,8 +1,6 @@
-﻿using aweXpect.Results;
-
-namespace aweXpect;
+﻿namespace aweXpect;
 
 /// <summary>
-///     An <see cref="ExpectationResult" /> when an exception was thrown.
+///     Expectations on the exception thrown by a delegate, continuing <c>Throws…</c>.
 /// </summary>
 public static partial class ThatDelegateThrows;

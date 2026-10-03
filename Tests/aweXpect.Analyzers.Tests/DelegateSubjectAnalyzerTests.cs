@@ -97,10 +97,11 @@ public class DelegateSubjectAnalyzerTests
 			using System;
 			using aweXpect;
 			using aweXpect.Core;
+			using aweXpect.Delegates;
 
 			public static class MyExtensions
 			{
-			    public static void Inspect(this IThat<aweXpect.Delegates.ThatDelegate.WithValue<int>> subject)
+			    public static void Inspect(this IThat<ThatDelegate.WithValue<int>> subject)
 			    {
 			    }
 			}
