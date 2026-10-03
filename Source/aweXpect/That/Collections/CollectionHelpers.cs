@@ -21,6 +21,28 @@ internal static class CollectionHelpers
 {
 	private const string MaybeMoreMarker = "(… and maybe more)";
 
+	private static readonly Type[] SingleLineTypes =
+	[
+		typeof(bool),
+		typeof(char),
+		typeof(byte),
+		typeof(sbyte),
+		typeof(float),
+		typeof(double),
+		typeof(decimal),
+		typeof(int),
+		typeof(uint),
+		typeof(long),
+		typeof(ulong),
+		typeof(short),
+		typeof(ushort),
+#if NET8_0_OR_GREATER
+		typeof(Int128),
+		typeof(UInt128),
+		typeof(Half),
+#endif
+	];
+
 	internal static string CreateDuplicateFailureMessage<TItem>(string it, List<TItem> duplicates)
 	{
 		StringBuilder sb = new();
@@ -112,19 +134,8 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Collection"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Collection",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete),
-						-1));
-			}
-		});
+		return expectationBuilder.AddContext(
+			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
 	}
 
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
@@ -135,19 +146,7 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Collection"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Collection",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: FormatCollection(value)?.AppendIsIncomplete(isIncomplete),
-						-1));
-			}
-		});
+		return expectationBuilder.AddContext(new CollectionContext(value, isIncomplete, onlyOnFailureOf));
 	}
 
 #if NET8_0_OR_GREATER
@@ -240,6 +239,98 @@ internal static class CollectionHelpers
 	private static bool IsHidden(ConstraintResult? onlyOnFailureOf)
 		=> onlyOnFailureOf is not null && onlyOnFailureOf.Outcome != Outcome.Failure;
 
+	/// <remarks>
+	///     A dedicated context instead of a callback, because a succeeding collection expectation adds it as well, and
+	///     the closures with their delegates would be allocated for a message that is rarely built.
+	/// </remarks>
+	private sealed class CollectionContext<TItem>(
+		IEnumerable<TItem> value,
+		bool isIncomplete,
+		int? totalCount,
+		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
+	{
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult(IsHidden(onlyOnFailureOf)
+				? null
+				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
+
+		/// <remarks>
+		///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must
+		///     not be rendered as the total from which the number of remaining items is derived.
+		/// </remarks>
+		private string? FormatCollection()
+		{
+			if (value is IKeyedCollection keyed)
+			{
+				return keyed.Format();
+			}
+
+			if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
+			{
+				return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
+			}
+
+			int? count = totalCount ?? value switch
+			{
+				ICollection<TItem> coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			};
+			return Formatter.Format(value, typeof(TItem).GetFormattingOption(
+				value is LimitedCollection<TItem> limited ? limited.Count : count, count));
+		}
+	}
+
+	/// <inheritdoc cref="CollectionContext{TItem}" />
+	private sealed class CollectionContext(
+		IEnumerable value,
+		bool isIncomplete,
+		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
+	{
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult(IsHidden(onlyOnFailureOf)
+				? null
+				: FormatCollection()?.AppendIsIncomplete(isIncomplete));
+
+		private string? FormatCollection()
+		{
+			if (value is IMaterializedEnumerable { Count: null, } materialized)
+			{
+				return FormatReadItems(materialized.MaterializedItems,
+					materialized.MaterializedItems.GetItemType());
+			}
+
+			int? totalCount = value switch
+			{
+				ICollection coll => coll.Count,
+				ICountable countable => countable.Count,
+				_ => null,
+			};
+			return Formatter.Format(value,
+				GetItemTypeOfListedItems().GetFormattingOption(totalCount, totalCount));
+		}
+
+		/// <remarks>
+		///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be
+		///     searched to its end. An exception of the source is ignored here, as the formatter enumerates the same
+		///     items and renders it.
+		/// </remarks>
+		private Type GetItemTypeOfListedItems()
+		{
+			IEnumerable<object?> items = value is ICollection
+				? value.Cast<object?>()
+				: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+			try
+			{
+				return items.GetItemType();
+			}
+			catch (Exception)
+			{
+				return typeof(object);
+			}
+		}
+	}
+
 	/// <summary>
 	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
 	///     <paramref name="expected" /> collection.
@@ -254,26 +345,6 @@ internal static class CollectionHelpers
 				_ => null,
 			})),
 			-2));
-
-	/// <remarks>
-	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
-	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
-	///     renders it.
-	/// </remarks>
-	private static Type GetItemTypeOfListedItems(IEnumerable value)
-	{
-		IEnumerable<object?> items = value is ICollection
-			? value.Cast<object?>()
-			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		try
-		{
-			return items.GetItemType();
-		}
-		catch (Exception)
-		{
-			return typeof(object);
-		}
-	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -377,48 +448,6 @@ internal static class CollectionHelpers
 	}
 
 	/// <summary>
-	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
-	///     be rendered as the total from which the number of remaining items is derived.
-	/// </summary>
-	private static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
-	{
-		if (value is IKeyedCollection keyed)
-		{
-			return keyed.Format();
-		}
-
-		if (totalCount is null && value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
-		{
-			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
-		}
-
-		totalCount ??= value switch
-		{
-			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
-			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
-	}
-
-	private static string? FormatCollection(IEnumerable value)
-	{
-		if (value is IMaterializedEnumerable { Count: null, } materialized)
-		{
-			return FormatReadItems(materialized.MaterializedItems, materialized.MaterializedItems.GetItemType());
-		}
-
-		int? totalCount = value switch
-		{
-			ICollection coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
-	}
-
-	/// <summary>
 	///     Formats the items that were read from a source that did not reach its end, marked as incomplete.
 	/// </summary>
 	/// <remarks>
@@ -512,28 +541,7 @@ internal static class CollectionHelpers
 	/// </summary>
 	internal static FormattingOptions GetFormattingOption(this Type type, int? count, int? totalCount = null)
 	{
-		Type[] singleLineTypes =
-		[
-			typeof(bool),
-			typeof(char),
-			typeof(byte),
-			typeof(sbyte),
-			typeof(float),
-			typeof(double),
-			typeof(decimal),
-			typeof(int),
-			typeof(uint),
-			typeof(long),
-			typeof(ulong),
-			typeof(short),
-			typeof(ushort),
-#if NET8_0_OR_GREATER
-			typeof(Int128),
-			typeof(UInt128),
-			typeof(Half),
-#endif
-		];
-		if (count < 10 && (type.IsEnum || singleLineTypes.Contains(type)))
+		if (count < 10 && (type.IsEnum || SingleLineTypes.Contains(type)))
 		{
 			return FormattingOptions.SingleLine with
 			{
@@ -544,7 +552,7 @@ internal static class CollectionHelpers
 		Type? underlyingType = Nullable.GetUnderlyingType(type);
 
 		if (count < 10 && underlyingType != null &&
-		    (underlyingType.IsEnum || singleLineTypes.Contains(underlyingType)))
+		    (underlyingType.IsEnum || SingleLineTypes.Contains(underlyingType)))
 		{
 			return FormattingOptions.SingleLine with
 			{

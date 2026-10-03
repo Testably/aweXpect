@@ -47,8 +47,12 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-		bool isEqual = UserCode.Invoke(() => isDecidedByExpected ? expected.Equals(actual) : actual.Equals(expected),
-			() => UserCode.EqualsOf(isDecidedByExpected ? expected : actual));
+		bool isEqual = UserCode.Invoke(
+			static values => values.IsDecidedByExpected
+				? values.Expected!.Equals(values.Actual)
+				: values.Actual!.Equals(values.Expected),
+			(Actual: actual, Expected: expected, IsDecidedByExpected: isDecidedByExpected),
+			static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
 		if (!isEqual)
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
@@ -98,6 +102,11 @@ public static partial class EquivalencyComparison
 	private static void AppendDifference<TActual, TExpected>(StringBuilder failureBuilder,
 		MemberType memberType, string memberPath, TActual actual, TExpected expected, EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendDifferenceHeader(failureBuilder, memberType, memberPath, context);
 		(string actualText, string expectedText) =
 			ValuePairFormatter.Format(actual, expected, FormattingOptions.SingleLine);
@@ -119,6 +128,11 @@ public static partial class EquivalencyComparison
 	private static void AppendLackedDistinctKey(StringBuilder failureBuilder, string memberPath,
 		EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
 		failureBuilder.Append(" lacked a distinct key");
 	}
@@ -126,6 +140,11 @@ public static partial class EquivalencyComparison
 	private static void AppendMaxRecursionDepthExceeded(StringBuilder failureBuilder, MemberType memberType,
 		string memberPath, int maxRecursionDepth, EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, memberType, memberPath, context);
 		failureBuilder.Append(" exceeded the maximum recursion depth of ");
 		failureBuilder.Append(maxRecursionDepth);
@@ -134,6 +153,11 @@ public static partial class EquivalencyComparison
 	private static void AppendMissingElement(StringBuilder failureBuilder, string memberPath, object? expected,
 		EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
 		failureBuilder.Append(" was missing ");
 		Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
@@ -142,6 +166,11 @@ public static partial class EquivalencyComparison
 	private static void AppendMissingMember(StringBuilder failureBuilder, MemberType memberType, string memberPath,
 		bool isAmbiguous, EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, memberType, memberPath, context);
 		failureBuilder.Append(isAmbiguous
 			? " was ambiguous on the actual object, which implements it explicitly for more than one interface"
@@ -151,6 +180,11 @@ public static partial class EquivalencyComparison
 	private static void AppendSuperfluousElement(StringBuilder failureBuilder, string memberPath, object? actual,
 		EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
 		failureBuilder.Append(" had superfluous ");
 		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
@@ -159,6 +193,11 @@ public static partial class EquivalencyComparison
 	private static void AppendUnmatchedElement(StringBuilder failureBuilder, string memberPath,
 		EquivalencyContext context)
 	{
+		if (context.IsDecidingOnly)
+		{
+			return;
+		}
+
 		AppendEntry(failureBuilder, MemberType.Element, memberPath, context);
 		failureBuilder.Append(" matched no expected key");
 	}
@@ -204,6 +243,22 @@ public static partial class EquivalencyComparison
 			_ => memberToIgnore is not MemberToIgnore.ByFieldPredicate and
 			     not MemberToIgnore.ByPropertyPredicate,
 		};
+
+	private static bool IsIgnored(MemberToIgnore[] membersToIgnore, MemberType memberType, string memberPath,
+		Type type)
+	{
+#pragma warning disable S3267 // Every compared member is checked, so Any with a closure is avoided here
+		foreach (MemberToIgnore memberToIgnore in membersToIgnore)
+		{
+			if (AppliesTo(memberToIgnore, memberType) && memberToIgnore.IgnoreMember(memberPath, type))
+			{
+				return true;
+			}
+		}
+#pragma warning restore S3267
+
+		return false;
+	}
 
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
@@ -274,6 +329,11 @@ public static partial class EquivalencyComparison
 
 			if (result.Outcome == Outcome.Failure)
 			{
+				if (context.IsDecidingOnly)
+				{
+					return false;
+				}
+
 				AppendDifferenceHeader(failureBuilder, memberType, memberPath, context);
 				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
 				if (actual is not null && !equivalencyExpectationBuilder.IsOfExpectedType(actual))
@@ -376,9 +436,7 @@ public static partial class EquivalencyComparison
 			{
 				memberCount++;
 				string fieldMemberPath = ConcatMemberPath(memberPath, field.Name);
-				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => AppliesTo(memberToIgnore, MemberType.Field) &&
-					       memberToIgnore.IgnoreMember(fieldMemberPath, field.DeclaredType)))
+				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Field, fieldMemberPath, field.DeclaredType))
 				{
 					continue;
 				}
@@ -415,9 +473,8 @@ public static partial class EquivalencyComparison
 			{
 				memberCount++;
 				string propertyMemberPath = ConcatMemberPath(memberPath, property.Name);
-				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => AppliesTo(memberToIgnore, MemberType.Property) &&
-					       memberToIgnore.IgnoreMember(propertyMemberPath, property.DeclaredType)))
+				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Property, propertyMemberPath,
+					    property.DeclaredType))
 				{
 					continue;
 				}
@@ -646,9 +703,8 @@ public static partial class EquivalencyComparison
 				{
 					string elementMemberPath = GetKeyPath(memberPath, key);
 					object? actualObject = GetEntry(actual, key, elementMemberPath);
-					if (typeOptions.MembersToIgnore.Any(memberToIgnore
-						    => AppliesTo(memberToIgnore, MemberType.Element) &&
-						       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
+					if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+						    actualObject?.GetType() ?? typeof(object)))
 					{
 						continue;
 					}
@@ -667,10 +723,15 @@ public static partial class EquivalencyComparison
 			}
 			else
 			{
-				AppendEntry(failureBuilder, memberType, memberPath, context);
-				failureBuilder.Append(" contained ").Append(actual.Count).Append(actual.Count == 1 ? " key" : " keys")
-					.Append(" and matched ").Append(matchedKeys.Count)
-					.Append(matchedKeys.Count == 1 ? " expected key" : " expected keys");
+				if (!context.IsDecidingOnly)
+				{
+					AppendEntry(failureBuilder, memberType, memberPath, context);
+					failureBuilder.Append(" contained ").Append(actual.Count)
+						.Append(actual.Count == 1 ? " key" : " keys")
+						.Append(" and matched ").Append(matchedKeys.Count)
+						.Append(matchedKeys.Count == 1 ? " expected key" : " expected keys");
+				}
+
 				result = false;
 			}
 		}
@@ -684,9 +745,8 @@ public static partial class EquivalencyComparison
 			if (!isMatched)
 			{
 				object? expectedObject = GetEntry(expected, key, elementMemberPath);
-				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => AppliesTo(memberToIgnore, MemberType.Element) &&
-					       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
+				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+					    expectedObject?.GetType() ?? typeof(object)))
 				{
 					continue;
 				}
@@ -697,9 +757,8 @@ public static partial class EquivalencyComparison
 			}
 
 			object? actualObject = GetEntry(actual, key, elementMemberPath);
-			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => AppliesTo(memberToIgnore, MemberType.Element) &&
-				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
+			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				    actualObject?.GetType() ?? typeof(object)))
 			{
 				continue;
 			}
@@ -805,13 +864,12 @@ public static partial class EquivalencyComparison
 		{
 			string elementMemberPath = $"{memberPath}[{i}]";
 			object? actualObject = actualObjects.ElementAtOrDefault(i);
-			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => AppliesTo(memberToIgnore, MemberType.Element) &&
-				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
+			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				    actualObject?.GetType() ?? typeof(object)))
 			{
 				continue;
 			}
-			
+
 			object? expectedObject = expectedObjects.ElementAtOrDefault(i);
 
 			if (!await Compare(actualObject, expectedObject,
@@ -828,9 +886,8 @@ public static partial class EquivalencyComparison
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
 				object? expectedObject = expectedObjects.ElementAtOrDefault(i);
-				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => AppliesTo(memberToIgnore, MemberType.Element) &&
-					       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
+				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+					    expectedObject?.GetType() ?? typeof(object)))
 				{
 					continue;
 				}
@@ -846,9 +903,8 @@ public static partial class EquivalencyComparison
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
 				object? actualObject = actualObjects.ElementAtOrDefault(i);
-				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => AppliesTo(memberToIgnore, MemberType.Element) &&
-					       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
+				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+					    actualObject?.GetType() ?? typeof(object)))
 				{
 					continue;
 				}
@@ -886,6 +942,11 @@ public static partial class EquivalencyComparison
 		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, memberPath,
 			options, typeOptions, context);
 		await matcher.MatchAll();
+		if (context.IsDecidingOnly)
+		{
+			return !matcher.HasLeftovers;
+		}
+
 		(int Actual, int Expected)[] leftovers = await matcher.GetLeftovers();
 		if (leftovers.Length == 0)
 		{
@@ -929,9 +990,8 @@ public static partial class EquivalencyComparison
 		{
 			object? element = objects[i];
 			string elementMemberPath = $"{memberPath}[{i}]";
-			if (!typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => AppliesTo(memberToIgnore, MemberType.Element) &&
-				       memberToIgnore.IgnoreMember(elementMemberPath, element?.GetType() ?? typeof(object))))
+			if (!IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				    element?.GetType() ?? typeof(object)))
 			{
 				indices.Add(i);
 			}
@@ -950,13 +1010,13 @@ public static partial class EquivalencyComparison
 		private readonly EquivalencyContext _context;
 
 		/// <summary>
-		///     The number of differences of every pairwise comparison that <see cref="_results" /> holds a result for.
+		///     The number of differences of the pairs that were considered for the leftovers.
 		/// </summary>
 		/// <remarks>
-		///     Kept apart from the result, because the search for augmenting paths reads the result of every pair it
-		///     considers while only the leftovers need the count, and a wider cell would slow that search down.
+		///     Only the leftovers need the count, and counting the differences means writing them, so the search for
+		///     augmenting paths only decides the pairs it considers.
 		/// </remarks>
-		private readonly int[,] _differenceCounts;
+		private int?[,]? _differenceCounts;
 
 		private readonly int[] _expectedIndices;
 		private readonly object?[] _expectedObjects;
@@ -982,6 +1042,11 @@ public static partial class EquivalencyComparison
 		/// </summary>
 		private readonly List<int> _unmatchedExpected = [];
 
+		/// <summary>
+		///     The builder for the comparisons that only decide a pair, which never write into it.
+		/// </summary>
+		private readonly StringBuilder _unusedFailureBuilder = new();
+
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
 			int[] expectedIndices, string memberPath, EquivalencyOptions options,
 			EquivalencyTypeOptions typeOptions, EquivalencyContext context)
@@ -995,7 +1060,6 @@ public static partial class EquivalencyComparison
 			_typeOptions = typeOptions;
 			_context = context;
 			_results = new bool?[actualIndices.Length, expectedIndices.Length];
-			_differenceCounts = new int[actualIndices.Length, expectedIndices.Length];
 			_matchedTo = new int[actualIndices.Length];
 			for (int i = 0; i < _matchedTo.Length; i++)
 			{
@@ -1009,14 +1073,26 @@ public static partial class EquivalencyComparison
 		public async ValueTask
 			MatchAll()
 		{
+			int previous = -1;
 			for (int i = 0; i < _expectedIndices.Length; i++)
 			{
-				if (!await TryMatch(i, new bool[_actualIndices.Length]))
+				previous = await TryMatchNextTo(previous, i);
+				if (previous < 0)
+				{
+					previous = await TryMatch(i, new bool[_actualIndices.Length]);
+				}
+
+				if (previous < 0)
 				{
 					_unmatchedExpected.Add(i);
 				}
 			}
 		}
+
+		/// <summary>
+		///     Whether an actual or an expected element is left without a counterpart.
+		/// </summary>
+		public bool HasLeftovers => _unmatchedExpected.Count > 0 || Array.IndexOf(_matchedTo, -1) >= 0;
 
 		/// <summary>
 		///     Returns the elements that were left over, as pairs of an actual and an expected index, where
@@ -1052,8 +1128,7 @@ public static partial class EquivalencyComparison
 			{
 				foreach (int expectedIndex in _unmatchedExpected)
 				{
-					candidates.Add(((await GetResult(actualIndex, expectedIndex)).DifferenceCount, actualIndex,
-						expectedIndex));
+					candidates.Add((await GetDifferenceCount(actualIndex, expectedIndex), actualIndex, expectedIndex));
 				}
 			}
 
@@ -1080,52 +1155,115 @@ public static partial class EquivalencyComparison
 			return leftovers.ToArray();
 		}
 
-		private async ValueTask<bool>
+		/// <summary>
+		///     Matches the expected element to a free neighbour of the <paramref name="previous" /> actual element, and
+		///     returns its index, or <c>-1</c> when neither neighbour is equivalent.
+		/// </summary>
+		/// <remarks>
+		///     A collection in or against the expected order finds each match next to the previous one, so the element
+		///     is not compared with every free actual element first.
+		/// </remarks>
+		private async ValueTask<int>
+			TryMatchNextTo(int previous, int expectedIndex)
+		{
+			if (previous < 0)
+			{
+				return -1;
+			}
+
+			for (int actualIndex = previous + 1; actualIndex >= previous - 1; actualIndex -= 2)
+			{
+				if (actualIndex >= 0 && actualIndex < _actualIndices.Length && _matchedTo[actualIndex] < 0 &&
+				    await IsEquivalent(actualIndex, expectedIndex))
+				{
+					_matchedTo[actualIndex] = expectedIndex;
+					return actualIndex;
+				}
+			}
+
+			return -1;
+		}
+
+		/// <returns>The index of the actual element the expected element is matched to, or <c>-1</c>.</returns>
+		private async ValueTask<int>
 			TryMatch(int expectedIndex, bool[] visited)
 		{
 			for (int offset = 0; offset < _actualIndices.Length; offset++)
 			{
 				// Starting at the same position pairs collections that are already in order without any search.
 				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
-				if (visited[actualIndex] || !(await GetResult(actualIndex, expectedIndex)).IsEquivalent)
+				if (visited[actualIndex] || !await IsEquivalent(actualIndex, expectedIndex))
 				{
 					continue;
 				}
 
 				visited[actualIndex] = true;
-				if (_matchedTo[actualIndex] < 0 || await TryMatch(_matchedTo[actualIndex], visited))
+				if (_matchedTo[actualIndex] < 0 || await TryMatch(_matchedTo[actualIndex], visited) >= 0)
 				{
 					_matchedTo[actualIndex] = expectedIndex;
-					return true;
+					return actualIndex;
 				}
 			}
 
-			return false;
+			return -1;
 		}
 
 		/// <remarks>
-		///     The comparison writes into a throwaway builder, because only the differences that survive the matching
-		///     belong in the failure message. Its differences are counted nonetheless, so the count is taken from the
-		///     context and restored afterwards, which keeps them out of the count of the message that is kept.
+		///     Only decides the pair without writing its differences, because only the pairs that are left over are
+		///     reported. The code of the caller is still called as for a reported pair, so that it throws alike.
 		/// </remarks>
-		private async ValueTask<(bool IsEquivalent, int DifferenceCount)>
-			GetResult(int actualIndex, int expectedIndex)
+		private async ValueTask<bool>
+			IsEquivalent(int actualIndex, int expectedIndex)
 		{
 			if (_results[actualIndex, expectedIndex] is { } cachedResult)
 			{
-				return (cachedResult, _differenceCounts[actualIndex, expectedIndex]);
+				return cachedResult;
 			}
 
-			object? actualObject = _actualObjects[_actualIndices[actualIndex]];
-			int differenceCount = _context.DifferenceCount;
-			bool isEquivalent = await Compare(actualObject, _expectedObjects[_expectedIndices[expectedIndex]],
-				_options, _typeOptions,
-				new StringBuilder(), $"{_memberPath}[{_actualIndices[actualIndex]}]", MemberType.Element, _context);
+			bool wasDecidingOnly = _context.IsDecidingOnly;
+			_context.IsDecidingOnly = true;
+			bool isEquivalent;
+			try
+			{
+				isEquivalent = await Compare(_actualObjects[_actualIndices[actualIndex]],
+					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
+					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+			}
+			finally
+			{
+				_context.IsDecidingOnly = wasDecidingOnly;
+			}
+
 			_results[actualIndex, expectedIndex] = isEquivalent;
-			_differenceCounts[actualIndex, expectedIndex] = _context.DifferenceCount - differenceCount;
-			_context.DifferenceCount = differenceCount;
-			return (isEquivalent, _differenceCounts[actualIndex, expectedIndex]);
+			return isEquivalent;
 		}
+
+		/// <remarks>
+		///     The comparison writes into a throwaway builder, because only the pairs that are reported belong in the
+		///     failure message. Its differences are counted nonetheless, so the count is taken from the context and
+		///     restored afterwards, which keeps them out of the count of the message that is kept.
+		/// </remarks>
+		private async ValueTask<int>
+			GetDifferenceCount(int actualIndex, int expectedIndex)
+		{
+			_differenceCounts ??= new int?[_actualIndices.Length, _expectedIndices.Length];
+			if (_differenceCounts[actualIndex, expectedIndex] is { } cachedCount)
+			{
+				return cachedCount;
+			}
+
+			int differenceCount = _context.DifferenceCount;
+			await Compare(_actualObjects[_actualIndices[actualIndex]],
+				_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
+				new StringBuilder(), GetElementPath(actualIndex), MemberType.Element, _context);
+			int count = _context.DifferenceCount - differenceCount;
+			_context.DifferenceCount = differenceCount;
+			_differenceCounts[actualIndex, expectedIndex] = count;
+			return count;
+		}
+
+		private string GetElementPath(int actualIndex)
+			=> $"{_memberPath}[{_actualIndices[actualIndex]}]";
 	}
 #pragma warning restore S107
 #pragma warning restore S3776

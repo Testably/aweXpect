@@ -769,7 +769,8 @@ public static partial class ThatEnumerable
 	/// </remarks>
 	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
 		=> expected is not null
-			? UserCode.Invoke(() => ((ICollection<TItem>)collection).Contains(expected), "the comparer")
+			? UserCode.Invoke(static values => values.Collection.Contains(values.Expected),
+				(Collection: (ICollection<TItem>)collection, Expected: expected), "the comparer")
 			: null;
 
 	/// <summary>

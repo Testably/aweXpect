@@ -96,7 +96,7 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 
 		try
 		{
-			if (UserCode.Invoke(_enumerator.MoveNext))
+			if (UserCode.Invoke(static enumerator => enumerator.MoveNext(), _enumerator))
 			{
 				return true;
 			}
@@ -206,7 +206,7 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 
 		try
 		{
-			if (UserCode.Invoke(_enumerator.MoveNext))
+			if (UserCode.Invoke(static enumerator => enumerator.MoveNext(), _enumerator))
 			{
 				return true;
 			}

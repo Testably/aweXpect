@@ -18,7 +18,8 @@ internal sealed class SubjectComparer<T>(Func<T, T, bool> areEqual, object compa
 	/// </remarks>
 	public bool AreEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		=> actual is T typedActual && expected is T typedExpected
-			? UserCode.Invoke(() => areEqual(typedActual, typedExpected), "the comparer")
+			? UserCode.Invoke(static values => values.AreEqual(values.Actual, values.Expected),
+				(AreEqual: areEqual, Actual: typedActual, Expected: typedExpected), "the comparer")
 			: actual is null && expected is null;
 
 	/// <inheritdoc cref="object.ToString()" />

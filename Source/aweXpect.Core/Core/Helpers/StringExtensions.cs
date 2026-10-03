@@ -255,11 +255,12 @@ internal static class StringExtensions
 	/// </remarks>
 	public static string TrimCommonWhiteSpace(this string value)
 	{
-		string[] lines = value.Split('\n');
-		if (lines.Length <= 1)
+		if (value.IndexOf('\n') < 0)
 		{
 			return value;
 		}
+
+		string[] lines = value.Split('\n');
 
 		string? commonWhiteSpace = null;
 		foreach (string line in lines.Skip(1).Where(line => !string.IsNullOrWhiteSpace(line)))

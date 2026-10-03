@@ -2077,6 +2077,40 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithDuplicatesInExpected_AndSubjectAgainstTheExpectedOrder_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["c", "a",]);
+				string[] expected = ["a", "b", "a", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it lacked 2 of 4 expected items:
+					               "a",
+					               "b"
+
+					             Collection:
+					             [
+					               "c",
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "a",
+					               "c"
+					             ]
+					             """)
+					.Because("the neighbour of the previous match is tried first, so the later \"a\" is matched and the earlier one is left over");
+			}
+
+			[Fact]
 			public async Task WithDuplicatesInExpected_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -2106,6 +2140,39 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithDuplicatesInReversedOrder_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["c", "b", "a", "a",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it contained item "a" at index 3 that was not expected
+
+					             Collection:
+					             [
+					               "c",
+					               "b",
+					               "a",
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("the item next to the previous match is tried first, which must not change the reported item");
 			}
 
 			[Fact]

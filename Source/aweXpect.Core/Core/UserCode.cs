@@ -76,6 +76,26 @@ public static class UserCode
 	}
 
 	/// <summary>
+	///     Calls the <paramref name="callback" /> of the caller with the <paramref name="argument" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="thrower" /> is only created when the <paramref name="callback" /> throws, and with static
+	///     delegates that receive their values through the <paramref name="argument" />, a call allocates nothing.
+	/// </remarks>
+	internal static TResult Invoke<TArgument, TResult>(Func<TArgument, TResult> callback, TArgument argument,
+		Func<TArgument, string> thrower)
+	{
+		try
+		{
+			return callback(argument);
+		}
+		catch (Exception exception) when (exception is not UserCodeException)
+		{
+			throw new UserCodeException(exception, thrower(argument));
+		}
+	}
+
+	/// <summary>
 	///     Calls the asynchronous <paramref name="callback" /> of the caller.
 	/// </summary>
 	/// <param name="callback">The code of the caller.</param>

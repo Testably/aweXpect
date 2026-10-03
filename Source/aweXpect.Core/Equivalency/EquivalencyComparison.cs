@@ -47,6 +47,11 @@ public static partial class EquivalencyComparison
 	/// </remarks>
 	private static void JoinSingleLineEntries(StringBuilder failureBuilder, int start)
 	{
+		if (failureBuilder.Length == start)
+		{
+			return;
+		}
+
 		string separator = $"{Environment.NewLine}and{Environment.NewLine}";
 		string failures = failureBuilder.ToString(start, failureBuilder.Length - start);
 		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains('\n', StringComparison.Ordinal)))
@@ -84,6 +89,16 @@ public static partial class EquivalencyComparison
 		///     that comparison and restores it afterwards when the differences were written into a throwaway builder.
 		/// </remarks>
 		public int DifferenceCount { get; set; }
+
+		/// <summary>
+		///     Whether the comparison only decides whether the objects are equivalent, without writing or counting their
+		///     differences.
+		/// </summary>
+		/// <remarks>
+		///     Set while elements whose order is ignored are paired, as most of the pairs that are tried are not
+		///     equivalent and never reported, so formatting their values would be wasted.
+		/// </remarks>
+		public bool IsDecidingOnly { get; set; }
 
 		/// <summary>
 		///     The options registered for a type, or <see langword="null" /> when it has no registration.

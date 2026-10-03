@@ -217,6 +217,8 @@ public static class TypeMetadataRegistry
 
 	internal sealed class TypeMetadata
 	{
+		private MemberSnapshot? _orderedMembers;
+
 		public ConcurrentDictionary<string, RegisteredMember> Fields { get; } = new(StringComparer.Ordinal);
 		public ConcurrentDictionary<string, RegisteredMember> Properties { get; } = new(StringComparer.Ordinal);
 
@@ -229,6 +231,16 @@ public static class TypeMetadataRegistry
 		///     The reader of the key comparer, registered for a generic dictionary interface.
 		/// </summary>
 		public DictionaryKeyComparer? KeyComparer { get; set; }
+
+		/// <summary>
+		///     The registered fields and properties in the order of their registration.
+		/// </summary>
+		/// <remarks>
+		///     Computed once, because a published entry is never changed, and every compared object reads them.
+		/// </remarks>
+		public MemberSnapshot OrderedMembers => _orderedMembers ??= new MemberSnapshot(
+			Order(Fields), Order(Properties),
+			!(Fields.IsEmpty && Properties.IsEmpty && ExplicitProperties.IsEmpty));
 
 		/// <summary>
 		///     A copy of this metadata in which the <paramref name="registered" /> members and events replace those of the
@@ -255,6 +267,22 @@ public static class TypeMetadataRegistry
 				merged[entry.Key] = entry.Value;
 			}
 		}
+
+		private static EquivalencyMember[] Order(ConcurrentDictionary<string, RegisteredMember> members)
+			=> members.Values
+				.OrderBy(member => member.Order)
+				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue))
+				.ToArray();
+	}
+
+	/// <summary>
+	///     The registered fields and properties of a type, and whether it has any member that is compared.
+	/// </summary>
+	internal sealed class MemberSnapshot(EquivalencyMember[] fields, EquivalencyMember[] properties, bool hasMembers)
+	{
+		public EquivalencyMember[] Fields { get; } = fields;
+		public EquivalencyMember[] Properties { get; } = properties;
+		public bool HasMembers { get; } = hasMembers;
 	}
 
 	internal sealed class RegisteredMember(string name, Type memberType, Func<object, object?> getValue, int order)

@@ -197,8 +197,10 @@ internal class ExpectationNode : Node
 	/// <remarks>
 	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved, so that
 	///     <see cref="AppendExpectation" /> includes them.
+	///     <para />
+	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then nothing is allocated.
 	/// </remarks>
-	private async Task<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
+	private async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
 	{
 		if (_reasons is null)
 		{

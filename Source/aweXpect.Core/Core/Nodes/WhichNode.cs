@@ -202,7 +202,7 @@ internal class WhichNode<TSource, TMember> : Node
 				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
-	private async Task<(TMember? Value, bool IsNullTask)> ComputeMatchingValueAsync(TSource? source)
+	private async ValueTask<(TMember? Value, bool IsNullTask)> ComputeMatchingValueAsync(TSource? source)
 	{
 #pragma warning disable S2583
 		if (source is null)

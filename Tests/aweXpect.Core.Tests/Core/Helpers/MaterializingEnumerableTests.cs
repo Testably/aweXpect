@@ -215,6 +215,41 @@ public class MaterializingEnumerableTests
 	}
 
 	[Fact]
+	public async Task WhenSourceThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the source is broken");
+		DisposeTrackingEnumerable source = new(exception, 1);
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(source);
+		Exception? first = null;
+		Exception? second = null;
+
+		try
+		{
+			_ = materialized.ToList();
+		}
+		catch (Exception e)
+		{
+			first = e;
+		}
+
+		try
+		{
+			_ = materialized.ToList();
+		}
+		catch (Exception e)
+		{
+			second = e;
+		}
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+	}
+
+	[Fact]
 	public async Task Wrap_ForCollection_ShouldUseCollection()
 	{
 		List<int> collection = new();

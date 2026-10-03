@@ -41,6 +41,13 @@ public static class EvaluationContextExtensions
 		this IEvaluationContext evaluationContext, IEnumerable<TItem> collection)
 	{
 		collection.ThrowIfNull();
+		// A collection that is also non-generic would be returned unchanged by both overloads, so it needs no entry
+		// for the other overload to reuse.
+		if (collection is ICollection<TItem> and ICollection)
+		{
+			return collection;
+		}
+
 		return evaluationContext.GetOrMaterialize(MaterializedEnumerableKey, collection,
 			() => MaterializingEnumerable<TItem>.Wrap(collection));
 	}

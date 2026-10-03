@@ -17,14 +17,17 @@ public partial class CollectionMatchOptions
 		: ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private readonly List<T> _values = new();
+		/// <remarks>
+		///     Only kept when the in-order matcher does not keep the items itself.
+		/// </remarks>
+		private readonly List<T>? _values = inOrderMatcher is IRecordingCollectionMatcher<T> ? null : new();
 
 		public bool IsDetermined => inOrderMatcher.IsDetermined;
 
 		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			_values.Add(value);
+			_values?.Add(value);
 			return inOrderMatcher.Verify(it, value, options, maximumNumber);
 		}
 
@@ -44,7 +47,8 @@ public partial class CollectionMatchOptions
 			MatchesInAnyOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			ICollectionMatcher<T, T2> matcher = anyOrderMatcher();
-			foreach (T value in _values)
+			IReadOnlyList<T> values = _values ?? ((IRecordingCollectionMatcher<T>)inOrderMatcher).Values;
+			foreach (T value in values)
 			{
 				(bool isFailure, string? _) = await matcher.Verify(it, value, options, maximumNumber);
 				if (isFailure)
@@ -56,5 +60,13 @@ public partial class CollectionMatchOptions
 			(bool isCompleteFailure, string? _) = await matcher.VerifyComplete(it, options, maximumNumber);
 			return !isCompleteFailure;
 		}
+	}
+
+	/// <summary>
+	///     A matcher that keeps every item it verified, in the order of the subject.
+	/// </summary>
+	private interface IRecordingCollectionMatcher<out T>
+	{
+		IReadOnlyList<T> Values { get; }
 	}
 }

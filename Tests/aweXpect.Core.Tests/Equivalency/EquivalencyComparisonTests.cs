@@ -904,6 +904,29 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsAreReversedWithDuplicates_ShouldReportTheDifference()
+	{
+		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20), new(2, 20), new(3, 30),];
+		WithTwoPublicValues[] expected = [new(3, 30), new(2, 20), new(2, 21), new(1, 10),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field [1].Other differed:
+		                                                      Actual: 20
+		                                                    Expected: 21
+		                                                """).IgnoringNewlineStyle()
+			.Because("the neighbour of the previous match is tried first, so the later of the two equal actual elements is matched and the earlier one is left over");
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
 	{
 		object[] actual = [1, "a",];
@@ -2493,6 +2516,25 @@ public sealed partial class EquivalencyComparisonTests
 			             """).And
 			.Whose(e => e.InnerException, i => i.Is<InvalidOperationException>())
 			.Because("a getter that threw answered nothing, so the negation fails as well");
+	}
+
+	[Fact]
+	public async Task WhenGetterThrows_WhenReflected_ShouldThrowTheGetterException()
+	{
+		WithThrowingGetter actual = new("getter failed");
+		WithThrowingGetter expected = new("getter failed");
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(Act).Throws<Exception>()
+			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+			.WithInner<InvalidOperationException>(inner => inner.HasMessage("getter failed"))
+			.Because("non-public members are read by reflection, which wraps the exception that the cached accessor has to unwrap");
 	}
 
 	[Fact]

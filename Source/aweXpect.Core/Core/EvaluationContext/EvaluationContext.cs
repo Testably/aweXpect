@@ -61,6 +61,11 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 	/// </summary>
 	public async Task ReleaseMaterializations()
 	{
+		if (_store is null && _releases is null && _attempt is null)
+		{
+			return;
+		}
+
 		foreach (IMaterialization materialization in this.GetMaterializations())
 		{
 			await materialization.ReleaseSource();

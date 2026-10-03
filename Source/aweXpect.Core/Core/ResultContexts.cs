@@ -51,6 +51,24 @@ public class ResultContexts : IEnumerable<ResultContext>
 	}
 
 	/// <summary>
+	///     Indicates whether a context with the <paramref name="title" /> was added.
+	/// </summary>
+	internal bool ContainsTitle(string title)
+	{
+#pragma warning disable S3267 // Every expectation adds its contexts, so Any with a closure is avoided here
+		foreach (ResultContext context in _results)
+		{
+			if (string.Equals(context.Title, title, StringComparison.Ordinal))
+			{
+				return true;
+			}
+		}
+#pragma warning restore S3267
+
+		return false;
+	}
+
+	/// <summary>
 	///     Removes all contexts from the context list.
 	/// </summary>
 	public ResultContexts Clear()
