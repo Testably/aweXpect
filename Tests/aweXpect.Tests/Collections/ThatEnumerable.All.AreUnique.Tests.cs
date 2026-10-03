@@ -60,6 +60,20 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenDateTimesOnlyDifferInTheirKind_ShouldSucceed()
+				{
+					DateTime local = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Local);
+					DateTime utc = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+					IEnumerable<DateTime> subject = ToEnumerable([local, utc,]);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique();
+
+					await That(Act).DoesNotThrow()
+						.Because("both have the same hash code, but the comparison still decides that their kinds are incompatible");
+				}
+
+				[Fact]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3, 1,]);

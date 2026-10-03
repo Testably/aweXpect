@@ -92,7 +92,8 @@ public static partial class ThatEnumerable
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						itemOptions.UseComparerOf);
+						itemOptions.UseComparerOf,
+						createGetHashCode: () => MemberHashing.For(options));
 				}),
 				_subject,
 				options);
@@ -103,7 +104,7 @@ public static partial class ThatEnumerable
 				Func<string?, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -115,7 +116,8 @@ public static partial class ThatEnumerable
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -135,7 +137,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -216,7 +219,8 @@ public static partial class ThatEnumerable
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
 						itemOptions.UseComparerOf,
-						appendOptionsContexts: options.AppendContexts);
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options));
 				}),
 				_subject,
 				options);
@@ -226,7 +230,7 @@ public static partial class ThatEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -238,7 +242,8 @@ public static partial class ThatEnumerable
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -258,7 +263,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -341,7 +347,8 @@ public static partial class ThatEnumerable
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
 						itemOptions.UseComparerOf,
-						appendOptionsContexts: options.AppendContexts);
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options));
 				}),
 				_subject,
 				options);
@@ -351,7 +358,7 @@ public static partial class ThatEnumerable
 			Func<object?, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -363,7 +370,8 @@ public static partial class ThatEnumerable
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -383,7 +391,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -441,7 +450,7 @@ public static partial class ThatEnumerable
 
 		private ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem> AreUniqueCore(bool expectUnique)
 		{
-			ObjectEqualityOptions<TItem> options = new();
+			ItemEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -452,7 +461,8 @@ public static partial class ThatEnumerable
 						a => (TItem)a!,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -461,7 +471,7 @@ public static partial class ThatEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -473,7 +483,8 @@ public static partial class ThatEnumerable
 						a => memberAccessor((TItem)a!),
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -493,7 +504,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						a => memberAccessor((TItem)a!),
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -561,7 +573,8 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => (string?)a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -570,7 +583,7 @@ public static partial class ThatEnumerable
 			Func<string?, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -582,7 +595,8 @@ public static partial class ThatEnumerable
 						a => memberAccessor((string?)a),
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -602,7 +616,8 @@ public static partial class ThatEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						a => memberAccessor((string?)a),
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -622,7 +637,8 @@ public static partial class ThatEnumerable
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
 		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
+		Action<ResultContextCollector>? appendOptionsContexts = null,
+		Func<Func<TMember, int>?>? createGetHashCode = null)
 		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
@@ -656,7 +672,7 @@ public static partial class ThatEnumerable
 			}
 
 			bool cancelEarly = actual is not ICollection<TItem>;
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
+			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
 			List<(TItem Item, int MemberIndex)> items = [];
 			foreach (TItem item in materialized)
 			{
@@ -713,7 +729,8 @@ public static partial class ThatEnumerable
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
 		Func<object?, bool>? isUniqueBySubject = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
+		Action<ResultContextCollector>? appendOptionsContexts = null,
+		Func<Func<TMember, int>?>? createGetHashCode = null)
 		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<TEnumerable>
@@ -765,7 +782,7 @@ public static partial class ThatEnumerable
 			}
 
 			bool cancelEarly = actual is not ICollection;
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
+			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
 			List<(object? Item, int MemberIndex)> items = [];
 			foreach (object? item in materialized)
 			{

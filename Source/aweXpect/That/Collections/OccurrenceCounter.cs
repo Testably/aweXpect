@@ -9,9 +9,16 @@ namespace aweXpect;
 ///     Counts how often each distinct member occurs, using <paramref name="areConsideredEqual" /> to decide which
 ///     members are the same.
 /// </summary>
+/// <remarks>
+///     With a <paramref name="getHashCode" /> that returns the same value for every two members that
+///     <paramref name="areConsideredEqual" /> considers the same, a member is only compared with the distinct members
+///     of the same hash code, in the order they were added, so that it is still counted for the first one it equals.
+/// </remarks>
 internal sealed class OccurrenceCounter<TMember>(
-	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual)
+	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
+	Func<TMember, int>? getHashCode = null)
 {
+	private readonly Dictionary<int, List<int>>? _candidates = getHashCode is null ? null : new();
 	private readonly List<TMember> _distinctMembers = [];
 	private readonly List<int> _occurrences = [];
 	private int _notUniqueCount;
@@ -19,18 +26,50 @@ internal sealed class OccurrenceCounter<TMember>(
 	/// <summary>
 	///     Counts one occurrence of the <paramref name="member" /> and returns the index of its distinct member.
 	/// </summary>
-	public async Task<int> Add(TMember member)
+	public async ValueTask<int> Add(TMember member)
 	{
-		for (int i = 0; i < _distinctMembers.Count; i++)
+		if (_candidates is null)
+		{
+			for (int i = 0; i < _distinctMembers.Count; i++)
+			{
+				if (await areConsideredEqual(member, _distinctMembers[i]))
+				{
+					return Count(i);
+				}
+			}
+
+			return AddDistinct(member);
+		}
+
+		int hashCode = getHashCode!(member);
+		if (!_candidates.TryGetValue(hashCode, out List<int>? candidates))
+		{
+			candidates = [];
+			_candidates.Add(hashCode, candidates);
+		}
+
+		foreach (int i in candidates)
 		{
 			if (await areConsideredEqual(member, _distinctMembers[i]))
 			{
-				_occurrences[i]++;
-				_notUniqueCount += _occurrences[i] == 2 ? 2 : 1;
-				return i;
+				return Count(i);
 			}
 		}
 
+		int index = AddDistinct(member);
+		candidates.Add(index);
+		return index;
+	}
+
+	private int Count(int index)
+	{
+		_occurrences[index]++;
+		_notUniqueCount += _occurrences[index] == 2 ? 2 : 1;
+		return index;
+	}
+
+	private int AddDistinct(TMember member)
+	{
 		_distinctMembers.Add(member);
 		_occurrences.Add(1);
 		return _distinctMembers.Count - 1;
