@@ -24,7 +24,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that contain an item equal to 0 at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (keys):
 					             [1, 2, 3]
 					             """);
 			}
@@ -54,7 +54,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             whose Map has keys that contain an item equal to 0 at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (Map.keys):
 					             [1, 2, 3]
 					             """)
 					.Because("the keys, not the member Map, are the subject of the continued expectation");
@@ -74,7 +74,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that do not contain an item equal to 2,
 					             but it contained 2 at least once
 
-					             Collection:
+					             Collection (keys):
 					             [1, 2, 3]
 					             """);
 			}
@@ -228,7 +228,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that contain "a" using AllDifferentComparer at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (keys):
 					             [
 					               "a"
 					             ]
@@ -250,7 +250,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that do not contain "A" using the subject's StringComparer.OrdinalIgnoreCase,
 					             but it contained "A" once
 
-					             Collection:
+					             Collection (keys):
 					             [
 					               "a"
 					             ]
@@ -272,7 +272,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that contain "b" using the subject's StringComparer.OrdinalIgnoreCase at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (keys):
 					             [
 					               "a"
 					             ]
@@ -293,7 +293,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             has keys that contain "A" at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (keys):
 					             [
 					               "a"
 					             ]

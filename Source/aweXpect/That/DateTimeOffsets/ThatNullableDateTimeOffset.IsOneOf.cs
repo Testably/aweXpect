@@ -32,7 +32,6 @@ public static partial class ThatNullableDateTimeOffset
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			tolerance);
@@ -58,6 +57,10 @@ public static partial class ThatNullableDateTimeOffset
 		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
 			Actual = actual;

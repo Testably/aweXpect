@@ -205,12 +205,54 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 
 Information that does not fit into one sentence, such as the items of a collection or the expected and the actual
 value of a long comparison, belongs in a context. A context is shown below the message with its title, e.g.
-`Collection:`, `Expected:`, `Actual:` or `Not matching items:`. Use the overload of `AddConstraint` that also passes the
-`ExpectationBuilder`, and add the context while the constraint is evaluated:
+`Collection:`, `Expected:`, `Actual:` or `Not matching items:`. The result adds its contexts in `AppendContexts`:
 
-```csharp no-compile
-expectationBuilder.AddContext(new ResultContext.Fixed("Playlist", Formatter.Format(tracks, FormattingOptions.MultipleLines)));
+```csharp
+private sealed class HasPlaylistConstraint(string it, ExpectationGrammars grammars)
+    : ConstraintResult.WithNotNullValue<Track[]>(it, grammars),
+        IValueConstraint<Track[]?>
+{
+    public ConstraintResult IsMetBy(Track[]? actual)
+    {
+        Actual = actual;
+        Outcome = actual?.Length is > 0 and <= 20 ? Outcome.Success : Outcome.Failure;
+        return this;
+    }
+
+    public override void AppendContexts(ResultContextCollector contexts)
+    {
+        if (Actual is { } tracks)
+        {
+            contexts.Add(new ResultContext.SyncCallback("Playlist",
+                () => Formatter.Format(tracks, FormattingOptions.MultipleLines)));
+        }
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("has a playlist of up to 20 tracks");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" had ").Append(Actual?.Length).Append(" tracks");
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("does not have a playlist of up to 20 tracks");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => AppendNormalResult(stringBuilder, indentation);
+}
 ```
+
+- `AppendContexts` is only called while the failure message is created, so an expectation that is met creates no
+  context. Keep the values that the context needs in the constraint, and format them in the callback.
+- It is only called for the parts of a combined expectation that explain the failure, after every negation, e.g. not
+  for a succeeding operand of `And` or for a negated part that succeeds again under `DoesNotComplyWith`. Decide in
+  `AppendContexts` on the final `Grammars` and `Outcome` instead of in `IsMetBy` or `Negate()`.
+- Capture the state in the callback when `AppendContexts` runs (`tracks` above), as the result of an item expectation
+  is evaluated again for the next item before the content is created.
+- A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are
+  shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
+- A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
+  its outcome, or `contexts.VisitMember("name", result)` to label them with a member.
 
 ## Exceptions
 

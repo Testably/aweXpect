@@ -49,7 +49,7 @@ public sealed partial class ThatGeneric
 					             whose Item is of type Derived whose Name is equal to "foo",
 					             but Item was OtherDerived
 
-					             Actual:
+					             Actual (Item):
 					             OtherDerived { }
 					             """);
 			}
@@ -72,7 +72,7 @@ public sealed partial class ThatGeneric
 					             whose Item is of type Derived whose Task.FromResult(d.Name) is equal to "foo",
 					             but Item was OtherDerived
 
-					             Actual:
+					             Actual (Item):
 					             OtherDerived { }
 					             """);
 			}
@@ -1352,6 +1352,16 @@ public sealed partial class ThatGeneric
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Other whose Name is equal to "x" and has Name that is equal to "i",
 					             but it was ThatGeneric.Whose.NegatedTests.Container and Other was <null> and Name was "i"
+
+					             Actual:
+					             ThatGeneric.Whose.NegatedTests.Container {
+					               In = ThatGeneric.Whose.NegatedTests.Inner {
+					                 Name = "i",
+					                 Next = [Next did throw an InvalidOperationException: next failed],
+					                 Other = <null>
+					               },
+					               Name = <null>
+					             }
 					             """);
 			}
 
@@ -1369,11 +1379,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not have a single item whose y!.Name is equal to "i",
 					             but it was <null>
-
-					             Collection:
-					             [
-					               <null>
-					             ]
 					             """);
 			}
 
@@ -1391,14 +1396,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not have a single item whose In has Name that is equal to "i",
 					             but In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 
@@ -1422,14 +1419,6 @@ public sealed partial class ThatGeneric
 					               }
 					             ]
 					             and In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 
@@ -1447,14 +1436,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is not empty and does not have a single item whose In has Name that is equal to "i",
 					             but In was <null>
-
-					             Collection:
-					             [
-					               ThatGeneric.Whose.NegatedTests.Container {
-					                 In = <null>,
-					                 Name = <null>
-					               }
-					             ]
 					             """);
 			}
 

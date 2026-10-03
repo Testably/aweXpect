@@ -56,6 +56,14 @@ public static class ConstraintResultExtensions
 		=> new ConstraintResultExpectationWrapper(inner, prefix);
 
 	/// <summary>
+	///     Like <see cref="PrependExpectationText(ConstraintResult, Action{StringBuilder})" />, for the result of the
+	///     expectations on the <paramref name="member" />, whose contexts are labelled with it.
+	/// </summary>
+	internal static ConstraintResult PrependExpectationText(this ConstraintResult inner, Action<StringBuilder>? prefix,
+		string? member)
+		=> new ConstraintResultExpectationWrapper(inner, prefix, member: member);
+
+	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> where the expectation is appended with the <paramref name="suffix" />.
 	/// </summary>
 	public static ConstraintResult AppendExpectationText(this ConstraintResult inner, Action<StringBuilder>? suffix)
@@ -210,6 +218,9 @@ public static class ConstraintResultExtensions
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendResult(stringBuilder, indentation);
 
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.Visit(_inner);
+
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{
 			if (_value is TValue typedValue)
@@ -276,14 +287,17 @@ public static class ConstraintResultExtensions
 	{
 		private readonly bool _includeInnerExpectation;
 		private readonly ConstraintResult _inner;
+		private readonly string? _member;
 		private readonly Action<StringBuilder>? _prefix;
 		private readonly Action<StringBuilder>? _suffix;
 
 		public ConstraintResultExpectationWrapper(ConstraintResult inner,
 			Action<StringBuilder>? prefix = null,
 			Action<StringBuilder>? suffix = null,
-			bool includeInnerExpectation = true) : base(inner.FurtherProcessingStrategy)
+			bool includeInnerExpectation = true,
+			string? member = null) : base(inner.FurtherProcessingStrategy)
 		{
+			_member = member;
 			_inner = inner;
 			Outcome = _inner.Outcome;
 			_prefix = prefix;
@@ -328,5 +342,8 @@ public static class ConstraintResultExtensions
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendResult(stringBuilder, indentation);
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.VisitOptionalMember(_member, _inner);
 	}
 }

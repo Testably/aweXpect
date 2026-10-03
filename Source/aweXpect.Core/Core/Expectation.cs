@@ -69,9 +69,7 @@ public abstract class Expectation
 	public override string? ToString()
 		=> base.ToString();
 
-	internal abstract Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes);
-
-	internal abstract IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes);
+	internal abstract Task<Result> GetResult(int index);
 
 	/// <summary>
 	///     Ends the evaluation, once the failure message no longer reads the collections it materialized.
@@ -146,7 +144,7 @@ public abstract class Expectation
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
 		/// <inheritdoc />
-		internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
+		internal override async Task<Result> GetResult(int index)
 		{
 			(Expectation Expectation, Result Result)[] results = new (Expectation, Result)[_expectations.Length];
 			Exception? failureCause = null;
@@ -154,11 +152,9 @@ public abstract class Expectation
 			for (int i = 0; i < _expectations.Length; i++)
 			{
 				Expectation expectation = _expectations[i];
-				int firstIndex = index + 1;
-				Result result = await expectation.GetResult(index, outcomes);
+				Result result = await expectation.GetResult(index);
 				outcome = CheckOutcome(outcome, result.ConstraintResult.Outcome);
 				index = result.Index;
-				RecordOutcome(expectation, firstIndex, result, outcomes);
 				if (result.ConstraintResult.Outcome == Outcome.Failure)
 				{
 					failureCause ??= result.ConstraintResult.FailureCause;
@@ -172,69 +168,12 @@ public abstract class Expectation
 				: new CombinationResult(Outcome.Success, results));
 		}
 
-		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-		{
-			List<ResultContext> combinedContexts = new();
-			AddContexts(index, outcomes, combinedContexts);
-			return combinedContexts;
-		}
-
-		/// <summary>
-		///     Adds the contexts of the expectations that did not succeed and returns the index of the last expectation,
-		///     so that nested combinations are numbered like in <see cref="GetResult" />.
-		/// </summary>
-		private int AddContexts(int index, Dictionary<int, Outcome> outcomes, List<ResultContext> combinedContexts)
-		{
-			foreach (Expectation expectation in _expectations)
-			{
-				if (expectation is Combination combination)
-				{
-					index = combination.AddContexts(index, outcomes, combinedContexts);
-				}
-				else
-				{
-					index++;
-					if (outcomes.TryGetValue(index, out Outcome outcome) && outcome == Outcome.Success)
-					{
-						continue;
-					}
-
-					foreach (ResultContext context in expectation.GetContexts(index, outcomes))
-					{
-						context.Title = $"[{index:00}] {context.Title}";
-						combinedContexts.Add(context);
-					}
-				}
-			}
-
-			return index;
-		}
-
 		/// <inheritdoc />
 		internal override async Task EndEvaluation()
 		{
 			foreach (Expectation expectation in _expectations)
 			{
 				await expectation.EndEvaluation();
-			}
-		}
-
-		private static void RecordOutcome(Expectation expectation, int firstIndex, Result result,
-			Dictionary<int, Outcome> outcomes)
-		{
-			if (expectation is not Combination)
-			{
-				outcomes[result.Index] = result.ConstraintResult.Outcome;
-				return;
-			}
-
-			// The failures of the members of a succeeded combination are not reported, so neither are their contexts.
-			if (result.ConstraintResult.Outcome == Outcome.Success)
-			{
-				for (int index = firstIndex; index <= result.Index; index++)
-				{
-					outcomes[index] = Outcome.Success;
-				}
 			}
 		}
 
@@ -252,8 +191,7 @@ public abstract class Expectation
 
 		private async Task ThrowUnlessMet(CancellationToken cancellationToken)
 		{
-			Dictionary<int, Outcome> outcomes = new();
-			Result result = await GetResult(0, outcomes);
+			Result result = await GetResult(0);
 			if (result.ConstraintResult.Outcome == Outcome.Success)
 			{
 				return;
@@ -265,18 +203,7 @@ public abstract class Expectation
 			sb.AppendLine();
 			sb.AppendLine("but");
 			result.ConstraintResult.AppendResult(sb);
-			foreach (ResultContext context in GetContexts(0, outcomes).OrderByDescending(x => x.Priority))
-			{
-				string? content = await context.GetContentUnlessUserCodeThrows(cancellationToken);
-				if (content is null)
-				{
-					continue;
-				}
-
-				sb.AppendLine().AppendLine();
-				sb.Append(context.Title).Append(':').AppendLine();
-				sb.Append(content);
-			}
+			await ResultContextRenderer.AppendContexts(sb, result.ConstraintResult, cancellationToken);
 
 			if (result.ConstraintResult.Outcome == Outcome.Undecided)
 			{
@@ -382,6 +309,29 @@ public abstract class Expectation
 			}
 
 			public override ConstraintResult Negate() => this;
+
+			/// <remarks>
+			///     The contexts of each failed expectation are numbered like it, while a nested combination numbers its own.
+			/// </remarks>
+			public override void AppendContexts(ResultContextCollector contexts)
+			{
+				foreach ((Expectation expectation, Result result) in _results)
+				{
+					if (result.ConstraintResult.Outcome == Outcome.Success)
+					{
+						continue;
+					}
+
+					if (expectation is Combination)
+					{
+						contexts.Visit(result.ConstraintResult);
+					}
+					else
+					{
+						contexts.VisitWithTitlePrefix($"[{result.Index:00}] ", result.ConstraintResult);
+					}
+				}
+			}
 		}
 
 		/// <summary>

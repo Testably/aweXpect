@@ -22,7 +22,7 @@ public sealed partial class ThatDictionary
 					             has values that have exactly 3 items and contain an item equal to 4 at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (values):
 					             [1, 2, 3]
 					             """);
 			}
@@ -41,10 +41,10 @@ public sealed partial class ThatDictionary
 					             has values of which all are unique,
 					             but only 2 of 4 were
 
-					             Not matching items:
+					             Not matching items (values):
 					             [1, 1]
 
-					             Collection:
+					             Collection (values):
 					             [1, 2, 3, 1]
 					             """);
 			}
@@ -85,7 +85,7 @@ public sealed partial class ThatDictionary
 					             has values of which not all are unique,
 					             but all 3 were
 
-					             Collection:
+					             Collection (values):
 					             [1, 2, 3]
 					             """);
 			}
@@ -136,13 +136,13 @@ public sealed partial class ThatDictionary
 					             has values of which all are unique ignoring case,
 					             but none of 2 were
 
-					             Not matching items:
+					             Not matching items (values):
 					             [
 					               "a",
 					               "A"
 					             ]
 
-					             Collection:
+					             Collection (values):
 					             [
 					               "a",
 					               "A"
@@ -188,7 +188,7 @@ public sealed partial class ThatDictionary
 					             has values that contain "baz" at least once,
 					             but it did not contain it
 
-					             Collection:
+					             Collection (values):
 					             [
 					               "foo",
 					               "bar"

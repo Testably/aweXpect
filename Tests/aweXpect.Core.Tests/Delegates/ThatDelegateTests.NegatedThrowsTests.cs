@@ -109,9 +109,6 @@ public sealed partial class ThatDelegateTests
 				             does not throw a MyException with message equal to "foo",
 				             but it did throw a MyException:
 				               foo
-
-				             Message:
-				             foo
 				             """);
 		}
 
@@ -206,9 +203,6 @@ public sealed partial class ThatDelegateTests
 				             does not throw a MyException with message equal to "foo",
 				             but it did throw a MyException:
 				               foo
-
-				             Message:
-				             foo
 				             """);
 		}
 

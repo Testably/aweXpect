@@ -44,7 +44,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection?, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(),
 					expectedEntries,
 					options).InvertIf(negated)),
@@ -69,7 +69,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection?, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(),
 					expectedEntries,
 					options).InvertIf(negated)),
@@ -93,7 +93,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection?, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
+				=> new IsEqualToConstraint<TCollection, TKey, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(),
 					expectedEntries,
 					options).InvertIf(negated)),
@@ -102,7 +102,6 @@ public static partial class ThatDictionary
 	}
 
 	private sealed class IsEqualToConstraint<TDictionary, TKey, TValue>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -114,6 +113,13 @@ public static partial class ThatDictionary
 	{
 		private string? _failure;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(TDictionary? actual,
 			CancellationToken cancellationToken)
 		{
@@ -124,7 +130,6 @@ public static partial class ThatDictionary
 				return this;
 			}
 
-			AddDictionaryContext(expectationBuilder, actual);
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;

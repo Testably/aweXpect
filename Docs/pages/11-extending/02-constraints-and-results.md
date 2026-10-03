@@ -394,18 +394,16 @@ using aweXpect.Options;
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
     this IEnumerableElements<Track> elements)
 {
-    ExpectationBuilder expectationBuilder = elements.Subject.Get().ExpectationBuilder;
-    return new(expectationBuilder.AddConstraint((it, grammars)
-            => new AreRadioFriendlyConstraint(expectationBuilder, it, grammars, elements.Quantifier)),
+    return new(elements.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreRadioFriendlyConstraint(it, grammars, elements.Quantifier)),
         elements.Subject);
 }
 
 private sealed class AreRadioFriendlyConstraint(
-    ExpectationBuilder expectationBuilder,
     string it,
     ExpectationGrammars grammars,
     EnumerableQuantifier quantifier)
-    : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(expectationBuilder, it, grammars, quantifier,
+    : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(it, grammars, quantifier,
             g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
         IValueConstraint<IEnumerable<Track>?>
 {
@@ -439,7 +437,9 @@ await Expect.That(tracks).All().AreRadioFriendly();
 - The verb completes the result, e.g. "but only 1 of 3 were".
 
 The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
-or not matching items as context. `DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio
+or not matching items as [context](03-message-conventions.md#contexts). When the items are verified by nested
+expectations, record the result of each item with `Record(item, itemResult)`, so that the contexts of the item that
+explains the failure are shown as well, labelled with its index, e.g. `Actual (item [2]):`. `DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio
 friendly for fewer than 2 items, but 3 of 3 were", followed by the "Matching items". Unlike the built-in expectations,
 it does not add the "Collection" context.
 

@@ -142,6 +142,12 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
+		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// The tolerance is part of the expectation, so the comparison has no options to explain.
+		}
+
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();

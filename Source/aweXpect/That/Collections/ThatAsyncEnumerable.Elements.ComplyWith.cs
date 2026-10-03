@@ -24,8 +24,8 @@ public static partial class ThatAsyncEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithConstraint<TItem>(expectationBuilder, it, grammars, _quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithConstraint<TItem>(it, grammars, _quantifier, expectations)),
 				_subject);
 		}
 	}
@@ -40,19 +40,18 @@ public static partial class ThatAsyncEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithConstraint<string?>(expectationBuilder, it, grammars, _quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithConstraint<string?>(it, grammars, _quantifier, expectations)),
 				_subject);
 		}
 	}
 
 	private sealed class ComplyWithConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
-		: ComplyWithConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: ComplyWithConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectations),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{

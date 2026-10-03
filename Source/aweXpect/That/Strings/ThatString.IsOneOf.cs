@@ -32,7 +32,6 @@ public static partial class ThatString
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			options);
@@ -47,6 +46,10 @@ public static partial class ThatString
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
+
 		private bool _hasNothingToInspect;
 
 		/// <inheritdoc cref="ConstraintResult.Outcome" />

@@ -56,6 +56,12 @@ public partial class ObjectEqualityOptions<TSubject>
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
+		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// A comparison with a comparer has no options to explain.
+		}
+
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
@@ -99,6 +105,12 @@ public partial class ObjectEqualityOptions<TSubject>
 		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
+
+		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// A comparison with a comparer has no options to explain.
+		}
 
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)

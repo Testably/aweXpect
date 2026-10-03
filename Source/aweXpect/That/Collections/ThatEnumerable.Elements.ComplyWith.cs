@@ -26,8 +26,8 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithConstraint<TItem>(expectationBuilder, it, grammars, _quantifier, expectations)),
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithConstraint<TItem>(it, grammars, _quantifier, expectations)),
 				_subject);
 		}
 	}
@@ -42,8 +42,8 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithConstraint<string?>(expectationBuilder, it, grammars, _quantifier,
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithConstraint<string?>(it, grammars, _quantifier,
 						expectations)),
 				_subject);
 		}
@@ -59,8 +59,8 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithForEnumerableConstraint<TEnumerable>(expectationBuilder, it, grammars,
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithForEnumerableConstraint<TEnumerable>(it, grammars,
 						_quantifier, expectations)),
 				_subject);
 		}
@@ -76,8 +76,8 @@ public static partial class ThatEnumerable
 		{
 			expectations.ThrowIfNull();
 			return new(
-				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-					=> new ComplyWithForStructEnumerableConstraint<TEnumerable, TItem>(expectationBuilder, it,
+				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+					=> new ComplyWithForStructEnumerableConstraint<TEnumerable, TItem>(it,
 						grammars, _quantifier, expectations)),
 				_subject);
 		}
@@ -94,20 +94,29 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class ComplyWithConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
-		: ComplyWithConstraint<IEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars, quantifier,
+		: ComplyWithConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectations),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			IEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual is null)
@@ -118,7 +127,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			return await IsMetByItems(materialized, actual is not ICollection<TItem>,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 	}
@@ -128,16 +137,23 @@ public static partial class ThatEnumerable
 	///     <see langword="null" />.
 	/// </remarks>
 	private sealed class ComplyWithForEnumerableConstraint<TEnumerable>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Action<IThatSubject<object?>> expectations)
-		: ComplyWithConstraint<TEnumerable?, object?>(expectationBuilder, it, grammars, quantifier, expectations),
+		: ComplyWithConstraint<TEnumerable?, object?>(it, grammars, quantifier, expectations),
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private Type? _itemType;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
 
 		protected override Type ItemType => _itemType ?? typeof(object);
 
@@ -146,6 +162,7 @@ public static partial class ThatEnumerable
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual is null)
@@ -156,7 +173,7 @@ public static partial class ThatEnumerable
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			return await IsMetByItems(WithItemType(materialized), actual is not ICollection,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 
@@ -171,20 +188,29 @@ public static partial class ThatEnumerable
 	}
 
 	private sealed class ComplyWithForStructEnumerableConstraint<TEnumerable, TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
-		: ComplyWithConstraint<TEnumerable, TItem>(expectationBuilder, it, grammars, quantifier, expectations),
+		: ComplyWithConstraint<TEnumerable, TItem>(it, grammars, quantifier, expectations),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
+		private CollectionContext _collectionContext;
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+		}
+
 		public async Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			await PrepareExpectation(context, cancellationToken);
 			if (actual.IsDefaultImmutableArray())
@@ -195,7 +221,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
 			return await IsMetByItems(materialized, actual is not ICollection<TItem>,
 				() => cancellationToken.IsCanceledBeforeTheEndOf(materialized),
-				isIncomplete => ExpectationBuilder.AddCollectionContext(materialized, isIncomplete),
+				isIncomplete => _collectionContext.Set(materialized, isIncomplete),
 				context, cancellationToken);
 		}
 	}

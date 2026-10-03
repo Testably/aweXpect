@@ -14,8 +14,7 @@ namespace aweXpect.Core;
 /// <summary>
 ///     A manual expectation builder can be used for manually evaluating inner expectations.
 /// </summary>
-public class ManualExpectationBuilder<TValue>(
-	ExpectationBuilder? inner,
+public sealed class ManualExpectationBuilder<TValue>(
 	ExpectationGrammars grammars = ExpectationGrammars.None)
 	: ExpectationBuilder("", grammars),
 		IEqualityComparer<ManualExpectationBuilder<TValue>>
@@ -115,22 +114,6 @@ public class ManualExpectationBuilder<TValue>(
 		=> throw Tracing.WriteException(
 			new NotSupportedException($"Use {nameof(IsMetBy)} for ManualExpectationBuilder."));
 
-	/// <inheritdoc cref="ExpectationBuilder.UpdateContexts(Action{ResultContexts})" />
-	public override ExpectationBuilder UpdateContexts(Action<ResultContexts> callback)
-	{
-		inner?.UpdateContexts(callback);
-		base.UpdateContexts(callback);
-		return this;
-	}
-
-	/// <inheritdoc cref="ExpectationBuilder.AddContext(ResultContext)" />
-	public override ExpectationBuilder AddContext(ResultContext resultContext)
-	{
-		inner?.AddContext(resultContext);
-		base.AddContext(resultContext);
-		return this;
-	}
-
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
 	{
@@ -165,7 +148,7 @@ public class ManualExpectationBuilder<TValue>(
 	/// <summary>
 	///     Determines whether the <paramref name="other" /> object is equal to the current object.
 	/// </summary>
-	protected virtual bool Equals(ManualExpectationBuilder<TValue> other) => GetRootNode().Equals(other.GetRootNode());
+	private bool Equals(ManualExpectationBuilder<TValue> other) => GetRootNode().Equals(other.GetRootNode());
 
 	#endregion
 

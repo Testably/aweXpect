@@ -13,6 +13,7 @@ namespace aweXpect.Core.Nodes;
 internal class WhichNode<TSource, TMember> : Node
 {
 	private readonly Func<TSource, Task<TMember?>>? _asyncMemberAccessor;
+	private readonly string? _contextMember;
 	private readonly Func<TSource, TMember?>? _memberAccessor;
 	private readonly string _memberName = "it";
 	private readonly bool _negateMemberOnly;
@@ -25,8 +26,10 @@ internal class WhichNode<TSource, TMember> : Node
 		Func<TSource, TMember?> memberAccessor,
 		string? separator = null,
 		bool negateMemberOnly = false,
-		string? memberName = null)
+		string? memberName = null,
+		string? contextMember = null)
 	{
+		_contextMember = contextMember;
 		_parent = parent;
 		_memberAccessor = memberAccessor;
 		_separator = separator;
@@ -49,38 +52,8 @@ internal class WhichNode<TSource, TMember> : Node
 		=> _inner?.AddConstraint(constraint);
 
 	/// <inheritdoc />
-	public override Node AddMapping<TValue, TTarget>(MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> _inner?.AddMapping(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> _inner?.AddNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddAsyncMapping<TValue, TTarget>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		=> _inner?.AddAsyncMapping(memberAccessor, expectationTextGenerator) ?? this;
-
-	/// <inheritdoc />
-	public override Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-		=> _inner?.AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(memberAccessor, expectationTextGenerator)
-		   ?? this;
+	public override Node AddMapping(MappingNode mappingNode)
+		=> _inner?.AddMapping(mappingNode) ?? this;
 
 	/// <inheritdoc />
 	public override void AddNode(Node node, string? separator = null)
@@ -93,7 +66,7 @@ internal class WhichNode<TSource, TMember> : Node
 	/// </remarks>
 	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
 	{
-		if (_inner is OrNode or AndNode)
+		if (_inner is JunctionNode)
 		{
 			_inner = _inner.ReplaceRightMostOperand(replace);
 			return this;
@@ -238,22 +211,25 @@ internal class WhichNode<TSource, TMember> : Node
 	{
 		if (leftResult == null)
 		{
-			return separator.Length == 0
-				? rightResult
-				: PrependSeparator(rightResult, separator);
+			if (separator.Length == 0)
+			{
+				return _contextMember is null ? rightResult : rightResult.PrependExpectationText(null, _contextMember);
+			}
+
+			return PrependSeparator(rightResult, separator, _contextMember);
 		}
 
 		return new WhichConstraintResult(leftResult, rightResult, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue,
-			value, _negateMemberOnly, false);
+			value, _negateMemberOnly, false, _contextMember);
 	}
 
 	/// <remarks>
 	///     A separate method, so that the closure over the <paramref name="separator" /> is only allocated when it is
 	///     prepended, and not on every combination.
 	/// </remarks>
-	private static ConstraintResult PrependSeparator(ConstraintResult result, string separator)
-		=> result.PrependExpectationText(sb => sb.Append(separator.TrimStart()));
+	private static ConstraintResult PrependSeparator(ConstraintResult result, string separator, string? contextMember)
+		=> result.PrependExpectationText(sb => sb.Append(separator.TrimStart()), contextMember);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -267,8 +243,9 @@ internal class WhichNode<TSource, TMember> : Node
 			sb => _inner?.AppendExpectation(sb, indentation));
 	}
 
-	private sealed class WhichConstraintResult : ConstraintResult
+	private sealed class WhichConstraintResult : CombinedResult
 	{
+		private readonly string? _contextMember;
 		private readonly bool _isMemberSkipped;
 		private readonly bool _negateMemberOnly;
 		private readonly string _separator;
@@ -276,16 +253,13 @@ internal class WhichNode<TSource, TMember> : Node
 		// ReSharper disable once ReplaceWithPrimaryConstructorParameter
 		private readonly TMember? _value;
 
-		private bool _isNegated;
-		private ConstraintResult _left;
-		private ConstraintResult _right;
-		private bool _rightFailsAlsoWhenNegated;
-
 		/// <summary>
 		///     The positive expectation text of the member, which a negated result keeps, as only the left part renders
 		///     the negation.
 		/// </summary>
 		private string? _negatedRightExpectation;
+
+		private bool _rightFailsAlsoWhenNegated;
 
 		public WhichConstraintResult(ConstraintResult left,
 			ConstraintResult right,
@@ -293,92 +267,72 @@ internal class WhichNode<TSource, TMember> : Node
 			FurtherProcessingStrategy furtherProcessingStrategy,
 			TMember? value,
 			bool negateMemberOnly,
-			bool isMemberSkipped) : base(furtherProcessingStrategy)
+			bool isMemberSkipped,
+			string? contextMember = null) : base(left, right, true, furtherProcessingStrategy)
 		{
-			_left = left;
-			_right = right;
+			_contextMember = contextMember;
 			_separator = separator;
 			_value = value;
 			_negateMemberOnly = negateMemberOnly;
 			_isMemberSkipped = isMemberSkipped;
-			Outcome = isMemberSkipped ? left.Outcome : Combine(left.Outcome, right.Outcome, false);
+			Outcome = isMemberSkipped ? left.Outcome : CombineOutcomes();
 		}
-
-		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
-
-		/// <remarks>
-		///     An operand which only contributes an expectation text does not take part in the combination.
-		/// </remarks>
-		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
-		{
-			if (_left.IsExpectationOnly)
-			{
-				return right;
-			}
-
-			if (_right.IsExpectationOnly)
-			{
-				return left;
-			}
-
-			return isNegated ? Or(left, right) : And(left, right);
-		}
-
-		private static Outcome And(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Success, Outcome.Success) => Outcome.Success,
-				(_, Outcome.Failure) => Outcome.Failure,
-				(Outcome.Failure, _) => Outcome.Failure,
-				(_, _) => Outcome.Undecided,
-			};
-
-		private static Outcome Or(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
-				(_, Outcome.Success) => Outcome.Success,
-				(Outcome.Success, _) => Outcome.Success,
-				(_, _) => Outcome.Undecided,
-			};
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			_left.AppendExpectation(stringBuilder);
+			Left.AppendExpectation(stringBuilder);
 			if (_negatedRightExpectation is not null)
 			{
 				stringBuilder.Append(_negatedRightExpectation);
 				return;
 			}
 
-			stringBuilder.AppendSeparatedExpectation(_separator, _right);
+			stringBuilder.AppendSeparatedExpectation(_separator, Right);
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     Only one part explains the outcome. Under negation both parts were met, so the left part explains the
+		///     failure, unless the member failed in both cases.
+		/// </remarks>
+		protected override (bool Left, bool Right) GetExplainingParts()
+		{
+			if (IsNegated && _rightFailsAlsoWhenNegated)
+			{
+				return (false, true);
+			}
+
+			if (Left.ExplainsOutcomeOf(this))
+			{
+				return (true, false);
+			}
+
+			return (false, Right.ExplainsOutcomeOf(this));
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			// Under negation both parts were met, so the left part explains the failure, unless the member failed in
-			// both cases.
-			if (_isNegated && _rightFailsAlsoWhenNegated)
+			(bool rendersLeft, bool rendersRight) = GetExplainingParts();
+			if (rendersLeft)
 			{
-				_right.AppendResult(stringBuilder, indentation);
+				Left.AppendResult(stringBuilder, indentation);
 			}
-			else if (_left.ExplainsOutcomeOf(this))
+			else if (rendersRight)
 			{
-				_left.AppendResult(stringBuilder, indentation);
-			}
-			else if (_right.ExplainsOutcomeOf(this))
-			{
-				_right.AppendResult(stringBuilder, indentation);
+				Right.AppendResult(stringBuilder, indentation);
 			}
 		}
+
+		/// <inheritdoc />
+		protected override void VisitRight(ResultContextCollector contexts)
+			=> contexts.VisitOptionalMember(_contextMember, Right);
 
 		public override bool TryGetStoredValue<TValue>(out TValue? value)
 			where TValue : default
 		{
 			if (_isMemberSkipped)
 			{
-				return _left.TryGetStoredValue(out value);
+				return Left.TryGetStoredValue(out value);
 			}
 
 			if (_value is TValue typedValue)
@@ -387,19 +341,11 @@ internal class WhichNode<TSource, TMember> : Node
 				return true;
 			}
 
-			if (_left.TryGetStoredValue(out TValue? leftValue))
+			if (base.TryGetStoredValue(out value))
 			{
-				value = leftValue;
 				return true;
 			}
 
-			if (_right.TryGetStoredValue(out TValue? rightValue))
-			{
-				value = rightValue;
-				return true;
-			}
-
-			value = default;
 			// When neither this result nor its sub-chains carry a TValue, fall through to a
 			// type-compatibility check so chained WhichNodes can keep propagating projections
 			// even when the recorded matching value happens to be null (e.g. an outer
@@ -417,19 +363,18 @@ internal class WhichNode<TSource, TMember> : Node
 			if (_negateMemberOnly)
 			{
 				// The parent keeps its positive form, so a failed parent still fails the combination.
-				_right = _right.Negate();
-				Outcome = Combine(_left.Outcome, _right.Outcome, false);
+				Right = Right.Negate();
+				Outcome = CombineOutcomes();
 				return this;
 			}
 
-			_isNegated = !_isNegated;
-			_left = _left.Negate();
-			_negatedRightExpectation = _isNegated ? GetRightExpectation() : null;
-			Outcome rightOutcome = _right.Outcome;
-			_right = _right.Negate();
-			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && _right.Outcome == Outcome.Failure;
-			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
-			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
+			IsNegated = !IsNegated;
+			Left = Left.Negate();
+			_negatedRightExpectation = IsNegated ? GetRightExpectation() : null;
+			Outcome rightOutcome = Right.Outcome;
+			Right = Right.Negate();
+			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && Right.Outcome == Outcome.Failure;
+			Outcome = CombineOutcomes();
 			return this;
 		}
 
@@ -440,22 +385,22 @@ internal class WhichNode<TSource, TMember> : Node
 		{
 			if (_negateMemberOnly)
 			{
-				_right = _right.Negate();
+				Right = Right.Negate();
 			}
 			else
 			{
-				_left = _left.Negate();
-				_isNegated = !_isNegated;
+				Left = Left.Negate();
+				IsNegated = !IsNegated;
 			}
 
-			Outcome = _left.Outcome;
+			Outcome = Left.Outcome;
 			return this;
 		}
 
 		private string GetRightExpectation()
 		{
 			StringBuilder stringBuilder = new();
-			stringBuilder.AppendSeparatedExpectation(_separator, _right);
+			stringBuilder.AppendSeparatedExpectation(_separator, Right);
 			return stringBuilder.ToString();
 		}
 	}

@@ -32,7 +32,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasSingleConstraint<TItem>(expectationBuilder, it, grammars, options)),
+				=> new HasSingleConstraint<TItem>(it, grammars, options)),
 			options,
 			f => f.FirstOrDefault(item => options.Matches(item))
 		);
@@ -50,7 +50,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasSingleForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
+				=> new HasSingleForEnumerableConstraint<IEnumerable, object?>(it, grammars,
 					options)),
 			options,
 			f =>
@@ -70,7 +70,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasSingleForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
+				=> new HasSingleForEnumerableConstraint<ImmutableArray<TItem>, TItem>(it, grammars,
 					options)),
 			options,
 			f =>
@@ -81,21 +81,26 @@ public static partial class ThatEnumerable
 #endif
 
 	private sealed class HasSingleConstraint<TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
 		: ConstraintResult.WithValue<TItem?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
 		private IEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isEmpty;
 		private IEnumerable<TItem>? _materialized;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			_actual = actual;
 			if (actual is null)
 			{
@@ -113,7 +118,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -131,9 +136,10 @@ public static partial class ThatEnumerable
 			}
 
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
-			if (_count > 1)
+			// The single item also explains the failure of a negation, but not of a continuation on the item.
+			if (_count > 0)
 			{
-				expectationBuilder.AddCollectionContext(materialized);
+				_collectionContext.Set(materialized);
 			}
 
 			return Task.FromResult<ConstraintResult>(this);
@@ -205,23 +211,9 @@ public static partial class ThatEnumerable
 			get => _actual is null ? Outcome.Failure : base.Outcome;
 			protected set => base.Outcome = value;
 		}
-
-		public override ConstraintResult Negate()
-		{
-			base.Negate();
-			// The collection context is only added once the negation is known, as it would otherwise also appear when a
-			// continuation on the single item fails.
-			if (IsNegated && _count == 1)
-			{
-				expectationBuilder.AddCollectionContext(_materialized);
-			}
-
-			return this;
-		}
 	}
 
 	private sealed class HasSingleForEnumerableConstraint<TEnumerable, TItem>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
@@ -229,14 +221,20 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
+		private CollectionContext _collectionContext;
 		private TEnumerable? _actual;
 		private int _count;
 		private bool _isEmpty;
 		private IEnumerable? _materialized;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
 		public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			_actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -259,7 +257,7 @@ public static partial class ThatEnumerable
 				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 				{
 					Outcome = Outcome.Undecided;
-					expectationBuilder.AddCollectionContext(materialized, true);
+					_collectionContext.Set(materialized, true);
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
@@ -277,9 +275,10 @@ public static partial class ThatEnumerable
 			}
 
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
-			if (_count > 1)
+			// The single item also explains the failure of a negation, but not of a continuation on the item.
+			if (_count > 0)
 			{
-				expectationBuilder.AddCollectionContext(materialized);
+				_collectionContext.Set(materialized);
 			}
 
 			return Task.FromResult<ConstraintResult>(this);
@@ -350,19 +349,6 @@ public static partial class ThatEnumerable
 		{
 			get => _actual is null ? Outcome.Failure : base.Outcome;
 			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			base.Negate();
-			// The collection context is only added once the negation is known, as it would otherwise also appear when a
-			// continuation on the single item fails.
-			if (IsNegated && _count == 1)
-			{
-				expectationBuilder.AddCollectionContext(_materialized);
-			}
-
-			return this;
 		}
 	}
 }

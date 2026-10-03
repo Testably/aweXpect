@@ -121,12 +121,8 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	}
 
 	/// <inheritdoc />
-	internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
+	internal override async Task<Result> GetResult(int index)
 		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(), true);
-
-	/// <inheritdoc />
-	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-		=> ExpectationBuilder.GetContexts();
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
@@ -306,12 +302,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	}
 
 	/// <inheritdoc />
-	internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
+	internal override async Task<Result> GetResult(int index)
 		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(), true);
-
-	/// <inheritdoc />
-	internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
-		=> ExpectationBuilder.GetContexts();
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()

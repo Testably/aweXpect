@@ -31,7 +31,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
 					expected, options).InvertIf(negated)),
 			subject,
 			options);
@@ -51,7 +51,7 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<TCollection, TKey, TValue>(expectationBuilder, it, grammars,
+				new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
 					expected, options).InvertIf(negated)),
 			subject,
 			options);
@@ -70,14 +70,13 @@ public static partial class ThatDictionary
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainValueConstraint<TCollection, TKey, string?>(expectationBuilder, it, grammars,
+				new ContainValueConstraint<TCollection, TKey, string?>(it, grammars,
 					expected, options).InvertIf(negated)),
 			subject,
 			options);
 	}
 
 	private sealed class ContainValueConstraint<TDictionary, TKey, TValue>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		TValue expected,
@@ -92,8 +91,14 @@ public static partial class ThatDictionary
 			Outcome = actual is not null && await ContainsValue(actual, expected, options)
 				? Outcome.Success
 				: Outcome.Failure;
-			AddDictionaryContext(expectationBuilder, actual);
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

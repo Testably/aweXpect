@@ -30,20 +30,18 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			expectationBuilder.AddEquivalencyContext(equivalencyOptions);
-
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
 							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were")),
+						"were",
+						appendOptionsContexts: equalityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}
@@ -78,20 +76,18 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			expectationBuilder.AddEquivalencyContext(equivalencyOptions);
-
 			ObjectEqualityOptions<object?> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
 							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were")),
+						"were",
+						appendOptionsContexts: equalityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}
@@ -126,20 +122,18 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			expectationBuilder.AddEquivalencyContext(equivalencyOptions);
-
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
 							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						a => equalityOptions.AreConsideredEqual((TItem)a!, expected),
-						"were")),
+						"were",
+						appendOptionsContexts: equalityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}

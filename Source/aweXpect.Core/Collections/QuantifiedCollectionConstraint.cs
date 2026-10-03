@@ -14,7 +14,7 @@ namespace aweXpect;
 ///     Use it for an expectation on the elements of a collection, e.g. an extension method on
 ///     <see cref="IEnumerableElements{TItem}" />, which exposes the <see cref="EnumerableQuantifier" /> and the subject.
 ///     Pass the quantifier to the constructor, set <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in
-///     <c>IsMetBy</c>, call <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Record" /> for every item and
+///     <c>IsMetBy</c>, call <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Record(TItem, bool)" /> for every item and
 ///     <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Complete" /> afterwards. For a
 ///     <see langword="null" /> subject, only set the <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> and
 ///     return, as the expectation fails for it.
@@ -24,7 +24,6 @@ namespace aweXpect;
 /// </remarks>
 /// <typeparam name="TValue">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
-/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
 /// <param name="it">The name of the subject.</param>
 /// <param name="grammars">The grammars of the expectation.</param>
 /// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
@@ -37,13 +36,12 @@ namespace aweXpect;
 ///     The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".
 /// </param>
 public abstract class QuantifiedCollectionConstraint<TValue, TItem>(
-	ExpectationBuilder expectationBuilder,
 	string it,
 	ExpectationGrammars grammars,
 	EnumerableQuantifier quantifier,
 	Func<ExpectationGrammars, string> expectationText,
 	string verb)
-	: QuantifiedCollectionConstraintBase<TValue, TItem>(expectationBuilder, it, grammars, quantifier)
+	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
 	/// <inheritdoc />
 	protected sealed override string Verb => verb;

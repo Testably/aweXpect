@@ -33,7 +33,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
+				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -52,7 +52,7 @@ public static partial class ThatEnumerable
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
-					expectationBuilder, it, grammars, expectations, indexOptions)),
+					it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -70,7 +70,7 @@ public static partial class ThatEnumerable
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
-					expectationBuilder, it, grammars, expectations, indexOptions)),
+					it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -88,7 +88,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
+				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)
 					.Invert()),
 			subject,
 			indexOptions);
@@ -108,7 +108,7 @@ public static partial class ThatEnumerable
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
-					expectationBuilder, it, grammars, expectations, indexOptions).Invert()),
+					it, grammars, expectations, indexOptions).Invert()),
 			subject,
 			indexOptions);
 	}
@@ -126,7 +126,7 @@ public static partial class ThatEnumerable
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
-					expectationBuilder, it, grammars, expectations, indexOptions).Invert()),
+					it, grammars, expectations, indexOptions).Invert()),
 			subject,
 			indexOptions);
 	}
@@ -136,7 +136,7 @@ public static partial class ThatEnumerable
 		IAsyncContextConstraint<IEnumerable<TItem>?>,
 		IExpectationTextConstraint
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly string _it;
 		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 		private readonly CollectionIndexOptions _options;
@@ -145,18 +145,19 @@ public static partial class ThatEnumerable
 		private ConstraintResult? _unansweredItem;
 		private int _unansweredItemIndex;
 
-		public HasItemThatConstraint(ExpectationBuilder expectationBuilder,
-			string it,
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
+		public HasItemThatConstraint(string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
 			CollectionIndexOptions options) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null,
-				(Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>((Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -176,6 +177,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_unansweredItem = null;
 			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
@@ -186,7 +188,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			_expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
@@ -323,7 +325,7 @@ public static partial class ThatEnumerable
 		IExpectationTextConstraint
 		where TEnumerable : IEnumerable?
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly string _it;
 		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 		private readonly CollectionIndexOptions _options;
@@ -332,18 +334,19 @@ public static partial class ThatEnumerable
 		private ConstraintResult? _unansweredItem;
 		private int _unansweredItemIndex;
 
-		public HasItemThatForEnumerableConstraint(ExpectationBuilder expectationBuilder,
-			string it,
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _collectionContext.AppendTo(contexts);
+
+		public HasItemThatForEnumerableConstraint(string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
 			CollectionIndexOptions options) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null,
-				(Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>((Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -363,6 +366,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_unansweredItem = null;
 			if (actual.IsDefaultImmutableArray())
@@ -378,7 +382,7 @@ public static partial class ThatEnumerable
 			}
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			_expectationBuilder.AddCollectionContext(materialized);
+			_collectionContext.Set(materialized);
 			_hasIndex = false;
 			Outcome = Outcome.Failure;
 

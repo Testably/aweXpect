@@ -282,6 +282,11 @@ public class ObjectEqualityOptionsTests
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 			=> "";
 
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// The dummy adds no context.
+		}
+
 		public override string ToString() => "dummy";
 	}
 }

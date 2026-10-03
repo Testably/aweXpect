@@ -33,4 +33,12 @@ public interface IObjectMatchType
 	///     which already names the item reads <c>has item equal to 3</c>.
 	/// </remarks>
 	string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null);
+
+	/// <summary>
+	///     Adds the contexts that explain a failure of a comparison with this match type.
+	/// </summary>
+	/// <remarks>
+	///     Only called while a failure message is created.
+	/// </remarks>
+	void AppendContexts(ResultContextCollector contexts);
 }

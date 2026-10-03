@@ -32,7 +32,6 @@ public static partial class ThatDateTime
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			tolerance);
@@ -58,6 +57,10 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime actual)

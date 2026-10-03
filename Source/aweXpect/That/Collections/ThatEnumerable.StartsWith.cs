@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				StartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -84,7 +84,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.ComparesByOrdinalEquality);
-				StartsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+				StartsWithConstraint<string?, string?> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -114,7 +114,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				StartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -144,7 +144,7 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
 				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
@@ -185,7 +185,7 @@ public static partial class ThatEnumerable
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => options.HasDefaultMatchType);
 				StartsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					Formatter.Format(expectedItems), expectedItems, itemOptions, itemOptions.UseComparerOf);
 				return negated ? constraint.Invert() : constraint;
 			}),
@@ -212,7 +212,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -241,7 +241,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				StartsWithForEnumerableConstraint<TCollection, string?> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -272,7 +272,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
 				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -286,7 +286,7 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly TItem[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
@@ -297,8 +297,14 @@ public static partial class ThatEnumerable
 		private int _index;
 		private IEnumerable<TItem>? _materializedEnumerable;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
+
 		public StartsWithConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
@@ -306,7 +312,6 @@ public static partial class ThatEnumerable
 			IOptionsEquality<TMatch> options,
 			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
@@ -317,6 +322,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -342,7 +348,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(_materializedEnumerable);
+					_collectionContext.Set(_materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -354,7 +360,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			_expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_collectionContext.Set(_materializedEnumerable);
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -410,7 +416,7 @@ public static partial class ThatEnumerable
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly TMatch[] _expected;
 		private readonly string _expectedExpression;
 		private readonly string _it;
@@ -421,8 +427,14 @@ public static partial class ThatEnumerable
 		private int _index;
 		private IEnumerable? _materializedEnumerable;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
+
 		public StartsWithForEnumerableConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
@@ -430,7 +442,6 @@ public static partial class ThatEnumerable
 			IOptionsEquality<TMatch> options,
 			Func<object?, bool>? useComparerOf = null) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
@@ -441,6 +452,7 @@ public static partial class ThatEnumerable
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -471,7 +483,7 @@ public static partial class ThatEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(_materializedEnumerable);
+					_collectionContext.Set(_materializedEnumerable);
 					Outcome = Outcome.Failure;
 					return this;
 				}
@@ -483,7 +495,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			_expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_collectionContext.Set(_materializedEnumerable);
 			Outcome = Outcome.Failure;
 			return this;
 		}

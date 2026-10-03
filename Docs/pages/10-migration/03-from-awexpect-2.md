@@ -185,6 +185,14 @@ ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they
 `has an item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
 need an update.
 
+The contexts below a failure message (e.g. `Collection:`, `Expected:` or `Actual:`) belong to the part of the
+expectation they describe: they appear exactly when that part explains the failure, also after a negation, and no
+longer for a part that succeeded, e.g. the other operand of `And` or `Equivalency options` of a succeeding
+`IsEquivalentTo`. A context of a member is labelled with it, e.g. `Collection (Items):` or `Actual (S1):`, so that two
+members with the same kind of context each show their own, and a failed expectation on the items of a collection
+(`All().ComplyWith(…)`) also shows the contexts of the item that explains the failure, e.g. `Expected (item [1]):`.
+Contexts with the same title and member are shown once, or numbered when their content differs.
+
 An object that contains itself through a collection, such as a tree node that lists itself among its children, and a
 collection that contains itself are rendered as `{ *recursive* }` or `[ *recursive* ]` where they repeat, instead of
 overflowing the stack and aborting the test run. An instance that appears twice without containing itself, e.g. in two
@@ -395,8 +403,23 @@ that are not public.
 `ThatBoolSubject`, `ThatDelegateThrows<TException>` and `It.IsEquivalent<T>` no longer have a public
 `ExpectationBuilder` property; reach the builder through `IExpectThat<T>`, as for every other subject.
 
+A constraint adds its contexts in the new `ConstraintResult.AppendContexts(ResultContextCollector)`, which is only
+called while the failure message is created and only for the parts of the result that explain the failure. It replaces
+`ExpectationBuilder.AddContext(…)`, `ExpectationBuilder.UpdateContexts(…)` and the `ResultContexts` list, which are
+gone, as is the setter of `ResultContext.Title`. Move the context from `IsMetBy` into `AppendContexts` and keep the
+values it needs in the constraint, see [contexts](../11-extending/03-message-conventions.md#contexts). A context that
+was added when the expectation was built belongs to the constraint it describes. A result that wraps other results
+adds their contexts with `contexts.Visit(…)`. As the builder is no longer needed for contexts,
+`QuantifiedCollectionConstraint<TValue, TItem>` and `QuantifiedCollectionConstraintBase<TValue, TItem>` no longer take an
+`ExpectationBuilder`, and `ManualExpectationBuilder<TValue>` is sealed and no longer takes an inner builder to forward
+contexts to. `ExpectationBuilder.ForWhich(…)` takes a `contextMember` that labels the contexts of the member.
+
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.
+
+A custom `IObjectMatchType` must implement the new `AppendContexts(ResultContextCollector)`, which adds the contexts
+that explain a failed comparison, e.g. the equivalency options. Leave its body empty when the match type adds no
+context.
 
 ## New expectations
 

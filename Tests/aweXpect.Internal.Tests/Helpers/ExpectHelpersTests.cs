@@ -31,6 +31,6 @@ public class ExpectHelpersTests
 	private sealed class ThatWithExpectThat : IExpectThat<int>
 	{
 		public ExpectationBuilder ExpectationBuilder { get; }
-			= new ManualExpectationBuilder<int>(null);
+			= new ManualExpectationBuilder<int>();
 	}
 }

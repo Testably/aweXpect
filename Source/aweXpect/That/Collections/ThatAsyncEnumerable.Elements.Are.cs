@@ -21,7 +21,6 @@ public static partial class ThatAsyncEnumerable
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
@@ -41,7 +40,6 @@ public static partial class ThatAsyncEnumerable
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),

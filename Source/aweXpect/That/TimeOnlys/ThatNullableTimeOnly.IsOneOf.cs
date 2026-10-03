@@ -33,7 +33,6 @@ public static partial class ThatNullableTimeOnly
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			tolerance);
@@ -59,6 +58,10 @@ public static partial class ThatNullableTimeOnly
 		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
 			IValueConstraint<TimeOnly?>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
 			Actual = actual;

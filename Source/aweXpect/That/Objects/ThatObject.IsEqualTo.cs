@@ -120,6 +120,10 @@ public static partial class ThatObject
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncConstraint<TSubject>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -151,6 +155,10 @@ public static partial class ThatObject
 			IAsyncConstraint<T>
 		where T : struct
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -182,6 +190,10 @@ public static partial class ThatObject
 			IAsyncConstraint<T?>
 		where T : struct
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		public async Task<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;

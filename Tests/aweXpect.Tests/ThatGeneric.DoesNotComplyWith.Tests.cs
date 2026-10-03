@@ -675,9 +675,6 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is not equivalent to new { HasWaitedEnough = false, } within 0:30,
 					             but it did not finish within 0:00.050
-
-					             Equivalency options:
-					              - include public fields and properties
 					             """).And
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}

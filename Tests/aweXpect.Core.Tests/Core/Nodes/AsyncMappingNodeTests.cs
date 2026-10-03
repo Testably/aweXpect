@@ -40,9 +40,9 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task Equals_IfMemberAccessorsAreDifferent_ShouldBeFalse()
 	{
-		AsyncMappingNode<string, int> node1 = new(
+		MappingNode<string, int, int> node1 = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length1 "));
-		AsyncMappingNode<string, int> node2 = new(
+		MappingNode<string, int, int> node2 = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length2 "));
 
 		bool result = node1.Equals(node2);
@@ -54,9 +54,9 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task Equals_IfMemberAccessorsAreSame_ShouldBeTrue()
 	{
-		AsyncMappingNode<string, int> node1 = new(
+		MappingNode<string, int, int> node1 = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
-		AsyncMappingNode<string, int> node2 = new(
+		MappingNode<string, int, int> node2 = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
 
 		bool result = node1.Equals(node2);
@@ -68,9 +68,9 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
-		AsyncMappingNode<string, int> node = new(
+		MappingNode<string, int, int> node = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
-		object other = new AsyncMappingNode<int, int>(
+		object other = new MappingNode<int, int, int>(
 			MemberAccessor<int, Task<int>>.FromFunc(s => Task.FromResult(s * 2), " duplicate "));
 
 		bool result = node.Equals(other);
@@ -81,7 +81,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
-		AsyncMappingNode<string, int> node = new(
+		MappingNode<string, int, int> node = new(
 			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
 
 		bool result = node.Equals(null);
@@ -92,7 +92,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_ShouldUseInnerConstraintWithOuterValue()
 	{
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
 		node.AddConstraint(new DummyValueConstraint<int>(v
 			=> new DummyConstraintResult<int>(Outcome.Success, v, $"yeah: {v}")));
@@ -140,7 +140,7 @@ public class AsyncMappingNodeTests
 	public async Task IsMetBy_WhenMemberFaults_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(_ => Task.FromException<int>(exception), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -156,7 +156,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WhenMemberFaults_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
-		AsyncMappingNode<string, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
+		MappingNode<string, int, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
 			_ => Task.FromException<int>(new NotSupportedException("foo")), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -172,7 +172,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WhenMemberNeverCompletes_ShouldAbortOnCancellation()
 	{
-		AsyncMappingNode<string, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
+		MappingNode<string, int, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
 			_ => new TaskCompletionSource<int>().Task, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(100));
@@ -188,7 +188,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WhenMemberReturnsNullTask_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(_ => null!, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -206,7 +206,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WhenMemberReturnsNullTask_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(_ => null!, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -224,7 +224,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WithInvalidType_ShouldNotApplyTheMemberExpectations()
 	{
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 
@@ -239,7 +239,7 @@ public class AsyncMappingNodeTests
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
-		AsyncMappingNode<string?, int?> node =
+		MappingNode<string?, int?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -255,7 +255,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WithNullValue_ShouldReturnNullFailure()
 	{
-		AsyncMappingNode<string?, int?> node =
+		MappingNode<string?, int?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -271,7 +271,7 @@ public class AsyncMappingNodeTests
 	[Fact]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
-		AsyncMappingNode<string?, int?> node =
+		MappingNode<string?, int?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
@@ -338,7 +338,7 @@ public class AsyncMappingNodeTests
 			             but length did throw an InvalidOperationException:
 			               A
 
-			             Other exceptions:
+			             Other exceptions (length):
 			             [
 			               ArgumentException: B,
 			               NotSupportedException: C
@@ -404,7 +404,7 @@ public class AsyncMappingNodeTests
 		TaskCompletionSource<int> tcs = new();
 		using CancellationTokenSource safetyNet = new(30.Seconds());
 		using CancellationTokenRegistration _ = safetyNet.Token.Register(() => tcs.TrySetException(exception));
-		AsyncMappingNode<string, int> node =
+		MappingNode<string, int, int> node =
 			new(MemberAccessor<string, Task<int>>.FromFunc(_ => tcs.Task, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		using CancellationTokenSource cts = new(50.Milliseconds());

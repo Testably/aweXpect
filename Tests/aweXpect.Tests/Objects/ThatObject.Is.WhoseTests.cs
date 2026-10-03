@@ -279,7 +279,7 @@ public sealed partial class ThatObject
 					             is of type Outer whose Item is of type Derived,
 					             but Item was OtherDerived
 
-					             Actual:
+					             Actual (Item):
 					             OtherDerived { }
 					             """);
 			}

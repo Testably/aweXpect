@@ -25,7 +25,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<string?>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -51,7 +50,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -77,7 +75,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -103,7 +100,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -129,7 +125,6 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder,
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),

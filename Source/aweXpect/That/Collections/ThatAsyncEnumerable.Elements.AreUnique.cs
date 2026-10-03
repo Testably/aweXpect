@@ -75,7 +75,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, string?>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
@@ -95,13 +95,14 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -115,7 +116,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<string?, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -187,12 +188,13 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -207,13 +209,14 @@ public static partial class ThatAsyncEnumerable
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, TMember>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						appendOptionsContexts: options.AppendContexts)),
 				_subject,
 				options);
 		}
@@ -227,7 +230,7 @@ public static partial class ThatAsyncEnumerable
 			return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueConstraint<TItem, string>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
@@ -240,23 +243,26 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class AreUniqueConstraint<TItem, TMember>(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-		bool expectUnique)
-		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars,
+		bool expectUnique,
+		Action<ResultContextCollector>? appendOptionsContexts = null)
+		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars,
 				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
+		private CollectionContext _collectionContext;
+
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			if (actual is null)
 			{
@@ -275,7 +281,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					RecordAll(items, occurrences);
 					CompleteEarly();
-					ExpectationBuilder.AddCollectionContext(items.ConvertAll(x => x.Item), true);
+					_collectionContext.Set(items.ConvertAll(x => x.Item), true);
 					return this;
 				}
 			}
@@ -284,14 +290,22 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 			{
 				Outcome = Outcome.Undecided;
-				ExpectationBuilder.AddCollectionContext(collection, true);
+				_collectionContext.Set(collection, true);
 				return this;
 			}
 
 			RecordAll(items, occurrences);
 			Complete();
-			ExpectationBuilder.AddCollectionContext(collection);
+			_collectionContext.Set(collection);
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
 		}
 
 		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)

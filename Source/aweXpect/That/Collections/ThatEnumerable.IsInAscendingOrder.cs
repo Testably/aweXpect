@@ -255,7 +255,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				IsInOrderConstraint<TItem, TMember> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					memberAccessor,
 					sortOrder,
 					options,
@@ -298,7 +298,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				IsInOrderForEnumerableConstraint<IEnumerable, object?, TMember> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					memberAccessor,
 					sortOrder,
 					options,
@@ -326,7 +326,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				IsInOrderForEnumerableConstraint<TCollection, TItem, TMember> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					memberAccessor,
 					sortOrder,
 					options,

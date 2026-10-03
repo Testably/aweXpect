@@ -612,22 +612,19 @@ public sealed partial class ThatException
 					=> await That(subject).HasMessage().StartingWith("outer").And.HasParamName("other");
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has message starting with "outer" and has param name equal to "other",
-					              but it had param name "paramName", which differs at index 0:
-					                 ↓ (actual)
-					                "paramName"
-					                "other"
-					                 ↑ (expected)
+					.WithMessage("""
+					             Expected that subject
+					             has message starting with "outer" and has param name equal to "other",
+					             but it had param name "paramName", which differs at index 0:
+					                ↓ (actual)
+					               "paramName"
+					               "other"
+					                ↑ (expected)
 
-					              Message:
-					              {subject.Message}
-
-					              Param name:
-					              paramName
-					              """)
-					.Because("the framework appends the param name to the message in its own format");
+					             Param name:
+					             paramName
+					             """)
+					.Because("the message was met, so it does not explain the failure");
 			}
 
 			[Fact]

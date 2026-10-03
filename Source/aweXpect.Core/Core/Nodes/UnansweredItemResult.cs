@@ -84,6 +84,13 @@ internal sealed class UnansweredItemResult : ConstraintResult
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The constraint describes what it evaluated until the item was not answered.
+	/// </remarks>
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> contexts.Visit(_inner);
+
+	/// <inheritdoc />
 	public override ConstraintResult Negate()
 	{
 		_inner.Negate();

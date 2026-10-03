@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -17,21 +18,25 @@ namespace aweXpect;
 ///     verb in the result are only known while the failure message is created, e.g. because they come from nested
 ///     expectations.
 ///     <para />
-///     Set <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in <c>IsMetBy</c>, call <see cref="Record" /> for
-///     every item and <see cref="Complete" /> afterwards, or <see cref="CompleteEarly" /> as soon as
-///     <see cref="IsDetermined" />. For a <see langword="null" /> subject, only set the
+///     Set <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in <c>IsMetBy</c>, call
+///     <see cref="Record(TItem, bool)" /> for every item, or <see cref="Record(TItem, ConstraintResult)" /> when the items
+///     are verified by nested expectations, and <see cref="Complete" /> afterwards, or <see cref="CompleteEarly" /> as
+///     soon as <see cref="IsDetermined" />. For a <see langword="null" /> subject, only set the
 ///     <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> and return, as the expectation fails for it.
 ///     <para />
 ///     The base class renders the expectation and the result for the normal, the negated and the nested case (e.g.
 ///     "has values of which at least 2 are …") like the built-in expectations and adds the matching or not matching
-///     items as context, as far as the quantifier requires them.
+///     items as context, as far as the quantifier requires them, together with the contexts of the first such item.
 /// </remarks>
 /// <typeparam name="TValue">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
 public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	: ConstraintResult.WithNotNullValue<TValue>
 {
+	private ItemContexts _firstMatchingItem;
+	private ItemContexts _firstNotMatchingItem;
 	private bool _isCompleted;
+	private bool _isIncomplete;
 	private int _matchingCount;
 	private LimitedCollection<TItem>? _matchingItems;
 	private int _notMatchingCount;
@@ -41,25 +46,17 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// <summary>
 	///     Initializes the constraint.
 	/// </summary>
-	/// <param name="expectationBuilder">The <see cref="ExpectationBuilder" /> of the expectation.</param>
 	/// <param name="it">The name of the subject.</param>
 	/// <param name="grammars">The grammars of the expectation.</param>
 	/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
 	protected QuantifiedCollectionConstraintBase(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier)
 		: base(it, grammars)
 	{
-		ExpectationBuilder = expectationBuilder;
 		Quantifier = quantifier;
 	}
-
-	/// <summary>
-	///     The <see cref="ExpectationBuilder" /> of the expectation.
-	/// </summary>
-	protected ExpectationBuilder ExpectationBuilder { get; }
 
 	/// <summary>
 	///     The quantifier for the items.
@@ -124,7 +121,32 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	}
 
 	/// <summary>
-	///     Determines the outcome from the recorded items and adds the contexts required by the quantifier.
+	///     Records whether the <paramref name="item" /> matches the expectations on the items, which led to the
+	///     <paramref name="itemResult" />.
+	/// </summary>
+	/// <remarks>
+	///     The contexts of the first matching and of the first not matching item are kept, so that the failure message
+	///     shows those of the item that explains it, labelled with its index, e.g. <c>Actual (item [2]):</c>.
+	/// </remarks>
+	protected void Record(TItem item, ConstraintResult itemResult)
+	{
+		bool isMatch = itemResult.Outcome == Outcome.Success;
+		Record(item, isMatch);
+		int index = _matchingCount + _notMatchingCount - 1;
+		if (isMatch)
+		{
+			_firstMatchingItem.KeepFirst(itemResult, index,
+				CouldShow(EnumerableQuantifier.QuantifierContexts.MatchingItems));
+		}
+		else
+		{
+			_firstNotMatchingItem.KeepFirst(itemResult, index,
+				CouldShow(EnumerableQuantifier.QuantifierContexts.NotMatchingItems));
+		}
+	}
+
+	/// <summary>
+	///     Determines the outcome from the recorded items.
 	/// </summary>
 	protected void Complete()
 		=> DetermineOutcome(false);
@@ -135,6 +157,42 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// </summary>
 	protected void CompleteEarly()
 		=> DetermineOutcome(true);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     Adds the matching or the not matching items, as far as the quantifier requires them.
+	/// </remarks>
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (!_isCompleted)
+		{
+			return;
+		}
+
+		bool isIncomplete = _isIncomplete;
+		int matchingCount = _matchingCount;
+		int notMatchingCount = _notMatchingCount;
+		TValue? actual = Actual;
+		EnumerableQuantifier.QuantifierContexts shown = Grammars.IsNegated()
+			? Quantifier.GetNegatedQuantifierContext()
+			: Quantifier.GetQuantifierContext();
+		contexts.AddQuantifierContexts(Quantifier, shown,
+			_matchingItems is { Count: > 0, } matchingItems
+				? () => matchingItems.Format(actual, ItemType, matchingCount).AppendIsIncomplete(isIncomplete)
+				: null,
+			_notMatchingItems is { Count: > 0, } notMatchingItems
+				? () => notMatchingItems.Format(actual, ItemType, notMatchingCount).AppendIsIncomplete(isIncomplete)
+				: null);
+		if (shown.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems))
+		{
+			_firstNotMatchingItem.AppendTo(contexts);
+		}
+
+		if (shown.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems))
+		{
+			_firstMatchingItem.AppendTo(contexts);
+		}
+	}
 
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -166,21 +224,54 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
 		Outcome = Quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
-		ExpectationBuilder.AddQuantifierContexts(this, Quantifier,
-			_matchingItems is { Count: > 0, } matchingItems
-				? () => matchingItems.Format(Actual, ItemType, _matchingCount).AppendIsIncomplete(isIncomplete)
-				: null,
-			_notMatchingItems is { Count: > 0, } notMatchingItems
-				? () => notMatchingItems.Format(Actual, ItemType, _notMatchingCount).AppendIsIncomplete(isIncomplete)
-				: null);
+		_isIncomplete = isIncomplete;
 	}
+
+	/// <summary>
+	///     Whether the items are shown as context, for the expectation or its negation, which is only known when the
+	///     failure message is created.
+	/// </summary>
+	private bool CouldShow(EnumerableQuantifier.QuantifierContexts items)
+		=> (Quantifier.GetQuantifierContext() | Quantifier.GetNegatedQuantifierContext()).HasFlag(items);
 
 	private void Reset()
 	{
+		_firstMatchingItem = default;
+		_firstNotMatchingItem = default;
 		_isCompleted = false;
 		_matchingCount = 0;
 		_notMatchingCount = 0;
 		_matchingItems = null;
 		_notMatchingItems = null;
+	}
+
+	/// <summary>
+	///     The contexts of the first item of a kind and its index.
+	/// </summary>
+	private struct ItemContexts
+	{
+		private IReadOnlyList<ResultContextCollector.Entry>? _contexts;
+		private int _index;
+		private bool _isKept;
+
+		public void KeepFirst(ConstraintResult itemResult, int index, bool couldBeShown)
+		{
+			if (_isKept || !couldBeShown)
+			{
+				return;
+			}
+
+			_isKept = true;
+			_index = index;
+			_contexts = ResultContextCollector.Capture(itemResult);
+		}
+
+		public readonly void AppendTo(ResultContextCollector contexts)
+		{
+			if (_contexts is not null)
+			{
+				contexts.AddCaptured($"[{_index}]", _contexts);
+			}
+		}
 	}
 }

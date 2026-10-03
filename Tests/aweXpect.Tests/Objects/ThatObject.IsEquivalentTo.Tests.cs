@@ -31,6 +31,33 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task ChainedWithAnd_WhenOnlyTheOtherPartFails_ShouldNotShowTheEquivalencyOptions()
+			{
+				OuterClass subject = new()
+				{
+					Value = "Foo",
+				};
+				OuterClass expected = new()
+				{
+					Value = "Foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected).And.Whose(x => x.Value, value => value.IsEqualTo("Bar"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to expected and whose Value is equal to "Bar",
+					             but Value was "Foo", which differs at index 0:
+					                ↓ (actual)
+					               "Foo"
+					               "Bar"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Fact]
 			public async Task ChainedWithAnd_WhenBothFail_ShouldIncludeEachFailureOnce()
 			{
 				OuterClass subject = new();

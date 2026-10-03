@@ -378,9 +378,6 @@ public sealed partial class ThatException
 						             does not have an inner ThatException.CustomException whose message is equal to "inner",
 						             but it had an inner ThatException.CustomException:
 						               inner
-						             
-						             Message:
-						             inner
 						             """);
 				}
 

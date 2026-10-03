@@ -26,8 +26,8 @@ public static partial class ThatGeneric
 		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((expectationBuilder, _, grammars) =>
-					new CompliesWithConstraint<T>(expectationBuilder, grammars, expectations, options)),
+				.AddConstraint((_, grammars) =>
+					new CompliesWithConstraint<T>(grammars, expectations, options)),
 			subject,
 			options);
 	}
@@ -45,8 +45,8 @@ public static partial class ThatGeneric
 		expectations.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((expectationBuilder, _, grammars) =>
-					new CompliesWithConstraint<T>(expectationBuilder, grammars, expectations, options).Invert()),
+				.AddConstraint((_, grammars) =>
+					new CompliesWithConstraint<T>(grammars, expectations, options).Invert()),
 			subject,
 			options);
 	}
@@ -61,12 +61,12 @@ public static partial class ThatGeneric
 		private bool _isNegated;
 		private ConstraintResult? _negatedResult;
 
-		public CompliesWithConstraint(ExpectationBuilder expectationBuilder, ExpectationGrammars grammars,
+		public CompliesWithConstraint(ExpectationGrammars grammars,
 			Action<IThatSubject<T>> expectations, RepeatedCheckOptions options)
 			: base(grammars)
 		{
 			_options = options;
-			_itemExpectationBuilder = new ManualExpectationBuilder<T>(expectationBuilder, grammars);
+			_itemExpectationBuilder = new ManualExpectationBuilder<T>(grammars);
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
 		}
 

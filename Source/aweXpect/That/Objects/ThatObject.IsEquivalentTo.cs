@@ -29,8 +29,6 @@ public static partial class ThatObject
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		expectationBuilder.AddEquivalencyContext(equivalencyOptions);
-
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
@@ -69,8 +67,6 @@ public static partial class ThatObject
 		{
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
-
-		expectationBuilder.AddEquivalencyContext(equivalencyOptions);
 
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);

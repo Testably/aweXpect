@@ -9,32 +9,85 @@ using aweXpect.Core.Sources;
 
 namespace aweXpect.Core.Nodes;
 
-internal class MappingNode<TSource, TTarget> : ExpectationNode
+/// <summary>
+///     A node that maps the value to one of its members and applies the expectations on the member to it.
+/// </summary>
+internal abstract class MappingNode : ExpectationNode
 {
-	private readonly Action<MemberAccessor<TSource, TTarget>, StringBuilder>
-		_expectationTextGenerator;
-
-	private readonly MemberAccessor<TSource, TTarget> _memberAccessor;
-
-	public MappingNode(MemberAccessor<TSource, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-	{
-		_memberAccessor = memberAccessor;
-		if (expectationTextGenerator == null)
-		{
-			_expectationTextGenerator = DefaultExpectationTextGenerator;
-		}
-		else
-		{
-			_expectationTextGenerator = expectationTextGenerator;
-		}
-	}
+	/// <summary>
+	///     The accessor of the member.
+	/// </summary>
+	public abstract MemberAccessor MemberAccessor { get; }
 
 	/// <summary>
 	///     The name and the grammars of the subject the member is accessed on, which the result names when it is
 	///     <see langword="null" />.
 	/// </summary>
 	public (string It, ExpectationGrammars Grammars) Source { get; set; } = ("it", ExpectationGrammars.None);
+
+	/// <summary>
+	///     The name of the member, when the result text refers to the member by it, so that its contexts are labelled
+	///     with it.
+	/// </summary>
+	public string? ContextMember { get; set; }
+
+	/// <summary>
+	///     Combines the <paramref name="result" /> of the expectations on the member with the
+	///     <paramref name="combinedResult" /> of the expectations on the value, if any.
+	/// </summary>
+	internal abstract ConstraintResult CombineResults(ConstraintResult? combinedResult, ConstraintResult result);
+}
+
+/// <summary>
+///     A <see cref="MappingNode" /> for the member of type <typeparamref name="TTarget" />, which is accessed directly
+///     or awaited, and whose expectations are typed at <typeparamref name="TNarrowed" />.
+/// </summary>
+/// <remarks>
+///     When <typeparamref name="TNarrowed" /> is narrower than <typeparamref name="TTarget" />, the expectations are
+///     not applied to a member with a different runtime type, because the expectation which narrowed the type already
+///     reports the mismatch.
+/// </remarks>
+internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
+{
+	private readonly Action<StringBuilder> _appendMemberText;
+	private readonly MemberAccessor<TSource, Task<TTarget>>? _asyncMemberAccessor;
+	private readonly MemberAccessor<TSource, TTarget>? _memberAccessor;
+
+	/// <summary>
+	///     Maps to the member that the <paramref name="memberAccessor" /> accesses.
+	/// </summary>
+	public MappingNode(MemberAccessor<TSource, TTarget> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
+	{
+		_memberAccessor = memberAccessor;
+		MemberAccessor = memberAccessor;
+		_appendMemberText = CreateMemberText(memberAccessor, expectationTextGenerator);
+	}
+
+	/// <summary>
+	///     Maps to the member that the <paramref name="asyncMemberAccessor" /> accesses and that is awaited.
+	/// </summary>
+	public MappingNode(MemberAccessor<TSource, Task<TTarget>> asyncMemberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
+	{
+		_asyncMemberAccessor = asyncMemberAccessor;
+		MemberAccessor = asyncMemberAccessor;
+		_appendMemberText = CreateMemberText(asyncMemberAccessor, expectationTextGenerator);
+	}
+
+	/// <inheritdoc />
+	public override MemberAccessor MemberAccessor { get; }
+
+	private static Action<StringBuilder> CreateMemberText(MemberAccessor memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
+	{
+		if (expectationTextGenerator is null)
+		{
+			return stringBuilder => stringBuilder.Append(memberAccessor);
+		}
+
+		return stringBuilder => expectationTextGenerator(memberAccessor, stringBuilder);
+	}
 
 	/// <inheritdoc />
 	public override async Task<ConstraintResult> IsMetBy<TValue>(
@@ -53,26 +106,45 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 			return NullSubjectResult.Create(result, value, Source.It, Source.Grammars);
 		}
 
-		if (value is TSource typedValue)
+		if (value is not TSource typedValue)
 		{
-			TTarget matchingValue;
-			try
-			{
-				matchingValue = _memberAccessor.AccessMember(typedValue);
-			}
-			catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
-			{
-				ConstraintResult result = await GetExpectationResult(context, cancellationToken);
-				return MemberExceptionResult.Create(result, exception, _memberAccessor.ToString().Trim(), value);
-			}
-
-			ConstraintResult memberResult = await IsMetByMember(matchingValue, context, cancellationToken);
-			return memberResult.UseValue(value);
+			// The value only has another type after a failed type check (e.g. `Is<T>()`), which reports the mismatch.
+			ConstraintResult expectationResult = await GetExpectationResult(context, cancellationToken);
+			return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
 		}
 
-		// The value only has another type after a failed type check (e.g. `Is<T>()`), which reports the mismatch.
-		ConstraintResult expectationResult = await GetExpectationResult(context, cancellationToken);
-		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+		TTarget member = default!;
+		Task<TTarget>? memberTask = null;
+		try
+		{
+			if (_asyncMemberAccessor is null)
+			{
+				member = _memberAccessor!.AccessMember(typedValue);
+			}
+			else
+			{
+				memberTask = _asyncMemberAccessor.AccessMember(typedValue);
+				if (memberTask is not null)
+				{
+					member = await memberTask.AbandonOnCancellation(cancellationToken);
+				}
+			}
+		}
+		catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
+		{
+			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
+			return MemberExceptionResult.Create(result, exception, MemberAccessor.ToString().Trim(), value,
+				memberTask?.GetOtherExceptions(exception));
+		}
+
+		if (_asyncMemberAccessor is not null && memberTask is null)
+		{
+			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
+			return NullSubjectResult.CreateForNullTask(result, MemberAccessor.ToString().Trim(), value);
+		}
+
+		ConstraintResult memberResult = await IsMetByMember(member, context, cancellationToken);
+		return memberResult.UseValue(value);
 	}
 
 	/// <inheritdoc />
@@ -86,26 +158,32 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
 		StringBuilder separator = new();
-		_expectationTextGenerator(_memberAccessor, separator);
-		stringBuilder.AppendSeparatedExpectation(separator.ToString(), sb => AppendMemberExpectation(sb, indentation));
+		_appendMemberText(separator);
+		stringBuilder.AppendSeparatedExpectation(separator.ToString(),
+			sb => base.AppendExpectation(sb, indentation));
 	}
-
-	/// <summary>
-	///     Appends the expectations on the member, without the text for the member itself.
-	/// </summary>
-	/// <remarks>
-	///     Results flowing through <see cref="CombineResults" /> already get the member text prepended there.
-	/// </remarks>
-	protected void AppendMemberExpectation(StringBuilder stringBuilder, string? indentation)
-		=> base.AppendExpectation(stringBuilder, indentation);
 
 	/// <summary>
 	///     Verifies if the <paramref name="value" /> of the member satisfies the expectations of the node.
 	/// </summary>
-	protected virtual Task<ConstraintResult> IsMetByMember(TTarget? value,
+	private async Task<ConstraintResult> IsMetByMember(TTarget? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> IsMetByExpectations(value, context, cancellationToken);
+	{
+		if (value is TNarrowed narrowedValue)
+		{
+			return await base.IsMetBy(narrowedValue, context, cancellationToken);
+		}
+
+		if (value is null)
+		{
+			return await base.IsMetBy<TNarrowed>(default, context, cancellationToken);
+		}
+
+		ConstraintResult expectationResult = await base.IsMetBy<TNarrowed>(default,
+			ExpectationTextEvaluationContext.For(context), cancellationToken);
+		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+	}
 
 	/// <summary>
 	///     Returns the expectations on the member, without evaluating them, for when the member value is not available.
@@ -114,187 +192,21 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		CancellationToken cancellationToken)
 		=> IsMetByMember(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
 
-	/// <summary>
-	///     Verifies if the <paramref name="value" /> satisfies the expectations of the node, without accessing the member.
-	/// </summary>
-	protected Task<ConstraintResult> IsMetByExpectations<TValue>(TValue? value,
-		IEvaluationContext context,
-		CancellationToken cancellationToken)
-		=> base.IsMetBy(value, context, cancellationToken);
-
 	/// <inheritdoc cref="object.Equals(object?)" />
-	public override bool Equals(object? obj) => obj is MappingNode<TSource, TTarget> other && Equals(other);
-
-	private bool Equals(MappingNode<TSource, TTarget> other) => _memberAccessor.Equals(other._memberAccessor);
+	public override bool Equals(object? obj)
+		=> obj is MappingNode<TSource, TTarget, TNarrowed> other && MemberAccessor.Equals(other.MemberAccessor);
 
 	/// <inheritdoc cref="object.GetHashCode()" />
-	public override int GetHashCode() => _memberAccessor.GetHashCode();
+	public override int GetHashCode() => MemberAccessor.GetHashCode();
 
-
-	internal ConstraintResult CombineResults(
-		ConstraintResult? combinedResult,
-		ConstraintResult result)
+	/// <inheritdoc />
+	internal override ConstraintResult CombineResults(ConstraintResult? combinedResult, ConstraintResult result)
 	{
 		if (combinedResult == null)
 		{
-			return result.PrependExpectationText(e => _expectationTextGenerator(_memberAccessor, e));
+			return result.PrependExpectationText(_appendMemberText, ContextMember);
 		}
 
-		return new MappingConstraintResult(combinedResult, result, _expectationTextGenerator, _memberAccessor);
-	}
-
-	private static void DefaultExpectationTextGenerator(
-		MemberAccessor<TSource, TTarget> memberAccessor,
-		StringBuilder expectation)
-		=> expectation.Append(memberAccessor);
-
-	private sealed class MappingConstraintResult : ConstraintResult
-	{
-		private readonly Action<MemberAccessor<TSource, TTarget>, StringBuilder>? _expectationTextGenerator;
-		private readonly ConstraintResult _left;
-		private readonly MemberAccessor<TSource, TTarget> _memberAccessor;
-		private readonly ConstraintResult _right;
-		private bool _isNegated;
-		private bool _rightFailsAlsoWhenNegated;
-
-		/// <summary>
-		///     The positive expectation text of the member, which a negated result keeps, as only the left part renders
-		///     the negation.
-		/// </summary>
-		private string? _negatedRightExpectation;
-
-		public MappingConstraintResult(ConstraintResult left,
-			ConstraintResult right,
-			Action<MemberAccessor<TSource, TTarget>, StringBuilder>? expectationTextGenerator,
-			MemberAccessor<TSource, TTarget> memberAccessor) : base(FurtherProcessingStrategy.Continue)
-		{
-			_left = left;
-			_right = right;
-			_expectationTextGenerator = expectationTextGenerator;
-			_memberAccessor = memberAccessor;
-			Outcome = Combine(left.Outcome, right.Outcome, false);
-		}
-
-		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
-
-		/// <remarks>
-		///     An operand which only contributes an expectation text does not take part in the combination.
-		/// </remarks>
-		private Outcome Combine(Outcome left, Outcome right, bool isNegated)
-		{
-			if (_left.IsExpectationOnly)
-			{
-				return right;
-			}
-
-			if (_right.IsExpectationOnly)
-			{
-				return left;
-			}
-
-			return isNegated ? Or(left, right) : And(left, right);
-		}
-
-		private static Outcome And(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Success, Outcome.Success) => Outcome.Success,
-				(_, Outcome.Failure) => Outcome.Failure,
-				(Outcome.Failure, _) => Outcome.Failure,
-				(_, _) => Outcome.Undecided,
-			};
-
-		private static Outcome Or(Outcome left, Outcome right)
-			=> (left, right) switch
-			{
-				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
-				(_, Outcome.Success) => Outcome.Success,
-				(Outcome.Success, _) => Outcome.Success,
-				(_, _) => Outcome.Undecided,
-			};
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			_left.AppendExpectation(stringBuilder);
-			if (_negatedRightExpectation is not null)
-			{
-				stringBuilder.Append(_negatedRightExpectation);
-				return;
-			}
-
-			AppendRightExpectation(stringBuilder);
-		}
-
-		private void AppendRightExpectation(StringBuilder stringBuilder)
-		{
-			StringBuilder separator = new();
-			_expectationTextGenerator?.Invoke(_memberAccessor, separator);
-			stringBuilder.AppendSeparatedExpectation(separator.ToString(), _right);
-		}
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			bool rendersLeft = _left.ExplainsOutcomeOf(this);
-			// Under negation both parts were met, so the left part explains the failure, unless the member failed in
-			// both cases.
-			bool rendersRight = _right.ExplainsOutcomeOf(this) &&
-			                    (!_isNegated || _rightFailsAlsoWhenNegated || !rendersLeft);
-			if (rendersLeft)
-			{
-				int leftStart = stringBuilder.Length;
-				_left.AppendResult(stringBuilder, indentation);
-				if (rendersRight &&
-				    _left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue &&
-				    !_left.HasSameResultTextAs(_right))
-				{
-					stringBuilder.AppendAndSeparator(leftStart, indentation);
-					_right.AppendResult(stringBuilder, indentation);
-				}
-			}
-			else if (rendersRight)
-			{
-				_right.AppendResult(stringBuilder, indentation);
-			}
-		}
-
-		public override bool TryGetStoredValue<TValue>(out TValue? value)
-			where TValue : default
-		{
-			if (_left.TryGetStoredValue(out TValue? leftValue))
-			{
-				value = leftValue;
-				return true;
-			}
-
-			if (_right.TryGetStoredValue(out TValue? rightValue))
-			{
-				value = rightValue;
-				return true;
-			}
-
-			value = default;
-			return false;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			_left.Negate();
-			_negatedRightExpectation = _isNegated ? GetRightExpectation() : null;
-			Outcome rightOutcome = _right.Outcome;
-			_right.Negate();
-			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && _right.Outcome == Outcome.Failure;
-			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
-			Outcome = Combine(_left.Outcome, _right.Outcome, _isNegated);
-			return this;
-		}
-
-		private string GetRightExpectation()
-		{
-			StringBuilder stringBuilder = new();
-			AppendRightExpectation(stringBuilder);
-			return stringBuilder.ToString();
-		}
+		return new MappingResult(combinedResult, result, _appendMemberText, ContextMember);
 	}
 }

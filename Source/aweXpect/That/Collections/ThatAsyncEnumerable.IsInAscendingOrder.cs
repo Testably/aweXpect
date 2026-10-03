@@ -141,7 +141,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
 				IsInOrderConstraint<TItem, TMember> constraint = new(
-					expectationBuilder, it, grammars,
+					it, grammars,
 					memberAccessor, sortOrder, options, memberExpression,
 					createIncompatibilityCheck?.Invoke(options));
 				return isNegated ? constraint.Invert() : constraint;

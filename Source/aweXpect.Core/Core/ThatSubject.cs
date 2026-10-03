@@ -18,9 +18,8 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 	[GuaranteesNotNull]
 	public AndOrWhoseResult<TType, IThatSubject<T>> Is<TType>()
 	{
-		ExpectationBuilder builder = ExpectationBuilder;
-		return new(builder.AddConstraint((it, grammars)
-				=> new IsOfTypeConstraint<T, TType>(builder, it, grammars)),
+		return new(ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsOfTypeConstraint<T, TType>(it, grammars)),
 			this);
 	}
 
@@ -28,9 +27,8 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 	[GuaranteesNotNull]
 	public AndOrResult<T, IThatSubject<T>> IsNot<TType>()
 	{
-		ExpectationBuilder builder = ExpectationBuilder;
-		return new(builder.AddConstraint((it, grammars)
-				=> new IsOfTypeConstraint<T, TType>(builder, it, grammars).Invert()),
+		return new(ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsOfTypeConstraint<T, TType>(it, grammars).Invert()),
 			this);
 	}
 
@@ -38,9 +36,8 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 	[GuaranteesNotNull]
 	public AndOrWhoseResult<TType, IThatSubject<T>> IsExactly<TType>()
 	{
-		ExpectationBuilder builder = ExpectationBuilder;
-		return new(builder.AddConstraint((it, grammars)
-				=> new IsExactlyOfTypeConstraint<T, TType>(builder, it, grammars)),
+		return new(ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsExactlyOfTypeConstraint<T, TType>(it, grammars)),
 			this);
 	}
 
@@ -48,9 +45,8 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 	[GuaranteesNotNull]
 	public AndOrResult<T, IThatSubject<T>> IsNotExactly<TType>()
 	{
-		ExpectationBuilder builder = ExpectationBuilder;
-		return new(builder.AddConstraint((it, grammars)
-				=> new IsExactlyOfTypeConstraint<T, TType>(builder, it, grammars).Invert()),
+		return new(ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsExactlyOfTypeConstraint<T, TType>(it, grammars).Invert()),
 			this);
 	}
 }

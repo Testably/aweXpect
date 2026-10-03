@@ -20,7 +20,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
@@ -39,7 +39,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
@@ -60,7 +60,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
@@ -79,7 +79,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
@@ -100,7 +100,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
@@ -119,7 +119,7 @@ public static partial class ThatEnumerable
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
-						expectationBuilder, it, grammars,
+						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),

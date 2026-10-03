@@ -14,45 +14,9 @@ internal class DummyNode(string name, Func<ConstraintResult>? result = null) : N
 	public override void AddConstraint(IConstraint constraint)
 		=> throw new NotSupportedException();
 
-	public override Node AddMapping<TValue, TTarget>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
+	public override Node AddMapping(MappingNode mappingNode)
 	{
-		MappingMemberAccessor = memberAccessor;
-		return this;
-	}
-
-	public override Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-	{
-		MappingMemberAccessor = memberAccessor;
-		return this;
-	}
-
-	public override Node AddAsyncMapping<TValue, TTarget>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-	{
-		MappingMemberAccessor = memberAccessor;
-		return this;
-	}
-
-	public override Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-	{
-		MappingMemberAccessor = memberAccessor;
+		MappingMemberAccessor = mappingNode.MemberAccessor;
 		return this;
 	}
 

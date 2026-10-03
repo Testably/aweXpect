@@ -47,9 +47,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an expectation on the inner exceptions requires at least one of them");
 			}
@@ -68,9 +65,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which all are equal to Exception: inner,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """);
 			}
 
@@ -87,9 +81,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which all are unique,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """);
 			}
 
@@ -106,9 +97,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which at most 2 satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
@@ -126,9 +114,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which all have message equal to "inner",
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """);
 			}
 
@@ -145,9 +130,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions that have exactly 0 items,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("the existence of an inner exception is required before the count is checked");
 			}
@@ -165,9 +147,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which none satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
@@ -196,9 +175,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}
@@ -216,9 +192,6 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has recursive inner exceptions of which none satisfy _ => true,
 					             but it had no inner exceptions
-
-					             Collection:
-					             []
 					             """)
 					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}

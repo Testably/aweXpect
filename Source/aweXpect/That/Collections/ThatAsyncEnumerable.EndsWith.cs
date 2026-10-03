@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
 			{
-				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -71,7 +71,7 @@ public static partial class ThatAsyncEnumerable
 			TTolerance>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
 			{
-				EndsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -98,7 +98,7 @@ public static partial class ThatAsyncEnumerable
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
 			{
-				EndsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+				EndsWithConstraint<string?, string?> constraint = new(it, grammars,
 					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues),
 					expectedValues.ToArray(), options);
 				return negated ? constraint.Invert() : constraint;
@@ -112,7 +112,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 		where TItem : TMatch
 	{
-		private readonly ExpectationBuilder _expectationBuilder;
+		private CollectionContext _collectionContext;
 		private readonly TItem[] _expected;
 		private readonly string _expectedExpression;
 		private readonly List<TItem> _foundValues = [];
@@ -124,15 +124,20 @@ public static partial class ThatAsyncEnumerable
 		private int _itemsCount;
 		private int _offset;
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			_collectionContext.AppendTo(contexts);
+			contexts.AddOptionsContexts(_options);
+		}
+
 		public EndsWithConstraint(
-			ExpectationBuilder expectationBuilder,
 			string it,
 			ExpectationGrammars grammars,
 			string expectedExpression,
 			TItem[] expected,
 			IOptionsEquality<TMatch> options) : base(it, grammars)
 		{
-			_expectationBuilder = expectationBuilder;
 			_it = it;
 			_expectedExpression = expectedExpression;
 			_expected = expected;
@@ -142,6 +147,7 @@ public static partial class ThatAsyncEnumerable
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			_collectionContext = default;
 			Actual = actual;
 			_foundValues.Clear();
 			_foundMismatch = false;
@@ -178,7 +184,7 @@ public static partial class ThatAsyncEnumerable
 			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
 			{
 				Outcome = Outcome.Undecided;
-				_expectationBuilder.AddCollectionContext(
+				_collectionContext.Set(
 					materializedEnumerable as IMaterializedAsyncEnumerable<TItem>, true);
 				return this;
 			}
@@ -190,7 +196,7 @@ public static partial class ThatAsyncEnumerable
 				if (_index + _offset < 0)
 				{
 					Outcome = Outcome.Failure;
-					_expectationBuilder.AddCollectionContext(
+					_collectionContext.Set(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					return this;
 				}
@@ -201,7 +207,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
-					_expectationBuilder.AddCollectionContext(
+					_collectionContext.Set(
 						materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 					Outcome = Outcome.Failure;
 					return this;

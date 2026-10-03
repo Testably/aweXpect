@@ -6,7 +6,7 @@ using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.EvaluationContext;
 
-internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) : IEvaluationContext
+internal class EvaluationContext : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
 	private List<Action>? _releases;
@@ -40,13 +40,6 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
 
 	#endregion
-
-	/// <summary>
-	///     Adds the <paramref name="otherExceptions" /> of a faulted task to the context of the expectation that is
-	///     evaluated, unless they are <see langword="null" />.
-	/// </summary>
-	public void AddOtherExceptions(Exception[]? otherExceptions)
-		=> expectationBuilder?.AddOtherExceptions(otherExceptions);
 
 	/// <summary>
 	///     Registers the <paramref name="release" /> of a resource that the evaluation, including its failure message,
@@ -97,7 +90,7 @@ internal class EvaluationContext(ExpectationBuilder? expectationBuilder = null) 
 	public async Task<EvaluationContext> StartAttempt()
 	{
 		await ReleaseMaterializations();
-		_attempt = new EvaluationContext(expectationBuilder)
+		_attempt = new EvaluationContext()
 		{
 			Cancellation = Cancellation,
 		};

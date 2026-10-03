@@ -193,6 +193,12 @@ internal static class ObjectEqualityOptions
 		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
 			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
+		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// A comparison by equality has no options to explain.
+		}
+
 		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 			=> GetItemExpectation(expected, itemNoun, comparison);
@@ -267,6 +273,13 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
 	public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
 		=> MatchType.PrependItemAndComparison(expected, itemNoun, comparison);
+
+	/// <summary>
+	///     Adds the contexts of the match type to the <paramref name="contexts" />, e.g. the options of an equivalency
+	///     comparison.
+	/// </summary>
+	public void AppendContexts(ResultContextCollector contexts)
+		=> MatchType.AppendContexts(contexts);
 
 	/// <inheritdoc />
 	public override string? ToString() => MatchType.ToString();

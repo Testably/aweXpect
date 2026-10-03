@@ -40,57 +40,8 @@ internal class ExpectationNode : Node
 	}
 
 	/// <inheritdoc />
-	public override Node AddMapping<TValue, TTarget>(MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
+	public override Node AddMapping(MappingNode mappingNode)
 	{
-		MappingNode<TValue, TTarget> mappingNode =
-			new(memberAccessor, expectationTextGenerator);
-		_inner = mappingNode;
-		_combineResults = mappingNode.CombineResults;
-		return mappingNode;
-	}
-
-	/// <inheritdoc />
-	public override Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, TTarget> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-	{
-		NarrowingMappingNode<TValue, TTarget, TNarrowed> mappingNode =
-			new(memberAccessor, expectationTextGenerator);
-		_inner = mappingNode;
-		_combineResults = mappingNode.CombineResults;
-		return mappingNode;
-	}
-
-	/// <inheritdoc />
-	public override Node AddAsyncMapping<TValue, TTarget>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-	{
-		AsyncMappingNode<TValue, TTarget> mappingNode =
-			new(memberAccessor, expectationTextGenerator);
-		_inner = mappingNode;
-		_combineResults = mappingNode.CombineResults;
-		return mappingNode;
-	}
-
-	/// <inheritdoc />
-	public override Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
-		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
-		where TValue : default
-		where TTarget : default
-		where TNarrowed : default
-	{
-		NarrowingAsyncMappingNode<TValue, TTarget, TNarrowed> mappingNode =
-			new(memberAccessor, expectationTextGenerator);
 		_inner = mappingNode;
 		_combineResults = mappingNode.CombineResults;
 		return mappingNode;
@@ -229,7 +180,8 @@ internal class ExpectationNode : Node
 	{
 		ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
 		ConstraintResult result =
-			MemberExceptionResult.Create(expectation, exception.Exception, exception.Thrower ?? "it", value);
+			MemberExceptionResult.FromEvaluation(expectation, exception.Exception, exception.Thrower ?? "it",
+				value);
 		return exception.ItemIndex is null
 			? result
 			: UnansweredItemResult.Create(expectation, result, null, exception.ItemIndex, value);

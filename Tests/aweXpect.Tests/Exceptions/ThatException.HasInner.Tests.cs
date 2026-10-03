@@ -162,9 +162,6 @@ public sealed partial class ThatException
 					             does not have an inner exception whose message is equal to "inner",
 					             but it had an inner InvalidOperationException:
 					               inner
-
-					             Message:
-					             inner
 					             """);
 			}
 		}

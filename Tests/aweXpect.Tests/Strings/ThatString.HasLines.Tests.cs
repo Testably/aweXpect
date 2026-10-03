@@ -227,12 +227,6 @@ public sealed partial class ThatString
 					               "Starting up",
 					               "Ready"
 					             ]
-
-					             Collection:
-					             [
-					               "Starting up",
-					               "Ready"
-					             ]
 					             """);
 			}
 		}

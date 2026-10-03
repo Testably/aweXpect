@@ -33,7 +33,6 @@ public static partial class ThatNullableDateOnly
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.WithExpectedValuesContext(subject, expectedExpression, negated, expectedValues)
 					.InvertIf(negated)),
 			subject,
 			tolerance);
@@ -59,6 +58,10 @@ public static partial class ThatNullableDateOnly
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
 	{
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			Actual = actual;
