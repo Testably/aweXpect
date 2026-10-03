@@ -39,6 +39,19 @@ public partial class StringEqualityOptions
 				new Regex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline,
 					RegexTimeout));
 
+		/// <summary>
+		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
+		/// </summary>
+		public static Regex CreateRegex(string expected, bool ignoreCase)
+			=> new(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline, RegexTimeout);
+
+		/// <summary>
+		///     Whether the <paramref name="actual" /> value matches the <paramref name="regex" /> from
+		///     <see cref="CreateRegex" />.
+		/// </summary>
+		public static bool IsMatch(Regex regex, string actual, bool ignoreCase)
+			=> regex.IsMatch(FoldCase(actual, ignoreCase));
+
 		/// <remarks>
 		///     The casing is ignored by comparing the upper-case invariant values instead of with
 		///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by

@@ -27,6 +27,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private IStringMatchType _matchType = ExactMatch;
 
 	/// <summary>
+	///     The pattern that was parsed last, because a collection expectation compares every item with the same one.
+	/// </summary>
+	private ParsedPattern? _parsedPattern;
+
+	/// <summary>
 	///     Initializes the options for a pattern that the caller received as <paramref name="parameterName" />, which
 	///     an unusable pattern is reported against.
 	/// </summary>
@@ -85,6 +90,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			if (regex is not null)
 			{
 				return actual is not null && regex.IsMatch(actual);
+			}
+
+			if (_matchType is WildcardMatchType)
+			{
+				return actual is not null && WildcardMatchType.IsMatch(
+					GetParsedPattern(expected, static (_, pattern, ignoreCase)
+						=> WildcardMatchType.CreateRegex(pattern, ignoreCase)), actual, _ignoreCase);
 			}
 
 			return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
@@ -167,8 +179,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> string by
 	///     comparing it with a window of the same length.
 	/// </summary>
+	/// <remarks>
+	///     For the default match type without a comparer, a window equals the <paramref name="expected" /> string
+	///     exactly where an ordinal search finds it, so the windows are not copied.
+	/// </remarks>
 	private async ValueTask<int> CountOccurrencesWithWindow(string actual, string expected)
 	{
+		if (_matchType is ExactMatchType && _comparer is null)
+		{
+			return CountOrdinalOccurrences(actual, expected,
+				_ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+		}
+
 		int count = 0;
 		int index = 0;
 		while (index < actual.Length)
@@ -184,6 +206,19 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			{
 				index++;
 			}
+		}
+
+		return count;
+	}
+
+	private static int CountOrdinalOccurrences(string actual, string expected, StringComparison comparison)
+	{
+		int count = 0;
+		int index = actual.IndexOf(expected, 0, comparison);
+		while (index >= 0)
+		{
+			count++;
+			index = actual.IndexOf(expected, index + expected.Length, comparison);
 		}
 
 		return count;
@@ -648,14 +683,15 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			throw CreateEmptyPatternException(patternKind);
 		}
 
-		if (_matchType is not RegexMatchType regexMatchType)
+		if (_matchType is not RegexMatchType)
 		{
 			return null;
 		}
 
 		try
 		{
-			return regexMatchType.CreateRegex(expected, _ignoreCase);
+			return GetParsedPattern(expected, static (matchType, pattern, ignoreCase)
+				=> ((RegexMatchType)matchType).CreateRegex(pattern, ignoreCase));
 		}
 		catch (ArgumentException exception) when (exception is not ArgumentOutOfRangeException)
 		{
@@ -663,5 +699,34 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			throw Tracing.WriteException(new ArgumentException(
 				$"The '{_parameterName}' regex pattern is invalid: {exception.Message}", _parameterName, exception));
 		}
+	}
+
+	/// <summary>
+	///     Returns the regex for the <paramref name="expected" /> pattern of the current match type, and parses it with
+	///     <paramref name="parse" /> only when the last parsed pattern was a different one.
+	/// </summary>
+	private Regex GetParsedPattern(string expected, Func<IStringMatchType, string, bool, Regex> parse)
+	{
+		ParsedPattern? parsedPattern = _parsedPattern;
+		if (parsedPattern is not null && parsedPattern.IsFor(_matchType, expected, _ignoreCase))
+		{
+			return parsedPattern.Regex;
+		}
+
+		Regex regex = parse(_matchType, expected, _ignoreCase);
+		_parsedPattern = new ParsedPattern(_matchType, expected, _ignoreCase, regex);
+		return regex;
+	}
+
+	/// <remarks>
+	///     Immutable, so that it can be replaced as a whole while another evaluation reads it.
+	/// </remarks>
+	private sealed class ParsedPattern(IStringMatchType matchType, string expected, bool ignoreCase, Regex regex)
+	{
+		public Regex Regex { get; } = regex;
+
+		public bool IsFor(IStringMatchType otherMatchType, string otherExpected, bool otherIgnoreCase)
+			=> ReferenceEquals(matchType, otherMatchType) && ignoreCase == otherIgnoreCase &&
+			   string.Equals(expected, otherExpected, StringComparison.Ordinal);
 	}
 }

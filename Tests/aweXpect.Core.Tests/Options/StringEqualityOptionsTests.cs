@@ -97,6 +97,28 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the failure has to blame the comparer for every match type that consults it");
 		}
 
+		[Theory]
+		[InlineData("AsRegex", "f.*", "b.*")]
+		[InlineData("AsWildcard", "f*", "b*")]
+		public async Task AreConsideredEqual_WhenThePatternOrTheCasingChanges_ShouldParseThePatternAgain(
+			string matchType, string matchingPattern, string otherPattern)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+
+			bool matchingResult = await sut.AreConsideredEqual("foo", matchingPattern);
+			bool otherResult = await sut.AreConsideredEqual("foo", otherPattern);
+			bool caseSensitiveResult = await sut.AreConsideredEqual("FOO", matchingPattern);
+			sut.IgnoringCase();
+			bool ignoringCaseResult = await sut.AreConsideredEqual("FOO", matchingPattern);
+
+			await That(matchingResult).IsTrue();
+			await That(otherResult).IsFalse()
+				.Because("the pattern that was parsed for the previous comparison must not be reused for another one");
+			await That(caseSensitiveResult).IsFalse();
+			await That(ignoringCaseResult).IsTrue()
+				.Because("the casing is part of the parsed pattern");
+		}
+
 		[Fact]
 		public async Task AsRegex_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
@@ -176,6 +198,25 @@ public sealed partial class StringEqualityOptionsTests
 			Change(sut, option, false);
 
 			await That(sut.ComparesByOrdinalEquality).IsTrue();
+		}
+
+		[Theory]
+		[InlineData("aaaa", "aa", false, 2)]
+		[InlineData("aaa", "aa", false, 1)]
+		[InlineData("abcABCabc", "abc", false, 2)]
+		[InlineData("abcABCabc", "abc", true, 3)]
+		[InlineData("x\U00010400y\U00010428", "\U00010428", false, 1)]
+		[InlineData("ab", "abc", false, 0)]
+		public async Task CountOccurrences_WhenComparedOrdinally_ShouldCountTheNonOverlappingOccurrences(
+			string actual, string expected, bool ignoreCase, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringCase(ignoreCase);
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the occurrences are searched instead of compared with a window at every position, which must count alike");
 		}
 
 		[Fact]
