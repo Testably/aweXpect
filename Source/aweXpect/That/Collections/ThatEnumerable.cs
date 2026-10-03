@@ -26,11 +26,11 @@ public static partial class ThatEnumerable
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
 	/// <remarks>
-	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a set subject with a
-	///     custom comparer compares its items with that comparer, as it does for a single item in <c>Contains</c>, and the
-	///     expectation names it.
+	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a subject that is a set
+	///     of <typeparamref name="TItem" /> with a custom comparer compares its items with that comparer, as it does for a
+	///     single item in <c>Contains</c>, and the expectation names it.
 	/// </remarks>
-	private sealed class IsEqualToConstraint<TItem, TMatch>(
+	private sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedExpression,
@@ -39,8 +39,9 @@ public static partial class ThatEnumerable
 		CollectionMatchOptions matchOptions,
 		bool failsForNullSubject = false,
 		Func<bool>? usesDefaultEquality = null)
-		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
+		: ConstraintResult.WithEqualToValue<TEnumerable?>(it, grammars, expected is null),
+			IAsyncContextConstraint<TEnumerable?>
+		where TEnumerable : IEnumerable?
 		where TItem : TMatch
 	{
 		private CollectionContext _collectionContext;
@@ -62,48 +63,72 @@ public static partial class ThatEnumerable
 			{
 				contexts.AddExpectedItemsContext(expected, _expectedItems);
 			}
+
 			contexts.AddOptionsContexts(options);
 		}
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
+		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
 			_expectedItems = null;
+			_failure = null;
+			_subjectComparer = null;
 			Actual = actual;
+			if (actual.IsDefaultImmutableArray())
+			{
+				return this.AsNullSubject(It);
+			}
+
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
 				return this;
 			}
 
+			bool isTyped = CollectionItems<TItem>.IsTyped<TEnumerable>();
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
-				_collectionContext.Set(
-					context.UseMaterializedEnumerable<TItem>(actual));
+				if (isTyped)
+				{
+					CollectionItems<TItem>.Materialize(actual, context).SetContext(ref _collectionContext);
+				}
+				else
+				{
+					CollectionItems<object?>.Materialize(actual, context).SetContext(ref _collectionContext);
+				}
+
 				return this;
 			}
 
 			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
 			_expectedItems = expectedItems;
-			IEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems);
-			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			IOptionsEquality<TMatch> itemOptions = options is ObjectEqualityOptions<TMatch> objectOptions
-				? objectOptions.ForEvaluation()
-				: options;
-			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(itemOptions, usesDefaultEquality ?? (() => false));
+			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(
+				options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options,
+				usesDefaultEquality ?? (() => false));
 			_subjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
-			itemOptions = subjectOptions;
+			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+			return isTyped
+				? await Verify(CollectionItems<TItem>.Materialize(actual, context),
+					matchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems), subjectOptions, maximumNumber,
+					cancellationToken)
+				: await Verify(CollectionItems<object?>.Materialize(actual, context),
+					matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
+					new UntypedOptions(subjectOptions), maximumNumber, cancellationToken);
+		}
 
-			foreach (TItem item in materializedEnumerable)
+		private async Task<ConstraintResult> Verify<TRead, TReadMatch>(CollectionItems<TRead> materialized,
+			ICollectionMatcher<TRead, TReadMatch> matcher, IOptionsEquality<TReadMatch> itemOptions, int maximumNumber,
+			CancellationToken cancellationToken)
+			where TRead : TReadMatch
+		{
+			foreach (TRead item in materialized.Items)
 			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materializedEnumerable, true);
+					materialized.SetContext(ref _collectionContext, true);
 					return this;
 				}
 
@@ -112,7 +137,7 @@ public static partial class ThatEnumerable
 				{
 					_failure = failure ?? TooManyDeviationsError();
 					Outcome = Outcome.Failure;
-					_collectionContext.Set(materializedEnumerable);
+					materialized.SetContext(ref _collectionContext);
 					return this;
 				}
 
@@ -127,17 +152,28 @@ public static partial class ThatEnumerable
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
 				Outcome = Outcome.Failure;
-				_collectionContext.Set(materializedEnumerable);
+				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 
-			_collectionContext.Set(materializedEnumerable);
+			materialized.SetContext(ref _collectionContext);
 			Outcome = Outcome.Success;
 			return this;
 		}
 
 		private string TooManyDeviationsError()
 			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+
+		/// <summary>
+		///     A non-generic subject can contain items of any type, so an item that is not a
+		///     <typeparamref name="TMatch" /> never equals an expected item.
+		/// </summary>
+		private sealed class UntypedOptions(IOptionsEquality<TMatch> options) : IOptionsEquality<object?>
+		{
+			public async ValueTask<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
+				=> TryCastItem(actual, out TMatch typedActual)
+				   && await options.AreConsideredEqual(typedActual, (TItem)(object?)expected!);
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -491,170 +527,6 @@ public static partial class ThatEnumerable
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
 				=> new ValueTask<bool>(Equals(actual, expected));
-		}
-	}
-
-	/// <remarks>
-	///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a subject that is a set
-	///     of <typeparamref name="TItem" /> with a custom comparer compares its items with that comparer, and the
-	///     expectation names it.
-	/// </remarks>
-	private sealed class IsEqualToForEnumerableConstraint<TEnumerable, TItem, TMatch>(
-		string it,
-		ExpectationGrammars grammars,
-		string? expectedExpression,
-		IEnumerable<TItem>? expected,
-		IOptionsEquality<TMatch> options,
-		CollectionMatchOptions matchOptions,
-		bool failsForNullSubject = false,
-		Func<bool>? usesDefaultEquality = null)
-		: ConstraintResult.WithEqualToValue<TEnumerable?>(it, grammars, expected is null),
-			IAsyncContextConstraint<TEnumerable?>
-		where TEnumerable : IEnumerable?
-		where TItem : TMatch
-	{
-		private CollectionContext _collectionContext;
-		private ICollection<TItem>? _expectedItems;
-		private string? _failure;
-		private SubjectComparer<TItem>? _subjectComparer;
-
-		public override Outcome Outcome
-		{
-			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			if (expected is not null && _expectedItems is not null)
-			{
-				contexts.AddExpectedItemsContext(expected, _expectedItems);
-			}
-			contexts.AddOptionsContexts(options);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_expectedItems = null;
-			Actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return this.AsNullSubject(It);
-			}
-
-			if (actual is null)
-			{
-				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
-				return this;
-			}
-
-			if (expected is null)
-			{
-				Outcome = Outcome.Failure;
-				_collectionContext.Set(context.UseMaterializedEnumerable(actual));
-				return this;
-			}
-
-			ICollection<TItem> expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
-			_expectedItems = expectedItems;
-			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			ICollectionMatcher<object?, object?> matcher =
-				matchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>());
-			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(
-				options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options,
-				usesDefaultEquality ?? (() => false));
-			_subjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
-			UntypedOptions untypedOptions = new(subjectOptions);
-			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-
-			foreach (object? item in materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materializedEnumerable, true);
-					return this;
-				}
-
-				var (result, failure) = await matcher.Verify(It, item, untypedOptions, maximumNumber);
-				if (result)
-				{
-					_failure = failure ?? TooManyDeviationsError();
-					Outcome = Outcome.Failure;
-					_collectionContext.Set(materializedEnumerable);
-					return this;
-				}
-
-				if (matcher.IsDetermined)
-				{
-					break;
-				}
-			}
-
-			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, untypedOptions, maximumNumber);
-			if (completedResult)
-			{
-				_failure = completedFailure ?? TooManyDeviationsError();
-				Outcome = Outcome.Failure;
-				_collectionContext.Set(materializedEnumerable);
-				return this;
-			}
-
-			_collectionContext.Set(materializedEnumerable);
-			Outcome = Outcome.Success;
-			return this;
-		}
-
-		private string TooManyDeviationsError()
-			=> $"{It} had more than {2L * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
-
-		/// <summary>
-		///     The subject can contain items of any type, so an item that is not a <typeparamref name="TMatch" /> never
-		///     equals an expected item.
-		/// </summary>
-		private sealed class UntypedOptions(IOptionsEquality<TMatch> options) : IOptionsEquality<object?>
-		{
-			public async ValueTask<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
-				=> TryCastItem(actual, out TMatch typedActual)
-				   && await options.AreConsideredEqual(typedActual, (TItem)(object?)expected!);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			string expectedText = expectedExpression ?? Formatter.Format(expected, FormattingOptions.SingleLine);
-			// The options qualify the expected items, not their order.
-			stringBuilder.Append(matchOptions.GetExpectation(expectedText + options + _subjectComparer, Grammars));
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (expected is null)
-			{
-				stringBuilder.Append(ExpectedCollectionWasNull);
-			}
-			else if (_failure is not null)
-			{
-				stringBuilder.Append(_failure);
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalExpectation(stringBuilder, indentation);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (expected is null)
-			{
-				stringBuilder.Append(ExpectedCollectionWasNull);
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
-			}
 		}
 	}
 }
