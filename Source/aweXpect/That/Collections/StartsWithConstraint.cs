@@ -48,13 +48,23 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	}
 
 	/// <summary>
-	///     Compares the <paramref name="item" /> with the next expected item and returns the outcome, when it is decided.
+	///     Compares the <paramref name="item" /> with the next expected item.
 	/// </summary>
-	protected async ValueTask<Outcome?> Compare(TItem item)
+	protected ValueTask<bool> MatchesNext(TItem item)
 	{
 		TMatch expectedItem = expected[_index++];
-		if (!CollectionItems<TItem>.TryCast(item, out TMatch matchedItem) ||
-		    !await options.AreConsideredEqual(matchedItem, expectedItem))
+		return CollectionItems<TItem>.TryCast(item, out TMatch matchedItem)
+			? options.AreConsideredEqual(matchedItem, expectedItem)
+			: new ValueTask<bool>(false);
+	}
+
+	/// <summary>
+	///     Records whether the <paramref name="item" /> matched the expected item and returns the outcome, when it is
+	///     decided.
+	/// </summary>
+	protected Outcome? Decide(TItem item, bool isMatch)
+	{
+		if (!isMatch)
 		{
 			_firstMismatchItem = item;
 			_foundMismatch = true;
@@ -157,7 +167,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 				return this;
 			}
 
-			if (await Compare(item) is { } outcome)
+			if (Decide(item, await MatchesNext(item)) is { } outcome)
 			{
 				if (outcome == Outcome.Failure)
 				{
@@ -226,7 +236,7 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 		await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
 		{
-			Outcome? outcome = await Compare(item);
+			Outcome? outcome = Decide(item, await MatchesNext(item));
 			if (outcome == Outcome.Failure)
 			{
 				_collectionContext.Set(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);

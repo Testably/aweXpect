@@ -105,11 +105,22 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	}
 
 	/// <summary>
+	///     Whether the predicate is synchronous, so that the items can be counted without awaiting it.
+	/// </summary>
+	protected bool IsSynchronous => _asyncPredicate is null;
+
+	/// <summary>
+	///     Whether the <paramref name="item" /> matches the synchronous predicate.
+	/// </summary>
+	protected bool MatchesSynchronously(TItem item)
+		=> UserCode.Invoke(_predicate!, item, "the predicate");
+
+	/// <summary>
 	///     Whether the <paramref name="item" /> matches.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
 		=> _asyncPredicate is null
-			? new ValueTask<bool>(UserCode.Invoke(_predicate!, item, "the predicate"))
+			? new ValueTask<bool>(MatchesSynchronously(item))
 			: _asyncPredicate(item);
 
 	/// <summary>
@@ -267,48 +278,89 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
 		Start(actual);
 		if (actual.IsDefaultImmutableArray())
 		{
-			return this.AsNullSubject(It);
+			return Task.FromResult(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		if (_lookup?.Invoke(actual) is { } isContained)
 		{
 			CountExpected(isContained);
-			CollectionItems<TItem>.Of(actual).SetContext(ref _collectionContext);
-			Finish();
-			return this;
+			return Task.FromResult(Finish(CollectionItems<TItem>.Of(actual)));
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+		return IsSynchronous
+			? Task.FromResult(Count(materialized, cancellationToken))
+			: CountAsync(materialized, cancellationToken);
+	}
+
+	private ConstraintResult Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	{
 		foreach (TItem item in materialized.Items)
 		{
-			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
+			if (IsCanceled(materialized, cancellationToken) ||
+			    (MatchesSynchronously(item) && IsDecidedBy(materialized, item)))
 			{
-				Outcome = Outcome.Undecided;
-				materialized.SetContext(ref _collectionContext, true);
-				return this;
-			}
-
-			if (await Matches(item) && CountMatch(item) is { } outcome)
-			{
-				Outcome = outcome;
-				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 		}
 
+		return Finish(materialized);
+	}
+
+	private async Task<ConstraintResult> CountAsync(CollectionItems<TItem> materialized,
+		CancellationToken cancellationToken)
+	{
+		foreach (TItem item in materialized.Items)
+		{
+			if (IsCanceled(materialized, cancellationToken) ||
+			    (await Matches(item) && IsDecidedBy(materialized, item)))
+			{
+				return this;
+			}
+		}
+
+		return Finish(materialized);
+	}
+
+	private bool IsCanceled(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	{
+		if (!materialized.IsCanceledBeforeTheEnd(cancellationToken))
+		{
+			return false;
+		}
+
+		Outcome = Outcome.Undecided;
+		materialized.SetContext(ref _collectionContext, true);
+		return true;
+	}
+
+	private bool IsDecidedBy(CollectionItems<TItem> materialized, TItem item)
+	{
+		if (CountMatch(item) is not { } outcome)
+		{
+			return false;
+		}
+
+		Outcome = outcome;
 		materialized.SetContext(ref _collectionContext);
+		return true;
+	}
+
+	private ConstraintResult Finish(CollectionItems<TItem> items)
+	{
+		items.SetContext(ref _collectionContext);
 		Finish();
 		return this;
 	}

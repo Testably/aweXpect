@@ -58,11 +58,22 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>
 	}
 
 	/// <summary>
+	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
+	/// </summary>
+	protected bool IsSynchronous => _asyncPredicate is null;
+
+	/// <summary>
+	///     Whether the <paramref name="item" /> satisfies the synchronous predicate.
+	/// </summary>
+	protected bool MatchesSynchronously(TItem item)
+		=> UserCode.Invoke(_predicate!, item, "the predicate");
+
+	/// <summary>
 	///     Whether the <paramref name="item" /> satisfies the predicate.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
 		=> _asyncPredicate is null
-			? new ValueTask<bool>(UserCode.Invoke(_predicate!, item, "the predicate"))
+			? new ValueTask<bool>(MatchesSynchronously(item))
 			: _asyncPredicate(item);
 }
 
@@ -75,6 +86,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
+	private readonly bool _isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
 	private readonly Func<object?, bool>? _useComparerOf;
 	private CollectionContext _collectionContext;
 	private Type? _itemType;
@@ -114,7 +126,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(
+	public Task<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -124,41 +136,84 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return this.AsNullSubject(It);
+			return Task.FromResult(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		_useComparerOf?.Invoke(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
-		bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
+		return IsSynchronous
+			? Task.FromResult(Verify(materialized, cancelEarly, cancellationToken))
+			: VerifyAsync(materialized, cancelEarly, cancellationToken);
+	}
+
+	private ConstraintResult Verify(CollectionItems<TItem> materialized, bool cancelEarly,
+		CancellationToken cancellationToken)
+	{
 		foreach (TItem item in materialized.Items)
 		{
-			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
+			if (IsCanceled(materialized, cancellationToken) ||
+			    IsDecidedBy(materialized, item, MatchesSynchronously(item), cancelEarly))
 			{
-				Outcome = Outcome.Undecided;
-				materialized.SetContext(ref _collectionContext, true);
-				return this;
-			}
-
-			if (isUntyped)
-			{
-				_itemType ??= item?.GetType();
-			}
-
-			Record(item, await Matches(item));
-			if (cancelEarly && IsDetermined)
-			{
-				CompleteEarly();
-				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 		}
 
+		return Finish(materialized);
+	}
+
+	private async Task<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, bool cancelEarly,
+		CancellationToken cancellationToken)
+	{
+		foreach (TItem item in materialized.Items)
+		{
+			if (IsCanceled(materialized, cancellationToken) ||
+			    IsDecidedBy(materialized, item, await Matches(item), cancelEarly))
+			{
+				return this;
+			}
+		}
+
+		return Finish(materialized);
+	}
+
+	private bool IsCanceled(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	{
+		if (!materialized.IsCanceledBeforeTheEnd(cancellationToken))
+		{
+			return false;
+		}
+
+		Outcome = Outcome.Undecided;
+		materialized.SetContext(ref _collectionContext, true);
+		return true;
+	}
+
+	private bool IsDecidedBy(CollectionItems<TItem> materialized, TItem item, bool isMatch, bool cancelEarly)
+	{
+		if (_isUntyped)
+		{
+			_itemType ??= item?.GetType();
+		}
+
+		Record(item, isMatch);
+		if (!cancelEarly || !IsDetermined)
+		{
+			return false;
+		}
+
+		CompleteEarly();
+		materialized.SetContext(ref _collectionContext);
+		return true;
+	}
+
+	private CollectionConstraint<TEnumerable, TItem> Finish(CollectionItems<TItem> materialized)
+	{
 		Complete();
 		materialized.SetContext(ref _collectionContext);
 		return this;

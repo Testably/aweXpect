@@ -73,28 +73,40 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	}
 
 	/// <summary>
-	///     Verifies the <paramref name="item" /> at the <paramref name="index" /> of a collection with
-	///     <paramref name="count" /> items and returns <see langword="true" />, when the remaining items cannot change the
-	///     outcome.
+	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
 	/// </summary>
-	protected async ValueTask<bool> IsDecidedBy(TItem item, int index, int? count)
+	protected bool IsSynchronous => _asyncPredicate is null;
+
+	/// <summary>
+	///     Whether the <paramref name="item" /> matches the synchronous predicate.
+	/// </summary>
+	protected bool MatchesSynchronously(TItem item)
+		=> UserCode.Invoke(_predicate!, item, "the predicate");
+
+	/// <summary>
+	///     Whether the <paramref name="item" /> matches.
+	/// </summary>
+	protected ValueTask<bool> Matches(TItem item)
+		=> _asyncPredicate is null
+			? new ValueTask<bool>(MatchesSynchronously(item))
+			: _asyncPredicate(item);
+
+	/// <summary>
+	///     Whether the item at the <paramref name="index" /> of a collection with <paramref name="count" /> items is at
+	///     the expected index: <see langword="false" /> when no later item can be, and <see langword="null" /> when a
+	///     later item can be.
+	/// </summary>
+	protected bool? IsAtIndex(int index, int? count)
+		=> ThatEnumerable.IsIndexInRange(Options, index, count);
+
+	/// <summary>
+	///     Records whether the <paramref name="item" /> at the expected index matches and returns
+	///     <see langword="true" />, when it decides the outcome.
+	/// </summary>
+	protected bool Record(TItem item, bool isMatch)
 	{
-		bool? isIndexInRange = ThatEnumerable.IsIndexInRange(Options, index, count);
-		if (isIndexInRange is null)
-		{
-			return false;
-		}
-
-		if (isIndexInRange == false)
-		{
-			return true;
-		}
-
 		_hasIndex = true;
 		_actual = item;
-		bool isMatch = _asyncPredicate is null
-			? UserCode.Invoke(_predicate!, item, "the predicate")
-			: await _asyncPredicate(item);
 		Outcome = isMatch ? Outcome.Success : Outcome.Failure;
 		return isMatch;
 	}
@@ -175,7 +187,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -183,27 +195,35 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		Start();
 		if (actual.IsDefaultImmutableArray())
 		{
-			return this.AsNullSubject(It);
+			return Task.FromResult(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
 		_useComparerOf?.Invoke(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 
-		IEnumerable<TItem> items = materialized.Items;
-		if (!ThatEnumerable.TryCountForIndex(Options, actual, items, cancellationToken, out int? count))
+		if (!ThatEnumerable.TryCountForIndex(Options, actual, materialized.Items, cancellationToken,
+			    out int? count))
 		{
 			Outcome = Outcome.Undecided;
-			return this;
+			return Task.FromResult<ConstraintResult>(this);
 		}
 
+		return IsSynchronous
+			? Task.FromResult(Verify(materialized, count, cancellationToken))
+			: VerifyAsync(materialized, count, cancellationToken);
+	}
+
+	private ConstraintResult Verify(CollectionItems<TItem> materialized, int? count,
+		CancellationToken cancellationToken)
+	{
 		int index = 0;
-		foreach (TItem item in items)
+		foreach (TItem item in materialized.Items)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
@@ -211,9 +231,32 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 				return this;
 			}
 
-			if (await IsDecidedBy(item, index++, count))
+			bool? isAtIndex = IsAtIndex(index++, count);
+			if (isAtIndex == false || (isAtIndex == true && Record(item, MatchesSynchronously(item))))
 			{
-				break;
+				return this;
+			}
+		}
+
+		return this;
+	}
+
+	private async Task<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, int? count,
+		CancellationToken cancellationToken)
+	{
+		int index = 0;
+		foreach (TItem item in materialized.Items)
+		{
+			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
+			{
+				Outcome = Outcome.Undecided;
+				return this;
+			}
+
+			bool? isAtIndex = IsAtIndex(index++, count);
+			if (isAtIndex == false || (isAtIndex == true && Record(item, await Matches(item))))
+			{
+				return this;
 			}
 		}
 
@@ -285,7 +328,8 @@ internal sealed class AsyncHasItemConstraint<TItem>
 		int index = 0;
 		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 		{
-			if (await IsDecidedBy(item, index++, count))
+			bool? isAtIndex = IsAtIndex(index++, count);
+			if (isAtIndex == false || (isAtIndex == true && Record(item, await Matches(item))))
 			{
 				return this;
 			}
