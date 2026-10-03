@@ -54,7 +54,7 @@ public static partial class ThatNullableDateTimeOffset
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

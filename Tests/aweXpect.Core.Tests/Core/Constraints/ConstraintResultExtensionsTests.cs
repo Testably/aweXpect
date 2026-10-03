@@ -28,7 +28,7 @@ public sealed class ConstraintResultExtensionsTests
 
 			bool result = sut.TryGetValue(out string? value);
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(result).IsFalse();
 			await That(value).IsNull();
 		}
@@ -41,7 +41,7 @@ public sealed class ConstraintResultExtensionsTests
 
 			bool result = sut.TryGetValue(out int value);
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(result).IsTrue();
 			await That(value).IsEqualTo(1);
 		}
@@ -54,7 +54,7 @@ public sealed class ConstraintResultExtensionsTests
 
 			bool result = sut.TryGetValue(out string? value);
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(result).IsFalse();
 			await That(value).IsNull();
 		}
@@ -91,7 +91,7 @@ public sealed class ConstraintResultExtensionsTests
 			sut.Negate();
 
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
 		[Theory]
@@ -110,7 +110,7 @@ public sealed class ConstraintResultExtensionsTests
 
 			await That(negated).IsSameAs(sut)
 				.Because("callers continue with the returned result, which has to keep the forced failure");
-			await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+			await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(negated.GetResultText()).IsEqualTo("bar");
 		}
 	}

@@ -20,5 +20,5 @@ internal sealed class AndNode(Node node) : JunctionNode(node, true)
 	/// </remarks>
 	protected override bool SkipsFollowingOperands(ConstraintResult result, ConstraintResult combinedResult)
 		=> result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreResult &&
-		   result.Outcome == Outcome.Failure;
+		   result.Outcome is Outcome.Failure or Outcome.FailureBothWays;
 }

@@ -8,9 +8,9 @@ public abstract partial class ConstraintResult
 	///     <see langword="null" />.
 	/// </summary>
 	/// <remarks>
-	///     The <see langword="null" /> check is applied <b>before</b> the negation, so a <see langword="null" /> subject
-	///     fails the expectation and its negation alike: there is no value to inspect, and negating a question that cannot
-	///     be answered does not make it true. This is the base class for every expectation that inspects its subject.
+	///     A <see langword="null" /> subject is <see cref="Outcome.FailureBothWays" />, so it fails the expectation
+	///     and its negation alike: there is no value to inspect, and negating a question that cannot be answered does
+	///     not make it true. This is the base class for every expectation that inspects its subject.
 	///     <para />
 	///     Set <see cref="WithValue{T}.Actual" /> in one of the <c>IsMetBy</c> overloads of <see cref="IConstraint" /> and
 	///     overwrite<br />
@@ -23,7 +23,7 @@ public abstract partial class ConstraintResult
 		: WithValue<T>(it, grammars)
 	{
 		/// <inheritdoc />
-		private protected override Outcome? GetNullSubjectOutcome() => Outcome.Failure;
+		private protected override Outcome? GetNullSubjectOutcome() => Outcome.FailureBothWays;
 
 		/// <inheritdoc />
 		private protected override bool RendersNullSubject => true;

@@ -153,9 +153,13 @@ public abstract class Expectation
 			{
 				Expectation expectation = _expectations[i];
 				Result result = await expectation.GetResult(index);
-				outcome = CheckOutcome(outcome, result.ConstraintResult.Outcome);
+				// The combination is never negated, so an expectation that fails both ways only fails it.
+				Outcome current = result.ConstraintResult.Outcome == Outcome.FailureBothWays
+					? Outcome.Failure
+					: result.ConstraintResult.Outcome;
+				outcome = CheckOutcome(outcome, current);
 				index = result.Index;
-				if (result.ConstraintResult.Outcome == Outcome.Failure)
+				if (current == Outcome.Failure)
 				{
 					failureCause ??= result.ConstraintResult.FailureCause;
 				}

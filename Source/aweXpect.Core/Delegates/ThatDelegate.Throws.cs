@@ -100,14 +100,14 @@ public abstract partial class ThatDelegate
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure && !_tookTooLong ? _actual?.Exception : null;
+			=> (Outcome is Outcome.Failure or Outcome.FailureBothWays) && !_tookTooLong ? _actual?.Exception : null;
 
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
 			_actual = value;
 			if (value.IsNull || value.ExceededTimeout is not null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

@@ -72,7 +72,7 @@ public static partial class ThatDateTimeOffset
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

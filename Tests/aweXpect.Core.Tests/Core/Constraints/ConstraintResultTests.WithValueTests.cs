@@ -115,6 +115,29 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task Outcome_WhenActualIsNull_ShouldKeepTheSetOutcome()
+		{
+			ConstraintResult sut = new MyWithValueDummy<int?>(null, outcome: Outcome.Success);
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Success)
+				.Because("WithValue applies no null policy of its own");
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task Outcome_WhenFailureBothWays_ShouldBeKeptUnderNegation(bool invert)
+		{
+			ConstraintResult sut = new MyWithValueDummy<int>(0, outcome: Outcome.FailureBothWays);
+			if (invert)
+			{
+				sut.Invert();
+			}
+
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		}
+
+		[Fact]
 		public async Task ShouldInitializeOutcomeToUndecided()
 		{
 			ConstraintResult sut = new MyWithValueDummy<int>(0);

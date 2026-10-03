@@ -29,8 +29,9 @@ internal sealed class UnansweredItemResult : ConstraintResult
 		_index = index;
 		_value = value;
 		_valueType = valueType;
-		Outcome = Outcome.Failure;
+		Outcome = Outcome.FailureBothWays;
 	}
+
 
 	/// <inheritdoc />
 	public override Exception? FailureCause => _itemResult.FailureCause;

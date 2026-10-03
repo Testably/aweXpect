@@ -19,8 +19,6 @@ internal sealed class MappingResult : CombinedResult
 	/// </summary>
 	private string? _negatedRightExpectation;
 
-	private bool _rightFailsAlsoWhenNegated;
-
 	public MappingResult(ConstraintResult left, ConstraintResult right, Action<StringBuilder> appendMemberText,
 		string? member)
 		: base(left, right, true, FurtherProcessingStrategy.Continue)
@@ -32,14 +30,14 @@ internal sealed class MappingResult : CombinedResult
 
 	/// <inheritdoc />
 	/// <remarks>
-	///     Under negation both parts were met, so the left part explains the failure, unless the member failed in both
-	///     cases. The member is not considered after a left part that stops the further processing.
+	///     Under negation both parts were met, so the left part explains the failure, unless the member could not be
+	///     answered. The member is not considered after a left part that stops the further processing.
 	/// </remarks>
 	protected override (bool Left, bool Right) GetExplainingParts()
 	{
 		bool explainsLeft = Left.ExplainsOutcomeOf(this);
 		bool explainsRight = Right.ExplainsOutcomeOf(this) &&
-		                     (!IsNegated || _rightFailsAlsoWhenNegated || !explainsLeft) &&
+		                     (!IsNegated || Right.Outcome == Outcome.FailureBothWays || !explainsLeft) &&
 		                     (!explainsLeft || Left.FurtherProcessingStrategy == FurtherProcessingStrategy.Continue);
 		return (explainsLeft, explainsRight);
 	}
@@ -97,9 +95,7 @@ internal sealed class MappingResult : CombinedResult
 		IsNegated = !IsNegated;
 		Left.Negate();
 		_negatedRightExpectation = IsNegated ? GetRightExpectation() : null;
-		Outcome rightOutcome = Right.Outcome;
 		Right.Negate();
-		_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && Right.Outcome == Outcome.Failure;
 		Outcome = CombineOutcomes();
 		return this;
 	}

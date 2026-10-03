@@ -50,19 +50,10 @@ public static partial class ThatString
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
 
-		private bool _hasNothingToInspect;
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		/// <remarks>
-		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, fails for a
-		///     <see langword="null" /> subject in both polarities, because it has no content.
+		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
+		///     <see langword="null" /> subject, because it has no content.
 		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => _hasNothingToInspect ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -77,8 +68,7 @@ public static partial class ThatString
 				}
 			}
 
-			_hasNothingToInspect = actual is null && options.InspectsSubject;
-			Outcome = Outcome.Failure;
+			Outcome = actual is null && options.InspectsSubject ? Outcome.FailureBothWays : Outcome.Failure;
 			return this;
 		}
 

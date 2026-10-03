@@ -38,21 +38,18 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 		private DelegateValue<T>? _actual;
 
 		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+			=> Outcome == Outcome.FailureBothWays ? _actual?.Exception : null;
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     The negation does not apply to this guard, so a delegate without a result fails it both ways.
+		/// </remarks>
 		public ConstraintResult IsMetBy(DelegateValue<T> value)
 		{
 			_actual = value;
-			if (value.IsNull)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = value.Exception is null
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = value.IsNull || value.Exception is not null
+				? Outcome.FailureBothWays
+				: Outcome.Success;
 			return this;
 		}
 

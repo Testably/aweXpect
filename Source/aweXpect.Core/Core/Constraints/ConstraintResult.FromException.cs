@@ -41,7 +41,7 @@ public abstract partial class ConstraintResult
 
 		public override Outcome Outcome
 		{
-			get => Outcome.Failure;
+			get => Outcome.FailureBothWays;
 			protected set => _inner.Outcome = value;
 		}
 

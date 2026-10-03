@@ -148,7 +148,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo("yeah!");
 	}
@@ -165,7 +165,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
@@ -196,7 +196,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsNull()
 			.Because("a null task is not an exception thrown by the member");
 		await That(sb.ToString()).IsEqualTo("yeah!");
@@ -215,7 +215,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("a null task has no value that could meet the negated expectation");
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 		await That(negated.GetResultText()).IsEqualTo("length returned <null> instead of a task");
@@ -247,7 +247,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult result = await node.IsMetBy(value, null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("yeah!");
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
@@ -263,7 +263,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("yeah!");
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
@@ -280,7 +280,7 @@ public class AsyncMappingNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}

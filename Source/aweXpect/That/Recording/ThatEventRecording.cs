@@ -39,7 +39,7 @@ public static partial class ThatEventRecording
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -128,13 +128,6 @@ public static partial class ThatEventRecording
 
 			value = default;
 			return typeof(TValue).IsAssignableFrom(typeof(IEventRecording<TSubject>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()

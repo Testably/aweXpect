@@ -66,13 +66,14 @@ public static partial class ThatNullableDateTime
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, expected.Value.Kind))
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = expected.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

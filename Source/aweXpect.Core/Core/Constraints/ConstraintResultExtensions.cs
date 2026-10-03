@@ -19,25 +19,6 @@ public static class ConstraintResultExtensions
 	}
 
 	/// <summary>
-	///     Checks if the <paramref name="constraintResult" /> fails its expectation and the negation alike, e.g. because
-	///     code of the caller threw, so that the expectation was not answered.
-	/// </summary>
-	/// <remarks>
-	///     The negation is undone afterwards, because the results of an item expectation are reused for every item.
-	/// </remarks>
-	internal static bool FailsBothWays(this ConstraintResult constraintResult)
-	{
-		if (constraintResult.Outcome != Outcome.Failure)
-		{
-			return false;
-		}
-
-		bool isNegationFailed = constraintResult.Negate().Outcome == Outcome.Failure;
-		constraintResult.Negate();
-		return isNegationFailed;
-	}
-
-	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> from the <paramref name="inner" /> using the given
 	///     <paramref name="value" />.
 	/// </summary>
@@ -70,9 +51,12 @@ public static class ConstraintResultExtensions
 		=> new ConstraintResultExpectationWrapper(inner, null, suffix);
 
 	/// <summary>
-	///     Creates a new <see cref="ConstraintResult" /> with <see cref="Outcome.Failure" /> from
+	///     Creates a new <see cref="ConstraintResult" /> with <see cref="Outcome.FailureBothWays" /> from
 	///     the <paramref name="inner" /> using the given <paramref name="value" />.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="failure" /> fails the expectation and its negation alike.
+	/// </remarks>
 	public static ConstraintResult Fail<T>(this ConstraintResult inner, string failure, T value)
 		=> new ConstraintResultFailure<T>(inner, failure, value);
 
@@ -90,7 +74,7 @@ public static class ConstraintResultExtensions
 	///     An undecided operand only explains an undecided combination, as a failed one is explained by its failed operands.
 	/// </remarks>
 	internal static bool ExplainsOutcomeOf(this ConstraintResult operand, ConstraintResult combination)
-		=> operand.Outcome == Outcome.Failure ||
+		=> operand.Outcome is Outcome.Failure or Outcome.FailureBothWays ||
 		   (operand.Outcome == Outcome.Undecided && combination.Outcome == Outcome.Undecided);
 
 	/// <summary>
@@ -250,7 +234,7 @@ public static class ConstraintResultExtensions
 		public ConstraintResultFailure(ConstraintResult inner, string failure, T value) : base(
 			inner.FurtherProcessingStrategy)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			_inner = inner;
 			_failure = failure;
 			_value = value;

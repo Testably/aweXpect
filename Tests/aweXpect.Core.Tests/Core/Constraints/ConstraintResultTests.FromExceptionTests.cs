@@ -96,7 +96,7 @@ public partial class ConstraintResultTests
 
 			sut.Negate();
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 		}
 
@@ -117,19 +117,19 @@ public partial class ConstraintResultTests
 
 			await That(negated).IsSameAs(sut)
 				.Because("callers continue with the returned result, which has to keep the forced failure");
-			await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+			await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(negated.FailureCause).IsSameAs(exception);
 			await That(negated.GetResultText()).IsEqualTo($"it did throw an Exception:{Environment.NewLine}  bar");
 		}
 
 		[Fact]
-		public async Task Outcome_ShouldBeFailure()
+		public async Task Outcome_ShouldBeFailureBothWays()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
 			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, "it");
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
 		[Fact]
@@ -140,7 +140,7 @@ public partial class ConstraintResultTests
 			MyFromExceptionConstraintResult sut = new(inner, exception);
 			sut.SetOutcome(Outcome.Undecided);
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 			await That(inner.Outcome).IsEqualTo(Outcome.Undecided);
 		}
 

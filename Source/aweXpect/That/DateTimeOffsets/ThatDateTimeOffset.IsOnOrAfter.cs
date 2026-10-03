@@ -52,7 +52,7 @@ public static partial class ThatDateTimeOffset
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

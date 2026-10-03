@@ -52,7 +52,7 @@ public static partial class ThatTimeSpan
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

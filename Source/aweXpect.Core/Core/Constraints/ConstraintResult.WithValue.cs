@@ -17,7 +17,8 @@ public abstract partial class ConstraintResult
 	///     <see cref="ConstraintResult.WithNotNullValue{T}" /> instead: deciding the outcome with
 	///     <c>Actual is null ? Outcome.Failure : …</c> inside <c>IsMetBy</c> is not equivalent, because
 	///     <see cref="Outcome" /> inverts that failure into a success as soon as the expectation is negated, while
-	///     <see cref="ConstraintResult.WithNotNullValue{T}" /> decides before the inversion is applied.
+	///     <see cref="ConstraintResult.WithNotNullValue{T}" /> reports
+	///     <see cref="Outcome.FailureBothWays" />, which the negation keeps.
 	///     <para />
 	///     Set <see cref="Actual" /> in one of the <c>IsMetBy</c> overloads of <see cref="IConstraint" /> and overwrite<br />
 	///     - <see cref="AppendNormalExpectation" /> / <see cref="AppendNegatedExpectation" />
@@ -55,11 +56,16 @@ public abstract partial class ConstraintResult
 		protected T? Actual { get; set; }
 
 		/// <inheritdoc />
-		public override Outcome Outcome
+		/// <remarks>
+		///     The outcome is set for the expectation that is not negated and inverted while the expectation is negated.
+		///     Set <see cref="Outcome.FailureBothWays" /> for a result that fails regardless of the negation.
+		/// </remarks>
+		public sealed override Outcome Outcome
 		{
 			get
 			{
-				if (Actual is null && GetNullSubjectOutcome() is { } nullSubjectOutcome)
+				if (_outcome != Outcome.FailureBothWays && Actual is null &&
+				    GetNullSubjectOutcome() is { } nullSubjectOutcome)
 				{
 					return nullSubjectOutcome;
 				}

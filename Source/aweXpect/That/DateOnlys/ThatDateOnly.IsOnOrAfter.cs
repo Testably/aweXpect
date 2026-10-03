@@ -53,7 +53,7 @@ public static partial class ThatDateOnly
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

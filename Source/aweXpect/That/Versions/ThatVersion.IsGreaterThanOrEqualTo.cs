@@ -42,6 +42,7 @@ public static partial class ThatVersion
 			Actual = actual;
 			if (expected is null)
 			{
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

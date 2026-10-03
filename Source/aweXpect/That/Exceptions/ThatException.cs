@@ -27,7 +27,7 @@ public static partial class ThatException
 				? Outcome.Success
 				: Outcome.Failure;
 			// Expectations on a missing inner exception or one of another type could only repeat the mismatch.
-			FurtherProcessingStrategy = hasMemberExpectations && Outcome == Outcome.Failure
+			FurtherProcessingStrategy = hasMemberExpectations && Outcome != Outcome.Success
 				? FurtherProcessingStrategy.IgnoreResult
 				: FurtherProcessingStrategy.Continue;
 			return this;

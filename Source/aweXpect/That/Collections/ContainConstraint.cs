@@ -78,13 +78,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	/// </summary>
 	protected abstract Type CollectionType { get; }
 
-	/// <inheritdoc cref="ConstraintResult.Outcome" />
-	public override Outcome Outcome
-	{
-		get => _actual is null ? Outcome.Failure : base.Outcome;
-		protected set => base.Outcome = value;
-	}
-
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _appendOptionsContexts?.Invoke(contexts);
@@ -100,7 +93,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		_isFinished = false;
 		if (actual is null)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 		}
 	}
 

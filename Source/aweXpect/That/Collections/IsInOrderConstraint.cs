@@ -58,6 +58,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 			// The order of incompatible items cannot be verified, so the negated check fails as well.
 			_failureText = $"{It} {incompatibility}";
 			IsIncomparable = true;
+			Outcome = Outcome.FailureBothWays;
 			return true;
 		}
 
@@ -169,7 +170,7 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 
 		if (actual is null)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
@@ -222,7 +223,7 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 		Start(null);
 		if (actual is null)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			return this;
 		}
 

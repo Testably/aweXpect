@@ -34,8 +34,9 @@ internal sealed class MemberExceptionResult : ConstraintResult
 		_member = member;
 		_value = value;
 		_valueType = valueType;
-		Outcome = Outcome.Failure;
+		Outcome = Outcome.FailureBothWays;
 	}
+
 
 	/// <inheritdoc />
 	public override Exception FailureCause => _exception;

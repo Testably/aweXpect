@@ -269,18 +269,16 @@ public class EnumValueResult<TValue, TType>
 	{
 		private decimal? _value;
 
-		/// <inheritdoc />
-		public override Outcome Outcome
-		{
-			get => isOrderedAgainstNull ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
 		public ConstraintResult IsMetBy(TValue actual)
 		{
 			Actual = actual;
 			_value = mapper(actual);
 			Outcome = condition(_value) ? Outcome.Success : Outcome.Failure;
+			if (isOrderedAgainstNull)
+			{
+				Outcome = Outcome.FailureBothWays;
+			}
+
 			return this;
 		}
 

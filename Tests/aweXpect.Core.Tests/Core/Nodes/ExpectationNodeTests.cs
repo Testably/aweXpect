@@ -119,7 +119,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task AddAsyncMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
@@ -163,7 +163,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task AddAsyncMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
@@ -407,7 +407,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
@@ -448,7 +448,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenMemberResultIsAndWithOperandThatStaysFailed_NegatedResult_ShouldFollowTheAnd(
 		Outcome other, Outcome expectedOutcome)
@@ -467,7 +467,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task
 		AddMapping_WhenMemberResultIsFailedOrWithOperandThatStaysFailed_NegatedResult_ShouldOnlySucceedIfConstraintFails(
@@ -487,7 +487,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task
 		AddMapping_WhenUserCodeOfConstraintThrows_NegatedResult_ShouldOnlySucceedIfMemberExpectationFails(
@@ -531,7 +531,7 @@ public class ExpectationNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
@@ -792,7 +792,7 @@ public class ExpectationNodeTests
 		result.AppendExpectation(sb);
 		sb.Append(", but ");
 		result.AppendResult(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure)
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("the subject threw instead of providing a value the constraint could verify");
 		await That(result.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo("""
@@ -831,7 +831,7 @@ public class ExpectationNodeTests
 		result.AppendExpectation(sb);
 		sb.Append(", but ");
 		result.AppendResult(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo("""
 		                                    yeah!, but it did throw a MyException:
@@ -851,7 +851,7 @@ public class ExpectationNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("code that threw answered nothing, so the negation fails as well");
 		await That(negated.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo("not yeah!");

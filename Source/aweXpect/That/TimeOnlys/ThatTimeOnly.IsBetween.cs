@@ -66,7 +66,7 @@ public static partial class ThatTimeOnly
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

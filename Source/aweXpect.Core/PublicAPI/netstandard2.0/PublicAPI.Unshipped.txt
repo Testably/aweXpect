@@ -223,6 +223,7 @@ abstract aweXpect.Core.Constraints.ConstraintResult.TryGetStoredValue<TValue>(ou
 aweXpect.Core.Constraints.ConstraintResult.TryGetValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+aweXpect.Core.Constraints.Outcome.FailureBothWays = 3 -> aweXpect.Core.Constraints.Outcome
 *REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 *REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 *REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
@@ -251,6 +252,10 @@ override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredVal
 *REMOVED*override sealed aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 *REMOVED*virtual aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 *REMOVED*virtual aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.set -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.set -> void
 aweXpect.Core.IStringMatchType.InspectsSubject.get -> bool
 aweXpect.Core.ICollectionMatcher<T, T2>.IsDetermined.get -> bool
 aweXpect.Core.ManualExpectationBuilder<TValue>.AppendReasons(System.Text.StringBuilder! stringBuilder) -> void
@@ -361,7 +366,6 @@ static aweXpect.Options.EnumerableQuantifier.MoreThan(int minimum) -> aweXpect.O
 static aweXpect.Options.EnumerableQuantifier.None(aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) -> aweXpect.Options.EnumerableQuantifier!
 virtual aweXpect.Core.Constraints.ConstraintResult.LeadingSubject.get -> string?
 virtual aweXpect.Core.Constraints.ConstraintResult.TrailingSubject.get -> string?
-virtual aweXpect.Options.EnumerableQuantifier.FailsBothWays.get -> bool
 virtual aweXpect.Options.EnumerableQuantifier.GetQuantifierContext() -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
 virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get -> System.Type!
 *REMOVED*aweXpect.Core.ThatBoolSubject.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!

@@ -83,16 +83,6 @@ public static partial class ThatGeneric
 	{
 		private Exception? _exception;
 
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		/// <remarks>
-		///     A predicate that threw answered nothing, so it fails the expectation and its negation alike.
-		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => _exception is null ? base.Outcome : Outcome.Failure;
-			protected set => base.Outcome = value;
-		}
-
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause => _exception;
 
@@ -120,7 +110,9 @@ public static partial class ThatGeneric
 			catch (Exception exception) when (exception is not OperationCanceledException ||
 			                                  !cancellationToken.IsCancellationRequested)
 			{
+				// A predicate that threw answered nothing, so it fails the expectation and its negation alike.
 				_exception = exception;
+				Outcome = Outcome.FailureBothWays;
 				return false;
 			}
 

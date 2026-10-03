@@ -350,7 +350,7 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsNull()
 			.Because("a null task is not an exception thrown by the member accessor");
 		await That(sb.ToString()).IsEqualTo(" whose value e2");
@@ -369,7 +369,7 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
 		ConstraintResult negated = result.Negate();
 
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("a null task has no value that could meet the negated expectation");
 		await That(negated.GetResultText()).IsEqualTo("it returned <null> instead of a task");
 	}
@@ -405,7 +405,7 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
 
 		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsSameAs(exception);
 		await That(sb.ToString()).IsEqualTo(" whose value e2");
 		await That(result.GetResultText()).IsEqualTo("""
@@ -426,7 +426,7 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
 		ConstraintResult negated = result.Negate();
 
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("an accessor that threw answered nothing, so the negation fails as well");
 		await That(negated.FailureCause).IsSameAs(exception);
 		await That(negated.GetResultText()).IsEqualTo("""
@@ -446,7 +446,7 @@ public sealed class WhichNodeTests
 
 		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
 
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.FailureCause).IsSameAs(exception)
 			.Because("the exception of the caller is reported instead of the one that carried it out of the accessor");
 	}
@@ -572,10 +572,10 @@ public sealed class WhichNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays, Outcome.FailureBothWays)]
+	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldOnlySucceedIfParentFails(Outcome parentOutcome,
-		Outcome expectedNegatedOutcome)
+		Outcome expectedOutcome, Outcome expectedNegatedOutcome)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(parentOutcome)),
 			s => s.Length);
@@ -586,7 +586,7 @@ public sealed class WhichNodeTests
 		Outcome outcome = result.Outcome;
 		result.Negate();
 
-		await That(outcome).IsEqualTo(Outcome.Failure);
+		await That(outcome).IsEqualTo(expectedOutcome);
 		await That(result.Outcome).IsEqualTo(expectedNegatedOutcome);
 	}
 
@@ -602,7 +602,7 @@ public sealed class WhichNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("not e2");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
@@ -797,7 +797,7 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy(new Dummy(), null!, CancellationToken.None);
 		ConstraintResult negated = result.Negate();
 
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(negated.GetExpectationText()).IsEqualTo("not e1 which has field e2");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
@@ -815,7 +815,7 @@ public sealed class WhichNodeTests
 		ConstraintResult negated = result.Negate();
 
 		negated.AppendExpectation(sb);
-		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(sb.ToString()).IsEqualTo("not e1 which e2");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}

@@ -48,8 +48,9 @@ internal static class ImmutableArrayHelpers
 			_inner = inner;
 			_it = it;
 			Grammars = inner.Grammars;
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 		}
+
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);

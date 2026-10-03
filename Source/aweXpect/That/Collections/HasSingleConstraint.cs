@@ -36,13 +36,6 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	/// </summary>
 	protected abstract object? Materialized { get; }
 
-	/// <inheritdoc cref="ConstraintResult.Outcome" />
-	public override Outcome Outcome
-	{
-		get => _isNull ? Outcome.Failure : base.Outcome;
-		protected set => base.Outcome = value;
-	}
-
 	/// <summary>
 	///     Starts a new evaluation of a subject which is <see langword="null" />, when <paramref name="isNull" /> is set.
 	/// </summary>
@@ -53,7 +46,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 		_isEmpty = true;
 		if (isNull)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 		}
 	}
 

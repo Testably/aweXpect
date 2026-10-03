@@ -71,7 +71,7 @@ public static partial class ThatTimeSpan
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{
