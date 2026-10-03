@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306.1412992477417,
           306.65425740755524,
           337.75201447804767,
           302.21210071018766,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           372.90322062174477,
           281.60245819091796,
           181.4545805624553,
-          351.66029326121014
+          351.66029326121014,
+          371.91328716278076
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -428,7 +428,6 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840,
           936,
           936,
           936,
@@ -463,6 +462,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800,
           800,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.71533705393475,
           255.23794501168388,
           254.61803455352782,
           250.2746205670493,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           237.84199518423813,
           204.47215623514992,
           145.49324812207902,
-          252.23526869501387
+          252.23526869501387,
+          256.7717856725057
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          318501.8701497396,
           326566.2730794271,
           345701.63971354166,
           316975.791796875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           290380.4139927455,
           220585.15937151227,
           148709.5198625837,
-          290245.4733698918
+          290245.4733698918,
+          287580.0322614397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          618120,
           618120,
           618120,
           618120,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           86138,
           86138,
           86138,
+          86138,
           86138
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2599195.6180245536,
           2588997.383072917,
           2772641.68359375,
           2531028.349739583,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2515918.62109375,
           1808925.5673177084,
           1295520.78984375,
-          2303982.52421875
+          2303982.52421875,
+          2703740.744270833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
       {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          531.7529220581055,
           538.1694253512791,
           577.7639307022094,
           530.6930157343546,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           532.9993427276611,
           388.9199968973796,
           284.65417126814526,
-          566.9924236297608
+          566.9924236297608,
+          594.5345482145037
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1644,7 +1644,6 @@ window.BENCHMARK_DATA = {
           1512,
           1512,
           1512,
-          1512,
           1608,
           1608,
           1608,
@@ -1679,6 +1678,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104,
           1104,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          492.4942326863607,
           518.6470956802368,
           555.1492535273234,
           479.2288476058415,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           480.38019987742103,
           400.45877707799275,
           268.01146796771457,
-          491.15626989092146
+          491.15626989092146,
+          488.9102769851685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          301.0016506635226,
           323.1038678487142,
           348.18458862304686,
           307.96899785314287,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           375.72293860117594,
           303.6057075353769,
           182.40172738295334,
-          380.74375101498197
+          380.74375101498197,
+          392.31012461980185
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2252,7 +2252,6 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008,
           1104,
           1104,
           1104,
@@ -2287,6 +2286,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952,
           952,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.2290725026812,
           258.2499782562256,
           285.1541458129883,
           258.28920259475706,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           240.2495800336202,
           191.07920319239298,
           134.61963035265606,
-          244.56347176233928
+          244.56347176233928,
+          254.0459478378296
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          576.9623188018799,
           590.45237159729,
           603.0279440198626,
           546.6077763484075,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           559.1372151692708,
           392.96149935041154,
           243.23858434813363,
-          502.5803561528524
+          502.5803561528524,
+          524.4031518055842
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1400,
           1400,
           1400,
           1400,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1192.900960786002,
           1185.8738259633383,
           1327.5965039571126,
           1216.9129625467153,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1159.2521332332067,
           882.7562196731567,
           597.8788195610047,
-          1152.8177640279134
+          1152.8177640279134,
+          1190.6806184132895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2024.6299023946126,
           2019.8510101863317,
           2122.979504449027,
           2134.2143231709797,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2691.866480255127,
           1944.4431457519531,
           1419.1521091461182,
-          2781.446640777588
+          2781.446640777588,
+          2727.2405586242676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3104,
           3104,
           3104,
           3104,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
+          2896,
           2896
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1350.3154574076334,
           1315.3896138509115,
           1399.3660079956055,
           1370.7772269930158,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1250.2981399536134,
           1062.8478544871011,
           646.5440812792096,
-          1316.2379275004068
+          1316.2379275004068,
+          1341.730094273885
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "1305e06f09bac3f3e3750c6ab2d15ff92701b130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:51:38 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v3.0.0-pre.5 (#1200)"
-      },
-      {
         "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
-      "1305e06f",
       "e00183f5",
       "34d794ec",
       "f9b4540a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2581.742345937093,
           2583.1968972342356,
           2728.427665201823,
           2713.9010078430174,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3242.6715207781112,
           2463.241643172044,
           1690.9833320617677,
-          3321.210398864746
+          3321.210398864746,
+          3404.726574452718
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3296,
           3296,
           3296,
           3296,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
+          3176,
           3176
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26294.660250150242,
           27306.86591491699,
           27231.05518798828,
           27495.22459411621,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26028.70656738281,
           15590.14028676351,
           10010.612716674805,
-          20295.053096516927
+          20295.053096516927,
+          26673.899533081054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4205,7 +4205,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4237,6 +4236,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4298,6 +4298,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
@@ -4307,7 +4313,8 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
@@ -4320,7 +4327,8 @@ window.BENCHMARK_DATA = {
           5520.70621287028,
           3987.009569440569,
           2820.00571568807,
-          5096.47492980957
+          5096.47492980957,
+          5795.983270498423
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4332,6 +4340,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472,
           7472,
@@ -4359,7 +4368,8 @@ window.BENCHMARK_DATA = {
           84091.42727225168,
           53261.49040120443,
           29120.87935093471,
-          62192.45831298828
+          62192.45831298828,
+          83824.33119710286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4377,6 +4387,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -4433,6 +4444,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
         "message": "fix: keep deep equivalency comparisons from overflowing the stack (#1577)"
+      },
+      {
+        "sha": "bfeb4fc24d38e50d93b80c00439fa990524e4c7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
+        "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
       }
     ],
     "labels": [
@@ -4442,7 +4459,8 @@ window.BENCHMARK_DATA = {
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
-      "a4298247"
+      "a4298247",
+      "bfeb4fc2"
     ],
     "datasets": [
       {
@@ -4455,7 +4473,8 @@ window.BENCHMARK_DATA = {
           540.926056098938,
           423.7307744026184,
           260.7688136100769,
-          560.0543730417887
+          560.0543730417887,
+          587.4366920471191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4467,6 +4486,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176,
           1176,
@@ -4494,7 +4514,8 @@ window.BENCHMARK_DATA = {
           30943.731740315754,
           14791.289885384696,
           9445.914090983073,
-          18669.087475585937
+          18669.087475585937,
+          31424.79204450335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4512,6 +4533,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
