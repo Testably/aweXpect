@@ -85,7 +85,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
 						new(options, () => options.ComparesByOrdinalEquality);
-					return new AreUniqueConstraint<string?, string?>(
+					return new AreUniqueConstraint<IEnumerable<string?>?, string?, string?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
@@ -108,7 +108,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<string?, TMember>(
+					=> new AreUniqueConstraint<IEnumerable<string?>?, string?, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -130,7 +130,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<string?, string>(
+					=> new AreUniqueConstraint<IEnumerable<string?>?, string?, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -211,7 +211,7 @@ public static partial class ThatEnumerable
 				expectationBuilder.AddConstraint((it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions = new(options, () => options.HasDefaultMatchType);
-					return new AreUniqueConstraint<TItem, TItem>(
+					return new AreUniqueConstraint<IEnumerable<TItem>?, TItem, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
@@ -234,7 +234,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<TItem, TMember>(
+					=> new AreUniqueConstraint<IEnumerable<TItem>?, TItem, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -256,7 +256,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<TItem, string>(
+					=> new AreUniqueConstraint<IEnumerable<TItem>?, TItem, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -339,7 +339,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<object?, object?> itemOptions =
 						new(options, () => options.HasDefaultMatchType);
-					return new AreUniqueForEnumerableConstraint<TEnumerable, object?>(
+					return new AreUniqueConstraint<TEnumerable, object?, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), itemOptions),
@@ -362,7 +362,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
+					=> new AreUniqueConstraint<TEnumerable, object?, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -384,7 +384,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
+					=> new AreUniqueConstraint<TEnumerable, object?, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -454,7 +454,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, TItem>(
+					=> new AreUniqueConstraint<TEnumerable, object?, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
@@ -475,7 +475,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
+					=> new AreUniqueConstraint<TEnumerable, object?, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -497,7 +497,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
+					=> new AreUniqueConstraint<TEnumerable, object?, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -567,7 +567,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, string?>(
+					=> new AreUniqueConstraint<TEnumerable, object?, string?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
@@ -587,7 +587,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
+					=> new AreUniqueConstraint<TEnumerable, object?, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -609,7 +609,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
+					=> new AreUniqueConstraint<TEnumerable, object?, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -627,8 +627,11 @@ public static partial class ThatEnumerable
 	///     When <paramref name="isUniqueBySubject" /> holds for the subject, e.g. for a set with a custom comparer
 	///     whose comparison was not changed, every item is unique without being compared, because a set never holds two
 	///     items that its comparer considers equal.
+	///     <para />
+	///     The items of a non-generic collection are formatted as the type of its first item that is not
+	///     <see langword="null" />.
 	/// </remarks>
-	private sealed class AreUniqueConstraint<TItem, TMember>(
+	private sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		string it,
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
@@ -636,102 +639,10 @@ public static partial class ThatEnumerable
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
-		Func<IEnumerable<TItem>, bool>? isUniqueBySubject = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null,
-		Func<Func<TMember, int>?>? createGetHashCode = null)
-		: QuantifiedCollectionConstraint<IEnumerable<TItem>?, TItem>(it, grammars, quantifier,
-				expectationText, "were"),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-
-		public async Task<ConstraintResult> IsMetBy(
-			IEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			if (isUniqueBySubject?.Invoke(actual) == true)
-			{
-				foreach (TItem item in materialized)
-				{
-					Record(item, expectUnique);
-				}
-
-				Complete();
-				_collectionContext.Set(materialized);
-				return this;
-			}
-
-			bool cancelEarly = actual is not ICollection<TItem>;
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
-			List<(TItem Item, int MemberIndex)> items = [];
-			foreach (TItem item in materialized)
-			{
-				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
-				if (cancelEarly && occurrences.Determines(Quantifier, expectUnique))
-				{
-					RecordAll(items, occurrences);
-					CompleteEarly();
-					_collectionContext.Set(materialized);
-					return this;
-				}
-
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
-					return this;
-				}
-			}
-
-			RecordAll(items, occurrences);
-			Complete();
-			_collectionContext.Set(materialized);
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
-		{
-			foreach ((TItem item, int memberIndex) in items)
-			{
-				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
-			}
-		}
-	}
-
-	/// <remarks>
-	///     When <paramref name="isUniqueBySubject" /> holds for the subject, every item is unique without being compared,
-	///     as in <see cref="AreUniqueConstraint{TItem,TMember}" />.
-	/// </remarks>
-	private sealed class AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<object?, TMember> memberAccessor,
-		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-		bool expectUnique,
 		Func<object?, bool>? isUniqueBySubject = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null,
 		Func<Func<TMember, int>?>? createGetHashCode = null)
-		: QuantifiedCollectionConstraint<TEnumerable, object?>(it, grammars, quantifier,
+		: QuantifiedCollectionConstraint<TEnumerable, TItem>(it, grammars, quantifier,
 				expectationText, "were"),
 			IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
@@ -740,14 +651,7 @@ public static partial class ThatEnumerable
 		private Type? _itemType;
 
 		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		protected override Type ItemType => _itemType ?? typeof(object);
+		protected override Type ItemType => _itemType ?? typeof(TItem);
 
 		public async Task<ConstraintResult> IsMetBy(
 			TEnumerable actual,
@@ -755,6 +659,7 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			_collectionContext = default;
+			_itemType = null;
 			Actual = actual;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -767,52 +672,69 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
 			if (isUniqueBySubject?.Invoke(actual) == true)
 			{
-				foreach (object? item in materialized)
+				foreach (TItem item in materialized.Items)
 				{
-					_itemType ??= item?.GetType();
+					KeepItemType(item, isUntyped);
 					Record(item, expectUnique);
 				}
 
 				Complete();
-				_collectionContext.Set(materialized);
+				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 
-			bool cancelEarly = actual is not ICollection;
+			bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
-			List<(object? Item, int MemberIndex)> items = [];
-			foreach (object? item in materialized)
+			List<(TItem Item, int MemberIndex)> items = [];
+			foreach (TItem item in materialized.Items)
 			{
-				_itemType ??= item?.GetType();
+				KeepItemType(item, isUntyped);
 				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
 				if (cancelEarly && occurrences.Determines(Quantifier, expectUnique))
 				{
 					RecordAll(items, occurrences);
 					CompleteEarly();
-					_collectionContext.Set(materialized);
+					materialized.SetContext(ref _collectionContext);
 					return this;
 				}
 
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materialized, true);
+					materialized.SetContext(ref _collectionContext, true);
 					return this;
 				}
 			}
 
 			RecordAll(items, occurrences);
 			Complete();
-			_collectionContext.Set(materialized);
+			materialized.SetContext(ref _collectionContext);
 			return this;
 		}
 
-		private void RecordAll(List<(object? Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			foreach ((object? item, int memberIndex) in items)
+			_collectionContext.AppendTo(contexts);
+			base.AppendContexts(contexts);
+			appendOptionsContexts?.Invoke(contexts);
+		}
+
+		private void KeepItemType(TItem item, bool isUntyped)
+		{
+			if (isUntyped)
+			{
+				_itemType ??= item?.GetType();
+			}
+		}
+
+		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+		{
+			foreach ((TItem item, int memberIndex) in items)
 			{
 				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
 			}
