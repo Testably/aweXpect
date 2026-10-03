@@ -187,7 +187,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -195,12 +195,12 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		Start();
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		_useComparerOf?.Invoke(actual);
@@ -211,11 +211,11 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 			    out int? count))
 		{
 			Outcome = Outcome.Undecided;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		return IsSynchronous
-			? Task.FromResult<ConstraintResult>(Verify(materialized, count, cancellationToken))
+			? new ValueTask<ConstraintResult>(Verify(materialized, count, cancellationToken))
 			: VerifyAsync(materialized, count, cancellationToken);
 	}
 
@@ -241,7 +241,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		return this;
 	}
 
-	private async Task<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, int? count,
+	private async ValueTask<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, int? count,
 		CancellationToken cancellationToken)
 	{
 		int index = 0;
@@ -299,7 +299,7 @@ internal sealed class AsyncHasItemConstraint<TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

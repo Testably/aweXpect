@@ -58,7 +58,7 @@ public static partial class ThatString
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
 		/// </remarks>
-		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			StringEqualityOptions stringEqualityOptions = options;

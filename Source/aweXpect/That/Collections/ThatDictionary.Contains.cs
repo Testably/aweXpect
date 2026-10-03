@@ -113,7 +113,7 @@ public static partial class ThatDictionary
 			contexts.AddOptionsContexts(options);
 		}
 
-		public async Task<ConstraintResult> IsMetBy(TDictionary? actual,
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;

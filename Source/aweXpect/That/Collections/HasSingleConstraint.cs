@@ -151,7 +151,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -159,12 +159,12 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 		Start(actual is null);
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
@@ -175,7 +175,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 			{
 				Outcome = Outcome.Undecided;
 				materialized.SetContext(ref _collectionContext, true);
-				return Task.FromResult<ConstraintResult>(this);
+				return new ValueTask<ConstraintResult>(this);
 			}
 
 			if (Record(item))
@@ -191,7 +191,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 			materialized.SetContext(ref _collectionContext);
 		}
 
-		return Task.FromResult<ConstraintResult>(this);
+		return new ValueTask<ConstraintResult>(this);
 	}
 }
 
@@ -213,7 +213,7 @@ internal sealed class AsyncHasSingleConstraint<TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

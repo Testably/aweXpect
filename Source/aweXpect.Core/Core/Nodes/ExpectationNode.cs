@@ -65,8 +65,8 @@ internal class ExpectationNode : Node
 
 	/// <inheritdoc />
 	/// <remarks>
-	///     A node with a single synchronous constraint returns its result without starting a state machine, because most
-	///     expectations are of this kind.
+	///     A node with a single constraint returns its result without starting a state machine, when the constraint
+	///     completes synchronously, because most expectations are of this kind.
 	/// </remarks>
 	public override ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
@@ -85,6 +85,22 @@ internal class ExpectationNode : Node
 				{
 					return new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context));
 				}
+
+				if (_constraint is IAsyncConstraint<TValue?> asyncConstraint)
+				{
+					ValueTask<ConstraintResult> isMet = asyncConstraint.IsMetBy(value, cancellationToken);
+					return isMet.IsCompletedSuccessfully
+						? isMet
+						: AwaitConstraint(isMet, value, context, cancellationToken);
+				}
+
+				if (_constraint is IAsyncContextConstraint<TValue?> asyncContextConstraint)
+				{
+					ValueTask<ConstraintResult> isMet = asyncContextConstraint.IsMetBy(value, context, cancellationToken);
+					return isMet.IsCompletedSuccessfully
+						? isMet
+						: AwaitConstraint(isMet, value, context, cancellationToken);
+				}
 			}
 			catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 			{
@@ -102,6 +118,32 @@ internal class ExpectationNode : Node
 		}
 
 		return IsMetByAsync(value, context, cancellationToken);
+	}
+
+	/// <summary>
+	///     Awaits the constraint of the fast path in <see cref="IsMetBy{TValue}" /> that did not complete synchronously,
+	///     and handles the exceptions of the caller's code like <see cref="IsMetByAsync{TValue}" />.
+	/// </summary>
+	private async ValueTask<ConstraintResult> AwaitConstraint<TValue>(ValueTask<ConstraintResult> isMet,
+		TValue? value, IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await isMet;
+		}
+		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
+		{
+			return await FromUserCodeException(e, value, context, cancellationToken);
+		}
+		catch (UserCodeException e)
+		{
+			ExceptionDispatchInfo.Capture(e.Exception).Throw();
+			throw;
+		}
+		catch (UnansweredItemException e)
+		{
+			return await FromUnansweredItemException(e, value, context, cancellationToken);
+		}
 	}
 
 	private async ValueTask<ConstraintResult> IsMetByAsync<TValue>(TValue? value,

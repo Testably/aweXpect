@@ -77,7 +77,7 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public Task<ConstraintResult> IsMetBy(
+	public ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -86,20 +86,20 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
 			Outcome = Outcome.FailureBothWays;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		if (CollectionItems<TItem>.CountOf(actual) is { } totalCount)
 		{
 			CollectionItems<TItem>.Of(actual).SetContext(ref _collectionContext);
 			Complete(totalCount, totalCount);
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
@@ -110,7 +110,7 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 			{
 				materialized.SetContext(ref _collectionContext, true);
 				Complete(count, null, true);
-				return Task.FromResult<ConstraintResult>(this);
+				return new ValueTask<ConstraintResult>(this);
 			}
 
 			count++;
@@ -118,13 +118,13 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 			{
 				materialized.SetContext(ref _collectionContext);
 				Complete(count, null);
-				return Task.FromResult<ConstraintResult>(this);
+				return new ValueTask<ConstraintResult>(this);
 			}
 		}
 
 		materialized.SetContext(ref _collectionContext);
 		Complete(count, count);
-		return Task.FromResult<ConstraintResult>(this);
+		return new ValueTask<ConstraintResult>(this);
 	}
 }
 
@@ -142,7 +142,7 @@ internal sealed class AsyncCollectionCountConstraint<TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

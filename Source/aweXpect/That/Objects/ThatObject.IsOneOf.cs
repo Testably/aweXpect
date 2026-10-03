@@ -83,7 +83,7 @@ public static partial class ThatObject
 			options.AppendContexts(contexts);
 		}
 
-		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			foreach (TExpected? value in expected)

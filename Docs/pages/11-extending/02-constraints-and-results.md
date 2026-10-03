@@ -585,7 +585,7 @@ An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, wh
 (`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
 
 ```csharp no-compile
-public async Task<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
+public async ValueTask<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
 {
     Actual = actual;
     if (actual is not null)
@@ -640,7 +640,7 @@ private sealed class IsPlayingConstraint(
     : ConstraintResult.WithNotNullValue<Player>(it, grammars),
         IAsyncContextConstraint<Player?>
 {
-    public async Task<ConstraintResult> IsMetBy(Player? actual, IEvaluationContext context,
+    public async ValueTask<ConstraintResult> IsMetBy(Player? actual, IEvaluationContext context,
         CancellationToken cancellationToken)
     {
         Actual = actual;

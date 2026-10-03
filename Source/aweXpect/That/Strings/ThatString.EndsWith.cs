@@ -67,7 +67,7 @@ public static partial class ThatString
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
-		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;

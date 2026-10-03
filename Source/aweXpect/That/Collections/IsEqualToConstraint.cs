@@ -112,7 +112,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
 	/// </summary>
-	protected async Task<ConstraintResult> VerifyItems<TItem, TMatch>(CollectionItems<TItem> materialized,
+	protected async ValueTask<ConstraintResult> VerifyItems<TItem, TMatch>(CollectionItems<TItem> materialized,
 		ICollectionMatcher<TItem, TMatch> matcher, IOptionsEquality<TMatch> itemOptions,
 		CancellationToken cancellationToken)
 		where TItem : TMatch
@@ -149,7 +149,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
 	/// </summary>
-	protected async Task<ConstraintResult> VerifyItems<TItem, TMatch>(IAsyncEnumerable<TItem> materialized,
+	protected async ValueTask<ConstraintResult> VerifyItems<TItem, TMatch>(IAsyncEnumerable<TItem> materialized,
 		ICollectionMatcher<TItem, TMatch> matcher, IOptionsEquality<TMatch> itemOptions,
 		CancellationToken cancellationToken)
 		where TItem : TMatch
@@ -351,26 +351,26 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	where TEnumerable : IEnumerable?
 	where TItem : TMatch
 {
-	public Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
 			Outcome = NullSubjectOutcome;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		bool isTyped = CollectionItems<TItem>.IsTyped<TEnumerable>();
 		if (GetExpectedItems() is not { } expectedItems)
 		{
-			return Task.FromResult(isTyped
+			return new ValueTask<ConstraintResult>(isTyped
 				? FailForNullExpected(CollectionItems<TItem>.Materialize(actual, context))
 				: FailForNullExpected(CollectionItems<object?>.Materialize(actual, context)));
 		}
@@ -480,7 +480,7 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 	where TEnumerable : IEnumerable<TItem>?
 	where TItem : TMatch
 {
-	public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
@@ -571,26 +571,26 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 	where TEnumerable : IEnumerable<TItem>?
 	where TItem : TMatch
 {
-	public Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
 			Outcome = NullSubjectOutcome;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		if (GetExpectedItems() is not { } expectedItems)
 		{
-			return Task.FromResult(FailForNullExpected(materialized));
+			return new ValueTask<ConstraintResult>(FailForNullExpected(materialized));
 		}
 
 		return VerifyItems(materialized, MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems),
@@ -612,7 +612,7 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {
-	public Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
@@ -620,14 +620,14 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 		if (actual is null)
 		{
 			Outcome = NullSubjectOutcome;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		IAsyncEnumerable<TItem> materialized =
 			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 		if (GetExpectedItems() is not { } expectedItems)
 		{
-			return Task.FromResult(FailForNullExpected(materialized));
+			return new ValueTask<ConstraintResult>(FailForNullExpected(materialized));
 		}
 
 		return VerifyItems(materialized, MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems),
@@ -647,7 +647,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
@@ -682,7 +682,7 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {
-	public Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Start();
@@ -690,14 +690,14 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 		if (actual is null)
 		{
 			Outcome = NullSubjectOutcome;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		IAsyncEnumerable<TItem> materialized =
 			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
 		if (GetExpectedItems() is not { } expectedItems)
 		{
-			return Task.FromResult(FailForNullExpected(materialized));
+			return new ValueTask<ConstraintResult>(FailForNullExpected(materialized));
 		}
 
 		return VerifyItems(materialized, MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems),

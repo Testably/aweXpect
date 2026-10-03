@@ -88,7 +88,7 @@ public static partial class ThatGeneric
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause => _exception;
 
-		public async Task<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;

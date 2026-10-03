@@ -131,7 +131,7 @@ public static partial class ThatObject
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
 
-		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
@@ -166,7 +166,7 @@ public static partial class ThatObject
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
 
-		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
@@ -201,7 +201,7 @@ public static partial class ThatObject
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
 
-		public async Task<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;

@@ -276,30 +276,30 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
 		Start(actual);
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		if (_lookup?.Invoke(actual) is { } isContained)
 		{
 			CountExpected(isContained);
-			return Task.FromResult<ConstraintResult>(Finish(CollectionItems<TItem>.Of(actual)));
+			return new ValueTask<ConstraintResult>(Finish(CollectionItems<TItem>.Of(actual)));
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		return IsSynchronous
-			? Task.FromResult<ConstraintResult>(Count(materialized, cancellationToken))
+			? new ValueTask<ConstraintResult>(Count(materialized, cancellationToken))
 			: CountAsync(materialized, cancellationToken);
 	}
 
@@ -317,7 +317,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 		return Finish(materialized);
 	}
 
-	private async Task<ConstraintResult> CountAsync(CollectionItems<TItem> materialized,
+	private async ValueTask<ConstraintResult> CountAsync(CollectionItems<TItem> materialized,
 		CancellationToken cancellationToken)
 	{
 		foreach (TItem item in materialized.Items)
@@ -403,7 +403,7 @@ internal sealed class AsyncContainConstraint<TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

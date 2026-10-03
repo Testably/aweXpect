@@ -11,5 +11,5 @@ public interface IAsyncConstraint<in TValue> : IConstraint
 	/// <summary>
 	///     Checks if the <paramref name="actual" /> value meets the expectation.
 	/// </summary>
-	public Task<ConstraintResult> IsMetBy(TValue actual, CancellationToken cancellationToken);
+	public ValueTask<ConstraintResult> IsMetBy(TValue actual, CancellationToken cancellationToken);
 }
