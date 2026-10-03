@@ -76,7 +76,7 @@ internal class WhichNode<TSource, TMember> : Node
 	}
 
 	/// <inheritdoc />
-	public override async Task<ConstraintResult> IsMetBy<TValue>(
+	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default

@@ -601,7 +601,7 @@ public abstract class ExpectationBuilder
 	///     A failure keeps the collections materialized during the evaluation until <see cref="EndEvaluation" />, as the
 	///     failure message still reads them.
 	/// </remarks>
-	internal async Task<ConstraintResult> IsMet()
+	internal async ValueTask<ConstraintResult> IsMet()
 	{
 		await EndEvaluation();
 		ResetOtherExceptions();
@@ -643,17 +643,19 @@ public abstract class ExpectationBuilder
 	///     Releases the sources of the collections materialized during the current evaluation, once the failure message
 	///     no longer reads them.
 	/// </summary>
-	internal async Task EndEvaluation()
+	internal Task EndEvaluation()
 	{
-		if (_evaluationContext is not null)
+		if (_evaluationContext is null)
 		{
-			EvaluationContext.EvaluationContext context = _evaluationContext;
-			_evaluationContext = null;
-			await context.ReleaseMaterializations();
+			return Task.CompletedTask;
 		}
+
+		EvaluationContext.EvaluationContext context = _evaluationContext;
+		_evaluationContext = null;
+		return context.ReleaseMaterializations();
 	}
 
-	internal abstract Task<ConstraintResult> IsMet(Node rootNode,
+	internal abstract ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,
@@ -803,7 +805,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	}
 
 	/// <inheritdoc />
-	internal override async Task<ConstraintResult> IsMet(Node rootNode,
+	internal override async ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,

@@ -66,7 +66,7 @@ internal abstract class JunctionNode : Node
 	}
 
 	/// <inheritdoc />
-	public override async Task<ConstraintResult> IsMetBy<TValue>(TValue? value,
+	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{

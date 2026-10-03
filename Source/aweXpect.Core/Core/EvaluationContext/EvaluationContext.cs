@@ -52,13 +52,13 @@ internal class EvaluationContext : IEvaluationContext
 	///     Releases the sources of all collections that were materialized in this context and in its current attempt,
 	///     and the resources registered with <see cref="ReleaseWithEvaluation" />.
 	/// </summary>
-	public async Task ReleaseMaterializations()
-	{
-		if (_store is null && _releases is null && _attempt is null)
-		{
-			return;
-		}
+	public Task ReleaseMaterializations()
+		=> _store is null && _releases is null && _attempt is null
+			? Task.CompletedTask
+			: ReleaseAll();
 
+	private async Task ReleaseAll()
+	{
 		foreach (IMaterialization materialization in this.GetMaterializations())
 		{
 			await materialization.ReleaseSource();

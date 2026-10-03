@@ -8,8 +8,8 @@ internal class ValueSource<TValue>(TValue value) : IValueSource<TValue>
 {
 	#region IValueSource<TValue> Members
 
-	public Task<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
-		=> Task.FromResult(value);
+	public ValueTask<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
+		=> new(value);
 
 	#endregion
 }

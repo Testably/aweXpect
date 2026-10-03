@@ -55,7 +55,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	}
 
 	/// <inheritdoc />
-	internal override async Task<ConstraintResult> IsMet(Node rootNode,
+	internal override async ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,

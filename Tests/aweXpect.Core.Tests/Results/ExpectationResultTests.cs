@@ -78,7 +78,7 @@ public class ExpectationResultTests
 			return _cancellationToken;
 		}
 
-		internal override Task<ConstraintResult> IsMet(Node rootNode,
+		internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 			EvaluationContext.EvaluationContext context,
 			ITimeSystem timeSystem,
 			TimeSpan? timeout,
@@ -86,7 +86,7 @@ public class ExpectationResultTests
 		{
 			_cancellationToken = cancellationToken;
 			ConstraintResult result = _resultBuilder();
-			return Task.FromResult(result);
+			return new ValueTask<ConstraintResult>(result);
 		}
 	}
 }

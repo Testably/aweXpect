@@ -29,7 +29,11 @@ internal abstract class Node
 	/// <summary>
 	///     Verifies if the <paramref name="value" /> satisfies the expectations of the node.
 	/// </summary>
-	public abstract Task<ConstraintResult> IsMetBy<TValue>(
+	/// <remarks>
+	///     A <see cref="ValueTask{TResult}" />, because most expectations complete synchronously, and every node of an
+	///     evaluation would otherwise allocate and await a completed task.
+	/// </remarks>
+	public abstract ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken);

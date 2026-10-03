@@ -31,12 +31,12 @@ internal class DelegateSource : IValueSource<DelegateValue>
 
 	#region IValueSource<DelegateValue> Members
 
-	public Task<DelegateValue> GetValue(ITimeSystem timeSystem,
+	public ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
 		if (_action is null)
 		{
-			return Task.FromResult(new DelegateValue(null, TimeSpan.Zero, true));
+			return new ValueTask<DelegateValue>(new DelegateValue(null, TimeSpan.Zero, true));
 		}
 
 		IStopwatch sw = timeSystem.Stopwatch.New();
@@ -45,11 +45,11 @@ internal class DelegateSource : IValueSource<DelegateValue>
 			sw.Start();
 			_action(cancellationToken);
 			sw.Stop();
-			return Task.FromResult(new DelegateValue(null, sw.Elapsed));
+			return new ValueTask<DelegateValue>(new DelegateValue(null, sw.Elapsed));
 		}
 		catch (Exception ex)
 		{
-			return Task.FromResult(new DelegateValue(ex, sw.Elapsed));
+			return new ValueTask<DelegateValue>(new DelegateValue(ex, sw.Elapsed));
 		}
 	}
 
