@@ -307,7 +307,27 @@ internal static class CollectionHelpers
 				_ => null,
 			};
 			return Formatter.Format(value,
-				GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
+				GetItemTypeOfListedItems().GetFormattingOption(totalCount, totalCount));
+		}
+
+		/// <remarks>
+		///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be
+		///     searched to its end. An exception of the source is ignored here, as the formatter enumerates the same
+		///     items and renders it.
+		/// </remarks>
+		private Type GetItemTypeOfListedItems()
+		{
+			IEnumerable<object?> items = value is ICollection
+				? value.Cast<object?>()
+				: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+			try
+			{
+				return items.GetItemType();
+			}
+			catch (Exception)
+			{
+				return typeof(object);
+			}
 		}
 	}
 
@@ -325,26 +345,6 @@ internal static class CollectionHelpers
 				_ => null,
 			})),
 			-2));
-
-	/// <remarks>
-	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
-	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
-	///     renders it.
-	/// </remarks>
-	private static Type GetItemTypeOfListedItems(IEnumerable value)
-	{
-		IEnumerable<object?> items = value is ICollection
-			? value.Cast<object?>()
-			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		try
-		{
-			return items.GetItemType();
-		}
-		catch (Exception)
-		{
-			return typeof(object);
-		}
-	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
