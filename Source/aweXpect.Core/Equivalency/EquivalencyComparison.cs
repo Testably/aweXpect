@@ -101,6 +101,15 @@ public static partial class EquivalencyComparison
 		public bool IsDecidingOnly { get; set; }
 
 		/// <summary>
+		///     Whether the comparison only counts the differences of the objects, without writing them.
+		/// </summary>
+		/// <remarks>
+		///     Set while the leftovers of elements whose order is ignored are ranked by their number of differences, as
+		///     only the pairs that are reported in the end are written.
+		/// </remarks>
+		public bool IsCountingOnly { get; set; }
+
+		/// <summary>
 		///     The options registered for a type, or <see langword="null" /> when it has no registration.
 		/// </summary>
 		/// <remarks>
