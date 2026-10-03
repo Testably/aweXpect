@@ -747,25 +747,6 @@ public static partial class ThatEnumerable
 			: Formatter.Format(expected) + options;
 
 	/// <summary>
-	///     Casts the <paramref name="item" /> of an untyped enumerable to <typeparamref name="TItem" />.
-	/// </summary>
-	/// <remarks>
-	///     A <see langword="null" /> item is not matched by a type pattern, but is a valid value whenever
-	///     <typeparamref name="TItem" /> admits it.
-	/// </remarks>
-	private static bool TryCastItem<TItem>(object? item, out TItem typedItem)
-	{
-		if (item is TItem typed)
-		{
-			typedItem = typed;
-			return true;
-		}
-
-		typedItem = default!;
-		return item is null && default(TItem) is null;
-	}
-
-	/// <summary>
 	///     Asks a set <paramref name="collection" /> whose comparer decides itself whether it contains the
 	///     <paramref name="expected" /> item, or returns <see langword="null" /> when the items have to be enumerated
 	///     instead.

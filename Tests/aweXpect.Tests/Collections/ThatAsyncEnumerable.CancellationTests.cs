@@ -930,6 +930,26 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a timeout lists the items received so far, whichever expectation was pending");
 		}
 
+		[Fact]
+		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
+		{
+			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+
+			async Task Act()
+				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has exactly 0 items and is equal to collection [1, 2, 3,] in order,
+				             but it had at least 1 item
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """)
+				.Because("the undecided comparison must not hide the decided failure of the count");
+		}
+
 		/// <remarks>
 		///     The source is only reachable from within this method, so that it can be collected afterwards.
 		/// </remarks>
