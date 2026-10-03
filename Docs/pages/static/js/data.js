@@ -4242,6 +4242,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -4951,7 +4957,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -5664,7 +5671,8 @@ window.BENCHMARK_DATA = {
           253.24656489690145,
           359.5707740102495,
           234.52247835795086,
-          341.13765646616616
+          341.13765646616616,
+          173.47869953087397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6381,6 +6389,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          800,
           800,
           800
         ],
@@ -7103,7 +7112,8 @@ window.BENCHMARK_DATA = {
           213.10201036135356,
           255.9744202931722,
           196.33848306337993,
-          240.80439786911012
+          240.80439786911012,
+          133.22139133725847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7296,6 +7306,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11615,6 +11626,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -12247,7 +12264,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -12883,7 +12901,8 @@ window.BENCHMARK_DATA = {
           295789.5810895647,
           447523.8902669271,
           187347.56459960938,
-          295734.0402483259
+          295734.0402483259,
+          146925.58851841517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13524,7 +13543,8 @@ window.BENCHMARK_DATA = {
           677056,
           676888,
           86137,
-          86138
+          86138,
+          86137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14168,7 +14188,8 @@ window.BENCHMARK_DATA = {
           1596578.78828125,
           2652286.8286458333,
           1424963.7809895833,
-          2610232.06484375
+          2610232.06484375,
+          1254349.052734375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14809,7 +14830,8 @@ window.BENCHMARK_DATA = {
           4841609,
           4841651,
           4841611,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19065,6 +19087,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -19774,7 +19802,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -20487,7 +20516,8 @@ window.BENCHMARK_DATA = {
           414.8395215670268,
           650.2563043594361,
           360.124720287323,
-          502.90954602559407
+          502.90954602559407,
+          239.24562018712362
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21204,6 +21234,7 @@ window.BENCHMARK_DATA = {
           1584,
           1584,
           1584,
+          1104,
           1104,
           1104
         ],
@@ -21926,7 +21957,8 @@ window.BENCHMARK_DATA = {
           416.025589688619,
           513.4385245641073,
           372.3125605583191,
-          479.83998171488446
+          479.83998171488446,
+          261.75292506217954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22119,6 +22151,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -26900,6 +26933,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -27609,7 +27648,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -28322,7 +28362,8 @@ window.BENCHMARK_DATA = {
           280.34214941660565,
           374.92349875768025,
           244.0821105003357,
-          390.416090742747
+          390.416090742747,
+          192.22235318592615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29039,6 +29080,7 @@ window.BENCHMARK_DATA = {
           1072,
           1072,
           1072,
+          952,
           952,
           952
         ],
@@ -29761,7 +29803,8 @@ window.BENCHMARK_DATA = {
           207.21679401397705,
           278.54663734436036,
           193.77425656318664,
-          244.9692392985026
+          244.9692392985026,
+          141.10517188707988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29954,6 +29997,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -34735,6 +34779,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -35444,7 +35494,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -36157,7 +36208,8 @@ window.BENCHMARK_DATA = {
           434.7332351366679,
           698.2153003056844,
           357.7716964483261,
-          512.7948634465536
+          512.7948634465536,
+          224.305471438628
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36874,6 +36926,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1080,
           1080,
           1080
         ],
@@ -37596,7 +37649,8 @@ window.BENCHMARK_DATA = {
           842.3408256530762,
           1220.229696146647,
           865.8583909670512,
-          1246.9402375539144
+          1246.9402375539144,
+          621.1622296651204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38025,6 +38079,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42570,6 +42625,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -43279,7 +43340,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -43992,7 +44054,8 @@ window.BENCHMARK_DATA = {
           1696.247242863973,
           3350.257386016846,
           1289.945943069458,
-          2672.669841512044
+          2672.669841512044,
+          1450.9872616254365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44709,6 +44772,7 @@ window.BENCHMARK_DATA = {
           4376,
           4376,
           4384,
+          2896,
           2896,
           2896
         ],
@@ -45431,7 +45495,8 @@ window.BENCHMARK_DATA = {
           967.8624875386556,
           1367.511067199707,
           990.7968257023738,
-          1324.7816797892253
+          1324.7816797892253,
+          728.2218722025553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45624,6 +45689,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50405,6 +50471,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
@@ -51114,7 +51186,8 @@ window.BENCHMARK_DATA = {
       "208ea2b1",
       "2cb8037e",
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -51827,7 +51900,8 @@ window.BENCHMARK_DATA = {
           1721.8098628997802,
           3314.580428822835,
           1636.337705930074,
-          3245.4842256818497
+          3245.4842256818497,
+          1730.6978145326887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52544,6 +52618,7 @@ window.BENCHMARK_DATA = {
           4280,
           4280,
           4288,
+          3176,
           3176,
           3176
         ],
@@ -53266,7 +53341,8 @@ window.BENCHMARK_DATA = {
           12184.225337727865,
           27142.02975667318,
           12603.91444162222,
-          26656.025815691268
+          26656.025815691268,
+          11316.766002948467
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53984,6 +54060,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -54010,11 +54087,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -54022,7 +54106,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           3115.3962191263836,
-          5879.949660746256
+          5879.949660746256,
+          2672.734001977103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54034,6 +54119,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          7472,
           7472,
           7472
         ],
@@ -54051,7 +54137,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           32265.072572980607,
-          83063.9206891741
+          83063.9206891741,
+          29970.870603434243
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54064,7 +54151,8 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54090,11 +54178,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 14:38:07 2026 \u002B0200",
         "message": "perf: decide the type checks of equivalency once per type (#1565)"
+      },
+      {
+        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
+        "message": "ci: run the full mutation tests only nightly (#1573)"
       }
     ],
     "labels": [
       "fc7ed429",
-      "e49da50c"
+      "e49da50c",
+      "e1449d7d"
     ],
     "datasets": [
       {
@@ -54102,7 +54197,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           341.0223775931767,
-          535.4486650058201
+          535.4486650058201,
+          272.6125044482095
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54114,6 +54210,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1176,
           1176,
           1176
         ],
@@ -54131,7 +54228,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           13434.774471028646,
-          33315.1684526716
+          33315.1684526716,
+          9999.445686848958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54144,7 +54242,8 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
