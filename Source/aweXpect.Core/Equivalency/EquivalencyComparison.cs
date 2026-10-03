@@ -117,6 +117,29 @@ public static partial class EquivalencyComparison
 		///     of its types.
 		/// </remarks>
 		public Dictionary<Type, EquivalencyTypeOptions?> RegisteredOptions { get; } = [];
+
+		private EquivalencyTypeOptions? _lastParentOptions;
+		private EquivalencyTypeOptions? _lastInheritedOptions;
+
+		/// <summary>
+		///     Returns the options that a type without a registration inherits from the
+		///     <paramref name="parentOptions" />.
+		/// </summary>
+		/// <remarks>
+		///     The members of one object share their parent options, so the inherited copy is kept for the last parent
+		///     instead of being created again for every member.
+		/// </remarks>
+		public EquivalencyTypeOptions GetInheritedOptions(EquivalencyOptions equivalencyOptions,
+			EquivalencyTypeOptions parentOptions)
+		{
+			if (!ReferenceEquals(parentOptions, _lastParentOptions))
+			{
+				_lastParentOptions = parentOptions;
+				_lastInheritedOptions = equivalencyOptions.GetInheritedOptions(parentOptions);
+			}
+
+			return _lastInheritedOptions!;
+		}
 	}
 
 	private readonly struct ComparedPair : IEquatable<ComparedPair>

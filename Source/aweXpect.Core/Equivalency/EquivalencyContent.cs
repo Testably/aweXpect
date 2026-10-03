@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 #if !NET8_0_OR_GREATER
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -27,8 +28,14 @@ namespace aweXpect.Equivalency;
 /// </remarks>
 internal static class EquivalencyContent
 {
+	/// <remarks>
+	///     It only depends on the type, and every value that is compared by value asks for both of its types.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<Type, bool> ComparedByContent = new();
+
 	public static bool IsComparedByContent(Type type)
-		=> type == typeof(StringBuilder) || typeof(Regex).IsAssignableFrom(type) || IsJson(type);
+		=> ComparedByContent.GetOrAdd(type, static key
+			=> key == typeof(StringBuilder) || typeof(Regex).IsAssignableFrom(key) || IsJson(key));
 
 	/// <summary>
 	///     Returns the content of the <paramref name="value" />, or the <paramref name="value" /> itself when it is not
