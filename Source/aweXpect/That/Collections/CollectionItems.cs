@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
@@ -94,10 +95,17 @@ internal readonly struct CollectionItems<TItem>
 	/// <summary>
 	///     Whether the <paramref name="cancellationToken" /> is canceled before all items are available.
 	/// </summary>
+	/// <remarks>
+	///     It is checked for every item, so the common case of a token that is not canceled stays inlined.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool IsCanceledBeforeTheEnd(CancellationToken cancellationToken)
+		=> cancellationToken.IsCancellationRequested && IsIncomplete();
+
+	private bool IsIncomplete()
 		=> _typed is not null
-			? cancellationToken.IsCanceledBeforeTheEndOf(_typed)
-			: cancellationToken.IsCanceledBeforeTheEndOf(_untyped!);
+			? _typed is not (ICollection<TItem> or ICountable { Count: not null, })
+			: _untyped is not (ICollection or ICountable { Count: not null, });
 
 	/// <summary>
 	///     Keeps the items for the "Collection" <paramref name="context" />.
