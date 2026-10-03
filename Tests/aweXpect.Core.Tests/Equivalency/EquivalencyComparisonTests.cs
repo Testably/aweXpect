@@ -904,6 +904,29 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsAreReversedWithDuplicates_ShouldReportTheDifference()
+	{
+		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20), new(2, 20), new(3, 30),];
+		WithTwoPublicValues[] expected = [new(3, 30), new(2, 20), new(2, 21), new(1, 10),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field [2].Other differed:
+		                                                      Actual: 20
+		                                                    Expected: 21
+		                                                """).IgnoringNewlineStyle()
+			.Because("of the two equal actual elements, the one that is left over is reported");
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
 	{
 		object[] actual = [1, "a",];

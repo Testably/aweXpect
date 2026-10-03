@@ -91,6 +91,16 @@ public static partial class EquivalencyComparison
 		public int DifferenceCount { get; set; }
 
 		/// <summary>
+		///     Whether the comparison only decides whether the objects are equivalent, without writing or counting their
+		///     differences.
+		/// </summary>
+		/// <remarks>
+		///     Set while elements whose order is ignored are paired, as most of the pairs that are tried are not
+		///     equivalent and never reported, so formatting their values would be wasted.
+		/// </remarks>
+		public bool IsDecidingOnly { get; set; }
+
+		/// <summary>
 		///     The options registered for a type, or <see langword="null" /> when it has no registration.
 		/// </summary>
 		/// <remarks>
