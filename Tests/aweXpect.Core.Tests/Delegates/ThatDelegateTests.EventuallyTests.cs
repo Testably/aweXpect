@@ -814,6 +814,32 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenTestCancellationTimeoutIsShorterThanTheTimeoutAndWithTimeoutIsLonger_ShouldFail()
+		{
+			Counter counter = new();
+			Exception? exception;
+
+			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
+				       .Set(TestCancellation.FromTimeout(VeryLowTimeout)))
+			{
+				async Task Act()
+					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsEqualTo(1)
+						.WithTimeout(10.Seconds());
+
+				exception = await Record.ExceptionAsync(Act);
+			}
+
+			await That(exception).IsExactly<XunitException>().And
+				.HasMessage("""
+				            Expected that () => counter.Value
+				            eventually is equal to 1 within 0:05,
+				            but it did not finish within 0:00.050
+				            """).And
+				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
+		}
+
+		[Fact]
 		public async Task WhenTestCancellationTimeoutIsShorterThanTheTimeout_ShouldFail()
 		{
 			Counter counter = new();

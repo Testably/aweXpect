@@ -21,4 +21,13 @@ public interface IEvaluationContext
 	///     evaluation context.
 	/// </summary>
 	bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value);
+
+	/// <summary>
+	///     The cancellation of the current evaluation.
+	/// </summary>
+	/// <remarks>
+	///     Its <see cref="EvaluationCancellation.Token" /> is the cancellation token that the constraints receive.
+	///     A context outside of an evaluation returns <see cref="EvaluationCancellation.None" />.
+	/// </remarks>
+	EvaluationCancellation Cancellation { get; }
 }

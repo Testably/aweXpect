@@ -326,6 +326,56 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task
+				WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
+			{
+				int subject = 1;
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act()
+						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(2.Seconds())
+							.WithTimeout(10.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that subject
+					            is equal to 2 within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
+			}
+
+			[Fact]
+			public async Task WhenTestCancellationTimeoutIsShorter_ShouldFailWithTheTestCancellationTimeout()
+			{
+				int subject = 1;
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act()
+						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(2.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that subject
+					            is equal to 2 within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("a TestCancellation timeout that is shorter than Within ends the checks");
+			}
+
+			[Fact]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				int subject = 1;

@@ -69,6 +69,89 @@ public sealed class SignalerTests
 				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
 		}
 
+		[Fact]
+		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
+		{
+			Signaler signaler = new();
+			signaler.Signal();
+
+			Task<SignalerResult> wait = signaler.WaitAsync(2.Times(), 10.Seconds());
+			bool isCompletedBeforeTheSecondSignal = wait.IsCompleted;
+			signaler.Signal();
+			SignalerResult result = await wait;
+
+			await That(isCompletedBeforeTheSecondSignal).IsFalse();
+			await That(result.IsSuccess).IsTrue();
+			await That(result.Count).IsEqualTo(2)
+				.Because("the signal before the wait counts as well");
+		}
+
+		[Fact]
+		public async Task WaitAsync_ShouldNotContinueOnTheThreadThatSignals()
+		{
+			Signaler signaler = new();
+			using ManualResetEventSlim releaseTheContinuation = new();
+
+			async Task WaitAndBlock()
+			{
+				await signaler.WaitAsync(10.Seconds());
+				releaseTheContinuation.Wait(10.Seconds());
+			}
+
+			Task waiting = WaitAndBlock();
+			Stopwatch sw = Stopwatch.StartNew();
+			signaler.Signal();
+			sw.Stop();
+			releaseTheContinuation.Set();
+			await waiting;
+
+			await That(sw.Elapsed).IsLessThan(5.Seconds())
+				.Because("the code under test that signals must not run the continuation of the waiting expectation");
+		}
+
+		[Fact]
+		public async Task WaitAsync_ShouldReturnAtTheCancellationWithoutThrowing()
+		{
+			Signaler signaler = new();
+			signaler.Signal();
+			using CancellationTokenSource cts = new(30.Milliseconds());
+
+			SignalerResult result = await signaler.WaitAsync(2.Times(), 10.Seconds(), cts.Token);
+
+			await That(result.IsSuccess).IsFalse();
+			await That(result.Count).IsEqualTo(1)
+				.Because("the signals received until the cancellation are returned");
+		}
+
+		[Fact]
+		public async Task WaitAsync_ShouldUseTimeout()
+		{
+			Signaler signaler = new();
+			Stopwatch sw = Stopwatch.StartNew();
+
+			SignalerResult result = await signaler.WaitAsync(10.Milliseconds());
+
+			sw.Stop();
+			await That(result.IsSuccess).IsFalse();
+			await That(sw.Elapsed).IsLessThan(5.Seconds())
+				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
+		}
+
+		[Theory]
+		[InlineData(0)]
+		[InlineData(-1)]
+		public async Task WaitAsync_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
+		{
+			Signaler signaler = new();
+
+			void Act()
+				=> _ = signaler.WaitAsync(amount);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithMessage("The amount must be greater than zero*").AsWildcard().And
+				.WithParamName("amount");
+		}
+
 		[Theory]
 		[InlineData(2)]
 		[InlineData(3)]
@@ -400,6 +483,77 @@ public sealed class SignalerTests
 			await That(Act).DoesNotThrow()
 				.Because("the signal is sent on the thread of the code under test, which must not receive the exception");
 			await That(signaler.IsSignaled()).IsTrue();
+		}
+
+		[Fact]
+		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
+		{
+			Signaler<int> signaler = new();
+			signaler.Signal(1);
+
+			Task<SignalerResult<int>> wait = signaler.WaitAsync(2.Times(), timeout: 10.Seconds());
+			bool isCompletedBeforeTheSecondSignal = wait.IsCompleted;
+			signaler.Signal(2);
+			SignalerResult<int> result = await wait;
+
+			await That(isCompletedBeforeTheSecondSignal).IsFalse();
+			await That(result.IsSuccess).IsTrue();
+			await That(result.Parameters).IsEqualTo([1, 2,])
+				.Because("the signal before the wait counts as well");
+		}
+
+		[Fact]
+		public async Task WaitAsync_ShouldReturnAtTheCancellationWithoutThrowing()
+		{
+			Signaler<int> signaler = new();
+			signaler.Signal(1);
+			using CancellationTokenSource cts = new(30.Milliseconds());
+
+			SignalerResult<int> result = await signaler.WaitAsync(2.Times(), timeout: 10.Seconds(),
+				cancellationToken: cts.Token);
+
+			await That(result.IsSuccess).IsFalse();
+			await That(result.Parameters).IsEqualTo([1,])
+				.Because("the signals received until the cancellation are returned");
+		}
+
+		[Fact]
+		public async Task WaitAsync_WithPredicate_ShouldOnlyCountMatchingSignals()
+		{
+			Signaler<int> signaler = new();
+			signaler.Signal(1);
+			signaler.Signal(2);
+
+			Task<SignalerResult<int>> wait = signaler.WaitAsync(2.Times(), p => p > 1, 10.Seconds());
+			bool isCompletedBeforeTheMatchingSignal = wait.IsCompleted;
+			signaler.Signal(3);
+			SignalerResult<int> result = await wait;
+
+			await That(isCompletedBeforeTheMatchingSignal).IsFalse()
+				.Because("only one of the signals before the wait matches the predicate");
+			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Fact]
+		public async Task WaitAsync_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
+		{
+			Signaler<int> signaler = new();
+			InvalidOperationException exception = new("predicate failed");
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(1);
+			});
+			Stopwatch sw = Stopwatch.StartNew();
+
+			async Task Act()
+				=> await signaler.WaitAsync(2.Times(), _ => throw exception, 10.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("predicate failed");
+			sw.Stop();
+			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
 		[Theory]

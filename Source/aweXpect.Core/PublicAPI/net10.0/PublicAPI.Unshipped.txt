@@ -266,7 +266,7 @@ aweXpect.Options.EnumerableQuantifier.QuantifierContexts.None = 0 -> aweXpect.Op
 aweXpect.Options.EnumerableQuantifier.QuantifierContexts.NotMatchingItems = 4 -> aweXpect.Options.EnumerableQuantifier.QuantifierContexts
 aweXpect.Options.RepeatedCheckOptions
 aweXpect.Options.RepeatedCheckOptions.CheckEvery(System.TimeSpan interval) -> void
-aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.RepeatedCheckOptions.CheckRepeatedly(System.Func<System.Threading.Tasks.Task<bool>!>! check, aweXpect.Core.EvaluationContext.IEvaluationContext! context) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.Outcome>!
 aweXpect.Options.RepeatedCheckOptions.Interval.get -> System.TimeSpan
 aweXpect.Options.RepeatedCheckOptions.IsRepeated.get -> bool
 aweXpect.Options.RepeatedCheckOptions.RepeatedCheckOptions() -> void
@@ -343,3 +343,18 @@ virtual aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.ItemType.get 
 aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?>! memberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false) -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan duration) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
+aweXpect.Core.EvaluationContext.EvaluationCancellation
+aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.Caller = 2 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.None = 0 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.Timeout = 1 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Reason.get -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Timeout.get -> System.TimeSpan?
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Token.get -> System.Threading.CancellationToken
+aweXpect.Core.EvaluationContext.IEvaluationContext.Cancellation.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
+static aweXpect.Core.EvaluationContext.EvaluationCancellation.None.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
+aweXpect.Core.EvaluationContext.EvaluationCancellation.HasWaitElapsed(System.TimeSpan waitTimeout, System.TimeSpan waited) -> bool
+aweXpect.Signaling.Signaler.WaitAsync(System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
+aweXpect.Signaling.Signaler.WaitAsync(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
+aweXpect.Signaling.Signaler<TParameter>.WaitAsync(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!
+aweXpect.Signaling.Signaler<TParameter>.WaitAsync(aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!

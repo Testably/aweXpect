@@ -357,7 +357,14 @@ the v3 pre-releases, read like a timeout failure although it is the result of an
 interval, and the default comes from `Customize.aweXpect.Settings().DefaultCheckInterval`. `Satisfies(…)` and
 `CompliesWith(…)` with `Within(…)` now shorten the last wait to the timeout like `Eventually()`, so they check a last
 time at the timeout and never after it. As there, a `WithTimeout(…)` that is not shorter than `Within(…)` reports the
-result of that last check instead of "did not finish within …".
+result of that last check instead of "did not finish within …"; the effective timeout, which includes
+`TestCancellation.FromTimeout`, decides.
+
+`IEvaluationContext` has a `Cancellation` property with the token, the effective timeout and whether the evaluation
+timed out or was canceled by the caller; an own implementation returns `EvaluationCancellation.None` outside of an
+evaluation. `RepeatedCheckOptions.CheckRepeatedly` takes the `IEvaluationContext` instead of the `ExpectationBuilder`
+and the token, and returns the `Outcome`: `Undecided` for a cancellation, which the constraint reports as undecided
+instead of letting an `OperationCanceledException` escape.
 
 An extension that references only `aweXpect.Core` can now add expectations on collection items and repeated checks:
 `EnumerableQuantifier`, `QuantifiedCollectionConstraint<TValue, TItem>`, `RepeatedCheckOptions`,

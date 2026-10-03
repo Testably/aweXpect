@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using aweXpect.Customization;
 using aweXpect.Recording;
 
 namespace aweXpect.Tests;
@@ -403,6 +404,35 @@ public sealed partial class ThatEventRecording
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
+			}
+
+			[Fact]
+			public async Task
+				WhenTheTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+				Exception? exception;
+				using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
+				{
+					async Task Act() =>
+						await That(recording)
+							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+							.Within(2.Seconds()).WithTimeout(10.Seconds());
+
+					exception = await Record.ExceptionAsync(Act);
+				}
+
+				await That(exception).IsExactly<XunitException>().And
+					.HasMessage("""
+					            Expected that recording
+					            has recorded the CustomEvent event on sut at least once within 0:02,
+					            but it did not finish within 0:00.300
+					            """).And
+					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 			}
 
 			[Fact]

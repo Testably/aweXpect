@@ -36,6 +36,9 @@ internal sealed class ExpectationTextEvaluationContext : IEvaluationContext
 		return false;
 	}
 
+	/// <inheritdoc />
+	public EvaluationCancellation Cancellation => _inner?.Cancellation ?? EvaluationCancellation.None;
+
 	/// <summary>
 	///     Returns an <see cref="ExpectationTextEvaluationContext" /> wrapping the <paramref name="context" />.
 	/// </summary>

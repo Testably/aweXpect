@@ -24,7 +24,9 @@ available for the `IThat<T>`. They differ in the input and output parameters for
 | `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data between constraints               |
 
 The `IEvaluationContext` allows storing and receiving data between expectations. This mechanism is used for example to
-avoid enumerating an `IEnumerable` multiple times across multiple constraints.
+avoid enumerating an `IEnumerable` multiple times across multiple constraints. Its `Cancellation` describes the
+cancellation of the evaluation: the `Token` (the same token that an asynchronous constraint receives), the effective
+`Timeout`, and the `Reason` of a cancellation: `None`, the `Timeout`, or the `Caller`.
 
 `IsMetBy` returns a `ConstraintResult`, which decides the outcome and writes the expectation and the result texts of
 the failure message:
@@ -494,37 +496,41 @@ public class Player
 ```
 
 ```csharp
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 
 public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
 {
     RepeatedCheckOptions options = new();
     return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
-            .AddConstraint((expectationBuilder, it, grammars)
-                => new IsPlayingConstraint(expectationBuilder, it, grammars, options)),
+            .AddConstraint((it, grammars) => new IsPlayingConstraint(it, grammars, options)),
         subject,
         options);
 }
 
 private sealed class IsPlayingConstraint(
-    ExpectationBuilder expectationBuilder,
     string it,
     ExpectationGrammars grammars,
     RepeatedCheckOptions options)
     : ConstraintResult.WithNotNullValue<Player>(it, grammars),
-        IAsyncConstraint<Player?>
+        IAsyncContextConstraint<Player?>
 {
-    public async Task<ConstraintResult> IsMetBy(Player? actual, CancellationToken cancellationToken)
+    public async Task<ConstraintResult> IsMetBy(Player? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
     {
         Actual = actual;
         if (actual is not null)
         {
-            await options.CheckRepeatedly(() =>
+            Outcome outcome = await options.CheckRepeatedly(() =>
             {
                 bool isPlaying = actual.IsPlaying;
                 Outcome = isPlaying ? Outcome.Success : Outcome.Failure;
                 return Task.FromResult(isPlaying != IsNegated);
-            }, expectationBuilder, cancellationToken);
+            }, context);
+            if (outcome == Outcome.Undecided)
+            {
+                Outcome = Outcome.Undecided;
+            }
         }
 
         return this;
@@ -557,7 +563,10 @@ await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery
 - The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
   `true` when the player is *not* playing. The helper class inverts the stored `Outcome` itself.
 - Appending the options writes " within …" to the expectation text when `Within` was specified.
-- The cancellation token is only observed while waiting for the next check, so the first check is made even with a
-  canceled token, and its result is returned when it succeeds or when `IsRepeated` is `false`. A cancellation at the
-  timeout lets the last check decide. Any other cancellation during a wait is thrown and needs no handling, like in
-  any asynchronous constraint.
+- `CheckRepeatedly` returns the `Outcome`: `Success` when a check succeeded, `Failure` when the last check failed, and
+  `Undecided` when the evaluation was canceled before the timeout. The cancellation is only observed while waiting
+  for the next check, so the first check is made even when the evaluation is already canceled.
+- A cancellation at the timeout, or by an effective timeout of the evaluation (`WithTimeout` or
+  `TestCancellation.FromTimeout`) that is not shorter than `Within`, lets the last check decide. For `Undecided`, the
+  constraint sets its `Outcome` to `Undecided`: the helper class then reports that the expectation could not be
+  verified, and a shorter effective timeout is reported as "did not finish within …".
